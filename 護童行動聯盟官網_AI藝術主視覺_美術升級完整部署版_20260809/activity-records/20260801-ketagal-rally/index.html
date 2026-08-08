@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>115年8月1日反毒駕、反酒駕．凱道大遊行｜護童行動聯盟</title>
+<meta name="description" content="護童行動聯盟115年8月1日反毒駕、反酒駕凱道大遊行活動紀錄。">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+<header><div class="container nav"><a class="brand" href="../../">護童行動聯盟</a><nav>
+<a href="../../">首頁</a><a href="../../court-comics/">法庭漫畫</a><a href="../../hearing-records/">旁聽紀錄</a><a href="../../activity-records/">活動紀錄</a><a href="../../#social">官方社群</a><button class="lang-btn" onclick="toggleLang()">简</button>
+</nav></div></header>
+
+<section style="padding:38px 0 0"><div class="activity-article">
+<a class="article-back" href="../">← 返回活動紀錄</a>
+<div class="activity-cover">
+  <div class="eyebrow2">ACTIVITY RECORD · 2026.08.01</div>
+  <h1>115年8月1日反毒駕、反酒駕．凱道大遊行</h1>
+  <p>被害者家屬支持・兒少保護倡議・公共參與紀錄</p>
+</div>
+
+<figure class="activity-hero-photo art-poster-hero">
+  <img src="../../assets/art/rally-20260801-ai-poster.jpg" alt="115年8月1日反毒駕、反酒駕凱道大遊行 AI 藝術廣告圖">
+  <figcaption>AI 藝術主視覺｜115年8月1日反毒駕、反酒駕．凱道大遊行</figcaption>
+</figure>
+<div class="activity-photo-feature">
+  <img src="./images/rally-02.png" alt="115年8月1日凱道活動現場">
+  <div><span class="story-tag coral">現場照片</span><h3>照片紀錄</h3><p>完整活動照片已整理成獨立相簿，可逐張放大瀏覽。</p><a class="read-btn" href="../albums/20260801-ketagal-rally/">開啟「反毒駕、反酒駕．凱道大遊行」活動相簿 →</a></div>
+</div>
+
+<article class="activity-body">
+<p class="opening">8/1，我們看到的不是顏色，不是對立，更不是誰與誰的恩怨。</p>
+
+<p>我們看到的是一群平凡的被害者家屬，在失去摯愛後，仍努力抓住每一個能為家人討回公道的機會。</p>
+
+<p>站在台上的那一刻，他們流著眼淚訴說家人的遭遇，只希望司法能公平正義，還給家人一個公道，僅此而已。</p>
+
+<p>而我們這些平凡的素人爸媽走上街頭，只是單純希望有更多人關注兒虐，關注每一位受害的孩子，也希望政府能真正看見這些孩子的處境。</p>
+
+<p>然而，有些人眼中只有立場、只有顏色，只看得到自己的喜惡，甚至只用活動人數去定義一場活動的成功或失敗。</p>
+
+<div class="emphasis">但對這群家屬而言，能夠彼此陪伴、互相理解、勇敢站出來，就是繼續走下去的力量。</div>
+
+<p>因為只有經歷過相同傷痛的人，才能真正理解彼此，也只有他們知道，這一路走來有多麼艱難。</p>
+
+<p>是否參與活動，是每個人的自由選擇；但也請尊重每一位願意到場支持的人，更尊重每一位仍在為家人努力爭取公道的被害者家屬，不該忽略他們站出來的價值。</p>
+
+<p>真正值得被看見的，不是人數，不是立場，而是這群家屬直到今天，仍沒有放棄替家人討回一個公平的交代。</p>
+
+<p><strong>願每一位仍在漫長司法路上的被害者家屬，都能等到遲來的正義。</strong></p>
+
+<div class="tag-row">
+  <span class="tag-pill">#所有被害者家屬加油</span>
+  <span class="tag-pill">#願台灣重視兒虐</span>
+  <span class="tag-pill">#不忘初心保持良善</span>
+</div>
+
+<div class="album-jump"><a class="read-btn" href="../albums/20260801-ketagal-rally/">照片紀錄｜前往「反毒駕、反酒駕．凱道大遊行」活動相簿 →</a></div>
+<section class="media-section" style="padding-bottom:0">
+<h2>照片紀錄</h2>
+<div id="photoGrid" class="photo-grid"></div>
+<div id="photoEmpty" class="media-empty"><b>照片尚未上傳</b>將活動照片放入本頁的 images 資料夾並更新 media.json 後，即會顯示在這裡。</div>
+</section>
+
+<section class="media-section" style="padding-bottom:20px">
+<h2>影片紀錄</h2>
+<div id="videoGrid" class="video-grid"></div>
+<div id="videoEmpty" class="media-empty"><b>影片尚未上傳</b>可上傳 MP4，或在 media.json 加入 YouTube／外部影片連結。</div>
+</section>
+</article>
+</div></section>
+
+<footer><div class="container">護童行動聯盟</div></footer>
+<script src="../../assets/site.js"></script>
+<script>
+fetch('./media.json').then(r=>r.json()).then(data=>{
+  const pg=document.getElementById('photoGrid');
+  const pe=document.getElementById('photoEmpty');
+  if(data.photos && data.photos.length){
+    pe.style.display='none';
+    pg.innerHTML=data.photos.map(p=>`<figure class="photo-card"><a href="${p.src}" target="_blank" rel="noopener noreferrer"><img loading="lazy" src="${p.src}" alt="${p.alt||p.caption||'活動照片'}"></a><figcaption>${p.caption||''}<br><span class="photo-hint">點擊照片可查看原尺寸</span></figcaption></figure>`).join('');
+  }
+  const vg=document.getElementById('videoGrid');
+  const ve=document.getElementById('videoEmpty');
+  if(data.videos && data.videos.length){
+    ve.style.display='none';
+    vg.innerHTML=data.videos.map(v=>{
+      if(v.type==='youtube'){
+        return `<article class="video-card"><iframe class="video-frame" src="${v.src}" title="${v.title||'活動影片'}" allowfullscreen></iframe><div class="video-copy">${v.title||''}</div></article>`;
+      }
+      if(v.type==='link'){
+        return `<article class="video-card"><div class="video-copy"><b>${v.title||'活動影片'}</b><br><a class="read-btn" target="_blank" rel="noopener noreferrer" href="${v.src}">觀看影片 →</a></div></article>`;
+      }
+      return `<article class="video-card"><video controls preload="metadata" src="${v.src}"></video><div class="video-copy">${v.title||''}</div></article>`;
+    }).join('');
+  }
+  setLang(localStorage.getItem('siteLang')||'zh-Hant');
+}).catch(()=>{});
+</script>
+</body></html>
