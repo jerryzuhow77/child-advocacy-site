@@ -154,3 +154,25 @@ VOL.2 第二集：9 頁
    - primary-logo-01：全站 Header 與首頁主視覺
    - primary-logo-01～04：首頁「主要商標」完整展示
    - 新增 favicon
+
+
+【本次修正版】
+1. 繁簡切換已重寫：
+   - 只轉換文字節點，不再改寫 <a> 內容
+   - 不會再把圖片、按鈕內的 HTML、卡片圖片刪掉
+   - 簡體模式統一使用 Microsoft YaHei / Noto Sans SC / Source Han Sans SC 字型序列
+
+2. 主商標：
+   - 全站 Header、首頁主視覺與 favicon 改用「雨傘守護」primary-logo-03
+   - 首頁四款品牌圖仍完整保留，雨傘守護排列第一
+
+3. 法庭漫畫：
+   - 第一集 8 頁、第二集 9 頁直接顯示於 HTML
+   - 主漫畫圖片取消超連結，不需要點擊即可閱讀
+   - 上方縮圖仍可跳到各頁
+
+4. AI 藝術廣告圖：
+   - 首頁「最新紀錄」旁聽／活動卡直接使用 AI 主視覺
+   - 旁聽紀錄列表、活動紀錄列表與文章頁均使用 AI 主視覺
+   - 所有子網頁底部新增「專題導覽」兩張 AI 圖卡
+   - 根目錄另有 poster-hearing.jpg、poster-rally.jpg，方便 GitHub Pages 穩定載入
