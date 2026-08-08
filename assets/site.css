@@ -127,3 +127,65 @@ footer{background:#06172e;color:#c7d4e2;padding:36px 0}.social a{margin-right:12
 .lightbox-close{right:20px;top:18px;width:44px;height:44px;font-size:30px}.lightbox-prev,.lightbox-next{top:50%;width:48px;height:58px;font-size:40px;transform:translateY(-50%)}.lightbox-prev{left:18px}.lightbox-next{right:18px}
 .album-jump{margin:20px 0 6px}
 @media(max-width:800px){.album-index-grid,.album-photo-grid{grid-template-columns:1fr}.lightbox-prev{left:6px}.lightbox-next{right:6px}}
+
+
+/* ===== Redesigned court comics library / reader ===== */
+.court-library-hero{background:
+radial-gradient(circle at 80% 15%,rgba(245,200,76,.14),transparent 28%),
+linear-gradient(135deg,#061426,#0b2d50 58%,#111827);color:#fff;padding:70px 0 64px}
+.court-library-hero h1{color:#fff;margin:5px 0 14px;font-size:clamp(44px,7vw,72px)}
+.court-library-hero p{color:#ccdae8;max-width:760px;font-size:18px}
+.court-kicker{font-size:12px;letter-spacing:.17em;font-weight:950;color:#e5b943;text-transform:uppercase}
+.episode-library{display:grid;gap:30px}
+.episode-library-card{display:grid;grid-template-columns:minmax(300px,430px) 1fr;border:1px solid var(--line);border-radius:26px;overflow:hidden;background:#fff;box-shadow:0 16px 50px rgba(8,29,58,.09)}
+.episode-library-cover,.episode-placeholder-cover{position:relative;min-height:430px;display:block;overflow:hidden;background:#091827;color:#fff}
+.episode-library-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 10%}
+.episode-gradient{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 25%,rgba(1,8,19,.92) 100%)}
+.episode-number{position:absolute;top:22px;left:22px;background:#e8b93f;color:#0a1a2d;padding:7px 12px;border-radius:999px;font-size:12px;font-weight:950;letter-spacing:.09em;z-index:2}
+.episode-cover-title{position:absolute;left:28px;right:28px;bottom:28px;z-index:2}.episode-cover-title small{display:block;color:#e9c75f;letter-spacing:.12em;font-weight:900;margin-bottom:6px}.episode-cover-title strong{display:block;font-size:32px;line-height:1.25}
+.episode-library-copy{padding:38px;display:flex;flex-direction:column;justify-content:center}.episode-library-copy h2{font-size:30px;margin:5px 0 12px}.episode-library-copy p{color:var(--muted);font-size:16px}.episode-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.episode-placeholder-cover{background:
+radial-gradient(circle at 65% 25%,rgba(207,78,91,.35),transparent 28%),
+linear-gradient(145deg,#180d1c,#541c31 60%,#101a29)}
+.placeholder-icon{position:absolute;right:34px;top:50%;transform:translateY(-50%);font-size:150px;font-family:Georgia,serif;color:rgba(255,255,255,.07);font-weight:900}.placeholder-icon.large{position:static;transform:none;font-size:100px;color:rgba(255,255,255,.16);line-height:1}
+
+.comic-reader-hero{background:
+radial-gradient(circle at 80% 20%,rgba(245,200,76,.12),transparent 26%),
+linear-gradient(140deg,#050e1b,#0a2a49 58%,#172035);color:#fff;padding:38px 0 68px}
+.comic-reader-wrap{width:min(1100px,calc(100% - 36px));margin:auto}.comic-back{display:inline-block;color:#dbe8f5;margin-bottom:26px}
+.comic-reader-hero-grid{display:grid;grid-template-columns:minmax(300px,430px) 1fr;gap:52px;align-items:center}.comic-hero-cover{border-radius:22px;overflow:hidden;box-shadow:0 26px 70px rgba(0,0,0,.36);border:1px solid rgba(255,255,255,.16)}.comic-hero-cover img{width:100%;height:auto}
+.comic-series-label{font-size:13px;letter-spacing:.15em;color:#efca63;font-weight:950}.comic-hero-copy h1{font-size:clamp(38px,5vw,62px);line-height:1.12;margin:12px 0 18px;color:#fff}.comic-hero-copy p{font-size:18px;color:#d6e3ef;max-width:640px}.comic-stats{display:flex;gap:12px;flex-wrap:wrap;margin:24px 0}.comic-stats span{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);border-radius:999px;padding:7px 12px;color:#dbe8f5;font-size:13px}.comic-stats b{color:#f2cd68}.source-dark{color:#fff;border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.05)}
+
+.comic-intro-section{padding:54px 0;background:#f5f8fb}.comic-intro-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:34px;box-shadow:0 12px 38px rgba(8,29,58,.06)}.comic-intro-card h2{margin:5px 0 18px}.comic-intro-card p{font-size:17px;color:#3f4f63}.comic-tags{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}.comic-tags span{background:#edf4f9;color:#144f7a;border-radius:999px;padding:7px 12px;font-size:13px;font-weight:850}
+
+.comic-reader-section{padding:64px 0 80px}.reader-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:24px}.reader-head h2{margin:4px 0 5px}.reader-head p{margin:0;color:var(--muted)}.reader-count{font-weight:900;color:var(--navy);background:#eef4f8;border-radius:999px;padding:8px 13px}
+.comic-thumb-nav{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 16px;margin-bottom:24px;scrollbar-width:thin}.comic-thumb{flex:0 0 94px;border:1px solid var(--line);background:#fff;border-radius:12px;padding:6px;cursor:pointer;transition:.2s}.comic-thumb:hover{transform:translateY(-2px);border-color:#99b7ce}.comic-thumb img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:7px}.comic-thumb span{display:block;font-size:12px;font-weight:900;color:var(--navy);padding-top:5px}
+.comic-pages{display:grid;gap:34px}.comic-page{scroll-margin-top:90px;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 12px 34px rgba(8,29,58,.07)}.comic-page-label{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:#0a1c32;color:#fff}.comic-page-label span{font-size:12px;letter-spacing:.12em;color:#e6c55a;font-weight:900}.comic-page-label b{font-size:14px}.comic-page-image{width:100%;padding:0;border:0;background:#101010;cursor:zoom-in;display:block}.comic-page-image img{display:block;width:100%;height:auto;max-height:none}.comic-page-caption{padding:12px 18px;color:var(--muted);font-size:13px}
+.comic-end-card{margin-top:42px;background:linear-gradient(135deg,#071b31,#113d67);color:#fff;border-radius:22px;padding:28px;display:flex;align-items:center;gap:22px}.comic-end-icon{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:#e7bd4c;color:#0d1d30;font-size:30px;flex:0 0 auto}.comic-end-card h3{margin:0 0 5px;font-size:23px}.comic-end-card p{margin:0 0 12px;color:#d8e5f1}
+.comic-lightbox figure{max-width:min(900px,88vw)}.comic-lightbox img{max-height:86vh}
+.episode-two-hero{min-height:70vh;display:flex;align-items:center}.episode-two-box{max-width:760px;margin:20px auto 0;text-align:center;position:relative;padding:48px 30px}.episode-two-box .episode-number{position:static;display:inline-flex;margin-bottom:22px}.episode-two-box h1{font-size:clamp(38px,6vw,62px);color:#fff}.episode-two-box p{color:#d7e4f0;font-size:18px}.episode-actions.center{justify-content:center}
+
+@media(max-width:850px){
+.episode-library-card,.comic-reader-hero-grid{grid-template-columns:1fr}
+.episode-library-cover,.episode-placeholder-cover{min-height:360px}.episode-library-copy{padding:26px}
+.comic-reader-hero-grid{gap:28px}.comic-hero-cover{max-width:520px;margin:auto}.reader-head{align-items:flex-start;flex-direction:column}.reader-count{align-self:flex-start}
+}
+
+
+/* Court comics VOL.2 accents */
+.vol2-hero{
+background:
+radial-gradient(circle at 76% 18%,rgba(194,76,46,.19),transparent 28%),
+linear-gradient(140deg,#180e0b,#4b1e13 54%,#111827);
+}
+.vol2-card{border-color:#e7d5ca}
+.vol2-cover-card{background:#2a1610}
+.vol2-gradient{background:linear-gradient(180deg,rgba(0,0,0,.02) 25%,rgba(46,20,12,.94) 100%)}
+.vol2-number{background:#b94729;color:#fff}
+.vol2-btn{background:#b94729;color:#fff}
+.vol2-note{border-top:4px solid #b94729}
+.comic-pullquote{margin:26px 0;padding:22px 25px;border-radius:16px;background:linear-gradient(135deg,#fff6ef,#f6eee7);border-left:5px solid #b94729;color:#562519;font-size:22px;font-weight:900;line-height:1.6}
+.vol2-tags span{background:#f7eee8;color:#8a361f}
+.vol2-label{background:#3f1a11}
+.vol2-label span{color:#e7a38e}
+.vol2-end{background:linear-gradient(135deg,#2c120d,#7a2d1a)}

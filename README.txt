@@ -80,3 +80,38 @@ activity-records/albums/20260801-ketagal-rally/
 
 新增照片方式請看：
 activity-records/albums/20260801-ketagal-rally/UPLOAD_PHOTOS_README.txt
+
+
+【法庭漫畫分集閱讀版】
+法庭漫畫總覽：
+court-comics/
+
+第一集：
+court-comics/episode-01/
+- 已加入 8 張完整漫畫
+- pages.json 控制逐頁內容
+- 可點擊放大、左右鍵切換
+- Facebook 原文：https://www.facebook.com/share/p/1GQQd8vq95/
+
+第二集：
+court-comics/episode-02/
+- 已建立獨立頁面
+- 目前連到 Facebook 原始貼文：https://www.facebook.com/share/p/1EwVcXrwBJ/
+- 後續提供第二集圖片即可套用第一集版型
+
+
+【法庭漫畫第二集完整內容】
+第二集：
+court-comics/episode-02/
+- 法庭紀錄漫畫 VOL.2
+- 已加入 9 張完整漫畫
+- 第一張作為封面
+- pages.json 控制逐頁內容
+- 可點擊放大、左右鍵切換
+- 與第一集互相導覽
+- Facebook 原文：https://www.facebook.com/share/p/1EwVcXrwBJ/
+
+目前法庭漫畫：
+VOL.1 第一集：8 頁
+VOL.2 第二集：9 頁
+兩集均可在官網完整閱讀。
