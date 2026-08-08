@@ -1,0 +1,42 @@
+
+:root{--navy:#081d3a;--blue:#1677c8;--yellow:#f5c84c;--ink:#172238;--muted:#637083;--line:#dce6ef}
+*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;color:var(--ink);line-height:1.75}
+a{text-decoration:none;color:inherit}img{max-width:100%;display:block}.container{width:min(1120px,calc(100% - 36px));margin:auto}
+header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line)}.nav{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{font-size:20px;font-weight:900;color:var(--navy)}nav{display:flex;gap:18px;align-items:center;font-weight:700;font-size:14px}.lang-btn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-weight:900;cursor:pointer}
+.hero,.page-hero{background:linear-gradient(135deg,#071a34,#104b7b);color:#fff}.hero{padding:75px 0}.page-hero{padding:55px 0}.hero-grid{display:grid;grid-template-columns:1fr .9fr;gap:46px;align-items:center}
+h1{font-size:clamp(38px,5vw,64px);line-height:1.15;margin:0 0 18px}h2{font-size:clamp(30px,4vw,44px);color:var(--navy);margin:0 0 16px}.hero p,.page-hero p{color:#d9e8f5;font-size:18px}.hero img{border-radius:24px;box-shadow:0 20px 50px #0005}
+section{padding:68px 0}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.card{border:1px solid var(--line);border-radius:18px;padding:22px;background:#fff}.card h3{color:var(--navy);margin:0 0 8px}.muted{color:var(--muted)}
+.btn{display:inline-block;margin:8px 8px 0 0;padding:11px 18px;border-radius:10px;background:var(--yellow);color:var(--navy);font-weight:900}
+.comic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.comic{border:1px solid var(--line);border-radius:18px;overflow:hidden}.comic img{width:100%;aspect-ratio:4/5;object-fit:cover;background:#eef3f7}.comic .copy{padding:18px}
+.record{border:1px solid var(--line);border-radius:18px;padding:24px;margin-bottom:18px}.meta{font-size:13px;color:var(--blue);font-weight:900}.record .body{white-space:pre-wrap;color:#405066}
+footer{background:#06172e;color:#c7d4e2;padding:36px 0}.social a{margin-right:12px}
+@media(max-width:800px){nav a{display:none}.hero-grid,.grid3,.comic-grid{grid-template-columns:1fr}}
+
+
+/* Hearing-record cards and article pages */
+.record-list{display:grid;gap:24px}
+.record-card{display:grid;grid-template-columns:340px 1fr;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 10px 34px rgba(8,29,58,.06)}
+.record-card-image{min-height:230px;background:#101010}
+.record-card-image img{width:100%;height:100%;object-fit:cover}
+.record-card-copy{padding:28px 30px;display:flex;flex-direction:column;justify-content:center}
+.record-card-copy h3{font-size:clamp(23px,3vw,31px);line-height:1.35;color:var(--navy);margin:7px 0 12px}
+.record-card-copy p{margin:0 0 15px;color:var(--muted)}
+.read-btn{display:inline-flex;align-items:center;justify-content:center;align-self:flex-start;background:var(--navy);color:#fff;font-weight:900;border-radius:10px;padding:10px 17px;margin-top:6px}
+.read-btn:hover{background:#104b7b}
+.article-shell{width:min(900px,calc(100% - 36px));margin:auto}
+.article-cover{border-radius:20px;overflow:hidden;border:1px solid var(--line);box-shadow:0 12px 40px rgba(8,29,58,.10);margin:0 0 34px}
+.article-cover img{width:100%;height:auto}
+.article-meta{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0 22px}
+.article-chip{display:inline-flex;padding:5px 11px;border-radius:999px;background:#edf5fb;color:#155f97;font-size:13px;font-weight:800}
+.article-body{font-size:17px;color:#33445a}
+.article-body h2{font-size:28px;margin:42px 0 13px}
+.article-body h3{font-size:21px;color:var(--navy);margin:28px 0 9px}
+.article-body p{margin:0 0 16px}
+.article-body ol,.article-body ul{padding-left:1.5em;margin:0 0 20px}
+.article-body li{margin:5px 0}
+.article-quote{padding:18px 22px;border-left:4px solid var(--yellow);background:#f7fafc;border-radius:0 12px 12px 0;margin:20px 0;font-weight:700;color:#26384e}
+.article-note{border:1px solid #dbe6ee;background:#f8fbfd;padding:18px 20px;border-radius:14px;color:#5a6778;font-size:14px;margin:32px 0}
+.article-back{display:inline-block;margin-bottom:20px;color:var(--blue);font-weight:900}
+.hashtag{font-weight:900;color:var(--blue);font-size:18px;margin-top:34px}
+@media(max-width:800px){.record-card{grid-template-columns:1fr}.record-card-image{min-height:auto}.record-card-image img{aspect-ratio:16/9}.record-card-copy{padding:22px}.article-body{font-size:16px}}
