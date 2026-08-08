@@ -176,3 +176,24 @@ VOL.2 第二集：9 頁
    - 旁聽紀錄列表、活動紀錄列表與文章頁均使用 AI 主視覺
    - 所有子網頁底部新增「專題導覽」兩張 AI 圖卡
    - 根目錄另有 poster-hearing.jpg、poster-rally.jpg，方便 GitHub Pages 穩定載入
+
+
+【官方社群與志工LOGO更新】
+Instagram：https://www.instagram.com/child_protection_aa
+Threads：https://www.threads.com/@child_protection_aa
+Instagram / Threads 帳號：@child_protection_aa
+
+新增官方社群獨立子頁：
+social/index.html
+
+首頁第一張大型主視覺：
+家庭守護 primary-logo-02
+
+「主要商標」改為「志工 LOGO」，順序：
+1. 雨傘守護
+2. 家庭守護
+3. 點燈前行
+4. 燈火守護
+
+每款均加入 AI 藝術意象說明。
+所有既有子頁的專題導覽增加帶 AI 廣告圖片的「官方社群」圖卡。

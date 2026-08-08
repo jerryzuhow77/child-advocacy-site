@@ -453,3 +453,42 @@ html[lang="zh-Hans"] .btn {
   .visual-related-copy{padding:17px}
   .visual-related-copy h3{font-size:17px}
 }
+
+
+/* ===== Volunteer LOGO + Official Social Hub 2026-08-09 ===== */
+.volunteer-logo-grid figcaption{text-align:left;padding:17px 18px 20px}
+.volunteer-logo-grid figcaption strong{display:block;color:var(--navy);font-size:17px;margin-bottom:7px}
+.volunteer-logo-grid figcaption span{display:block;color:#665e52;font-size:13px;line-height:1.75;font-weight:500}
+.ai-art-note{margin:22px 0 0;padding:13px 16px;border-left:4px solid var(--gold);background:#fff8e9;color:#75664c;font-size:13px}
+
+.social-ai-preview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.social-ai-preview{position:relative;overflow:hidden;border-radius:22px;border:1px solid #e4d8c4;background:#fff;box-shadow:0 14px 34px rgba(48,40,29,.08)}
+.social-ai-preview img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover}
+.social-ai-preview span{position:absolute;left:16px;bottom:16px;padding:8px 13px;border-radius:999px;background:rgba(7,29,53,.92);color:#fff;font-weight:900}
+.social-page-cta{margin-top:24px;text-align:center}
+
+.social-hub-main{padding:64px 0 76px;background:linear-gradient(180deg,#fffdf8,#f8f0e4)}
+.social-platform-grid{display:grid;gap:30px}
+.social-platform-card{display:grid;grid-template-columns:minmax(300px,.78fr) minmax(0,1.22fr);overflow:hidden;border:1px solid #e5d9c6;border-radius:28px;background:#fff;box-shadow:0 18px 48px rgba(45,38,27,.08)}
+.social-platform-art{display:block;background:#f5ede1}
+.social-platform-art img{display:block;width:100%;height:100%;min-height:520px;object-fit:cover}
+.social-platform-copy{align-self:center;padding:42px 44px}
+.social-platform-kicker{color:#9d7021;font-size:12px;letter-spacing:.18em;font-weight:950}
+.social-platform-copy h2{margin:5px 0 4px;color:var(--navy);font-size:39px}
+.social-handle{margin:0 0 19px!important;color:var(--coral)!important;font-weight:900;font-size:18px}
+.social-platform-copy p{color:var(--muted);line-height:1.8}
+.social-account-note{margin-top:30px;padding:26px 28px;border-radius:20px;background:#fff8e9;border:1px solid #ead9ae}
+.social-account-note h2{margin:0 0 8px;color:var(--navy)}.social-account-note p{margin:0;color:#665e52}
+
+.visual-related-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.visual-related-card{grid-template-columns:150px 1fr}
+
+@media(max-width:900px){
+ .social-platform-card{grid-template-columns:1fr}
+ .social-platform-art img{min-height:0;aspect-ratio:4/3}
+ .visual-related-grid{grid-template-columns:1fr}
+}
+@media(max-width:650px){
+ .social-ai-preview-grid{grid-template-columns:1fr}
+ .social-platform-copy{padding:28px 24px}.social-platform-copy h2{font-size:31px}
+}
