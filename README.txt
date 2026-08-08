@@ -115,3 +115,23 @@ court-comics/episode-02/
 VOL.1 第一集：8 頁
 VOL.2 第二集：9 頁
 兩集均可在官網完整閱讀。
+
+
+【2026/08/09 AI藝術主視覺＋美術升級】
+1. 新增旁聽紀錄 AI 藝術廣告圖：
+   assets/art/hearing-tucheng-ai-poster.jpg
+
+2. 新增 8/1 凱道活動 AI 藝術廣告圖：
+   assets/art/rally-20260801-ai-poster.jpg
+
+3. 活動「照片紀錄」已加強連結：
+   activity-records/albums/20260801-ketagal-rally/
+
+4. 首頁重新設計：
+   - 深藍／暖金／珊瑚／青綠品牌色
+   - 上傳 LOGO 藝術作為主視覺與守護意象
+   - 最新紀錄雙主題卡
+   - 官網導覽與社群區塊美化
+
+5. 上傳的品牌視覺經網頁優化後存放：
+   assets/brand-art/
