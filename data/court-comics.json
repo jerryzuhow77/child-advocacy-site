@@ -1,9 +1,14 @@
 [
   {
-    "date": "2026-08-07",
-    "title": "法庭漫畫專區建立",
-    "summary": "日後可依日期上傳法庭漫畫或圖卡。",
-    "image": "images/example.svg",
-    "alt": "法庭漫畫示意圖"
+    "episode": 1,
+    "title": "法庭漫畫｜第一集",
+    "page": "episode-01/",
+    "facebook": "https://www.facebook.com/share/p/1GQQd8vq95/"
+  },
+  {
+    "episode": 2,
+    "title": "法庭漫畫｜第二集",
+    "page": "episode-02/",
+    "facebook": "https://www.facebook.com/share/p/1EwVcXrwBJ/"
   }
 ]

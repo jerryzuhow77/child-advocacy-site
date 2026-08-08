@@ -1,1 +1,64 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>法庭漫畫｜護童行動聯盟</title><link rel="stylesheet" href="../assets/site.css"></head><body><header><div class="container nav"><a class="brand" href="../">護童行動聯盟</a><nav><a href="../">首頁</a><a href="../court-comics/">法庭漫畫</a><a href="../hearing-records/">旁聽紀錄</a><button class="lang-btn" onclick="toggleLang()">简</button></nav></div></header><section class="page-hero"><div class="container"><h1>法庭漫畫</h1><p>以圖像整理法庭觀察與案件脈絡。</p></div></section><section><div class="container"><div id="list" class="comic-grid"></div></div></section><footer><div class="container">護童行動聯盟</div></footer><script src="../assets/site.js"></script><script>fetch('../data/court-comics.json').then(r=>r.json()).then(a=>{document.getElementById('list').innerHTML=a.slice().reverse().map(x=>`<article class="comic"><img src="${x.image}" alt="${x.alt||x.title}"><div class="copy"><div class="meta">${x.date}</div><h3>${x.title}</h3><p>${x.summary||''}</p></div></article>`).join('');setLang(localStorage.getItem('siteLang')||'zh-Hant')})</script></body></html>
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>法庭漫畫｜護童行動聯盟</title>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<header><div class="container nav"><a class="brand" href="../">護童行動聯盟</a><nav>
+<a href="../">首頁</a>
+<a href="../court-comics/">法庭漫畫</a>
+<a href="../hearing-records/">旁聽紀錄</a>
+<a href="../activity-records/">活動紀錄</a>
+<a href="../#social">官方社群</a>
+<button class="lang-btn" onclick="toggleLang()">简</button>
+</nav></div></header>
+
+<section class="page-hero"><div class="container">
+<h1>法庭漫畫</h1>
+<p>以漫畫與圖像整理法庭觀察及案件脈絡。本站保留 Facebook 原始貼文連結，方便讀者回到原始來源查看完整內容。</p>
+</div></section>
+
+<section><div class="container">
+<div class="episode-grid">
+
+<article class="episode-card">
+  <a class="episode-cover episode-one" href="./episode-01/">
+    <div class="episode-badge">EP.01</div>
+    <div class="episode-cover-copy"><small>COURT COMICS</small><strong>法庭漫畫<br>第一集</strong></div>
+  </a>
+  <div class="episode-copy">
+    <div class="meta">第一集｜Facebook 原始貼文</div>
+    <h3>法庭漫畫｜第一集</h3>
+    <p>點擊進入本站獨立頁面，或直接前往 Facebook 查看原始貼文。</p>
+    <div class="episode-actions">
+      <a class="read-btn" href="./episode-01/">閱讀第一集 →</a>
+      <a class="source-btn" href="https://www.facebook.com/share/p/1GQQd8vq95/" target="_blank" rel="noopener noreferrer">Facebook 原文</a>
+    </div>
+  </div>
+</article>
+
+<article class="episode-card">
+  <a class="episode-cover episode-two" href="./episode-02/">
+    <div class="episode-badge">EP.02</div>
+    <div class="episode-cover-copy"><small>COURT COMICS</small><strong>法庭漫畫<br>第二集</strong></div>
+  </a>
+  <div class="episode-copy">
+    <div class="meta">第二集｜Facebook 原始貼文</div>
+    <h3>法庭漫畫｜第二集</h3>
+    <p>點擊進入本站獨立頁面，或直接前往 Facebook 查看原始貼文。</p>
+    <div class="episode-actions">
+      <a class="read-btn" href="./episode-02/">閱讀第二集 →</a>
+      <a class="source-btn" href="https://www.facebook.com/share/p/1EwVcXrwBJ/" target="_blank" rel="noopener noreferrer">Facebook 原文</a>
+    </div>
+  </div>
+</article>
+
+</div>
+</div></section>
+
+<footer><div class="container">護童行動聯盟</div></footer>
+<script src="../assets/site.js"></script>
+</body></html>

@@ -40,3 +40,32 @@ GitHub Pages：main / (root)
    hearing-records/20260820-case-name/index.html
 3. 在 data/hearing-records.json 新增 date、title、court、summary、image、url。
 4. Commit changes 後，旁聽紀錄首頁會自動新增卡片與「閱讀完整紀錄」按鈕。
+
+
+【活動紀錄】
+新增入口：
+activity-records/
+
+目前新增：
+activity-records/20260801-ketagal-rally/
+
+活動頁照片、影片請依：
+activity-records/20260801-ketagal-rally/MEDIA_UPLOAD_README.txt
+操作。
+
+因本次未提供8/1活動的實際照片與影片，網站已先建立照片相簿與影片播放區，
+但不以其他圖片冒充活動紀錄。上傳實際媒體後即可顯示。
+
+
+【法庭漫畫新增兩集】
+第一集：
+court-comics/episode-01/
+Facebook：https://www.facebook.com/share/p/1GQQd8vq95/
+
+第二集：
+court-comics/episode-02/
+Facebook：https://www.facebook.com/share/p/1EwVcXrwBJ/
+
+目前兩篇使用 Facebook 原始貼文連結。
+若要把漫畫圖片直接顯示於官網，請另提供每一集的漫畫圖片檔；
+之後可在各集頁面加入「逐張漫畫閱讀」相簿，而不必更改原始 Facebook 來源。

@@ -40,3 +40,72 @@ footer{background:#06172e;color:#c7d4e2;padding:36px 0}.social a{margin-right:12
 .article-back{display:inline-block;margin-bottom:20px;color:var(--blue);font-weight:900}
 .hashtag{font-weight:900;color:var(--blue);font-size:18px;margin-top:34px}
 @media(max-width:800px){.record-card{grid-template-columns:1fr}.record-card-image{min-height:auto}.record-card-image img{aspect-ratio:16/9}.record-card-copy{padding:22px}.article-body{font-size:16px}}
+
+
+/* Activity records */
+.activity-list{display:grid;gap:24px}
+.activity-card{display:grid;grid-template-columns:360px 1fr;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 10px 34px rgba(8,29,58,.07)}
+.activity-card-cover{background:linear-gradient(135deg,#0b2547,#8a1f1f);min-height:245px;display:flex;align-items:center;justify-content:center;padding:28px;color:#fff;text-align:center}
+.activity-card-cover .datebox{font-weight:900;font-size:22px;line-height:1.35}
+.activity-card-cover .datebox small{display:block;font-size:13px;letter-spacing:.12em;color:#f7d86b;margin-bottom:8px}
+.activity-card-copy{padding:30px;display:flex;flex-direction:column;justify-content:center}
+.activity-card-copy h3{font-size:clamp(23px,3vw,31px);line-height:1.35;color:var(--navy);margin:7px 0 12px}
+.activity-card-copy p{margin:0 0 15px;color:var(--muted)}
+.activity-cover{border-radius:24px;overflow:hidden;background:linear-gradient(135deg,#091a31,#8e2424);padding:54px 34px;color:#fff;margin-bottom:34px;position:relative}
+.activity-cover:after{content:"";position:absolute;inset:auto -60px -100px auto;width:300px;height:300px;border-radius:50%;background:rgba(245,200,76,.14)}
+.activity-cover .eyebrow2{font-size:13px;letter-spacing:.14em;font-weight:900;color:#f5d869}
+.activity-cover h1{font-size:clamp(34px,5vw,54px);margin:10px 0 14px;max-width:800px}
+.activity-cover p{color:#e1eaf3;font-size:17px;max-width:760px;margin:0}
+.activity-article{width:min(900px,calc(100% - 36px));margin:auto}
+.activity-body{font-size:17px;color:#33445a}
+.activity-body p{margin:0 0 18px}
+.activity-body .opening{font-size:21px;line-height:1.75;color:var(--navy);font-weight:800;margin:0 0 28px}
+.activity-body h2{font-size:29px;margin:44px 0 16px}
+.activity-body .emphasis{border-left:4px solid var(--yellow);background:#f8fafc;border-radius:0 12px 12px 0;padding:18px 22px;margin:26px 0;font-weight:800;color:#24384f}
+.media-section{margin-top:48px}
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.photo-card{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff}
+.photo-card img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.photo-card figcaption{padding:10px 12px;font-size:13px;color:var(--muted)}
+.video-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.video-card{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff}
+.video-card video{width:100%;background:#111;display:block}
+.video-frame{aspect-ratio:16/9;width:100%;border:0;background:#111}
+.video-copy{padding:13px 15px;color:var(--muted);font-size:14px}
+.media-empty{border:1px dashed #aabccc;border-radius:16px;padding:28px;text-align:center;background:#f8fbfd;color:var(--muted)}
+.media-empty b{display:block;color:var(--navy);font-size:18px;margin-bottom:5px}
+.tag-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:28px}
+.tag-pill{display:inline-flex;background:#eef5fb;color:#155f97;border-radius:999px;padding:6px 11px;font-size:13px;font-weight:900}
+@media(max-width:800px){.activity-card{grid-template-columns:1fr}.activity-card-cover{min-height:190px}.photo-grid,.video-grid{grid-template-columns:1fr}.activity-body{font-size:16px}}
+
+
+.activity-photo-cover{position:relative;padding:0;min-height:245px;overflow:hidden}
+.activity-photo-cover>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.activity-cover-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,12,25,.08),rgba(3,12,25,.72));display:flex;align-items:flex-end;justify-content:flex-start;padding:24px;color:#fff;text-align:left}
+.activity-hero-photo{margin:0 0 38px;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:#fff;box-shadow:0 14px 42px rgba(8,29,58,.09)}
+.activity-hero-photo img{width:100%;height:auto;display:block}
+.activity-hero-photo figcaption{padding:11px 15px;color:var(--muted);font-size:13px}
+.photo-card a{display:block;overflow:hidden}
+.photo-card img{transition:transform .25s ease}
+.photo-card a:hover img{transform:scale(1.025)}
+.photo-hint{font-size:12px;color:#8796a8}
+
+
+/* Court comic episodes */
+.episode-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.episode-card{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 10px 32px rgba(8,29,58,.07)}
+.episode-cover{height:290px;position:relative;display:flex;align-items:flex-end;padding:28px;color:#fff;overflow:hidden}
+.episode-one{background:radial-gradient(circle at 75% 20%,rgba(245,200,76,.32),transparent 30%),linear-gradient(135deg,#071a34,#134b7c)}
+.episode-two{background:radial-gradient(circle at 75% 20%,rgba(255,104,86,.3),transparent 30%),linear-gradient(135deg,#2c0b20,#9d2837)}
+.episode-cover:after{content:"";position:absolute;width:240px;height:240px;border:2px solid rgba(255,255,255,.14);border-radius:50%;right:-70px;top:-60px}
+.episode-badge{position:absolute;top:20px;left:20px;background:var(--yellow);color:var(--navy);font-weight:950;border-radius:999px;padding:7px 12px;font-size:13px;letter-spacing:.08em}
+.episode-cover-copy{position:relative;z-index:1}.episode-cover-copy small{display:block;letter-spacing:.14em;color:#d8e9f8;margin-bottom:7px}.episode-cover-copy strong{display:block;font-size:38px;line-height:1.2}
+.episode-copy{padding:24px}.episode-copy h3{font-size:25px;color:var(--navy);margin:5px 0 9px}.episode-copy p{color:var(--muted);margin:0 0 18px}
+.episode-actions{display:flex;gap:10px;flex-wrap:wrap}.source-btn{display:inline-flex;padding:9px 13px;border:1px solid var(--line);border-radius:9px;color:var(--navy);font-weight:850}
+.comic-article{width:min(900px,calc(100% - 36px));margin:auto}.comic-episode-hero{min-height:350px;border-radius:24px;padding:38px;color:#fff;display:flex;align-items:flex-end;position:relative;overflow:hidden;margin-bottom:30px}
+.comic-episode-hero .episode-badge{top:28px;left:28px}.comic-episode-kicker{font-size:13px;letter-spacing:.14em;color:#f3d86f;font-weight:900}.comic-episode-hero h1{font-size:clamp(36px,5vw,58px);margin:6px 0}.comic-episode-hero p{color:#dce8f3}
+.comic-source-box{border:1px solid var(--line);border-radius:20px;padding:30px;background:#fff}.comic-source-box h2{margin-top:0}.comic-source-box p{color:var(--muted)}
+.fb-source-large{display:inline-flex;margin-top:8px;background:#1877f2;color:#fff;padding:12px 18px;border-radius:10px;font-weight:900}.source-url{font-size:12px;color:#8897a8;margin-top:14px;word-break:break-all}
+.comic-note{margin:24px 0;padding:20px 22px;background:#f6f9fc;border-left:4px solid var(--yellow);border-radius:0 12px 12px 0}.comic-note strong{color:var(--navy)}.comic-note p{margin:5px 0 0;color:var(--muted)}
+.article-prev-next{display:flex;justify-content:space-between;margin:32px 0 48px}.article-nav-link{font-weight:900;color:var(--blue)}
+@media(max-width:800px){.episode-grid{grid-template-columns:1fr}.episode-cover{height:230px}.episode-cover-copy strong{font-size:32px}.comic-episode-hero{min-height:280px}}
