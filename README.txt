@@ -69,3 +69,14 @@ Facebook：https://www.facebook.com/share/p/1EwVcXrwBJ/
 目前兩篇使用 Facebook 原始貼文連結。
 若要把漫畫圖片直接顯示於官網，請另提供每一集的漫畫圖片檔；
 之後可在各集頁面加入「逐張漫畫閱讀」相簿，而不必更改原始 Facebook 來源。
+
+
+【活動相簿】
+活動相簿首頁：
+activity-records/albums/
+
+8/1 凱道活動相簿：
+activity-records/albums/20260801-ketagal-rally/
+
+新增照片方式請看：
+activity-records/albums/20260801-ketagal-rally/UPLOAD_PHOTOS_README.txt
