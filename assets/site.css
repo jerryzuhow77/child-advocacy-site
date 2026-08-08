@@ -260,3 +260,71 @@ linear-gradient(135deg,#071d35,#0b385d);position:relative;overflow:hidden}
   .featured-copy{padding:22px}.footer-grid{flex-direction:column;align-items:flex-start}
   .art-hero{padding-top:42px}.art-hero h1{font-size:44px}
 }
+
+
+/* ===== Primary brand marks 2026-08-09 ===== */
+.brand:not(.brand-lockup){
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+}
+.brand:not(.brand-lockup)::before{
+  content:"";
+  width:42px;
+  height:42px;
+  flex:0 0 42px;
+  border-radius:50%;
+  background:url("./brand/primary-logo-01.jpg") center/cover no-repeat;
+  border:2px solid #e5bd55;
+  box-shadow:0 3px 10px rgba(8,35,63,.10);
+}
+.brand-lockup img{
+  content:url("./brand/primary-logo-01.jpg");
+}
+.primary-brand-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+}
+.primary-brand-grid figure{
+  margin:0;
+  background:#fff;
+  border:1px solid #e5d7bd;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 14px 38px rgba(62,50,31,.08);
+}
+.primary-brand-grid img{
+  width:100%;
+  aspect-ratio:1;
+  object-fit:cover;
+  display:block;
+}
+.primary-brand-grid figcaption{
+  padding:13px 15px 15px;
+  text-align:center;
+  color:#5f533f;
+  font-size:13px;
+  font-weight:850;
+}
+.comic-direct-link{
+  display:block;
+  width:100%;
+  cursor:zoom-in;
+  background:#101010;
+}
+.comic-direct-link img{
+  display:block;
+  width:100%;
+  height:auto;
+}
+.comic-thumb-link{
+  text-decoration:none;
+  color:inherit;
+}
+@media(max-width:900px){
+  .primary-brand-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:520px){
+  .brand:not(.brand-lockup)::before{width:36px;height:36px;flex-basis:36px}
+}

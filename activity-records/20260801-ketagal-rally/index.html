@@ -6,6 +6,7 @@
 <title>115年8月1日反毒駕、反酒駕．凱道大遊行｜護童行動聯盟</title>
 <meta name="description" content="護童行動聯盟115年8月1日反毒駕、反酒駕凱道大遊行活動紀錄。">
 <link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/brand/favicon.jpg">
 </head>
 <body>
 <header><div class="container nav"><a class="brand" href="../../">護童行動聯盟</a><nav>
@@ -24,11 +25,6 @@
   <img src="../../assets/art/rally-20260801-ai-poster.jpg" alt="115年8月1日反毒駕、反酒駕凱道大遊行 AI 藝術廣告圖">
   <figcaption>AI 藝術主視覺｜115年8月1日反毒駕、反酒駕．凱道大遊行</figcaption>
 </figure>
-<div class="activity-photo-feature">
-  <img src="./images/rally-02.png" alt="115年8月1日凱道活動現場">
-  <div><span class="story-tag coral">現場照片</span><h3>照片紀錄</h3><p>完整活動照片已整理成獨立相簿，可逐張放大瀏覽。</p><a class="read-btn" href="../albums/20260801-ketagal-rally/">開啟「反毒駕、反酒駕．凱道大遊行」活動相簿 →</a></div>
-</div>
-
 <article class="activity-body">
 <p class="opening">8/1，我們看到的不是顏色，不是對立，更不是誰與誰的恩怨。</p>
 
@@ -57,12 +53,6 @@
 </div>
 
 <div class="album-jump"><a class="read-btn" href="../albums/20260801-ketagal-rally/">照片紀錄｜前往「反毒駕、反酒駕．凱道大遊行」活動相簿 →</a></div>
-<section class="media-section" style="padding-bottom:0">
-<h2>照片紀錄</h2>
-<div id="photoGrid" class="photo-grid"></div>
-<div id="photoEmpty" class="media-empty"><b>照片尚未上傳</b>將活動照片放入本頁的 images 資料夾並更新 media.json 後，即會顯示在這裡。</div>
-</section>
-
 <section class="media-section" style="padding-bottom:20px">
 <h2>影片紀錄</h2>
 <div id="videoGrid" class="video-grid"></div>
@@ -75,12 +65,6 @@
 <script src="../../assets/site.js"></script>
 <script>
 fetch('./media.json').then(r=>r.json()).then(data=>{
-  const pg=document.getElementById('photoGrid');
-  const pe=document.getElementById('photoEmpty');
-  if(data.photos && data.photos.length){
-    pe.style.display='none';
-    pg.innerHTML=data.photos.map(p=>`<figure class="photo-card"><a href="${p.src}" target="_blank" rel="noopener noreferrer"><img loading="lazy" src="${p.src}" alt="${p.alt||p.caption||'活動照片'}"></a><figcaption>${p.caption||''}<br><span class="photo-hint">點擊照片可查看原尺寸</span></figcaption></figure>`).join('');
-  }
   const vg=document.getElementById('videoGrid');
   const ve=document.getElementById('videoEmpty');
   if(data.videos && data.videos.length){
