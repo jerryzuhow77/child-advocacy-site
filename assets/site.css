@@ -2490,3 +2490,672 @@ html[lang="zh-Hans"] .btn {
     margin-bottom:14px;
   }
 }
+
+
+/* =====================================================================
+   2026-08-09 全站 AI 美術強化 V3
+   - 導覽與主要連結按鈕：AI 圓形大頭貼
+   - 子頁 Hero：品牌藝術浮水印
+   - 卡片、圖片與字體：電腦 / 平板 / 手機分級
+   ===================================================================== */
+
+:root{
+  --brand-navy:#082b4b;
+  --brand-navy-2:#0d4164;
+  --brand-cream:#fffaf0;
+  --brand-gold:#d7aa3b;
+  --brand-coral:#c9583d;
+  --brand-teal:#2b7c78;
+  --brand-paper:#f7efe0;
+  --brand-line:#e5d7bd;
+  --brand-shadow:0 16px 42px rgba(30,42,49,.075);
+}
+
+/* ---------- 全站字體與尺寸節奏 ---------- */
+body{
+  font-size:16px;
+  line-height:1.75;
+  letter-spacing:.01em;
+}
+h1,h2,h3,h4{
+  text-wrap:balance;
+}
+.page-hero h1,
+.court-library-hero h1,
+.comic-reader-hero h1,
+.about-art-copy h1{
+  font-size:clamp(36px,4.3vw,60px) !important;
+  line-height:1.2 !important;
+}
+.page-hero p,
+.court-library-hero p,
+.comic-reader-hero p{
+  font-size:clamp(14px,1.15vw,17px);
+  line-height:1.85;
+}
+
+/* ---------- Header：更完整的品牌導覽 ---------- */
+header{
+  background:
+    linear-gradient(90deg,rgba(255,255,255,.97),rgba(255,251,241,.98)) !important;
+  border-bottom:1px solid rgba(213,177,92,.34) !important;
+  box-shadow:0 8px 27px rgba(8,35,63,.055);
+  backdrop-filter:blur(14px);
+}
+header .nav{
+  min-height:76px;
+}
+header .brand{
+  font-weight:950;
+  letter-spacing:.02em;
+}
+header .nav>nav{
+  gap:3px !important;
+}
+header .nav>nav>a{
+  position:relative;
+  display:inline-flex !important;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  min-height:45px;
+  padding:7px 9px !important;
+  border-radius:13px;
+  font-size:14px;
+  font-weight:880;
+  color:#142a3b;
+  transition:background .18s ease,transform .18s ease,box-shadow .18s ease;
+}
+header .nav>nav>a:hover{
+  background:#fff3d5;
+  box-shadow:0 7px 18px rgba(81,61,26,.07);
+  transform:translateY(-1px);
+}
+
+/* 子頁原本純文字導覽：自動加上 AI 大頭貼，不必改每一個 HTML */
+header .nav>nav>a:not(.nav-avatar-link)::before{
+  content:"";
+  width:25px;
+  height:25px;
+  flex:0 0 25px;
+  border-radius:50%;
+  background:url("./brand/primary-logo-02.jpg") center/cover no-repeat;
+  border:1.5px solid #e2c678;
+  box-shadow:0 2px 7px rgba(8,35,63,.12);
+}
+header .nav>nav>a:nth-child(2):not(.nav-avatar-link)::before{
+  background-image:url("./brand/primary-logo-03.jpg");
+}
+header .nav>nav>a:nth-child(3):not(.nav-avatar-link)::before{
+  background-image:url("./brand/primary-logo-04.jpg");
+}
+header .nav>nav>a:nth-child(4):not(.nav-avatar-link)::before{
+  background-image:url("./brand/primary-logo-03.jpg");
+}
+header .nav>nav>a:nth-child(5):not(.nav-avatar-link)::before{
+  background-image:url("./brand/primary-logo-02.jpg");
+}
+header .nav>nav>a:nth-child(6):not(.nav-avatar-link)::before{
+  background-image:url("./brand/primary-logo-01.jpg");
+}
+header .nav>nav>a:nth-child(7):not(.nav-avatar-link)::before{
+  background-image:url("./brand/primary-logo-02.jpg");
+}
+header .nav>nav .cute-btn-icon{
+  display:none !important;
+}
+
+/* ---------- 所有「按鈕式連結」統一加 AI 大頭貼 ---------- */
+/* 隱藏舊版 HTML 內嵌小頭貼，改用統一 CSS 頭貼，避免大小不一致 */
+.btn-ai-avatar{
+  display:none !important;
+}
+
+a.btn,
+a.read-btn,
+a.outline-btn,
+a.source-btn,
+a.article-back,
+a.editorial-read-link,
+a.editorial-simple-link,
+a.premium-all-link,
+a.newest-case-link,
+a.campaign-strip-btn,
+.editorial-mini-actions a{
+  position:relative;
+  display:inline-flex !important;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-height:42px;
+}
+
+a.btn::before,
+a.read-btn::before,
+a.outline-btn::before,
+a.source-btn::before,
+a.article-back::before,
+a.editorial-read-link::before,
+a.editorial-simple-link::before,
+a.premium-all-link::before,
+a.newest-case-link::before,
+a.campaign-strip-btn::before,
+.editorial-mini-actions a::before{
+  content:"";
+  width:27px;
+  height:27px;
+  flex:0 0 27px;
+  border-radius:50%;
+  background:url("./brand/primary-logo-03.jpg") center/cover no-repeat;
+  border:2px solid rgba(255,255,255,.86);
+  box-shadow:0 3px 10px rgba(8,35,63,.14);
+}
+
+/* 不同功能使用不同 AI 大頭貼，視覺更有辨識度 */
+a.outline-btn::before,
+.editorial-mini-actions a:nth-child(2)::before{
+  background-image:url("./brand/primary-logo-01.jpg");
+}
+a.source-btn::before,
+a.premium-all-link::before{
+  background-image:url("./brand/primary-logo-02.jpg");
+}
+a.editorial-simple-link::before{
+  background-image:url("./brand/primary-logo-04.jpg");
+}
+a.article-back::before{
+  width:24px;height:24px;flex-basis:24px;
+  background-image:url("./brand/primary-logo-02.jpg");
+}
+
+/* 外觀再統一 */
+a.read-btn,
+a.btn.art-primary{
+  border-radius:12px !important;
+  box-shadow:0 8px 20px rgba(7,48,77,.09);
+}
+a.outline-btn,
+a.source-btn{
+  border-radius:12px !important;
+}
+a.read-btn:hover,
+a.btn:hover,
+a.outline-btn:hover,
+a.source-btn:hover,
+a.article-back:hover{
+  transform:translateY(-2px);
+}
+
+/* ---------- 可點擊的大卡片也放一顆品牌 AI 小章 ---------- */
+.visual-related-card,
+.social-ai-preview,
+.episode-library-cover,
+.record-card-image,
+.activity-card-cover,
+.album-index-cover,
+.footer-light-ad{
+  position:relative;
+}
+.visual-related-card::after,
+.social-ai-preview::after,
+.episode-library-cover::after,
+.record-card-image::after,
+.activity-card-cover::after,
+.album-index-cover::after{
+  content:"";
+  position:absolute;
+  z-index:5;
+  right:12px;
+  top:12px;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:url("./brand/primary-logo-03.jpg") center/cover no-repeat;
+  border:2px solid rgba(255,255,255,.9);
+  box-shadow:0 5px 13px rgba(4,27,49,.18);
+}
+.social-ai-preview:nth-child(2)::after{
+  background-image:url("./brand/primary-logo-04.jpg");
+}
+.social-ai-preview:nth-child(3)::after{
+  background-image:url("./brand/primary-logo-02.jpg");
+}
+
+/* ---------- 子網頁 Hero：加入 AI 品牌美術浮水印 ---------- */
+.page-hero,
+.court-library-hero,
+.comic-reader-hero{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  border-bottom:1px solid rgba(213,172,78,.34);
+}
+.page-hero::before,
+.court-library-hero::before,
+.comic-reader-hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-2;
+  background:
+    radial-gradient(circle at 78% 30%,rgba(225,178,61,.22),transparent 27%),
+    radial-gradient(circle at 8% 15%,rgba(197,82,59,.09),transparent 22%),
+    linear-gradient(125deg,#fffdf7,#fff6e6 55%,#efe4cf);
+}
+.page-hero::after,
+.court-library-hero::after,
+.comic-reader-hero::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  right:5.5%;
+  top:50%;
+  transform:translateY(-50%) rotate(5deg);
+  width:170px;
+  height:170px;
+  border-radius:50%;
+  background:url("./brand/primary-logo-04.jpg") center/cover no-repeat;
+  opacity:.11;
+  filter:saturate(.78);
+  box-shadow:0 0 0 18px rgba(217,165,45,.07);
+}
+.activity-index-hero::after,
+.album-hero::after{
+  background-image:url("./brand/primary-logo-02.jpg");
+}
+.hearing-hero::after{
+  background-image:url("./brand/primary-logo-03.jpg");
+}
+.social-page-hero::after{
+  background-image:url("./brand/primary-logo-01.jpg");
+}
+.vol2-hero::after{
+  background-image:url("./brand/primary-logo-04.jpg");
+}
+
+/* ---------- 文章與內容容器：紙張＋AI 品牌感 ---------- */
+.article-shell,
+.activity-body,
+.comic-intro-card,
+.social-platform-card,
+.case-record-card,
+.album-index-card,
+.record-card,
+.activity-card{
+  border-color:var(--brand-line) !important;
+  box-shadow:var(--brand-shadow);
+}
+.article-shell,
+.activity-body{
+  position:relative;
+}
+.article-shell::before,
+.activity-body::before{
+  content:"";
+  position:absolute;
+  right:18px;
+  top:18px;
+  width:54px;
+  height:54px;
+  border-radius:50%;
+  background:url("./brand/primary-logo-03.jpg") center/cover no-repeat;
+  opacity:.08;
+  pointer-events:none;
+}
+
+/* ---------- 圖片尺寸：桌機版不要過大 ---------- */
+.article-cover.art-poster-cover{
+  max-width:760px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.activity-hero-photo.art-poster-hero{
+  max-width:760px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.article-cover img,
+.activity-hero-photo img{
+  max-height:720px;
+  object-fit:contain;
+}
+.record-card-image img,
+.activity-card-cover img,
+.album-index-cover img{
+  width:100%;
+  aspect-ratio:16/10;
+  object-fit:cover;
+}
+.visual-related-card img{
+  width:100%;
+  height:100%;
+  min-height:190px;
+  max-height:250px;
+  object-fit:cover;
+}
+.social-platform-art img{
+  max-height:330px !important;
+  object-fit:cover !important;
+}
+.social-ai-preview img{
+  max-height:300px !important;
+}
+.comic-page-image-static img{
+  max-width:760px !important;
+  margin:0 auto;
+}
+.comic-hero-cover{
+  max-width:320px !important;
+}
+
+/* ---------- 內容卡片美術 ---------- */
+.visual-related-card,
+.record-card,
+.activity-card,
+.album-index-card,
+.social-platform-card,
+.episode-card{
+  border-radius:22px !important;
+  overflow:hidden;
+  transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+}
+.visual-related-card:hover,
+.record-card:hover,
+.activity-card:hover,
+.album-index-card:hover,
+.social-platform-card:hover,
+.episode-card:hover{
+  transform:translateY(-4px);
+  border-color:#d9bd70 !important;
+  box-shadow:0 21px 46px rgba(42,44,39,.11) !important;
+}
+
+/* ---------- 專題導覽：更像藝術廣告卡 ---------- */
+.visual-related{
+  background:
+    radial-gradient(circle at 90% 12%,rgba(219,171,54,.12),transparent 22%),
+    linear-gradient(180deg,#fffaf1,#f5eddf) !important;
+}
+.related-head h2{
+  font-family:"Noto Serif TC","Noto Serif CJK TC",serif;
+  font-size:clamp(29px,3vw,39px);
+}
+.visual-related-copy small{
+  color:#9e701b !important;
+  letter-spacing:.09em;
+}
+.visual-related-copy h3{
+  font-family:"Noto Serif TC","Noto Serif CJK TC",serif;
+}
+
+/* ---------- Footer：強化成網站最後一張品牌廣告 ---------- */
+.art-footer{
+  position:relative;
+  overflow:hidden;
+}
+.art-footer::before{
+  content:"";
+  position:absolute;
+  width:190px;
+  height:190px;
+  left:-55px;
+  bottom:-85px;
+  border-radius:50%;
+  background:url("./brand/primary-logo-04.jpg") center/cover no-repeat;
+  opacity:.06;
+  pointer-events:none;
+}
+.footer-light-ad{
+  border-radius:22px !important;
+}
+.footer-light-ad img{
+  object-position:center 45% !important;
+}
+
+/* ---------- 桌機中尺寸：避免導覽擠在一起 ---------- */
+@media(min-width:801px) and (max-width:1180px){
+  header .nav{
+    width:min(100% - 24px,1120px);
+  }
+  header .nav>nav>a{
+    gap:4px;
+    padding:6px 6px !important;
+    font-size:12px;
+  }
+  header .nav>nav>a:not(.nav-avatar-link)::before,
+  .nav-ai-avatar{
+    width:21px !important;
+    height:21px !important;
+    flex-basis:21px !important;
+  }
+  .brand-lockup span{
+    font-size:17px !important;
+  }
+  .brand-lockup small{
+    font-size:8px !important;
+  }
+}
+
+/* =====================================================================
+   手機版：圖片與文字重新分級，不單純縮小桌機
+   ===================================================================== */
+@media(max-width:800px){
+  body{
+    font-size:15px;
+    line-height:1.72;
+  }
+
+  header .nav{
+    min-height:64px;
+  }
+  header .nav>nav{
+    padding:10px 11px 13px !important;
+  }
+  header .nav>nav>a{
+    justify-content:flex-start !important;
+    min-height:48px !important;
+    padding:8px 11px !important;
+    font-size:15px !important;
+    border-bottom:1px solid #eee2cc;
+    border-radius:9px !important;
+  }
+  header .nav>nav>a:last-of-type{
+    border-bottom:0;
+  }
+  header .nav>nav>a:not(.nav-avatar-link)::before,
+  .nav-ai-avatar{
+    width:31px !important;
+    height:31px !important;
+    flex-basis:31px !important;
+  }
+
+  .page-hero,
+  .court-library-hero,
+  .comic-reader-hero{
+    padding-top:42px !important;
+    padding-bottom:42px !important;
+  }
+  .page-hero::after,
+  .court-library-hero::after,
+  .comic-reader-hero::after{
+    width:105px;
+    height:105px;
+    right:-20px;
+    top:23px;
+    transform:none;
+    opacity:.08;
+  }
+  .page-hero h1,
+  .court-library-hero h1,
+  .comic-reader-hero h1,
+  .about-art-copy h1{
+    font-size:clamp(31px,9.3vw,42px) !important;
+  }
+  .page-hero p,
+  .court-library-hero p,
+  .comic-reader-hero p{
+    font-size:14px !important;
+  }
+
+  a.btn,
+  a.read-btn,
+  a.outline-btn,
+  a.source-btn,
+  a.article-back,
+  a.editorial-read-link,
+  a.editorial-simple-link,
+  a.premium-all-link,
+  a.newest-case-link{
+    min-height:44px;
+    font-size:13px !important;
+  }
+  a.btn::before,
+  a.read-btn::before,
+  a.outline-btn::before,
+  a.source-btn::before,
+  a.editorial-read-link::before,
+  a.editorial-simple-link::before,
+  a.premium-all-link::before,
+  a.newest-case-link::before{
+    width:29px;
+    height:29px;
+    flex-basis:29px;
+  }
+
+  .article-shell,
+  .activity-body{
+    width:min(100% - 22px,820px) !important;
+  }
+  .article-cover.art-poster-cover,
+  .activity-hero-photo.art-poster-hero{
+    max-width:100%;
+  }
+  .article-cover img,
+  .activity-hero-photo img{
+    max-height:none;
+    width:100%;
+    height:auto;
+  }
+
+  .record-card-image img,
+  .activity-card-cover img,
+  .album-index-cover img{
+    aspect-ratio:16/11;
+  }
+  .visual-related-card{
+    grid-template-columns:115px 1fr !important;
+  }
+  .visual-related-card img{
+    min-height:155px !important;
+    max-height:190px !important;
+  }
+  .visual-related-card::after,
+  .social-ai-preview::after,
+  .episode-library-cover::after,
+  .record-card-image::after,
+  .activity-card-cover::after,
+  .album-index-cover::after{
+    width:29px;
+    height:29px;
+    right:8px;
+    top:8px;
+  }
+
+  .social-platform-art img{
+    max-height:285px !important;
+  }
+  .social-ai-preview img{
+    max-height:none !important;
+  }
+
+  .comic-page-image-static img{
+    max-width:100% !important;
+  }
+  .comic-page-caption{
+    font-size:11px !important;
+  }
+  .comic-hero-cover{
+    max-width:260px !important;
+  }
+
+  .about-section-head h2,
+  .related-head h2{
+    font-size:clamp(28px,8vw,34px) !important;
+  }
+  .about-stat strong{
+    font-size:40px !important;
+  }
+  .street-timeline p,
+  .case-dates span,
+  .charity-grid h3{
+    font-size:12px !important;
+  }
+
+  .footer-light-ad{
+    max-width:560px !important;
+  }
+  .footer-light-copy strong{
+    font-size:19px !important;
+  }
+  .footer-light-copy span{
+    font-size:11px !important;
+  }
+}
+
+@media(max-width:480px){
+  body{
+    font-size:14px;
+  }
+  .container{
+    width:min(100% - 22px,1120px) !important;
+  }
+  .visual-related-card{
+    grid-template-columns:98px 1fr !important;
+  }
+  .visual-related-card img{
+    min-height:145px !important;
+  }
+  .visual-related-copy{
+    padding:12px 13px !important;
+  }
+  .visual-related-copy h3{
+    font-size:15px !important;
+    line-height:1.45 !important;
+  }
+  .visual-related-copy p{
+    font-size:11px !important;
+  }
+
+  .social-platform-art img{
+    max-height:250px !important;
+  }
+  .comic-hero-cover{
+    max-width:230px !important;
+  }
+
+  /* 小手機上的按鈕避免過長文字與頭貼擠成兩列 */
+  a.read-btn,
+  a.btn,
+  a.outline-btn,
+  a.source-btn{
+    padding-left:12px !important;
+    padding-right:12px !important;
+  }
+  a.read-btn::before,
+  a.btn::before,
+  a.outline-btn::before,
+  a.source-btn::before{
+    width:27px;
+    height:27px;
+    flex-basis:27px;
+  }
+}
+
+/* 簡體模式也保持同一套視覺與字重 */
+html[lang="zh-Hans"] header .nav>nav>a,
+html[lang="zh-Hans"] a.btn,
+html[lang="zh-Hans"] a.read-btn,
+html[lang="zh-Hans"] a.outline-btn,
+html[lang="zh-Hans"] a.source-btn{
+  font-weight:700 !important;
+}
