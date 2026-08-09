@@ -377,7 +377,7 @@ function initSiteSearch(){
   const status=overlay.querySelector('.site-search-status');
   const filters=overlay.querySelector('.site-search-filters');
 
-  const categories=['全部','旁聽紀錄','法庭漫畫','活動紀錄','活動相簿','關於我們','官方社群'];
+  const categories=['全部','案件介紹','旁聽紀錄','法庭漫畫','活動紀錄','活動相簿','關於我們','官方社群'];
   categories.forEach(cat=>{
     const b=document.createElement('button');
     b.type='button';

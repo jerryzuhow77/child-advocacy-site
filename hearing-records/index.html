@@ -40,12 +40,12 @@
       <h2>專題導覽</h2>
     </div>
     <div class="visual-related-grid">
-      <a class="visual-related-card" href="../hearing-records/tucheng-two-year-old-20260806/">
+      <a class="visual-related-card" href="../cases/tucheng-two-year-old/">
         <img loading="lazy" decoding="async" src="../poster-hearing.jpg" alt="土城兩歲男童命案旁聽紀錄 藝術廣告圖">
         <div class="visual-related-copy">
-          <small>旁聽紀錄</small>
-          <h3>「最後抱著兩瓶牛奶離世的孩子」</h3>
-          <p>8/6 二審準備程序旁聽紀錄</p>
+          <small>案件介紹</small>
+          <h3>最後陪著他的，只有兩瓶牛奶</h3>
+          <p>土城兩歲男童命案完整案件脈絡</p>
         </div>
       </a>
       <a class="visual-related-card" href="../activity-records/20260801-ketagal-rally/">
@@ -79,7 +79,10 @@ fetch('../data/hearing-records.json').then(r=>r.json()).then(a=>{
       <div class="meta">${x.date} ｜ ${x.court||''}</div>
       <h3>${x.title}</h3>
       <p>${x.summary||''}</p>
-      <a class="read-btn" href="${x.url}">閱讀完整紀錄 →</a>
+      <div class="case-record-actions">
+        ${x.caseUrl?`<a class="read-btn secondary" href="${x.caseUrl}">案件介紹</a>`:''}
+        <a class="read-btn" href="${x.url}">閱讀完整紀錄 →</a>
+      </div>
     </div>
   </article>`).join('');
   setLang(localStorage.getItem('siteLang')||'zh-Hant');
