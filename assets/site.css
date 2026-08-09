@@ -4217,3 +4217,58 @@ a.campaign-strip-btn:not(.content-brand-avatar)::before,
     height:8.3% !important;
   }
 }
+
+
+/* =====================================================================
+   2026-08-09 V9
+   新版活動／旁聽藝術海報：
+   右上角大頭貼已直接設計在圖片內，因此不再用 CSS 色塊遮蓋。
+   ===================================================================== */
+
+.activity-card-cover.activity-poster-cover::after,
+.record-card-image::after,
+.activity-card-cover.activity-poster-cover::before,
+.record-card-image::before{
+  content:none !important;
+  display:none !important;
+}
+
+/* 海報一律完整顯示，避免新版右上角大頭貼被裁切 */
+.activity-card-cover.activity-poster-cover,
+.record-card-image{
+  height:auto !important;
+  min-height:0 !important;
+  aspect-ratio:auto !important;
+  overflow:hidden !important;
+  background:#fbf4e5 !important;
+}
+
+.activity-card-cover.activity-poster-cover > img,
+.record-card-image > img{
+  display:block !important;
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  aspect-ratio:auto !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+}
+
+/* 手機版也保持原圖完整比例 */
+@media(max-width:800px){
+  .activity-card-cover.activity-poster-cover,
+  .record-card-image{
+    width:min(100%,430px) !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+    aspect-ratio:auto !important;
+  }
+
+  .activity-card-cover.activity-poster-cover > img,
+  .record-card-image > img{
+    width:100% !important;
+    height:auto !important;
+    object-fit:contain !important;
+  }
+}
