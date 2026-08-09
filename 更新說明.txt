@@ -1,32 +1,26 @@
-本次新增「土城兩歲男童命案」案件介紹子網頁。
+本次為 Q 版紀念圖示「精簡強化」更新。
 
-新增網址：
-/cases/tucheng-two-year-old/
+新增兩張輕量 WebP：
+assets/art/kaikai-q-wave.webp
+assets/art/kaikai-q-star.webp
 
-主要內容：
-- 使用「最後陪著他的，只有兩瓶牛奶」藝術主視覺。
-- 案件說明與內容提醒。
-- 案發、搶救、一審與二審重要時間脈絡。
-- 吳姓男子、陳姓生母一審判決整理。
-- 「兩瓶牛奶」象徵性描述與司法可確認事實之區分。
-- 為什麼記錄案件、兒少保護倡議與結語。
-- 明顯連結至 2026/8/6 二審準備程序旁聽紀錄。
+只使用在三個位置：
+1. 首頁「勿忘剴剴｜我們為什麼持續行動」標題旁。
+2. 土城兩歲男童案件介紹頁的最後紀念訊息。
+3. 2026/8/6 旁聽紀錄「先了解案件完整脈絡」入口。
 
-同步更新：
-- 旁聽紀錄列表：新增「案件介紹」按鈕。
-- 8/6 旁聽文章：新增案件介紹入口。
-- 首頁最新紀錄：可分別前往「案件介紹」及「旁聽紀錄」。
-- 全站搜尋：新增「案件介紹」分類，索引由 12 頁增加為 13 頁。
-- sitemap.xml：加入案件介紹新網址。
+設計原則：
+- 不放在日期、一般標題、正文段落或每張卡片。
+- 不遮文字。
+- 圓形小尺寸，保持深藍／暖金／米白品牌風格。
+- 圖示屬紀念藝術意象，不作為案件事實或人物真實影像。
 
-本次需新增／覆蓋：
+本次需要覆蓋：
 index.html
-hearing-records/index.html
-hearing-records/tucheng-two-year-old-20260806/index.html
 cases/tucheng-two-year-old/index.html
+hearing-records/tucheng-two-year-old-20260806/index.html
 assets/site.css
-assets/site.js
-assets/art/tucheng-two-year-old-case-poster.jpg
-data/hearing-records.json
-data/search-index.json
-sitemap.xml
+
+本次新增：
+assets/art/kaikai-q-wave.webp
+assets/art/kaikai-q-star.webp
