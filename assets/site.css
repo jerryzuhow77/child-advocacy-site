@@ -4158,3 +4158,62 @@ a.campaign-strip-btn:not(.content-brand-avatar)::before,
     width:min(100%,360px) !important;
   }
 }
+
+
+/* =====================================================================
+   2026-08-09 V8
+   移除「活動紀錄／旁聽紀錄」海報右上角圓形大頭貼
+   同時蓋掉該區殘留日期文字，保留乾淨標題條。
+   ===================================================================== */
+
+/* 活動紀錄：右上角改回完整青綠色標題條 */
+.activity-card-cover.activity-poster-cover::after{
+  content:"" !important;
+  display:block !important;
+  position:absolute !important;
+  z-index:8 !important;
+  left:79.5% !important;
+  top:3.55% !important;
+  width:14.7% !important;
+  height:8.3% !important;
+  border-radius:0 !important;
+  background:rgb(41,127,124) !important;
+  box-shadow:none !important;
+  outline:0 !important;
+  pointer-events:none !important;
+}
+
+/* 旁聽紀錄：右上角改回完整深藍色標題條 */
+.record-card-image::after{
+  content:"" !important;
+  display:block !important;
+  position:absolute !important;
+  z-index:8 !important;
+  left:79.5% !important;
+  top:3.55% !important;
+  width:14.7% !important;
+  height:8.3% !important;
+  border-radius:0 !important;
+  background:rgb(8,35,64) !important;
+  box-shadow:none !important;
+  outline:0 !important;
+  pointer-events:none !important;
+}
+
+/* 先前用來遮日期的小遮罩可關閉，避免重疊造成色塊 */
+.activity-card-cover.activity-poster-cover::before,
+.record-card-image::before{
+  content:none !important;
+  display:none !important;
+}
+
+/* 手機／平板維持同一比例位置，不需要另外裁圖 */
+@media(max-width:800px){
+  .activity-card-cover.activity-poster-cover::after,
+  .record-card-image::after{
+    left:79.5% !important;
+    top:3.55% !important;
+    width:14.7% !important;
+    height:8.3% !important;
+  }
+}
