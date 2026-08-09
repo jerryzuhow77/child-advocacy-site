@@ -1,8 +1,13 @@
 本壓縮檔只包含本次需要更新／新增的檔案。
 
-上傳方式：
-1. 解壓縮。
-2. 將所有檔案與資料夾依原路徑上傳到 GitHub Repository 根目錄。
-3. 同名檔案選擇覆蓋。
-4. about/ 為本次新增的「關於我們」子網頁。
-5. 不需要重新上傳活動照片、影片、法庭漫畫圖片、Logo 或其他未修改檔案。
+本次內容：
+- index.html：首頁導覽 AI 大頭貼、SEO、頁尾「一道光」藝術廣告
+- about/index.html：新增 2026/08/06 土城兩歲男童命案旁聽紀錄＋SEO
+- assets/site.css：本次視覺樣式
+- assets/site.js：民國年自動轉西元年
+- assets/art/light-in-darkness-footer.jpg：新頁尾藝術圖
+- sitemap.xml：Google Sitemap
+- robots.txt：搜尋引擎檢索規則
+- Google搜尋提交說明.txt：Search Console 最後人工操作
+
+不需要重新上傳活動照片、影片、法庭漫畫圖片、既有 Logo 或其他未修改內容。

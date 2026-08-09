@@ -4,7 +4,39 @@ const charMap={"㑳":"㑇","㘚":"㘎","㠏":"㟆","㠣":"𫵷","㥮":"㤘","㩜
 
 const origText = new WeakMap();
 const origAttrs = new WeakMap();
-const originalDocumentTitle = document.title;
+
+/* ===== ROC / Minguo year -> Gregorian year ===== */
+function normalizeROCYearString(s){
+  if(!s) return s;
+  let x=s;
+
+  // 民國115年8月1日 -> 2026年8月1日
+  x=x.replace(/民國\s*(\d{1,3})\s*年/g,(m,y)=>{
+    const n=Number(y);
+    return (n>=1 && n<=199) ? `${n+1911}年` : m;
+  });
+
+  // 115年8月1日 / 115年8月 -> 2026年8月1日 / 2026年8月
+  x=x.replace(/(^|[^\d])((?:10\d|11\d|12\d|13\d|14\d|15\d|16\d|17\d|18\d|19\d))年(?=\s*\d{1,2}\s*月)/g,
+    (m,prefix,y)=>`${prefix}${Number(y)+1911}年`);
+
+  // 民國115/08/01 -> 2026/08/01
+  x=x.replace(/民國\s*(\d{1,3})\s*\/\s*(\d{1,2})\s*\/\s*(\d{1,2})/g,(m,y,mo,d)=>{
+    const n=Number(y), mm=Number(mo), dd=Number(d);
+    return (n>=1&&n<=199&&mm>=1&&mm<=12&&dd>=1&&dd<=31) ? `${n+1911}/${mo}/${d}` : m;
+  });
+
+  // 115/08/01 -> 2026/08/01 (only ROC-like 3-digit years)
+  x=x.replace(/(^|[^\d])((?:10\d|11\d|12\d|13\d|14\d|15\d|16\d|17\d|18\d|19\d))\/(\d{1,2})\/(\d{1,2})(?!\d)/g,
+    (m,prefix,y,mo,d)=>{
+      const mm=Number(mo), dd=Number(d);
+      return (mm>=1&&mm<=12&&dd>=1&&dd<=31) ? `${prefix}${Number(y)+1911}/${mo}/${d}` : m;
+    });
+
+  return x;
+}
+
+const originalDocumentTitle = normalizeROCYearString(document.title);
 
 function cv(s){
   if(!s) return s;
@@ -55,7 +87,7 @@ function convertAttributes(isHans, root=document){
     if(!origAttrs.has(el)){
       const obj={};
       ['title','aria-label','alt','placeholder'].forEach(attr=>{
-        if(el.hasAttribute(attr)) obj[attr]=el.getAttribute(attr);
+        if(el.hasAttribute(attr)) obj[attr]=normalizeROCYearString(el.getAttribute(attr));
       });
       origAttrs.set(el,obj);
     }
@@ -67,7 +99,11 @@ function convertAttributes(isHans, root=document){
 }
 
 function convertTextNode(node,isHans){
-  if(!origText.has(node)) origText.set(node,node.nodeValue);
+  if(!origText.has(node)){
+    const normalized=normalizeROCYearString(node.nodeValue);
+    origText.set(node,normalized);
+    if(node.nodeValue!==normalized) node.nodeValue=normalized;
+  }
   const original=origText.get(node);
   node.nodeValue=isHans ? cv(original) : original;
 }
@@ -94,14 +130,14 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   // If a page injects new content later, convert it too.
   const observer=new MutationObserver(mutations=>{
-    if((localStorage.getItem('siteLang')||'zh-Hant')!=='zh-Hans') return;
+    const isHans=(localStorage.getItem('siteLang')||'zh-Hant')==='zh-Hans';
     mutations.forEach(m=>{
       m.addedNodes.forEach(n=>{
         if(n.nodeType===Node.TEXT_NODE){
-          if(n.nodeValue && n.nodeValue.trim()) convertTextNode(n,true);
+          if(n.nodeValue && n.nodeValue.trim()) convertTextNode(n,isHans);
         } else if(n.nodeType===Node.ELEMENT_NODE){
-          getConvertibleTextNodes(n).forEach(t=>convertTextNode(t,true));
-          convertAttributes(true,n);
+          getConvertibleTextNodes(n).forEach(t=>convertTextNode(t,isHans));
+          convertAttributes(isHans,n);
         }
       });
     });
