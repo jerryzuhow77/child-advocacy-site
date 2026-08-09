@@ -4272,3 +4272,124 @@ a.campaign-strip-btn:not(.content-brand-avatar)::before,
     object-fit:contain !important;
   }
 }
+
+
+/* =====================================================================
+   2026-08-09 V10 — 全站檢視校正層
+   ===================================================================== */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible{
+  outline:3px solid #e0ad35 !important;
+  outline-offset:3px !important;
+  border-radius:8px;
+}
+.lang-btn{
+  min-width:44px;
+  min-height:44px;
+  display:inline-grid;
+  place-items:center;
+}
+img{max-width:100%}
+body.lightbox-open{overflow:hidden}
+.comic-page-image-static img{cursor:zoom-in !important}
+
+/* 首頁最新紀錄：直式海報完整顯示，柔焦背景填滿橫向卡片 */
+.editorial-main-image,
+.editorial-side-stories .editorial-side-story:first-child .editorial-side-image{
+  position:relative;
+  isolation:isolate;
+  background:#0a2e4c;
+}
+.editorial-main-image::before,
+.editorial-side-stories .editorial-side-story:first-child .editorial-side-image::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:-18px;
+  background-position:center;
+  background-size:cover;
+  filter:blur(18px);
+  transform:scale(1.08);
+  opacity:.33;
+}
+.editorial-main-image::before{background-image:url("../poster-hearing.jpg")}
+.editorial-side-stories .editorial-side-story:first-child .editorial-side-image::before{
+  background-image:url("../poster-rally.jpg")
+}
+.editorial-main-image > img,
+.editorial-side-stories .editorial-side-story:first-child .editorial-side-image > img{
+  position:relative;
+  z-index:1;
+  object-fit:contain !important;
+  object-position:center !important;
+  background:rgba(5,31,51,.10);
+}
+
+/* 子頁 footer 統一品牌視覺 */
+footer:not(.art-footer){
+  margin-top:0;
+  border-top:1px solid rgba(217,170,56,.34);
+  background:linear-gradient(135deg,#071f37,#0a3557) !important;
+  color:#f7edd2;
+}
+footer:not(.art-footer) > .container{
+  min-height:88px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  font-weight:900;
+}
+footer:not(.art-footer) > .container::after{
+  content:"孩子優先・制度落實・持續行動";
+  color:#a9c4d4;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.08em;
+}
+
+/* 導覽品牌圖統一使用輕量縮圖 */
+.brand-lockup > img{
+  width:46px !important;
+  height:46px !important;
+  object-fit:cover;
+  flex:0 0 46px;
+}
+
+/* 活動相簿鍵盤操作 */
+.album-photo-card[role="button"]{cursor:zoom-in}
+.album-photo-card[role="button"]:focus-visible{
+  box-shadow:0 0 0 4px rgba(224,173,53,.25),0 14px 34px rgba(33,39,39,.10);
+}
+
+@media(max-width:800px){
+  .brand-lockup > img{
+    width:40px !important;
+    height:40px !important;
+    flex-basis:40px;
+  }
+  footer:not(.art-footer) > .container{
+    min-height:96px;
+    flex-direction:column;
+    justify-content:center;
+    text-align:center;
+    gap:5px;
+  }
+  .editorial-main-image > img,
+  .editorial-side-stories .editorial-side-story:first-child .editorial-side-image > img{
+    width:100%;
+    height:100%;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,
+  *::before,
+  *::after{
+    scroll-behavior:auto !important;
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+}
