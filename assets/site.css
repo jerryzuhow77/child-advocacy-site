@@ -3159,3 +3159,58 @@ html[lang="zh-Hans"] a.outline-btn,
 html[lang="zh-Hans"] a.source-btn{
   font-weight:700 !important;
 }
+
+
+/* ============================================================
+   2026-08-09 頁尾「一道光」圖片完整顯示修正
+   ============================================================ */
+.footer-light-ad{
+  align-items:center !important;
+  background:#071c31 !important;
+}
+
+.footer-light-ad img{
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:360px !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  align-self:center !important;
+  background:#071c31;
+}
+
+/* 桌機：讓圖片區保有足夠寬度，不用為了填滿卡片而裁圖 */
+@media(min-width:901px){
+  .footer-light-ad{
+    grid-template-columns:minmax(420px,48%) minmax(0,52%) !important;
+  }
+  .footer-light-ad img{
+    max-height:330px !important;
+  }
+}
+
+/* 平板 */
+@media(min-width:561px) and (max-width:900px){
+  .footer-light-ad{
+    grid-template-columns:minmax(330px,46%) minmax(0,54%) !important;
+  }
+  .footer-light-ad img{
+    max-height:300px !important;
+  }
+}
+
+/* 手機：圖片獨立一列，以原始比例完整呈現 */
+@media(max-width:560px){
+  .footer-light-ad{
+    grid-template-columns:1fr !important;
+  }
+  .footer-light-ad img{
+    width:100% !important;
+    height:auto !important;
+    max-height:none !important;
+    aspect-ratio:auto !important;
+    object-fit:contain !important;
+    object-position:center center !important;
+  }
+}
