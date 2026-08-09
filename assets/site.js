@@ -193,3 +193,79 @@ function initMobileMenu(){
 
 document.addEventListener('DOMContentLoaded',initMobileMenu);
 
+
+
+
+/* ===== 20 款護童形象大頭貼：同一頁不重複 ===== */
+function initUniqueBrandAvatars(){
+  const scriptSrc=(document.currentScript && document.currentScript.src)
+    ? document.currentScript.src
+    : new URL('assets/site.js',location.href).href;
+  const avatarBase=new URL('./avatars/',scriptSrc);
+
+  const avatarFiles=Array.from({length:20},(_,i)=>
+    `avatar-${String(i+1).padStart(2,'0')}.jpg`
+  );
+
+  /* 依重要性排序。
+     首頁候選超過 20 個，因此會把 20 張全部用完；
+     子頁若不足 20 個，就只使用需要的數量，不會硬塞、不會重複。 */
+  const selectors=[
+    'header .nav > nav > a',
+    '.premium-hero-actions a',
+    '.hero-actions a',
+    '.premium-all-link',
+    '.editorial-read-link',
+    '.editorial-mini-actions a',
+    '.editorial-simple-link',
+    '.editorial-topic-strip > a',
+    '.social-ai-preview',
+    '.social-page-cta .read-btn',
+    '.article-back',
+    '.source-btn',
+    '.read-btn',
+    '.outline-btn',
+    '.visual-related-card',
+    '.art-eyebrow',
+    '.premium-kicker',
+    '.about-pill',
+    '.social-platform-kicker',
+    '.editorial-category',
+    '.topic-strip-title',
+    '.comic-volume',
+    '.episode-badge',
+    '.section-title-row h2',
+    '.premium-section-heading h2',
+    '.about-section-head h2',
+    '.related-head h2'
+  ];
+
+  const seen=new Set();
+  const candidates=[];
+
+  selectors.forEach(sel=>{
+    document.querySelectorAll(sel).forEach(el=>{
+      if(!seen.has(el)){
+        seen.add(el);
+        candidates.push(el);
+      }
+    });
+  });
+
+  candidates.forEach((el,index)=>{
+    el.classList.remove('unique-brand-avatar','avatar-fallback');
+    el.style.removeProperty('--unique-avatar-image');
+
+    if(index < avatarFiles.length){
+      const url=new URL(avatarFiles[index],avatarBase).href;
+      el.classList.add('unique-brand-avatar');
+      el.style.setProperty('--unique-avatar-image',`url("${url}")`);
+    }else{
+      el.classList.add('avatar-fallback');
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  initUniqueBrandAvatars();
+});

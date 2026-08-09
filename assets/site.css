@@ -3499,3 +3499,205 @@ html[lang="zh-Hans"] .about-pill,
 html[lang="zh-Hans"] header .nav>nav>a{
   font-weight:700 !important;
 }
+
+
+/* =====================================================================
+   2026-08-09 V5 — 20 張大頭貼「同一頁不重複」＋頁尾完整圖片
+   ===================================================================== */
+
+/* ---------------------------------------------------------------------
+   A. 關閉 V4 靜態配圖。
+   V4 是按 selector 固定指定圖片，所以同一張會在多處重複。
+   V5 改由 site.js 每頁依 DOM 順序發放 avatar-01 ~ avatar-20。
+   --------------------------------------------------------------------- */
+.nav-avatar-link .nav-ai-avatar{
+  display:none !important;
+}
+
+/* 所有舊的圖片型 pseudo avatar 先清空 */
+header .nav>nav>a::before,
+a.btn::before,
+a.read-btn::before,
+a.outline-btn::before,
+a.source-btn::before,
+a.article-back::before,
+a.editorial-read-link::before,
+a.editorial-simple-link::before,
+a.premium-all-link::before,
+a.newest-case-link::before,
+a.campaign-strip-btn::before,
+.editorial-mini-actions a::before,
+.art-eyebrow::before,
+.premium-kicker::before,
+.about-pill::before,
+.hero-campaign-badge::before,
+.social-platform-kicker::before,
+.editorial-category::before,
+.topic-strip-title::before,
+.comic-volume::before,
+.episode-badge::before,
+.section-title-row h2::before,
+.premium-section-heading h2::before,
+.about-section-head h2::before,
+.related-head h2::before{
+  background-image:none !important;
+}
+
+/* JS 指定到的 20 個元素才使用照片 */
+.unique-brand-avatar::before{
+  content:"" !important;
+  display:inline-block !important;
+  width:27px !important;
+  height:27px !important;
+  flex:0 0 27px !important;
+  border-radius:50% !important;
+  background-image:var(--unique-avatar-image) !important;
+  background-position:center !important;
+  background-size:cover !important;
+  background-repeat:no-repeat !important;
+  border:2px solid rgba(255,255,255,.96) !important;
+  outline:1px solid #d8ad47 !important;
+  box-shadow:0 4px 11px rgba(7,38,63,.15) !important;
+  vertical-align:middle;
+}
+
+/* H2 / section heading 的大頭貼稍大 */
+.section-title-row h2.unique-brand-avatar::before,
+.premium-section-heading h2.unique-brand-avatar::before,
+.about-section-head h2.unique-brand-avatar::before,
+.related-head h2.unique-brand-avatar::before{
+  width:42px !important;
+  height:42px !important;
+  flex-basis:42px !important;
+  border-width:3px !important;
+}
+
+/* 小標語 / 分類徽章稍小 */
+.art-eyebrow.unique-brand-avatar::before,
+.premium-kicker.unique-brand-avatar::before,
+.about-pill.unique-brand-avatar::before,
+.hero-campaign-badge.unique-brand-avatar::before,
+.social-platform-kicker.unique-brand-avatar::before,
+.editorial-category.unique-brand-avatar::before,
+.topic-strip-title.unique-brand-avatar::before,
+.comic-volume.unique-brand-avatar::before,
+.episode-badge.unique-brand-avatar::before{
+  width:23px !important;
+  height:23px !important;
+  flex-basis:23px !important;
+  border-width:1.5px !important;
+}
+
+/* 超過 20 個的候選元素不再重複照片，改用簡單愛心符號 */
+.avatar-fallback::before{
+  content:"♡" !important;
+  display:inline-grid !important;
+  place-items:center !important;
+  width:25px !important;
+  height:25px !important;
+  flex:0 0 25px !important;
+  border-radius:50% !important;
+  background:#fff2d6 !important;
+  background-image:none !important;
+  color:#c8543b !important;
+  border:1px solid #e1bd68 !important;
+  box-shadow:none !important;
+  font:900 15px/1 Georgia,serif !important;
+}
+
+/* 首頁與子頁導覽保持頭貼＋文字的整齊間距 */
+header .nav>nav>a.unique-brand-avatar{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:7px !important;
+}
+header .nav>nav>a.unique-brand-avatar::before{
+  width:27px !important;
+  height:27px !important;
+  flex-basis:27px !important;
+}
+
+/* ---------------------------------------------------------------------
+   B. 頁尾「一道光」：新圖本身就是完整面板，不再拿裁過的來源圖。
+   永遠用 contain / auto height，不允許任何 cover。
+   --------------------------------------------------------------------- */
+.footer-light-ad{
+  overflow:hidden !important;
+  align-items:center !important;
+  background:#071f37 !important;
+}
+
+.footer-light-ad img{
+  display:block !important;
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  aspect-ratio:auto !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  align-self:center !important;
+  background:#071f37 !important;
+}
+
+/* 新圖片約 1.95:1，桌機左區拉寬，直接完整呈現 */
+@media(min-width:901px){
+  .footer-light-ad{
+    grid-template-columns:minmax(520px,52%) minmax(0,48%) !important;
+  }
+  .footer-light-ad img{
+    width:100% !important;
+    height:auto !important;
+  }
+}
+
+/* 平板：避免左右兩欄把圖片壓成窄直欄 */
+@media(min-width:601px) and (max-width:900px){
+  .footer-light-ad{
+    grid-template-columns:1fr !important;
+    max-width:760px !important;
+  }
+  .footer-light-ad img{
+    width:100% !important;
+    height:auto !important;
+  }
+  .footer-light-copy{
+    text-align:center;
+  }
+}
+
+/* 手機：整張圖片一列，文字下一列 */
+@media(max-width:600px){
+  .footer-light-ad{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    width:100% !important;
+  }
+  .footer-light-ad img{
+    width:100% !important;
+    height:auto !important;
+    max-width:100% !important;
+    max-height:none !important;
+    object-fit:contain !important;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   C. 手機的 unique avatar 尺寸
+   --------------------------------------------------------------------- */
+@media(max-width:800px){
+  header .nav>nav>a.unique-brand-avatar::before{
+    width:31px !important;
+    height:31px !important;
+    flex-basis:31px !important;
+  }
+  .section-title-row h2.unique-brand-avatar::before,
+  .premium-section-heading h2.unique-brand-avatar::before,
+  .about-section-head h2.unique-brand-avatar::before,
+  .related-head h2.unique-brand-avatar::before{
+    width:35px !important;
+    height:35px !important;
+    flex-basis:35px !important;
+    border-width:2px !important;
+  }
+}
