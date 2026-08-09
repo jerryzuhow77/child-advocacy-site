@@ -3701,3 +3701,343 @@ header .nav>nav>a.unique-brand-avatar::before{
     border-width:2px !important;
   }
 }
+
+
+/* =====================================================================
+   2026-08-09 V6 — 官網美術「減法」精修
+   大頭貼減量、留白增加、卡片統一、圖片與手機尺寸重新整理
+   ===================================================================== */
+
+/* ------------------------------------------------
+   取消過多裝飾：標題、小標語、分類、卡片不再塞照片
+   ------------------------------------------------ */
+.art-eyebrow::before,
+.premium-kicker::before,
+.about-pill::before,
+.hero-campaign-badge::before,
+.social-platform-kicker::before,
+.editorial-category::before,
+.topic-strip-title::before,
+.comic-volume::before,
+.episode-badge::before,
+.section-title-row h2::before,
+.premium-section-heading h2::before,
+.about-section-head h2::before,
+.related-head h2::before,
+.visual-related-card::after,
+.social-ai-preview::after,
+.episode-library-cover::after,
+.record-card-image::after,
+.activity-card-cover::after,
+.album-index-cover::after,
+.page-hero::after,
+.court-library-hero::after,
+.comic-reader-hero::after,
+.article-shell::before,
+.activity-body::before{
+  content:none !important;
+  display:none !important;
+  background-image:none !important;
+}
+
+/* 小標語改用金色線與小點，不再使用人物頭貼 */
+.art-eyebrow,
+.premium-kicker,
+.about-pill,
+.social-platform-kicker{
+  position:relative;
+  gap:0 !important;
+}
+.art-eyebrow{
+  padding-left:25px;
+}
+.art-eyebrow::after{
+  content:"" !important;
+  display:block !important;
+  position:absolute;
+  left:0;
+  top:50%;
+  width:16px;
+  height:2px;
+  border-radius:999px;
+  background:#d4a63b;
+  transform:translateY(-50%);
+}
+
+/* 區塊 H2 回歸乾淨排版 */
+.section-title-row h2,
+.premium-section-heading h2,
+.about-section-head h2,
+.related-head h2{
+  display:block !important;
+}
+.section-title-row h2::after,
+.premium-section-heading h2::after,
+.about-section-head h2::after,
+.related-head h2::after{
+  content:"" !important;
+  display:block !important;
+  width:46px;
+  height:3px;
+  margin-top:10px;
+  border-radius:999px;
+  background:linear-gradient(90deg,#d9aa38,#c45b42);
+}
+
+/* ------------------------------------------------
+   大頭貼只保留：導航 + 每頁最多 3 個主要 CTA
+   ------------------------------------------------ */
+.unique-brand-avatar::before{
+  content:"" !important;
+  display:inline-block !important;
+  border-radius:50% !important;
+  background-image:var(--unique-avatar-image) !important;
+  background-position:center !important;
+  background-size:cover !important;
+  background-repeat:no-repeat !important;
+  vertical-align:middle;
+}
+
+.nav-brand-avatar{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:5px !important;
+}
+.nav-brand-avatar::before{
+  width:20px !important;
+  height:20px !important;
+  flex:0 0 20px !important;
+  border:1px solid #d7b15a !important;
+  outline:0 !important;
+  box-shadow:none !important;
+}
+
+.content-brand-avatar{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:8px !important;
+}
+.content-brand-avatar::before{
+  width:26px !important;
+  height:26px !important;
+  flex:0 0 26px !important;
+  border:2px solid rgba(255,255,255,.92) !important;
+  outline:1px solid #d7ac49 !important;
+  box-shadow:0 3px 9px rgba(7,38,63,.13) !important;
+}
+
+/* 沒被 JS 選中的按鈕不顯示舊 pseudo 大頭貼 */
+a.btn:not(.content-brand-avatar)::before,
+a.read-btn:not(.content-brand-avatar)::before,
+a.outline-btn:not(.content-brand-avatar)::before,
+a.source-btn:not(.content-brand-avatar)::before,
+a.article-back:not(.content-brand-avatar)::before,
+a.editorial-read-link:not(.content-brand-avatar)::before,
+a.editorial-simple-link:not(.content-brand-avatar)::before,
+a.premium-all-link:not(.content-brand-avatar)::before,
+a.newest-case-link:not(.content-brand-avatar)::before,
+a.campaign-strip-btn:not(.content-brand-avatar)::before,
+.editorial-mini-actions a:not(.content-brand-avatar)::before{
+  content:none !important;
+  display:none !important;
+}
+
+/* ------------------------------------------------
+   Hero：保留 AI 美術感，但用光、紙張、線條，而不是頭貼
+   ------------------------------------------------ */
+.page-hero,
+.court-library-hero,
+.comic-reader-hero{
+  background:
+    radial-gradient(circle at 84% 20%,rgba(221,173,54,.18),transparent 28%),
+    radial-gradient(circle at 8% 10%,rgba(197,82,59,.07),transparent 20%),
+    linear-gradient(125deg,#fffdf8,#fff6e7 57%,#f1e7d4) !important;
+}
+.page-hero::before,
+.court-library-hero::before,
+.comic-reader-hero::before{
+  background-image:
+    radial-gradient(circle at 14px 14px,rgba(28,98,105,.09) 0 1px,transparent 1.4px) !important;
+  background-size:58px 58px !important;
+  opacity:.28 !important;
+}
+
+/* ------------------------------------------------
+   卡片統一：少陰影、多留白、同一圓角
+   ------------------------------------------------ */
+.record-card,
+.activity-card,
+.album-index-card,
+.social-platform-card,
+.visual-related-card,
+.episode-card,
+.editorial-main-story,
+.editorial-side-story{
+  border-radius:20px !important;
+  border-color:#e7dcc7 !important;
+  box-shadow:0 12px 30px rgba(40,42,37,.06) !important;
+}
+.record-card:hover,
+.activity-card:hover,
+.album-index-card:hover,
+.social-platform-card:hover,
+.visual-related-card:hover,
+.episode-card:hover,
+.editorial-main-story:hover,
+.editorial-side-story:hover{
+  transform:translateY(-3px) !important;
+  box-shadow:0 18px 38px rgba(40,42,37,.09) !important;
+}
+
+/* ------------------------------------------------
+   圖片比例：電腦與手機都有固定視覺節奏
+   ------------------------------------------------ */
+.record-card-image img,
+.activity-card-cover img,
+.album-index-cover img{
+  aspect-ratio:16/10 !important;
+  object-fit:cover !important;
+}
+.visual-related-card img{
+  object-fit:cover !important;
+}
+.article-cover img,
+.activity-hero-photo img{
+  width:100% !important;
+  height:auto !important;
+  object-fit:contain !important;
+}
+
+/* ------------------------------------------------
+   Footer「一道光」：新圖無文字，HTML 文字獨立呈現
+   ------------------------------------------------ */
+.footer-light-ad{
+  grid-template-columns:minmax(440px,52%) minmax(0,48%) !important;
+  align-items:stretch !important;
+  background:#071f37 !important;
+}
+.footer-light-ad img{
+  width:100% !important;
+  height:100% !important;
+  min-height:210px !important;
+  max-height:290px !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+}
+.footer-light-copy{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  min-height:210px;
+}
+.footer-light-copy strong{
+  max-width:560px;
+}
+
+/* ------------------------------------------------
+   桌機版字級與留白
+   ------------------------------------------------ */
+@media(min-width:901px){
+  section{
+    scroll-margin-top:88px;
+  }
+  .section-title-row,
+  .premium-section-heading,
+  .about-section-head{
+    margin-bottom:30px !important;
+  }
+  header .nav>nav>a{
+    padding-left:7px !important;
+    padding-right:7px !important;
+  }
+}
+
+/* ------------------------------------------------
+   平板
+   ------------------------------------------------ */
+@media(min-width:601px) and (max-width:900px){
+  .footer-light-ad{
+    grid-template-columns:1fr !important;
+    max-width:720px !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+  .footer-light-ad img{
+    height:auto !important;
+    max-height:none !important;
+    aspect-ratio:16/8 !important;
+  }
+  .footer-light-copy{
+    min-height:0;
+    text-align:center;
+  }
+}
+
+/* ------------------------------------------------
+   手機：大頭貼更小、不遮字，卡片全部閱讀優先
+   ------------------------------------------------ */
+@media(max-width:800px){
+  .nav-brand-avatar::before{
+    width:25px !important;
+    height:25px !important;
+    flex-basis:25px !important;
+  }
+  header .nav>nav>a{
+    gap:9px !important;
+  }
+
+  .content-brand-avatar::before{
+    width:25px !important;
+    height:25px !important;
+    flex-basis:25px !important;
+  }
+
+  .section-title-row h2::after,
+  .premium-section-heading h2::after,
+  .about-section-head h2::after,
+  .related-head h2::after{
+    width:38px;
+    margin-top:8px;
+  }
+
+  .visual-related-card{
+    grid-template-columns:108px 1fr !important;
+  }
+  .visual-related-card img{
+    min-height:145px !important;
+    max-height:175px !important;
+  }
+
+  .footer-light-ad{
+    grid-template-columns:1fr !important;
+  }
+  .footer-light-ad img{
+    height:auto !important;
+    max-height:none !important;
+    min-height:0 !important;
+    aspect-ratio:auto !important;
+    object-fit:contain !important;
+  }
+  .footer-light-copy{
+    min-height:0 !important;
+    padding:20px 18px 22px !important;
+    text-align:center !important;
+  }
+}
+
+/* 小手機再減一級 */
+@media(max-width:480px){
+  .nav-brand-avatar::before{
+    width:23px !important;
+    height:23px !important;
+    flex-basis:23px !important;
+  }
+  .content-brand-avatar::before{
+    width:23px !important;
+    height:23px !important;
+    flex-basis:23px !important;
+  }
+  .visual-related-card{
+    grid-template-columns:96px 1fr !important;
+  }
+}

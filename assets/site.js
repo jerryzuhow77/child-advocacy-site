@@ -193,79 +193,68 @@ function initMobileMenu(){
 
 document.addEventListener('DOMContentLoaded',initMobileMenu);
 
-
-
-
-/* ===== 20 款護童形象大頭貼：同一頁不重複 ===== */
+/* ===== 護童大頭貼：精簡版 ===== */
 function initUniqueBrandAvatars(){
   const scriptSrc=(document.currentScript && document.currentScript.src)
     ? document.currentScript.src
     : new URL('assets/site.js',location.href).href;
   const avatarBase=new URL('./avatars/',scriptSrc);
 
-  const avatarFiles=Array.from({length:20},(_,i)=>
-    `avatar-${String(i+1).padStart(2,'0')}.jpg`
-  );
-
-  /* 依重要性排序。
-     首頁候選超過 20 個，因此會把 20 張全部用完；
-     子頁若不足 20 個，就只使用需要的數量，不會硬塞、不會重複。 */
-  const selectors=[
-    'header .nav > nav > a',
-    '.premium-hero-actions a',
-    '.hero-actions a',
-    '.premium-all-link',
-    '.editorial-read-link',
-    '.editorial-mini-actions a',
-    '.editorial-simple-link',
-    '.editorial-topic-strip > a',
-    '.social-ai-preview',
-    '.social-page-cta .read-btn',
-    '.article-back',
-    '.source-btn',
-    '.read-btn',
-    '.outline-btn',
-    '.visual-related-card',
-    '.art-eyebrow',
-    '.premium-kicker',
-    '.about-pill',
-    '.social-platform-kicker',
-    '.editorial-category',
-    '.topic-strip-title',
-    '.comic-volume',
-    '.episode-badge',
-    '.section-title-row h2',
-    '.premium-section-heading h2',
-    '.about-section-head h2',
-    '.related-head h2'
+  const avatarFiles=[
+    'avatar-01.jpg','avatar-03.jpg','avatar-07.jpg','avatar-13.jpg',
+    'avatar-15.jpg','avatar-18.jpg','avatar-20.jpg',
+    'avatar-04.jpg','avatar-11.jpg','avatar-17.jpg'
   ];
 
-  const seen=new Set();
-  const candidates=[];
+  // First clear old V4/V5 assignments.
+  document.querySelectorAll('.unique-brand-avatar,.avatar-fallback').forEach(el=>{
+    el.classList.remove('unique-brand-avatar','avatar-fallback','nav-brand-avatar','content-brand-avatar');
+    el.style.removeProperty('--unique-avatar-image');
+  });
 
-  selectors.forEach(sel=>{
+  // ① Navigation: every entry can keep one SMALL avatar.
+  const navLinks=[...document.querySelectorAll('header .nav > nav > a')];
+  navLinks.forEach((el,index)=>{
+    const file=avatarFiles[index % 7];
+    const url=new URL(file,avatarBase).href;
+    el.classList.add('unique-brand-avatar','nav-brand-avatar');
+    el.style.setProperty('--unique-avatar-image',`url("${url}")`);
+  });
+
+  // ② Main content: maximum THREE avatar buttons per page.
+  // Only true primary actions are eligible.
+  const prioritySelectors=[
+    '.premium-hero-actions a',
+    '.hero-actions a',
+    '.editorial-read-link',
+    '.article-back',
+    '.source-btn',
+    '.social-page-cta .read-btn',
+    '.newest-case-link',
+    '.read-btn',
+    '.outline-btn'
+  ];
+
+  const contentCandidates=[];
+  const seen=new Set();
+  prioritySelectors.forEach(sel=>{
     document.querySelectorAll(sel).forEach(el=>{
-      if(!seen.has(el)){
+      if(!seen.has(el) && !el.closest('header')){
         seen.add(el);
-        candidates.push(el);
+        contentCandidates.push(el);
       }
     });
   });
 
-  candidates.forEach((el,index)=>{
-    el.classList.remove('unique-brand-avatar','avatar-fallback');
-    el.style.removeProperty('--unique-avatar-image');
-
-    if(index < avatarFiles.length){
-      const url=new URL(avatarFiles[index],avatarBase).href;
-      el.classList.add('unique-brand-avatar');
-      el.style.setProperty('--unique-avatar-image',`url("${url}")`);
-    }else{
-      el.classList.add('avatar-fallback');
-    }
+  contentCandidates.slice(0,3).forEach((el,index)=>{
+    const file=avatarFiles[7+index];
+    const url=new URL(file,avatarBase).href;
+    el.classList.add('unique-brand-avatar','content-brand-avatar');
+    el.style.setProperty('--unique-avatar-image',`url("${url}")`);
   });
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
   initUniqueBrandAvatars();
 });
+
