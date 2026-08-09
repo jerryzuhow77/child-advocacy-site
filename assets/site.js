@@ -327,3 +327,294 @@ function initComicLightbox(){
   });
 }
 document.addEventListener('DOMContentLoaded',initComicLightbox);
+
+
+/* =====================================================================
+   2026-08-09 V11 — Full-site search
+   ===================================================================== */
+function initSiteSearch(){
+  const navs=[...document.querySelectorAll('header .nav > nav')];
+  if(!navs.length || document.querySelector('.site-search-overlay')) return;
+
+  const scriptEl=[...document.scripts].find(s=>/\/assets\/site\.js(?:\?|$)/.test(s.src));
+  const scriptSrc=scriptEl ? scriptEl.src : new URL('/child-advocacy-site/assets/site.js',location.origin).href;
+  const siteBase=new URL('../',scriptSrc);
+  const indexUrl=new URL('data/search-index.json',siteBase).href;
+
+  let searchData=null;
+  let loadingPromise=null;
+  let activeCategory='全部';
+  let lastFocused=null;
+
+  const overlay=document.createElement('div');
+  overlay.className='site-search-overlay';
+  overlay.hidden=true;
+  overlay.innerHTML=`
+    <section class="site-search-panel" role="dialog" aria-modal="true" aria-labelledby="siteSearchTitle">
+      <div class="site-search-panel-head">
+        <div><small>SEARCH THE SITE</small><h2 id="siteSearchTitle">全站搜尋</h2></div>
+        <button class="site-search-close" type="button" aria-label="關閉搜尋">✕</button>
+      </div>
+      <div class="site-search-form">
+        <label class="site-search-field">
+          <span aria-hidden="true">⌕</span>
+          <input class="site-search-input" type="search" autocomplete="off"
+                 placeholder="輸入案件、人名、日期或關鍵字" aria-label="搜尋網站內容">
+          <button class="site-search-clear" type="button" aria-label="清除搜尋">✕</button>
+        </label>
+      </div>
+      <div class="site-search-filters" aria-label="搜尋分類"></div>
+      <div class="site-search-status" aria-live="polite">輸入關鍵字開始搜尋</div>
+      <div class="site-search-results"></div>
+      <div class="site-search-tips">可搜尋「土城」、「白麗芳」、「凱道」、「2026/08/06」等內容。鍵盤可按 <kbd>/</kbd> 或 <kbd>Ctrl</kbd> + <kbd>K</kbd> 開啟搜尋。</div>
+    </section>`;
+  document.body.appendChild(overlay);
+
+  const input=overlay.querySelector('.site-search-input');
+  const closeBtn=overlay.querySelector('.site-search-close');
+  const clearBtn=overlay.querySelector('.site-search-clear');
+  const results=overlay.querySelector('.site-search-results');
+  const status=overlay.querySelector('.site-search-status');
+  const filters=overlay.querySelector('.site-search-filters');
+
+  const categories=['全部','旁聽紀錄','法庭漫畫','活動紀錄','活動相簿','關於我們','官方社群'];
+  categories.forEach(cat=>{
+    const b=document.createElement('button');
+    b.type='button';
+    b.className='site-search-filter'+(cat==='全部'?' is-active':'');
+    b.textContent=cat;
+    b.dataset.category=cat;
+    b.addEventListener('click',()=>{
+      activeCategory=cat;
+      filters.querySelectorAll('.site-search-filter').forEach(x=>x.classList.toggle('is-active',x===b));
+      render();
+    });
+    filters.appendChild(b);
+  });
+
+  navs.forEach(nav=>{
+    if(nav.querySelector('.site-search-btn')) return;
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.className='site-search-btn';
+    btn.setAttribute('aria-label','全站搜尋');
+    btn.setAttribute('title','全站搜尋（/）');
+    btn.innerHTML='<span class="site-search-icon" aria-hidden="true">⌕</span><span class="site-search-label">搜尋</span>';
+    const lang=nav.querySelector('.lang-btn');
+    nav.insertBefore(btn,lang||null);
+    btn.addEventListener('click',()=>openSearch(btn));
+  });
+
+  function esc(s=''){
+    return String(s).replace(/[&<>"']/g,ch=>({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[ch]));
+  }
+
+  function normalize(s=''){
+    return String(s)
+      .toLowerCase()
+      .replace(/[，。、「」『』（）()【】[\]；;：:！!？?．·・—_\-\/\\|]/g,' ')
+      .replace(/\s+/g,' ')
+      .trim();
+  }
+
+  function loadIndex(){
+    if(searchData) return Promise.resolve(searchData);
+    if(loadingPromise) return loadingPromise;
+    status.textContent='正在載入搜尋索引…';
+    loadingPromise=fetch(indexUrl,{cache:'no-cache'})
+      .then(r=>{
+        if(!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
+      .then(data=>{
+        searchData=data;
+        return data;
+      })
+      .catch(()=>{
+        status.textContent='搜尋索引載入失敗，請重新整理頁面後再試。';
+        return null;
+      });
+    return loadingPromise;
+  }
+
+  function searchable(item){
+    const traditional=[
+      item.title,item.category,item.date,item.summary,item.keywords,item.text
+    ].join(' ');
+    // cv() is the site's Traditional -> Simplified converter.
+    // Including both forms lets either script match the same index.
+    const simplified=(typeof cv==='function') ? cv(traditional) : traditional;
+    return normalize(traditional+' '+simplified);
+  }
+
+  function scoreItem(item,q,tokens){
+    const title=normalize(item.title+' '+((typeof cv==='function')?cv(item.title):item.title));
+    const keywords=normalize(item.keywords+' '+((typeof cv==='function')?cv(item.keywords):item.keywords));
+    const summary=normalize(item.summary+' '+((typeof cv==='function')?cv(item.summary):item.summary));
+    const hay=searchable(item);
+
+    if(!tokens.every(t=>hay.includes(t))) return -1;
+    let score=0;
+    if(title.includes(q)) score+=120;
+    if(keywords.includes(q)) score+=70;
+    if(summary.includes(q)) score+=45;
+    if(hay.includes(q)) score+=25;
+    tokens.forEach(t=>{
+      if(title.includes(t)) score+=24;
+      if(keywords.includes(t)) score+=12;
+      if(summary.includes(t)) score+=7;
+    });
+    if(item.date && normalize(item.date).includes(q)) score+=80;
+    return score;
+  }
+
+  function render(){
+    if(!searchData){
+      loadIndex().then(()=>render());
+      return;
+    }
+    const q=normalize(input.value);
+    const tokens=q.split(' ').filter(Boolean);
+
+    if(!q){
+      status.textContent=`已建立 ${searchData.count} 個頁面的搜尋索引`;
+      results.innerHTML=`
+        <div class="site-search-empty">
+          <strong>搜尋護童行動聯盟網站</strong>
+          <span>輸入案件名稱、人名、日期或主題，即可搜尋旁聽紀錄、法庭漫畫、活動與相簿。</span>
+        </div>`;
+      return;
+    }
+
+    const found=searchData.items
+      .filter(item=>activeCategory==='全部' || item.category===activeCategory)
+      .map(item=>({item,score:scoreItem(item,q,tokens)}))
+      .filter(x=>x.score>=0)
+      .sort((a,b)=>b.score-a.score)
+      .slice(0,20);
+
+    status.textContent=`找到 ${found.length} 筆結果${activeCategory!=='全部' ? `・${activeCategory}` : ''}`;
+
+    if(!found.length){
+      results.innerHTML=`
+        <div class="site-search-empty">
+          <strong>沒有找到符合的內容</strong>
+          <span>可以縮短關鍵字，或切換到「全部」分類再試一次。</span>
+        </div>`;
+      return;
+    }
+
+    results.innerHTML=found.map(({item})=>{
+      const href=new URL(item.url||'./',siteBase).href;
+      return `
+        <a class="site-search-result" href="${esc(href)}">
+          <div class="site-search-result-main">
+            <div class="site-search-result-top">
+              <span class="site-search-result-category">${esc(item.category)}</span>
+              ${item.date?`<span class="site-search-result-date">${esc(item.date)}</span>`:''}
+            </div>
+            <h3>${esc(item.title)}</h3>
+            <p>${esc(item.summary)}</p>
+          </div>
+          <span class="site-search-result-arrow" aria-hidden="true">→</span>
+        </a>`;
+    }).join('');
+  }
+
+  function openSearch(source){
+    lastFocused=source||document.activeElement;
+    overlay.hidden=false;
+    document.body.classList.add('site-search-open');
+    document.querySelectorAll('header .nav.menu-open').forEach(x=>x.classList.remove('menu-open'));
+    document.body.classList.remove('mobile-menu-active');
+    loadIndex().then(()=>{
+      render();
+      if((localStorage.getItem('siteLang')||'zh-Hant')==='zh-Hans' && typeof setLang==='function'){
+        setLang('zh-Hans');
+      }
+    });
+    requestAnimationFrame(()=>input.focus());
+  }
+
+  function closeSearch(){
+    overlay.hidden=true;
+    document.body.classList.remove('site-search-open');
+    if(lastFocused && typeof lastFocused.focus==='function') lastFocused.focus({preventScroll:true});
+  }
+
+  input.addEventListener('input',render);
+  input.addEventListener('keydown',e=>{
+    if(e.key==='Escape') closeSearch();
+  });
+  clearBtn.addEventListener('click',()=>{
+    input.value='';
+    render();
+    input.focus();
+  });
+  closeBtn.addEventListener('click',closeSearch);
+  overlay.addEventListener('click',e=>{
+    if(e.target===overlay) closeSearch();
+  });
+
+  document.addEventListener('keydown',e=>{
+    const tag=(document.activeElement && document.activeElement.tagName)||'';
+    const typing=['INPUT','TEXTAREA','SELECT'].includes(tag);
+    if((e.key==='/' && !typing) || ((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='k')){
+      e.preventDefault();
+      openSearch(document.activeElement);
+    }
+    if(e.key==='Escape' && !overlay.hidden) closeSearch();
+  });
+}
+
+/* ===== Homepage impact counters ===== */
+function initImpactCounters(){
+  const counters=[...document.querySelectorAll('.impact-counter[data-count]')];
+  if(!counters.length) return;
+
+  const reduced=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduced){
+    counters.forEach(el=>el.textContent=el.dataset.count);
+    return;
+  }
+
+  const animate=(el)=>{
+    if(el.dataset.animated==='1') return;
+    el.dataset.animated='1';
+    const target=Number(el.dataset.count)||0;
+    const duration=820;
+    const start=performance.now();
+    el.textContent='0';
+    const frame=(now)=>{
+      const p=Math.min(1,(now-start)/duration);
+      const eased=1-Math.pow(1-p,3);
+      el.textContent=String(Math.round(target*eased));
+      if(p<1) requestAnimationFrame(frame);
+      else el.textContent=String(target);
+    };
+    requestAnimationFrame(frame);
+  };
+
+  if(!('IntersectionObserver' in window)){
+    counters.forEach(animate);
+    return;
+  }
+
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        animate(entry.target);
+        io.unobserve(entry.target);
+      }
+    });
+  },{threshold:.45});
+
+  counters.forEach(el=>io.observe(el));
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  initSiteSearch();
+  initImpactCounters();
+});
