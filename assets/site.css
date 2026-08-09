@@ -3214,3 +3214,288 @@ html[lang="zh-Hans"] a.source-btn{
     object-position:center center !important;
   }
 }
+
+
+/* =====================================================================
+   2026-08-09 護童大頭貼徽章系統 V4
+   使用本次提供的 20 款護童行動聯盟形象圖
+   ===================================================================== */
+
+/* ---------- 共用：大頭貼徽章外框 ---------- */
+:root{
+  --avatar-ring:#d9ae48;
+  --avatar-glow:0 4px 12px rgba(8,39,65,.16);
+}
+.nav-ai-avatar,
+header .nav>nav>a:not(.nav-avatar-link)::before,
+a.btn::before,
+a.read-btn::before,
+a.outline-btn::before,
+a.source-btn::before,
+a.article-back::before,
+a.editorial-read-link::before,
+a.editorial-simple-link::before,
+a.premium-all-link::before,
+a.newest-case-link::before,
+a.campaign-strip-btn::before,
+.editorial-mini-actions a::before{
+  border:2px solid rgba(255,255,255,.94) !important;
+  outline:1px solid var(--avatar-ring);
+  box-shadow:var(--avatar-glow) !important;
+}
+
+/* ---------- 導覽列：七個入口，各用不同形象圖 ---------- */
+header .nav>nav>a:nth-of-type(1)::before{background-image:url("./avatars/avatar-01.jpg") !important}
+header .nav>nav>a:nth-of-type(2)::before{background-image:url("./avatars/avatar-03.jpg") !important}
+header .nav>nav>a:nth-of-type(3)::before{background-image:url("./avatars/avatar-07.jpg") !important}
+header .nav>nav>a:nth-of-type(4)::before{background-image:url("./avatars/avatar-13.jpg") !important}
+header .nav>nav>a:nth-of-type(5)::before{background-image:url("./avatars/avatar-15.jpg") !important}
+header .nav>nav>a:nth-of-type(6)::before{background-image:url("./avatars/avatar-18.jpg") !important}
+header .nav>nav>a:nth-of-type(7)::before{background-image:url("./avatars/avatar-20.jpg") !important}
+
+/* 首頁若 HTML 已經有 nav-ai-avatar，直接換成同一套圓形視覺 */
+.nav-avatar-link:nth-of-type(1) .nav-ai-avatar{content:url("./avatars/avatar-01.jpg")}
+.nav-avatar-link:nth-of-type(2) .nav-ai-avatar{content:url("./avatars/avatar-03.jpg")}
+.nav-avatar-link:nth-of-type(3) .nav-ai-avatar{content:url("./avatars/avatar-07.jpg")}
+.nav-avatar-link:nth-of-type(4) .nav-ai-avatar{content:url("./avatars/avatar-13.jpg")}
+.nav-avatar-link:nth-of-type(5) .nav-ai-avatar{content:url("./avatars/avatar-15.jpg")}
+.nav-avatar-link:nth-of-type(6) .nav-ai-avatar{content:url("./avatars/avatar-18.jpg")}
+.nav-avatar-link:nth-of-type(7) .nav-ai-avatar{content:url("./avatars/avatar-20.jpg")}
+
+/* ---------- 主要按鈕：不同功能輪替不同大頭貼 ---------- */
+a.btn::before{background-image:url("./avatars/avatar-04.jpg") !important}
+a.read-btn::before{background-image:url("./avatars/avatar-11.jpg") !important}
+a.outline-btn::before{background-image:url("./avatars/avatar-17.jpg") !important}
+a.source-btn::before{background-image:url("./avatars/avatar-08.jpg") !important}
+a.article-back::before{background-image:url("./avatars/avatar-02.jpg") !important}
+a.editorial-read-link::before{background-image:url("./avatars/avatar-14.jpg") !important}
+a.editorial-simple-link::before{background-image:url("./avatars/avatar-09.jpg") !important}
+a.premium-all-link::before{background-image:url("./avatars/avatar-12.jpg") !important}
+a.newest-case-link::before{background-image:url("./avatars/avatar-16.jpg") !important}
+a.campaign-strip-btn::before{background-image:url("./avatars/avatar-05.jpg") !important}
+.editorial-mini-actions a:nth-child(1)::before{background-image:url("./avatars/avatar-10.jpg") !important}
+.editorial-mini-actions a:nth-child(2)::before{background-image:url("./avatars/avatar-19.jpg") !important}
+
+/* 按鈕 hover：頭貼輕微放大，不讓整顆按鈕跳太多 */
+a.btn:hover::before,
+a.read-btn:hover::before,
+a.outline-btn:hover::before,
+a.source-btn:hover::before,
+a.article-back:hover::before,
+a.editorial-read-link:hover::before,
+a.editorial-simple-link:hover::before{
+  transform:scale(1.08) rotate(-2deg);
+}
+a.btn::before,
+a.read-btn::before,
+a.outline-btn::before,
+a.source-btn::before,
+a.article-back::before,
+a.editorial-read-link::before,
+a.editorial-simple-link::before{
+  transition:transform .18s ease;
+}
+
+/* ---------- 網站小標語 / eyebrow / badge 也加入大頭貼 ---------- */
+.art-eyebrow,
+.premium-kicker,
+.about-pill,
+.hero-campaign-badge,
+.social-platform-kicker,
+.editorial-category,
+.topic-strip-title,
+.comic-volume,
+.episode-badge{
+  display:inline-flex !important;
+  align-items:center;
+  gap:7px;
+}
+.art-eyebrow::before,
+.premium-kicker::before,
+.about-pill::before,
+.hero-campaign-badge::before,
+.social-platform-kicker::before,
+.editorial-category::before,
+.topic-strip-title::before,
+.comic-volume::before,
+.episode-badge::before{
+  content:"";
+  width:24px;
+  height:24px;
+  flex:0 0 24px;
+  border-radius:50%;
+  background:url("./avatars/avatar-06.jpg") center/cover no-repeat;
+  border:1.5px solid #e0bb62;
+  box-shadow:0 3px 9px rgba(7,38,63,.12);
+}
+.premium-kicker::before{background-image:url("./avatars/avatar-12.jpg")}
+.about-pill::before{background-image:url("./avatars/avatar-18.jpg")}
+.hero-campaign-badge::before{background-image:url("./avatars/avatar-05.jpg")}
+.social-platform-kicker::before{background-image:url("./avatars/avatar-20.jpg")}
+.editorial-category::before{background-image:url("./avatars/avatar-09.jpg");width:20px;height:20px;flex-basis:20px}
+.topic-strip-title::before{background-image:url("./avatars/avatar-14.jpg");width:21px;height:21px;flex-basis:21px}
+.comic-volume::before,.episode-badge::before{background-image:url("./avatars/avatar-07.jpg")}
+
+/* 若舊 badge 自己已有 emoji / icon，避免重複感太強 */
+.hero-campaign-badge>span,
+.premium-kicker>span{
+  display:none !important;
+}
+
+/* ---------- 章節標題旁新增「護童小徽章」 ---------- */
+.section-title-row h2,
+.premium-section-heading h2,
+.about-section-head h2,
+.related-head h2{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+.section-title-row h2::before,
+.premium-section-heading h2::before,
+.about-section-head h2::before,
+.related-head h2::before{
+  content:"";
+  width:42px;
+  height:42px;
+  flex:0 0 42px;
+  border-radius:50%;
+  background:url("./avatars/avatar-04.jpg") center/cover no-repeat;
+  border:3px solid #fff6df;
+  outline:1px solid #d4a842;
+  box-shadow:0 6px 15px rgba(8,40,66,.12);
+}
+.premium-section-heading h2::before{background-image:url("./avatars/avatar-13.jpg")}
+.about-section-head h2::before{background-image:url("./avatars/avatar-17.jpg")}
+.related-head h2::before{background-image:url("./avatars/avatar-19.jpg")}
+
+/* ---------- 形象圖 / 大卡片：右上角改用更多不同徽章 ---------- */
+.visual-related-card:nth-child(1)::after{background-image:url("./avatars/avatar-11.jpg") !important}
+.visual-related-card:nth-child(2)::after{background-image:url("./avatars/avatar-15.jpg") !important}
+.visual-related-card:nth-child(3)::after{background-image:url("./avatars/avatar-20.jpg") !important}
+.record-card-image::after{background-image:url("./avatars/avatar-13.jpg") !important}
+.activity-card-cover::after{background-image:url("./avatars/avatar-15.jpg") !important}
+.album-index-cover::after{background-image:url("./avatars/avatar-19.jpg") !important}
+.episode-library-cover::after{background-image:url("./avatars/avatar-07.jpg") !important}
+.social-ai-preview:nth-child(1)::after{background-image:url("./avatars/avatar-18.jpg") !important}
+.social-ai-preview:nth-child(2)::after{background-image:url("./avatars/avatar-09.jpg") !important}
+.social-ai-preview:nth-child(3)::after{background-image:url("./avatars/avatar-20.jpg") !important}
+
+/* ---------- 子頁 Hero 浮水印：不同類型頁面換不同頭像 ---------- */
+.page-hero::after{background-image:url("./avatars/avatar-04.jpg") !important}
+.hearing-hero::after{background-image:url("./avatars/avatar-13.jpg") !important}
+.activity-index-hero::after{background-image:url("./avatars/avatar-15.jpg") !important}
+.album-hero::after{background-image:url("./avatars/avatar-19.jpg") !important}
+.social-page-hero::after{background-image:url("./avatars/avatar-20.jpg") !important}
+.court-library-hero::after,
+.comic-reader-hero::after{background-image:url("./avatars/avatar-07.jpg") !important}
+
+/* ---------- 文章容器右上浮水印也換成大頭貼 ---------- */
+.article-shell::before{background-image:url("./avatars/avatar-11.jpg") !important}
+.activity-body::before{background-image:url("./avatars/avatar-15.jpg") !important}
+
+/* ---------- 小型標籤視覺：不會壓文字 ---------- */
+.editorial-meta{
+  flex-wrap:wrap;
+}
+.editorial-category{
+  padding:4px 9px 4px 5px !important;
+}
+.art-eyebrow{
+  max-width:100%;
+}
+.art-eyebrow::before{
+  width:22px;
+  height:22px;
+  flex-basis:22px;
+}
+
+/* ---------- 桌機 ---------- */
+@media(min-width:901px){
+  header .nav>nav>a{
+    white-space:nowrap;
+  }
+  .section-title-row h2::before,
+  .premium-section-heading h2::before,
+  .about-section-head h2::before,
+  .related-head h2::before{
+    width:44px;
+    height:44px;
+    flex-basis:44px;
+  }
+}
+
+/* ---------- 平板 / 手機：頭貼縮小、文字不擠壓 ---------- */
+@media(max-width:800px){
+  .art-eyebrow::before,
+  .premium-kicker::before,
+  .about-pill::before,
+  .hero-campaign-badge::before,
+  .social-platform-kicker::before,
+  .comic-volume::before,
+  .episode-badge::before{
+    width:23px;
+    height:23px;
+    flex-basis:23px;
+  }
+  .section-title-row h2::before,
+  .premium-section-heading h2::before,
+  .about-section-head h2::before,
+  .related-head h2::before{
+    width:36px;
+    height:36px;
+    flex-basis:36px;
+    border-width:2px;
+  }
+  header .nav>nav>a{
+    gap:11px !important;
+  }
+  header .nav>nav>a:not(.nav-avatar-link)::before,
+  .nav-ai-avatar{
+    width:32px !important;
+    height:32px !important;
+    flex-basis:32px !important;
+  }
+}
+
+/* ---------- 小手機 ---------- */
+@media(max-width:480px){
+  .art-eyebrow,
+  .premium-kicker,
+  .about-pill,
+  .hero-campaign-badge{
+    font-size:10px !important;
+    gap:6px;
+  }
+  .art-eyebrow::before,
+  .premium-kicker::before,
+  .about-pill::before,
+  .hero-campaign-badge::before{
+    width:21px;
+    height:21px;
+    flex-basis:21px;
+  }
+  .section-title-row h2,
+  .premium-section-heading h2,
+  .about-section-head h2,
+  .related-head h2{
+    gap:8px;
+  }
+  .section-title-row h2::before,
+  .premium-section-heading h2::before,
+  .about-section-head h2::before,
+  .related-head h2::before{
+    width:32px;
+    height:32px;
+    flex-basis:32px;
+  }
+}
+
+/* 簡體模式維持相同徽章與排版 */
+html[lang="zh-Hans"] .art-eyebrow,
+html[lang="zh-Hans"] .premium-kicker,
+html[lang="zh-Hans"] .about-pill,
+html[lang="zh-Hans"] header .nav>nav>a{
+  font-weight:700 !important;
+}
