@@ -7594,3 +7594,8 @@ body.social-cases-page .social-cases-art-note{
   .social-case-paper-thumb-label{left:16px;right:16px;bottom:16px}
   .social-case-paper-thumb-label strong{font-size:19px}
 }
+.language-switcher{display:inline-flex;align-items:center;gap:2px;padding:3px;border:1px solid rgba(201,168,93,.48);border-radius:999px;background:rgba(5,31,54,.58);white-space:nowrap}
+.language-switcher button{appearance:none;border:0;background:transparent;color:inherit;font:inherit;font-size:.78rem;line-height:1;min-width:30px;padding:7px 6px;border-radius:999px;cursor:pointer}
+.language-switcher button[aria-pressed="true"]{background:#caa85c;color:#082b4b;font-weight:800}
+.language-switcher button:focus-visible{outline:2px solid #f2d894;outline-offset:2px}
+@media(max-width:900px){.language-switcher{margin:8px 0}.language-switcher button{min-width:40px;padding:9px 8px}}

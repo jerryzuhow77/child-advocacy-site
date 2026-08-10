@@ -109,37 +109,72 @@ function convertTextNode(node,isHans){
   node.nodeValue=isHans ? cv(original) : original;
 }
 
+/* Static, pre-reviewed translations used by the four-language switcher.
+   Article-specific translations can be appended without changing page HTML. */
+const staticTranslations={
+  en:{
+    '護童行動聯盟':'Child Protection Action Alliance','首頁':'Home','關於我們':'About Us','法庭漫畫':'Court Comics','社會案件':'Cases','案件介紹':'Case Introductions','旁聽紀錄':'Court Hearing Notes','活動紀錄':'Activities','活動相簿':'Photo Albums','官方社群':'Official Social Media','查看全部社會案件':'View All Cases','最新消息':'Latest Updates','即時追蹤':'Live Updates','守護孩子的現在':'Protect Children Today','點亮希望的未來':'Light the Way to Hope','孩子優先・制度落實・持續行動':'Children First · Accountable Systems · Continued Action','家庭守護':'Protecting Families','每一個孩子，都值得被好好接住。':'Every child deserves safety, care, and support.','剴剴案｜生命最後115天':'Kaikai Case | The Final 115 Days','土城兩歲男童命案':'Tucheng Two-Year-Old Boy Case','陳尚潔案':'Chen Shang-jie Case','潘、蔡兩童受虐案':'Abuse Cases Involving the Pan and Tsai Children','毒駕殺警案':'Drug-Impaired Driving and Police Officer Death Case','案件背景、時間軸與司法進度':'Background, timeline, and court progress','法院程序與庭訊重點紀錄':'Court procedure and key hearing notes','在剴剴之前，傷害早已出現':'The harm had begun before Kaikai.','最後陪著他的，只有兩瓶牛奶':'In his final moments, only two bottles of milk remained.','一個孩子如何在保護制度中被漏接':'How a child fell through the child-protection system.','三次訪視、多次警訊，卻沒有等到救援':'Three visits and repeated warning signs, yet help never arrived.','一場盤查，讓一名警察再也沒有回家':'A roadside check ended with an officer never returning home.','網站導覽':'Site Navigation','返回首頁':'Back to Home','閱讀更多':'Read More','了解更多':'Learn More','最新進度':'Latest Progress','案件時間軸':'Case Timeline','案件概述':'Case Overview','司法進度':'Court Progress','資料來源':'Sources','聯絡我們':'Contact Us','隱私權':'Privacy','繁體中文':'Traditional Chinese','簡體中文':'Simplified Chinese'
+  },
+  ja:{
+    '護童行動聯盟':'子ども保護アクション・アライアンス','首頁':'ホーム','關於我們':'私たちについて','法庭漫畫':'法廷コミック','社會案件':'社会事件','案件介紹':'事件紹介','旁聽紀錄':'傍聴記録','活動紀錄':'活動記録','活動相簿':'活動アルバム','官方社群':'公式SNS','查看全部社會案件':'すべての事件を見る','最新消息':'最新情報','即時追蹤':'最新動向','守護孩子的現在':'子どもの今を守り','點亮希望的未來':'希望の未来を照らす','孩子優先・制度落實・持續行動':'子ども最優先・制度の実行・継続的な行動','家庭守護':'家族を守る','每一個孩子，都值得被好好接住。':'すべての子どもには、安全に守られ支えられる権利があります。','剴剴案｜生命最後115天':'カイカイ事件｜最後の115日間','土城兩歲男童命案':'土城2歳男児死亡事件','陳尚潔案':'陳尚潔事件','潘、蔡兩童受虐案':'潘・蔡両児童虐待事件','毒駕殺警案':'薬物運転による警察官死亡事件','案件背景、時間軸與司法進度':'事件の背景・時系列・裁判の進捗','法院程序與庭訊重點紀錄':'裁判手続と審理の要点','在剴剴之前，傷害早已出現':'カイカイ以前から、被害はすでに始まっていた。','最後陪著他的，只有兩瓶牛奶':'最後にそばにあったのは、2本のミルクだけでした。','一個孩子如何在保護制度中被漏接':'一人の子どもが保護制度からこぼれ落ちた経緯。','三次訪視、多次警訊，卻沒有等到救援':'3回の訪問と度重なる警告、それでも救助は届きませんでした。','一場盤查，讓一名警察再也沒有回家':'一度の職務質問で、警察官は二度と家に帰れませんでした。','網站導覽':'サイト案内','返回首頁':'ホームへ戻る','閱讀更多':'続きを読む','了解更多':'詳しく見る','最新進度':'最新の進捗','案件時間軸':'事件の時系列','案件概述':'事件概要','司法進度':'裁判の進捗','資料來源':'情報源','聯絡我們':'お問い合わせ','隱私權':'プライバシー','繁體中文':'繁体字中国語','簡體中文':'簡体字中国語'
+  }
+};
+
+function translateStatic(original,l){
+  if(l==='zh-Hans') return cv(original);
+  if(l==='en'||l==='ja'){
+    const trimmed=original.trim();
+    const translated=staticTranslations[l][trimmed];
+    if(translated) return original.replace(trimmed,translated);
+  }
+  return original;
+}
+
 function setLang(l){
   const isHans=l==='zh-Hans';
   document.documentElement.lang=l;
 
-  getConvertibleTextNodes().forEach(node=>convertTextNode(node,isHans));
+  getConvertibleTextNodes().forEach(node=>{
+    if(!origText.has(node)) origText.set(node,normalizeROCYearString(node.nodeValue));
+    node.nodeValue=translateStatic(origText.get(node),l);
+  });
   convertAttributes(isHans);
 
-  document.title=isHans ? cv(originalDocumentTitle) : originalDocumentTitle;
+  document.title=translateStatic(originalDocumentTitle,l);
 
   localStorage.setItem('siteLang',l);
-  document.querySelectorAll('.lang-btn').forEach(b=>{
-    b.textContent=isHans?'繁':'简';
-    b.setAttribute('aria-label',isHans?'切換為繁體中文':'切換為簡體中文');
-    b.setAttribute('title',isHans?'切換為繁體中文':'切換為簡體中文');
-  });
+  document.querySelectorAll('.language-switcher button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===l)));
 }
 
 function toggleLang(){
   setLang((localStorage.getItem('siteLang')||'zh-Hant')==='zh-Hant'?'zh-Hans':'zh-Hant');
 }
 
+function initLanguageSwitcher(){
+  document.querySelectorAll('.lang-btn').forEach(old=>{
+    const group=document.createElement('div'); group.className='language-switcher'; group.setAttribute('role','group'); group.setAttribute('aria-label','Language');
+    [['zh-Hant','繁'],['zh-Hans','简'],['en','EN'],['ja','日']].forEach(([code,label])=>{
+      const b=document.createElement('button'); b.type='button'; b.dataset.lang=code; b.textContent=label; b.title=code; b.addEventListener('click',()=>setLang(code)); group.appendChild(b);
+    });
+    old.replaceWith(group);
+  });
+}
+
 document.addEventListener('DOMContentLoaded',()=>{
+  initLanguageSwitcher();
   setLang(localStorage.getItem('siteLang')||'zh-Hant');
 
   // If a page injects new content later, convert it too.
   const observer=new MutationObserver(mutations=>{
-    const isHans=(localStorage.getItem('siteLang')||'zh-Hant')==='zh-Hans';
+    const activeLang=localStorage.getItem('siteLang')||'zh-Hant';
+    const isHans=activeLang==='zh-Hans';
     mutations.forEach(m=>{
       m.addedNodes.forEach(n=>{
         if(n.nodeType===Node.TEXT_NODE){
-          if(n.nodeValue && n.nodeValue.trim()) convertTextNode(n,isHans);
+          if(n.nodeValue && n.nodeValue.trim()){
+            if(!origText.has(n)) origText.set(n,normalizeROCYearString(n.nodeValue));
+            n.nodeValue=translateStatic(origText.get(n),activeLang);
+          }
         } else if(n.nodeType===Node.ELEMENT_NODE){
           getConvertibleTextNodes(n).forEach(t=>convertTextNode(t,isHans));
           convertAttributes(isHans,n);
