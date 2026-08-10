@@ -5728,3 +5728,62 @@ header .nav>nav>a.unique-brand-avatar::before,
     flex-basis:40px;
   }
 }
+
+
+/* 2026-08-10 — Chen Shang-jie case page additions */
+.social-case-feature-card + .social-case-feature-card{margin-top:30px}
+.social-case-status.appeal{background:#fff0dc;color:#9a5c12}
+.social-case-linked-placeholder{padding:16px;border:1px dashed #d7c6a8;border-radius:16px;background:#f8f5ed}
+.social-case-linked-placeholder small{display:block;color:#9d8458;font-size:10px;font-weight:900;letter-spacing:.08em}
+.social-case-linked-placeholder strong{display:block;color:#58636a}
+.social-case-linked-placeholder span{display:block;color:#8c9294;font-size:11px}
+.case-btn-disabled{opacity:.76;cursor:default;pointer-events:none}
+.case-connection-pending{display:block;padding:10px 12px;border:1px dashed #d6c6aa;border-radius:13px;background:#f6f0e5;color:#67737a}
+.case-connection-pending small{display:block;color:#b0832e;font-size:9px;font-weight:950}
+.case-connection-pending strong{display:block;font-size:13px;color:#435864}
+.case-connection-pending span{display:block;margin-top:1px;color:#8b9295;font-size:10px}
+.case-profile-toc .toc-pending{display:block;margin-top:9px;padding:9px;background:#e9e2d5;color:#7f7568;font-weight:900;cursor:default}
+.chen-case-hero{background:radial-gradient(circle at 80% 18%,rgba(221,177,74,.16),transparent 25%),radial-gradient(circle at 10% 86%,rgba(51,126,142,.10),transparent 27%),linear-gradient(132deg,#061a2d 0%,#0a2b49 58%,#123a55 100%)}
+.chen-case-page .case-profile-hero-copy h1 span{display:inline-block;margin-top:8px;font-size:.54em;line-height:1.45;letter-spacing:-.02em}
+.case-fact-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:22px 0 28px}
+.case-fact-grid>div{padding:16px 17px;border:1px solid #e7dccb;border-radius:15px;background:#fffaf1}
+.case-fact-grid small{display:block;color:#a47b31;font-size:10px;font-weight:900;letter-spacing:.08em}
+.case-fact-grid strong{display:block;margin-top:4px;color:#173950;font-size:14px;line-height:1.55}
+.case-subheading{margin:30px 0 14px;color:#17445f;font-family:"Noto Serif TC","Noto Serif CJK TC",serif;font-size:23px}
+.case-visit-list{display:grid;gap:15px;margin-top:24px}
+.case-visit-list article{position:relative;padding:20px 22px 20px 118px;border:1px solid #e3d7c5;border-radius:18px;background:#fffaf1}
+.case-visit-list time{position:absolute;left:20px;top:22px;color:#bb7f24;font-weight:950;font-size:12px;letter-spacing:.02em}
+.case-visit-list h3{margin:0 0 7px;color:#0d3754;font-size:19px}
+.case-visit-list p{margin:0;color:#5f6d74;line-height:1.85;font-size:13px}
+.case-duty-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.case-duty-grid article{padding:20px;border:1px solid #dfded7;border-radius:18px;background:#f8fbfa}
+.case-duty-grid span{color:#bf8a29;font-family:serif;font-size:22px;font-weight:900}
+.case-duty-grid h3{margin:5px 0 8px;color:#123b55;font-size:16px}
+.case-duty-grid p{margin:0;color:#68757b;font-size:13px;line-height:1.8}
+.case-negligence-list{display:grid;gap:12px;margin-top:24px}
+.case-negligence-list article{display:grid;grid-template-columns:42px 1fr;gap:13px;padding:18px 20px;border:1px solid #eadfce;border-radius:16px;background:#fffaf2}
+.case-negligence-list>article>span{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#0b3b5d;color:#f6d98b;font-weight:950}
+.case-negligence-list h3{margin:1px 0 6px;color:#153d57;font-size:16px}
+.case-negligence-list p{margin:0;color:#65727a;font-size:13px;line-height:1.8}
+.case-legal-label{margin-top:24px;padding:22px 24px;border:1px solid #e1d3bd;border-radius:18px;background:#f7efe0}
+.case-legal-label small{display:block;color:#a87a23;font-size:10px;font-weight:900;letter-spacing:.1em}
+.case-legal-label strong{display:block;margin:5px 0;color:#0d3653;font-size:20px}
+.case-legal-label p{margin:0;color:#68747a;font-size:13px;line-height:1.75}
+.case-if-list{display:grid;gap:8px;margin:20px 0}
+.case-if-list p{margin:0!important;padding:12px 16px;border-left:3px solid #d0a141;background:#fff7e8;color:#4e5c64!important;font-size:14px!important;line-height:1.7!important}
+.case-timeline-list{display:grid;gap:0;margin-top:24px}
+.case-timeline-list article{display:grid;grid-template-columns:116px 1fr;gap:20px;position:relative;padding:0 0 22px}
+.case-timeline-list article::before{content:"";position:absolute;left:104px;top:9px;bottom:-2px;width:1px;background:#dccaa8}
+.case-timeline-list article:last-child::before{display:none}
+.case-timeline-list article::after{content:"";position:absolute;left:99px;top:6px;width:11px;height:11px;border:3px solid #c99a3d;border-radius:50%;background:#fffdf8;box-sizing:border-box}
+.case-timeline-list time{color:#a86e1c;font-size:12px;font-weight:950;text-align:right}
+.case-timeline-list strong{display:block;color:#123b55;font-size:15px}
+.case-timeline-list p{margin:3px 0 0;color:#68757c;font-size:13px;line-height:1.75}
+.case-progress-box{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}
+.case-progress-box>div{padding:17px;border:1px solid #e1d6c4;border-radius:15px;background:#fff9ef}
+.case-progress-box small{display:block;color:#9a7b42;font-size:10px;font-weight:900}
+.case-progress-box strong{display:block;margin-top:4px;color:#143b54;font-size:14px;line-height:1.55}
+.case-letter-block{padding:30px 28px;border:1px solid #e1d2b8;border-radius:22px;background:linear-gradient(180deg,#fff9ec,#f7eee0);text-align:center}
+.case-letter-block p{margin:0 0 18px;color:#53616a;font-family:"Noto Serif TC","Noto Serif CJK TC",serif;font-size:16px;line-height:2}
+.case-letter-block strong{display:block;margin-top:26px;color:#0b3957;font-family:"Noto Serif TC","Noto Serif CJK TC",serif;font-size:21px;line-height:1.75}
+@media(max-width:800px){.case-fact-grid,.case-duty-grid,.case-progress-box{grid-template-columns:1fr}.case-visit-list article{padding:20px}.case-visit-list time{position:static;display:block;margin-bottom:5px}.case-timeline-list article{grid-template-columns:84px 1fr;gap:16px}.case-timeline-list article::before{left:74px}.case-timeline-list article::after{left:69px}.chen-case-page .case-profile-hero-copy h1 span{font-size:.6em}}
