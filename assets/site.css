@@ -6168,3 +6168,32 @@ html[lang="zh-Hans"] .public-view-count strong{font-weight:700!important}
   .home-advocacy-grid{grid-template-columns:1fr}.home-advocacy-grid>a{min-height:0}
 }
 @media(prefers-reduced-motion:reduce){.home-news-card,.home-news-card-media img,.home-progress-card{transition:none}}
+/* 2026-08-11 — 紙雕曙光系列與莫蘭迪深色文字系統 */
+.home-advocacy-feature{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(290px,.72fr);gap:20px;align-items:stretch}
+.home-advocacy-feature .home-advocacy-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.home-advocacy-art{position:relative;margin:0;min-height:100%;overflow:hidden;border-radius:18px;background:#0a2941;box-shadow:0 16px 34px rgba(32,48,52,.16)}
+.home-advocacy-art img{display:block;width:100%;height:100%;min-height:390px;object-fit:cover}
+.home-advocacy-art figcaption{position:absolute;left:0;right:0;bottom:0;padding:58px 22px 20px;background:linear-gradient(transparent,rgba(5,24,39,.94));color:#ece6d8}
+.home-advocacy-art strong,.home-advocacy-art span{display:block}
+.home-advocacy-art strong{font-family:"Noto Serif TC","PMingLiU",serif;font-size:1.18rem;color:#e1bc72}
+.home-advocacy-art span{margin-top:7px;font-size:12px;line-height:1.65;color:#d4d7d1}
+.about-journey-art-section{padding:20px 0 72px;background:#f2efe8}
+.about-journey-art{position:relative;max-width:980px;margin:0 auto;overflow:hidden;border-radius:30px;background:#0b2940;box-shadow:0 24px 58px rgba(38,55,58,.16)}
+.about-journey-art img{display:block;width:100%;max-height:700px;object-fit:cover;object-position:center 58%}
+.about-journey-art figcaption{position:absolute;left:0;right:0;bottom:0;padding:92px 6% 34px;background:linear-gradient(transparent,rgba(5,24,39,.94));color:#e8e3d9}
+.about-journey-art small,.about-journey-art strong,.about-journey-art span{display:block}
+.about-journey-art small{color:#c4a56d;font-weight:850;letter-spacing:.15em}
+.about-journey-art strong{margin-top:8px;color:#eee4d0;font-family:"Noto Serif TC","PMingLiU",serif;font-size:clamp(24px,3.5vw,40px)}
+.about-journey-art span{margin-top:9px;color:#ccd3cf;line-height:1.7}
+.social-cases-hero-subtitle{margin:-4px 0 17px;color:#d7c39a;font-family:"Noto Serif TC","PMingLiU",serif;font-size:clamp(20px,2.4vw,30px);font-weight:700;letter-spacing:.04em}
+.morandi-tone{color:#4f5e5d}
+.morandi-tone :where(h1,h2,h3,h4):not(.court-library-hero *):not(.about-art-hero *):not(.home-hero *):not(.page-hero *):not(.home-advocacy-art *):not(.about-journey-art *){color:#2d4850}
+.morandi-tone :where(p,li,blockquote):not(.court-library-hero *):not(.about-art-hero *):not(.home-hero *):not(.page-hero *):not(.home-advocacy-art *):not(.about-journey-art *){color:#596967}
+.morandi-tone :where(small,.meta,time):not(.court-library-hero *):not(.about-art-hero *):not(.home-hero *):not(.page-hero *):not(.home-advocacy-art *):not(.about-journey-art *){color:#7c7163}
+.morandi-tone a:not(.btn):not(.read-btn):not(.source-btn){color:#3c5e62}
+.morandi-tone .court-library-hero,.morandi-tone .court-library-hero h1,.morandi-tone .court-library-hero p,.morandi-tone .court-library-hero .court-kicker,
+.morandi-tone .about-art-hero,.morandi-tone .about-art-hero h1,.morandi-tone .about-art-hero p,
+.morandi-tone .home-hero,.morandi-tone .home-hero h1,.morandi-tone .home-hero p{color:#eee8db}
+.morandi-tone .page-hero,.morandi-tone .page-hero h1,.morandi-tone .page-hero h2,.morandi-tone .page-hero p,.morandi-tone .page-hero small{color:#eee8db}
+@media(max-width:900px){.home-advocacy-feature{grid-template-columns:1fr}.home-advocacy-art img{min-height:0;max-height:620px}.about-journey-art-section{padding-bottom:54px}}
+@media(max-width:620px){.home-advocacy-feature .home-advocacy-grid{grid-template-columns:1fr}.home-advocacy-art figcaption{padding:50px 17px 17px}.about-journey-art{border-radius:20px}.about-journey-art figcaption{padding:76px 20px 22px}.about-journey-art span{font-size:13px}}
