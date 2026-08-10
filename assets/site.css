@@ -7030,3 +7030,187 @@ body:not(.art-site){
   .home-progress-card strong,
   .home-case-reel-copy strong{color:#314750!important}
 }
+
+/* ============================================================
+   2026-08-10 V17 — ABOUT page / all Morandi dark typography
+   關於我們：全頁內容統一深色莫蘭迪字，淺底高對比
+   ============================================================ */
+body.about-page{
+  --about-deep:#394b54;
+  --about-deep-blue:#334b58;
+  --about-deep-plum:#5f5260;
+  --about-deep-mauve:#725c67;
+  --about-deep-sage:#53635b;
+  --about-deep-bronze:#775f42;
+  --about-body:#505b5c;
+  --about-muted:#687071;
+}
+
+/* All About-page content uses dark Morandi ink. */
+body.about-page main,
+body.about-page main :is(p,li,span,time,small,b,strong,h1,h2,h3,h4,a,blockquote){
+  color:var(--about-body)!important;
+  text-shadow:none!important;
+}
+body.about-page main :is(h1,h2,h3,h4,strong){
+  color:var(--about-deep)!important;
+}
+body.about-page main a{
+  color:var(--about-deep-plum)!important;
+}
+body.about-page main a:hover{
+  color:#493f4b!important;
+}
+
+/* Hero — deep blue-grey + plum on light paper. */
+body.about-page .about-art-hero{
+  background:
+    radial-gradient(circle at 80% 18%,rgba(179,145,94,.14),transparent 25%),
+    radial-gradient(circle at 8% 12%,rgba(179,143,154,.11),transparent 20%),
+    linear-gradient(120deg,#f5f1ea,#eee9ed 54%,#e7e2dc)!important;
+}
+body.about-page .about-art-kicker{color:var(--about-deep-bronze)!important}
+body.about-page .about-pill{
+  background:#eee7ea!important;
+  border-color:#cbbec5!important;
+  color:var(--about-deep-plum)!important;
+}
+body.about-page .about-art-copy h1{color:var(--about-deep-blue)!important}
+body.about-page .about-art-copy h1 em{color:var(--about-deep-mauve)!important}
+body.about-page .about-art-copy>p{color:var(--about-body)!important}
+body.about-page .about-hero-tags span{
+  background:#f1ece9!important;
+  border-color:#d1c4bd!important;
+  color:#5c5454!important;
+}
+
+/* Section headings and supporting text. */
+body.about-page .about-section-head small,
+body.about-page .related-head .art-eyebrow{color:var(--about-deep-bronze)!important}
+body.about-page .about-section-head h2,
+body.about-page .related-head h2{color:var(--about-deep-blue)!important}
+body.about-page .about-section-head>p{color:var(--about-muted)!important}
+
+/* Stats — remove saturated/light-on-color text. */
+body.about-page .about-stat{background:#f4f0ea!important}
+body.about-page .about-stat:nth-child(2){background:#f1e8eb!important}
+body.about-page .about-stat:nth-child(3){background:#eee9f0!important}
+body.about-page .about-stat:nth-child(4){background:#e9eeea!important}
+body.about-page .about-stat,
+body.about-page .about-stat.navy,
+body.about-page .about-stat.coral,
+body.about-page .about-stat.gold,
+body.about-page .about-stat.teal{color:var(--about-deep)!important}
+body.about-page .about-stat strong{color:var(--about-deep-blue)!important}
+body.about-page .about-stat b{color:var(--about-deep-plum)!important}
+body.about-page .about-stat p{color:var(--about-body)!important}
+
+/* Timeline — including highlighted milestone: pale card, dark ink. */
+body.about-page .about-timeline time{color:var(--about-deep-bronze)!important}
+body.about-page .about-timeline article>div:last-child{
+  background:#f3efea!important;
+  border-color:#d7ccc1!important;
+}
+body.about-page .about-timeline article:nth-child(even)>div:last-child{background:#eee9ef!important}
+body.about-page .about-timeline article.highlight>div:last-child{
+  background:#e5dce4!important;
+  border-color:#c9bac6!important;
+}
+body.about-page .about-timeline h3,
+body.about-page .about-timeline article.highlight h3{color:var(--about-deep-blue)!important}
+body.about-page .about-timeline p,
+body.about-page .about-timeline article.highlight p{color:var(--about-body)!important}
+body.about-page .timeline-dot{
+  background:#d8c8d1!important;
+  border-color:#f4efe8!important;
+  box-shadow:0 0 0 2px #8d7a86!important;
+}
+
+/* Court records — all labels and copy dark. */
+body.about-page .case-record-card,
+body.about-page .case-record-card.featured,
+body.about-page .case-record-card.newest-case{
+  background:#f4f0ea!important;
+  border-color:#d7ccc1!important;
+}
+body.about-page .case-record-card:nth-child(2n){background:#eee9ef!important}
+body.about-page .case-card-top small{color:var(--about-muted)!important}
+body.about-page .case-card-top h3{color:var(--about-deep-blue)!important}
+body.about-page .case-dates span{
+  background:#e6dde2!important;
+  color:var(--about-deep-plum)!important;
+}
+body.about-page .case-icon,
+body.about-page .case-icon.coral,
+body.about-page .case-icon.gold,
+body.about-page .case-icon.teal{
+  background:#ddd4d9!important;
+  color:var(--about-deep-plum)!important;
+  border:1px solid #c4b6bf!important;
+}
+body.about-page .newest-case-title{color:var(--about-deep)!important}
+body.about-page .newest-case-link{color:var(--about-deep-plum)!important}
+
+/* Street actions — pale labels with deep ink. */
+body.about-page .street-timeline article{
+  background:#f3efea!important;
+  border-color:#d7ccc1!important;
+}
+body.about-page .street-timeline article:nth-child(3n+2){background:#eee9ef!important}
+body.about-page .street-timeline article:nth-child(3n){background:#e9eeea!important}
+body.about-page .street-timeline time{
+  background:#d8dfe1!important;
+  color:var(--about-deep-blue)!important;
+  border:1px solid #bcc9cd!important;
+}
+body.about-page .street-timeline p,
+body.about-page .street-timeline p a{color:var(--about-body)!important}
+
+/* Charity cards — muted pink / lilac / sage, dark copy. */
+body.about-page .charity-grid article{background:#f2ece6!important;border-color:#d8cbc1!important}
+body.about-page .charity-grid article:nth-child(2){background:#f0e7ea!important}
+body.about-page .charity-grid article:nth-child(3){background:#ede8ef!important}
+body.about-page .charity-grid article:nth-child(4){background:#e8ede9!important}
+body.about-page .charity-grid small{color:var(--about-deep-bronze)!important}
+body.about-page .charity-grid h3{color:var(--about-deep-blue)!important}
+
+/* KEEP GOING — changed from dark blue to pale Morandi so deep type stays readable. */
+body.about-page .about-future-section{
+  background:
+    radial-gradient(circle at 80% 20%,rgba(179,145,94,.10),transparent 28%),
+    linear-gradient(135deg,#e8e5e6,#e2e7e5 55%,#ece5e9)!important;
+  color:var(--about-body)!important;
+}
+body.about-page .about-future-copy .about-art-kicker{color:var(--about-deep-bronze)!important}
+body.about-page .about-future-copy h2{color:var(--about-deep-blue)!important}
+body.about-page .about-future-copy>p{color:var(--about-body)!important}
+body.about-page .future-list li{
+  background:rgba(248,245,240,.72)!important;
+  border:1px solid rgba(123,105,116,.15)!important;
+  color:var(--about-deep)!important;
+}
+body.about-page .future-list li:before{color:var(--about-deep-bronze)!important}
+body.about-page .future-glow{
+  background:radial-gradient(circle,rgba(179,145,94,.22),transparent 66%)!important;
+}
+
+/* Closing promise + related cards. */
+body.about-page .about-closing-section{background:#eee9e3!important}
+body.about-page .about-closing-card{background:#f7f3ed!important;border-color:#d1c2b5!important}
+body.about-page .about-closing-card small{color:var(--about-deep-bronze)!important}
+body.about-page .about-closing-card h2{color:var(--about-deep-blue)!important}
+body.about-page .about-closing-card p{color:var(--about-body)!important}
+body.about-page .about-closing-card blockquote{
+  background:#ebe2e5!important;
+  border-left-color:#8f7785!important;
+  color:var(--about-deep-plum)!important;
+}
+body.about-page .about-hashtags{color:var(--about-deep-sage)!important}
+body.about-page .visual-related-copy small{color:var(--about-deep-bronze)!important}
+body.about-page .visual-related-copy h3{color:var(--about-deep-blue)!important}
+body.about-page .visual-related-copy p{color:var(--about-body)!important}
+
+/* Never allow legacy dark-section rules to turn About-page content white. */
+body.about-page main :is(.about-future-section,.about-art-hero,.about-timeline-section,.about-records-section,.about-street-section,.about-charity-section,.about-closing-section,.visual-related) :is(h1,h2,h3,h4,p,li,small,span,time,strong,b,a,blockquote){
+  text-shadow:none!important;
+}
