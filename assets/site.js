@@ -619,6 +619,29 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 
 
+
+
+/* =====================================================================
+   2026-08-10 — 新增「毒駕殺警案」至全站社會案件選單
+   只需更新 site.js，即可讓既有靜態頁面同步出現新案件入口。
+   ===================================================================== */
+function injectDuiPoliceCaseNavItem(){
+  const scriptEl=[...document.scripts].find(s=>/\/assets\/site\.js(?:\?|$)/.test(s.src));
+  if(!scriptEl) return;
+  const caseUrl=new URL('../cases/dui-police-killing/',scriptEl.src).href;
+  document.querySelectorAll('.social-case-menu-column').forEach(column=>{
+    const heading=column.querySelector('.social-case-menu-heading');
+    if(!heading || !/案件介紹|案件介绍/.test(heading.textContent)) return;
+    if(column.querySelector('a[href*="/cases/dui-police-killing/"]')) return;
+    const a=document.createElement('a');
+    a.className='social-case-menu-item';
+    a.href=caseUrl;
+    a.innerHTML='<b>毒駕殺警案</b><span>一場盤查，讓一名警察再也沒有回家</span>';
+    column.appendChild(a);
+  });
+}
+document.addEventListener('DOMContentLoaded',injectDuiPoliceCaseNavItem);
+
 /* =====================================================================
    2026-08-10 — 社會案件雙欄下拉導覽
    ===================================================================== */

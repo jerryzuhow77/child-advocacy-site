@@ -1,21 +1,13 @@
-此次需覆蓋／新增的檔案：
+本壓縮檔僅包含 2026-08-10「毒駕殺警案」新增所需覆蓋／新增檔案：
 
-about/index.html
-activity-records/20260801-ketagal-rally/index.html
-activity-records/albums/20260801-ketagal-rally/index.html
-activity-records/albums/index.html
-activity-records/index.html
-assets/art/chen-shangjie-case-poster.png
-assets/site.css
-cases/chen-shangjie/index.html
-cases/index.html
-cases/tucheng-two-year-old/index.html
-court-comics/episode-01/index.html
-court-comics/episode-02/index.html
-court-comics/index.html
-data/search-index.json
-hearing-records/index.html
-hearing-records/tucheng-two-year-old-20260806/index.html
-index.html
-sitemap.xml
-social/index.html
+新增：
+- cases/dui-police-killing/index.html
+- assets/art/dui-police-killing-poster.png
+
+覆蓋更新：
+- cases/index.html
+- assets/site.js
+- data/search-index.json
+- sitemap.xml
+
+旁聽紀錄目前維持「待更新」，未建立新的旁聽紀錄頁。
