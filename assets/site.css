@@ -6197,3 +6197,21 @@ html[lang="zh-Hans"] .public-view-count strong{font-weight:700!important}
 .morandi-tone .page-hero,.morandi-tone .page-hero h1,.morandi-tone .page-hero h2,.morandi-tone .page-hero p,.morandi-tone .page-hero small{color:#eee8db}
 @media(max-width:900px){.home-advocacy-feature{grid-template-columns:1fr}.home-advocacy-art img{min-height:0;max-height:620px}.about-journey-art-section{padding-bottom:54px}}
 @media(max-width:620px){.home-advocacy-feature .home-advocacy-grid{grid-template-columns:1fr}.home-advocacy-art figcaption{padding:50px 17px 17px}.about-journey-art{border-radius:20px}.about-journey-art figcaption{padding:76px 20px 22px}.about-journey-art span{font-size:13px}}
+/* 2026-08-11 — 子網頁燙金與深橘金文字系統 */
+.warm-gold-tone{color:#755b36}
+.warm-gold-tone :where(h1,h2,h3,h4):not(.court-library-hero *):not(.about-art-hero *):not(.page-hero *):not(.about-journey-art *){color:#8c5a18;text-shadow:0 1px 0 rgba(255,240,201,.72)}
+.warm-gold-tone :where(p,li,blockquote):not(.court-library-hero *):not(.about-art-hero *):not(.page-hero *):not(.about-journey-art *){color:#755b36}
+.warm-gold-tone :where(small,.meta,time):not(.court-library-hero *):not(.about-art-hero *):not(.page-hero *):not(.about-journey-art *){color:#a26f2b}
+.warm-gold-tone a:not(.btn):not(.read-btn):not(.source-btn){color:#95611e}
+.warm-gold-tone .court-library-hero,
+.warm-gold-tone .about-art-hero,
+.warm-gold-tone .page-hero{color:#f0d18b}
+.warm-gold-tone .court-library-hero :where(h1,h2,h3,h4),
+.warm-gold-tone .about-art-hero :where(h1,h2,h3,h4),
+.warm-gold-tone .page-hero :where(h1,h2,h3,h4){color:#f2cc74;text-shadow:0 1px 0 rgba(61,38,6,.34)}
+.warm-gold-tone .court-library-hero :where(p,small,.court-kicker),
+.warm-gold-tone .about-art-hero :where(p,small,.about-art-kicker),
+.warm-gold-tone .page-hero :where(p,small){color:#e7c98d}
+.warm-gold-tone .about-journey-art small{color:#d3aa58}
+.warm-gold-tone .about-journey-art strong{color:#f0cf85}
+.warm-gold-tone .about-journey-art span{color:#dfc99b}
