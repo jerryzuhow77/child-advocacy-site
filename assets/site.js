@@ -712,3 +712,249 @@ function initGlobalMemorialBanner(){
   footer.parentNode.insertBefore(section,footer);
 }
 document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
+
+
+/* ===== Public article view counts (CounterAPI) ===== */
+(() => {
+  const COUNTER_NS = 'jerryzuhow77.github.io-child-advocacy-site';
+  const COUNTER_ACTION = 'view';
+  const VIEW_COOLDOWN_MS = 30 * 60 * 1000;
+  const API_TIMEOUT_MS = 6500;
+  const STORAGE_PREFIX = 'cpa-viewed-v2:'; // v2 resets stale cooldowns from the earlier broken counter.
+  const readCache = new Map();
+
+  function routeFromUrl(input) {
+    let url;
+    try { url = new URL(input, window.location.href); } catch (_) { return ''; }
+    const parts = url.pathname.split('/').filter(Boolean);
+    const siteIndex = parts.indexOf('child-advocacy-site');
+    const routeParts = siteIndex >= 0 ? parts.slice(siteIndex + 1) : parts;
+    if (routeParts[routeParts.length - 1] === 'index.html') routeParts.pop();
+    return routeParts.join('/').replace(/\/+$/, '');
+  }
+
+  function isTrackableRoute(route) {
+    if (!route) return false;
+    if (/^cases\/[^/]+$/.test(route)) return true;
+    if (/^hearing-records\/[^/]+$/.test(route)) return true;
+    if (/^court-comics\/episode-[^/]+$/.test(route)) return true;
+    if (/^activity-records\/[^/]+$/.test(route) && route !== 'activity-records/albums') return true;
+    if (/^activity-records\/albums\/[^/]+$/.test(route)) return true;
+    return false;
+  }
+
+  function keyFromRoute(route) {
+    return route.replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
+  }
+
+  // Important: increment requests deliberately OMIT readOnly=false.
+  // CounterAPI increments by default; read-only requests explicitly use readOnly=true.
+  function counterUrl(key, readOnly, callbackName = '') {
+    const base = `https://counterapi.com/api/${encodeURIComponent(COUNTER_NS)}/${encodeURIComponent(COUNTER_ACTION)}/${encodeURIComponent(key)}`;
+    const params = new URLSearchParams();
+    if (readOnly) params.set('readOnly', 'true');
+    if (callbackName) params.set('callback', callbackName);
+    const query = params.toString();
+    return query ? `${base}?${query}` : base;
+  }
+
+  function parseCounterValue(data) {
+    const value = Number(data && data.value);
+    if (!Number.isFinite(value) || value < 0) throw new Error('invalid counter');
+    return value;
+  }
+
+  async function fetchCounter(key, readOnly) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
+    try {
+      const response = await fetch(counterUrl(key, readOnly), {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-store',
+        credentials: 'omit',
+        signal: controller.signal
+      });
+      if (!response.ok) throw new Error(`counter ${response.status}`);
+      return parseCounterValue(await response.json());
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  // JSONP fallback keeps the counter working even if a browser/network blocks CORS.
+  function jsonpCounter(key, readOnly) {
+    return new Promise((resolve, reject) => {
+      const callbackName = `__cpaCounter_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+      const script = document.createElement('script');
+      let timer;
+      const cleanup = () => {
+        clearTimeout(timer);
+        try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
+        script.remove();
+      };
+      window[callbackName] = data => {
+        try {
+          const value = parseCounterValue(data);
+          cleanup();
+          resolve(value);
+        } catch (error) {
+          cleanup();
+          reject(error);
+        }
+      };
+      script.async = true;
+      script.src = counterUrl(key, readOnly, callbackName);
+      script.onerror = () => {
+        cleanup();
+        reject(new Error('counter jsonp failed'));
+      };
+      timer = setTimeout(() => {
+        cleanup();
+        reject(new Error('counter jsonp timeout'));
+      }, API_TIMEOUT_MS);
+      document.head.appendChild(script);
+    });
+  }
+
+  async function requestCounter(key, readOnly = true) {
+    const cacheKey = `${key}:${readOnly ? 'r' : 'i'}`;
+    if (readOnly && readCache.has(cacheKey)) return readCache.get(cacheKey);
+
+    const task = (async () => {
+      try {
+        return await fetchCounter(key, readOnly);
+      } catch (_) {
+        return await jsonpCounter(key, readOnly);
+      }
+    })();
+
+    if (readOnly) readCache.set(cacheKey, task);
+    try {
+      const value = await task;
+      if (!readOnly) {
+        // Any old read-only value for this article is stale after incrementing.
+        readCache.delete(`${key}:r`);
+      }
+      return value;
+    } catch (error) {
+      if (readOnly) readCache.delete(cacheKey);
+      throw error;
+    }
+  }
+
+  function hasRecentView(key) {
+    const now = Date.now();
+    try {
+      const last = Number(localStorage.getItem(`${STORAGE_PREFIX}${key}`) || 0);
+      return Boolean(last && now - last < VIEW_COOLDOWN_MS);
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function markViewed(key) {
+    try { localStorage.setItem(`${STORAGE_PREFIX}${key}`, String(Date.now())); }
+    catch (_) {}
+  }
+
+  function formatCount(value) {
+    const locale = document.documentElement.lang === 'zh-Hans' ? 'zh-CN' : 'zh-TW';
+    try { return new Intl.NumberFormat(locale).format(value); }
+    catch (_) { return String(value); }
+  }
+
+  function createEyeIcon() {
+    return '<svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M2.2 12s3.5-6 9.8-6 9.8 6 9.8 6-3.5 6-9.8 6-9.8-6-9.8-6Zm9.8 3.1a3.1 3.1 0 1 0 0-6.2 3.1 3.1 0 0 0 0 6.2Z"/></svg>';
+  }
+
+  function makeBadge(kind = 'article') {
+    const el = document.createElement('span');
+    el.className = kind === 'card' ? 'public-view-count public-view-count-card' : 'public-view-count public-view-count-article';
+    el.hidden = true;
+    el.setAttribute('aria-live', 'polite');
+    el.innerHTML = `${createEyeIcon()}<span class="public-view-label">瀏覽</span><strong class="public-view-number"></strong><span class="public-view-unit">次</span>`;
+    return el;
+  }
+
+  function revealBadge(badge, value) {
+    const number = badge.querySelector('.public-view-number');
+    if (!number) return;
+    number.textContent = formatCount(value);
+    badge.hidden = false;
+    badge.setAttribute('title', `公開瀏覽次數：${formatCount(value)} 次`);
+  }
+
+  async function initArticleCounter() {
+    const route = routeFromUrl(window.location.href);
+    if (!isTrackableRoute(route)) return;
+    const key = keyFromRoute(route);
+    if (!key) return;
+
+    const heading = document.querySelector('main h1');
+    if (!heading || document.querySelector('.public-view-count-article')) return;
+    const badge = makeBadge('article');
+    heading.insertAdjacentElement('afterend', badge);
+
+    try {
+      const increment = !hasRecentView(key);
+      const value = await requestCounter(key, !increment);
+      // Only start the 30-minute cooldown AFTER the server confirms the increment.
+      if (increment) markViewed(key);
+      revealBadge(badge, value);
+    } catch (error) {
+      console.warn('[view-counter] unable to load count', error);
+      badge.remove();
+    }
+  }
+
+  function cardTargetFor(anchor) {
+    if (anchor.classList.contains('home-news-card')) return anchor.querySelector('.home-news-card-copy') || anchor;
+    if (anchor.classList.contains('home-case-reel-card')) return anchor.querySelector('.home-case-reel-copy') || anchor;
+    if (anchor.classList.contains('home-progress-card')) return anchor;
+    return anchor;
+  }
+
+  async function addReadOnlyBadge(anchor) {
+    if (!anchor || anchor.dataset.viewCounterReady === '1') return;
+    const route = routeFromUrl(anchor.href || anchor.getAttribute('href'));
+    if (!isTrackableRoute(route)) return;
+    anchor.dataset.viewCounterReady = '1';
+    const key = keyFromRoute(route);
+    const target = cardTargetFor(anchor);
+    const badge = makeBadge('card');
+    target.appendChild(badge);
+    try {
+      const value = await requestCounter(key, true);
+      revealBadge(badge, value);
+    } catch (_) {
+      badge.remove();
+      anchor.dataset.viewCounterReady = '0';
+    }
+  }
+
+  function initHomepageCardCounters() {
+    document.querySelectorAll('a.home-news-card[href], a.home-progress-card[href], a.home-case-reel-card[href]').forEach(addReadOnlyBadge);
+  }
+
+  function initCaseDirectoryCounters() {
+    document.querySelectorAll('.social-case-feature-card').forEach(card => {
+      const anchor = card.querySelector('a.social-case-feature-image[href], .social-case-linked-records a[href]');
+      const row = card.querySelector('.social-case-status-row');
+      if (!anchor || !row || row.querySelector('.public-view-count')) return;
+      const route = routeFromUrl(anchor.href || anchor.getAttribute('href'));
+      if (!isTrackableRoute(route)) return;
+      const key = keyFromRoute(route);
+      const badge = makeBadge('card');
+      badge.classList.add('public-view-count-directory');
+      row.appendChild(badge);
+      requestCounter(key, true).then(value => revealBadge(badge, value)).catch(() => badge.remove());
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initArticleCounter();
+    initHomepageCardCounters();
+    initCaseDirectoryCounters();
+  });
+})();
