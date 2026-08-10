@@ -6578,3 +6578,221 @@ html[lang="zh-Hans"] .public-view-count strong{font-weight:700!important}
   .public-view-count-card{font-size:10px;padding:6px 8px}
   .social-case-status-row .public-view-count-directory{margin-left:0}
 }
+
+/* ============================================================
+   2026-08-10 V15 — Visual identity lock
+   童趣紙雕 × Q版守護 × 莫蘭迪燙金
+   ============================================================ */
+:root{
+  --guard-blue:#718995;
+  --guard-blue-deep:#294756;
+  --guard-mist:#aab8b8;
+  --guard-sage:#98a494;
+  --guard-rose:#c5a09a;
+  --guard-ivory:#f5efe6;
+  --guard-cream:#ebe2d6;
+  --guard-gold:#b3915e;
+  --guard-gold-hi:#dec38f;
+  --guard-bronze:#866a43;
+  --guard-ink:#334750;
+  --guard-muted:#6d7979;
+  --guard-paper-shadow:0 6px 0 rgba(184,169,149,.30),0 18px 38px rgba(41,59,66,.10);
+  --guard-paper-shadow-hover:0 8px 0 rgba(184,169,149,.32),0 24px 44px rgba(41,59,66,.14);
+}
+
+/* Unified quiet editorial ground */
+body{
+  color:var(--guard-ink);
+  background-color:var(--guard-ivory);
+}
+body.art-site,
+body.case-profile-page,
+body.social-cases-page,
+body.about-page,
+body:not(.art-site){
+  background:
+    radial-gradient(circle at 12% 8%,rgba(255,255,255,.42) 0 1px,transparent 1.5px),
+    radial-gradient(circle at 82% 24%,rgba(75,96,104,.030) 0 1px,transparent 1.5px),
+    linear-gradient(180deg,#f6f1e9 0%,#eee7dd 100%);
+  background-size:21px 21px,27px 27px,auto;
+}
+
+/* Matte foil: restrained, mostly for display titles and small accents */
+:is(.premium-section-heading,.home-news-hub-head,.home-social-cases-copy,.social-cases-heading,.case-story-section,.about-section-heading,.court-library-heading) h2,
+:is(.home-hearing-alert-heading,.home-news-stream-head) h3{
+  color:#8e7048;
+}
+:is(.premium-section-heading,.home-news-hub-head,.home-social-cases-copy,.social-cases-heading,.case-story-section,.about-section-heading,.court-library-heading) h2::after{
+  background:linear-gradient(90deg,var(--guard-bronze),var(--guard-gold-hi),var(--guard-gold),transparent)!important;
+}
+
+/* Paper-cut cards: soft depth instead of glossy UI */
+:is(
+  .home-news-card,.home-progress-card,.home-case-reel-card,.home-news-focus,
+  .record-card,.activity-card,.album-index-card,.episode-library-card,
+  .visual-related-card,.social-platform-card,.case-record-card,
+  .case-fact-grid>article,.case-duty-grid>article,.case-progress-box>div
+){
+  border-color:rgba(133,116,92,.19)!important;
+  box-shadow:var(--guard-paper-shadow)!important;
+}
+:is(
+  .home-news-card,.home-progress-card,.home-case-reel-card,
+  .record-card,.activity-card,.album-index-card,.episode-library-card,
+  .visual-related-card,.social-platform-card,.case-record-card
+):hover{
+  box-shadow:var(--guard-paper-shadow-hover)!important;
+}
+
+/* Alternate paper layers add child-book warmth without becoming cartoonish */
+:is(.home-news-card,.home-progress-card,.home-case-reel-card):nth-child(3n+1){background-color:#f6efe6}
+:is(.home-news-card,.home-progress-card,.home-case-reel-card):nth-child(3n+2){background-color:#eef0eb}
+:is(.home-news-card,.home-progress-card,.home-case-reel-card):nth-child(3n){background-color:#f2e8e4}
+
+/* Morandi category accents */
+.home-news-tabs a:nth-child(2){--tab-accent:var(--guard-blue)}
+.home-news-tabs a:nth-child(3){--tab-accent:var(--guard-rose)}
+.home-news-tabs a:nth-child(4){--tab-accent:var(--guard-sage)}
+.home-news-tabs a:nth-child(5){--tab-accent:var(--guard-gold)}
+.home-news-tabs a:nth-child(6){--tab-accent:#829596}
+.home-news-tabs a{
+  border-color:rgba(116,105,88,.18)!important;
+  background:rgba(247,242,234,.78)!important;
+  color:#435962!important;
+}
+.home-news-tabs a:hover,
+.home-news-tabs a.is-active{
+  background:color-mix(in srgb,var(--tab-accent,var(--guard-blue)) 16%,#f7f1e8)!important;
+  border-color:color-mix(in srgb,var(--tab-accent,var(--guard-blue)) 45%,transparent)!important;
+  color:#294550!important;
+}
+
+/* A recurring blue-stripe token inspired by the child's striped shirt.
+   Kept abstract and small so it works as a respectful visual signature. */
+.home-news-hub-head h2::before,
+.home-social-cases-copy h2::before,
+.case-story-section h2::before,
+.about-section-heading h2::before,
+.court-library-heading h2::before{
+  content:"";
+  display:inline-block;
+  width:30px;
+  height:24px;
+  margin-right:10px;
+  vertical-align:.02em;
+  border-radius:8px 8px 10px 10px;
+  border:1px solid rgba(72,98,109,.18);
+  background:
+    repeating-linear-gradient(0deg,#f3eee5 0 4px,#718995 4px 8px);
+  box-shadow:0 3px 0 rgba(179,145,94,.20),0 7px 14px rgba(49,68,74,.08);
+  transform:rotate(-2deg);
+}
+
+/* Tiny matte-gold star: the companion mark to the striped token */
+.home-news-hub-head h2,
+.home-social-cases-copy h2,
+.case-story-section h2,
+.about-section-heading h2,
+.court-library-heading h2{position:relative}
+.home-news-hub-head h2 span.guard-star,
+.home-social-cases-copy h2 span.guard-star{color:var(--guard-gold)}
+
+/* Q-version Kaikai appears only in broad navigation/advocacy areas, never over evidence text. */
+.home-news-hub-head{position:relative;padding-right:98px}
+.home-news-hub-head::after{
+  content:"";
+  position:absolute;
+  right:8px;
+  bottom:-5px;
+  width:72px;
+  height:72px;
+  border-radius:50%;
+  background:#eee6db url("./art/kaikai-q-star.webp") center/cover no-repeat;
+  border:4px solid rgba(247,241,232,.95);
+  box-shadow:0 5px 0 rgba(182,164,140,.28),0 14px 24px rgba(38,58,66,.11);
+  transform:rotate(3deg);
+}
+
+/* Soft paper-cut clouds/circles for major neutral sections */
+.home-news-hub,
+.premium-latest-section,
+.visual-related,
+.about-future-section{
+  position:relative;
+  overflow:hidden;
+}
+.home-news-hub::before,
+.premium-latest-section::before,
+.about-future-section::before{
+  content:"";
+  position:absolute;
+  pointer-events:none;
+  width:210px;
+  height:210px;
+  left:-125px;
+  bottom:-105px;
+  border-radius:50%;
+  background:rgba(152,164,148,.09);
+  box-shadow:0 0 0 24px rgba(113,137,149,.055),0 0 0 50px rgba(179,145,94,.035);
+}
+
+/* Buttons feel like small foil-stamped labels rather than app controls */
+:is(.premium-main-cta,.home-news-primary,.home-social-cases-primary,.read-btn,.btn):not(.premium-sub-cta){
+  border-radius:999px;
+}
+:is(.premium-main-cta,.premium-case-cta){
+  background:linear-gradient(112deg,#d8bc88,#aa8453 48%,#e6cf9e)!important;
+  color:#183745!important;
+  border-color:rgba(248,237,213,.72)!important;
+}
+:is(.home-news-primary,.home-social-cases-primary,.read-btn){
+  background:linear-gradient(135deg,#294958,#3f606a)!important;
+  color:#f7f1e8!important;
+  border-color:rgba(55,78,87,.72)!important;
+}
+
+/* Status badges use muted family colours */
+.home-news-card-media>span,
+.home-case-status,
+.progress-state,
+.case-profile-status,
+.case-status{
+  box-shadow:none!important;
+  border:1px solid rgba(255,255,255,.24);
+}
+.home-news-card-media>span.is-muted{background:#667d86!important}
+.home-news-card-media>span.is-final,
+.home-case-status.is-final,
+.progress-state.is-final{background:#8b7049!important}
+.home-news-card-media>span.is-pending,
+.progress-state.is-pending{background:#7f8e7d!important}
+.home-news-card-media>span.is-activity{background:#899687!important}
+
+/* Existing illustrations get the same quiet print treatment */
+:is(.home-news-card-media,.home-case-reel-media,.home-news-focus-media,.case-profile-hero-media,.record-card-media) img{
+  filter:saturate(.86) contrast(.98) sepia(.025);
+}
+
+/* Gold hairlines make sections feel like a commemorative publication */
+.home-news-stream+.home-news-stream,
+.case-story-section+.case-story-section,
+.visual-related{
+  border-color:rgba(179,145,94,.20)!important;
+}
+
+@media(max-width:760px){
+  .home-news-hub-head{padding-right:0}
+  .home-news-hub-head::after{display:none}
+  .home-news-hub-head h2::before,
+  .home-social-cases-copy h2::before,
+  .case-story-section h2::before,
+  .about-section-heading h2::before,
+  .court-library-heading h2::before{width:25px;height:20px;margin-right:8px;border-radius:7px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .home-news-hub-head::after,
+  .home-news-hub-head h2::before,
+  .home-social-cases-copy h2::before,
+  .case-story-section h2::before{transform:none}
+}
