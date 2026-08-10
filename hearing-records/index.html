@@ -1,73 +1,83 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="zh-Hant">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>旁聽紀錄｜護童行動聯盟</title>
-<link rel="stylesheet" href="../assets/site.css">
-<link rel="icon" href="../assets/brand/favicon.jpg">
-
-<meta name="description" content="護童行動聯盟法院旁聽紀錄，整理兒少與公共案件的庭訊重點、程序進度與可查證資訊。">
-<meta name="robots" content="index,follow,max-image-preview:large">
-<meta name="theme-color" content="#082b4b">
-<link rel="canonical" href="https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="護童行動聯盟">
-<meta property="og:title" content="旁聽紀錄｜護童行動聯盟">
-<meta property="og:description" content="護童行動聯盟法院旁聽紀錄，整理兒少與公共案件的庭訊重點、程序進度與可查證資訊。">
-<meta property="og:url" content="https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/">
-<meta property="og:image" content="https://jerryzuhow77.github.io/child-advocacy-site/poster-hearing.jpg">
-<meta name="twitter:card" content="summary_large_image">
+<link href="../assets/site.css" rel="stylesheet"/>
+<link href="../assets/brand/favicon.jpg" rel="icon"/>
+<meta content="護童行動聯盟法院旁聽紀錄，整理兒少與公共案件的庭訊重點、程序進度與可查證資訊。" name="description"/>
+<meta content="index,follow,max-image-preview:large" name="robots"/>
+<meta content="#082b4b" name="theme-color"/>
+<link href="https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="護童行動聯盟" property="og:site_name"/>
+<meta content="旁聽紀錄｜護童行動聯盟" property="og:title"/>
+<meta content="護童行動聯盟法院旁聽紀錄，整理兒少與公共案件的庭訊重點、程序進度與可查證資訊。" property="og:description"/>
+<meta content="https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/" property="og:url"/>
+<meta content="https://jerryzuhow77.github.io/child-advocacy-site/poster-hearing.jpg" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
 </head>
 <body>
-<header><div class="container nav"><a class="brand brand-lockup" href="../"><img src="../assets/brand/primary-logo-03-thumb.jpg" alt="" width="48" height="48"><span>護童行動聯盟<small>Child Protection Action Alliance</small></span></a><nav>
+<header><div class="container nav"><a class="brand brand-lockup" href="../"><img alt="" height="48" src="../assets/brand/primary-logo-03-thumb.jpg" width="48"/><span>護童行動聯盟<small>Child Protection Action Alliance</small></span></a><nav>
 <a href="../">首頁</a>
 <a href="../about/">關於我們</a>
 <a href="../court-comics/">法庭漫畫</a>
-<a href="../hearing-records/" aria-current="page">旁聽紀錄</a>
+<div class="social-case-nav is-current">
+<button aria-expanded="false" aria-haspopup="true" class="social-case-nav-toggle" type="button"><span>社會案件</span><i aria-hidden="true">⌄</i></button>
+<div aria-label="社會案件導覽" class="social-case-nav-menu" role="group">
+<section class="social-case-menu-column">
+<a class="social-case-menu-heading" href="../cases/"><small>CASE INTRODUCTIONS</small><strong>案件介紹</strong><span>案件背景、時間軸與司法進度</span></a>
+<a class="social-case-menu-item" href="../cases/tucheng-two-year-old/"><b>土城兩歲男童命案</b><span>最後陪著他的，只有兩瓶牛奶</span></a>
+</section>
+<section class="social-case-menu-column">
+<a class="social-case-menu-heading" href="../hearing-records/"><small>COURT HEARING NOTES</small><strong>旁聽紀錄</strong><span>法院程序與庭訊重點紀錄</span></a>
+<a class="social-case-menu-item" href="../hearing-records/tucheng-two-year-old-20260806/"><b>土城兩歲男童命案</b><span>2026.08.06・二審準備程序</span></a>
+</section>
+<a class="social-case-menu-all" href="../cases/">查看全部社會案件 <b aria-hidden="true">→</b></a>
+</div></div>
 <a href="../activity-records/">活動紀錄</a>
 <a href="../activity-records/albums/">活動相簿</a>
 <a href="../social/">官方社群</a>
-<button class="lang-btn" type="button" onclick="toggleLang()" aria-label="切換為簡體中文" title="繁簡切換">简</button>
+<button aria-label="切換為簡體中文" class="lang-btn" onclick="toggleLang()" title="繁簡切換" type="button">简</button>
 </nav></div></header>
 <section class="page-hero art-page-hero"><div class="container"><div class="art-eyebrow">HEARING RECORDS</div><h1>旁聽紀錄</h1><p>從庭訊現場留下可查閱的公共紀錄；區分庭上主張、程序進度與法院最終認定。</p></div></section>
-<section><div class="container"><div id="list" class="record-list"></div></div></section>
-
+<section><div class="container"><div class="record-list" id="list"></div></div></section>
 <section class="visual-related">
-  <div class="container">
-    <div class="related-head">
-      <div class="art-eyebrow dark">FEATURED RECORDS</div>
-      <h2>專題導覽</h2>
-    </div>
-    <div class="visual-related-grid">
-      <a class="visual-related-card" href="../cases/tucheng-two-year-old/">
-        <img loading="lazy" decoding="async" src="../poster-hearing.jpg" alt="土城兩歲男童命案旁聽紀錄 藝術廣告圖">
-        <div class="visual-related-copy">
-          <small>案件介紹</small>
-          <h3>最後陪著他的，只有兩瓶牛奶</h3>
-          <p>土城兩歲男童命案完整案件脈絡</p>
-        </div>
-      </a>
-      <a class="visual-related-card" href="../activity-records/20260801-ketagal-rally/">
-        <img loading="lazy" decoding="async" src="../poster-rally.jpg" alt="8月1日反毒駕反酒駕凱道大遊行 藝術廣告圖">
-        <div class="visual-related-copy">
-          <small>活動紀錄</small>
-          <h3>反毒駕、反酒駕．凱道大遊行</h3>
-          <p>活動文字、照片相簿與影片紀錄</p>
-        </div>
-      </a>
-      <a class="visual-related-card" href="../social/">
-        <img loading="lazy" decoding="async" src="../assets/social-art/instagram-official-ai.jpg" alt="護童行動聯盟官方社群 藝術廣告圖">
-        <div class="visual-related-copy">
-          <small>官方社群</small>
-          <h3>Facebook・Instagram・Threads</h3>
-          <p>三個官方平台連結與社群內容入口</p>
-        </div>
-      </a>
-    </div>
-  </div>
+<div class="container">
+<div class="related-head">
+<div class="art-eyebrow dark">FEATURED RECORDS</div>
+<h2>專題導覽</h2>
+</div>
+<div class="visual-related-grid">
+<a class="visual-related-card" href="../cases/tucheng-two-year-old/">
+<img alt="土城兩歲男童命案旁聽紀錄 藝術廣告圖" decoding="async" loading="lazy" src="../poster-hearing.jpg"/>
+<div class="visual-related-copy">
+<small>案件介紹</small>
+<h3>最後陪著他的，只有兩瓶牛奶</h3>
+<p>土城兩歲男童命案完整案件脈絡</p>
+</div>
+</a>
+<a class="visual-related-card" href="../activity-records/20260801-ketagal-rally/">
+<img alt="8月1日反毒駕反酒駕凱道大遊行 藝術廣告圖" decoding="async" loading="lazy" src="../poster-rally.jpg"/>
+<div class="visual-related-copy">
+<small>活動紀錄</small>
+<h3>反毒駕、反酒駕．凱道大遊行</h3>
+<p>活動文字、照片相簿與影片紀錄</p>
+</div>
+</a>
+<a class="visual-related-card" href="../social/">
+<img alt="護童行動聯盟官方社群 藝術廣告圖" decoding="async" loading="lazy" src="../assets/social-art/instagram-official-ai.jpg"/>
+<div class="visual-related-copy">
+<small>官方社群</small>
+<h3>Facebook・Instagram・Threads</h3>
+<p>三個官方平台連結與社群內容入口</p>
+</div>
+</a>
+</div>
+</div>
 </section>
-
 <footer><div class="container">護童行動聯盟</div></footer>
 <script src="../assets/site.js"></script>
 <script>

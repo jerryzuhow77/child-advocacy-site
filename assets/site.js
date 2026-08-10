@@ -377,7 +377,7 @@ function initSiteSearch(){
   const status=overlay.querySelector('.site-search-status');
   const filters=overlay.querySelector('.site-search-filters');
 
-  const categories=['全部','案件介紹','旁聽紀錄','法庭漫畫','活動紀錄','活動相簿','關於我們','官方社群'];
+  const categories=['全部','社會案件','案件介紹','旁聽紀錄','法庭漫畫','活動紀錄','活動相簿','關於我們','官方社群'];
   categories.forEach(cat=>{
     const b=document.createElement('button');
     b.type='button';
@@ -618,3 +618,25 @@ document.addEventListener('DOMContentLoaded',()=>{
   initSiteSearch();
   initImpactCounters();
 });
+
+
+/* =====================================================================
+   2026-08-10 — 社會案件雙欄下拉導覽
+   ===================================================================== */
+function initSocialCaseDropdowns(){
+  const groups=[...document.querySelectorAll('.social-case-nav')];
+  if(!groups.length) return;
+  const close=group=>{group.classList.remove('is-open');const btn=group.querySelector('.social-case-nav-toggle');if(btn)btn.setAttribute('aria-expanded','false')};
+  const open=group=>{groups.forEach(g=>{if(g!==group)close(g)});group.classList.add('is-open');const btn=group.querySelector('.social-case-nav-toggle');if(btn)btn.setAttribute('aria-expanded','true')};
+  groups.forEach(group=>{
+    const btn=group.querySelector('.social-case-nav-toggle');if(!btn)return;
+    btn.addEventListener('click',e=>{e.stopPropagation();group.classList.contains('is-open')?close(group):open(group)});
+    group.addEventListener('mouseenter',()=>{if(window.innerWidth>800)open(group)});
+    group.addEventListener('mouseleave',()=>{if(window.innerWidth>800)close(group)});
+    group.addEventListener('keydown',e=>{if(e.key==='Escape'){close(group);btn.focus()}});
+    group.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>close(group)));
+  });
+  document.addEventListener('click',e=>groups.forEach(group=>{if(!group.contains(e.target))close(group)}));
+  window.addEventListener('resize',()=>groups.forEach(close));
+}
+document.addEventListener('DOMContentLoaded',initSocialCaseDropdowns);
