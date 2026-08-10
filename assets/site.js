@@ -668,7 +668,8 @@ document.addEventListener('DOMContentLoaded',initSocialCaseDropdowns);
   const COUNTER_NS = 'jerryzuhow77.github.io-child-advocacy-site';
   const COUNTER_ACTION = 'view';
   const VIEW_COOLDOWN_MS = 30 * 60 * 1000;
-  const API_TIMEOUT_MS = 4500;
+  const API_TIMEOUT_MS = 6500;
+  const STORAGE_PREFIX = 'cpa-viewed-v2:'; // v2 resets stale cooldowns from the earlier broken counter.
   const readCache = new Map();
 
   function routeFromUrl(input) {
@@ -695,9 +696,74 @@ document.addEventListener('DOMContentLoaded',initSocialCaseDropdowns);
     return route.replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
   }
 
-  function counterUrl(key, readOnly) {
+  // Important: increment requests deliberately OMIT readOnly=false.
+  // CounterAPI increments by default; read-only requests explicitly use readOnly=true.
+  function counterUrl(key, readOnly, callbackName = '') {
     const base = `https://counterapi.com/api/${encodeURIComponent(COUNTER_NS)}/${encodeURIComponent(COUNTER_ACTION)}/${encodeURIComponent(key)}`;
-    return `${base}?readOnly=${readOnly ? 'true' : 'false'}`;
+    const params = new URLSearchParams();
+    if (readOnly) params.set('readOnly', 'true');
+    if (callbackName) params.set('callback', callbackName);
+    const query = params.toString();
+    return query ? `${base}?${query}` : base;
+  }
+
+  function parseCounterValue(data) {
+    const value = Number(data && data.value);
+    if (!Number.isFinite(value) || value < 0) throw new Error('invalid counter');
+    return value;
+  }
+
+  async function fetchCounter(key, readOnly) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
+    try {
+      const response = await fetch(counterUrl(key, readOnly), {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-store',
+        credentials: 'omit',
+        signal: controller.signal
+      });
+      if (!response.ok) throw new Error(`counter ${response.status}`);
+      return parseCounterValue(await response.json());
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  // JSONP fallback keeps the counter working even if a browser/network blocks CORS.
+  function jsonpCounter(key, readOnly) {
+    return new Promise((resolve, reject) => {
+      const callbackName = `__cpaCounter_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+      const script = document.createElement('script');
+      let timer;
+      const cleanup = () => {
+        clearTimeout(timer);
+        try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
+        script.remove();
+      };
+      window[callbackName] = data => {
+        try {
+          const value = parseCounterValue(data);
+          cleanup();
+          resolve(value);
+        } catch (error) {
+          cleanup();
+          reject(error);
+        }
+      };
+      script.async = true;
+      script.src = counterUrl(key, readOnly, callbackName);
+      script.onerror = () => {
+        cleanup();
+        reject(new Error('counter jsonp failed'));
+      };
+      timer = setTimeout(() => {
+        cleanup();
+        reject(new Error('counter jsonp timeout'));
+      }, API_TIMEOUT_MS);
+      document.head.appendChild(script);
+    });
   }
 
   async function requestCounter(key, readOnly = true) {
@@ -705,45 +771,40 @@ document.addEventListener('DOMContentLoaded',initSocialCaseDropdowns);
     if (readOnly && readCache.has(cacheKey)) return readCache.get(cacheKey);
 
     const task = (async () => {
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
       try {
-        const response = await fetch(counterUrl(key, readOnly), {
-          method: 'GET',
-          mode: 'cors',
-          cache: 'no-store',
-          credentials: 'omit',
-          signal: controller.signal
-        });
-        if (!response.ok) throw new Error(`counter ${response.status}`);
-        const data = await response.json();
-        const value = Number(data && data.value);
-        if (!Number.isFinite(value) || value < 0) throw new Error('invalid counter');
-        return value;
-      } finally {
-        clearTimeout(timer);
+        return await fetchCounter(key, readOnly);
+      } catch (_) {
+        return await jsonpCounter(key, readOnly);
       }
     })();
 
     if (readOnly) readCache.set(cacheKey, task);
-    try { return await task; }
-    catch (error) {
+    try {
+      const value = await task;
+      if (!readOnly) {
+        // Any old read-only value for this article is stale after incrementing.
+        readCache.delete(`${key}:r`);
+      }
+      return value;
+    } catch (error) {
       if (readOnly) readCache.delete(cacheKey);
       throw error;
     }
   }
 
-  function shouldIncrement(key) {
-    const storageKey = `cpa-viewed:${key}`;
+  function hasRecentView(key) {
     const now = Date.now();
     try {
-      const last = Number(localStorage.getItem(storageKey) || 0);
-      if (last && now - last < VIEW_COOLDOWN_MS) return false;
-      localStorage.setItem(storageKey, String(now));
-      return true;
+      const last = Number(localStorage.getItem(`${STORAGE_PREFIX}${key}`) || 0);
+      return Boolean(last && now - last < VIEW_COOLDOWN_MS);
     } catch (_) {
-      return true;
+      return false;
     }
+  }
+
+  function markViewed(key) {
+    try { localStorage.setItem(`${STORAGE_PREFIX}${key}`, String(Date.now())); }
+    catch (_) {}
   }
 
   function formatCount(value) {
@@ -785,10 +846,13 @@ document.addEventListener('DOMContentLoaded',initSocialCaseDropdowns);
     heading.insertAdjacentElement('afterend', badge);
 
     try {
-      const increment = shouldIncrement(key);
+      const increment = !hasRecentView(key);
       const value = await requestCounter(key, !increment);
+      // Only start the 30-minute cooldown AFTER the server confirms the increment.
+      if (increment) markViewed(key);
       revealBadge(badge, value);
-    } catch (_) {
+    } catch (error) {
+      console.warn('[view-counter] unable to load count', error);
       badge.remove();
     }
   }
@@ -814,6 +878,7 @@ document.addEventListener('DOMContentLoaded',initSocialCaseDropdowns);
       revealBadge(badge, value);
     } catch (_) {
       badge.remove();
+      anchor.dataset.viewCounterReady = '0';
     }
   }
 
