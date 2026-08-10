@@ -662,3 +662,183 @@ function initSocialCaseDropdowns(){
   window.addEventListener('resize',()=>groups.forEach(close));
 }
 document.addEventListener('DOMContentLoaded',initSocialCaseDropdowns);
+
+/* ===== Public article view counts (CounterAPI) ===== */
+(() => {
+  const COUNTER_NS = 'jerryzuhow77.github.io-child-advocacy-site';
+  const COUNTER_ACTION = 'view';
+  const VIEW_COOLDOWN_MS = 30 * 60 * 1000;
+  const API_TIMEOUT_MS = 4500;
+  const readCache = new Map();
+
+  function routeFromUrl(input) {
+    let url;
+    try { url = new URL(input, window.location.href); } catch (_) { return ''; }
+    const parts = url.pathname.split('/').filter(Boolean);
+    const siteIndex = parts.indexOf('child-advocacy-site');
+    const routeParts = siteIndex >= 0 ? parts.slice(siteIndex + 1) : parts;
+    if (routeParts[routeParts.length - 1] === 'index.html') routeParts.pop();
+    return routeParts.join('/').replace(/\/+$/, '');
+  }
+
+  function isTrackableRoute(route) {
+    if (!route) return false;
+    if (/^cases\/[^/]+$/.test(route)) return true;
+    if (/^hearing-records\/[^/]+$/.test(route)) return true;
+    if (/^court-comics\/episode-[^/]+$/.test(route)) return true;
+    if (/^activity-records\/[^/]+$/.test(route) && route !== 'activity-records/albums') return true;
+    if (/^activity-records\/albums\/[^/]+$/.test(route)) return true;
+    return false;
+  }
+
+  function keyFromRoute(route) {
+    return route.replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
+  }
+
+  function counterUrl(key, readOnly) {
+    const base = `https://counterapi.com/api/${encodeURIComponent(COUNTER_NS)}/${encodeURIComponent(COUNTER_ACTION)}/${encodeURIComponent(key)}`;
+    return `${base}?readOnly=${readOnly ? 'true' : 'false'}`;
+  }
+
+  async function requestCounter(key, readOnly = true) {
+    const cacheKey = `${key}:${readOnly ? 'r' : 'i'}`;
+    if (readOnly && readCache.has(cacheKey)) return readCache.get(cacheKey);
+
+    const task = (async () => {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
+      try {
+        const response = await fetch(counterUrl(key, readOnly), {
+          method: 'GET',
+          mode: 'cors',
+          cache: 'no-store',
+          credentials: 'omit',
+          signal: controller.signal
+        });
+        if (!response.ok) throw new Error(`counter ${response.status}`);
+        const data = await response.json();
+        const value = Number(data && data.value);
+        if (!Number.isFinite(value) || value < 0) throw new Error('invalid counter');
+        return value;
+      } finally {
+        clearTimeout(timer);
+      }
+    })();
+
+    if (readOnly) readCache.set(cacheKey, task);
+    try { return await task; }
+    catch (error) {
+      if (readOnly) readCache.delete(cacheKey);
+      throw error;
+    }
+  }
+
+  function shouldIncrement(key) {
+    const storageKey = `cpa-viewed:${key}`;
+    const now = Date.now();
+    try {
+      const last = Number(localStorage.getItem(storageKey) || 0);
+      if (last && now - last < VIEW_COOLDOWN_MS) return false;
+      localStorage.setItem(storageKey, String(now));
+      return true;
+    } catch (_) {
+      return true;
+    }
+  }
+
+  function formatCount(value) {
+    const locale = document.documentElement.lang === 'zh-Hans' ? 'zh-CN' : 'zh-TW';
+    try { return new Intl.NumberFormat(locale).format(value); }
+    catch (_) { return String(value); }
+  }
+
+  function createEyeIcon() {
+    return '<svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M2.2 12s3.5-6 9.8-6 9.8 6 9.8 6-3.5 6-9.8 6-9.8-6-9.8-6Zm9.8 3.1a3.1 3.1 0 1 0 0-6.2 3.1 3.1 0 0 0 0 6.2Z"/></svg>';
+  }
+
+  function makeBadge(kind = 'article') {
+    const el = document.createElement('span');
+    el.className = kind === 'card' ? 'public-view-count public-view-count-card' : 'public-view-count public-view-count-article';
+    el.hidden = true;
+    el.setAttribute('aria-live', 'polite');
+    el.innerHTML = `${createEyeIcon()}<span class="public-view-label">瀏覽</span><strong class="public-view-number"></strong><span class="public-view-unit">次</span>`;
+    return el;
+  }
+
+  function revealBadge(badge, value) {
+    const number = badge.querySelector('.public-view-number');
+    if (!number) return;
+    number.textContent = formatCount(value);
+    badge.hidden = false;
+    badge.setAttribute('title', `公開瀏覽次數：${formatCount(value)} 次`);
+  }
+
+  async function initArticleCounter() {
+    const route = routeFromUrl(window.location.href);
+    if (!isTrackableRoute(route)) return;
+    const key = keyFromRoute(route);
+    if (!key) return;
+
+    const heading = document.querySelector('main h1');
+    if (!heading || document.querySelector('.public-view-count-article')) return;
+    const badge = makeBadge('article');
+    heading.insertAdjacentElement('afterend', badge);
+
+    try {
+      const increment = shouldIncrement(key);
+      const value = await requestCounter(key, !increment);
+      revealBadge(badge, value);
+    } catch (_) {
+      badge.remove();
+    }
+  }
+
+  function cardTargetFor(anchor) {
+    if (anchor.classList.contains('home-news-card')) return anchor.querySelector('.home-news-card-copy') || anchor;
+    if (anchor.classList.contains('home-case-reel-card')) return anchor.querySelector('.home-case-reel-copy') || anchor;
+    if (anchor.classList.contains('home-progress-card')) return anchor;
+    return anchor;
+  }
+
+  async function addReadOnlyBadge(anchor) {
+    if (!anchor || anchor.dataset.viewCounterReady === '1') return;
+    const route = routeFromUrl(anchor.href || anchor.getAttribute('href'));
+    if (!isTrackableRoute(route)) return;
+    anchor.dataset.viewCounterReady = '1';
+    const key = keyFromRoute(route);
+    const target = cardTargetFor(anchor);
+    const badge = makeBadge('card');
+    target.appendChild(badge);
+    try {
+      const value = await requestCounter(key, true);
+      revealBadge(badge, value);
+    } catch (_) {
+      badge.remove();
+    }
+  }
+
+  function initHomepageCardCounters() {
+    document.querySelectorAll('a.home-news-card[href], a.home-progress-card[href], a.home-case-reel-card[href]').forEach(addReadOnlyBadge);
+  }
+
+  function initCaseDirectoryCounters() {
+    document.querySelectorAll('.social-case-feature-card').forEach(card => {
+      const anchor = card.querySelector('a.social-case-feature-image[href], .social-case-linked-records a[href]');
+      const row = card.querySelector('.social-case-status-row');
+      if (!anchor || !row || row.querySelector('.public-view-count')) return;
+      const route = routeFromUrl(anchor.href || anchor.getAttribute('href'));
+      if (!isTrackableRoute(route)) return;
+      const key = keyFromRoute(route);
+      const badge = makeBadge('card');
+      badge.classList.add('public-view-count-directory');
+      row.appendChild(badge);
+      requestCounter(key, true).then(value => revealBadge(badge, value)).catch(() => badge.remove());
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initArticleCounter();
+    initHomepageCardCounters();
+    initCaseDirectoryCounters();
+  });
+})();
