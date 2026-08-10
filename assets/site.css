@@ -6796,3 +6796,237 @@ body:not(.art-site){
   .home-social-cases-copy h2::before,
   .case-story-section h2::before{transform:none}
 }
+
+/* ============================================================
+   2026-08-10 V16 — Contrast + Morandi lavender / blush expansion
+   淺底深字 × 深底白字；加入紫灰、藕粉與灰粉
+   ============================================================ */
+:root{
+  --guard-lavender:#a89dad;
+  --guard-lilac:#c9c0cc;
+  --guard-lilac-paper:#eee9ef;
+  --guard-mauve:#b38f9a;
+  --guard-blush:#d4b9b6;
+  --guard-blush-paper:#f2e7e5;
+  --guard-plum:#685865;
+  --guard-plum-deep:#594b57;
+  --guard-light-ink:#334750;
+  --guard-light-muted:#687575;
+}
+
+/* Accessibility rule: all pale paper surfaces use dark ink. */
+:is(
+  .home-news-card-copy,
+  .home-progress-card,
+  .home-case-reel-copy,
+  .featured-copy,
+  .mission-card,
+  .social-card,
+  .record-card-copy,
+  .activity-card-copy,
+  .album-index-copy,
+  .episode-library-copy,
+  .social-case-feature-copy,
+  .social-case-linked-records a,
+  .case-fact-grid>div,
+  .case-duty-grid>article,
+  .case-progress-box>div,
+  .case-emphasis-card,
+  .case-date-card,
+  .case-judgment-card,
+  .case-large-quote,
+  .case-question-list li,
+  .home-advocacy-grid>a
+){
+  color:var(--guard-light-ink)!important;
+}
+
+:is(
+  .home-news-card-copy,
+  .home-progress-card,
+  .home-case-reel-copy,
+  .featured-copy,
+  .mission-card,
+  .social-card,
+  .record-card-copy,
+  .activity-card-copy,
+  .album-index-copy,
+  .episode-library-copy,
+  .social-case-feature-copy,
+  .social-case-linked-records a,
+  .case-fact-grid>div,
+  .case-duty-grid>article,
+  .case-progress-box>div,
+  .case-emphasis-card,
+  .case-date-card,
+  .case-judgment-card,
+  .case-large-quote,
+  .case-question-list li,
+  .home-advocacy-grid>a
+) :is(p,span,small){
+  color:var(--guard-light-muted);
+}
+
+:is(
+  .home-news-card-copy,
+  .home-progress-card,
+  .home-case-reel-copy,
+  .featured-copy,
+  .mission-card,
+  .social-card,
+  .record-card-copy,
+  .activity-card-copy,
+  .album-index-copy,
+  .episode-library-copy,
+  .social-case-feature-copy,
+  .social-case-linked-records a,
+  .case-fact-grid>div,
+  .case-duty-grid>article,
+  .case-progress-box>div,
+  .case-emphasis-card,
+  .case-date-card,
+  .case-judgment-card,
+  .case-question-list li,
+  .home-advocacy-grid>a
+) :is(h2,h3,h4,strong,b){
+  color:var(--guard-light-ink);
+}
+
+/* Restore intentional accent colours inside pale panels. */
+.home-news-card-copy small,
+.home-case-reel-copy small,
+.case-fact-grid small,
+.case-progress-box small,
+.case-emphasis-card small,
+.case-date-card>span,
+.case-judgment-card>strong,
+.social-case-linked-records small,
+.home-advocacy-grid>a>span{
+  color:#8b6b46!important;
+}
+.social-case-subtitle{color:#8d5966!important}
+.case-judgment-card.coral h3{color:#8d5966!important}
+
+/* Morandi paper-cut rotation: blue-grey, blush, lavender, sage, cream. */
+:is(.home-news-card,.home-progress-card,.home-case-reel-card):nth-child(5n+1){
+  background:#edf1f1!important;
+}
+:is(.home-news-card,.home-progress-card,.home-case-reel-card):nth-child(5n+2){
+  background:var(--guard-blush-paper)!important;
+}
+:is(.home-news-card,.home-progress-card,.home-case-reel-card):nth-child(5n+3){
+  background:var(--guard-lilac-paper)!important;
+}
+:is(.home-news-card,.home-progress-card,.home-case-reel-card):nth-child(5n+4){
+  background:#edf0ea!important;
+}
+:is(.home-news-card,.home-progress-card,.home-case-reel-card):nth-child(5n){
+  background:#f4eee5!important;
+}
+
+/* Purple / pink become supporting accents, never low-contrast white-on-pastel. */
+.home-news-tabs a:nth-child(3){--tab-accent:var(--guard-mauve)}
+.home-news-tabs a:nth-child(4){--tab-accent:var(--guard-lavender)}
+.home-news-tabs a:nth-child(5){--tab-accent:var(--guard-sage)}
+.home-news-tabs a:nth-child(6){--tab-accent:var(--guard-gold)}
+
+.story-tag.coral,
+.tag-pill:nth-child(3n+2),
+.article-chip:nth-child(3n+2){
+  background:#eadde2!important;
+  color:#6e4d59!important;
+}
+.tag-pill:nth-child(3n),
+.article-chip:nth-child(3n){
+  background:#e7e1e9!important;
+  color:#5e5364!important;
+}
+
+/* Pale pills and labels must never inherit white. */
+:is(.story-tag,.tag-pill,.article-chip,.hero-values span,.public-view-count,.home-news-tabs a){
+  text-shadow:none!important;
+}
+
+/* Dark labels may keep white: use deeper Morandi tones for dependable contrast. */
+.home-news-card-media>span:not(.is-final):not(.is-pending):not(.is-activity):not(.is-muted),
+.home-case-status,
+.social-cases-page .social-case-status{
+  background:var(--guard-plum-deep)!important;
+  color:#fff!important;
+}
+.home-news-card-media>span.is-muted{background:#586f79!important;color:#fff!important}
+.home-news-card-media>span.is-final,
+.home-case-status.is-final,
+.progress-state.is-final{background:#765f43!important;color:#fff!important}
+.home-news-card-media>span.is-pending,
+.progress-state.is-pending{background:#697969!important;color:#fff!important}
+.home-news-card-media>span.is-activity{background:#677a70!important;color:#fff!important}
+
+/* Lavender and blush paper accents on selected feature panels. */
+.mission-card:nth-child(4n+2),
+.social-card:nth-child(4n+2),
+.case-duty-grid>article:nth-child(4n+2){
+  background:linear-gradient(180deg,#f4eff4,#ece5ee)!important;
+}
+.mission-card:nth-child(4n+3),
+.social-card:nth-child(4n+3),
+.case-duty-grid>article:nth-child(4n+3){
+  background:linear-gradient(180deg,#f5eceb,#eee1e0)!important;
+}
+.mission-card:nth-child(4n+4),
+.social-card:nth-child(4n+4),
+.case-duty-grid>article:nth-child(4n+4){
+  background:linear-gradient(180deg,#f0f2ed,#e8ece5)!important;
+}
+
+/* Buttons on pale surfaces: dark text on gold / pale mauve, white only on dark buttons. */
+.btn:not(.read-btn):not(.home-news-primary):not(.home-social-cases-primary):not(.premium-main-cta):not(.premium-case-cta){
+  background:linear-gradient(135deg,#d9c39a,#c7a978)!important;
+  color:#314852!important;
+}
+.outline-btn,
+.case-record-actions .read-btn.secondary{
+  background:#f4eef3!important;
+  border-color:#c9b7c3!important;
+  color:#5d4e59!important;
+}
+
+/* Keep headings elegant but readable: dark mauve on very light sections. */
+:is(.premium-section-heading,.home-news-hub-head,.home-social-cases-copy,.social-cases-heading,.case-story-section,.about-section-heading,.court-library-heading) h2,
+:is(.home-hearing-alert-heading,.home-news-stream-head) h3{
+  color:#755f6b!important;
+}
+
+/* Fine-print contrast on cream / blush backgrounds. */
+.poster-caption,
+.photo-card figcaption,
+.activity-hero-photo figcaption,
+.comic-page-caption,
+.public-view-count-article .public-view-label{
+  color:#66716f!important;
+}
+
+/* True dark surfaces retain light type. */
+:is(
+  .hero,.page-hero,.art-page-hero,.court-library-hero,.comic-reader-hero,
+  .activity-cover,.activity-card-cover,.home-campaign-strip,.about-future-section,
+  .case-profile-hero,.case-hearing-banner,.case-final-message,.milk-symbol-callout,
+  .social-cases-hero,.comic-end-card,.family-hero-caption,.belief-mobile-bottom
+){
+  --guard-dark-text:#f7f1e8;
+}
+:is(
+  .hero,.page-hero,.art-page-hero,.court-library-hero,.comic-reader-hero,
+  .activity-cover,.activity-card-cover,.home-campaign-strip,.about-future-section,
+  .case-profile-hero,.case-hearing-banner,.case-final-message,.milk-symbol-callout,
+  .social-cases-hero,.comic-end-card,.family-hero-caption,.belief-mobile-bottom
+) :is(h1,h2,h3,strong){
+  color:var(--guard-dark-text);
+}
+
+@media(max-width:760px){
+  /* Mobile text should favor legibility over decorative light type. */
+  .home-news-card-copy strong,
+  .home-progress-card strong,
+  .home-case-reel-copy strong{color:#314750!important}
+}
