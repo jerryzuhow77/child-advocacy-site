@@ -646,16 +646,19 @@ document.addEventListener('DOMContentLoaded',initSocialCaseDropdowns);
    2026-08-10 — 全站紀念標語模組（案件頁大版／其他頁面小版）
    ===================================================================== */
 function initGlobalMemorialBanner(){
+  const path=location.pathname.replace(/index\.html$/,'');
+  const normalizedPath=path.endsWith('/') ? path : `${path}/`;
+  const isHomepage=normalizedPath==='/' || normalizedPath==='/child-advocacy-site/';
+
+  // 首頁保留原本完整排版與「勿忘剴剴」區塊，不插入全站紀念模組。
+  if(isHomepage) return;
+
   const existing=document.querySelector('.global-memorial-section');
   if(existing) existing.remove();
-
-  const oldHomepageMemorial=document.querySelector('.remember-kaikai-section');
-  if(oldHomepageMemorial) oldHomepageMemorial.remove();
 
   const footer=document.querySelector('footer');
   if(!footer || !footer.parentNode) return;
 
-  const path=location.pathname.replace(/index\.html$/,'');
   const isCasePage=/\/cases\/[^/]+\/?$/.test(path);
 
   const scriptEl=[...document.scripts].find(s=>/\/assets\/site\.js(?:\?|$)/.test(s.src));
