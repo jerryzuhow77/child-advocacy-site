@@ -179,19 +179,19 @@ function initMobileMenu(){
       navWrap.classList.toggle('menu-open',opening);
       btn.setAttribute('aria-expanded',opening?'true':'false');
       btn.setAttribute('aria-label',opening?'關閉網站選單':'開啟網站選單');
-      document.body.classList.toggle('mobile-menu-active',opening && window.innerWidth<=800);
+      document.body.classList.toggle('mobile-menu-active',opening && window.innerWidth<=1100);
     });
 
     nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
 
     document.addEventListener('click',e=>{
-      if(window.innerWidth<=800 && navWrap.classList.contains('menu-open') && !navWrap.contains(e.target)){
+      if(window.innerWidth<=1100 && navWrap.classList.contains('menu-open') && !navWrap.contains(e.target)){
         closeMenu();
       }
     });
 
     window.addEventListener('resize',()=>{
-      if(window.innerWidth>800) closeMenu();
+      if(window.innerWidth>1100) closeMenu();
     });
   });
 }
@@ -218,13 +218,12 @@ function initUniqueBrandAvatars(){
     el.style.removeProperty('--unique-avatar-image');
   });
 
-  // ① Navigation: every entry can keep one SMALL avatar.
-  const navLinks=[...document.querySelectorAll('header .nav > nav > a')];
-  navLinks.forEach((el,index)=>{
-    const file=avatarFiles[index % 7];
-    const url=new URL(file,avatarBase).href;
-    el.classList.add('unique-brand-avatar','nav-brand-avatar');
-    el.style.setProperty('--unique-avatar-image',`url("${url}")`);
+  // ① Navigation: keep the header visually clean.
+  // Decorative avatars are intentionally disabled in the top navigation so
+  // the added Social Cases/Search/Language controls never crowd the header.
+  document.querySelectorAll('header .nav > nav > a').forEach(el=>{
+    el.classList.remove('unique-brand-avatar','nav-brand-avatar','avatar-fallback');
+    el.style.removeProperty('--unique-avatar-image');
   });
 
   // ② Main content: maximum THREE avatar buttons per page.
@@ -631,8 +630,8 @@ function initSocialCaseDropdowns(){
   groups.forEach(group=>{
     const btn=group.querySelector('.social-case-nav-toggle');if(!btn)return;
     btn.addEventListener('click',e=>{e.stopPropagation();group.classList.contains('is-open')?close(group):open(group)});
-    group.addEventListener('mouseenter',()=>{if(window.innerWidth>800)open(group)});
-    group.addEventListener('mouseleave',()=>{if(window.innerWidth>800)close(group)});
+    group.addEventListener('mouseenter',()=>{if(window.innerWidth>1100)open(group)});
+    group.addEventListener('mouseleave',()=>{if(window.innerWidth>1100)close(group)});
     group.addEventListener('keydown',e=>{if(e.key==='Escape'){close(group);btn.focus()}});
     group.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>close(group)));
   });

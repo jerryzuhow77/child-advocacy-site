@@ -5462,3 +5462,269 @@ body.site-search-open{overflow:hidden}
 @media(max-width:900px){.social-cases-hero-grid,.social-case-feature-card{grid-template-columns:1fr}.social-cases-art-feature{width:min(520px,100%);margin:auto}.social-case-feature-image{min-height:0}.social-case-feature-image img{height:auto;max-height:650px}.case-connection-nav{grid-template-columns:1fr}.social-cases-route-card{align-items:flex-start;flex-direction:column}}
 @media(max-width:800px){header .nav>nav .social-case-nav{display:block;width:100%}.social-case-nav-toggle{width:100%;justify-content:flex-start;min-height:43px;padding:9px 12px;border-radius:10px;font-size:15px}.social-case-nav-toggle::before{width:25px;height:25px;flex-basis:25px}.social-case-nav-toggle i{margin-left:auto}.social-case-nav-menu{position:static;transform:none;width:100%;grid-template-columns:1fr;margin:3px 0 5px;padding:6px;border-radius:14px;box-shadow:none;background:#fbf5e9}.social-case-nav-menu::before{display:none}.social-case-menu-column+.social-case-menu-column{border-left:0;border-top:1px solid #e5dac8}.social-case-menu-all{grid-column:auto!important}header .nav .social-case-nav-menu a{padding:10px 11px!important}.social-case-menu-heading strong{font-size:16px}.social-cases-hero{padding:52px 0}.social-cases-hero-grid{gap:28px}.social-cases-intro-strip>.container{grid-template-columns:1fr}.social-cases-principle+.social-cases-principle{border-left:0;border-top:1px solid #eee3d3}.social-cases-directory,.social-cases-art-direction{padding:54px 0}.social-case-feature-copy{padding:24px 20px}.social-case-feature-copy h3{font-size:28px}.social-case-linked-records,.social-cases-style-grid{grid-template-columns:1fr}.case-connection-links{grid-template-columns:1fr}.case-connection-links a{display:grid;grid-template-columns:34px 1fr;column-gap:7px}.case-connection-links small{grid-row:1/3;align-self:center}.case-connection-links span{grid-column:2}}
 @media(max-width:520px){.social-cases-route-actions{width:100%}.social-cases-route-actions .btn{width:100%;margin-right:0;text-align:center}.social-cases-art-feature{border-radius:22px}}
+
+
+/* =====================================================================
+   2026-08-10 V14 — Header/navigation stabilization
+   Goal: one predictable navigation system across desktop, tablet, mobile.
+   ===================================================================== */
+
+/* Desktop header: clean text navigation, no per-item portrait badges. */
+header .nav,
+.art-header .nav{
+  width:min(1180px,calc(100% - 32px));
+  min-height:72px;
+  gap:18px;
+}
+header .brand,
+.art-header .brand{
+  flex:0 0 auto;
+}
+header .nav>nav,
+.art-header .nav>nav{
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  flex-wrap:nowrap;
+  gap:3px;
+  min-width:0;
+}
+header .nav>nav>a,
+.art-header .nav>nav>a,
+header .nav>nav>a.unique-brand-avatar,
+.art-header .nav>nav>a.unique-brand-avatar{
+  display:inline-flex !important;
+  align-items:center;
+  justify-content:center;
+  gap:0 !important;
+  min-height:42px;
+  padding:7px 9px !important;
+  border-radius:10px;
+  white-space:nowrap;
+  font-size:13px;
+  line-height:1.2;
+}
+header .nav>nav>a::before,
+.art-header .nav>nav>a::before,
+header .nav>nav>a.unique-brand-avatar::before,
+.art-header .nav>nav>a.unique-brand-avatar::before,
+.nav-brand-avatar::before{
+  content:none !important;
+  display:none !important;
+  background-image:none !important;
+}
+.social-case-nav{
+  flex:0 0 auto;
+}
+.social-case-nav-toggle{
+  min-height:42px;
+  padding:7px 9px;
+  gap:5px;
+  border-radius:10px;
+  font-size:13px;
+  white-space:nowrap;
+}
+.social-case-nav-toggle::before{
+  content:none !important;
+  display:none !important;
+}
+.social-case-nav-menu{
+  width:min(640px,calc(100vw - 36px));
+}
+.site-search-btn{
+  width:40px;
+  min-width:40px;
+  height:40px;
+  padding:0;
+  flex:0 0 40px;
+}
+.lang-btn{
+  min-width:40px;
+  min-height:40px;
+  padding:6px 10px;
+  flex:0 0 auto;
+}
+
+/* Medium desktop: brand stays readable while menu spacing tightens slightly. */
+@media(min-width:1101px) and (max-width:1220px){
+  header .nav,
+  .art-header .nav{
+    width:calc(100% - 24px);
+    gap:10px;
+  }
+  .brand-lockup img{
+    width:40px !important;
+    height:40px !important;
+    flex-basis:40px !important;
+  }
+  .brand-lockup span{font-size:16px !important}
+  .brand-lockup small{display:none !important}
+  header .nav>nav>a,
+  .art-header .nav>nav>a,
+  .social-case-nav-toggle{
+    padding-left:7px !important;
+    padding-right:7px !important;
+    font-size:12px !important;
+  }
+}
+
+/* Tablet + mobile: one hamburger system beginning at 1100px. */
+@media(max-width:1100px){
+  header,
+  .art-header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+  }
+  header .nav,
+  .art-header .nav{
+    width:min(100% - 24px,1120px);
+    min-height:64px;
+    position:relative;
+    gap:10px;
+  }
+  .brand,
+  .brand-lockup{
+    min-width:0;
+    max-width:calc(100% - 58px);
+  }
+  .brand-lockup img{
+    width:42px !important;
+    height:42px !important;
+    flex:0 0 42px !important;
+  }
+  .brand-lockup span{
+    min-width:0;
+    font-size:16px !important;
+    line-height:1.18;
+  }
+  .brand-lockup small{display:none !important}
+
+  .mobile-menu-toggle{
+    display:inline-flex !important;
+    margin-left:auto;
+    position:relative;
+    z-index:2;
+  }
+
+  header .nav>nav,
+  .art-header .nav>nav{
+    display:none !important;
+    position:absolute;
+    left:0;
+    right:0;
+    top:calc(100% + 1px);
+    z-index:1300;
+    max-height:calc(100vh - 76px);
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    margin:0;
+    padding:10px 11px 13px !important;
+    gap:4px;
+    flex-direction:column;
+    align-items:stretch;
+    justify-content:flex-start;
+    background:#fffdf8;
+    border:1px solid #dce6ef;
+    border-top:0;
+    border-radius:0 0 18px 18px;
+    box-shadow:0 18px 38px rgba(8,29,58,.16);
+  }
+  header .nav.menu-open>nav,
+  .art-header .nav.menu-open>nav{
+    display:flex !important;
+  }
+
+  header .nav>nav>a,
+  .art-header .nav>nav>a,
+  header .nav>nav>a.unique-brand-avatar,
+  .art-header .nav>nav>a.unique-brand-avatar{
+    width:100%;
+    justify-content:flex-start !important;
+    min-height:46px !important;
+    padding:9px 12px !important;
+    border-radius:10px !important;
+    border-bottom:1px solid #eee2cc;
+    font-size:15px !important;
+  }
+  header .nav>nav>a::after,
+  .art-header .nav>nav>a::after{
+    display:none !important;
+  }
+
+  header .nav>nav .social-case-nav,
+  .art-header .nav>nav .social-case-nav{
+    display:block;
+    width:100%;
+    border-bottom:1px solid #eee2cc;
+    padding-bottom:3px;
+  }
+  .social-case-nav-toggle{
+    width:100%;
+    justify-content:flex-start;
+    min-height:46px;
+    padding:9px 12px;
+    border-radius:10px;
+    font-size:15px;
+  }
+  .social-case-nav-toggle i{margin-left:auto}
+  .social-case-nav-menu{
+    position:static;
+    left:auto;
+    top:auto;
+    transform:none;
+    width:100%;
+    grid-template-columns:1fr;
+    margin:3px 0 5px;
+    padding:6px;
+    border-radius:14px;
+    box-shadow:none;
+    background:#fbf5e9;
+  }
+  .social-case-nav-menu::before{display:none}
+  .social-case-menu-column+.social-case-menu-column{
+    border-left:0;
+    border-top:1px solid #e5dac8;
+  }
+  .social-case-menu-all{grid-column:auto !important}
+  header .nav .social-case-nav-menu a,
+  .art-header .nav .social-case-nav-menu a{
+    border-bottom:0 !important;
+    padding:10px 11px !important;
+  }
+
+  .site-search-btn{
+    width:100% !important;
+    min-width:0;
+    height:44px;
+    flex:0 0 auto;
+    justify-content:flex-start;
+    padding:0 14px !important;
+    border-radius:10px;
+    margin-top:2px;
+  }
+  .site-search-label{display:inline}
+  header .nav nav .lang-btn,
+  .art-header .nav nav .lang-btn{
+    width:100%;
+    min-height:44px;
+    margin-top:2px;
+    border-radius:10px;
+    background:#f7f2e8;
+  }
+  body.mobile-menu-active{overflow:hidden}
+}
+
+@media(max-width:480px){
+  header .nav,
+  .art-header .nav{
+    width:calc(100% - 18px);
+  }
+  .brand-lockup span{font-size:15px !important}
+  .mobile-menu-toggle{
+    width:40px;
+    height:40px;
+    flex-basis:40px;
+  }
+}
