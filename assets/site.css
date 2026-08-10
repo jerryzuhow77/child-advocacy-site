@@ -7214,3 +7214,383 @@ body.about-page .visual-related-copy p{color:var(--about-body)!important}
 body.about-page main :is(.about-future-section,.about-art-hero,.about-timeline-section,.about-records-section,.about-street-section,.about-charity-section,.about-closing-section,.visual-related) :is(h1,h2,h3,h4,p,li,small,span,time,strong,b,a,blockquote){
   text-shadow:none!important;
 }
+
+/* ============================================================
+   2026-08-10 V18 — Social Cases editorial art language
+   深藍紙雕 × 暖金字 × 節制幼童意象
+   The visual language is built into the website, not represented
+   by a single Pan/Cai poster image.
+   ============================================================ */
+:root{
+  --case-paper-navy:#173746;
+  --case-paper-navy-2:#234756;
+  --case-paper-navy-3:#315764;
+  --case-paper-slate:#496874;
+  --case-paper-gold:#b69561;
+  --case-paper-gold-hi:#dec38f;
+  --case-paper-cream:#eee6d9;
+  --case-paper-shadow:rgba(4,19,28,.28);
+}
+
+/* Social-cases hero gets visible cut-paper depth while keeping the text calm. */
+body.social-cases-page .social-cases-hero{
+  background:
+    radial-gradient(circle at 13% 15%,rgba(222,195,143,.12),transparent 24%),
+    linear-gradient(128deg,#102c39 0%,#173b4a 54%,#254d5c 100%)!important;
+}
+body.social-cases-page .social-cases-hero::before{
+  content:"";
+  position:absolute;
+  width:440px;height:440px;
+  left:-235px;bottom:-300px;
+  border-radius:50%;
+  border:1px solid rgba(222,195,143,.18);
+  box-shadow:
+    0 0 0 34px rgba(49,87,100,.30),
+    0 0 0 72px rgba(35,71,86,.24),
+    0 0 0 108px rgba(182,149,97,.055);
+  pointer-events:none;
+}
+body.social-cases-page .social-cases-hero-copy{position:relative;z-index:3}
+body.social-cases-page .social-cases-hero-copy::after{
+  content:"✦";
+  position:absolute;
+  right:2%;bottom:-12px;
+  color:var(--case-paper-gold);
+  font-size:24px;
+  opacity:.72;
+  transform:rotate(12deg);
+}
+body.social-cases-page .social-cases-hero h1{
+  color:#f4ead8!important;
+  text-shadow:0 2px 0 rgba(0,0,0,.08);
+}
+body.social-cases-page .social-cases-hero h1::after{
+  content:"";
+  display:block;
+  width:106px;height:2px;
+  margin-top:15px;
+  background:linear-gradient(90deg,var(--case-paper-gold-hi),var(--case-paper-gold),transparent);
+}
+
+/* Reusable CSS paper-cut scene. No case poster artwork is embedded here. */
+.social-cases-paper-feature,
+.case-paper-hero,
+.social-case-paper-thumb{
+  position:relative;
+  isolation:isolate;
+}
+.social-cases-paper-feature{
+  background:linear-gradient(155deg,#102c39,#183b49 54%,#244d5b)!important;
+  border-color:rgba(222,195,143,.42)!important;
+  box-shadow:0 9px 0 rgba(182,149,97,.13),0 28px 68px rgba(3,17,25,.30)!important;
+}
+.social-paper-scene{
+  position:relative;
+  overflow:hidden;
+  min-height:455px;
+  background:
+    radial-gradient(circle at 50% 33%,rgba(222,195,143,.12),transparent 23%),
+    linear-gradient(160deg,var(--case-paper-navy),#102c39 52%,#0d2633);
+}
+.social-paper-scene::before,
+.social-paper-scene::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+}
+.social-paper-scene::before{
+  width:410px;height:410px;
+  left:-155px;top:-230px;
+  border:1px solid rgba(222,195,143,.11);
+  box-shadow:0 0 0 30px rgba(73,104,116,.14),0 0 0 64px rgba(35,71,86,.22);
+}
+.social-paper-scene::after{
+  width:330px;height:330px;
+  right:-170px;bottom:-205px;
+  background:rgba(49,87,100,.26);
+  box-shadow:0 0 0 27px rgba(35,71,86,.26),0 0 0 58px rgba(182,149,97,.06);
+}
+.social-paper-halo{
+  position:absolute;
+  z-index:1;
+  width:190px;height:190px;
+  left:50%;top:29%;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(232,208,160,.40) 0 7%,rgba(222,195,143,.18) 8% 35%,rgba(222,195,143,.045) 36% 62%,transparent 63%);
+  box-shadow:0 0 48px rgba(222,195,143,.10);
+}
+.social-paper-arch{
+  position:absolute;
+  z-index:2;
+  left:50%;
+  transform:translateX(-50%);
+  border-radius:50% 50% 0 0 / 62% 62% 0 0;
+  border-bottom:0;
+}
+.social-paper-arch--outer{
+  width:76%;height:66%;top:13%;
+  border:24px solid var(--case-paper-navy-3);
+  border-bottom:0;
+  filter:drop-shadow(0 12px 10px rgba(0,0,0,.16));
+}
+.social-paper-arch--inner{
+  width:57%;height:52%;top:24%;
+  border:15px solid var(--case-paper-navy-2);
+  border-bottom:0;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
+}
+.social-paper-ground{
+  position:absolute;
+  z-index:3;
+  left:-8%;right:-8%;bottom:-13%;
+  height:39%;
+  border-radius:50% 50% 0 0 / 34% 34% 0 0;
+  background:var(--case-paper-navy-3);
+  box-shadow:0 -13px 0 rgba(35,71,86,.86),0 -27px 0 rgba(23,55,70,.70);
+}
+.social-paper-star{
+  position:absolute;
+  z-index:6;
+  width:7px;height:7px;
+  background:var(--case-paper-gold-hi);
+  transform:rotate(45deg);
+  box-shadow:0 0 12px rgba(222,195,143,.18);
+}
+.social-paper-star::after{
+  content:"";position:absolute;inset:2px;background:#f0dfbd;border-radius:50%;
+}
+.social-paper-star--1{left:21%;top:24%}
+.social-paper-star--2{right:20%;top:31%;transform:rotate(45deg) scale(.72)}
+.social-paper-star--3{right:29%;top:15%;transform:rotate(45deg) scale(.48);opacity:.78}
+
+/* Restrained child silhouettes: deliberately generic, paper-cut, non-realistic. */
+.social-paper-child{
+  position:absolute;
+  z-index:7;
+  bottom:20%;
+  width:72px;height:126px;
+  filter:drop-shadow(0 8px 7px rgba(0,0,0,.18));
+}
+.social-paper-child i{
+  position:absolute;
+  left:50%;top:0;
+  width:43px;height:43px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:#d6c0a0;
+  box-shadow:inset 0 -5px 0 rgba(131,105,77,.08);
+}
+.social-paper-child b{
+  position:absolute;
+  left:50%;top:37px;
+  width:58px;height:77px;
+  transform:translateX(-50%);
+  border-radius:24px 24px 16px 16px;
+  background:repeating-linear-gradient(0deg,#e8e1d7 0 8px,#718995 8px 16px);
+  border:1px solid rgba(255,255,255,.12);
+}
+.social-paper-child b::before,
+.social-paper-child b::after{
+  content:"";position:absolute;bottom:-19px;width:15px;height:32px;border-radius:10px;background:#6d8188;
+}
+.social-paper-child b::before{left:8px;transform:rotate(4deg)}
+.social-paper-child b::after{right:8px;transform:rotate(-4deg)}
+.social-paper-child--left{left:34%;transform:scale(.90)}
+.social-paper-child--right{right:31%;transform:scale(.78);bottom:21%}
+.social-paper-child--right b{background:linear-gradient(180deg,#b9a9b8,#968894)}
+
+/* Abstract protective hands, read as paper shapes rather than anatomy. */
+.social-paper-hand{
+  position:absolute;
+  z-index:5;
+  bottom:11%;
+  width:42%;height:105px;
+  background:#c3aa84;
+  opacity:.90;
+  box-shadow:0 8px 0 rgba(134,106,67,.12);
+}
+.social-paper-hand--left{
+  left:-7%;
+  border-radius:0 74px 70px 0;
+  transform:rotate(10deg);
+  clip-path:polygon(0 40%,62% 18%,100% 46%,88% 70%,53% 62%,0 86%);
+}
+.social-paper-hand--right{
+  right:-7%;
+  border-radius:74px 0 0 70px;
+  transform:rotate(-10deg);
+  clip-path:polygon(100% 40%,38% 18%,0 46%,12% 70%,47% 62%,100% 86%);
+}
+.social-paper-caption-mark{
+  position:absolute;
+  z-index:8;
+  left:50%;bottom:8%;
+  transform:translateX(-50%);
+  color:var(--case-paper-gold-hi);
+  font-family:"Noto Serif TC","PMingLiU",serif;
+  font-weight:900;
+  letter-spacing:.30em;
+  font-size:12px;
+  white-space:nowrap;
+}
+.social-cases-paper-feature figcaption{
+  position:relative;
+  z-index:10;
+  padding:17px 20px 20px!important;
+  background:linear-gradient(180deg,#102d3b,#0d2633)!important;
+  border-top:1px solid rgba(222,195,143,.16);
+}
+.social-cases-paper-feature figcaption strong{color:#ead5ad!important}
+.social-cases-paper-feature figcaption span{color:#bcc9c9!important}
+
+/* Pan/Cai profile now uses the same in-layout art rather than a poster image. */
+body.pan-cai-case-page .case-paper-hero{
+  padding:12px!important;
+  background:rgba(235,226,214,.06)!important;
+  border:1px solid rgba(222,195,143,.38)!important;
+  box-shadow:0 8px 0 rgba(182,149,97,.10),0 28px 68px rgba(0,0,0,.25)!important;
+}
+body.pan-cai-case-page .case-paper-hero .social-paper-scene{
+  min-height:515px;
+  border-radius:20px;
+}
+body.pan-cai-case-page .case-paper-hero figcaption{
+  padding:12px 8px 2px!important;
+  color:#bcc8ca!important;
+}
+body.pan-cai-case-page .social-paper-scene--case .social-paper-child--left{left:32%;bottom:19%;transform:scale(.96)}
+body.pan-cai-case-page .social-paper-scene--case .social-paper-child--right{right:29%;bottom:20%;transform:scale(.84)}
+
+/* Directory thumbnail is also generated from website elements, not the Pan/Cai poster. */
+.social-case-paper-thumb{
+  overflow:hidden;
+  min-height:500px;
+  background:linear-gradient(160deg,#102c39,#244b59)!important;
+}
+.social-case-paper-thumb .social-paper-scene{height:100%;min-height:500px}
+.social-case-paper-thumb .social-paper-arch--inner{display:none}
+.social-case-paper-thumb .social-paper-child--left{left:32%;bottom:24%;transform:scale(.82)}
+.social-case-paper-thumb .social-paper-child--right{right:28%;bottom:25%;transform:scale(.70)}
+.social-case-paper-thumb-label{
+  position:absolute;
+  z-index:12;
+  left:26px;right:26px;bottom:24px;
+  padding:16px 17px;
+  border:1px solid rgba(222,195,143,.24);
+  border-radius:16px;
+  background:rgba(10,35,46,.82);
+  backdrop-filter:blur(5px);
+  box-shadow:0 10px 28px rgba(0,0,0,.16);
+}
+.social-case-paper-thumb-label small{display:block;color:var(--case-paper-gold-hi);font-size:9px;font-weight:950;letter-spacing:.14em}
+.social-case-paper-thumb-label strong{display:block;margin-top:3px;color:#f1e5ce;font-family:"Noto Serif TC","PMingLiU",serif;font-size:22px}
+.social-case-paper-thumb-label b{display:block;margin-top:2px;color:#b9c8ca;font-size:12px;font-weight:700}
+
+/* More of the art language across every social case profile page. */
+body.case-profile-page .case-profile-hero{
+  background:
+    radial-gradient(circle at 78% 22%,rgba(222,195,143,.11),transparent 24%),
+    radial-gradient(circle at 9% 80%,rgba(84,111,119,.10),transparent 25%),
+    linear-gradient(130deg,#102b38 0%,#173b4a 57%,#254d5b 100%)!important;
+}
+body.case-profile-page .case-profile-hero::before{
+  content:"";
+  position:absolute;
+  width:360px;height:360px;
+  right:-185px;top:-225px;
+  border-radius:50%;
+  border:1px solid rgba(222,195,143,.16);
+  box-shadow:0 0 0 28px rgba(49,87,100,.24),0 0 0 62px rgba(35,71,86,.18);
+  pointer-events:none;
+}
+body.case-profile-page .case-profile-poster{
+  box-shadow:0 7px 0 rgba(182,149,97,.11),0 28px 68px rgba(0,0,0,.23)!important;
+}
+body.case-profile-page .case-profile-poster::after{
+  content:"✦";
+  position:absolute;
+  z-index:5;
+  right:16px;top:13px;
+  width:31px;height:31px;
+  display:grid;place-items:center;
+  border-radius:50%;
+  background:#173746;
+  border:1px solid rgba(222,195,143,.42);
+  color:var(--case-paper-gold-hi);
+  box-shadow:0 5px 12px rgba(0,0,0,.16);
+}
+body.case-profile-page .case-story-section{
+  position:relative;
+}
+body.case-profile-page .case-story-section::after{
+  content:"";
+  position:absolute;
+  right:0;bottom:-1px;
+  width:82px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--case-paper-gold));
+  opacity:.60;
+}
+body.case-profile-page .case-section-index{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  color:#866a43!important;
+}
+body.case-profile-page .case-section-index::before{
+  content:"";
+  width:17px;height:17px;
+  border-radius:5px;
+  background:linear-gradient(145deg,#294c59,#173746);
+  border:1px solid rgba(182,149,97,.38);
+  box-shadow:2px 2px 0 rgba(182,149,97,.16);
+}
+body.case-profile-page :is(.case-emphasis-card,.case-date-card,.case-large-quote,.case-question-list li){
+  box-shadow:0 4px 0 rgba(182,149,97,.08),0 13px 24px rgba(37,61,68,.055)!important;
+}
+body.social-cases-page .social-cases-style-grid article{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(180deg,#f4efe7,#ebe5dc)!important;
+  border-color:rgba(134,106,67,.18)!important;
+  box-shadow:0 4px 0 rgba(182,149,97,.11),0 14px 26px rgba(37,61,68,.07);
+}
+body.social-cases-page .social-cases-style-grid article::after{
+  content:"";
+  position:absolute;
+  width:74px;height:74px;
+  right:-38px;bottom:-42px;
+  border-radius:50%;
+  background:rgba(73,104,116,.10);
+  box-shadow:0 0 0 13px rgba(182,149,97,.035);
+}
+body.social-cases-page .social-cases-art-direction{
+  background:
+    radial-gradient(circle at 91% 16%,rgba(182,149,97,.075),transparent 22%),
+    linear-gradient(180deg,#e7ece9,#eee9e3)!important;
+}
+body.social-cases-page .social-cases-art-note{
+  border-left-color:var(--case-paper-gold)!important;
+  background:#f4efe7!important;
+  box-shadow:0 5px 0 rgba(182,149,97,.09),0 15px 28px rgba(37,61,68,.06);
+}
+
+@media(max-width:900px){
+  .social-paper-scene{min-height:430px}
+  body.pan-cai-case-page .case-paper-hero .social-paper-scene{min-height:470px}
+}
+@media(max-width:620px){
+  .social-paper-scene{min-height:365px}
+  body.pan-cai-case-page .case-paper-hero .social-paper-scene{min-height:410px}
+  .social-paper-arch--outer{width:86%;height:62%;border-width:18px}
+  .social-paper-arch--inner{width:65%;height:49%;border-width:11px}
+  .social-paper-child{transform-origin:bottom center}
+  .social-paper-child--left{left:29%;transform:scale(.74)}
+  .social-paper-child--right{right:25%;transform:scale(.64)}
+  .social-case-paper-thumb{min-height:390px}
+  .social-case-paper-thumb .social-paper-scene{min-height:390px}
+  .social-case-paper-thumb-label{left:16px;right:16px;bottom:16px}
+  .social-case-paper-thumb-label strong{font-size:19px}
+}
