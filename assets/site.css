@@ -6395,3 +6395,26 @@ html[lang="zh-Hans"] :is(input,textarea,select,option,label,small,time,blockquot
   font-family:"Microsoft YaHei UI","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC","Source Han Sans SC","PingFang SC",sans-serif !important;
   font-synthesis:none !important;
 }
+
+
+/* ===== 2026-08-10 hearing poster refresh: slightly smaller on desktop ===== */
+@media (min-width:851px){
+  .home-hearing-alert-card{grid-template-columns:350px 1fr;}
+  .home-hearing-alert-poster{
+    min-height:0;
+    align-self:start;
+    margin:24px 0 24px 24px;
+    border-radius:12px;
+    box-shadow:0 12px 28px rgba(43,50,52,.14);
+  }
+  .home-hearing-alert-poster img{
+    display:block;
+    width:100%;
+    height:auto;
+    min-height:0;
+    aspect-ratio:3/4;
+    object-fit:cover;
+    object-position:center top;
+  }
+  .home-hearing-alert-poster:after{border-radius:inherit;}
+}
