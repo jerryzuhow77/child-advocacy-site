@@ -6101,3 +6101,256 @@ body.case-profile-page > header nav > a:hover{
   .kaikai-memory-icons img{width:68px;height:68px}
   .kaikai-case-page .case-profile-poster{transform:none}
 }
+
+/* ==========================================================
+   2026-08-10 — Subpage art harmonization
+   Paper-cut layers + restrained gold-foil accents + Morandi palette
+   Applies to non-home interior pages while preserving existing layouts.
+   ========================================================== */
+:root{
+  --subpaper:#f3ede4;
+  --subpaper-hi:#fbf7f0;
+  --subpaper-low:#e6ddd0;
+  --subink:#263a43;
+  --subnavy:#17364b;
+  --subnavy-2:#294b5a;
+  --subblue:#748a95;
+  --subsage:#8d9a8e;
+  --subrose:#aa7d74;
+  --subtaupe:#ad9b86;
+  --subgold:#b48b4f;
+  --subgold-hi:#e2c58d;
+  --subline:rgba(129,108,81,.22);
+  --subpaper-shadow:0 6px 0 rgba(184,166,143,.28),0 18px 38px rgba(28,49,59,.10);
+}
+
+body:not(.art-site){
+  color:var(--subink);
+  background-color:var(--subpaper);
+  background-image:
+    radial-gradient(circle at 7% 2%,rgba(141,154,142,.13) 0 9rem,transparent 9.1rem),
+    radial-gradient(circle at 94% 15%,rgba(116,138,149,.10) 0 12rem,transparent 12.1rem),
+    linear-gradient(115deg,rgba(255,255,255,.34),transparent 34%),
+    repeating-linear-gradient(0deg,rgba(79,69,56,.018) 0 1px,transparent 1px 5px);
+}
+body:not(.art-site) main,
+body:not(.art-site) .social-hub-main{position:relative}
+
+/* Cream-paper navigation carries the same visual language into every child page. */
+body:not(.art-site) header{
+  background:rgba(248,243,235,.96);
+  border-bottom:1px solid rgba(180,139,79,.34);
+  box-shadow:0 5px 18px rgba(31,52,62,.07);
+  backdrop-filter:saturate(.85) blur(12px);
+}
+body:not(.art-site) header .brand,
+body:not(.art-site) header .brand-lockup{color:var(--subnavy)}
+body:not(.art-site) header nav>a{color:#455960}
+body:not(.art-site) header nav>a:hover,
+body:not(.art-site) header nav>a[aria-current="page"]{color:#9c7440}
+body:not(.art-site) .lang-btn,
+body:not(.art-site) .site-search-btn{
+  background:#f6efe5;
+  border-color:rgba(147,122,91,.27);
+  color:var(--subnavy);
+}
+
+/* Hero panels: layered cut-paper arcs in desaturated navy, sage and parchment. */
+body:not(.art-site) :is(.page-hero.art-page-hero,.court-library-hero,.comic-reader-hero,.case-profile-hero,.about-art-hero,.activity-cover,.art-poster-hero){
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 88% -14%,transparent 0 116px,rgba(228,218,204,.11) 117px 151px,transparent 152px),
+    radial-gradient(circle at 94% -10%,transparent 0 171px,rgba(142,155,145,.13) 172px 210px,transparent 211px),
+    radial-gradient(circle at 5% 116%,rgba(180,139,79,.13) 0 130px,transparent 131px),
+    linear-gradient(135deg,#132e42 0%,#2d4b57 57%,#6d7e7d 125%) !important;
+  box-shadow:inset 0 -1px 0 rgba(226,197,141,.34),0 14px 40px rgba(18,42,56,.14);
+}
+body:not(.art-site) :is(.page-hero.art-page-hero,.court-library-hero,.comic-reader-hero,.case-profile-hero,.about-art-hero,.activity-cover,.art-poster-hero)::after{
+  content:"";
+  position:absolute;
+  pointer-events:none;
+  width:240px;
+  height:240px;
+  right:-96px;
+  bottom:-118px;
+  border-radius:50%;
+  border:24px solid rgba(243,237,228,.065);
+  box-shadow:0 0 0 30px rgba(180,139,79,.055),0 0 0 62px rgba(141,154,142,.055);
+}
+body:not(.art-site) :is(.page-hero,.court-library-hero,.comic-reader-hero,.case-profile-hero,.about-art-hero,.activity-cover) > *{position:relative;z-index:1}
+
+/* Foil-like headline treatment: intentionally reserved for hero typography. */
+body:not(.art-site) :is(.page-hero,.court-library-hero,.comic-reader-hero,.case-profile-hero,.about-art-hero,.activity-cover) h1,
+body:not(.art-site) .about-art-copy h1{
+  font-family:"Noto Serif TC","PMingLiU","Times New Roman",serif;
+  color:var(--subgold-hi);
+  letter-spacing:.035em;
+  text-shadow:0 1px 0 rgba(255,247,224,.32),0 3px 13px rgba(0,0,0,.18);
+}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  body:not(.art-site) :is(.page-hero,.court-library-hero,.comic-reader-hero,.case-profile-hero,.about-art-hero,.activity-cover) h1,
+  body:not(.art-site) .about-art-copy h1{
+    background:linear-gradient(102deg,#9d7540 3%,#e6cc98 28%,#b98d4c 50%,#f1ddb0 68%,#a87d43 98%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+}
+body:not(.art-site) :is(.page-hero,.court-library-hero,.comic-reader-hero,.case-profile-hero,.about-art-hero,.activity-cover) p{color:#e1e5e1}
+body:not(.art-site) :is(.art-eyebrow,.court-kicker,.eyebrow2,.comic-series-label,.case-profile-kicker){color:var(--subgold-hi)!important}
+
+/* Section typography receives quiet editorial-gold accents rather than full metallic text. */
+body:not(.art-site) :is(.article-body,.activity-body,.comic-intro-card,.case-story-section,.about-section-head,.related-head,.social-platform-copy) h2{
+  color:var(--subnavy);
+  font-family:"Noto Serif TC","PMingLiU",serif;
+  letter-spacing:.025em;
+}
+body:not(.art-site) :is(.article-body,.activity-body,.case-story-section) h3{color:#315567}
+body:not(.art-site) :is(.article-body,.activity-body,.case-story-section) h2::after,
+body:not(.art-site) .about-section-head h2::after,
+body:not(.art-site) .related-head h2::after{
+  content:"";
+  display:block;
+  width:74px;
+  height:2px;
+  margin-top:9px;
+  background:linear-gradient(90deg,var(--subgold),var(--subgold-hi),transparent);
+}
+
+/* Shared cut-paper surfaces across records, albums, comics, cases, About and social pages. */
+body:not(.art-site) :is(
+  .record-card,.activity-card,.album-index-card,.album-photo-card,
+  .episode-library-card,.comic-intro-card,.comic-page,.comic-end-card,
+  .visual-related-card,.video-card,.photo-card,.social-platform-card,
+  .case-record-card,.case-intro-video-card,.case-disclaimer,.case-story-section,
+  .case-emphasis-card,.case-date-card,.case-judgment-card,.case-fact-note,
+  .about-stat,.about-closing-card,.about-timeline,.social-account-note,
+  .article-note,.record
+){
+  border-color:var(--subline)!important;
+  background:
+    radial-gradient(circle at 100% 0,rgba(142,154,143,.09),transparent 34%),
+    linear-gradient(145deg,rgba(251,247,240,.98),rgba(235,226,214,.98))!important;
+  box-shadow:var(--subpaper-shadow)!important;
+}
+body:not(.art-site) :is(.record-card,.activity-card,.album-index-card,.episode-library-card,.visual-related-card,.social-platform-card,.case-record-card){
+  border-radius:22px;
+  overflow:hidden;
+}
+body:not(.art-site) :is(.record-card,.activity-card,.album-index-card,.episode-library-card,.visual-related-card,.social-platform-card,.case-record-card):hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 0 rgba(184,166,143,.25),0 24px 42px rgba(28,49,59,.13)!important;
+}
+body:not(.art-site) :is(.record-card,.activity-card,.album-index-card,.episode-library-card,.visual-related-card,.social-platform-card,.case-record-card){transition:transform .2s ease,box-shadow .2s ease}
+
+/* Layered paper frames for key images and posters. */
+body:not(.art-site) :is(.article-cover,.activity-hero-photo,.comic-hero-cover,.case-profile-poster,.art-poster-cover,.about-art-visual){
+  border-color:rgba(180,139,79,.35)!important;
+  background:#ede3d5!important;
+  box-shadow:0 7px 0 rgba(170,151,126,.34),0 24px 48px rgba(27,48,60,.16)!important;
+}
+body:not(.art-site) :is(.article-cover,.activity-hero-photo,.comic-hero-cover,.case-profile-poster,.art-poster-cover) img{
+  filter:saturate(.86) contrast(.98) sepia(.035);
+}
+body:not(.art-site) :is(.record-card-image,.activity-card-cover,.episode-library-cover,.album-index-cover,.visual-related-card) img{
+  filter:saturate(.88) contrast(.99);
+}
+
+/* Paper notes and quotations. */
+body:not(.art-site) :is(.article-quote,.activity-body .emphasis,.comic-pullquote,.case-large-quote,.remember-kaikai-quote){
+  border-left-color:var(--subgold)!important;
+  background:linear-gradient(100deg,#efe4d2,#f8f3ea)!important;
+  color:#46575d!important;
+  box-shadow:0 4px 0 rgba(190,171,146,.22);
+}
+body:not(.art-site) :is(.article-chip,.tag-pill,.comic-tags span,.case-status-chip,.reader-count,.meta){
+  color:#6e604c;
+}
+body:not(.art-site) :is(.article-chip,.tag-pill,.comic-tags span,.reader-count){
+  background:#e8dfd2;
+  border:1px solid rgba(166,141,109,.2);
+}
+
+/* Buttons: deep Morandi navy with a narrow metallic edge. */
+body:not(.art-site) :is(.btn,.read-btn,.source-btn,.case-profile-actions a,.episode-actions a){
+  border:1px solid rgba(214,184,128,.44);
+  background:linear-gradient(180deg,#294b5a,#17364b)!important;
+  color:#fbf5ea!important;
+  box-shadow:0 4px 0 rgba(176,145,96,.38),0 10px 20px rgba(25,48,59,.11);
+}
+body:not(.art-site) :is(.btn,.read-btn,.source-btn,.case-profile-actions a,.episode-actions a):hover{
+  background:linear-gradient(180deg,#345c6b,#1d4055)!important;
+  transform:translateY(-1px);
+}
+
+/* Case / article navigation feels like layered index tabs. */
+body:not(.art-site) :is(.case-connection-section,.case-profile-toc-inner){
+  background:linear-gradient(145deg,#eee5d8,#f8f3eb)!important;
+  border-color:rgba(150,125,94,.23)!important;
+  box-shadow:0 5px 0 rgba(188,171,149,.24),0 15px 30px rgba(28,49,59,.08);
+}
+body:not(.art-site) .case-section-index{
+  color:#9e7440;
+  text-shadow:0 1px 0 #fff7e8;
+}
+body:not(.art-site) .timeline-dot,
+body:not(.art-site) .case-timeline-list article::after{border-color:var(--subgold)!important;background:#f8f1e6!important}
+body:not(.art-site) .case-timeline-list article::before{background:#cdbb9c!important}
+
+/* About page — convert statistic/timeline areas from flat UI into tactile editorial pieces. */
+body:not(.art-site) .about-stats-section,
+body:not(.art-site) .about-timeline-section,
+body:not(.art-site) .about-records-section,
+body:not(.art-site) .about-street-section,
+body:not(.art-site) .about-future-section,
+body:not(.art-site) .about-charity-section{background:transparent!important}
+body:not(.art-site) .about-visual-ring{
+  border-color:rgba(226,198,144,.48)!important;
+  box-shadow:0 0 0 18px rgba(142,154,143,.08),0 0 0 38px rgba(180,139,79,.055);
+}
+
+/* Court comics retain cinematic contrast but move away from saturated blue/red. */
+body:not(.art-site) .vol2-hero,
+body:not(.art-site) .episode-two-hero{
+  background:
+    radial-gradient(circle at 76% 18%,rgba(170,125,116,.19),transparent 28%),
+    linear-gradient(140deg,#293139,#5e5651 54%,#263847)!important;
+}
+body:not(.art-site) :is(.episode-one,.episode-two,.episode-placeholder-cover){
+  background:linear-gradient(145deg,#233d4e,#6f7d7d)!important;
+}
+body:not(.art-site) .episode-number{background:linear-gradient(120deg,#c69a55,#ead09c);color:#193348}
+body:not(.art-site) .comic-page-label{background:#203c4d;color:#f8f0e4}
+body:not(.art-site) .comic-page-label span{color:#dfbd7d}
+
+/* Social hub cards use muted platform-neutral colours so brand colours do not break the palette. */
+body:not(.art-site) .social-platform-card{background:linear-gradient(145deg,#f7f1e8,#e6ddd1)!important}
+body:not(.art-site) .social-platform-kicker{color:#977044!important}
+body:not(.art-site) .social-handle{color:#55707b!important}
+
+/* Related-content strip and footer tie all subpages together. */
+body:not(.art-site) .visual-related{
+  background:
+    radial-gradient(circle at 8% 110%,rgba(141,154,142,.13),transparent 24%),
+    linear-gradient(180deg,#eee6dc,#e3dbcf)!important;
+  border-top:1px solid rgba(180,139,79,.18);
+  border-bottom:1px solid rgba(180,139,79,.18);
+}
+body:not(.art-site) footer{
+  background:
+    radial-gradient(circle at 90% 20%,rgba(180,139,79,.13),transparent 21%),
+    linear-gradient(135deg,#122d41,#253f4b 65%,#53625f);
+  border-top:1px solid rgba(225,195,139,.42);
+  color:#e5e3dc;
+}
+body:not(.art-site) footer a:hover{color:var(--subgold-hi)}
+
+/* Reduce motion / preserve readability on compact screens. */
+@media(max-width:800px){
+  body:not(.art-site) :is(.page-hero.art-page-hero,.court-library-hero,.comic-reader-hero,.case-profile-hero,.about-art-hero,.activity-cover)::after{width:170px;height:170px;right:-88px;bottom:-92px}
+  body:not(.art-site) :is(.record-card,.activity-card,.album-index-card,.episode-library-card,.visual-related-card,.social-platform-card,.case-record-card):hover{transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  body:not(.art-site) :is(.record-card,.activity-card,.album-index-card,.episode-library-card,.visual-related-card,.social-platform-card,.case-record-card){transition:none}
+}
