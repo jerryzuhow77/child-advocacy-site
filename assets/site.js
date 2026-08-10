@@ -109,72 +109,37 @@ function convertTextNode(node,isHans){
   node.nodeValue=isHans ? cv(original) : original;
 }
 
-/* Static, pre-reviewed translations used by the four-language switcher.
-   Article-specific translations can be appended without changing page HTML. */
-const staticTranslations={
-  en:{
-    '護童行動聯盟':'Child Protection Action Alliance','首頁':'Home','關於我們':'About Us','法庭漫畫':'Court Comics','社會案件':'Cases','案件介紹':'Case Introductions','旁聽紀錄':'Court Hearing Notes','活動紀錄':'Activities','活動相簿':'Photo Albums','官方社群':'Official Social Media','查看全部社會案件':'View All Cases','最新消息':'Latest Updates','即時追蹤':'Live Updates','守護孩子的現在':'Protect Children Today','點亮希望的未來':'Light the Way to Hope','孩子優先・制度落實・持續行動':'Children First · Accountable Systems · Continued Action','家庭守護':'Protecting Families','每一個孩子，都值得被好好接住。':'Every child deserves safety, care, and support.','剴剴案｜生命最後115天':'Kaikai Case | The Final 115 Days','土城兩歲男童命案':'Tucheng Two-Year-Old Boy Case','陳尚潔案':'Chen Shang-jie Case','潘、蔡兩童受虐案':'Abuse Cases Involving the Pan and Tsai Children','毒駕殺警案':'Drug-Impaired Driving and Police Officer Death Case','案件背景、時間軸與司法進度':'Background, timeline, and court progress','法院程序與庭訊重點紀錄':'Court procedure and key hearing notes','在剴剴之前，傷害早已出現':'The harm had begun before Kaikai.','最後陪著他的，只有兩瓶牛奶':'In his final moments, only two bottles of milk remained.','一個孩子如何在保護制度中被漏接':'How a child fell through the child-protection system.','三次訪視、多次警訊，卻沒有等到救援':'Three visits and repeated warning signs, yet help never arrived.','一場盤查，讓一名警察再也沒有回家':'A roadside check ended with an officer never returning home.','網站導覽':'Site Navigation','返回首頁':'Back to Home','閱讀更多':'Read More','了解更多':'Learn More','最新進度':'Latest Progress','案件時間軸':'Case Timeline','案件概述':'Case Overview','司法進度':'Court Progress','資料來源':'Sources','聯絡我們':'Contact Us','隱私權':'Privacy','繁體中文':'Traditional Chinese','簡體中文':'Simplified Chinese'
-  },
-  ja:{
-    '護童行動聯盟':'子ども保護アクション・アライアンス','首頁':'ホーム','關於我們':'私たちについて','法庭漫畫':'法廷コミック','社會案件':'社会事件','案件介紹':'事件紹介','旁聽紀錄':'傍聴記録','活動紀錄':'活動記録','活動相簿':'活動アルバム','官方社群':'公式SNS','查看全部社會案件':'すべての事件を見る','最新消息':'最新情報','即時追蹤':'最新動向','守護孩子的現在':'子どもの今を守り','點亮希望的未來':'希望の未来を照らす','孩子優先・制度落實・持續行動':'子ども最優先・制度の実行・継続的な行動','家庭守護':'家族を守る','每一個孩子，都值得被好好接住。':'すべての子どもには、安全に守られ支えられる権利があります。','剴剴案｜生命最後115天':'カイカイ事件｜最後の115日間','土城兩歲男童命案':'土城2歳男児死亡事件','陳尚潔案':'陳尚潔事件','潘、蔡兩童受虐案':'潘・蔡両児童虐待事件','毒駕殺警案':'薬物運転による警察官死亡事件','案件背景、時間軸與司法進度':'事件の背景・時系列・裁判の進捗','法院程序與庭訊重點紀錄':'裁判手続と審理の要点','在剴剴之前，傷害早已出現':'カイカイ以前から、被害はすでに始まっていた。','最後陪著他的，只有兩瓶牛奶':'最後にそばにあったのは、2本のミルクだけでした。','一個孩子如何在保護制度中被漏接':'一人の子どもが保護制度からこぼれ落ちた経緯。','三次訪視、多次警訊，卻沒有等到救援':'3回の訪問と度重なる警告、それでも救助は届きませんでした。','一場盤查，讓一名警察再也沒有回家':'一度の職務質問で、警察官は二度と家に帰れませんでした。','網站導覽':'サイト案内','返回首頁':'ホームへ戻る','閱讀更多':'続きを読む','了解更多':'詳しく見る','最新進度':'最新の進捗','案件時間軸':'事件の時系列','案件概述':'事件概要','司法進度':'裁判の進捗','資料來源':'情報源','聯絡我們':'お問い合わせ','隱私權':'プライバシー','繁體中文':'繁体字中国語','簡體中文':'簡体字中国語'
-  }
-};
-
-function translateStatic(original,l){
-  if(l==='zh-Hans') return cv(original);
-  if(l==='en'||l==='ja'){
-    const trimmed=original.trim();
-    const translated=staticTranslations[l][trimmed];
-    if(translated) return original.replace(trimmed,translated);
-  }
-  return original;
-}
-
 function setLang(l){
   const isHans=l==='zh-Hans';
   document.documentElement.lang=l;
 
-  getConvertibleTextNodes().forEach(node=>{
-    if(!origText.has(node)) origText.set(node,normalizeROCYearString(node.nodeValue));
-    node.nodeValue=translateStatic(origText.get(node),l);
-  });
+  getConvertibleTextNodes().forEach(node=>convertTextNode(node,isHans));
   convertAttributes(isHans);
 
-  document.title=translateStatic(originalDocumentTitle,l);
+  document.title=isHans ? cv(originalDocumentTitle) : originalDocumentTitle;
 
   localStorage.setItem('siteLang',l);
-  document.querySelectorAll('.language-switcher button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===l)));
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    b.textContent=isHans?'繁':'简';
+    b.setAttribute('aria-label',isHans?'切換為繁體中文':'切換為簡體中文');
+    b.setAttribute('title',isHans?'切換為繁體中文':'切換為簡體中文');
+  });
 }
 
 function toggleLang(){
   setLang((localStorage.getItem('siteLang')||'zh-Hant')==='zh-Hant'?'zh-Hans':'zh-Hant');
 }
 
-function initLanguageSwitcher(){
-  document.querySelectorAll('.lang-btn').forEach(old=>{
-    const group=document.createElement('div'); group.className='language-switcher'; group.setAttribute('role','group'); group.setAttribute('aria-label','Language');
-    [['zh-Hant','繁'],['zh-Hans','简'],['en','EN'],['ja','日']].forEach(([code,label])=>{
-      const b=document.createElement('button'); b.type='button'; b.dataset.lang=code; b.textContent=label; b.title=code; b.addEventListener('click',()=>setLang(code)); group.appendChild(b);
-    });
-    old.replaceWith(group);
-  });
-}
-
 document.addEventListener('DOMContentLoaded',()=>{
-  initLanguageSwitcher();
   setLang(localStorage.getItem('siteLang')||'zh-Hant');
 
   // If a page injects new content later, convert it too.
   const observer=new MutationObserver(mutations=>{
-    const activeLang=localStorage.getItem('siteLang')||'zh-Hant';
-    const isHans=activeLang==='zh-Hans';
+    const isHans=(localStorage.getItem('siteLang')||'zh-Hant')==='zh-Hans';
     mutations.forEach(m=>{
       m.addedNodes.forEach(n=>{
         if(n.nodeType===Node.TEXT_NODE){
-          if(n.nodeValue && n.nodeValue.trim()){
-            if(!origText.has(n)) origText.set(n,normalizeROCYearString(n.nodeValue));
-            n.nodeValue=translateStatic(origText.get(n),activeLang);
-          }
+          if(n.nodeValue && n.nodeValue.trim()) convertTextNode(n,isHans);
         } else if(n.nodeType===Node.ELEMENT_NODE){
           getConvertibleTextNodes(n).forEach(t=>convertTextNode(t,isHans));
           convertAttributes(isHans,n);
@@ -214,19 +179,19 @@ function initMobileMenu(){
       navWrap.classList.toggle('menu-open',opening);
       btn.setAttribute('aria-expanded',opening?'true':'false');
       btn.setAttribute('aria-label',opening?'關閉網站選單':'開啟網站選單');
-      document.body.classList.toggle('mobile-menu-active',opening && window.innerWidth<=800);
+      document.body.classList.toggle('mobile-menu-active',opening && window.innerWidth<=1100);
     });
 
     nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
 
     document.addEventListener('click',e=>{
-      if(window.innerWidth<=800 && navWrap.classList.contains('menu-open') && !navWrap.contains(e.target)){
+      if(window.innerWidth<=1100 && navWrap.classList.contains('menu-open') && !navWrap.contains(e.target)){
         closeMenu();
       }
     });
 
     window.addEventListener('resize',()=>{
-      if(window.innerWidth>800) closeMenu();
+      if(window.innerWidth>1100) closeMenu();
     });
   });
 }
@@ -253,13 +218,12 @@ function initUniqueBrandAvatars(){
     el.style.removeProperty('--unique-avatar-image');
   });
 
-  // ① Navigation: every entry can keep one SMALL avatar.
-  const navLinks=[...document.querySelectorAll('header .nav > nav > a')];
-  navLinks.forEach((el,index)=>{
-    const file=avatarFiles[index % 7];
-    const url=new URL(file,avatarBase).href;
-    el.classList.add('unique-brand-avatar','nav-brand-avatar');
-    el.style.setProperty('--unique-avatar-image',`url("${url}")`);
+  // ① Navigation: keep the header visually clean.
+  // Decorative avatars are intentionally disabled in the top navigation so
+  // the added Social Cases/Search/Language controls never crowd the header.
+  document.querySelectorAll('header .nav > nav > a').forEach(el=>{
+    el.classList.remove('unique-brand-avatar','nav-brand-avatar','avatar-fallback');
+    el.style.removeProperty('--unique-avatar-image');
   });
 
   // ② Main content: maximum THREE avatar buttons per page.
@@ -655,6 +619,29 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 
 
+
+
+/* =====================================================================
+   2026-08-10 — 新增「毒駕殺警案」至全站社會案件選單
+   只需更新 site.js，即可讓既有靜態頁面同步出現新案件入口。
+   ===================================================================== */
+function injectDuiPoliceCaseNavItem(){
+  const scriptEl=[...document.scripts].find(s=>/\/assets\/site\.js(?:\?|$)/.test(s.src));
+  if(!scriptEl) return;
+  const caseUrl=new URL('../cases/dui-police-killing/',scriptEl.src).href;
+  document.querySelectorAll('.social-case-menu-column').forEach(column=>{
+    const heading=column.querySelector('.social-case-menu-heading');
+    if(!heading || !/案件介紹|案件介绍/.test(heading.textContent)) return;
+    if(column.querySelector('a[href*="/cases/dui-police-killing/"]')) return;
+    const a=document.createElement('a');
+    a.className='social-case-menu-item';
+    a.href=caseUrl;
+    a.innerHTML='<b>毒駕殺警案</b><span>一場盤查，讓一名警察再也沒有回家</span>';
+    column.appendChild(a);
+  });
+}
+document.addEventListener('DOMContentLoaded',injectDuiPoliceCaseNavItem);
+
 /* =====================================================================
    2026-08-10 — 社會案件雙欄下拉導覽
    ===================================================================== */
@@ -666,8 +653,8 @@ function initSocialCaseDropdowns(){
   groups.forEach(group=>{
     const btn=group.querySelector('.social-case-nav-toggle');if(!btn)return;
     btn.addEventListener('click',e=>{e.stopPropagation();group.classList.contains('is-open')?close(group):open(group)});
-    group.addEventListener('mouseenter',()=>{if(window.innerWidth>800)open(group)});
-    group.addEventListener('mouseleave',()=>{if(window.innerWidth>800)close(group)});
+    group.addEventListener('mouseenter',()=>{if(window.innerWidth>1100)open(group)});
+    group.addEventListener('mouseleave',()=>{if(window.innerWidth>1100)close(group)});
     group.addEventListener('keydown',e=>{if(e.key==='Escape'){close(group);btn.focus()}});
     group.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>close(group)));
   });
@@ -676,44 +663,247 @@ function initSocialCaseDropdowns(){
 }
 document.addEventListener('DOMContentLoaded',initSocialCaseDropdowns);
 
+/* ===== Public article view counts (CounterAPI) ===== */
+(() => {
+  const COUNTER_NS = 'jerryzuhow77.github.io-child-advocacy-site';
+  const COUNTER_ACTION = 'view';
+  const VIEW_COOLDOWN_MS = 30 * 60 * 1000;
+  const API_TIMEOUT_MS = 6500;
+  const STORAGE_PREFIX = 'cpa-viewed-v2:'; // v2 resets stale cooldowns from the earlier broken counter.
+  const readCache = new Map();
 
-/* =====================================================================
-   2026-08-10 — 全站紀念標語模組（除首頁既有大版專區外）
-   ===================================================================== */
-function initGlobalMemorialBanner(){
-  if(document.querySelector('.global-memorial-section')) return;
-  if(document.querySelector('.remember-kaikai-section')) return; // homepage already has a dedicated memorial block
+  function routeFromUrl(input) {
+    let url;
+    try { url = new URL(input, window.location.href); } catch (_) { return ''; }
+    const parts = url.pathname.split('/').filter(Boolean);
+    const siteIndex = parts.indexOf('child-advocacy-site');
+    const routeParts = siteIndex >= 0 ? parts.slice(siteIndex + 1) : parts;
+    if (routeParts[routeParts.length - 1] === 'index.html') routeParts.pop();
+    return routeParts.join('/').replace(/\/+$/, '');
+  }
 
-  const footer=document.querySelector('footer');
-  if(!footer || !footer.parentNode) return;
+  function isTrackableRoute(route) {
+    if (!route) return false;
+    if (/^cases\/[^/]+$/.test(route)) return true;
+    if (/^hearing-records\/[^/]+$/.test(route)) return true;
+    if (/^court-comics\/episode-[^/]+$/.test(route)) return true;
+    if (/^activity-records\/[^/]+$/.test(route) && route !== 'activity-records/albums') return true;
+    if (/^activity-records\/albums\/[^/]+$/.test(route)) return true;
+    return false;
+  }
 
-  const scriptEl=[...document.scripts].find(s=>/\/assets\/site\.js(?:\?|$)/.test(s.src));
-  const imageSrc=scriptEl
-    ? new URL('./art/global-memorial-kaikai.jpg',scriptEl.src).href
-    : new URL('/child-advocacy-site/assets/art/global-memorial-kaikai.jpg',location.origin).href;
+  function keyFromRoute(route) {
+    return route.replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
+  }
 
-  const section=document.createElement('section');
-  section.className='global-memorial-section';
-  section.setAttribute('aria-labelledby','globalMemorialTitle');
-  section.innerHTML=`
-    <div class="container">
-      <div class="global-memorial-card">
-        <div class="global-memorial-media">
-          <img src="${imageSrc}" alt="剴剴紀念插畫：微笑的小孩肖像" loading="lazy" decoding="async">
-        </div>
-        <div class="global-memorial-copy">
-          <div class="global-memorial-kicker">REMEMBER ・ PROTECT ・ ACT</div>
-          <h2 id="globalMemorialTitle">記住他，不只是記住一場悲劇。</h2>
-          <p class="global-memorial-lead">願下一個孩子，在傷害發生以前，就有人伸手接住。</p>
-          <p class="global-memorial-note">護童行動聯盟持續透過案件紀錄、司法旁聽與兒少保護倡議，讓每一道曾被忽略的求救訊號，都不再被沉默帶走。</p>
-          <div class="global-memorial-signoff">
-            <strong>護童行動聯盟</strong>
-            <span>案件紀錄｜司法旁聽｜兒少保護倡議</span>
-          </div>
-        </div>
-      </div>
-    </div>`;
+  // Important: increment requests deliberately OMIT readOnly=false.
+  // CounterAPI increments by default; read-only requests explicitly use readOnly=true.
+  function counterUrl(key, readOnly, callbackName = '') {
+    const base = `https://counterapi.com/api/${encodeURIComponent(COUNTER_NS)}/${encodeURIComponent(COUNTER_ACTION)}/${encodeURIComponent(key)}`;
+    const params = new URLSearchParams();
+    if (readOnly) params.set('readOnly', 'true');
+    if (callbackName) params.set('callback', callbackName);
+    const query = params.toString();
+    return query ? `${base}?${query}` : base;
+  }
 
-  footer.parentNode.insertBefore(section,footer);
-}
-document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
+  function parseCounterValue(data) {
+    const value = Number(data && data.value);
+    if (!Number.isFinite(value) || value < 0) throw new Error('invalid counter');
+    return value;
+  }
+
+  async function fetchCounter(key, readOnly) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
+    try {
+      const response = await fetch(counterUrl(key, readOnly), {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-store',
+        credentials: 'omit',
+        signal: controller.signal
+      });
+      if (!response.ok) throw new Error(`counter ${response.status}`);
+      return parseCounterValue(await response.json());
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  // JSONP fallback keeps the counter working even if a browser/network blocks CORS.
+  function jsonpCounter(key, readOnly) {
+    return new Promise((resolve, reject) => {
+      const callbackName = `__cpaCounter_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+      const script = document.createElement('script');
+      let timer;
+      const cleanup = () => {
+        clearTimeout(timer);
+        try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
+        script.remove();
+      };
+      window[callbackName] = data => {
+        try {
+          const value = parseCounterValue(data);
+          cleanup();
+          resolve(value);
+        } catch (error) {
+          cleanup();
+          reject(error);
+        }
+      };
+      script.async = true;
+      script.src = counterUrl(key, readOnly, callbackName);
+      script.onerror = () => {
+        cleanup();
+        reject(new Error('counter jsonp failed'));
+      };
+      timer = setTimeout(() => {
+        cleanup();
+        reject(new Error('counter jsonp timeout'));
+      }, API_TIMEOUT_MS);
+      document.head.appendChild(script);
+    });
+  }
+
+  async function requestCounter(key, readOnly = true) {
+    const cacheKey = `${key}:${readOnly ? 'r' : 'i'}`;
+    if (readOnly && readCache.has(cacheKey)) return readCache.get(cacheKey);
+
+    const task = (async () => {
+      try {
+        return await fetchCounter(key, readOnly);
+      } catch (_) {
+        return await jsonpCounter(key, readOnly);
+      }
+    })();
+
+    if (readOnly) readCache.set(cacheKey, task);
+    try {
+      const value = await task;
+      if (!readOnly) {
+        // Any old read-only value for this article is stale after incrementing.
+        readCache.delete(`${key}:r`);
+      }
+      return value;
+    } catch (error) {
+      if (readOnly) readCache.delete(cacheKey);
+      throw error;
+    }
+  }
+
+  function hasRecentView(key) {
+    const now = Date.now();
+    try {
+      const last = Number(localStorage.getItem(`${STORAGE_PREFIX}${key}`) || 0);
+      return Boolean(last && now - last < VIEW_COOLDOWN_MS);
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function markViewed(key) {
+    try { localStorage.setItem(`${STORAGE_PREFIX}${key}`, String(Date.now())); }
+    catch (_) {}
+  }
+
+  function formatCount(value) {
+    const locale = document.documentElement.lang === 'zh-Hans' ? 'zh-CN' : 'zh-TW';
+    try { return new Intl.NumberFormat(locale).format(value); }
+    catch (_) { return String(value); }
+  }
+
+  function createEyeIcon() {
+    return '<svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M2.2 12s3.5-6 9.8-6 9.8 6 9.8 6-3.5 6-9.8 6-9.8-6-9.8-6Zm9.8 3.1a3.1 3.1 0 1 0 0-6.2 3.1 3.1 0 0 0 0 6.2Z"/></svg>';
+  }
+
+  function makeBadge(kind = 'article') {
+    const el = document.createElement('span');
+    el.className = kind === 'card' ? 'public-view-count public-view-count-card' : 'public-view-count public-view-count-article';
+    el.hidden = true;
+    el.setAttribute('aria-live', 'polite');
+    el.innerHTML = `${createEyeIcon()}<span class="public-view-label">瀏覽</span><strong class="public-view-number"></strong><span class="public-view-unit">次</span>`;
+    return el;
+  }
+
+  function revealBadge(badge, value) {
+    const number = badge.querySelector('.public-view-number');
+    if (!number) return;
+    number.textContent = formatCount(value);
+    badge.hidden = false;
+    badge.setAttribute('title', `公開瀏覽次數：${formatCount(value)} 次`);
+  }
+
+  async function initArticleCounter() {
+    const route = routeFromUrl(window.location.href);
+    if (!isTrackableRoute(route)) return;
+    const key = keyFromRoute(route);
+    if (!key) return;
+
+    const heading = document.querySelector('main h1');
+    if (!heading || document.querySelector('.public-view-count-article')) return;
+    const badge = makeBadge('article');
+    heading.insertAdjacentElement('afterend', badge);
+
+    try {
+      const increment = !hasRecentView(key);
+      const value = await requestCounter(key, !increment);
+      // Only start the 30-minute cooldown AFTER the server confirms the increment.
+      if (increment) markViewed(key);
+      revealBadge(badge, value);
+    } catch (error) {
+      console.warn('[view-counter] unable to load count', error);
+      badge.remove();
+    }
+  }
+
+  function cardTargetFor(anchor) {
+    if (anchor.classList.contains('home-news-card')) return anchor.querySelector('.home-news-card-copy') || anchor;
+    if (anchor.classList.contains('home-case-reel-card')) return anchor.querySelector('.home-case-reel-copy') || anchor;
+    if (anchor.classList.contains('home-progress-card')) return anchor;
+    return anchor;
+  }
+
+  async function addReadOnlyBadge(anchor) {
+    if (!anchor || anchor.dataset.viewCounterReady === '1') return;
+    const route = routeFromUrl(anchor.href || anchor.getAttribute('href'));
+    if (!isTrackableRoute(route)) return;
+    anchor.dataset.viewCounterReady = '1';
+    const key = keyFromRoute(route);
+    const target = cardTargetFor(anchor);
+    const badge = makeBadge('card');
+    target.appendChild(badge);
+    try {
+      const value = await requestCounter(key, true);
+      revealBadge(badge, value);
+    } catch (_) {
+      badge.remove();
+      anchor.dataset.viewCounterReady = '0';
+    }
+  }
+
+  function initHomepageCardCounters() {
+    document.querySelectorAll('a.home-news-card[href], a.home-progress-card[href], a.home-case-reel-card[href]').forEach(addReadOnlyBadge);
+  }
+
+  function initCaseDirectoryCounters() {
+    document.querySelectorAll('.social-case-feature-card').forEach(card => {
+      const anchor = card.querySelector('a.social-case-feature-image[href], .social-case-linked-records a[href]');
+      const row = card.querySelector('.social-case-status-row');
+      if (!anchor || !row || row.querySelector('.public-view-count')) return;
+      const route = routeFromUrl(anchor.href || anchor.getAttribute('href'));
+      if (!isTrackableRoute(route)) return;
+      const key = keyFromRoute(route);
+      const badge = makeBadge('card');
+      badge.classList.add('public-view-count-directory');
+      row.appendChild(badge);
+      requestCounter(key, true).then(value => revealBadge(badge, value)).catch(() => badge.remove());
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initArticleCounter();
+    initHomepageCardCounters();
+    initCaseDirectoryCounters();
+  });
+})();
