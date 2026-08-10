@@ -6215,3 +6215,20 @@ html[lang="zh-Hans"] .public-view-count strong{font-weight:700!important}
 .warm-gold-tone .about-journey-art small{color:#d3aa58}
 .warm-gold-tone .about-journey-art strong{color:#f0cf85}
 .warm-gold-tone .about-journey-art span{color:#dfc99b}
+/* 2026-08-11 — 剴剴案：看見警訊・立即行動・持續守護 */
+.kaikai-memory-strip-section{padding:24px 0 52px;background:linear-gradient(180deg,#fffaf0 0%,#f4efe5 100%)}
+.kaikai-memory-strip{display:grid;grid-template-columns:minmax(245px,.78fr) minmax(0,1.72fr);gap:28px;align-items:stretch;padding:28px;border:1px solid rgba(169,125,54,.28);border-radius:24px;background:linear-gradient(135deg,rgba(255,253,247,.98),rgba(236,229,215,.96));box-shadow:0 16px 36px rgba(37,55,59,.09)}
+.kaikai-memory-intro{display:flex;flex-direction:column;justify-content:center;padding:6px 10px 6px 4px}
+.kaikai-memory-intro small{color:#a3732d;font-size:11px;font-weight:900;letter-spacing:.16em}
+.kaikai-memory-intro strong{display:block;margin-top:9px;color:#294650;font-family:"Noto Serif TC","PMingLiU",serif;font-size:clamp(22px,2.5vw,31px);line-height:1.35}
+.kaikai-memory-intro span{display:block;margin-top:10px;color:#6b7069;font-size:14px;line-height:1.75}
+.kaikai-memory-icons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.kaikai-memory-icons figure{position:relative;display:grid;grid-template-rows:auto 1fr;justify-items:center;gap:10px;min-width:0;margin:0;padding:18px 14px 16px;border:1px solid rgba(49,76,82,.12);border-radius:18px;background:rgba(255,255,255,.76);text-align:center;box-shadow:0 7px 16px rgba(38,57,61,.06)}
+.kaikai-memory-icon-shell{display:flex;align-items:center;justify-content:center;width:76px;height:76px;border-radius:50%;background:linear-gradient(145deg,#e7e1d5,#faf6ed);box-shadow:inset 0 0 0 1px rgba(166,122,52,.18),0 7px 16px rgba(38,57,61,.08)}
+.kaikai-memory-icon-shell img{width:58px;height:58px;object-fit:contain}
+.kaikai-memory-icons figcaption{display:flex;flex-direction:column;align-items:center}
+.kaikai-memory-icons figcaption small{color:#a3732d;font-size:9px;font-weight:900;letter-spacing:.12em}
+.kaikai-memory-icons figcaption strong{margin-top:3px;color:#304d54;font-family:"Noto Serif TC","PMingLiU",serif;font-size:17px}
+.kaikai-memory-icons figcaption span{margin-top:5px;color:#6d746e;font-size:11px;line-height:1.55}
+@media(max-width:900px){.kaikai-memory-strip{grid-template-columns:1fr}.kaikai-memory-intro{padding:2px 4px}.kaikai-memory-icons{gap:10px}}
+@media(max-width:680px){.kaikai-memory-strip-section{padding:16px 0 40px}.kaikai-memory-strip{padding:20px 16px;border-radius:19px}.kaikai-memory-icons{grid-template-columns:1fr}.kaikai-memory-icons figure{grid-template-columns:64px 1fr;grid-template-rows:auto;justify-items:start;align-items:center;padding:13px;text-align:left}.kaikai-memory-icon-shell{width:60px;height:60px}.kaikai-memory-icon-shell img{width:47px;height:47px}.kaikai-memory-icons figcaption{align-items:flex-start}.kaikai-memory-icons figcaption span{font-size:12px}}
