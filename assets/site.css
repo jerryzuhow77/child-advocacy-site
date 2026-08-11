@@ -6344,6 +6344,6 @@ html:has(.hearing-detail-gold){scroll-behavior:smooth}
 }
 
 /* 2026-08-11 — 首頁主標題「守護孩子的現在」中國傳統退紅 */
-.morandi-tone .premium-home-hero .premium-hero-copy h1{
-  color:#E6B8A8;
+body.art-site.morandi-tone .premium-home-hero .premium-hero-copy h1{
+  color:#E6B8A8!important;
 }
