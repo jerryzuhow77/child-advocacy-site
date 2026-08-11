@@ -6745,6 +6745,7 @@ html[lang="zh-Hans"]{
 }
 html[lang="en"]{
   --site-font:"Noto Sans","Noto Sans TC","Noto Sans CJK TC",Arial,"Helvetica Neue",sans-serif;
+  --site-display-size:clamp(2.25rem,4vw,3.4rem);
 }
 html[lang="ja"]{
   --site-font:"Noto Sans JP","Noto Sans CJK JP","Hiragino Sans","Yu Gothic UI","Yu Gothic","Noto Sans",sans-serif;
@@ -6797,13 +6798,13 @@ html[lang="en"] :where(p,li,dt,dd,blockquote,figcaption,th,td){hyphens:auto}
 html[lang="ja"] :where(p,li,dt,dd,blockquote,figcaption,th,td){line-break:strict;word-break:normal}
 
 /* Keep long English and Japanese display copy aligned with the Chinese layouts. */
-html[lang] :where(.art-hero,.page-hero,.court-library-hero,.comic-reader-hero,.comic-episode-hero,.social-cases-hero,.hearing-hero) h1,
+html[lang] :where(.art-hero,.page-hero,.court-library-hero,.comic-reader-hero,.comic-episode-hero,.social-cases-hero,.hearing-hero,.case-profile-hero,.activity-cover) h1,
 html[lang] .about-art-copy h1{
   font-size:var(--site-display-size)!important;
   line-height:1.16!important;
   letter-spacing:-.02em!important;
 }
-html[lang="ja"] :where(.art-hero,.page-hero,.court-library-hero,.comic-reader-hero,.comic-episode-hero,.social-cases-hero,.hearing-hero) h1,
+html[lang="ja"] :where(.art-hero,.page-hero,.court-library-hero,.comic-reader-hero,.comic-episode-hero,.social-cases-hero,.hearing-hero,.case-profile-hero,.activity-cover) h1,
 html[lang="ja"] .about-art-copy h1{
   line-height:1.3!important;
   letter-spacing:.01em!important;
@@ -6811,6 +6812,38 @@ html[lang="ja"] .about-art-copy h1{
 html[lang="en"] .home-news-focus-copy h3,
 html[lang="ja"] .home-news-focus-copy h3{
   font-size:clamp(1.75rem,3vw,2.5rem)!important;
+}
+html[lang] .case-profile-hero-copy h1 span{
+  display:block;
+  margin-top:.45rem;
+  font-size:clamp(1.15rem,2vw,1.7rem)!important;
+  line-height:1.42!important;
+  letter-spacing:0!important;
+  font-weight:700!important;
+  text-wrap:pretty;
+}
+
+/* English copy is longer: adjust containers and wrapping without shrinking body text. */
+html[lang="en"] :where(p,li,dt,dd,blockquote,figcaption){text-wrap:pretty}
+html[lang="en"] .case-profile-kicker{line-height:1.55;letter-spacing:.04em}
+html[lang="en"] :where(.case-story-section,.about-section-head,.related-head) h2{
+  font-size:clamp(1.55rem,3vw,2.15rem)!important;
+  line-height:1.32!important;
+}
+html[lang="en"] .activity-card-copy h3{
+  font-size:clamp(1.25rem,2.2vw,1.7rem)!important;
+}
+html[lang="en"] .social-case-feature-copy h3{
+  font-size:clamp(1.5rem,2.5vw,1.9rem)!important;
+}
+html[lang="en"] .hearing-sentence-grid h3{
+  font-size:clamp(1.05rem,2vw,1.25rem)!important;
+  line-height:1.45!important;
+}
+html[lang="en"] .social-case-nav-menu{width:min(760px,92vw)}
+html[lang="en"] .social-case-menu-item b{line-height:1.4}
+html[lang="en"] :where(.case-status-row span,.about-hashtags,.case-profile-toc a,.case-profile-toc strong,.case-emphasis-card strong){
+  overflow-wrap:anywhere;
 }
 
 /* Navigation and action labels use stable sizes and non-synthetic weights. */
@@ -6829,6 +6862,7 @@ html[lang="en"] .social-case-nav-toggle{
 :where(a.btn,a.read-btn,a.outline-btn,a.source-btn,a.article-back,a.editorial-read-link,a.editorial-simple-link,a.premium-all-link,a.newest-case-link,a.campaign-strip-btn,.editorial-mini-actions a){
   height:auto!important;
   min-height:44px;
+  max-width:100%;
   white-space:normal;
   text-align:center;
   line-height:1.4!important;
@@ -6910,6 +6944,8 @@ html[lang="ja"] table{max-width:100%;table-layout:auto}
     padding-inline:4px!important;
     font-size:12px!important;
   }
+  html[lang="en"] .brand-lockup span{font-size:15px!important}
+  html[lang="en"] .brand-lockup small{display:none}
 }
 @media(max-width:800px){
   html[lang] body{font-size:16px;line-height:1.72}
@@ -6935,9 +6971,17 @@ html[lang="ja"] table{max-width:100%;table-layout:auto}
     align-items:stretch;
   }
   .premium-hero-actions .btn{min-height:62px}
+  html[lang="en"] .social-case-nav-menu{width:100%!important}
+  html[lang="en"] table{
+    width:100%;
+    max-width:100%;
+    table-layout:fixed!important;
+  }
+  html[lang="en"] :where(th,td){overflow-wrap:anywhere;hyphens:auto}
 }
 @media(max-width:520px){
   :root{--site-display-size:clamp(2rem,10vw,2.75rem)}
+  html[lang="en"]{--site-display-size:clamp(1.9rem,8.5vw,2.25rem)}
   .premium-hero-actions{grid-template-columns:1fr!important}
   .premium-hero-actions .premium-case-cta{grid-column:auto!important}
 }
