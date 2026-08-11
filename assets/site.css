@@ -6730,22 +6730,214 @@ body.art-site.morandi-tone .premium-home-hero .premium-hero-copy h1{
     opacity:.70;
   }
 }
-/* ===== Four-language typography and switcher ===== */
-:root{--site-sans:"Noto Sans TC","Noto Sans JP","Noto Sans SC","PingFang TC","PingFang SC","Microsoft JhengHei","Microsoft YaHei",Arial,sans-serif}
-html,body,button,input,select,textarea{font-family:var(--site-sans)!important}
-body{font-synthesis:none;text-rendering:optimizeLegibility}
-h1,h2,h3,h4,h5,h6,p,a,span,strong,small,li,dt,dd,time,figcaption{overflow-wrap:break-word}
-.language-switcher{display:inline-flex;align-items:center;gap:2px;padding:3px;border:1px solid rgba(201,168,93,.52);border-radius:999px;background:rgba(5,31,54,.62);white-space:nowrap;flex:0 0 auto}
-.language-switcher a{display:inline-flex;align-items:center;justify-content:center;min-width:31px;padding:7px 6px;border-radius:999px;color:inherit!important;text-decoration:none!important;font-size:.78rem;line-height:1;font-weight:700;letter-spacing:.02em}
-.language-switcher a[aria-current="true"]{background:linear-gradient(135deg,#e7c979,#b88732);color:#082b4b!important;box-shadow:0 2px 8px rgba(0,0,0,.18)}
-.language-switcher a:focus-visible{outline:2px solid #f3dc9c;outline-offset:2px}
-html[lang="en"] body{font-family:"Noto Sans",Arial,sans-serif!important;line-height:1.68}
-html[lang="ja"] body{font-family:"Noto Sans JP","Yu Gothic","Hiragino Kaku Gothic ProN",sans-serif!important;line-height:1.78}
-html[lang="en"] h1,html[lang="en"] h2,html[lang="en"] h3{line-height:1.18;letter-spacing:-.018em}
-html[lang="ja"] h1,html[lang="ja"] h2,html[lang="ja"] h3{line-height:1.35;letter-spacing:.015em}
-html[lang="en"] .nav nav>a,html[lang="ja"] .nav nav>a{white-space:normal;text-align:center}
-html[lang="en"] .social-case-nav-menu,html[lang="ja"] .social-case-nav-menu{line-height:1.5}
-html[lang="en"] .btn,html[lang="ja"] .btn{height:auto;min-height:44px;white-space:normal;text-align:center}
-html[lang="en"] table,html[lang="ja"] table{table-layout:auto}
-@media(max-width:1100px){html[lang="en"] .nav nav,html[lang="ja"] .nav nav{gap:10px}html[lang="en"] .nav nav>a,html[lang="ja"] .nav nav>a{font-size:.84rem}}
-@media(max-width:900px){.language-switcher{margin:8px 0}.language-switcher a{min-width:42px;padding:10px 8px}html[lang="en"] h1{font-size:clamp(2rem,9vw,3.5rem)}html[lang="ja"] h1{font-size:clamp(1.9rem,8vw,3.25rem)}}
+/* ===== Four-language typography, rhythm and switcher ===== */
+:root{
+  --site-font:"Noto Sans TC","Noto Sans CJK TC","PingFang TC","Microsoft JhengHei","Noto Sans",Arial,sans-serif;
+  --site-body-size:16px;
+  --site-body-leading:1.75;
+  --site-display-size:clamp(2.35rem,4.3vw,3.75rem);
+}
+html[lang="zh-Hant"]{
+  --site-font:"Noto Sans TC","Noto Sans CJK TC","Source Han Sans TC","PingFang TC","Microsoft JhengHei","Noto Sans",Arial,sans-serif;
+}
+html[lang="zh-Hans"]{
+  --site-font:"Noto Sans SC","Noto Sans CJK SC","Source Han Sans SC","PingFang SC","Microsoft YaHei","Noto Sans",Arial,sans-serif;
+}
+html[lang="en"]{
+  --site-font:"Noto Sans","Noto Sans TC","Noto Sans CJK TC",Arial,"Helvetica Neue",sans-serif;
+}
+html[lang="ja"]{
+  --site-font:"Noto Sans JP","Noto Sans CJK JP","Hiragino Sans","Yu Gothic UI","Yu Gothic","Noto Sans",sans-serif;
+}
+
+/* All four languages use the same Noto Sans visual family and standard weights. */
+html[lang] body,
+html[lang] body :where(h1,h2,h3,h4,h5,h6,p,a,button,input,select,textarea,label,span,strong,b,small,li,dt,dd,time,figcaption,blockquote,table,th,td,div,section,article,aside,nav){
+  font-family:var(--site-font)!important;
+}
+html[lang] body *::before,
+html[lang] body *::after{
+  font-family:var(--site-font)!important;
+}
+html[lang] body{
+  font-size:var(--site-body-size);
+  line-height:var(--site-body-leading);
+  font-weight:400;
+  letter-spacing:0;
+  font-synthesis:none;
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+}
+html[lang] :where(h1,h2,h3,h4,h5,h6){
+  margin-block-start:0;
+  text-wrap:balance;
+  overflow-wrap:break-word;
+}
+html[lang] :where(h1,h2),
+html[lang] :where(h1,h2) :where(strong,b,span){
+  font-weight:800!important;
+}
+html[lang] :where(h3,h4,h5,h6),
+html[lang] :where(h3,h4,h5,h6) :where(strong,b,span){
+  font-weight:700!important;
+}
+html[lang] h1{line-height:1.16!important}
+html[lang] h2{line-height:1.28!important}
+html[lang] h3{line-height:1.38!important}
+html[lang] :where(h4,h5,h6){line-height:1.45!important}
+html[lang] :where(strong,b,button,.btn,.read-btn,.outline-btn,.source-btn,.article-back,.meta,.art-eyebrow,small){
+  font-weight:700!important;
+}
+html[lang] :where(h1,h2) :where(strong,b,span){font-weight:800!important}
+html[lang] :where(h3,h4,h5,h6) :where(strong,b,span){font-weight:700!important}
+html[lang] :where(p,li,dt,dd,blockquote,figcaption,th,td){
+  overflow-wrap:break-word;
+}
+html[lang="en"] :where(p,li,dt,dd,blockquote,figcaption,th,td){hyphens:auto}
+html[lang="ja"] :where(p,li,dt,dd,blockquote,figcaption,th,td){line-break:strict;word-break:normal}
+
+/* Keep long English and Japanese display copy aligned with the Chinese layouts. */
+html[lang] :where(.art-hero,.page-hero,.court-library-hero,.comic-reader-hero,.comic-episode-hero,.social-cases-hero,.hearing-hero) h1,
+html[lang] .about-art-copy h1{
+  font-size:var(--site-display-size)!important;
+  line-height:1.16!important;
+  letter-spacing:-.02em!important;
+}
+html[lang="ja"] :where(.art-hero,.page-hero,.court-library-hero,.comic-reader-hero,.comic-episode-hero,.social-cases-hero,.hearing-hero) h1,
+html[lang="ja"] .about-art-copy h1{
+  line-height:1.3!important;
+  letter-spacing:.01em!important;
+}
+html[lang="en"] .home-news-focus-copy h3,
+html[lang="ja"] .home-news-focus-copy h3{
+  font-size:clamp(1.75rem,3vw,2.5rem)!important;
+}
+
+/* Navigation and action labels use stable sizes and non-synthetic weights. */
+header .nav>nav>a,
+.social-case-nav-toggle{
+  font-family:var(--site-font)!important;
+  font-size:14px!important;
+  font-weight:700!important;
+  line-height:1.25!important;
+  text-align:center;
+}
+html[lang="en"] header .nav>nav>a,
+html[lang="en"] .social-case-nav-toggle{
+  font-size:13px!important;
+}
+:where(a.btn,a.read-btn,a.outline-btn,a.source-btn,a.article-back,a.editorial-read-link,a.editorial-simple-link,a.premium-all-link,a.newest-case-link,a.campaign-strip-btn,.editorial-mini-actions a){
+  height:auto!important;
+  min-height:44px;
+  white-space:normal;
+  text-align:center;
+  line-height:1.4!important;
+  overflow-wrap:anywhere;
+}
+
+/* Equal-height hero actions prevent English labels from producing uneven buttons. */
+@media(min-width:761px){
+  .premium-hero-actions{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    align-items:stretch;
+    width:min(100%,650px);
+  }
+  .premium-hero-actions .btn{
+    min-width:0!important;
+    min-height:64px;
+    padding:12px 14px!important;
+  }
+}
+
+/* Compact language control with the same size and weight in every locale. */
+.language-switcher{
+  display:inline-grid;
+  grid-template-columns:repeat(4,minmax(32px,auto));
+  align-items:center;
+  gap:2px;
+  padding:3px;
+  border:1px solid rgba(201,168,93,.52);
+  border-radius:999px;
+  background:rgba(5,31,54,.62);
+  white-space:nowrap;
+  flex:0 0 auto;
+  font-family:var(--site-font)!important;
+}
+.language-switcher a{
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  min-width:32px;
+  min-height:32px;
+  padding:7px 6px!important;
+  border-radius:999px!important;
+  color:#fff8e8!important;
+  text-decoration:none!important;
+  font-size:13px!important;
+  line-height:1!important;
+  font-weight:700!important;
+  letter-spacing:.02em!important;
+  white-space:nowrap!important;
+}
+.language-switcher a[aria-current="true"]{
+  background:linear-gradient(135deg,#e7c979,#b88732)!important;
+  color:#082b4b!important;
+  box-shadow:0 2px 8px rgba(0,0,0,.18);
+}
+.language-switcher a:focus-visible{
+  outline:2px solid #f3dc9c;
+  outline-offset:2px;
+}
+html[lang="en"] .social-case-nav-menu,
+html[lang="ja"] .social-case-nav-menu{line-height:1.5}
+html[lang="en"] table,
+html[lang="ja"] table{max-width:100%;table-layout:auto}
+
+@media(min-width:1101px){
+  html[lang] header .nav>nav>a,
+  html[lang] .social-case-nav-toggle{white-space:nowrap!important}
+}
+@media(min-width:801px) and (max-width:1100px){
+  header .nav>nav>a,
+  .social-case-nav-toggle{
+    padding-inline:5px!important;
+    font-size:12px!important;
+    white-space:nowrap!important;
+  }
+  .language-switcher a{
+    min-width:29px;
+    padding-inline:4px!important;
+    font-size:12px!important;
+  }
+}
+@media(max-width:800px){
+  html[lang] body{font-size:16px;line-height:1.72}
+  header .nav>nav>a,
+  .social-case-nav-toggle{
+    font-size:15px!important;
+    line-height:1.35!important;
+    text-align:left;
+  }
+  .language-switcher{
+    grid-template-columns:repeat(4,1fr);
+    width:100%;
+    margin:8px 0 0;
+    border-radius:16px;
+  }
+  .language-switcher a{
+    min-height:42px;
+    font-size:14px!important;
+  }
+  .premium-hero-actions{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    align-items:stretch;
+  }
+  .premium-hero-actions .btn{min-height:62px}
+}
+@media(max-width:520px){
+  :root{--site-display-size:clamp(2rem,10vw,2.75rem)}
+  .premium-hero-actions{grid-template-columns:1fr!important}
+  .premium-hero-actions .premium-case-cta{grid-column:auto!important}
+}

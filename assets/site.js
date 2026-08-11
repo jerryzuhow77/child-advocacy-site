@@ -109,6 +109,14 @@ function convertTextNode(node,isHans){
   node.nodeValue=isHans ? cv(original) : original;
 }
 
+function syncLanguageSwitcher(activeLang){
+  document.querySelectorAll('.language-switcher a').forEach(a=>{
+    const linkLang=a.getAttribute('title')||'zh-Hant';
+    if(linkLang===activeLang) a.setAttribute('aria-current','true');
+    else a.removeAttribute('aria-current');
+  });
+}
+
 function setLang(l){
   const isHans=l==='zh-Hans';
   document.documentElement.lang=l;
@@ -119,6 +127,7 @@ function setLang(l){
   document.title=isHans ? cv(originalDocumentTitle) : originalDocumentTitle;
 
   localStorage.setItem('siteLang',l);
+  syncLanguageSwitcher(l);
   document.querySelectorAll('.lang-btn').forEach(b=>{
     b.textContent=isHans?'繁':'简';
     b.setAttribute('aria-label',isHans?'切換為繁體中文':'切換為簡體中文');
@@ -132,8 +141,12 @@ function toggleLang(){
 
 document.addEventListener('DOMContentLoaded',()=>{
   const staticPageLang=document.documentElement.lang;
-  if(staticPageLang==='en'||staticPageLang==='ja') localStorage.setItem('siteLang',staticPageLang);
-  else setLang(localStorage.getItem('siteLang')||'zh-Hant');
+  if(staticPageLang==='en'||staticPageLang==='ja'){
+    localStorage.setItem('siteLang',staticPageLang);
+    syncLanguageSwitcher(staticPageLang);
+  } else {
+    setLang(localStorage.getItem('siteLang')==='zh-Hans'?'zh-Hans':'zh-Hant');
+  }
 
   document.querySelectorAll('.language-switcher a').forEach(a=>a.addEventListener('click',()=>{
     localStorage.setItem('siteLang',a.title||'zh-Hant');
