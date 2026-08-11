@@ -1,4 +1,4 @@
-/* English and Japanese homepage view counter — 2026-08-11 */
+/* Four-language homepage view counter — 2026-08-11 */
 (() => {
   'use strict';
 
@@ -103,22 +103,39 @@
     catch (_) { return String(value); }
   }
 
+  function localizedData(widget, field) {
+    const lang = document.documentElement.lang;
+    if (lang === 'zh-Hans' && widget.dataset[`${field}Hans`]) return widget.dataset[`${field}Hans`];
+    if (lang === 'zh-Hant' && widget.dataset[`${field}Hant`]) return widget.dataset[`${field}Hant`];
+    return widget.dataset[field] || '';
+  }
+
   async function initializeCounter(widget) {
     const number = widget.querySelector('[data-home-view-number]');
-    const key = widget.dataset.counterKey;
+    const label = widget.querySelector('.home-view-counter-label');
+    const unit = widget.querySelector('.home-view-counter-value span');
+    const key = localizedData(widget, 'counterKey');
     if (!number || !key) return;
+
+    const labelCopy = localizedData(widget, 'counterLabel');
+    const unitCopy = localizedData(widget, 'counterUnit');
+    const titleCopy = localizedData(widget, 'counterTitle');
+    const errorCopy = localizedData(widget, 'counterError');
+    const locale = localizedData(widget, 'counterLocale');
+    if (label && labelCopy) label.textContent = labelCopy;
+    if (unit && unitCopy) unit.textContent = unitCopy;
 
     const readOnly = hasRecentView(key);
     try {
       const value = await requestCounter(key, readOnly);
       if (!readOnly) markViewed(key);
-      const formatted = formatNumber(value, widget.dataset.counterLocale);
+      const formatted = formatNumber(value, locale);
       number.textContent = formatted;
-      widget.title = `${widget.dataset.counterTitle || ''}: ${formatted} ${widget.dataset.counterUnit || ''}`.trim();
+      widget.title = `${titleCopy}: ${formatted} ${unitCopy}`.trim();
     } catch (_) {
       number.textContent = '—';
       widget.classList.add('is-unavailable');
-      widget.title = widget.dataset.counterError || '';
+      widget.title = errorCopy;
     } finally {
       widget.setAttribute('aria-busy', 'false');
     }
