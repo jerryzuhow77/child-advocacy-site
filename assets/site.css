@@ -163,6 +163,22 @@ linear-gradient(140deg,#050e1b,#0a2a49 58%,#172035);color:#fff;padding:38px 0 68
 .comic-pages{display:grid;gap:34px}.comic-page{scroll-margin-top:90px;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 12px 34px rgba(8,29,58,.07)}.comic-page-label{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:#0a1c32;color:#fff}.comic-page-label span{font-size:12px;letter-spacing:.12em;color:#e6c55a;font-weight:900}.comic-page-label b{font-size:14px}.comic-page-image{width:100%;padding:0;border:0;background:#101010;cursor:zoom-in;display:block}.comic-page-image img{display:block;width:100%;height:auto;max-height:none}.comic-page-caption{padding:12px 18px;color:var(--muted);font-size:13px}
 .comic-end-card{margin-top:42px;background:linear-gradient(135deg,#071b31,#113d67);color:#fff;border-radius:22px;padding:28px;display:flex;align-items:center;gap:22px}.comic-end-icon{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:#e7bd4c;color:#0d1d30;font-size:30px;flex:0 0 auto}.comic-end-card h3{margin:0 0 5px;font-size:23px}.comic-end-card p{margin:0 0 12px;color:#d8e5f1}
 .comic-lightbox figure{max-width:min(900px,88vw)}.comic-lightbox img{max-height:86vh}
+
+/* 2026-08-11 — 法庭漫畫第一、二集主標題燙金漸層 */
+.comic-reader-hero .comic-hero-copy h1{
+  color:#f0c96f;
+  text-shadow:0 1px 0 rgba(61,38,6,.36),0 5px 18px rgba(212,158,55,.18);
+}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .comic-reader-hero .comic-hero-copy h1{
+    background:linear-gradient(102deg,#a96b1d 0%,#f4d487 34%,#d89b37 63%,#fff1b7 84%,#b77924 100%);
+    background-clip:text;
+    -webkit-background-clip:text;
+    color:transparent;
+    -webkit-text-fill-color:transparent;
+    text-shadow:none;
+  }
+}
 .episode-two-hero{min-height:70vh;display:flex;align-items:center}.episode-two-box{max-width:760px;margin:20px auto 0;text-align:center;position:relative;padding:48px 30px}.episode-two-box .episode-number{position:static;display:inline-flex;margin-bottom:22px}.episode-two-box h1{font-size:clamp(38px,6vw,62px);color:#fff}.episode-two-box p{color:#d7e4f0;font-size:18px}.episode-actions.center{justify-content:center}
 
 @media(max-width:850px){
