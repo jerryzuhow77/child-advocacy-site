@@ -6265,3 +6265,15 @@ html[lang="zh-Hans"] .public-view-count strong{font-weight:700!important}
   .kaikai-memory-icons figure,.kaikai-memory-icons figure::after,.kaikai-memory-icon-shell{animation:none!important;opacity:1!important;transform:none!important}
   .kaikai-memory-icons figure{transition:none}
 }
+/* 2026-08-11 — 土城兩歲男童命案旁聽紀錄頁首燙金漸層 */
+.hearing-detail-gold .hearing-hero h1{color:#efc66d;text-shadow:0 1px 0 rgba(55,34,8,.34)}
+.hearing-detail-gold .hearing-hero p{color:#e8cc92}
+.hearing-detail-gold .hearing-hero .article-back{color:#dca94b!important}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .hearing-detail-gold .hearing-hero h1{
+    background:linear-gradient(102deg,#ad6f1f 0%,#f2cf7d 36%,#d89b37 67%,#fff0b4 100%);
+    background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+    text-shadow:none
+  }
+}
+@media(max-width:680px){.hearing-detail-gold .hearing-hero h1{font-size:clamp(31px,9vw,44px);line-height:1.22}}
