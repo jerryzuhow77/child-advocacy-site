@@ -131,9 +131,16 @@ function toggleLang(){
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
-  setLang(localStorage.getItem('siteLang')||'zh-Hant');
+  const staticPageLang=document.documentElement.lang;
+  if(staticPageLang==='en'||staticPageLang==='ja') localStorage.setItem('siteLang',staticPageLang);
+  else setLang(localStorage.getItem('siteLang')||'zh-Hant');
+
+  document.querySelectorAll('.language-switcher a').forEach(a=>a.addEventListener('click',()=>{
+    localStorage.setItem('siteLang',a.title||'zh-Hant');
+  }));
 
   // If a page injects new content later, convert it too.
+  if(staticPageLang==='en'||staticPageLang==='ja') return;
   const observer=new MutationObserver(mutations=>{
     const isHans=(localStorage.getItem('siteLang')||'zh-Hant')==='zh-Hans';
     mutations.forEach(m=>{

@@ -6730,3 +6730,22 @@ body.art-site.morandi-tone .premium-home-hero .premium-hero-copy h1{
     opacity:.70;
   }
 }
+/* ===== Four-language typography and switcher ===== */
+:root{--site-sans:"Noto Sans TC","Noto Sans JP","Noto Sans SC","PingFang TC","PingFang SC","Microsoft JhengHei","Microsoft YaHei",Arial,sans-serif}
+html,body,button,input,select,textarea{font-family:var(--site-sans)!important}
+body{font-synthesis:none;text-rendering:optimizeLegibility}
+h1,h2,h3,h4,h5,h6,p,a,span,strong,small,li,dt,dd,time,figcaption{overflow-wrap:break-word}
+.language-switcher{display:inline-flex;align-items:center;gap:2px;padding:3px;border:1px solid rgba(201,168,93,.52);border-radius:999px;background:rgba(5,31,54,.62);white-space:nowrap;flex:0 0 auto}
+.language-switcher a{display:inline-flex;align-items:center;justify-content:center;min-width:31px;padding:7px 6px;border-radius:999px;color:inherit!important;text-decoration:none!important;font-size:.78rem;line-height:1;font-weight:700;letter-spacing:.02em}
+.language-switcher a[aria-current="true"]{background:linear-gradient(135deg,#e7c979,#b88732);color:#082b4b!important;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.language-switcher a:focus-visible{outline:2px solid #f3dc9c;outline-offset:2px}
+html[lang="en"] body{font-family:"Noto Sans",Arial,sans-serif!important;line-height:1.68}
+html[lang="ja"] body{font-family:"Noto Sans JP","Yu Gothic","Hiragino Kaku Gothic ProN",sans-serif!important;line-height:1.78}
+html[lang="en"] h1,html[lang="en"] h2,html[lang="en"] h3{line-height:1.18;letter-spacing:-.018em}
+html[lang="ja"] h1,html[lang="ja"] h2,html[lang="ja"] h3{line-height:1.35;letter-spacing:.015em}
+html[lang="en"] .nav nav>a,html[lang="ja"] .nav nav>a{white-space:normal;text-align:center}
+html[lang="en"] .social-case-nav-menu,html[lang="ja"] .social-case-nav-menu{line-height:1.5}
+html[lang="en"] .btn,html[lang="ja"] .btn{height:auto;min-height:44px;white-space:normal;text-align:center}
+html[lang="en"] table,html[lang="ja"] table{table-layout:auto}
+@media(max-width:1100px){html[lang="en"] .nav nav,html[lang="ja"] .nav nav{gap:10px}html[lang="en"] .nav nav>a,html[lang="ja"] .nav nav>a{font-size:.84rem}}
+@media(max-width:900px){.language-switcher{margin:8px 0}.language-switcher a{min-width:42px;padding:10px 8px}html[lang="en"] h1{font-size:clamp(2rem,9vw,3.5rem)}html[lang="ja"] h1{font-size:clamp(1.9rem,8vw,3.25rem)}}
