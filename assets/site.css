@@ -165,12 +165,14 @@ linear-gradient(140deg,#050e1b,#0a2a49 58%,#172035);color:#fff;padding:38px 0 68
 .comic-lightbox figure{max-width:min(900px,88vw)}.comic-lightbox img{max-height:86vh}
 
 /* 2026-08-11 — 法庭漫畫第一、二集主標題燙金漸層 */
-.comic-reader-hero .comic-hero-copy h1{
+.comic-reader-hero .comic-hero-copy h1,
+.comic-reader-hero .comic-hero-copy .comic-hero-gold-lead{
   color:#f0c96f;
   text-shadow:0 1px 0 rgba(61,38,6,.36),0 5px 18px rgba(212,158,55,.18);
 }
 @supports ((-webkit-background-clip:text) or (background-clip:text)){
-  .comic-reader-hero .comic-hero-copy h1{
+  .comic-reader-hero .comic-hero-copy h1,
+  .comic-reader-hero .comic-hero-copy .comic-hero-gold-lead{
     background:linear-gradient(102deg,#a96b1d 0%,#f4d487 34%,#d89b37 63%,#fff1b7 84%,#b77924 100%);
     background-clip:text;
     -webkit-background-clip:text;

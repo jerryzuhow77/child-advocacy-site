@@ -682,6 +682,39 @@ function initGlobalMemorialBanner(){
   const normalizedPath=path.endsWith('/') ? path : `${path}/`;
   const isHomepage=normalizedPath==='/' || normalizedPath==='/child-advocacy-site/';
 
+  const declaredLang=(document.documentElement.lang || '').toLowerCase();
+  const pageLang=declaredLang.startsWith('ja') || /\/ja\//.test(normalizedPath)
+    ? 'ja'
+    : declaredLang.startsWith('en') || /\/en\//.test(normalizedPath)
+      ? 'en'
+      : 'zh';
+  const memorialCopy={
+    zh:{
+      title:'記住他，不只是記住一場悲劇。',
+      lead:'願下一個孩子，在傷害發生以前，就有人伸手接住。',
+      note:'我們持續留下案件紀錄、整理司法程序、凝視每一道曾被忽略的求救訊號，不讓孩子的傷與沉默，只在新聞熱度裡短暫被看見。',
+      brand:'護童行動聯盟',
+      focus:'案件紀錄｜司法旁聽｜兒少保護倡議',
+      imageAlt:'剴剴紀念Q版插畫：穿藍色條紋上衣的小男孩'
+    },
+    en:{
+      title:'Remembering him means remembering more than a tragedy.',
+      lead:'May someone reach out and protect the next child before harm occurs.',
+      note:"We continue to document cases, explain judicial proceedings, and attend to every overlooked cry for help, so that children’s suffering and silence are not seen only briefly while a story is in the news.",
+      brand:'Child Protection Action Alliance',
+      focus:'Case Records｜Court Observation｜Child Protection Advocacy',
+      imageAlt:'Memorial illustration of Kaikai: a little boy in a blue striped shirt'
+    },
+    ja:{
+      title:'彼を記憶することは、一つの悲劇だけを記憶することではありません。',
+      lead:'次の子どもが傷つけられる前に、誰かが手を差し伸べ、受け止めてくれますように。',
+      note:'私たちは、事件の記録を残し、司法手続きを整理し、見過ごされてきた一つひとつの救いを求めるサインを見つめ続けます。子どもの傷と沈黙が、ニュースの関心の中で一時的に注目されるだけで終わらないように。',
+      brand:'子供保護行動連盟',
+      focus:'事件記録｜司法傍聴｜児童保護の提言',
+      imageAlt:'カイカイを偲ぶイラスト：青いボーダーシャツを着た男の子'
+    }
+  }[pageLang];
+
   // 首頁保留原本完整排版與「勿忘剴剴」區塊，不插入全站紀念模組。
   if(isHomepage) return;
 
@@ -707,16 +740,16 @@ function initGlobalMemorialBanner(){
       <div class="container">
         <div class="global-memorial-card">
           <div class="global-memorial-media">
-            <img src="${imageSrc}" alt="剴剴紀念Q版插畫：穿藍色條紋上衣的小男孩" loading="lazy" decoding="async">
+            <img src="${imageSrc}" alt="${memorialCopy.imageAlt}" loading="lazy" decoding="async">
           </div>
           <div class="global-memorial-copy">
             <div class="global-memorial-kicker">REMEMBER ・ PROTECT ・ ACT</div>
-            <h2 id="globalMemorialTitle">記住他，不只是記住一場悲劇。</h2>
-            <p class="global-memorial-lead">願下一個孩子，在傷害發生以前，就有人伸手接住。</p>
-            <p class="global-memorial-note">我們持續留下案件紀錄、整理司法程序、凝視每一道曾被忽略的求救訊號，不讓孩子的傷與沉默，只在新聞熱度裡短暫被看見。</p>
+            <h2 id="globalMemorialTitle">${memorialCopy.title}</h2>
+            <p class="global-memorial-lead">${memorialCopy.lead}</p>
+            <p class="global-memorial-note">${memorialCopy.note}</p>
             <div class="global-memorial-signoff">
-              <strong>護童行動聯盟</strong>
-              <span>案件紀錄｜司法旁聽｜兒少保護倡議</span>
+              <strong>${memorialCopy.brand}</strong>
+              <span>${memorialCopy.focus}</span>
             </div>
           </div>
         </div>
@@ -726,15 +759,15 @@ function initGlobalMemorialBanner(){
       <div class="container">
         <div class="global-memorial-card">
           <div class="global-memorial-media">
-            <img src="${imageSrc}" alt="剴剴紀念Q版插畫：穿藍色條紋上衣的小男孩" loading="lazy" decoding="async">
+            <img src="${imageSrc}" alt="${memorialCopy.imageAlt}" loading="lazy" decoding="async">
           </div>
           <div class="global-memorial-copy">
             <div class="global-memorial-kicker">REMEMBER ・ PROTECT ・ ACT</div>
-            <h2 id="globalMemorialTitle">記住他，不只是記住一場悲劇。</h2>
-            <p class="global-memorial-lead">願下一個孩子，在傷害發生以前，就有人伸手接住。</p>
+            <h2 id="globalMemorialTitle">${memorialCopy.title}</h2>
+            <p class="global-memorial-lead">${memorialCopy.lead}</p>
             <div class="global-memorial-signoff">
-              <strong>護童行動聯盟</strong>
-              <span>案件紀錄｜司法旁聽｜兒少保護倡議</span>
+              <strong>${memorialCopy.brand}</strong>
+              <span>${memorialCopy.focus}</span>
             </div>
           </div>
         </div>
