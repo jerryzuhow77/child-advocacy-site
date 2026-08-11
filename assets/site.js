@@ -117,12 +117,23 @@ function syncLanguageSwitcher(activeLang){
   });
 }
 
+function syncLocalizedImages(isHans, root=document){
+  const images=[];
+  if(root.nodeType===Node.ELEMENT_NODE && root.matches && root.matches('img[data-hans-src]')) images.push(root);
+  root.querySelectorAll('img[data-hans-src]').forEach(img=>images.push(img));
+  images.forEach(img=>{
+    if(!img.dataset.hantSrc) img.dataset.hantSrc=img.getAttribute('src');
+    img.setAttribute('src',isHans ? img.dataset.hansSrc : img.dataset.hantSrc);
+  });
+}
+
 function setLang(l){
   const isHans=l==='zh-Hans';
   document.documentElement.lang=l;
 
   getConvertibleTextNodes().forEach(node=>convertTextNode(node,isHans));
   convertAttributes(isHans);
+  syncLocalizedImages(isHans);
 
   document.title=isHans ? cv(originalDocumentTitle) : originalDocumentTitle;
 
@@ -163,6 +174,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         } else if(n.nodeType===Node.ELEMENT_NODE){
           getConvertibleTextNodes(n).forEach(t=>convertTextNode(t,isHans));
           convertAttributes(isHans,n);
+          syncLocalizedImages(isHans,n);
         }
       });
     });
