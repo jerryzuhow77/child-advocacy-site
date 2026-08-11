@@ -6287,7 +6287,8 @@ html:has(.hearing-detail-gold){scroll-behavior:smooth}
 .hearing-page-toc>div strong{color:#2d4850;font-family:"Noto Serif TC","PMingLiU",serif;font-size:19px}
 .hearing-page-toc>a{display:flex;align-items:center;gap:7px;min-height:52px;padding:9px 10px;border-radius:12px;color:#425b5e;font-size:13px;font-weight:850;transition:background .2s ease,transform .2s ease,color .2s ease}
 .hearing-page-toc>a span{display:inline-flex;align-items:center;justify-content:center;flex:0 0 25px;width:25px;height:25px;border-radius:50%;background:#e6d9bf;color:#8b5c1d;font-family:Georgia,serif;font-size:10px}
-.hearing-page-toc>a:hover{transform:translateY(-2px);background:#fff;color:#8b5c1d}
+.hearing-page-toc>a:hover,.hearing-page-toc>a.is-current{transform:translateY(-2px);background:#fff;color:#8b5c1d;box-shadow:0 5px 14px rgba(63,70,66,.08)}
+.hearing-page-toc>a:focus-visible,.hearing-back-top:focus-visible{outline:3px solid rgba(224,171,79,.76);outline-offset:3px}
 .hearing-detail-gold [id^="hearing-"]{scroll-margin-top:92px}
 .hearing-sentence-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0 22px}
 .hearing-sentence-grid article{position:relative;padding:22px 22px 20px;border:1px solid rgba(154,105,32,.22);border-radius:17px;background:linear-gradient(145deg,#fffdf7,#f4eee2);box-shadow:0 9px 22px rgba(38,55,59,.07);overflow:hidden}
@@ -6344,5 +6345,5 @@ html:has(.hearing-detail-gold){scroll-behavior:smooth}
 
 /* 2026-08-11 — 首頁主標題「守護孩子的現在」莫蘭迪杏橘 */
 .morandi-tone .premium-home-hero .premium-hero-copy h1{
-  color:#dfa77e;
+  color:#DFA77E;
 }
