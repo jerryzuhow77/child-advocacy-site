@@ -163,6 +163,35 @@ linear-gradient(140deg,#050e1b,#0a2a49 58%,#172035);color:#fff;padding:38px 0 68
 .comic-pages{display:grid;gap:34px}.comic-page{scroll-margin-top:90px;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 12px 34px rgba(8,29,58,.07)}.comic-page-label{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:#0a1c32;color:#fff}.comic-page-label span{font-size:12px;letter-spacing:.12em;color:#e6c55a;font-weight:900}.comic-page-label b{font-size:14px}.comic-page-image{width:100%;padding:0;border:0;background:#101010;cursor:zoom-in;display:block}.comic-page-image img{display:block;width:100%;height:auto;max-height:none}.comic-page-caption{padding:12px 18px;color:var(--muted);font-size:13px}
 .comic-end-card{margin-top:42px;background:linear-gradient(135deg,#071b31,#113d67);color:#fff;border-radius:22px;padding:28px;display:flex;align-items:center;gap:22px}.comic-end-icon{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:#e7bd4c;color:#0d1d30;font-size:30px;flex:0 0 auto}.comic-end-card h3{margin:0 0 5px;font-size:23px}.comic-end-card p{margin:0 0 12px;color:#d8e5f1}
 .comic-lightbox figure{max-width:min(900px,88vw)}.comic-lightbox img{max-height:86vh}
+
+/* 2026-08-11 — 法庭漫畫第一、二集主標題燙金漸層 */
+.comic-reader-hero .comic-hero-copy h1{
+  color:#f0c96f;
+  text-shadow:0 1px 0 rgba(61,38,6,.36),0 5px 18px rgba(212,158,55,.18);
+}
+.comic-reader-hero .comic-hero-copy .comic-gold-summary{
+  color:#e7c36f;
+  font-weight:700;
+  text-shadow:0 1px 0 rgba(42,27,7,.45),0 4px 15px rgba(211,157,53,.16);
+}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .comic-reader-hero .comic-hero-copy h1{
+    background:linear-gradient(102deg,#a96b1d 0%,#f4d487 34%,#d89b37 63%,#fff1b7 84%,#b77924 100%);
+    background-clip:text;
+    -webkit-background-clip:text;
+    color:transparent;
+    -webkit-text-fill-color:transparent;
+    text-shadow:none;
+  }
+  .comic-reader-hero .comic-hero-copy .comic-gold-summary{
+    background:linear-gradient(100deg,#bd842e 0%,#f6dc98 35%,#d9a546 64%,#fff0bd 86%,#c28a32 100%);
+    background-clip:text;
+    -webkit-background-clip:text;
+    color:transparent;
+    -webkit-text-fill-color:transparent;
+    text-shadow:none;
+  }
+}
 .episode-two-hero{min-height:70vh;display:flex;align-items:center}.episode-two-box{max-width:760px;margin:20px auto 0;text-align:center;position:relative;padding:48px 30px}.episode-two-box .episode-number{position:static;display:inline-flex;margin-bottom:22px}.episode-two-box h1{font-size:clamp(38px,6vw,62px);color:#fff}.episode-two-box p{color:#d7e4f0;font-size:18px}.episode-actions.center{justify-content:center}
 
 @media(max-width:850px){
@@ -5453,7 +5482,7 @@ body.site-search-open{overflow:hidden}
 /* =====================================================================
    2026-08-10 — 社會案件導覽、總覽頁、案件互通
    ===================================================================== */
-.social-case-nav{position:relative;display:flex;align-items:center}.social-case-nav-toggle{appearance:none;border:0;background:transparent;position:relative;display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:45px;padding:7px 9px;border-radius:13px;color:#142a3b;font:inherit;font-size:14px;font-weight:880;cursor:pointer;transition:background .18s ease,transform .18s ease,box-shadow .18s ease}.social-case-nav-toggle::before{content:"";width:25px;height:25px;flex:0 0 25px;border-radius:50%;background:url("./brand/primary-logo-03.jpg") center/cover no-repeat;border:1.5px solid #e2c678;box-shadow:0 2px 7px rgba(8,35,63,.12)}.social-case-nav-toggle:hover,.social-case-nav.is-open .social-case-nav-toggle{background:#fff3d5;box-shadow:0 7px 18px rgba(81,61,26,.07);transform:translateY(-1px)}.social-case-nav.is-current .social-case-nav-toggle{color:#8a6118;background:#fff7e7}.social-case-nav-toggle i{font-style:normal;font-size:14px;transition:transform .18s ease}.social-case-nav.is-open .social-case-nav-toggle i{transform:rotate(180deg)}
+.social-case-nav{position:relative;display:flex;align-items:center}.social-case-nav-toggle{appearance:none;border:0;background:transparent;position:relative;display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:45px;padding:7px 9px;border-radius:13px;color:#3c5e62;font:inherit;font-size:14px;font-weight:880;cursor:pointer;transition:background .18s ease,transform .18s ease,box-shadow .18s ease}.social-case-nav-toggle::before{content:"";width:25px;height:25px;flex:0 0 25px;border-radius:50%;background:url("./brand/primary-logo-03.jpg") center/cover no-repeat;border:1.5px solid #e2c678;box-shadow:0 2px 7px rgba(8,35,63,.12)}.social-case-nav-toggle:hover,.social-case-nav.is-open .social-case-nav-toggle{background:#fff3d5;box-shadow:0 7px 18px rgba(81,61,26,.07);transform:translateY(-1px)}.social-case-nav.is-current .social-case-nav-toggle{color:#8a6118;background:#fff7e7}.social-case-nav-toggle i{font-style:normal;font-size:14px;transition:transform .18s ease}.social-case-nav.is-open .social-case-nav-toggle i{transform:rotate(180deg)}
 .social-case-nav-menu{display:none;position:absolute;z-index:400;top:calc(100% + 10px);left:50%;transform:translateX(-50%);width:min(660px,82vw);grid-template-columns:1fr 1fr;gap:0;padding:12px;border:1px solid #e4d6bd;border-radius:22px;background:rgba(255,253,248,.99);box-shadow:0 24px 60px rgba(8,35,63,.20);backdrop-filter:blur(14px)}.social-case-nav.is-open .social-case-nav-menu{display:grid}.social-case-nav-menu::before{content:"";position:absolute;top:-7px;left:50%;width:14px;height:14px;background:#fffdf8;border-left:1px solid #e4d6bd;border-top:1px solid #e4d6bd;transform:translateX(-50%) rotate(45deg)}.social-case-menu-column{padding:7px}.social-case-menu-column+.social-case-menu-column{border-left:1px solid #eadfce}header .nav .social-case-nav-menu a{display:block!important;height:auto!important;min-height:0!important;padding:12px 13px!important;border-radius:13px;transform:none!important}header .nav .social-case-nav-menu a::before,header .nav .social-case-nav-menu a::after{display:none!important}header .nav .social-case-nav-menu a:hover{background:#fff4dc!important;box-shadow:none!important}.social-case-menu-heading small{display:block;color:#a4751d;font-size:9px;letter-spacing:.14em;font-weight:950}.social-case-menu-heading strong{display:block;margin:2px 0;color:#0b3150;font-size:18px}.social-case-menu-heading span,.social-case-menu-item span{display:block;color:#768087;font-size:11px;line-height:1.55}.social-case-menu-item{margin-top:4px;border:1px solid #eee2cf;background:#fff}.social-case-menu-item b{display:block;color:#193951;font-size:13px}.social-case-menu-all{grid-column:1/-1!important;display:flex!important;align-items:center!important;justify-content:space-between!important;margin:5px 7px 0;padding:11px 14px!important;background:#082b4b!important;color:#fff7df!important;font-weight:900!important}header .nav .social-case-nav-menu .social-case-menu-all:hover{background:#0d3b63!important}
 .social-cases-page{background:#fffaf0}.social-cases-hero{position:relative;overflow:hidden;padding:76px 0;background:radial-gradient(circle at 15% 15%,rgba(211,165,55,.12),transparent 25%),linear-gradient(120deg,#071f37,#0b304e 58%,#143c55);color:#fff}.social-cases-hero::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(255,228,169,.10) 1px,transparent 1px);background-size:27px 27px;opacity:.36;pointer-events:none}.social-cases-hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,.92fr) minmax(340px,.68fr);gap:54px;align-items:center}.social-cases-hero h1{margin:8px 0 14px;font-family:"Noto Serif TC","Noto Serif CJK TC",serif;font-size:clamp(52px,7vw,84px);color:#fff7e3}.social-cases-lead{max-width:690px;margin:0;color:#d7e3e8;font-size:17px;line-height:1.9}.social-cases-hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 16px}.social-cases-hero-tags span{padding:6px 10px;border:1px solid rgba(236,203,123,.36);border-radius:999px;background:rgba(255,255,255,.05);color:#f0d18c;font-size:12px;font-weight:850}.social-cases-art-feature{margin:0;overflow:hidden;border:1px solid rgba(230,197,121,.46);border-radius:28px;background:#061929;box-shadow:0 28px 70px rgba(0,0,0,.30)}.social-cases-art-feature img{width:100%;aspect-ratio:1229/1536;object-fit:cover}.social-cases-art-feature figcaption{padding:16px 18px 18px;background:#071f36}.social-cases-art-feature small{display:block;color:#d3aa50;font-size:9px;letter-spacing:.16em;font-weight:900}.social-cases-art-feature strong{display:block;margin:3px 0;color:#fff0c9;font-size:15px}.social-cases-art-feature span{display:block;color:#aebfc9;font-size:11px;line-height:1.6}
 .social-cases-intro-strip{padding:0;background:#fff}.social-cases-intro-strip>.container{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid #e4dac8;border-top:0;border-radius:0 0 22px 22px;overflow:hidden;background:#fff}.social-cases-principle{display:grid;grid-template-columns:auto 1fr;gap:13px;padding:20px 22px}.social-cases-principle+.social-cases-principle{border-left:1px solid #eee3d3}.social-cases-principle>span{color:#c08d24;font-family:serif;font-size:26px;font-weight:900}.social-cases-principle strong{display:block;color:#0b3150}.social-cases-principle p{margin:2px 0 0;color:#738087;font-size:12px;line-height:1.6}.social-cases-directory{padding:72px 0;background:#fffaf0}.social-cases-heading{margin-bottom:26px}.social-case-feature-card{display:grid;grid-template-columns:minmax(300px,.8fr) minmax(0,1.2fr);overflow:hidden;border:1px solid #e4d8c4;border-radius:28px;background:#fff;box-shadow:0 18px 45px rgba(47,40,28,.08)}.social-case-feature-image{display:block;min-height:500px;background:#081f35}.social-case-feature-image img{width:100%;height:100%;object-fit:contain;background:linear-gradient(180deg,#081f35,#0e324d)}.social-case-feature-copy{align-self:center;padding:34px 38px}.social-case-status-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:#7d858a;font-size:12px;font-weight:800}.social-case-status{display:inline-flex;padding:5px 9px;border-radius:999px}.social-case-status.live{background:#e7f1ed;color:#23715f}.social-case-feature-copy h3{margin:13px 0 4px;color:#0b3150;font-family:"Noto Serif TC","Noto Serif CJK TC",serif;font-size:34px}.social-case-subtitle{margin:0 0 12px!important;color:#bd593e!important;font-size:20px!important;font-weight:900}.social-case-feature-copy>p{color:#67747c;line-height:1.8}.social-case-linked-records{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}.social-case-linked-records a{padding:16px;border:1px solid #e8dac0;border-radius:16px;background:#fffaf0}.social-case-linked-records a:hover{border-color:#d1a84d;background:#fff5dc}.social-case-linked-records small{display:block;color:#a7771c;font-size:10px;font-weight:900;letter-spacing:.08em}.social-case-linked-records strong{display:block;color:#14354d}.social-case-linked-records span{display:block;color:#7c8589;font-size:11px}
@@ -6197,3 +6226,930 @@ html[lang="zh-Hans"] .public-view-count strong{font-weight:700!important}
 .morandi-tone .page-hero,.morandi-tone .page-hero h1,.morandi-tone .page-hero h2,.morandi-tone .page-hero p,.morandi-tone .page-hero small{color:#eee8db}
 @media(max-width:900px){.home-advocacy-feature{grid-template-columns:1fr}.home-advocacy-art img{min-height:0;max-height:620px}.about-journey-art-section{padding-bottom:54px}}
 @media(max-width:620px){.home-advocacy-feature .home-advocacy-grid{grid-template-columns:1fr}.home-advocacy-art figcaption{padding:50px 17px 17px}.about-journey-art{border-radius:20px}.about-journey-art figcaption{padding:76px 20px 22px}.about-journey-art span{font-size:13px}}
+/* 2026-08-11 — 子網頁燙金與深橘金文字系統 */
+.warm-gold-tone{color:#755b36}
+.warm-gold-tone :where(h1,h2,h3,h4):not(.court-library-hero *):not(.about-art-hero *):not(.page-hero *):not(.about-journey-art *){color:#8c5a18;text-shadow:0 1px 0 rgba(255,240,201,.72)}
+.warm-gold-tone :where(p,li,blockquote):not(.court-library-hero *):not(.about-art-hero *):not(.page-hero *):not(.about-journey-art *){color:#755b36}
+.warm-gold-tone :where(small,.meta,time):not(.court-library-hero *):not(.about-art-hero *):not(.page-hero *):not(.about-journey-art *){color:#a26f2b}
+.warm-gold-tone a:not(.btn):not(.read-btn):not(.source-btn){color:#95611e}
+.warm-gold-tone .court-library-hero,
+.warm-gold-tone .about-art-hero,
+.warm-gold-tone .page-hero{color:#f0d18b}
+.warm-gold-tone .court-library-hero :where(h1,h2,h3,h4),
+.warm-gold-tone .about-art-hero :where(h1,h2,h3,h4),
+.warm-gold-tone .page-hero :where(h1,h2,h3,h4){color:#f2cc74;text-shadow:0 1px 0 rgba(61,38,6,.34)}
+.warm-gold-tone .court-library-hero :where(p,small,.court-kicker),
+.warm-gold-tone .about-art-hero :where(p,small,.about-art-kicker),
+.warm-gold-tone .page-hero :where(p,small){color:#e7c98d}
+.warm-gold-tone .about-journey-art small{color:#d3aa58}
+.warm-gold-tone .about-journey-art strong{color:#f0cf85}
+.warm-gold-tone .about-journey-art span{color:#dfc99b}
+/* 2026-08-11 — 剴剴案：看見警訊・立即行動・持續守護 */
+.kaikai-memory-strip-section{padding:24px 0 52px;background:linear-gradient(180deg,#fffaf0 0%,#f4efe5 100%)}
+.kaikai-memory-strip{display:grid;grid-template-columns:minmax(245px,.78fr) minmax(0,1.72fr);gap:28px;align-items:stretch;padding:28px;border:1px solid rgba(169,125,54,.28);border-radius:24px;background:linear-gradient(135deg,rgba(255,253,247,.98),rgba(236,229,215,.96));box-shadow:0 16px 36px rgba(37,55,59,.09)}
+.kaikai-memory-intro{display:flex;flex-direction:column;justify-content:center;padding:6px 10px 6px 4px}
+.kaikai-memory-intro small{color:#a3732d;font-size:11px;font-weight:900;letter-spacing:.16em}
+.kaikai-memory-intro strong{display:block;margin-top:9px;color:#294650;font-family:"Noto Serif TC","PMingLiU",serif;font-size:clamp(22px,2.5vw,31px);line-height:1.35}
+.kaikai-memory-intro span{display:block;margin-top:10px;color:#6b7069;font-size:14px;line-height:1.75}
+.kaikai-memory-icons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.kaikai-memory-icons figure{position:relative;display:grid;grid-template-rows:auto 1fr;justify-items:center;gap:10px;min-width:0;margin:0;padding:18px 14px 16px;border:1px solid rgba(49,76,82,.12);border-radius:18px;background:rgba(255,255,255,.76);text-align:center;box-shadow:0 7px 16px rgba(38,57,61,.06)}
+.kaikai-memory-icon-shell{display:flex;align-items:center;justify-content:center;width:76px;height:76px;border-radius:50%;background:linear-gradient(145deg,#e7e1d5,#faf6ed);box-shadow:inset 0 0 0 1px rgba(166,122,52,.18),0 7px 16px rgba(38,57,61,.08)}
+.kaikai-memory-icon-shell img{width:58px;height:58px;object-fit:contain}
+.kaikai-memory-icons figcaption{display:flex;flex-direction:column;align-items:center}
+.kaikai-memory-icons figcaption small{color:#a3732d;font-size:9px;font-weight:900;letter-spacing:.12em}
+.kaikai-memory-icons figcaption strong{margin-top:3px;color:#304d54;font-family:"Noto Serif TC","PMingLiU",serif;font-size:17px}
+.kaikai-memory-icons figcaption span{margin-top:5px;color:#6d746e;font-size:11px;line-height:1.55}
+@media(max-width:900px){.kaikai-memory-strip{grid-template-columns:1fr}.kaikai-memory-intro{padding:2px 4px}.kaikai-memory-icons{gap:10px}}
+@media(max-width:680px){.kaikai-memory-strip-section{padding:16px 0 40px}.kaikai-memory-strip{padding:20px 16px;border-radius:19px}.kaikai-memory-icons{grid-template-columns:1fr}.kaikai-memory-icons figure{grid-template-columns:64px 1fr;grid-template-rows:auto;justify-items:start;align-items:center;padding:13px;text-align:left}.kaikai-memory-icon-shell{width:60px;height:60px}.kaikai-memory-icon-shell img{width:47px;height:47px}.kaikai-memory-icons figcaption{align-items:flex-start}.kaikai-memory-icons figcaption span{font-size:12px}}
+/* 2026-08-11 — 燙金漸層字與剴剴案節制動態效果 */
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .warm-gold-tone :where(h1,h2,h3,h4):not(.court-library-hero *):not(.about-art-hero *):not(.page-hero *):not(.about-journey-art *){
+    background:linear-gradient(105deg,#7f4b12 0%,#b77722 34%,#e0ad4e 58%,#9a5d16 100%);
+    background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+    text-shadow:none
+  }
+  .warm-gold-tone .court-library-hero :where(h1,h2,h3,h4),
+  .warm-gold-tone .about-art-hero :where(h1,h2,h3,h4),
+  .warm-gold-tone .page-hero :where(h1,h2,h3,h4){
+    background:linear-gradient(100deg,#b87925 0%,#f1ce7b 42%,#d59a39 72%,#fff0b5 100%);
+    background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+    text-shadow:none
+  }
+}
+.kaikai-memory-icons figure{overflow:hidden;opacity:0;animation:kaikai-card-fade .72s ease-out forwards;transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease}
+.kaikai-memory-icons figure:nth-child(1){animation-delay:.08s}
+.kaikai-memory-icons figure:nth-child(2){animation-delay:.24s}
+.kaikai-memory-icons figure:nth-child(3){animation-delay:.40s}
+.kaikai-memory-icons figure::after{content:"";position:absolute;inset:-40% auto -40% -55%;width:34%;transform:rotate(16deg);background:linear-gradient(90deg,transparent,rgba(225,178,83,.28),transparent);animation:kaikai-gold-sheen 7.2s ease-in-out infinite;pointer-events:none}
+.kaikai-memory-icons figure:nth-child(2)::after{animation-delay:1.05s}
+.kaikai-memory-icons figure:nth-child(3)::after{animation-delay:2.1s}
+.kaikai-memory-icons figure:hover{transform:translateY(-5px);border-color:rgba(171,124,48,.34);box-shadow:0 14px 28px rgba(38,57,61,.12)}
+.kaikai-memory-icon-shell{animation:kaikai-icon-breathe 4.8s ease-in-out infinite}
+.kaikai-memory-icons figure:nth-child(2) .kaikai-memory-icon-shell{animation-delay:.8s}
+.kaikai-memory-icons figure:nth-child(3) .kaikai-memory-icon-shell{animation-delay:1.6s}
+@keyframes kaikai-card-fade{from{opacity:0}to{opacity:1}}
+@keyframes kaikai-icon-breathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.025)}}
+@keyframes kaikai-gold-sheen{0%,68%{left:-55%;opacity:0}74%{opacity:1}88%{left:125%;opacity:0}100%{left:125%;opacity:0}}
+@media(prefers-reduced-motion:reduce){
+  .kaikai-memory-icons figure,.kaikai-memory-icons figure::after,.kaikai-memory-icon-shell{animation:none!important;opacity:1!important;transform:none!important}
+  .kaikai-memory-icons figure{transition:none}
+}
+/* 2026-08-11 — 土城兩歲男童命案旁聽紀錄頁首燙金漸層 */
+.hearing-detail-gold .hearing-hero h1{color:#efc66d;text-shadow:0 1px 0 rgba(55,34,8,.34)}
+.hearing-detail-gold .hearing-hero p{color:#e8cc92}
+.hearing-detail-gold .hearing-hero .article-back{color:#dca94b!important}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .hearing-detail-gold .hearing-hero h1{
+    background:linear-gradient(102deg,#ad6f1f 0%,#f2cf7d 36%,#d89b37 67%,#fff0b4 100%);
+    background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+    text-shadow:none
+  }
+}
+@media(max-width:680px){.hearing-detail-gold .hearing-hero h1{font-size:clamp(31px,9vw,44px);line-height:1.22}}
+/* 2026-08-11 — 土城旁聽紀錄長篇閱讀優化 */
+html:has(.hearing-detail-gold){scroll-behavior:smooth}
+.hearing-reading-progress{position:fixed;top:0;left:0;right:0;height:4px;z-index:40;background:rgba(8,29,58,.12);pointer-events:none}
+.hearing-reading-progress span{display:block;width:100%;height:100%;transform:scaleX(0);transform-origin:left center;background:linear-gradient(90deg,#9b5d18,#e4ad49 55%,#ffe3a0);box-shadow:0 0 10px rgba(218,164,68,.46);will-change:transform}
+.hearing-page-toc{display:grid;grid-template-columns:minmax(150px,1.1fr) repeat(4,minmax(115px,1fr));gap:9px;margin:24px 0 34px;padding:12px;border:1px solid rgba(159,111,38,.22);border-radius:18px;background:linear-gradient(135deg,#fffdf8,#f2ede4);box-shadow:0 10px 24px rgba(38,55,59,.07)}
+.hearing-page-toc>div{display:flex;flex-direction:column;justify-content:center;padding:8px 11px}
+.hearing-page-toc>div small{color:#a06b25;font-size:9px;font-weight:900;letter-spacing:.14em}
+.hearing-page-toc>div strong{color:#2d4850;font-family:"Noto Serif TC","PMingLiU",serif;font-size:19px}
+.hearing-page-toc>a{display:flex;align-items:center;gap:7px;min-height:52px;padding:9px 10px;border-radius:12px;color:#425b5e;font-size:13px;font-weight:850;transition:background .2s ease,transform .2s ease,color .2s ease}
+.hearing-page-toc>a span{display:inline-flex;align-items:center;justify-content:center;flex:0 0 25px;width:25px;height:25px;border-radius:50%;background:#e6d9bf;color:#8b5c1d;font-family:Georgia,serif;font-size:10px}
+.hearing-page-toc>a:hover,.hearing-page-toc>a.is-current{transform:translateY(-2px);background:#fff;color:#8b5c1d;box-shadow:0 5px 14px rgba(63,70,66,.08)}
+.hearing-page-toc>a:focus-visible,.hearing-back-top:focus-visible{outline:3px solid rgba(224,171,79,.76);outline-offset:3px}
+.hearing-detail-gold [id^="hearing-"]{scroll-margin-top:92px}
+.hearing-sentence-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0 22px}
+.hearing-sentence-grid article{position:relative;padding:22px 22px 20px;border:1px solid rgba(154,105,32,.22);border-radius:17px;background:linear-gradient(145deg,#fffdf7,#f4eee2);box-shadow:0 9px 22px rgba(38,55,59,.07);overflow:hidden}
+.hearing-sentence-grid article::after{content:"";position:absolute;width:110px;height:110px;right:-50px;bottom:-54px;border-radius:50%;background:rgba(197,146,62,.09)}
+.hearing-sentence-grid small{color:#9d6a28;font-size:11px;font-weight:900;letter-spacing:.12em}
+.hearing-sentence-grid h3{margin:2px 0 5px;font-size:20px}
+.hearing-sentence-grid strong{display:block;color:#2c4a52;font-family:"Noto Serif TC","PMingLiU",serif;font-size:clamp(23px,3vw,31px);line-height:1.3}
+.hearing-sentence-grid p{position:relative;z-index:1;margin:9px 0 0!important;color:#626d68;font-size:13px;line-height:1.7}
+.hearing-position{padding:14px 16px;border-left:3px solid #b98734;border-radius:0 11px 11px 0;background:#f8f5ee}
+.hearing-role{display:inline-flex;align-items:center;margin:0 9px 3px 0;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:900;letter-spacing:.03em;vertical-align:middle}
+.hearing-role.defense{background:#e7eef0;color:#355a63}
+.hearing-role.prosecution{background:#f0e2d1;color:#8a551e}
+.hearing-role.court{background:#e9e2ca;color:#6d5a20}
+.hearing-back-top{position:fixed;right:22px;bottom:22px;z-index:25;display:flex;flex-direction:column;align-items:center;justify-content:center;width:54px;height:54px;padding:0;border:1px solid rgba(229,184,96,.55);border-radius:50%;background:linear-gradient(145deg,#0b2b46,#123d5d);box-shadow:0 10px 24px rgba(8,29,58,.24);color:#e9c16f;font-size:9px;font-weight:900;letter-spacing:.08em;opacity:0;visibility:hidden;transform:translateY(12px);transition:opacity .22s ease,visibility .22s ease,transform .22s ease;cursor:pointer}
+.hearing-back-top span{font-size:20px;line-height:1}.hearing-back-top.is-visible{opacity:1;visibility:visible;transform:translateY(0)}.hearing-back-top:hover{background:linear-gradient(145deg,#123d5d,#1b5275)}
+.hearing-detail-gold .article-body>p{margin-bottom:19px}
+@media(max-width:900px){.hearing-page-toc{grid-template-columns:repeat(2,minmax(0,1fr))}.hearing-page-toc>div{grid-column:1/-1}.hearing-sentence-grid{gap:12px}}
+@media(max-width:620px){
+  .hearing-detail-gold .hearing-hero{padding:42px 0 38px}
+  .hearing-detail-gold .hearing-hero h1{line-height:1.18;margin-bottom:14px}
+  .hearing-detail-gold .article-body{font-size:16px;line-height:1.86}
+  .hearing-detail-gold .article-body>p{margin-bottom:22px}
+  .hearing-page-toc{grid-template-columns:1fr;margin:18px 0 28px;padding:10px}.hearing-page-toc>div{grid-column:auto}.hearing-page-toc>a{min-height:45px}
+  .hearing-sentence-grid{grid-template-columns:1fr}.hearing-sentence-grid article{padding:18px}
+  .hearing-position{padding:13px 14px}
+  .hearing-back-top{right:14px;bottom:14px;width:49px;height:49px}
+}
+@media(prefers-reduced-motion:reduce){html:has(.hearing-detail-gold){scroll-behavior:auto}.hearing-page-toc>a,.hearing-back-top{transition:none}}
+/* 2026-08-11 — 土城旁聽紀錄手機版莫蘭迪淺色底 */
+@media(max-width:620px){
+  .hearing-detail-gold{background:#e9e7df}
+  .hearing-detail-gold .hearing-connection{background:#ebe8df}
+  .hearing-detail-gold .hearing-article-section{background:linear-gradient(180deg,#f3f0e9 0%,#ece9e1 100%)}
+  .hearing-detail-gold .hearing-page-toc{border-color:rgba(120,115,99,.20);background:linear-gradient(145deg,#f1eee6,#e5e2d8);box-shadow:0 9px 20px rgba(58,65,62,.07)}
+  .hearing-detail-gold .hearing-page-toc>a{background:rgba(247,244,237,.62)}
+  .hearing-detail-gold .hearing-sentence-grid article{border-color:rgba(129,119,93,.20);background:linear-gradient(145deg,#f6f2e9,#e9e4d9)}
+  .hearing-detail-gold .hearing-position{background:#e9e7df;border-left-color:#a98d59}
+  .hearing-detail-gold .article-note{border-color:#cbc8bc;background:#e5e4dc;color:#58615e}
+  .hearing-detail-gold .visual-related{background:#e4e6df}
+  .hearing-detail-gold .visual-related-card{background:#f2f0e9;border-color:rgba(98,112,104,.16)}
+}
+/* 2026-08-11 — 全站手機版莫蘭迪淺色背景 */
+@media(max-width:620px){
+  html{background:#e7e5de}
+  body,main{background-color:#e9e7df}
+  header{background:#f1eee7;border-bottom-color:#d2d0c7}
+  body section:not([class*="hero"]):not(.about-future-section){background-color:#eeece5}
+  .page-hero,.hero,.home-hero,.about-art-hero,.court-library-hero,.social-cases-hero,.case-profile-hero,.hearing-hero{background-color:#0b304e}
+  .about-future-section,footer{background-color:#082d4c}
+  .article-shell,.container{--mobile-morandi-surface:#f3f0e9}
+  .article-note{border-color:#cbc8bd;background:#e5e4dc}
+  .record-card,.activity-card,.episode-library-card,.case-record-card,.social-case-feature-card{border-color:#d4d1c7}
+}
+
+/* 2026-08-11 — 首頁主標題「守護孩子的現在」中國傳統退紅 */
+body.art-site.morandi-tone .premium-home-hero .premium-hero-copy h1{
+  color:#E6B8A8!important;
+}
+
+/* ============================================================
+   2026-08-11 — 微調式雅色方案
+   原設計 85% + 中國傳統色 7.5% + 莫蘭迪色 7.5%
+   僅調整狀態、細框、標籤、紙雕層次與手機淡底。
+   ============================================================ */
+:root{
+  --micro-indigo:#31566f;
+  --micro-crab:#78918f;
+  --micro-impatiens:#b387a4;
+  --micro-lilac:#b7a9c0;
+  --micro-smoke:#88817c;
+  --micro-flesh:#e5b4aa;
+  --micro-fog-rose:#d8bec0;
+  --micro-smoke-blue:#a8b8c0;
+  --micro-sage:#b4bdad;
+  --micro-paper:#f4eee6;
+  --micro-apricot:#dfa77e;
+  --micro-warm-gold:#b3935f;
+  --micro-blue-green:#3e5961;
+}
+
+/* 全站導覽：保留米白導覽，只柔化互動狀態。 */
+header .nav>nav>a:hover,
+.social-case-nav-toggle:hover,
+.social-case-nav.is-open .social-case-nav-toggle{
+  background:rgba(229,180,170,.22)!important;
+  color:var(--micro-indigo)!important;
+  box-shadow:0 7px 18px rgba(49,86,111,.07)!important;
+}
+header .nav>nav>a[aria-current="page"],
+.social-case-nav.is-current .social-case-nav-toggle{
+  color:var(--micro-indigo)!important;
+  background:rgba(229,180,170,.28)!important;
+  box-shadow:inset 0 -2px 0 rgba(49,86,111,.30)!important;
+}
+.social-case-nav-menu{
+  border-color:rgba(136,129,124,.28)!important;
+}
+.social-case-nav-menu::before{
+  border-color:rgba(136,129,124,.28)!important;
+}
+header .nav .social-case-nav-menu .social-case-menu-heading,
+header .nav .social-case-nav-menu .social-case-menu-item{
+  border-left:2px solid rgba(179,147,95,.48)!important;
+}
+header .nav .social-case-nav-menu a:hover{
+  background:rgba(229,180,170,.17)!important;
+}
+header :where(a,button):focus-visible,
+main :where(a,button):focus-visible{
+  outline:3px solid rgba(229,180,170,.72);
+  outline-offset:3px;
+}
+
+/* 淺色子頁 Hero 的說明文字改用深灰青，避免淡金字對比不足。 */
+.warm-gold-tone .page-hero p,
+.warm-gold-tone .court-library-hero p{
+  color:#596967!important;
+}
+.warm-gold-tone .page-hero :where(.art-eyebrow,small),
+.warm-gold-tone .court-library-hero .court-kicker{
+  color:#657472!important;
+}
+
+/* 首頁：保留深藍、米白與暖金，雅色只出現在紙雕及卡片上框。 */
+body.art-site.morandi-tone .premium-home-hero .premium-hero-copy h1{
+  color:var(--micro-apricot)!important;
+}
+.premium-home-hero .premium-hero-lead{
+  color:#e8e4dc!important;
+}
+.premium-home-hero::before{
+  border-color:rgba(120,145,143,.14)!important;
+  box-shadow:0 0 0 28px rgba(229,180,170,.07),0 0 0 58px rgba(183,169,192,.06)!important;
+}
+.premium-home-hero::after{
+  border-color:rgba(229,180,170,.09)!important;
+  box-shadow:0 0 0 32px rgba(120,145,143,.10)!important;
+}
+.premium-home-hero .premium-floating-tag{
+  border-color:rgba(229,180,170,.38)!important;
+}
+#news-focus{
+  border-top:3px solid rgba(229,180,170,.88)!important;
+}
+#news-hearing .home-news-card{
+  border-top:3px solid rgba(120,145,143,.82)!important;
+}
+#news-flash .home-news-card{
+  border-top:3px solid rgba(49,86,111,.82)!important;
+}
+#news-activity .home-news-card,
+#news-advocacy .home-advocacy-grid>a{
+  border-top:3px solid rgba(180,189,173,.92)!important;
+}
+#news-progress .home-progress-card{
+  border-top:3px solid rgba(183,169,192,.88)!important;
+}
+.home-news-tabs a:hover,
+.home-news-tabs a.is-active{
+  background:var(--micro-indigo)!important;
+  border-color:var(--micro-indigo)!important;
+}
+
+/* 關於我們：肉粉與蟹青僅用在圈線、標籤與時間軸。 */
+.about-page .about-art-copy>p{
+  color:#596967!important;
+}
+.about-page .about-pill,
+.about-page .about-hero-tags span{
+  border-color:rgba(229,180,170,.56)!important;
+}
+.about-page .about-hero-tags span:hover{
+  background:rgba(229,180,170,.25)!important;
+  color:var(--micro-indigo)!important;
+}
+.about-page .about-visual-ring{
+  border-color:rgba(120,145,143,.54)!important;
+  box-shadow:0 0 0 22px rgba(229,180,170,.12)!important;
+}
+.about-page .about-timeline::before{
+  background:linear-gradient(var(--micro-flesh),var(--micro-crab))!important;
+}
+.about-page .about-timeline article:nth-child(odd) .timeline-dot{
+  background:var(--micro-flesh)!important;
+  box-shadow:0 0 0 2px rgba(49,86,111,.32)!important;
+}
+.about-page .about-timeline article:nth-child(even) .timeline-dot{
+  background:var(--micro-crab)!important;
+  box-shadow:0 0 0 2px rgba(229,180,170,.56)!important;
+}
+.about-page .about-timeline article.highlight>div:last-child{
+  outline:1px solid rgba(179,135,164,.52);
+  outline-offset:3px;
+}
+.about-page .case-record-card,
+.about-page .about-stat{
+  border-top:3px solid rgba(229,180,170,.52)!important;
+}
+
+/* 社會案件總覽：深藍主視覺不動，只增加蟹青紙層與淡煙藍邊緣。 */
+.social-cases-page .social-cases-hero{
+  box-shadow:inset 0 -3px 0 rgba(120,145,143,.58);
+}
+.social-cases-page .social-cases-paper-poster-frame,
+.social-cases-page .social-cases-art-feature{
+  border-color:rgba(120,145,143,.54)!important;
+}
+.social-cases-page .social-case-feature-card{
+  border-color:rgba(168,184,192,.54)!important;
+  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;
+}
+.social-cases-page .social-case-feature-card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(120,145,143,.78)!important;
+  box-shadow:0 20px 48px rgba(49,86,111,.12)!important;
+}
+.social-cases-page .social-case-status.live{
+  background:rgba(120,145,143,.17)!important;
+  color:#365f5c!important;
+}
+.social-cases-page .social-case-status.appeal{
+  background:rgba(183,169,192,.22)!important;
+  color:#695a73!important;
+}
+.social-cases-page .social-cases-art-direction{
+  background:linear-gradient(180deg,rgba(168,184,192,.18),#eef1ef)!important;
+}
+
+/* 個別案件：正文以宣紙米白承接，傷害內容不使用粉紫大色塊。 */
+.case-profile-page .case-profile-main-section{
+  background:linear-gradient(180deg,#fffdf9 0%,var(--micro-paper) 100%)!important;
+}
+.case-profile-page .case-profile-toc-inner,
+.case-profile-page .case-date-card,
+.case-profile-page .case-connection-section{
+  border-color:rgba(120,145,143,.40)!important;
+}
+.case-profile-page .case-date-card{
+  background:rgba(244,238,230,.76)!important;
+}
+.case-profile-page .case-date-card span{
+  color:#b87555!important;
+}
+.case-profile-page .case-judgment-card{
+  border-color:rgba(168,184,192,.46)!important;
+  border-top-color:var(--micro-indigo)!important;
+  background:rgba(168,184,192,.13)!important;
+}
+.case-profile-page .case-judgment-card.coral{
+  border-top-color:#b87555!important;
+  background:#fffaf7!important;
+}
+.case-profile-page .case-emphasis-card,
+.case-profile-page .case-fact-note{
+  border-color:rgba(180,189,173,.72)!important;
+  background:rgba(180,189,173,.13)!important;
+}
+.case-profile-page .case-disclaimer,
+.case-profile-page .article-note{
+  border-top:2px solid rgba(136,129,124,.45)!important;
+}
+
+/* 旁聽紀錄：丁香與霧玫瑰只用在卡片、標籤及返回狀態。 */
+.record-list .record-card{
+  border-top:3px solid rgba(183,169,192,.82)!important;
+}
+.hearing-detail-gold .article-cover{
+  border:1px solid rgba(183,169,192,.66)!important;
+  outline:1px solid rgba(179,147,95,.58);
+  outline-offset:4px;
+}
+.hearing-detail-gold .hearing-hero{
+  background:
+    radial-gradient(circle at 82% 24%,rgba(120,145,143,.18),transparent 28%),
+    linear-gradient(125deg,#102a3d,#31566f)!important;
+}
+.hearing-detail-gold .hearing-hero::before{
+  background-image:radial-gradient(circle at 14px 14px,rgba(244,238,230,.09) 0 1px,transparent 1.4px)!important;
+  opacity:.48!important;
+}
+.hearing-detail-gold .hearing-hero p{
+  color:#e8ddd0!important;
+}
+.hearing-detail-gold .article-back{
+  border-color:rgba(229,180,170,.72)!important;
+  background:rgba(229,180,170,.22)!important;
+  color:var(--micro-indigo)!important;
+}
+.hearing-detail-gold .article-chip{
+  border-color:rgba(183,169,192,.56)!important;
+  background:rgba(183,169,192,.16)!important;
+}
+.hearing-detail-gold .hearing-role.defense{
+  background:rgba(183,169,192,.35)!important;
+  color:#544764!important;
+}
+.hearing-detail-gold .hearing-role.prosecution{
+  background:rgba(216,190,192,.50)!important;
+  color:#744f57!important;
+}
+.hearing-detail-gold .hearing-role.court{
+  background:rgba(120,145,143,.27)!important;
+  color:#365b59!important;
+}
+.hearing-detail-gold .hearing-page-toc>a:nth-of-type(odd) span{
+  background:rgba(183,169,192,.38)!important;
+  color:#5b4d67!important;
+}
+.hearing-detail-gold .hearing-page-toc>a:nth-of-type(even) span{
+  background:rgba(120,145,143,.28)!important;
+  color:#365b59!important;
+}
+.hearing-detail-gold .article-note{
+  border-color:rgba(136,129,124,.40)!important;
+  background:rgba(136,129,124,.11)!important;
+}
+
+/* 法庭漫畫：鳳仙紫為集數識別，丁香只做細框與陰影。 */
+.court-library-hero{
+  box-shadow:inset 0 -3px 0 rgba(179,135,164,.46);
+}
+.episode-library-card,
+.comic-intro-card,
+.comic-page{
+  border-color:rgba(183,169,192,.62)!important;
+}
+.episode-library-card:hover,
+.comic-page:hover{
+  box-shadow:0 18px 40px rgba(179,135,164,.15)!important;
+}
+.episode-number,
+.comic-series-label,
+.comic-page-label{
+  background:var(--micro-impatiens)!important;
+  color:#fffaf8!important;
+}
+.episode-library .read-btn,
+.comic-reader-wrap .read-btn{
+  background:var(--micro-indigo)!important;
+  color:#fff!important;
+}
+.episode-library .source-btn,
+.comic-reader-wrap .source-btn{
+  border-color:rgba(120,145,143,.68)!important;
+}
+
+/* 活動與相簿：鼠尾草灰、肉粉只出現在日期、分類與照片細框。 */
+.activity-list .activity-card{
+  border-top:3px solid rgba(180,189,173,.92)!important;
+}
+.activity-card .meta,
+.activity-card .datebox small,
+.activity-article .eyebrow2{
+  color:#667565!important;
+}
+.activity-card:hover .activity-card-copy{
+  background:rgba(229,180,170,.09)!important;
+}
+.activity-article .tag-pill,
+.activity-article .album-jump{
+  border-color:rgba(120,145,143,.54)!important;
+  background:rgba(229,180,170,.14)!important;
+}
+.album-index-card,
+.album-photo-card{
+  border-color:rgba(216,190,192,.64)!important;
+}
+.album-index-card:hover,
+.album-photo-card:hover{
+  box-shadow:0 18px 38px rgba(216,190,192,.18)!important;
+}
+.album-count,
+.album-photo-card figcaption{
+  color:var(--micro-smoke)!important;
+}
+.album-hero .art-eyebrow{
+  color:#526966!important;
+}
+.lightbox{
+  background:rgba(15,25,34,.94)!important;
+}
+
+/* 官方社群：保留平台原色與圖片，只以不同淡色細框辨識。 */
+.social-page-hero{
+  background:
+    radial-gradient(circle at 82% 18%,rgba(179,135,164,.16),transparent 25%),
+    radial-gradient(circle at 12% 75%,rgba(229,180,170,.14),transparent 28%),
+    linear-gradient(125deg,#fffdf8,#fff6e7 57%,#f1e7d4)!important;
+}
+.social-platform-card#instagram{
+  border-color:rgba(216,190,192,.82)!important;
+}
+.social-platform-card#threads{
+  border-color:rgba(136,129,124,.54)!important;
+}
+.social-platform-card#facebook{
+  border-color:rgba(168,184,192,.82)!important;
+}
+.social-platform-card:hover{
+  box-shadow:0 18px 42px rgba(179,135,164,.12)!important;
+}
+
+/* 手機版：宣紙米白底、白卡片、靛藍按鈕與肉粉操作狀態。 */
+@media(max-width:620px){
+  html,
+  body,
+  main{
+    background-color:var(--micro-paper)!important;
+  }
+  header{
+    background:rgba(244,238,230,.97)!important;
+    border-bottom-color:rgba(136,129,124,.25)!important;
+  }
+  body section:not([class*="hero"]):not(.about-future-section){
+    background-color:var(--micro-paper);
+  }
+  body section:not([class*="hero"]):not(.about-future-section):nth-of-type(even){
+    background-color:#f6efea;
+  }
+  :where(.record-card,.activity-card,.album-index-card,.album-photo-card,.episode-library-card,.case-record-card,.social-case-feature-card,.social-platform-card){
+    background:#fff!important;
+  }
+  header .nav>nav>a[aria-current="page"],
+  .social-case-nav.is-current .social-case-nav-toggle{
+    background:rgba(229,180,170,.34)!important;
+  }
+  :where(.btn.art-primary,.read-btn,.home-news-primary){
+    background:var(--micro-indigo)!important;
+    color:#fff!important;
+  }
+  .hearing-back-top{
+    border-color:rgba(49,86,111,.28)!important;
+    background:var(--micro-flesh)!important;
+    color:var(--micro-indigo)!important;
+  }
+  .premium-home-hero::before,
+  .premium-home-hero::after,
+  .social-cases-hero::after{
+    opacity:.70;
+  }
+}
+/* ===== Four-language typography, rhythm and switcher ===== */
+:root{
+  --site-font:"Noto Sans TC","Noto Sans CJK TC","PingFang TC","Microsoft JhengHei","Noto Sans",Arial,sans-serif;
+  --site-body-size:16px;
+  --site-body-leading:1.75;
+  --site-display-size:clamp(2.35rem,4.3vw,3.75rem);
+}
+html[lang="zh-Hant"]{
+  --site-font:"Noto Sans TC","Noto Sans CJK TC","Source Han Sans TC","PingFang TC","Microsoft JhengHei","Noto Sans",Arial,sans-serif;
+}
+html[lang="zh-Hans"]{
+  --site-font:"Noto Sans SC","Noto Sans CJK SC","Source Han Sans SC","PingFang SC","Microsoft YaHei","Noto Sans",Arial,sans-serif;
+}
+html[lang="en"]{
+  --site-font:"Noto Sans","Noto Sans TC","Noto Sans CJK TC",Arial,"Helvetica Neue",sans-serif;
+  --site-display-size:clamp(2.25rem,3.8vw,3.15rem);
+}
+html[lang="ja"]{
+  --site-font:"Noto Sans JP","Noto Sans CJK JP","Hiragino Sans","Yu Gothic UI","Yu Gothic","Noto Sans",sans-serif;
+  --site-display-size:clamp(2.2rem,3.9vw,3.3rem);
+}
+
+/* All four languages use the same Noto Sans visual family and standard weights. */
+html[lang] body,
+html[lang] body :where(h1,h2,h3,h4,h5,h6,p,a,button,input,select,textarea,label,span,strong,b,small,li,dt,dd,time,figcaption,blockquote,table,th,td,div,section,article,aside,nav){
+  font-family:var(--site-font)!important;
+}
+html[lang] body *::before,
+html[lang] body *::after{
+  font-family:var(--site-font)!important;
+}
+html[lang] body{
+  font-size:var(--site-body-size);
+  line-height:var(--site-body-leading);
+  font-weight:400;
+  letter-spacing:0;
+  font-synthesis:none;
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+}
+html[lang] :where(h1,h2,h3,h4,h5,h6){
+  margin-block-start:0;
+  text-wrap:balance;
+  overflow-wrap:break-word;
+}
+html[lang] :where(h1,h2),
+html[lang] :where(h1,h2) :where(strong,b,span){
+  font-weight:800!important;
+}
+html[lang] :where(h3,h4,h5,h6),
+html[lang] :where(h3,h4,h5,h6) :where(strong,b,span){
+  font-weight:700!important;
+}
+html[lang] h1{line-height:1.16!important}
+html[lang] h2{line-height:1.28!important}
+html[lang] h3{line-height:1.38!important}
+html[lang] :where(h4,h5,h6){line-height:1.45!important}
+html[lang] :where(strong,b,button,.btn,.read-btn,.outline-btn,.source-btn,.article-back,.meta,.art-eyebrow,small){
+  font-weight:700!important;
+}
+html[lang] :where(h1,h2) :where(strong,b,span){font-weight:800!important}
+html[lang] :where(h3,h4,h5,h6) :where(strong,b,span){font-weight:700!important}
+html[lang] :where(p,li,dt,dd,blockquote,figcaption,th,td){
+  overflow-wrap:break-word;
+}
+html[lang="en"] :where(p,li,dt,dd,blockquote,figcaption,th,td){hyphens:auto}
+html[lang="ja"] :where(p,li,dt,dd,blockquote,figcaption,th,td){line-break:strict;word-break:normal;overflow-wrap:break-word}
+html[lang="ja"] :where(h1,h2,h3,h4,h5,h6,.btn,.read-btn,.outline-btn,.source-btn,.article-back,.social-case-menu-item,.social-case-menu-heading){
+  line-break:strict;
+  word-break:normal;
+  overflow-wrap:anywhere;
+}
+
+/* Keep long English and Japanese display copy aligned with the Chinese layouts. */
+html[lang] :where(.art-hero,.page-hero,.court-library-hero,.comic-reader-hero,.comic-episode-hero,.social-cases-hero,.hearing-hero,.case-profile-hero,.activity-cover) h1,
+html[lang] .about-art-copy h1{
+  font-size:var(--site-display-size)!important;
+  line-height:1.16!important;
+  letter-spacing:-.02em!important;
+}
+html[lang="ja"] :where(.art-hero,.page-hero,.court-library-hero,.comic-reader-hero,.comic-episode-hero,.social-cases-hero,.hearing-hero,.case-profile-hero,.activity-cover) h1,
+html[lang="ja"] .about-art-copy h1{
+  line-height:1.3!important;
+  letter-spacing:.01em!important;
+}
+html[lang="en"] .premium-hero-copy h1 span,
+html[lang="ja"] .premium-hero-copy h1 span{
+  display:inline-block;
+  max-width:100%;
+  white-space:normal!important;
+  overflow-wrap:anywhere;
+}
+html[lang="ja"] .premium-hero-copy h1 span{line-break:strict}
+html[lang="en"] .home-news-focus-copy h3,
+html[lang="ja"] .home-news-focus-copy h3{
+  font-size:clamp(1.75rem,3vw,2.5rem)!important;
+}
+html[lang] .case-profile-hero-copy h1 span{
+  display:block;
+  margin-top:.45rem;
+  font-size:clamp(1.15rem,2vw,1.7rem)!important;
+  line-height:1.42!important;
+  letter-spacing:0!important;
+  font-weight:700!important;
+  text-wrap:pretty;
+}
+
+/* English copy is longer: adjust containers and wrapping without shrinking body text. */
+html[lang="en"] :where(p,li,dt,dd,blockquote,figcaption){text-wrap:pretty}
+html[lang="en"] .case-profile-kicker{line-height:1.55;letter-spacing:.04em}
+html[lang="en"] :where(.case-story-section,.about-section-head,.related-head) h2{
+  font-size:clamp(1.55rem,3vw,2.15rem)!important;
+  line-height:1.32!important;
+}
+html[lang="en"] .activity-card-copy h3{
+  font-size:clamp(1.25rem,2.2vw,1.7rem)!important;
+}
+html[lang="en"] .social-case-feature-copy h3{
+  font-size:clamp(1.5rem,2.5vw,1.9rem)!important;
+}
+html[lang="en"] .hearing-sentence-grid h3{
+  font-size:clamp(1.05rem,2vw,1.25rem)!important;
+  line-height:1.45!important;
+}
+html[lang="en"] .social-case-nav-menu{width:min(760px,92vw)}
+html[lang="en"] .social-case-menu-item b{line-height:1.4}
+html[lang="en"] :where(.case-status-row span,.about-hashtags,.case-profile-toc a,.case-profile-toc strong,.case-emphasis-card strong){
+  overflow-wrap:anywhere;
+}
+html[lang="en"] .visual-related-copy h3{
+  font-size:clamp(1rem,1.7vw,1.125rem)!important;
+  line-height:1.45!important;
+}
+
+/* Japanese needs more breathing room for mixed kanji, kana and Latin text. */
+html[lang="ja"] .remember-kaikai-heading-row h2{
+  font-size:clamp(1.75rem,3.2vw,2.35rem)!important;
+  line-height:1.4!important;
+}
+html[lang="ja"] :where(.case-story-section,.about-section-head,.related-head,.about-closing-card) h2{
+  font-size:clamp(1.55rem,3vw,2.15rem)!important;
+  line-height:1.4!important;
+}
+html[lang="ja"] :where(.case-story-section,.about-timeline) h3{
+  font-size:clamp(1.1rem,2.2vw,1.55rem)!important;
+  line-height:1.5!important;
+}
+html[lang="ja"] .hearing-sentence-grid h3{
+  font-size:clamp(1.05rem,2vw,1.25rem)!important;
+  line-height:1.5!important;
+}
+html[lang="ja"] .social-case-nav-menu{width:min(720px,92vw)}
+html[lang="ja"] .social-case-menu-item b{line-height:1.5}
+html[lang="ja"] :where(.case-status-row span,.about-hashtags,.case-profile-toc a,.case-profile-toc strong,.case-emphasis-card strong){
+  overflow-wrap:anywhere;
+}
+
+/* Navigation and action labels use stable sizes and non-synthetic weights. */
+header .nav>nav>a,
+.social-case-nav-toggle{
+  font-family:var(--site-font)!important;
+  font-size:14px!important;
+  font-weight:700!important;
+  line-height:1.25!important;
+  text-align:center;
+}
+html[lang="en"] header .nav>nav>a,
+html[lang="en"] .social-case-nav-toggle{
+  font-size:13px!important;
+}
+:where(a.btn,a.read-btn,a.outline-btn,a.source-btn,a.article-back,a.editorial-read-link,a.editorial-simple-link,a.premium-all-link,a.newest-case-link,a.campaign-strip-btn,.editorial-mini-actions a){
+  height:auto!important;
+  min-height:44px;
+  max-width:100%;
+  white-space:normal;
+  text-align:center;
+  line-height:1.4!important;
+  overflow-wrap:anywhere;
+}
+
+/* Equal-height hero actions prevent English labels from producing uneven buttons. */
+@media(min-width:761px){
+  .premium-hero-actions{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    align-items:stretch;
+    width:min(100%,650px);
+  }
+  .premium-hero-actions .btn{
+    min-width:0!important;
+    min-height:64px;
+    padding:12px 14px!important;
+  }
+}
+
+/* Compact language control with the same size and weight in every locale. */
+.language-switcher{
+  display:inline-grid;
+  grid-template-columns:repeat(4,minmax(32px,auto));
+  align-items:center;
+  gap:2px;
+  padding:3px;
+  border:1px solid rgba(201,168,93,.52);
+  border-radius:999px;
+  background:rgba(5,31,54,.62);
+  white-space:nowrap;
+  flex:0 0 auto;
+  font-family:var(--site-font)!important;
+}
+.language-switcher a{
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  min-width:32px;
+  min-height:32px;
+  padding:7px 6px!important;
+  border-radius:999px!important;
+  color:#fff8e8!important;
+  text-decoration:none!important;
+  font-size:13px!important;
+  line-height:1!important;
+  font-weight:700!important;
+  letter-spacing:.02em!important;
+  white-space:nowrap!important;
+}
+.language-switcher a[aria-current="true"]{
+  background:linear-gradient(135deg,#e7c979,#b88732)!important;
+  color:#082b4b!important;
+  box-shadow:0 2px 8px rgba(0,0,0,.18);
+}
+.language-switcher a:focus-visible{
+  outline:2px solid #f3dc9c;
+  outline-offset:2px;
+}
+html[lang="en"] .social-case-nav-menu,
+html[lang="ja"] .social-case-nav-menu{line-height:1.5}
+html[lang="en"] table,
+html[lang="ja"] table{max-width:100%;table-layout:auto}
+
+@media(min-width:1101px){
+  html[lang] header .nav>nav>a,
+  html[lang] .social-case-nav-toggle{white-space:nowrap!important}
+  html[lang="en"] .brand-lockup small,
+  html[lang="ja"] .brand-lockup small{display:none!important}
+  html[lang="en"] .brand-lockup span{
+    width:140px;
+    font-size:13px!important;
+    line-height:1.2!important;
+  }
+  html[lang="ja"] .brand-lockup span{
+    width:128px;
+    font-size:15px!important;
+    line-height:1.2!important;
+  }
+  html[lang="en"] header .nav>nav>a::before,
+  html[lang="ja"] header .nav>nav>a::before,
+  html[lang="en"] .social-case-nav-toggle::before,
+  html[lang="ja"] .social-case-nav-toggle::before{
+    display:none!important;
+  }
+  html[lang="en"] header .nav>nav>a,
+  html[lang="en"] .social-case-nav-toggle{
+    min-height:46px!important;
+    padding-inline:4px!important;
+    gap:0!important;
+    font-size:12px!important;
+  }
+  html[lang="ja"] header .nav>nav>a,
+  html[lang="ja"] .social-case-nav-toggle{
+    min-height:46px!important;
+    padding-inline:5px!important;
+    gap:0!important;
+    font-size:12.5px!important;
+  }
+  html[lang="en"] .language-switcher,
+  html[lang="ja"] .language-switcher{
+    grid-template-columns:repeat(4,30px);
+    gap:1px;
+  }
+  html[lang="en"] .language-switcher a,
+  html[lang="ja"] .language-switcher a{
+    min-width:30px;
+    padding-inline:4px!important;
+    font-size:12px!important;
+  }
+}
+@media(min-width:801px) and (max-width:1100px){
+  header .nav,
+  .art-header .nav{
+    position:relative;
+    width:min(calc(100% - 24px),1120px)!important;
+    min-height:64px;
+    gap:10px;
+  }
+  .brand,
+  .brand-lockup{
+    min-width:0;
+    max-width:calc(100% - 58px);
+  }
+  .brand-lockup span{font-size:15px!important;line-height:1.2!important}
+  .brand-lockup small{display:none!important}
+  .mobile-menu-toggle{display:inline-flex;margin-left:auto}
+  header .nav>nav,
+  .art-header .nav>nav{
+    display:none!important;
+    position:absolute;
+    left:0;
+    right:0;
+    top:calc(100% + 1px);
+    z-index:120;
+    padding:10px 11px 13px!important;
+    gap:4px!important;
+    flex-direction:column;
+    align-items:stretch;
+    background:#fff;
+    border:1px solid #dce6ef;
+    border-top:0;
+    border-radius:0 0 18px 18px;
+    box-shadow:0 18px 38px rgba(8,29,58,.16);
+  }
+  header .nav.menu-open>nav,
+  .art-header .nav.menu-open>nav{display:flex!important}
+  header .nav nav>a,
+  .art-header .nav nav>a,
+  .social-case-nav-toggle{
+    justify-content:flex-start!important;
+    width:100%;
+    min-height:46px!important;
+    padding:8px 11px!important;
+    border-radius:9px!important;
+    font-size:15px!important;
+    line-height:1.35!important;
+    text-align:left;
+    white-space:normal!important;
+    overflow-wrap:anywhere;
+  }
+  .language-switcher{
+    grid-template-columns:repeat(4,1fr);
+    width:100%;
+    margin:8px 0 0;
+    border-radius:16px;
+  }
+  .language-switcher a{min-height:42px;font-size:14px!important}
+  .site-search-label{display:inline}
+  .site-search-btn{
+    width:100%;
+    min-height:46px;
+    justify-content:flex-start;
+    padding:0 14px;
+  }
+  .social-case-nav-menu{width:100%!important}
+}
+@media(max-width:800px){
+  html[lang] body{font-size:16px;line-height:1.72}
+  header .nav>nav>a,
+  .social-case-nav-toggle{
+    font-size:15px!important;
+    line-height:1.35!important;
+    text-align:left;
+  }
+  .language-switcher{
+    grid-template-columns:repeat(4,1fr);
+    width:100%;
+    margin:8px 0 0;
+    border-radius:16px;
+  }
+  .language-switcher a{
+    min-height:42px;
+    font-size:14px!important;
+  }
+  .premium-hero-actions{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    align-items:stretch;
+  }
+  .premium-hero-actions .btn{min-height:62px}
+  html[lang="en"] .social-case-nav-menu{width:100%!important}
+  html[lang="ja"] .social-case-nav-menu{width:100%!important}
+  html[lang="en"] table,
+  html[lang="ja"] table{
+    width:100%;
+    max-width:100%;
+    table-layout:fixed!important;
+  }
+  html[lang="en"] :where(th,td){overflow-wrap:anywhere;hyphens:auto}
+  html[lang="ja"] :where(th,td){overflow-wrap:anywhere;line-break:strict}
+}
+@media(max-width:520px){
+  :root{--site-display-size:clamp(2rem,10vw,2.75rem)}
+  html[lang="en"]{--site-display-size:clamp(1.9rem,8.5vw,2.25rem)}
+  html[lang="ja"]{--site-display-size:clamp(1.9rem,8.5vw,2.25rem)}
+  .premium-hero-actions{grid-template-columns:1fr!important}
+  .premium-hero-actions .premium-case-cta{grid-column:auto!important}
+}
