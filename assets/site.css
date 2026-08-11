@@ -6347,3 +6347,386 @@ html:has(.hearing-detail-gold){scroll-behavior:smooth}
 body.art-site.morandi-tone .premium-home-hero .premium-hero-copy h1{
   color:#E6B8A8!important;
 }
+
+/* ============================================================
+   2026-08-11 — 微調式雅色方案
+   原設計 85% + 中國傳統色 7.5% + 莫蘭迪色 7.5%
+   僅調整狀態、細框、標籤、紙雕層次與手機淡底。
+   ============================================================ */
+:root{
+  --micro-indigo:#31566f;
+  --micro-crab:#78918f;
+  --micro-impatiens:#b387a4;
+  --micro-lilac:#b7a9c0;
+  --micro-smoke:#88817c;
+  --micro-flesh:#e5b4aa;
+  --micro-fog-rose:#d8bec0;
+  --micro-smoke-blue:#a8b8c0;
+  --micro-sage:#b4bdad;
+  --micro-paper:#f4eee6;
+  --micro-apricot:#dfa77e;
+  --micro-warm-gold:#b3935f;
+  --micro-blue-green:#3e5961;
+}
+
+/* 全站導覽：保留米白導覽，只柔化互動狀態。 */
+header .nav>nav>a:hover,
+.social-case-nav-toggle:hover,
+.social-case-nav.is-open .social-case-nav-toggle{
+  background:rgba(229,180,170,.22)!important;
+  color:var(--micro-indigo)!important;
+  box-shadow:0 7px 18px rgba(49,86,111,.07)!important;
+}
+header .nav>nav>a[aria-current="page"],
+.social-case-nav.is-current .social-case-nav-toggle{
+  color:var(--micro-indigo)!important;
+  background:rgba(229,180,170,.28)!important;
+  box-shadow:inset 0 -2px 0 rgba(49,86,111,.30)!important;
+}
+.social-case-nav-menu{
+  border-color:rgba(136,129,124,.28)!important;
+}
+.social-case-nav-menu::before{
+  border-color:rgba(136,129,124,.28)!important;
+}
+header .nav .social-case-nav-menu .social-case-menu-heading,
+header .nav .social-case-nav-menu .social-case-menu-item{
+  border-left:2px solid rgba(179,147,95,.48)!important;
+}
+header .nav .social-case-nav-menu a:hover{
+  background:rgba(229,180,170,.17)!important;
+}
+header :where(a,button):focus-visible,
+main :where(a,button):focus-visible{
+  outline:3px solid rgba(229,180,170,.72);
+  outline-offset:3px;
+}
+
+/* 淺色子頁 Hero 的說明文字改用深灰青，避免淡金字對比不足。 */
+.warm-gold-tone .page-hero p,
+.warm-gold-tone .court-library-hero p{
+  color:#596967!important;
+}
+.warm-gold-tone .page-hero :where(.art-eyebrow,small),
+.warm-gold-tone .court-library-hero .court-kicker{
+  color:#657472!important;
+}
+
+/* 首頁：保留深藍、米白與暖金，雅色只出現在紙雕及卡片上框。 */
+body.art-site.morandi-tone .premium-home-hero .premium-hero-copy h1{
+  color:var(--micro-apricot)!important;
+}
+.premium-home-hero .premium-hero-lead{
+  color:#e8e4dc!important;
+}
+.premium-home-hero::before{
+  border-color:rgba(120,145,143,.14)!important;
+  box-shadow:0 0 0 28px rgba(229,180,170,.07),0 0 0 58px rgba(183,169,192,.06)!important;
+}
+.premium-home-hero::after{
+  border-color:rgba(229,180,170,.09)!important;
+  box-shadow:0 0 0 32px rgba(120,145,143,.10)!important;
+}
+.premium-home-hero .premium-floating-tag{
+  border-color:rgba(229,180,170,.38)!important;
+}
+#news-focus{
+  border-top:3px solid rgba(229,180,170,.88)!important;
+}
+#news-hearing .home-news-card{
+  border-top:3px solid rgba(120,145,143,.82)!important;
+}
+#news-flash .home-news-card{
+  border-top:3px solid rgba(49,86,111,.82)!important;
+}
+#news-activity .home-news-card,
+#news-advocacy .home-advocacy-grid>a{
+  border-top:3px solid rgba(180,189,173,.92)!important;
+}
+#news-progress .home-progress-card{
+  border-top:3px solid rgba(183,169,192,.88)!important;
+}
+.home-news-tabs a:hover,
+.home-news-tabs a.is-active{
+  background:var(--micro-indigo)!important;
+  border-color:var(--micro-indigo)!important;
+}
+
+/* 關於我們：肉粉與蟹青僅用在圈線、標籤與時間軸。 */
+.about-page .about-art-copy>p{
+  color:#596967!important;
+}
+.about-page .about-pill,
+.about-page .about-hero-tags span{
+  border-color:rgba(229,180,170,.56)!important;
+}
+.about-page .about-hero-tags span:hover{
+  background:rgba(229,180,170,.25)!important;
+  color:var(--micro-indigo)!important;
+}
+.about-page .about-visual-ring{
+  border-color:rgba(120,145,143,.54)!important;
+  box-shadow:0 0 0 22px rgba(229,180,170,.12)!important;
+}
+.about-page .about-timeline::before{
+  background:linear-gradient(var(--micro-flesh),var(--micro-crab))!important;
+}
+.about-page .about-timeline article:nth-child(odd) .timeline-dot{
+  background:var(--micro-flesh)!important;
+  box-shadow:0 0 0 2px rgba(49,86,111,.32)!important;
+}
+.about-page .about-timeline article:nth-child(even) .timeline-dot{
+  background:var(--micro-crab)!important;
+  box-shadow:0 0 0 2px rgba(229,180,170,.56)!important;
+}
+.about-page .about-timeline article.highlight>div:last-child{
+  outline:1px solid rgba(179,135,164,.52);
+  outline-offset:3px;
+}
+.about-page .case-record-card,
+.about-page .about-stat{
+  border-top:3px solid rgba(229,180,170,.52)!important;
+}
+
+/* 社會案件總覽：深藍主視覺不動，只增加蟹青紙層與淡煙藍邊緣。 */
+.social-cases-page .social-cases-hero{
+  box-shadow:inset 0 -3px 0 rgba(120,145,143,.58);
+}
+.social-cases-page .social-cases-paper-poster-frame,
+.social-cases-page .social-cases-art-feature{
+  border-color:rgba(120,145,143,.54)!important;
+}
+.social-cases-page .social-case-feature-card{
+  border-color:rgba(168,184,192,.54)!important;
+  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;
+}
+.social-cases-page .social-case-feature-card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(120,145,143,.78)!important;
+  box-shadow:0 20px 48px rgba(49,86,111,.12)!important;
+}
+.social-cases-page .social-case-status.live{
+  background:rgba(120,145,143,.17)!important;
+  color:#365f5c!important;
+}
+.social-cases-page .social-case-status.appeal{
+  background:rgba(183,169,192,.22)!important;
+  color:#695a73!important;
+}
+.social-cases-page .social-cases-art-direction{
+  background:linear-gradient(180deg,rgba(168,184,192,.18),#eef1ef)!important;
+}
+
+/* 個別案件：正文以宣紙米白承接，傷害內容不使用粉紫大色塊。 */
+.case-profile-page .case-profile-main-section{
+  background:linear-gradient(180deg,#fffdf9 0%,var(--micro-paper) 100%)!important;
+}
+.case-profile-page .case-profile-toc-inner,
+.case-profile-page .case-date-card,
+.case-profile-page .case-connection-section{
+  border-color:rgba(120,145,143,.40)!important;
+}
+.case-profile-page .case-date-card{
+  background:rgba(244,238,230,.76)!important;
+}
+.case-profile-page .case-date-card span{
+  color:#b87555!important;
+}
+.case-profile-page .case-judgment-card{
+  border-color:rgba(168,184,192,.46)!important;
+  border-top-color:var(--micro-indigo)!important;
+  background:rgba(168,184,192,.13)!important;
+}
+.case-profile-page .case-judgment-card.coral{
+  border-top-color:#b87555!important;
+  background:#fffaf7!important;
+}
+.case-profile-page .case-emphasis-card,
+.case-profile-page .case-fact-note{
+  border-color:rgba(180,189,173,.72)!important;
+  background:rgba(180,189,173,.13)!important;
+}
+.case-profile-page .case-disclaimer,
+.case-profile-page .article-note{
+  border-top:2px solid rgba(136,129,124,.45)!important;
+}
+
+/* 旁聽紀錄：丁香與霧玫瑰只用在卡片、標籤及返回狀態。 */
+.record-list .record-card{
+  border-top:3px solid rgba(183,169,192,.82)!important;
+}
+.hearing-detail-gold .article-cover{
+  border:1px solid rgba(183,169,192,.66)!important;
+  outline:1px solid rgba(179,147,95,.58);
+  outline-offset:4px;
+}
+.hearing-detail-gold .hearing-hero{
+  background:
+    radial-gradient(circle at 82% 24%,rgba(120,145,143,.18),transparent 28%),
+    linear-gradient(125deg,#102a3d,#31566f)!important;
+}
+.hearing-detail-gold .hearing-hero::before{
+  background-image:radial-gradient(circle at 14px 14px,rgba(244,238,230,.09) 0 1px,transparent 1.4px)!important;
+  opacity:.48!important;
+}
+.hearing-detail-gold .hearing-hero p{
+  color:#e8ddd0!important;
+}
+.hearing-detail-gold .article-back{
+  border-color:rgba(229,180,170,.72)!important;
+  background:rgba(229,180,170,.22)!important;
+  color:var(--micro-indigo)!important;
+}
+.hearing-detail-gold .article-chip{
+  border-color:rgba(183,169,192,.56)!important;
+  background:rgba(183,169,192,.16)!important;
+}
+.hearing-detail-gold .hearing-role.defense{
+  background:rgba(183,169,192,.35)!important;
+  color:#544764!important;
+}
+.hearing-detail-gold .hearing-role.prosecution{
+  background:rgba(216,190,192,.50)!important;
+  color:#744f57!important;
+}
+.hearing-detail-gold .hearing-role.court{
+  background:rgba(120,145,143,.27)!important;
+  color:#365b59!important;
+}
+.hearing-detail-gold .hearing-page-toc>a:nth-of-type(odd) span{
+  background:rgba(183,169,192,.38)!important;
+  color:#5b4d67!important;
+}
+.hearing-detail-gold .hearing-page-toc>a:nth-of-type(even) span{
+  background:rgba(120,145,143,.28)!important;
+  color:#365b59!important;
+}
+.hearing-detail-gold .article-note{
+  border-color:rgba(136,129,124,.40)!important;
+  background:rgba(136,129,124,.11)!important;
+}
+
+/* 法庭漫畫：鳳仙紫為集數識別，丁香只做細框與陰影。 */
+.court-library-hero{
+  box-shadow:inset 0 -3px 0 rgba(179,135,164,.46);
+}
+.episode-library-card,
+.comic-intro-card,
+.comic-page{
+  border-color:rgba(183,169,192,.62)!important;
+}
+.episode-library-card:hover,
+.comic-page:hover{
+  box-shadow:0 18px 40px rgba(179,135,164,.15)!important;
+}
+.episode-number,
+.comic-series-label,
+.comic-page-label{
+  background:var(--micro-impatiens)!important;
+  color:#fffaf8!important;
+}
+.episode-library .read-btn,
+.comic-reader-wrap .read-btn{
+  background:var(--micro-indigo)!important;
+  color:#fff!important;
+}
+.episode-library .source-btn,
+.comic-reader-wrap .source-btn{
+  border-color:rgba(120,145,143,.68)!important;
+}
+
+/* 活動與相簿：鼠尾草灰、肉粉只出現在日期、分類與照片細框。 */
+.activity-list .activity-card{
+  border-top:3px solid rgba(180,189,173,.92)!important;
+}
+.activity-card .meta,
+.activity-card .datebox small,
+.activity-article .eyebrow2{
+  color:#667565!important;
+}
+.activity-card:hover .activity-card-copy{
+  background:rgba(229,180,170,.09)!important;
+}
+.activity-article .tag-pill,
+.activity-article .album-jump{
+  border-color:rgba(120,145,143,.54)!important;
+  background:rgba(229,180,170,.14)!important;
+}
+.album-index-card,
+.album-photo-card{
+  border-color:rgba(216,190,192,.64)!important;
+}
+.album-index-card:hover,
+.album-photo-card:hover{
+  box-shadow:0 18px 38px rgba(216,190,192,.18)!important;
+}
+.album-count,
+.album-photo-card figcaption{
+  color:var(--micro-smoke)!important;
+}
+.album-hero .art-eyebrow{
+  color:#526966!important;
+}
+.lightbox{
+  background:rgba(15,25,34,.94)!important;
+}
+
+/* 官方社群：保留平台原色與圖片，只以不同淡色細框辨識。 */
+.social-page-hero{
+  background:
+    radial-gradient(circle at 82% 18%,rgba(179,135,164,.16),transparent 25%),
+    radial-gradient(circle at 12% 75%,rgba(229,180,170,.14),transparent 28%),
+    linear-gradient(125deg,#fffdf8,#fff6e7 57%,#f1e7d4)!important;
+}
+.social-platform-card#instagram{
+  border-color:rgba(216,190,192,.82)!important;
+}
+.social-platform-card#threads{
+  border-color:rgba(136,129,124,.54)!important;
+}
+.social-platform-card#facebook{
+  border-color:rgba(168,184,192,.82)!important;
+}
+.social-platform-card:hover{
+  box-shadow:0 18px 42px rgba(179,135,164,.12)!important;
+}
+
+/* 手機版：宣紙米白底、白卡片、靛藍按鈕與肉粉操作狀態。 */
+@media(max-width:620px){
+  html,
+  body,
+  main{
+    background-color:var(--micro-paper)!important;
+  }
+  header{
+    background:rgba(244,238,230,.97)!important;
+    border-bottom-color:rgba(136,129,124,.25)!important;
+  }
+  body section:not([class*="hero"]):not(.about-future-section){
+    background-color:var(--micro-paper);
+  }
+  body section:not([class*="hero"]):not(.about-future-section):nth-of-type(even){
+    background-color:#f6efea;
+  }
+  :where(.record-card,.activity-card,.album-index-card,.album-photo-card,.episode-library-card,.case-record-card,.social-case-feature-card,.social-platform-card){
+    background:#fff!important;
+  }
+  header .nav>nav>a[aria-current="page"],
+  .social-case-nav.is-current .social-case-nav-toggle{
+    background:rgba(229,180,170,.34)!important;
+  }
+  :where(.btn.art-primary,.read-btn,.home-news-primary){
+    background:var(--micro-indigo)!important;
+    color:#fff!important;
+  }
+  .hearing-back-top{
+    border-color:rgba(49,86,111,.28)!important;
+    background:var(--micro-flesh)!important;
+    color:var(--micro-indigo)!important;
+  }
+  .premium-home-hero::before,
+  .premium-home-hero::after,
+  .social-cases-hero::after{
+    opacity:.70;
+  }
+}
