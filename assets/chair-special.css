@@ -1305,3 +1305,294 @@ html[lang] header .nav > nav > a.nav-special-feature:focus-visible {
     white-space: normal !important;
   }
 }
+
+/* Homepage special-feature dropdown: a distinct golden paper-cut crane. */
+html[lang] header .nav .special-feature-nav .special-feature-nav-toggle {
+  position: relative;
+  isolation: isolate;
+  gap: 7px !important;
+  min-height: 45px !important;
+  padding: 6px 12px 6px 8px !important;
+  color: #203640 !important;
+  border: 1px solid #b9842d !important;
+  border-radius: 5px 14px 6px 12px !important;
+  background:
+    linear-gradient(145deg, rgba(255, 249, 222, .98), rgba(243, 218, 151, .98) 45%, rgba(211, 174, 91, .98) 74%, rgba(247, 228, 174, .98)) !important;
+  box-shadow:
+    3px 3px 0 rgba(159, 95, 77, .42),
+    6px 6px 0 rgba(46, 70, 82, .12),
+    0 10px 22px rgba(73, 53, 24, .15) !important;
+  font-family: "Noto Serif TC", "Noto Serif JP", Georgia, serif !important;
+  font-weight: 900 !important;
+  letter-spacing: .055em;
+  white-space: nowrap !important;
+}
+
+html[lang] header .nav .special-feature-nav .special-feature-nav-toggle::before {
+  content: "" !important;
+  display: block !important;
+  width: 37px !important;
+  height: 29px !important;
+  flex: 0 0 37px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: url("./art/golden-paper-crane.svg") center / contain no-repeat !important;
+  box-shadow: none !important;
+  filter: drop-shadow(1px 2px 1px rgba(88, 54, 12, .25));
+}
+
+html[lang] header .nav .special-feature-nav .special-feature-nav-toggle::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 3px;
+  right: 3px;
+  width: 10px;
+  height: 10px;
+  background: linear-gradient(135deg, #fff8d8 0 49%, #9f6820 50% 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+  opacity: .9;
+  pointer-events: none;
+}
+
+html[lang] header .nav .special-feature-nav .special-feature-nav-toggle i {
+  color: #775019;
+  font-weight: 900;
+}
+
+html[lang] header .nav .special-feature-nav .special-feature-nav-toggle:hover,
+html[lang] header .nav .special-feature-nav.is-open .special-feature-nav-toggle,
+html[lang] header .nav .special-feature-nav .special-feature-nav-toggle:focus-visible {
+  color: #162f3d !important;
+  border-color: #a87022 !important;
+  background: linear-gradient(145deg, #fff8d3, #eac76f 54%, #f6e2a7) !important;
+  box-shadow:
+    2px 2px 0 rgba(159, 95, 77, .46),
+    5px 5px 0 rgba(46, 70, 82, .13),
+    0 13px 26px rgba(73, 53, 24, .2) !important;
+  transform: translateY(-2px) !important;
+}
+
+html[lang] header .nav .special-feature-nav-menu {
+  left: auto;
+  right: 0;
+  width: min(570px, 88vw);
+  padding: 10px;
+  grid-template-columns: 1fr;
+  border-color: rgba(185, 132, 45, .48);
+  border-radius: 18px 6px 18px 18px;
+  background:
+    radial-gradient(circle at 93% 10%, rgba(214, 182, 108, .2), transparent 32%),
+    rgba(255, 253, 247, .99);
+  box-shadow:
+    4px 4px 0 rgba(159, 95, 77, .2),
+    0 25px 60px rgba(8, 35, 63, .22);
+  transform: none;
+}
+
+html[lang] header .nav .special-feature-nav-menu::before {
+  left: auto;
+  right: 39px;
+  border-color: rgba(185, 132, 45, .48) transparent transparent rgba(185, 132, 45, .48);
+  background: #fffaf0;
+  transform: rotate(45deg);
+}
+
+html[lang] header .nav .special-feature-nav-menu .special-feature-menu-card {
+  display: grid !important;
+  grid-template-columns: 148px minmax(0, 1fr);
+  align-items: stretch;
+  gap: 16px;
+  padding: 0 !important;
+  overflow: hidden;
+  border: 1px solid rgba(185, 132, 45, .4);
+  border-radius: 12px 3px 12px 12px;
+  background:
+    linear-gradient(135deg, rgba(255, 249, 229, .98), rgba(238, 239, 233, .96)) !important;
+  box-shadow:
+    3px 3px 0 rgba(214, 182, 108, .28),
+    7px 7px 0 rgba(46, 70, 82, .08) !important;
+  color: #203640 !important;
+  text-decoration: none;
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease !important;
+}
+
+html[lang] header .nav .special-feature-nav-menu .special-feature-menu-card:hover,
+html[lang] header .nav .special-feature-nav-menu .special-feature-menu-card:focus-visible {
+  border-color: #b9842d !important;
+  background: linear-gradient(135deg, #fff8df, #f0eee5) !important;
+  box-shadow:
+    2px 2px 0 rgba(214, 182, 108, .35),
+    6px 6px 0 rgba(46, 70, 82, .1),
+    0 14px 28px rgba(46, 70, 82, .14) !important;
+  transform: translateY(-2px) !important;
+}
+
+.special-feature-menu-art {
+  display: block;
+  min-height: 156px;
+  overflow: hidden;
+  background: #d9d7cc;
+}
+
+.special-feature-menu-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 156px;
+  object-fit: cover;
+  object-position: center 62%;
+  filter: saturate(.82) contrast(1.02);
+}
+
+.special-feature-menu-copy {
+  display: flex;
+  min-width: 0;
+  padding: 15px 17px 14px 0;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.special-feature-menu-copy small {
+  display: block;
+  color: #a06d20;
+  font-size: 9px;
+  font-weight: 950;
+  letter-spacing: .16em;
+}
+
+.special-feature-menu-copy strong {
+  display: block;
+  margin: 4px 0 5px;
+  color: #173b4c;
+  font-family: "Noto Serif TC", "Noto Serif JP", Georgia, serif;
+  font-size: 20px;
+  line-height: 1.35;
+}
+
+.special-feature-menu-copy > span {
+  display: block;
+  color: #68767a;
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+.special-feature-menu-copy b {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 8px;
+  color: #9f5f4d;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.special-feature-menu-copy em {
+  color: #a87022;
+  font-size: 17px;
+  font-style: normal;
+  line-height: 1;
+}
+
+/* The feature leads the homepage latest-news reel. */
+.home-news-card.is-special-feature {
+  position: relative;
+  border-color: rgba(185, 132, 45, .55);
+  border-radius: 5px 15px 7px 14px;
+  background:
+    radial-gradient(circle at 94% 8%, rgba(214, 182, 108, .24), transparent 31%),
+    linear-gradient(145deg, rgba(255, 249, 230, .96), rgba(236, 239, 235, .96));
+  box-shadow:
+    3px 3px 0 rgba(214, 182, 108, .38),
+    7px 7px 0 rgba(159, 95, 77, .17),
+    0 16px 30px rgba(46, 70, 82, .12);
+}
+
+.home-news-card.is-special-feature:hover,
+.home-news-card.is-special-feature:focus-visible {
+  box-shadow:
+    2px 2px 0 rgba(214, 182, 108, .42),
+    6px 6px 0 rgba(159, 95, 77, .2),
+    0 22px 38px rgba(46, 70, 82, .17);
+}
+
+.home-news-card.is-special-feature .home-news-card-media {
+  background: #2e4652;
+}
+
+.home-news-card.is-special-feature .home-news-card-media img {
+  object-position: center 62%;
+  filter: saturate(.82) contrast(1.03);
+}
+
+.home-news-card.is-special-feature .home-news-card-media > span {
+  color: #203640;
+  border: 1px solid rgba(185, 132, 45, .62);
+  border-radius: 3px 9px 4px 8px;
+  background: linear-gradient(145deg, #fff4c3, #d6b66c 62%, #f3dc9d);
+  box-shadow: 2px 2px 0 rgba(159, 95, 77, .35);
+}
+
+.home-news-card.is-special-feature .home-news-card-copy small {
+  color: #9a6720;
+}
+
+.home-news-card.is-special-feature .home-news-card-copy strong {
+  color: #1e4050;
+}
+
+@media (max-width: 1100px) {
+  html[lang] header .nav .special-feature-nav .special-feature-nav-toggle {
+    justify-content: flex-start !important;
+    width: 100%;
+    min-height: 49px !important;
+    padding: 8px 13px 8px 10px !important;
+    font-size: 15px !important;
+    white-space: normal !important;
+  }
+
+  html[lang] header .nav .special-feature-nav .special-feature-nav-toggle i {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 800px) {
+  html[lang] header .nav .special-feature-nav-menu {
+    position: static;
+    right: auto;
+    width: 100% !important;
+    margin: 5px 0 7px;
+    padding: 7px;
+    border-radius: 14px;
+    box-shadow: 3px 3px 0 rgba(214, 182, 108, .2);
+  }
+
+  html[lang] header .nav .special-feature-nav-menu .special-feature-menu-card {
+    grid-template-columns: 108px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .special-feature-menu-art,
+  .special-feature-menu-art img {
+    min-height: 142px;
+  }
+
+  .special-feature-menu-copy {
+    padding: 12px 12px 12px 0;
+  }
+
+  .special-feature-menu-copy strong {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 420px) {
+  html[lang] header .nav .special-feature-nav-menu .special-feature-menu-card {
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .special-feature-menu-copy > span {
+    font-size: 10px;
+  }
+}
