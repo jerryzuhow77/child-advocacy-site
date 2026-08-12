@@ -5,7 +5,42 @@
   var topButton = document.querySelector(".back-to-top");
   var tocLinks = Array.prototype.slice.call(document.querySelectorAll(".special-toc a[href^='#']"));
   var sections = Array.prototype.slice.call(document.querySelectorAll(".story-section[id]"));
+  var chapterTransition = document.querySelector(".next-chapter-transition");
   var reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function clamp(value) {
+    return Math.min(Math.max(value, 0), 1);
+  }
+
+  function updateChapterTransition() {
+    if (!chapterTransition) return;
+
+    if (reducedMotion) {
+      chapterTransition.style.setProperty("--ancient-opacity", ".26");
+      chapterTransition.style.setProperty("--ancient-scale", "1");
+      chapterTransition.style.setProperty("--modern-opacity", "1");
+      chapterTransition.style.setProperty("--door-left-shift", "-104%");
+      chapterTransition.style.setProperty("--door-right-shift", "104%");
+      chapterTransition.style.setProperty("--door-light-width", "82vw");
+      chapterTransition.style.setProperty("--door-light-opacity", ".34");
+      return;
+    }
+
+    var rect = chapterTransition.getBoundingClientRect();
+    var travel = Math.max(chapterTransition.offsetHeight - window.innerHeight, 1);
+    var progress = clamp(-rect.top / travel);
+    var age = clamp(progress / .32);
+    var door = clamp((progress - .16) / .5);
+    var modern = clamp((progress - .34) / .42);
+
+    chapterTransition.style.setProperty("--ancient-opacity", (1 - modern * .82).toFixed(3));
+    chapterTransition.style.setProperty("--ancient-scale", (1 + age * .055).toFixed(3));
+    chapterTransition.style.setProperty("--modern-opacity", modern.toFixed(3));
+    chapterTransition.style.setProperty("--door-left-shift", (-104 * door).toFixed(2) + "%");
+    chapterTransition.style.setProperty("--door-right-shift", (104 * door).toFixed(2) + "%");
+    chapterTransition.style.setProperty("--door-light-width", (2 + door * 80).toFixed(2) + "vw");
+    chapterTransition.style.setProperty("--door-light-opacity", (.22 + door * .42).toFixed(3));
+  }
 
   function updateScrollUI() {
     var doc = document.documentElement;
@@ -25,6 +60,8 @@
       if (active) link.setAttribute("aria-current", "location");
       else link.removeAttribute("aria-current");
     });
+
+    updateChapterTransition();
   }
 
   if (topButton) {

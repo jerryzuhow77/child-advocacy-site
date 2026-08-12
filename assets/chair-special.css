@@ -406,13 +406,27 @@ body.chair-special-page::before {
 }
 
 .story-heading .section-number {
-  display: block;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
   margin-bottom: 10px;
   color: var(--sp-gold);
   font-family: Georgia, serif;
   font-size: .9rem;
   font-weight: 800;
   letter-spacing: .2em;
+}
+
+.story-heading .section-number-zh {
+  color: var(--sp-ochre);
+  font-family: "Noto Serif TC", "Noto Serif JP", Georgia, serif;
+  font-size: .78rem;
+  letter-spacing: .14em;
+}
+
+.final-section .story-heading .section-number-zh {
+  color: var(--sp-gold-light);
 }
 
 .story-heading h2 {
@@ -829,6 +843,362 @@ html[lang="ja"] .final-mantra {
   background: var(--sp-white);
 }
 
+/* Prologue-to-chapter transition: an old paper-cut room opens into a modern hospital corridor. */
+.next-chapter-transition {
+  --ancient-opacity: 1;
+  --ancient-scale: 1;
+  --modern-opacity: 0;
+  --door-left-shift: 0%;
+  --door-right-shift: 0%;
+  --door-light-width: 2px;
+  --door-light-opacity: .22;
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  color: rgba(255, 250, 240, .94);
+  background: #142b35;
+}
+
+.next-chapter-stage {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background: #142b35;
+}
+
+.next-chapter-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(10, 27, 35, .22), transparent 32%, rgba(7, 22, 29, .48)),
+    radial-gradient(circle at 50% 54%, transparent 22%, rgba(9, 26, 34, .46) 100%);
+}
+
+.next-chapter-ancient,
+.next-chapter-modern,
+.door-frame {
+  position: absolute;
+  inset: 0;
+}
+
+.next-chapter-ancient {
+  z-index: 1;
+  opacity: var(--ancient-opacity);
+  background:
+    linear-gradient(90deg, rgba(28, 48, 49, .5), rgba(96, 75, 55, .08) 48%, rgba(27, 45, 47, .56)),
+    linear-gradient(180deg, rgba(18, 41, 46, .18), rgba(30, 35, 31, .52)),
+    url("art/chair-bound-child-paper-art-20260811.webp") center 48% / cover no-repeat;
+  filter: sepia(.16) saturate(.72) brightness(.72);
+  transform: scale(var(--ancient-scale));
+  transform-origin: 50% 52%;
+  will-change: opacity, transform;
+}
+
+.ancient-window {
+  position: absolute;
+  left: 7vw;
+  top: 10vh;
+  width: min(31vw, 440px);
+  height: min(58vh, 600px);
+  opacity: .5;
+  border: clamp(8px, 1.2vw, 18px) solid rgba(58, 55, 44, .78);
+  box-shadow: inset 0 0 0 2px rgba(233, 213, 171, .28), 0 20px 50px rgba(6, 22, 27, .34);
+  background:
+    linear-gradient(90deg, transparent 47%, rgba(58, 55, 44, .74) 48% 52%, transparent 53%),
+    linear-gradient(180deg, transparent 47%, rgba(58, 55, 44, .74) 48% 52%, transparent 53%),
+    rgba(205, 181, 135, .12);
+}
+
+.ancient-chair {
+  position: absolute;
+  right: 13vw;
+  bottom: 9vh;
+  width: clamp(82px, 10vw, 148px);
+  height: clamp(138px, 21vh, 220px);
+  opacity: .5;
+  border: 8px solid rgba(47, 43, 36, .75);
+  border-bottom: 0;
+  box-shadow:
+    inset 17px 0 0 -13px rgba(47, 43, 36, .7),
+    inset -17px 0 0 -13px rgba(47, 43, 36, .7),
+    0 28px 28px rgba(7, 21, 26, .32);
+}
+
+.ancient-chair::before,
+.ancient-chair::after {
+  content: "";
+  position: absolute;
+  bottom: -44px;
+  width: 8px;
+  height: 70px;
+  background: rgba(47, 43, 36, .75);
+}
+
+.ancient-chair::before { left: 8px; }
+.ancient-chair::after { right: 8px; }
+
+.time-wash {
+  position: absolute;
+  inset: -18%;
+  opacity: .7;
+  background:
+    conic-gradient(from 40deg at 45% 48%, rgba(230, 184, 168, .05), rgba(240, 217, 154, .24), rgba(67, 94, 100, .16), rgba(230, 184, 168, .05));
+  mix-blend-mode: screen;
+  animation: old-time-passes 12s linear infinite;
+}
+
+@keyframes old-time-passes {
+  from { transform: rotate(0deg) scale(1.15); }
+  to { transform: rotate(360deg) scale(1.15); }
+}
+
+.next-chapter-modern {
+  z-index: 2;
+  opacity: var(--modern-opacity);
+  background:
+    linear-gradient(115deg, transparent 0 47%, rgba(128, 148, 157, .28) 47.2% 47.7%, transparent 48%),
+    linear-gradient(245deg, transparent 0 47%, rgba(128, 148, 157, .25) 47.2% 47.7%, transparent 48%),
+    linear-gradient(180deg, #d8dcda 0 17%, #8c9da4 17.3% 18%, #526c77 18.2% 63%, #263f4a 63.4% 100%);
+  filter: saturate(.62);
+  will-change: opacity;
+}
+
+.hospital-ceiling {
+  position: absolute;
+  inset: 4vh 17vw auto;
+  height: 12vh;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 15%, rgba(245, 242, 229, .82) 15.5% 24%, transparent 24.5% 39%);
+  filter: blur(.4px);
+  box-shadow: 0 0 40px rgba(246, 243, 229, .25);
+}
+
+.hospital-curtain {
+  position: absolute;
+  top: 16vh;
+  right: 3vw;
+  width: min(36vw, 510px);
+  height: 72vh;
+  opacity: .84;
+  border-left: 2px solid rgba(232, 226, 215, .6);
+  border-right: 2px solid rgba(89, 105, 112, .5);
+  background:
+    repeating-linear-gradient(90deg, #c4c7c1 0 12px, #aeb7b5 13px 25px, #d3d0c8 26px 34px);
+  box-shadow: -18px 16px 38px rgba(10, 29, 37, .3);
+  clip-path: polygon(0 0, 100% 0, 98% 100%, 91% 98%, 84% 100%, 76% 98%, 69% 100%, 61% 98%, 53% 100%, 45% 98%, 37% 100%, 29% 98%, 21% 100%, 13% 98%, 5% 100%);
+}
+
+.corridor-line {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 2px;
+  height: 43vh;
+  opacity: .5;
+  background: linear-gradient(180deg, rgba(240, 217, 154, .1), rgba(240, 217, 154, .72));
+  box-shadow: 0 0 18px rgba(240, 217, 154, .28);
+}
+
+.door-frame {
+  z-index: 5;
+  pointer-events: none;
+  perspective: 1100px;
+}
+
+.door-frame::before {
+  content: "";
+  position: absolute;
+  inset: 3.5vh 7vw;
+  z-index: 4;
+  border: clamp(10px, 1.8vw, 24px) solid rgba(38, 43, 39, .92);
+  box-shadow: inset 0 0 0 2px rgba(220, 190, 130, .2), 0 0 58px rgba(6, 21, 27, .48);
+}
+
+.door-panel {
+  position: absolute;
+  top: 3.5vh;
+  bottom: 3.5vh;
+  z-index: 3;
+  width: 43vw;
+  max-width: 720px;
+  border: 1px solid rgba(218, 190, 137, .3);
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, .05), transparent 8% 92%, rgba(5, 18, 23, .22)),
+    repeating-linear-gradient(90deg, rgba(92, 72, 53, .2) 0 1px, transparent 1px 17px),
+    linear-gradient(155deg, #3a514f, #263f42 52%, #1f3437);
+  box-shadow: inset 0 0 0 9px rgba(25, 45, 46, .46), 0 10px 38px rgba(4, 17, 22, .42);
+  will-change: transform;
+}
+
+.door-panel::before,
+.door-panel::after {
+  content: "";
+  position: absolute;
+  inset: 8% 10%;
+  border: 1px solid rgba(214, 182, 108, .22);
+}
+
+.door-panel::after {
+  inset: 51% 10% 8%;
+}
+
+.door-panel-left {
+  right: 50%;
+  transform: translateX(var(--door-left-shift));
+  transform-origin: left center;
+}
+
+.door-panel-right {
+  left: 50%;
+  transform: translateX(var(--door-right-shift));
+  transform-origin: right center;
+}
+
+.door-light {
+  position: absolute;
+  left: 50%;
+  top: 3.5vh;
+  bottom: 3.5vh;
+  z-index: 2;
+  width: var(--door-light-width);
+  opacity: var(--door-light-opacity);
+  background: linear-gradient(90deg, rgba(237, 232, 218, .08), rgba(246, 243, 229, .96), rgba(237, 232, 218, .08));
+  box-shadow: 0 0 60px rgba(238, 234, 218, .6);
+  transform: translateX(-50%);
+}
+
+.next-chapter-narrative {
+  position: relative;
+  z-index: 10;
+  width: min(100% - 36px, 1180px);
+  margin: -100svh auto 0;
+  padding: 6svh 0 12svh;
+}
+
+.next-chapter-beat {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 78svh;
+  width: min(100%, 690px);
+  padding: clamp(27px, 4vw, 48px);
+  background: rgba(17, 39, 47, .78);
+  border: 1px solid rgba(240, 217, 154, .28);
+  box-shadow: 0 24px 80px rgba(5, 18, 24, .42);
+  backdrop-filter: blur(9px);
+}
+
+.next-chapter-beat:nth-child(even) {
+  margin-left: auto;
+  background: rgba(41, 57, 60, .8);
+}
+
+.next-chapter-beat + .next-chapter-beat {
+  margin-top: 28svh;
+}
+
+.next-chapter-opening {
+  min-height: 88svh;
+}
+
+.next-chapter-eyebrow {
+  margin: 0 0 19px;
+  color: var(--sp-gold-light);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .2em;
+}
+
+.next-chapter-opening h2 {
+  margin: 0;
+  color: var(--sp-white);
+  font-family: "Noto Serif TC", "Noto Serif JP", Georgia, serif;
+  font-size: clamp(2.05rem, 4vw, 4rem);
+  line-height: 1.22;
+  letter-spacing: .06em;
+}
+
+.next-chapter-opening h2 span {
+  display: block;
+  margin-top: 12px;
+  color: var(--sp-tuihong);
+  font-size: .7em;
+  letter-spacing: .12em;
+}
+
+.next-chapter-deck {
+  margin: 21px 0 34px;
+  color: #c9d2d0;
+  font-family: "Noto Serif TC", "Noto Serif JP", Georgia, serif;
+  font-size: clamp(1.05rem, 1.8vw, 1.28rem);
+  letter-spacing: .08em;
+}
+
+.next-chapter-copy {
+  font-family: "Noto Serif TC", "Noto Serif JP", Georgia, serif;
+  font-size: clamp(1.02rem, 1.6vw, 1.17rem);
+  line-height: 2;
+}
+
+.next-chapter-copy p {
+  margin: 0 0 1.22em;
+}
+
+.next-chapter-copy p:last-child {
+  margin-bottom: 0;
+}
+
+.next-chapter-ending {
+  min-height: 94svh;
+  margin-bottom: 0;
+}
+
+.next-chapter-last-lines {
+  display: grid;
+  gap: 6px;
+  margin-top: 30px !important;
+  color: var(--sp-gold-light);
+  font-size: clamp(1.35rem, 2.5vw, 2rem);
+  letter-spacing: .08em;
+}
+
+.next-chapter-cta {
+  display: grid;
+  gap: 4px;
+  width: min(100%, 500px);
+  margin-top: 38px;
+  padding: 18px 22px;
+  color: var(--sp-indigo-deep);
+  background: linear-gradient(135deg, var(--sp-paper), #dedbd2);
+  border: 1px solid var(--sp-gold);
+  box-shadow: 7px 7px 0 rgba(214, 182, 108, .16), 0 18px 38px rgba(4, 17, 22, .3);
+  font-family: "Noto Serif TC", "Noto Serif JP", Georgia, serif;
+}
+
+.next-chapter-cta > span {
+  color: var(--sp-ochre);
+  font-size: .85rem;
+  letter-spacing: .14em;
+}
+
+.next-chapter-cta strong {
+  font-size: clamp(1.05rem, 2vw, 1.28rem);
+}
+
+.next-chapter-cta small {
+  margin-top: 5px;
+  color: rgba(46, 70, 82, .64);
+  font-size: .68rem;
+  letter-spacing: .12em;
+}
+
 .special-sources {
   padding: 70px 0;
   background: #e9e2d8;
@@ -1040,6 +1410,60 @@ html[lang="ja"] .final-mantra {
     padding: 12px 16px;
     letter-spacing: .15em;
   }
+
+  .next-chapter-narrative {
+    width: min(100% - 24px, 720px);
+    padding-bottom: 8svh;
+  }
+
+  .next-chapter-beat {
+    min-height: 86svh;
+    padding: 28px 22px;
+    background: rgba(17, 39, 47, .86);
+    backdrop-filter: blur(6px);
+  }
+
+  .next-chapter-beat + .next-chapter-beat {
+    margin-top: 18svh;
+  }
+
+  .next-chapter-opening,
+  .next-chapter-ending {
+    min-height: 94svh;
+  }
+
+  .next-chapter-opening h2 {
+    font-size: clamp(2rem, 9.6vw, 3.25rem);
+  }
+
+  .next-chapter-copy {
+    font-size: 1rem;
+    line-height: 1.9;
+  }
+
+  .ancient-window {
+    left: 4vw;
+    width: 44vw;
+    opacity: .4;
+  }
+
+  .ancient-chair {
+    right: 9vw;
+    opacity: .42;
+  }
+
+  .hospital-curtain {
+    right: -12vw;
+    width: 64vw;
+  }
+
+  .door-frame::before {
+    inset-inline: 3vw;
+  }
+
+  .door-panel {
+    width: 47vw;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1077,6 +1501,27 @@ html[lang="ja"] .final-mantra {
     right: 12px;
     bottom: 12px;
   }
+
+  .next-chapter-narrative {
+    width: min(100% - 18px, 720px);
+  }
+
+  .next-chapter-beat {
+    padding: 25px 18px;
+  }
+
+  .next-chapter-eyebrow {
+    font-size: .67rem;
+    letter-spacing: .13em;
+  }
+
+  .next-chapter-deck {
+    margin-bottom: 27px;
+  }
+
+  .next-chapter-cta {
+    padding: 16px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1091,6 +1536,53 @@ html[lang="ja"] .final-mantra {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  .time-wash {
+    animation: none;
+  }
+
+  .next-chapter-stage {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+  }
+
+  .next-chapter-ancient {
+    opacity: .26;
+    transform: none;
+  }
+
+  .next-chapter-modern {
+    opacity: 1;
+  }
+
+  .door-panel-left {
+    transform: translateX(-104%);
+  }
+
+  .door-panel-right {
+    transform: translateX(104%);
+  }
+
+  .door-light {
+    width: 82vw;
+    opacity: .34;
+  }
+
+  .next-chapter-narrative {
+    margin-top: 0;
+    padding-block: 42px;
+  }
+
+  .next-chapter-beat,
+  .next-chapter-opening,
+  .next-chapter-ending {
+    min-height: 0;
+  }
+
+  .next-chapter-beat + .next-chapter-beat {
+    margin-top: 28px;
   }
 }
 
@@ -1108,10 +1600,40 @@ html[lang="ja"] .final-mantra {
 
   .story-section,
   .final-section,
+  .next-chapter-transition,
   .special-sources {
     color: #111;
     background: #fff !important;
     break-inside: avoid;
+  }
+
+  .next-chapter-stage {
+    display: none;
+  }
+
+  .next-chapter-narrative {
+    width: min(100% - 36px, 780px);
+    margin: 0 auto;
+    padding: 30px 0;
+  }
+
+  .next-chapter-beat,
+  .next-chapter-opening,
+  .next-chapter-ending {
+    min-height: 0;
+    margin: 0 0 20px !important;
+    padding: 20px 0;
+    color: #111;
+    background: #fff;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .next-chapter-opening h2,
+  .next-chapter-last-lines,
+  .next-chapter-eyebrow,
+  .next-chapter-deck {
+    color: #111;
   }
 
   .story-heading h2,
