@@ -1,0 +1,912 @@
+/*
+ * 2026-08-12 — Mobile four-scheme colour system
+ *
+ * Global frame: Scheme 4 (soft paper-cut pastels)
+ * Scheme 1: original navy / ivory / warm gold, with restrained traditional colour
+ * Scheme 2: Chinese traditional colour led, soft eastern narrative
+ * Scheme 3: Morandi reading palette for long-form text and comic readers
+ * Scheme 4: balanced original / traditional / Morandi palette for welcoming hubs
+ *
+ * Desktop remains unchanged. All rules in this file are intentionally mobile-only.
+ */
+
+@media (max-width: 800px) {
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) {
+    --mobile-navy: #243b55;
+    --mobile-navy-deep: #142f48;
+    --mobile-ivory: #f7f1e8;
+    --mobile-paper: #fffaf2;
+    --mobile-gold: #c8a968;
+    --mobile-gold-deep: #9b783d;
+    --mobile-moon: #dde7e3;
+    --mobile-faded-red: #e6b8a8;
+    --mobile-apricot: #e6c6aa;
+    --mobile-lotus: #e8cfcc;
+    --mobile-sage: #aab6a1;
+    --mobile-mist: #aebbc3;
+    --mobile-mauve: #b9adb9;
+    --mobile-warm-gray: #c8bdb1;
+    --mobile-ink: #34434c;
+    --mobile-muted: #66716f;
+    --mobile-shadow: 0 12px 28px rgba(42, 57, 65, .09);
+    color: var(--mobile-ink);
+    background-color: var(--mobile-page-bg) !important;
+  }
+
+  body.mobile-scheme-1 {
+    /* Approx. original 75% / Chinese traditional 15% / Morandi 10%. */
+    --mobile-page-bg: #eee9df;
+    --mobile-section-bg: #f7f1e8;
+    --mobile-section-alt: #e8ece8;
+    --mobile-surface: #fffaf2;
+    --mobile-soft-accent: #ead9ca;
+    --mobile-border: #cdbd9b;
+    --mobile-heading: #243b55;
+  }
+
+  body.mobile-scheme-2 {
+    /* Approx. Chinese traditional 60% / original 25% / Morandi 15%. */
+    --mobile-page-bg: #eee5e0;
+    --mobile-section-bg: #f3e7e2;
+    --mobile-section-alt: #dde7e3;
+    --mobile-surface: #fffaf2;
+    --mobile-soft-accent: #e6c6aa;
+    --mobile-border: #d6b8ac;
+    --mobile-heading: #2d4856;
+  }
+
+  body.mobile-scheme-3 {
+    /* Approx. Morandi 55% / original 30% / Chinese traditional 15%. */
+    --mobile-page-bg: #e4e6e2;
+    --mobile-section-bg: #e9e8e1;
+    --mobile-section-alt: #e0e3e1;
+    --mobile-surface: #f7f1e8;
+    --mobile-soft-accent: #ddd3d5;
+    --mobile-border: #c4c6bf;
+    --mobile-heading: #334d59;
+  }
+
+  body.mobile-scheme-4 {
+    /* Approx. original 40% / Chinese traditional 30% / Morandi 30%. */
+    --mobile-page-bg: #eadedb;
+    --mobile-section-bg: #f1dfdb;
+    --mobile-section-alt: #dde7e3;
+    --mobile-surface: #fffaf2;
+    --mobile-soft-accent: #e6c6aa;
+    --mobile-border: #d5beb7;
+    --mobile-heading: #2b4657;
+  }
+
+  /* ---------- Scheme 4 global frame: every mobile page ---------- */
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) > header,
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) > header.art-header {
+    background:
+      radial-gradient(circle at 12% 12%, rgba(230, 198, 170, .48), transparent 42%),
+      linear-gradient(115deg, rgba(247, 241, 232, .98), rgba(232, 207, 204, .97) 54%, rgba(221, 231, 227, .98)) !important;
+    border-bottom: 1px solid rgba(86, 96, 98, .18) !important;
+    box-shadow: 0 8px 22px rgba(55, 64, 68, .08) !important;
+    backdrop-filter: blur(14px);
+  }
+
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) .brand-lockup span {
+    color: var(--mobile-navy) !important;
+  }
+
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) .brand-lockup small {
+    color: #6e7776 !important;
+  }
+
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) .mobile-menu-toggle {
+    color: var(--mobile-navy) !important;
+    background: rgba(255, 250, 242, .74) !important;
+    border-color: rgba(91, 101, 102, .22) !important;
+  }
+
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) header .nav > nav {
+    background:
+      linear-gradient(145deg, rgba(255, 250, 242, .99), rgba(241, 223, 219, .98) 58%, rgba(221, 231, 227, .98)) !important;
+    border-color: rgba(105, 110, 108, .20) !important;
+    box-shadow: 0 18px 40px rgba(42, 55, 61, .14) !important;
+  }
+
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) header .nav > nav > a,
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) .social-case-nav-toggle {
+    color: var(--mobile-navy) !important;
+    border-bottom-color: rgba(128, 113, 105, .17) !important;
+  }
+
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) header .nav > nav > a[aria-current="page"],
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) .social-case-nav.is-current .social-case-nav-toggle {
+    color: var(--mobile-navy) !important;
+    background: rgba(230, 184, 168, .45) !important;
+    box-shadow: inset 3px 0 0 var(--mobile-gold) !important;
+  }
+
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) .social-case-nav-menu,
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) .special-feature-nav-menu {
+    background: linear-gradient(145deg, #fffaf2, #efe4de) !important;
+    border-color: rgba(118, 108, 101, .20) !important;
+  }
+
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) .language-switcher {
+    background: rgba(36, 59, 85, .92) !important;
+    border-color: rgba(200, 169, 104, .72) !important;
+  }
+
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) > footer,
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) > footer.art-footer {
+    position: relative;
+    background:
+      radial-gradient(circle at 92% 15%, rgba(170, 182, 161, .48), transparent 34%),
+      radial-gradient(circle at 5% 100%, rgba(230, 198, 170, .52), transparent 38%),
+      linear-gradient(130deg, #ead3d0, #e5dedb 48%, #dce7e1) !important;
+    border-top: 1px solid rgba(79, 92, 96, .16) !important;
+    color: var(--mobile-navy) !important;
+  }
+
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) > footer :where(b, strong, p, div, span, a) {
+    color: var(--mobile-navy) !important;
+  }
+
+  /* ---------- Shared content rhythm and accessible contrast ---------- */
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) main {
+    background-color: var(--mobile-page-bg) !important;
+  }
+
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) > section:not([class*="hero"]),
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) > main > section:not([class*="hero"]),
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) > main > .container > section:not([class*="hero"]) {
+    background-color: var(--mobile-section-bg) !important;
+  }
+
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) > section:nth-of-type(even):not([class*="hero"]),
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) > main > section:nth-of-type(even):not([class*="hero"]) {
+    background-color: var(--mobile-section-alt) !important;
+  }
+
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) :where(h2, h3, h4) {
+    color: var(--mobile-heading) !important;
+    text-shadow: none !important;
+  }
+
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) :where(p, li, dd, figcaption, blockquote) {
+    color: var(--mobile-ink);
+  }
+
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) :where(
+    .card,
+    .record-card,
+    .activity-card,
+    .album-index-card,
+    .album-photo-card,
+    .episode-library-card,
+    .episode-card,
+    .social-platform-card,
+    .social-account-note,
+    .visual-related-card,
+    .mission-card,
+    .home-news-card,
+    .home-case-reel-card,
+    .home-progress-card,
+    .impact-metric-card,
+    .case-record-card,
+    .social-case-feature-card
+  ) {
+    background: var(--mobile-surface) !important;
+    border-color: var(--mobile-border) !important;
+    box-shadow: var(--mobile-shadow) !important;
+  }
+
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) :where(.btn.art-primary, .read-btn, .home-news-primary, .campaign-strip-btn) {
+    background: var(--mobile-navy) !important;
+    color: #fffaf2 !important;
+    border-color: var(--mobile-navy) !important;
+  }
+
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) :where(.btn.art-secondary, .outline-btn, .source-btn:not(.source-dark)) {
+    background: rgba(255, 250, 242, .78) !important;
+    color: var(--mobile-navy) !important;
+    border-color: var(--mobile-gold) !important;
+  }
+
+  :where(
+    body.mobile-scheme-1,
+    body.mobile-scheme-2,
+    body.mobile-scheme-3,
+    body.mobile-scheme-4
+  ) .visual-related {
+    background:
+      radial-gradient(circle at 90% 8%, rgba(230, 184, 168, .24), transparent 30%),
+      linear-gradient(180deg, var(--mobile-section-alt), var(--mobile-section-bg)) !important;
+  }
+
+  /* ---------- Scheme 1: case data, court schedules and judgments ---------- */
+  body.mobile-scheme-1 :where(
+    .page-hero,
+    .social-cases-hero,
+    .case-profile-hero,
+    .hearing-hero
+  ) {
+    background:
+      radial-gradient(circle at 85% 12%, rgba(200, 169, 104, .22), transparent 27%),
+      radial-gradient(circle at 6% 95%, rgba(174, 187, 195, .13), transparent 35%),
+      linear-gradient(135deg, #142f48, #243b55 58%, #31566b) !important;
+  }
+
+  /* Keep the established case artwork dark even when its inline poster is absent. */
+  body.mobile-scheme-1 .case-profile-poster {
+    background:
+      radial-gradient(circle at 70% 22%, rgba(200, 169, 104, .25), transparent 30%),
+      linear-gradient(145deg, #18344c, #243b55) !important;
+    border-color: rgba(200, 169, 104, .54) !important;
+  }
+
+  body.mobile-scheme-1 :where(
+    .page-hero,
+    .social-cases-hero,
+    .case-profile-hero,
+    .hearing-hero
+  ) :where(h1, h2, h3) {
+    color: #fff7e8 !important;
+  }
+
+  body.mobile-scheme-1 :where(
+    .page-hero,
+    .social-cases-hero,
+    .case-profile-hero,
+    .hearing-hero
+  ) :where(p, li) {
+    color: #dce6e3 !important;
+  }
+
+  body.mobile-scheme-1 :where(
+    .social-cases-intro-strip,
+    .social-cases-directory,
+    .case-profile-main-section,
+    .case-connection-section
+  ) {
+    background-color: #f7f1e8 !important;
+  }
+
+  body.mobile-scheme-1 :where(
+    .social-cases-art-direction,
+    .social-cases-route-section,
+    .case-disclaimer-section
+  ) {
+    background-color: #e8ece8 !important;
+  }
+
+  body.mobile-scheme-1 :where(
+    .social-case-feature-copy,
+    .social-cases-principle,
+    .social-cases-style-grid article,
+    .social-cases-route-card,
+    .case-profile-toc-inner,
+    .case-fact-grid > div,
+    .case-emphasis-card,
+    .case-date-card,
+    .case-judgment-card,
+    .case-final-message,
+    .case-disclaimer,
+    .record-card-copy
+  ) {
+    background: #fffaf2 !important;
+    border-color: rgba(200, 169, 104, .56) !important;
+    box-shadow: 0 10px 24px rgba(24, 48, 68, .07) !important;
+  }
+
+  body.mobile-scheme-1 .case-story-section {
+    border-bottom-color: rgba(155, 120, 61, .28) !important;
+  }
+
+  body.mobile-scheme-1 :where(
+    .case-section-index,
+    .article-chip,
+    .case-status-row span,
+    .social-case-status,
+    .meta,
+    time
+  ) {
+    color: #80612f !important;
+  }
+
+  body.mobile-scheme-1 :where(
+    .case-date-card > span,
+    .case-judgment-card > strong,
+    .case-disclaimer > strong
+  ) {
+    color: #9b783d !important;
+  }
+
+  /* Data-source sections are deliberately neutral, even inside Scheme 1. */
+  body.mobile-scheme-1 .case-profile-article > .case-story-section:last-child {
+    margin-inline: -10px;
+    padding: 26px 16px !important;
+    border: 1px solid #c8c9c2 !important;
+    border-radius: 18px;
+    background: #e6e7e2 !important;
+  }
+
+  /* ---------- Scheme 2: eastern soft narrative ---------- */
+  body.mobile-scheme-2 :where(.about-art-hero, .special-hero) {
+    background:
+      radial-gradient(circle at 84% 12%, rgba(170, 182, 161, .32), transparent 30%),
+      radial-gradient(circle at 8% 80%, rgba(230, 198, 170, .42), transparent 34%),
+      linear-gradient(128deg, #f7f1e8, #f1dfdb 54%, #dde7e3) !important;
+  }
+
+  body.mobile-scheme-2 :where(.about-art-hero, .special-hero) :where(h1, h2, h3) {
+    color: #2d4856 !important;
+  }
+
+  body.mobile-scheme-2 :where(.about-art-hero, .special-hero) :where(p, blockquote) {
+    color: #586663 !important;
+  }
+
+  body.mobile-scheme-2 :where(
+    .about-stats-section,
+    .about-records-section
+  ) {
+    /* Action results borrow the brighter Scheme 4 card language. */
+    background:
+      radial-gradient(circle at 90% 10%, rgba(185, 173, 185, .24), transparent 32%),
+      linear-gradient(150deg, #f1dfdb, #fff3e6 48%, #dde7e3) !important;
+  }
+
+  body.mobile-scheme-2 :where(
+    .about-journey-art-section,
+    .about-timeline-section,
+    .about-charity-section,
+    .about-closing-section,
+    .special-reading-note,
+    .special-toc-section
+  ) {
+    background-color: #f3e7e2 !important;
+  }
+
+  body.mobile-scheme-2 :where(
+    .about-street-section,
+    .about-future-section
+  ) {
+    background-color: #dde7e3 !important;
+  }
+
+  body.mobile-scheme-2 :where(
+    .about-stat,
+    .about-timeline article,
+    .case-record-card,
+    .street-timeline article,
+    .charity-grid article,
+    .about-closing-card,
+    .reading-note-card,
+    .special-toc
+  ) {
+    background: rgba(255, 250, 242, .88) !important;
+    border-color: rgba(159, 95, 77, .24) !important;
+    box-shadow: var(--mobile-shadow) !important;
+  }
+
+  body.mobile-scheme-2 .about-timeline article:nth-child(3n + 1),
+  body.mobile-scheme-2 .charity-grid article:nth-child(3n + 1) {
+    background: #f3dfdb !important;
+  }
+
+  body.mobile-scheme-2 .about-timeline article:nth-child(3n + 2),
+  body.mobile-scheme-2 .charity-grid article:nth-child(3n + 2) {
+    background: #e5ebe5 !important;
+  }
+
+  body.mobile-scheme-2 .about-timeline article:nth-child(3n),
+  body.mobile-scheme-2 .charity-grid article:nth-child(3n) {
+    background: #f1e1d1 !important;
+  }
+
+  body.mobile-scheme-2 :where(.about-art-kicker, .special-eyebrow, .section-number) {
+    color: #9f5f4d !important;
+  }
+
+  /* Feature prologue and headings stay Scheme 2; long chapters become Scheme 3. */
+  body.mobile-scheme-2.chair-special-page .special-article {
+    background: #e4e6e2 !important;
+  }
+
+  body.mobile-scheme-2.chair-special-page .story-section {
+    background: #e9e8e1 !important;
+    border-color: rgba(101, 111, 108, .18) !important;
+  }
+
+  body.mobile-scheme-2.chair-special-page .story-section:nth-child(even) {
+    background: #e0e3e1 !important;
+  }
+
+  body.mobile-scheme-2.chair-special-page .story-inner {
+    background: rgba(247, 241, 232, .70) !important;
+    border: 1px solid rgba(103, 113, 110, .15);
+    border-radius: 22px;
+    padding: 24px 17px;
+  }
+
+  body.mobile-scheme-2.chair-special-page .story-heading {
+    margin: -24px -17px 22px;
+    padding: 22px 17px 18px;
+    border-radius: 22px 22px 0 0;
+    background: linear-gradient(135deg, #f1dfdb, #f2e2d4 55%, #dde7e3) !important;
+    border-bottom: 1px solid rgba(159, 95, 77, .18);
+  }
+
+  body.mobile-scheme-2.chair-special-page :where(
+    .comparison-card,
+    .responsibility-card,
+    .pull-quote,
+    .paper-note
+  ) {
+    background: #f7f1e8 !important;
+    border-color: #c5c7c1 !important;
+  }
+
+  body.mobile-scheme-2.chair-special-page .special-sources {
+    background: #dfe2df !important;
+  }
+
+  body.mobile-scheme-2.chair-special-page .special-sources-inner {
+    background: #f0eee8 !important;
+    border-color: #c5c7c1 !important;
+  }
+
+  /* ---------- Scheme 3: long-form reading and comic episodes ---------- */
+  body.mobile-scheme-3 :where(
+    .comic-intro-section,
+    .comic-reader-section,
+    .hearing-article-section
+  ) {
+    background: #e4e6e2 !important;
+  }
+
+  body.mobile-scheme-3 .comic-reader-hero,
+  body.mobile-scheme-3 .hearing-hero {
+    background:
+      radial-gradient(circle at 84% 15%, rgba(200, 169, 104, .20), transparent 27%),
+      linear-gradient(138deg, #213c50, #334d59 58%, #566a70) !important;
+  }
+
+  body.mobile-scheme-3 :where(.comic-reader-hero, .hearing-hero) :where(h1, h2, h3) {
+    color: #fff7e8 !important;
+  }
+
+  body.mobile-scheme-3 :where(.comic-reader-hero, .hearing-hero) :where(p, span) {
+    color: #e3e8e4;
+  }
+
+  body.mobile-scheme-3 .comic-intro-card {
+    background: #f7f1e8 !important;
+    border-color: #c4c6bf !important;
+    box-shadow: var(--mobile-shadow) !important;
+  }
+
+  body.mobile-scheme-3 :where(.comic-tags span, .reader-count, .comic-thumb) {
+    color: #334d59 !important;
+    background: #dde4df !important;
+    border-color: #bcc5bf !important;
+  }
+
+  body.mobile-scheme-3 .comic-page {
+    background: #fffaf2 !important;
+    border-color: #c7c2b8 !important;
+    box-shadow: 0 12px 28px rgba(48, 58, 58, .09) !important;
+  }
+
+  body.mobile-scheme-3 .comic-page-image-static {
+    padding: 10px;
+    background: #fffaf2 !important;
+  }
+
+  body.mobile-scheme-3 .comic-page-caption {
+    color: #68716d !important;
+    background: #f7f1e8 !important;
+  }
+
+  body.mobile-scheme-3 .comic-page-label {
+    background: #243b55 !important;
+  }
+
+  body.mobile-scheme-3 .comic-end-card {
+    background: linear-gradient(135deg, #334d59, #53686d) !important;
+  }
+
+  body.mobile-scheme-3 .comic-end-card :where(h3, p) {
+    color: #fffaf2 !important;
+  }
+
+  body.mobile-scheme-3 .hearing-connection {
+    background: #e0e3e1 !important;
+  }
+
+  body.mobile-scheme-3 > section:not([class*="hero"]):has(.article-shell) {
+    background: linear-gradient(180deg, #e4e6e2, #dedfdc) !important;
+  }
+
+  /* Progressive fallback for browsers without :has(). */
+  body.mobile-scheme-3.hearing-detail-gold > section:not([class*="hero"]):not(.hearing-connection):not(.visual-related) {
+    background: linear-gradient(180deg, #e4e6e2, #dedfdc) !important;
+  }
+
+  body.mobile-scheme-3 .article-body {
+    margin-top: 18px;
+    padding: 24px 17px;
+    border: 1px solid #c7c8c1;
+    border-radius: 22px;
+    background: #f7f1e8 !important;
+    box-shadow: var(--mobile-shadow);
+  }
+
+  body.mobile-scheme-3 .article-body :where(h2, h3) {
+    color: #334d59 !important;
+  }
+
+  /* Important court summaries return to Scheme 1 for rapid scanning. */
+  body.mobile-scheme-3 :where(
+    .case-inline-intro-link,
+    .hearing-page-toc,
+    .hearing-sentence-grid article,
+    .hearing-position,
+    .article-meta
+  ) {
+    background: #fffaf2 !important;
+    border-color: rgba(155, 120, 61, .42) !important;
+    box-shadow: 0 8px 20px rgba(36, 59, 85, .07) !important;
+  }
+
+  body.mobile-scheme-3 .article-meta {
+    padding: 12px;
+    border: 1px solid rgba(155, 120, 61, .35);
+    border-radius: 16px;
+  }
+
+  body.mobile-scheme-3 .article-chip {
+    color: #6f572f !important;
+    background: #ece0c8 !important;
+  }
+
+  body.mobile-scheme-3 .hearing-page-toc > a {
+    color: #243b55 !important;
+    background: #f1e8d8 !important;
+  }
+
+  body.mobile-scheme-3 .hearing-position {
+    border-left-color: #c8a968 !important;
+  }
+
+  body.mobile-scheme-3 :where(.article-quote, .article-note) {
+    color: #4f5b59 !important;
+    background: #e3e3dd !important;
+    border-color: #bfc2bc !important;
+  }
+
+  /* ---------- Scheme 4: welcoming hubs, activities, albums and social ---------- */
+  body.mobile-scheme-4 :where(
+    .premium-home-hero,
+    .page-hero,
+    .court-library-hero,
+    .social-page-hero,
+    .activity-cover,
+    .album-hero
+  ) {
+    background:
+      radial-gradient(circle at 84% 12%, rgba(170, 182, 161, .42), transparent 29%),
+      radial-gradient(circle at 8% 88%, rgba(185, 173, 185, .28), transparent 34%),
+      linear-gradient(125deg, #fff8ed, #f1dfdb 48%, #dde7e3) !important;
+  }
+
+  body.mobile-scheme-4 :where(
+    .premium-home-hero,
+    .page-hero,
+    .court-library-hero,
+    .social-page-hero,
+    .activity-cover,
+    .album-hero
+  ) :where(h1, h2, h3) {
+    color: #243b55 !important;
+    -webkit-text-fill-color: #243b55 !important;
+    background: none !important;
+    text-shadow: none !important;
+  }
+
+  body.mobile-scheme-4 :where(
+    .premium-home-hero,
+    .page-hero,
+    .court-library-hero,
+    .social-page-hero,
+    .activity-cover,
+    .album-hero
+  ) :where(p, li) {
+    color: #536463 !important;
+  }
+
+  body.mobile-scheme-4 :where(
+    .premium-home-hero,
+    .page-hero,
+    .court-library-hero,
+    .social-page-hero,
+    .activity-cover,
+    .album-hero
+  ) :where(.art-eyebrow, .court-kicker, .eyebrow2, small) {
+    color: #9f5f4d !important;
+  }
+
+  body.mobile-scheme-4 .premium-home-hero .premium-hero-copy h1,
+  body.mobile-scheme-4 .premium-home-hero .premium-hero-copy h1 span {
+    color: #243b55 !important;
+    -webkit-text-fill-color: #243b55 !important;
+  }
+
+  body.mobile-scheme-4 .premium-home-hero .premium-hero-copy h1 span::after {
+    background: linear-gradient(90deg, #9f5f4d, #c8a968, #78918f) !important;
+  }
+
+  body.mobile-scheme-4 .premium-home-hero .premium-hero-lead {
+    color: #536463 !important;
+  }
+
+  body.mobile-scheme-4 .home-news-hub {
+    background:
+      radial-gradient(circle at 90% 9%, rgba(230, 198, 170, .34), transparent 28%),
+      linear-gradient(155deg, #f1dfdb, #f7eee8 54%, #e5ece7) !important;
+  }
+
+  body.mobile-scheme-4 .home-social-cases-section {
+    background: linear-gradient(145deg, #e4dbe2, #f0e3df) !important;
+  }
+
+  body.mobile-scheme-4 .remember-kaikai-section {
+    background: linear-gradient(145deg, #f2e2d4, #f4e8e2) !important;
+  }
+
+  body.mobile-scheme-4 .impact-dashboard-section {
+    background: linear-gradient(145deg, #dde7e3, #e4e5dc) !important;
+  }
+
+  body.mobile-scheme-4 .mission-section {
+    background: #fff4e7 !important;
+  }
+
+  body.mobile-scheme-4 .volunteer-logo-section {
+    background: linear-gradient(145deg, #ecd5d2, #f2e0dc) !important;
+  }
+
+  body.mobile-scheme-4 .social-preview-section,
+  body.mobile-scheme-4 .social-hub-main {
+    background: linear-gradient(145deg, #dde7e3, #ecede6) !important;
+  }
+
+  body.mobile-scheme-4 .belief-footer-section {
+    background: linear-gradient(145deg, #e5dbe2, #ead9d5) !important;
+  }
+
+  body.mobile-scheme-4 :where(
+    .home-news-card:nth-child(3n + 1),
+    .mission-card:nth-child(3n + 1),
+    .impact-metric-card:nth-child(3n + 1)
+  ) {
+    background: #f4e2df !important;
+  }
+
+  body.mobile-scheme-4 :where(
+    .home-news-card:nth-child(3n + 2),
+    .mission-card:nth-child(3n + 2),
+    .impact-metric-card:nth-child(3n + 2)
+  ) {
+    background: #e5ece7 !important;
+  }
+
+  body.mobile-scheme-4 :where(
+    .home-news-card:nth-child(3n),
+    .mission-card:nth-child(3n),
+    .impact-metric-card:nth-child(3n)
+  ) {
+    background: #f1e1d1 !important;
+  }
+
+  body.mobile-scheme-4 .social-platform-card:nth-child(1) {
+    background: #f0dfe1 !important;
+    border-color: #cdb5c3 !important;
+  }
+
+  body.mobile-scheme-4 .social-platform-card:nth-child(2) {
+    background: #e6e4df !important;
+    border-color: #bdbab3 !important;
+  }
+
+  body.mobile-scheme-4 .social-platform-card:nth-child(3) {
+    background: #dfe7e5 !important;
+    border-color: #b3c3c4 !important;
+  }
+
+  body.mobile-scheme-4 :where(
+    .album-photo-grid,
+    .photo-grid,
+    .comic-pages
+  ) {
+    padding: 10px;
+    border-radius: 20px;
+    background: #fffaf2 !important;
+  }
+
+  body.mobile-scheme-4 :where(.album-photo-card, .photo-card) {
+    background: #fffaf2 !important;
+    border-color: #d8cbbd !important;
+  }
+
+  body.mobile-scheme-4 .activity-body .emphasis {
+    color: #3d5057 !important;
+    background: #e8d8d7 !important;
+    border-left-color: #9f5f4d !important;
+  }
+
+  body.mobile-scheme-4 .tag-pill {
+    color: #3c5960 !important;
+    background: #dce7e3 !important;
+  }
+
+  body.mobile-scheme-4 .episode-library-card:nth-child(even) .episode-library-copy {
+    background: #e5ece7 !important;
+  }
+
+  body.mobile-scheme-4 .episode-library-card:nth-child(odd) .episode-library-copy {
+    background: #f4e2df !important;
+  }
+}
+
+@media (max-width: 480px) {
+  body.mobile-scheme-2.chair-special-page .story-inner {
+    padding-inline: 14px;
+  }
+
+  body.mobile-scheme-2.chair-special-page .story-heading {
+    margin-inline: -14px;
+    padding-inline: 14px;
+  }
+
+  body.mobile-scheme-3 .article-body {
+    padding-inline: 14px;
+  }
+}
