@@ -934,6 +934,11 @@ html[lang="zh-Hans"] .btn {
     font-size:16px !important;
     line-height:1.2;
   }
+  html[lang="zh-Hant"] .zh-brand-title,
+  html[lang="zh-Hans"] .zh-brand-title{
+    font-size:15px !important;
+    letter-spacing:.015em;
+  }
   .brand-lockup small{
     display:none !important;
   }
@@ -2567,6 +2572,14 @@ header .brand{
   font-weight:950;
   letter-spacing:.02em;
 }
+/* Traditional Chinese home header: keep the alliance name readable without
+   competing with the expanded navigation on narrower desktop screens. */
+html[lang="zh-Hant"] .zh-brand-title,
+html[lang="zh-Hans"] .zh-brand-title{
+  font-size:18px;
+  letter-spacing:.035em;
+  white-space:nowrap;
+}
 header .nav>nav{
   gap:3px !important;
 }
@@ -2948,6 +2961,11 @@ a.article-back:hover{
   }
   .brand-lockup span{
     font-size:17px !important;
+  }
+  html[lang="zh-Hant"] .zh-brand-title,
+  html[lang="zh-Hans"] .zh-brand-title{
+    font-size:16px !important;
+    letter-spacing:.02em;
   }
   .brand-lockup small{
     font-size:8px !important;
