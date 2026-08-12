@@ -805,6 +805,7 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     // so each translated article has its own independent count.
     const contentRoute = route.replace(/^(?:en|ja)\//, '');
     if (/^cases\/[^/]+$/.test(contentRoute)) return true;
+    if (/^cases\/[^/]+\/features\/[^/]+$/.test(contentRoute)) return true;
     if (/^hearing-records\/[^/]+$/.test(contentRoute)) return true;
     if (/^court-comics\/episode-[^/]+$/.test(contentRoute)) return true;
     if (/^activity-records\/[^/]+$/.test(contentRoute) && contentRoute !== 'activity-records/albums') return true;
