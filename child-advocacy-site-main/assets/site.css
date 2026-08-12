@@ -511,6 +511,135 @@ html[lang="zh-Hans"] .btn {
  .social-platform-copy{padding:28px 24px}.social-platform-copy h2{font-size:31px}
 }
 
+/* ============================================================
+   2026-08-12 — 關於我們：紙雕長卷 × 中國傳統色 × 婦幼守護
+   電腦版與手機版專用配色層：增加暖色比例，但保留深藍公益識別。
+   ============================================================ */
+.about-page{
+  --about-paper:#f7f0e6;
+  --about-paper-deep:#f1e3d5;
+  --about-rose:#e6b8a8;
+  --about-apricot:#dfa77e;
+  --about-lilac:#d9c2c7;
+  --about-sage:#a8ada1;
+  --about-gold:#d6b66c;
+  --about-ink:#2e4652;
+  --about-coral:#a96458;
+  background:var(--about-paper);
+}
+.about-page .about-art-hero{
+  background:
+    radial-gradient(circle at 78% 22%,rgba(230,184,168,.34),transparent 27%),
+    radial-gradient(circle at 12% 82%,rgba(217,194,199,.25),transparent 25%),
+    linear-gradient(135deg,#fffaf3 0%,var(--about-paper) 52%,#f1e3d5 100%)!important;
+  border-bottom:1px solid rgba(214,182,108,.45);
+}
+.about-page .about-art-hero:before{
+  background-image:radial-gradient(circle at 13px 13px,rgba(169,100,88,.15) 0 1.4px,transparent 1.7px);
+  opacity:.30;
+}
+.about-page .about-art-kicker{color:var(--about-coral)!important}
+.about-page .about-pill{
+  background:rgba(255,250,243,.90)!important;
+  border-color:rgba(214,182,108,.72)!important;
+  color:#8b6630!important;
+}
+.about-page .about-art-copy h1{color:var(--about-ink)!important}
+.about-page .about-art-copy h1 em{color:var(--about-coral)!important}
+.about-page .about-art-copy>p{color:#596967!important}
+.about-page .about-hero-tags span{
+  background:rgba(255,250,243,.80)!important;
+  border-color:rgba(230,184,168,.72)!important;
+  color:#6b5a55!important;
+}
+.about-page .about-hero-tags span:nth-child(2n){border-color:rgba(168,173,161,.75)!important}
+.about-page .about-hero-tags span:nth-child(3n){border-color:rgba(217,194,199,.86)!important}
+.about-page .about-visual-ring{
+  border-color:rgba(214,182,108,.72)!important;
+  box-shadow:0 0 0 22px rgba(230,184,168,.18)!important;
+}
+.about-page .about-main-art{border-color:rgba(255,250,243,.94)!important}
+.about-page .about-mini-art{border-color:#fff7ec!important}
+
+.about-page .about-stats-section{background:#fffaf3!important}
+.about-page .about-records-section{background:linear-gradient(180deg,#fffaf3,#f6ebe3)!important}
+.about-page .about-charity-section{background:#fffaf3!important}
+.about-page .about-section-head small{color:#a06b54!important}
+.about-page .about-section-head h2{color:var(--about-ink)!important}
+.about-page .about-section-head>p{color:#716b63!important}
+.about-page .about-stat{
+  border-color:rgba(214,182,108,.42)!important;
+  background:linear-gradient(145deg,#fffdf8,#fbf0e8)!important;
+}
+.about-page .about-stat:nth-child(2){background:linear-gradient(145deg,#fffdf8,#f3e9ee)!important}
+.about-page .about-stat:nth-child(3){background:linear-gradient(145deg,#fffdf8,#edf1e9)!important}
+.about-page .about-stat:nth-child(4){background:linear-gradient(145deg,#fffdf8,#f8eddb)!important}
+.about-page .about-stat strong{color:var(--about-ink)!important}
+.about-page .about-stat p{color:#70685f!important}
+.about-page .about-stat.navy{color:var(--about-ink)!important}
+.about-page .about-stat.coral{color:var(--about-coral)!important}
+.about-page .about-stat.gold{color:#b38a3e!important}
+.about-page .about-stat.teal{color:#718e82!important}
+
+.about-page .about-timeline-section{
+  background:
+    linear-gradient(90deg,rgba(230,184,168,.14),transparent 28%,transparent 72%,rgba(168,173,161,.14)),
+    linear-gradient(180deg,#f8eee5,#f2e8df)!important;
+}
+.about-page .about-timeline:before{background:linear-gradient(var(--about-apricot),var(--about-sage))!important}
+.about-page .about-timeline time{color:#a06b54!important}
+.about-page .about-timeline article>div:last-child{
+  background:rgba(255,252,247,.82)!important;
+  border-color:rgba(214,182,108,.42)!important;
+}
+.about-page .about-timeline article:nth-child(odd) .timeline-dot{background:var(--about-rose)!important}
+.about-page .about-timeline article:nth-child(even) .timeline-dot{background:var(--about-sage)!important}
+.about-page .about-timeline h3{color:var(--about-ink)!important}
+.about-page .about-timeline p{color:#70685f!important}
+.about-page .about-timeline article.highlight>div:last-child{
+  background:linear-gradient(135deg,#7b514c,#a96458)!important;
+  border-color:rgba(255,244,226,.55)!important;
+}
+
+.about-page .about-street-section{background:#f5ebe1!important}
+.about-page .about-future-section{
+  background:
+    radial-gradient(circle at 12% 18%,rgba(230,184,168,.24),transparent 25%),
+    linear-gradient(135deg,#2e4652,#526b6d 58%,#7b514c)!important;
+}
+.about-page .about-future-copy .about-art-kicker{color:#f0d59a!important}
+.about-page .future-list li{background:rgba(255,244,226,.12)!important;border:1px solid rgba(255,226,202,.18)}
+.about-page .future-list li:before{color:var(--about-rose)!important}
+.about-page .about-closing-section{background:linear-gradient(180deg,#fff7ed,#f3e5de)!important}
+.about-page .about-closing-card{
+  background:rgba(255,252,247,.94)!important;
+  border-color:rgba(214,182,108,.62)!important;
+}
+.about-page .about-closing-card small{color:#a06b54!important}
+.about-page .about-closing-card h2{color:var(--about-ink)!important}
+.about-page .about-closing-card blockquote{
+  border-left-color:var(--about-coral)!important;
+  background:#f8e9e1!important;
+  color:#6c4d48!important;
+}
+.about-page .about-hashtags{color:#718e82!important}
+
+@media(max-width:900px){
+  .about-page .about-art-grid{gap:38px}
+  .about-page .about-art-visual{min-height:390px}
+}
+@media(max-width:620px){
+  .about-page{background:#f1e8df!important}
+  .about-page .about-art-hero{background:linear-gradient(180deg,#fff8ef,#f1e3d9)!important}
+  .about-page .about-art-visual{min-height:320px}
+  .about-page .about-stats-section,
+  .about-page .about-records-section,
+  .about-page .about-charity-section{background:#fff7ef!important}
+  .about-page .about-timeline-section{background:linear-gradient(180deg,#f5eae2,#efe3db)!important}
+  .about-page .about-street-section{background:#f2e5dd!important}
+  .about-page .about-closing-card{box-shadow:0 12px 30px rgba(111,78,65,.10)!important}
+}
+
 
 /* ===== 2026-08-09 Homepage campaign art refresh ===== */
 .art-hero{
@@ -933,6 +1062,11 @@ html[lang="zh-Hans"] .btn {
     min-width:0;
     font-size:16px !important;
     line-height:1.2;
+  }
+  html[lang="zh-Hant"] .zh-brand-title,
+  html[lang="zh-Hans"] .zh-brand-title{
+    font-size:15px !important;
+    letter-spacing:.015em;
   }
   .brand-lockup small{
     display:none !important;
@@ -2567,6 +2701,14 @@ header .brand{
   font-weight:950;
   letter-spacing:.02em;
 }
+/* Traditional Chinese home header: keep the alliance name readable without
+   competing with the expanded navigation on narrower desktop screens. */
+html[lang="zh-Hant"] .zh-brand-title,
+html[lang="zh-Hans"] .zh-brand-title{
+  font-size:18px;
+  letter-spacing:.035em;
+  white-space:nowrap;
+}
 header .nav>nav{
   gap:3px !important;
 }
@@ -2948,6 +3090,11 @@ a.article-back:hover{
   }
   .brand-lockup span{
     font-size:17px !important;
+  }
+  html[lang="zh-Hant"] .zh-brand-title,
+  html[lang="zh-Hans"] .zh-brand-title{
+    font-size:16px !important;
+    letter-spacing:.02em;
   }
   .brand-lockup small{
     font-size:8px !important;
@@ -7159,4 +7306,36 @@ img,video,iframe,table { max-width: 100%; }
   :where(h1,h2,h3,h4,h5,h6,p,li,a,button,small,strong,span) { max-width: 100%; }
   :where(article,.article-body,.case-copy,.home-news-card-copy,.social-case-feature-copy) p { line-height: 1.84; }
   header .nav > nav a, header .nav > nav button { line-height: 1.45; }
+}
+
+/* 2026-08-12 — Final about-page palette layer: warm Chinese traditional colors. */
+.about-page{
+  --about-paper:#f7f0e6;--about-rose:#e6b8a8;--about-apricot:#dfa77e;
+  --about-lilac:#d9c2c7;--about-sage:#a8ada1;--about-gold:#d6b66c;
+  --about-ink:#2e4652;--about-coral:#a96458;
+  background:#f7f0e6;
+}
+.about-page .about-art-hero{
+  background:radial-gradient(circle at 78% 22%,rgba(230,184,168,.34),transparent 27%),radial-gradient(circle at 12% 82%,rgba(217,194,199,.25),transparent 25%),linear-gradient(135deg,#fffaf3 0%,#f7f0e6 52%,#f1e3d5 100%)!important;
+  border-bottom:1px solid rgba(214,182,108,.45);
+}
+.about-page .about-art-hero:before{background-image:radial-gradient(circle at 13px 13px,rgba(169,100,88,.15) 0 1.4px,transparent 1.7px);opacity:.30}
+.about-page .about-art-kicker{color:#a96458!important}
+.about-page .about-pill{background:rgba(255,250,243,.90)!important;border-color:rgba(214,182,108,.72)!important;color:#8b6630!important}
+.about-page .about-art-copy h1{color:#2e4652!important}.about-page .about-art-copy h1 em{color:#a96458!important}
+.about-page .about-art-copy>p{color:#596967!important}
+.about-page .about-hero-tags span{background:rgba(255,250,243,.80)!important;border-color:rgba(230,184,168,.72)!important;color:#6b5a55!important}
+.about-page .about-hero-tags span:nth-child(2n){border-color:rgba(168,173,161,.75)!important}.about-page .about-hero-tags span:nth-child(3n){border-color:rgba(217,194,199,.86)!important}
+.about-page .about-visual-ring{border-color:rgba(214,182,108,.72)!important;box-shadow:0 0 0 22px rgba(230,184,168,.18)!important}
+.about-page .about-main-art{border-color:rgba(255,250,243,.94)!important}.about-page .about-mini-art{border-color:#fff7ec!important}
+.about-page .about-stats-section,.about-page .about-charity-section{background:#fffaf3!important}.about-page .about-records-section{background:linear-gradient(180deg,#fffaf3,#f6ebe3)!important}
+.about-page .about-section-head small{color:#a06b54!important}.about-page .about-section-head h2{color:#2e4652!important}.about-page .about-section-head>p{color:#716b63!important}
+.about-page .about-stat{border-color:rgba(214,182,108,.42)!important;background:linear-gradient(145deg,#fffdf8,#fbf0e8)!important}.about-page .about-stat:nth-child(2){background:linear-gradient(145deg,#fffdf8,#f3e9ee)!important}.about-page .about-stat:nth-child(3){background:linear-gradient(145deg,#fffdf8,#edf1e9)!important}.about-page .about-stat:nth-child(4){background:linear-gradient(145deg,#fffdf8,#f8eddb)!important}
+.about-page .about-stat strong{color:#2e4652!important}.about-page .about-stat p{color:#70685f!important}.about-page .about-stat.navy{color:#2e4652!important}.about-page .about-stat.coral{color:#a96458!important}.about-page .about-stat.gold{color:#b38a3e!important}.about-page .about-stat.teal{color:#718e82!important}
+.about-page .about-timeline-section{background:linear-gradient(90deg,rgba(230,184,168,.14),transparent 28%,transparent 72%,rgba(168,173,161,.14)),linear-gradient(180deg,#f8eee5,#f2e8df)!important}
+.about-page .about-timeline:before{background:linear-gradient(#dfa77e,#a8ada1)!important}.about-page .about-timeline time{color:#a06b54!important}.about-page .about-timeline article>div:last-child{background:rgba(255,252,247,.82)!important;border-color:rgba(214,182,108,.42)!important}.about-page .about-timeline h3{color:#2e4652!important}.about-page .about-timeline p{color:#70685f!important}.about-page .about-timeline article:nth-child(odd) .timeline-dot{background:#e6b8a8!important}.about-page .about-timeline article:nth-child(even) .timeline-dot{background:#a8ada1!important}.about-page .about-timeline article.highlight>div:last-child{background:linear-gradient(135deg,#7b514c,#a96458)!important}
+.about-page .about-street-section{background:#f5ebe1!important}.about-page .about-future-section{background:radial-gradient(circle at 12% 18%,rgba(230,184,168,.24),transparent 25%),linear-gradient(135deg,#2e4652,#526b6d 58%,#7b514c)!important}.about-page .about-future-copy .about-art-kicker{color:#f0d59a!important}.about-page .future-list li{background:rgba(255,244,226,.12)!important;border:1px solid rgba(255,226,202,.18)}.about-page .future-list li:before{color:#e6b8a8!important}
+.about-page .about-closing-section{background:linear-gradient(180deg,#fff7ed,#f3e5de)!important}.about-page .about-closing-card{background:rgba(255,252,247,.94)!important;border-color:rgba(214,182,108,.62)!important}.about-page .about-closing-card small{color:#a06b54!important}.about-page .about-closing-card h2{color:#2e4652!important}.about-page .about-closing-card blockquote{border-left-color:#a96458!important;background:#f8e9e1!important;color:#6c4d48!important}.about-page .about-hashtags{color:#718e82!important}
+@media(max-width:620px){
+  .about-page{background:#f1e8df!important}.about-page .about-art-hero{background:linear-gradient(180deg,#fff8ef,#f1e3d9)!important}.about-page .about-stats-section,.about-page .about-records-section,.about-page .about-charity-section{background:#fff7ef!important}.about-page .about-timeline-section{background:linear-gradient(180deg,#f5eae2,#efe3db)!important}.about-page .about-street-section{background:#f2e5dd!important}.about-page .about-closing-card{box-shadow:0 12px 30px rgba(111,78,65,.10)!important}
 }
