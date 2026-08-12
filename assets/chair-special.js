@@ -6,7 +6,91 @@
   var tocLinks = Array.prototype.slice.call(document.querySelectorAll(".special-toc a[href^='#']"));
   var sections = Array.prototype.slice.call(document.querySelectorAll(".story-section[id]"));
   var chapterTransition = document.querySelector(".next-chapter-transition");
+  var specialIntro = document.querySelector("#specialIntro");
+  var introSkip = document.querySelector("#introSkip");
+  var introReplay = document.querySelector("#introReplay");
+  var specialTitle = document.querySelector("#specialTitle");
+  var introTimer = 0;
   var reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function setPageInert(isInert) {
+    var regions = document.querySelectorAll("body > header, body > main, body > footer, .back-to-top");
+    regions.forEach(function (region) {
+      if (isInert) {
+        region.setAttribute("inert", "");
+        region.setAttribute("aria-hidden", "true");
+      } else {
+        region.removeAttribute("inert");
+        region.removeAttribute("aria-hidden");
+      }
+    });
+  }
+
+  function rememberIntro() {
+    try { window.sessionStorage.setItem("chair-special-intro-seen", "1"); } catch (error) { /* Storage can be unavailable. */ }
+  }
+
+  function hasSeenIntro() {
+    try { return window.sessionStorage.getItem("chair-special-intro-seen") === "1"; } catch (error) { return false; }
+  }
+
+  function finishIntro() {
+    if (!specialIntro) return;
+    var moveFocusToTitle = specialIntro.contains(document.activeElement);
+    window.clearTimeout(introTimer);
+    specialIntro.hidden = true;
+    specialIntro.classList.remove("is-active", "is-closing");
+    document.body.classList.remove("intro-playing");
+    setPageInert(false);
+    if (specialTitle && moveFocusToTitle) {
+      specialTitle.focus({ preventScroll: true });
+    }
+  }
+
+  function closeIntro() {
+    if (!specialIntro || specialIntro.hidden) return;
+    window.clearTimeout(introTimer);
+    specialIntro.classList.remove("is-active");
+    specialIntro.classList.add("is-closing");
+    introTimer = window.setTimeout(finishIntro, 470);
+  }
+
+  function showIntro() {
+    if (!specialIntro || reducedMotion) return;
+    window.clearTimeout(introTimer);
+    specialIntro.hidden = false;
+    specialIntro.classList.remove("is-active", "is-closing");
+    void specialIntro.offsetWidth;
+    document.body.classList.add("intro-playing");
+    setPageInert(true);
+    specialIntro.classList.add("is-active");
+    rememberIntro();
+    if (introSkip) window.setTimeout(function () { introSkip.focus({ preventScroll: true }); }, 60);
+    introTimer = window.setTimeout(finishIntro, 7900);
+  }
+
+  if (specialIntro) {
+    specialIntro.addEventListener("animationend", function (event) {
+      if (event.target === specialIntro && event.animationName === "intro-overlay-exit") finishIntro();
+    });
+
+    specialIntro.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeIntro();
+      } else if (event.key === "Tab" && introSkip) {
+        event.preventDefault();
+        introSkip.focus();
+      }
+    });
+  }
+
+  if (introSkip) introSkip.addEventListener("click", closeIntro);
+  if (introReplay) introReplay.addEventListener("click", showIntro);
+
+  var forceIntro = /(?:^|[?&])intro=1(?:&|$)/.test(window.location.search) || window.location.hash === "#intro";
+  var directSectionLink = window.location.hash && window.location.hash !== "#intro";
+  if (!reducedMotion && (forceIntro || (!directSectionLink && !hasSeenIntro()))) showIntro();
 
   function clamp(value) {
     return Math.min(Math.max(value, 0), 1);
