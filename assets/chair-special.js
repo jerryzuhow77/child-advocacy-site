@@ -14,6 +14,10 @@
   var chapterSkip = document.querySelector("#chapterSkip");
   var chapterContent = document.querySelector("#chapterOneContent");
   var chapterHeading = document.querySelector("#chapterOneHeading");
+  var chapterStage = chapterTransition && chapterTransition.querySelector(".next-chapter-stage");
+  var ancientChair = chapterTransition && chapterTransition.querySelector(".ancient-chair");
+  var hospitalCurtain = chapterTransition && chapterTransition.querySelector(".hospital-curtain");
+  var chairCurtainMorph = chapterTransition && chapterTransition.querySelector(".chair-curtain-morph");
   var introTimer = 0;
   var introFocusFrame = 0;
   var introReturnFocus = null;
@@ -122,6 +126,22 @@
     return 1 - phase(value, peak, end);
   }
 
+  function setMorphGeometry(value) {
+    if (!chapterStage || !ancientChair || !hospitalCurtain || !chairCurtainMorph) return;
+    var stageRect = chapterStage.getBoundingClientRect();
+    var chairRect = ancientChair.getBoundingClientRect();
+    var curtainRect = hospitalCurtain.getBoundingClientRect();
+    var fromLeft = chairRect.left - stageRect.left;
+    var fromTop = chairRect.top - stageRect.top;
+    var toLeft = curtainRect.left - stageRect.left;
+    var toTop = curtainRect.top - stageRect.top;
+
+    chapterTransition.style.setProperty("--morph-left", (fromLeft + (toLeft - fromLeft) * value).toFixed(2) + "px");
+    chapterTransition.style.setProperty("--morph-top", (fromTop + (toTop - fromTop) * value).toFixed(2) + "px");
+    chapterTransition.style.setProperty("--morph-width", (chairRect.width + (curtainRect.width - chairRect.width) * value).toFixed(2) + "px");
+    chapterTransition.style.setProperty("--morph-height", (chairRect.height + (curtainRect.height - chairRect.height) * value).toFixed(2) + "px");
+  }
+
   function setChapterButtonReady(isReady) {
     if (!chapterEnter) return;
     chapterEnter.disabled = !isReady;
@@ -189,19 +209,22 @@
     var rect = chapterTransition.getBoundingClientRect();
     var travel = Math.max(chapterTransition.offsetHeight - window.innerHeight, 1);
     var transitionProgress = clamp(-rect.top / travel);
+    var isMobileTransition = window.innerWidth <= 760;
+    var years = phase(transitionProgress, 0, .3);
     var sunlight = .16 + pulse(transitionProgress, .01, .065, .13) * .62 + pulse(transitionProgress, .15, .2, .26) * .28;
-    var rain = pulse(transitionProgress, .075, .135, .2) * .72;
-    var leaves = pulse(transitionProgress, .145, .215, .29) * .7;
-    var ink = phase(transitionProgress, .2, .39);
-    var push = phase(transitionProgress, .34, .56);
-    var door = phase(transitionProgress, .5, .72);
-    var modern = phase(transitionProgress, .59, .8);
-    var morph = pulse(transitionProgress, .55, .7, .86);
-    var morphProgress = phase(transitionProgress, .57, .8);
-    var title = phase(transitionProgress, .76, .91);
-    var cta = phase(transitionProgress, .89, .99);
+    var rain = pulse(transitionProgress, .075, .135, .2) * .72 * (isMobileTransition ? .72 : 1);
+    var leaves = pulse(transitionProgress, .145, .215, .29) * .7 * (isMobileTransition ? .65 : 1);
+    var ink = phase(transitionProgress, .18, .3);
+    /* .30–.42 deliberately holds the ink-washed room and closed doors still. */
+    var push = phase(transitionProgress, .42, .58);
+    var door = phase(transitionProgress, .56, .76);
+    var modern = phase(transitionProgress, .64, .84);
+    var morph = pulse(transitionProgress, .54, .74, .92);
+    var morphProgress = phase(transitionProgress, .54, .88);
+    var title = phase(transitionProgress, .82, .94);
+    var cta = phase(transitionProgress, .92, .995);
     var lastLine = 1 - phase(transitionProgress, .1, .24);
-    var cue = 1 - phase(transitionProgress, .08, .34);
+    var cue = 1 - phase(transitionProgress, .08, .3);
     var chapterIsOpen = chapterContent && !chapterContent.hidden;
 
     chapterTransition.style.setProperty("--sunlight-opacity", Math.min(sunlight, .9).toFixed(3));
@@ -210,21 +233,18 @@
     chapterTransition.style.setProperty("--ink-opacity", ink.toFixed(3));
     chapterTransition.style.setProperty("--ancient-window-opacity", (.52 - ink * .34).toFixed(3));
     chapterTransition.style.setProperty("--ancient-chair-opacity", (.54 - ink * .36).toFixed(3));
-    chapterTransition.style.setProperty("--time-rotate", (transitionProgress * 230).toFixed(2) + "deg");
-    chapterTransition.style.setProperty("--leaf-shift-x", (transitionProgress * 7).toFixed(2) + "vw");
-    chapterTransition.style.setProperty("--leaf-shift-y", (transitionProgress * 5).toFixed(2) + "vh");
+    chapterTransition.style.setProperty("--time-rotate", (years * 230).toFixed(2) + "deg");
+    chapterTransition.style.setProperty("--leaf-shift-x", (years * 7).toFixed(2) + "vw");
+    chapterTransition.style.setProperty("--leaf-shift-y", (years * 5).toFixed(2) + "vh");
     chapterTransition.style.setProperty("--ancient-opacity", (1 - modern * .88).toFixed(3));
     chapterTransition.style.setProperty("--ancient-scale", (1 + push * .08).toFixed(3));
     chapterTransition.style.setProperty("--modern-opacity", modern.toFixed(3));
     chapterTransition.style.setProperty("--door-left-shift", (-104 * door).toFixed(2) + "%");
     chapterTransition.style.setProperty("--door-right-shift", (104 * door).toFixed(2) + "%");
-    chapterTransition.style.setProperty("--door-light-width", "calc(2px + " + (door * 86).toFixed(2) + "vw)");
-    chapterTransition.style.setProperty("--door-light-opacity", (.18 + door * .52).toFixed(3));
+    chapterTransition.style.setProperty("--door-light-width", "calc(2px + " + (door * (isMobileTransition ? 96 : 86)).toFixed(2) + "vw)");
+    chapterTransition.style.setProperty("--door-light-opacity", (.18 + door * (isMobileTransition ? .58 : .52)).toFixed(3));
     chapterTransition.style.setProperty("--morph-opacity", morph.toFixed(3));
     chapterTransition.style.setProperty("--morph-progress", morphProgress.toFixed(3));
-    chapterTransition.style.setProperty("--morph-shift", (-2 * morphProgress).toFixed(3) + "vw");
-    chapterTransition.style.setProperty("--morph-scale-x", (1 + morphProgress * 2.5).toFixed(3));
-    chapterTransition.style.setProperty("--morph-scale-y", (1 + morphProgress * .42).toFixed(3));
     chapterTransition.style.setProperty("--last-line-opacity", lastLine.toFixed(3));
     chapterTransition.style.setProperty("--last-line-shift", (-12 * phase(transitionProgress, .1, .24)).toFixed(2) + "px");
     chapterTransition.style.setProperty("--chapter-opacity", title.toFixed(3));
@@ -233,7 +253,8 @@
     chapterTransition.style.setProperty("--cta-shift", (12 * (1 - cta)).toFixed(2) + "px");
     chapterTransition.style.setProperty("--cue-opacity", cue.toFixed(3));
     chapterTransition.style.setProperty("--paper-grain-opacity", (.18 - modern * .15).toFixed(3));
-    setChapterButtonReady(Boolean(chapterIsOpen || transitionProgress >= .965));
+    setMorphGeometry(morphProgress);
+    setChapterButtonReady(Boolean(chapterIsOpen || transitionProgress >= .975));
   }
 
   function updateScrollUI() {

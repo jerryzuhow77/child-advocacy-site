@@ -1592,9 +1592,10 @@ html[lang="ja"] .final-mantra {
   --door-light-opacity: .18;
   --morph-opacity: 0;
   --morph-progress: 0;
-  --morph-shift: 0vw;
-  --morph-scale-x: 1;
-  --morph-scale-y: 1;
+  --morph-left: 0px;
+  --morph-top: 0px;
+  --morph-width: 0px;
+  --morph-height: 0px;
   --last-line-opacity: 1;
   --last-line-shift: 0px;
   --chapter-opacity: 0;
@@ -1767,6 +1768,22 @@ html[lang="ja"] .final-mantra {
     linear-gradient(180deg, #e9eff1 0 17%, #aabac0 17.2% 18%, #718890 18.2% 60%, #405864 60.4% 100%);
   filter: saturate(.62);
   will-change: opacity;
+  isolation: isolate;
+}
+
+/* Keep a restrained 7% paper fibre layer over the modern corridor. */
+.next-chapter-modern::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  opacity: .07;
+  background:
+    repeating-linear-gradient(8deg, rgba(60, 71, 72, .72) 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(93deg, rgba(255, 255, 255, .8) 0 1px, transparent 1px 10px),
+    radial-gradient(ellipse at 38% 44%, rgba(68, 77, 76, .36), transparent 54%);
+  mix-blend-mode: multiply;
 }
 
 .hospital-ceiling {
@@ -1833,17 +1850,16 @@ html[lang="ja"] .final-mantra {
 
 .chair-curtain-morph {
   position: absolute;
-  right: 13vw;
-  bottom: 9vh;
+  left: var(--morph-left);
+  top: var(--morph-top);
   z-index: 4;
-  width: clamp(82px, 10vw, 148px);
-  height: clamp(138px, 21vh, 220px);
+  width: var(--morph-width);
+  height: var(--morph-height);
   opacity: var(--morph-opacity);
   border-top: 7px solid rgba(178, 188, 188, .52);
   background: repeating-linear-gradient(90deg, rgba(68, 75, 72, .8) 0 7px, transparent 8px 21px);
-  transform: translate3d(var(--morph-shift), 0, 0) scaleX(var(--morph-scale-x)) scaleY(var(--morph-scale-y));
-  transform-origin: right bottom;
-  will-change: opacity, transform;
+  box-shadow: inset 0 0 18px rgba(225, 228, 222, .14);
+  will-change: opacity, left, top, width, height;
 }
 
 .door-frame {
@@ -2432,8 +2448,8 @@ html[lang="ja"] .final-mantra {
   }
 
   .next-chapter-transition {
-    min-height: 230vh;
-    min-height: 230svh;
+    min-height: 200vh;
+    min-height: 200svh;
   }
 
   .transition-last-line,
@@ -2451,7 +2467,7 @@ html[lang="ja"] .final-mantra {
   }
 
   .chapter-threshold h2 {
-    font-size: clamp(2.2rem, 11vw, 3.7rem);
+    font-size: clamp(2.4rem, 12vw, 3.9rem);
     letter-spacing: .045em;
   }
 
@@ -2481,10 +2497,6 @@ html[lang="ja"] .final-mantra {
   .hospital-curtain {
     right: -12vw;
     width: 64vw;
-  }
-
-  .chair-curtain-morph {
-    right: 9vw;
   }
 
   .door-frame::before {
