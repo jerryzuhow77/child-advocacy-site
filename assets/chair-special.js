@@ -11,6 +11,9 @@
   var introReplay = document.querySelector("#introReplay");
   var specialTitle = document.querySelector("#specialTitle");
   var introTimer = 0;
+  var introFocusFrame = 0;
+  var introReturnFocus = null;
+  var introDuration = 10100;
   var reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function setPageInert(isInert) {
@@ -30,34 +33,51 @@
     if (!specialIntro) return;
     var moveFocusToTitle = specialIntro.contains(document.activeElement);
     window.clearTimeout(introTimer);
+    window.cancelAnimationFrame(introFocusFrame);
     specialIntro.hidden = true;
     specialIntro.classList.remove("is-active", "is-closing", "is-reduced");
     document.body.classList.remove("intro-playing");
     setPageInert(false);
-    if (specialTitle && moveFocusToTitle) {
-      specialTitle.focus({ preventScroll: true });
+    if (moveFocusToTitle) {
+      if (introReturnFocus && document.contains(introReturnFocus)) {
+        introReturnFocus.focus({ preventScroll: true });
+      } else if (specialTitle) {
+        specialTitle.focus({ preventScroll: true });
+      }
     }
+    introReturnFocus = null;
   }
 
   function closeIntro() {
     if (!specialIntro || specialIntro.hidden) return;
     window.clearTimeout(introTimer);
+    window.cancelAnimationFrame(introFocusFrame);
+    if (reducedMotion) {
+      finishIntro();
+      return;
+    }
     specialIntro.classList.remove("is-active");
     specialIntro.classList.add("is-closing");
     introTimer = window.setTimeout(finishIntro, 470);
   }
 
-  function showIntro() {
+  function showIntro(returnFocus) {
     if (!specialIntro) return;
     window.clearTimeout(introTimer);
+    window.cancelAnimationFrame(introFocusFrame);
+    introReturnFocus = returnFocus || null;
     specialIntro.hidden = false;
     specialIntro.classList.remove("is-active", "is-closing", "is-reduced");
     void specialIntro.offsetWidth;
     document.body.classList.add("intro-playing");
     setPageInert(true);
     specialIntro.classList.add(reducedMotion ? "is-reduced" : "is-active");
-    if (introSkip) window.setTimeout(function () { introSkip.focus({ preventScroll: true }); }, 60);
-    introTimer = window.setTimeout(finishIntro, reducedMotion ? 3000 : 7900);
+    if (introSkip) {
+      introFocusFrame = window.requestAnimationFrame(function () {
+        if (!specialIntro.hidden) introSkip.focus({ preventScroll: true });
+      });
+    }
+    introTimer = window.setTimeout(finishIntro, reducedMotion ? 3000 : introDuration);
   }
 
   if (specialIntro) {
@@ -77,7 +97,7 @@
   }
 
   if (introSkip) introSkip.addEventListener("click", closeIntro);
-  if (introReplay) introReplay.addEventListener("click", showIntro);
+  if (introReplay) introReplay.addEventListener("click", function () { showIntro(introReplay); });
 
   /* Play on every entry or reload. Replay when the page is restored from the browser back/forward cache. */
   showIntro();
