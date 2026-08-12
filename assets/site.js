@@ -673,6 +673,34 @@ function initSocialCaseDropdowns(){
 }
 document.addEventListener('DOMContentLoaded',initSocialCaseDropdowns);
 
+/* 2026-08-12 — 特別專題：案件 → 章節／文章二級展開。 */
+function initSpecialFeatureCaseMenus(){
+  document.querySelectorAll('.special-feature-case-group').forEach(group=>{
+    const button=group.querySelector('.special-feature-case-toggle');
+    if(!button) return;
+    const setExpanded=value=>{
+      group.classList.toggle('is-expanded',value);
+      button.setAttribute('aria-expanded',String(value));
+    };
+    button.addEventListener('click',event=>{
+      event.stopPropagation();
+      setExpanded(!group.classList.contains('is-expanded'));
+    });
+    group.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){
+        setExpanded(false);
+        button.focus();
+      }
+    });
+    const parent=group.closest('.special-feature-nav');
+    if(parent){
+      const topButton=parent.querySelector('.special-feature-nav-toggle');
+      if(topButton) topButton.addEventListener('click',()=>{if(parent.classList.contains('is-open')) setExpanded(false)});
+    }
+  });
+}
+document.addEventListener('DOMContentLoaded',initSpecialFeatureCaseMenus);
+
 
 /* =====================================================================
    2026-08-10 — 全站紀念標語模組（案件頁大版／其他頁面小版）
