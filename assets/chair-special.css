@@ -2172,6 +2172,49 @@ html[lang="ja"] .final-mantra {
   line-height: 1.75;
 }
 
+.chapter-coming-soon {
+  margin-top: 38px;
+  padding: 30px clamp(22px, 5vw, 38px);
+  text-align: center;
+  background: linear-gradient(135deg, rgba(222, 231, 226, .86), rgba(255, 251, 242, .84));
+  border: 1px solid rgba(185, 150, 95, .5);
+  box-shadow: 10px 10px 0 rgba(185, 150, 95, .12);
+}
+
+.chapter-coming-soon > span {
+  color: #a37d3d;
+  font-family: Arial, sans-serif;
+  font-size: .71rem;
+  font-weight: 800;
+  letter-spacing: .2em;
+}
+
+.chapter-coming-soon h3 {
+  margin: 12px 0 8px;
+  color: #243e47;
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  letter-spacing: .07em;
+}
+
+.chapter-coming-soon p {
+  margin: 0 0 18px;
+  color: #52666d;
+  font-size: .96rem;
+}
+
+.chapter-coming-soon a {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  color: #243e47;
+  font-weight: 800;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+}
+
+.chapter-coming-soon a:hover,
+.chapter-coming-soon a:focus-visible { color: #8c6530; }
+
 .special-sources {
   padding: 70px 0;
   background: #e9e2d8;
