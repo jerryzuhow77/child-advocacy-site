@@ -7342,10 +7342,19 @@ img,video,iframe,table { max-width: 100%; }
 
 /* 2026-08-12 — 首頁品牌英文副標改為緊湊雙行，避免擠壓桌面導覽。 */
 @media(min-width:1101px){
+  html[lang="zh-Hant"] .brand-lockup .zh-brand-title,
+  html[lang="zh-Hans"] .brand-lockup .zh-brand-title{
+    width:98px;
+    flex:0 0 98px;
+    white-space:nowrap!important;
+    font-size:15.5px!important;
+    line-height:1.08!important;
+    letter-spacing:.01em!important;
+  }
   html[lang="zh-Hant"] .zh-brand-title small,
   html[lang="zh-Hans"] .zh-brand-title small{
     display:block!important;
-    width:112px;
+    width:98px;
     margin-top:3px;
     white-space:normal!important;
     font-size:8px!important;
