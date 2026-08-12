@@ -7339,3 +7339,18 @@ img,video,iframe,table { max-width: 100%; }
 @media(max-width:620px){
   .about-page{background:#f1e8df!important}.about-page .about-art-hero{background:linear-gradient(180deg,#fff8ef,#f1e3d9)!important}.about-page .about-stats-section,.about-page .about-records-section,.about-page .about-charity-section{background:#fff7ef!important}.about-page .about-timeline-section{background:linear-gradient(180deg,#f5eae2,#efe3db)!important}.about-page .about-street-section{background:#f2e5dd!important}.about-page .about-closing-card{box-shadow:0 12px 30px rgba(111,78,65,.10)!important}
 }
+
+/* 2026-08-12 — 首頁品牌英文副標改為緊湊雙行，避免擠壓桌面導覽。 */
+@media(min-width:1101px){
+  html[lang="zh-Hant"] .zh-brand-title small,
+  html[lang="zh-Hans"] .zh-brand-title small{
+    display:block!important;
+    width:112px;
+    margin-top:3px;
+    white-space:normal!important;
+    font-size:8px!important;
+    line-height:1.18!important;
+    letter-spacing:.045em!important;
+    text-align:left;
+  }
+}
