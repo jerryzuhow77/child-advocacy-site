@@ -163,24 +163,6 @@ linear-gradient(140deg,#050e1b,#0a2a49 58%,#172035);color:#fff;padding:38px 0 68
 .comic-pages{display:grid;gap:34px}.comic-page{scroll-margin-top:90px;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 12px 34px rgba(8,29,58,.07)}.comic-page-label{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:#0a1c32;color:#fff}.comic-page-label span{font-size:12px;letter-spacing:.12em;color:#e6c55a;font-weight:900}.comic-page-label b{font-size:14px}.comic-page-image{width:100%;padding:0;border:0;background:#101010;cursor:zoom-in;display:block}.comic-page-image img{display:block;width:100%;height:auto;max-height:none}.comic-page-caption{padding:12px 18px;color:var(--muted);font-size:13px}
 .comic-end-card{margin-top:42px;background:linear-gradient(135deg,#071b31,#113d67);color:#fff;border-radius:22px;padding:28px;display:flex;align-items:center;gap:22px}.comic-end-icon{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:#e7bd4c;color:#0d1d30;font-size:30px;flex:0 0 auto}.comic-end-card h3{margin:0 0 5px;font-size:23px}.comic-end-card p{margin:0 0 12px;color:#d8e5f1}
 .comic-lightbox figure{max-width:min(900px,88vw)}.comic-lightbox img{max-height:86vh}
-
-/* 2026-08-11 — 法庭漫畫第一、二集主標題燙金漸層 */
-.comic-reader-hero .comic-hero-copy h1,
-.comic-reader-hero .comic-hero-copy .comic-hero-gold-lead{
-  color:#f0c96f;
-  text-shadow:0 1px 0 rgba(61,38,6,.36),0 5px 18px rgba(212,158,55,.18);
-}
-@supports ((-webkit-background-clip:text) or (background-clip:text)){
-  .comic-reader-hero .comic-hero-copy h1,
-  .comic-reader-hero .comic-hero-copy .comic-hero-gold-lead{
-    background:linear-gradient(102deg,#a96b1d 0%,#f4d487 34%,#d89b37 63%,#fff1b7 84%,#b77924 100%);
-    background-clip:text;
-    -webkit-background-clip:text;
-    color:transparent;
-    -webkit-text-fill-color:transparent;
-    text-shadow:none;
-  }
-}
 .episode-two-hero{min-height:70vh;display:flex;align-items:center}.episode-two-box{max-width:760px;margin:20px auto 0;text-align:center;position:relative;padding:48px 30px}.episode-two-box .episode-number{position:static;display:inline-flex;margin-bottom:22px}.episode-two-box h1{font-size:clamp(38px,6vw,62px);color:#fff}.episode-two-box p{color:#d7e4f0;font-size:18px}.episode-actions.center{justify-content:center}
 
 @media(max-width:850px){
@@ -2285,9 +2267,9 @@ html[lang="zh-Hans"] .btn {
 .about-future-art img{position:relative;z-index:2;width:min(360px,83%);border-radius:50%;border:6px solid rgba(255,255,255,.18);box-shadow:0 25px 65px rgba(0,0,0,.24)}
 .future-glow{position:absolute;width:390px;height:390px;border-radius:50%;background:radial-gradient(circle,rgba(244,196,80,.48),transparent 66%)}
 .about-future-copy .about-art-kicker{color:#f1c85f}.about-future-copy h2{margin:7px 0 15px;color:#fff;font-family:"Noto Serif TC","Noto Serif CJK TC",serif;font-size:40px}
-.about-future-copy>p{color:#bbcdc5!important;line-height:1.8}
+.about-future-copy>p{color:#d2e0e8;line-height:1.8}
 .future-list{display:grid;grid-template-columns:1fr 1fr;gap:9px 16px;padding:0;margin:25px 0 0;list-style:none}
-.future-list li{position:relative;padding:11px 12px 11px 37px;border-radius:11px;background:rgba(255,255,255,.08);color:#bbcdc5!important;font-size:13px}.future-list li:before{content:"◆";position:absolute;left:13px;top:10px;color:#f0c65d;font-size:11px}
+.future-list li{position:relative;padding:11px 12px 11px 37px;border-radius:11px;background:rgba(255,255,255,.08);color:#f5f9fb;font-size:13px}.future-list li:before{content:"◆";position:absolute;left:13px;top:10px;color:#f0c65d;font-size:11px}
 
 .about-closing-section{padding:82px 0;background:#fff9ed}
 .about-closing-card{display:grid;grid-template-columns:210px 1fr;gap:32px;align-items:center;padding:35px;border:1px solid #e0c991;border-radius:28px;background:#fff;box-shadow:0 18px 48px rgba(48,41,29,.07)}
@@ -5891,8 +5873,6 @@ body.site-search-open{overflow:hidden}
 .home-case-reel-copy .public-view-count-card{align-self:flex-start}
 .social-case-status-row .public-view-count-directory{margin:0 0 0 auto;align-self:center}
 html[lang="zh-Hans"] .public-view-count-card .public-view-unit::after{content:"浏览"}
-html[lang="en"] .public-view-count-card .public-view-unit::after,
-html[lang="ja"] .public-view-count-card .public-view-unit::after{content:""}
 html[lang="zh-Hans"] .public-view-count{font-family:"Microsoft YaHei UI","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC","Source Han Sans SC","PingFang SC",sans-serif!important;font-weight:600!important}
 html[lang="zh-Hans"] .public-view-count strong{font-weight:700!important}
 @media(max-width:760px){
@@ -6765,7 +6745,7 @@ html[lang="zh-Hans"]{
 }
 html[lang="en"]{
   --site-font:"Noto Sans","Noto Sans TC","Noto Sans CJK TC",Arial,"Helvetica Neue",sans-serif;
-  --site-display-size:clamp(2.25rem,3.8vw,3.15rem);
+  --site-display-size:clamp(2.25rem,4vw,3.4rem);
 }
 html[lang="ja"]{
   --site-font:"Noto Sans JP","Noto Sans CJK JP","Hiragino Sans","Yu Gothic UI","Yu Gothic","Noto Sans",sans-serif;
@@ -6835,14 +6815,13 @@ html[lang="ja"] .about-art-copy h1{
   line-height:1.3!important;
   letter-spacing:.01em!important;
 }
-html[lang="en"] .premium-hero-copy h1 span,
 html[lang="ja"] .premium-hero-copy h1 span{
   display:inline-block;
   max-width:100%;
   white-space:normal!important;
+  line-break:strict;
   overflow-wrap:anywhere;
 }
-html[lang="ja"] .premium-hero-copy h1 span{line-break:strict}
 html[lang="en"] .home-news-focus-copy h3,
 html[lang="ja"] .home-news-focus-copy h3{
   font-size:clamp(1.75rem,3vw,2.5rem)!important;
@@ -6878,10 +6857,6 @@ html[lang="en"] .social-case-nav-menu{width:min(760px,92vw)}
 html[lang="en"] .social-case-menu-item b{line-height:1.4}
 html[lang="en"] :where(.case-status-row span,.about-hashtags,.case-profile-toc a,.case-profile-toc strong,.case-emphasis-card strong){
   overflow-wrap:anywhere;
-}
-html[lang="en"] .visual-related-copy h3{
-  font-size:clamp(1rem,1.7vw,1.125rem)!important;
-  line-height:1.45!important;
 }
 
 /* Japanese needs more breathing room for mixed kanji, kana and Latin text. */
@@ -6992,115 +6967,36 @@ html[lang="ja"] table{max-width:100%;table-layout:auto}
 @media(min-width:1101px){
   html[lang] header .nav>nav>a,
   html[lang] .social-case-nav-toggle{white-space:nowrap!important}
-  html[lang="en"] .brand-lockup small,
-  html[lang="ja"] .brand-lockup small{display:none!important}
-  html[lang="en"] .brand-lockup span{
-    width:140px;
-    font-size:13px!important;
-    line-height:1.2!important;
-  }
-  html[lang="ja"] .brand-lockup span{
-    width:128px;
-    font-size:15px!important;
-    line-height:1.2!important;
-  }
-  html[lang="en"] header .nav>nav>a::before,
-  html[lang="ja"] header .nav>nav>a::before,
-  html[lang="en"] .social-case-nav-toggle::before,
-  html[lang="ja"] .social-case-nav-toggle::before{
-    display:none!important;
-  }
-  html[lang="en"] header .nav>nav>a,
-  html[lang="en"] .social-case-nav-toggle{
-    min-height:46px!important;
-    padding-inline:4px!important;
-    gap:0!important;
-    font-size:12px!important;
-  }
   html[lang="ja"] header .nav>nav>a,
   html[lang="ja"] .social-case-nav-toggle{
-    min-height:46px!important;
+    min-height:50px!important;
     padding-inline:5px!important;
-    gap:0!important;
-    font-size:12.5px!important;
+    font-size:13px!important;
+    gap:5px!important;
   }
-  html[lang="en"] .language-switcher,
-  html[lang="ja"] .language-switcher{
-    grid-template-columns:repeat(4,30px);
-    gap:1px;
-  }
-  html[lang="en"] .language-switcher a,
-  html[lang="ja"] .language-switcher a{
-    min-width:30px;
-    padding-inline:4px!important;
-    font-size:12px!important;
+  html[lang="ja"] header .nav>nav>a.unique-brand-avatar::before,
+  html[lang="ja"] .social-case-nav-toggle::before{
+    width:23px!important;
+    height:23px!important;
+    flex-basis:23px!important;
   }
 }
 @media(min-width:801px) and (max-width:1100px){
-  header .nav,
-  .art-header .nav{
-    position:relative;
-    width:min(calc(100% - 24px),1120px)!important;
-    min-height:64px;
-    gap:10px;
-  }
-  .brand,
-  .brand-lockup{
-    min-width:0;
-    max-width:calc(100% - 58px);
-  }
-  .brand-lockup span{font-size:15px!important;line-height:1.2!important}
-  .brand-lockup small{display:none!important}
-  .mobile-menu-toggle{display:inline-flex;margin-left:auto}
-  header .nav>nav,
-  .art-header .nav>nav{
-    display:none!important;
-    position:absolute;
-    left:0;
-    right:0;
-    top:calc(100% + 1px);
-    z-index:120;
-    padding:10px 11px 13px!important;
-    gap:4px!important;
-    flex-direction:column;
-    align-items:stretch;
-    background:#fff;
-    border:1px solid #dce6ef;
-    border-top:0;
-    border-radius:0 0 18px 18px;
-    box-shadow:0 18px 38px rgba(8,29,58,.16);
-  }
-  header .nav.menu-open>nav,
-  .art-header .nav.menu-open>nav{display:flex!important}
-  header .nav nav>a,
-  .art-header .nav nav>a,
+  header .nav>nav>a,
   .social-case-nav-toggle{
-    justify-content:flex-start!important;
-    width:100%;
-    min-height:46px!important;
-    padding:8px 11px!important;
-    border-radius:9px!important;
-    font-size:15px!important;
-    line-height:1.35!important;
-    text-align:left;
-    white-space:normal!important;
-    overflow-wrap:anywhere;
+    padding-inline:5px!important;
+    font-size:12px!important;
+    white-space:nowrap!important;
   }
-  .language-switcher{
-    grid-template-columns:repeat(4,1fr);
-    width:100%;
-    margin:8px 0 0;
-    border-radius:16px;
+  .language-switcher a{
+    min-width:29px;
+    padding-inline:4px!important;
+    font-size:12px!important;
   }
-  .language-switcher a{min-height:42px;font-size:14px!important}
-  .site-search-label{display:inline}
-  .site-search-btn{
-    width:100%;
-    min-height:46px;
-    justify-content:flex-start;
-    padding:0 14px;
-  }
-  .social-case-nav-menu{width:100%!important}
+  html[lang="en"] .brand-lockup span{font-size:15px!important}
+  html[lang="en"] .brand-lockup small{display:none}
+  html[lang="ja"] .brand-lockup span{font-size:15px!important}
+  html[lang="ja"] .brand-lockup small{display:none}
 }
 @media(max-width:800px){
   html[lang] body{font-size:16px;line-height:1.72}
@@ -7150,13 +7046,6 @@ body { font-kerning: normal; text-rendering: optimizeLegibility; }
 :where(h1,h2,h3,h4,h5,h6,p,li,dt,dd,figcaption,blockquote,a,button,small,strong,span) { overflow-wrap: break-word; }
 :where(h1,h2,h3,h4,h5,h6) { text-wrap: balance; }
 :where(p,li,dd,figcaption,blockquote) { text-wrap: pretty; }
-:where(article,.article-body,.case-copy,.home-news-card-copy,.social-case-feature-copy) p { line-height: 1.8; }
-html[lang="en"] :where(h1,h2,h3,h4,p,a,span,strong),
-html[lang="ja"] :where(h1,h2,h3,h4,p,a,span,strong) { overflow-wrap: anywhere; }
+html[lang="en"] :where(h1,h2,h3,h4,p,a,span,strong), html[lang="ja"] :where(h1,h2,h3,h4,p,a,span,strong) { overflow-wrap: anywhere; }
 img,video,iframe,table { max-width: 100%; }
-@media (max-width:800px) {
-  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  :where(h1,h2,h3,h4,h5,h6,p,li,a,button,small,strong,span) { max-width: 100%; }
-  :where(article,.article-body,.case-copy,.home-news-card-copy,.social-case-feature-copy) p { line-height: 1.84; }
-  header .nav > nav a, header .nav > nav button { line-height: 1.45; }
-}
+@media (max-width:800px) { table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; } }

@@ -2285,9 +2285,9 @@ html[lang="zh-Hans"] .btn {
 .about-future-art img{position:relative;z-index:2;width:min(360px,83%);border-radius:50%;border:6px solid rgba(255,255,255,.18);box-shadow:0 25px 65px rgba(0,0,0,.24)}
 .future-glow{position:absolute;width:390px;height:390px;border-radius:50%;background:radial-gradient(circle,rgba(244,196,80,.48),transparent 66%)}
 .about-future-copy .about-art-kicker{color:#f1c85f}.about-future-copy h2{margin:7px 0 15px;color:#fff;font-family:"Noto Serif TC","Noto Serif CJK TC",serif;font-size:40px}
-.about-future-copy>p{color:#bbcdc5!important;line-height:1.8}
+.about-future-copy>p{color:#d2e0e8;line-height:1.8}
 .future-list{display:grid;grid-template-columns:1fr 1fr;gap:9px 16px;padding:0;margin:25px 0 0;list-style:none}
-.future-list li{position:relative;padding:11px 12px 11px 37px;border-radius:11px;background:rgba(255,255,255,.08);color:#bbcdc5!important;font-size:13px}.future-list li:before{content:"◆";position:absolute;left:13px;top:10px;color:#f0c65d;font-size:11px}
+.future-list li{position:relative;padding:11px 12px 11px 37px;border-radius:11px;background:rgba(255,255,255,.08);color:#f5f9fb;font-size:13px}.future-list li:before{content:"◆";position:absolute;left:13px;top:10px;color:#f0c65d;font-size:11px}
 
 .about-closing-section{padding:82px 0;background:#fff9ed}
 .about-closing-card{display:grid;grid-template-columns:210px 1fr;gap:32px;align-items:center;padding:35px;border:1px solid #e0c991;border-radius:28px;background:#fff;box-shadow:0 18px 48px rgba(48,41,29,.07)}
@@ -5891,8 +5891,6 @@ body.site-search-open{overflow:hidden}
 .home-case-reel-copy .public-view-count-card{align-self:flex-start}
 .social-case-status-row .public-view-count-directory{margin:0 0 0 auto;align-self:center}
 html[lang="zh-Hans"] .public-view-count-card .public-view-unit::after{content:"浏览"}
-html[lang="en"] .public-view-count-card .public-view-unit::after,
-html[lang="ja"] .public-view-count-card .public-view-unit::after{content:""}
 html[lang="zh-Hans"] .public-view-count{font-family:"Microsoft YaHei UI","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC","Source Han Sans SC","PingFang SC",sans-serif!important;font-weight:600!important}
 html[lang="zh-Hans"] .public-view-count strong{font-weight:700!important}
 @media(max-width:760px){
@@ -7150,13 +7148,6 @@ body { font-kerning: normal; text-rendering: optimizeLegibility; }
 :where(h1,h2,h3,h4,h5,h6,p,li,dt,dd,figcaption,blockquote,a,button,small,strong,span) { overflow-wrap: break-word; }
 :where(h1,h2,h3,h4,h5,h6) { text-wrap: balance; }
 :where(p,li,dd,figcaption,blockquote) { text-wrap: pretty; }
-:where(article,.article-body,.case-copy,.home-news-card-copy,.social-case-feature-copy) p { line-height: 1.8; }
-html[lang="en"] :where(h1,h2,h3,h4,p,a,span,strong),
-html[lang="ja"] :where(h1,h2,h3,h4,p,a,span,strong) { overflow-wrap: anywhere; }
+html[lang="en"] :where(h1,h2,h3,h4,p,a,span,strong), html[lang="ja"] :where(h1,h2,h3,h4,p,a,span,strong) { overflow-wrap: anywhere; }
 img,video,iframe,table { max-width: 100%; }
-@media (max-width:800px) {
-  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  :where(h1,h2,h3,h4,h5,h6,p,li,a,button,small,strong,span) { max-width: 100%; }
-  :where(article,.article-body,.case-copy,.home-news-card-copy,.social-case-feature-copy) p { line-height: 1.84; }
-  header .nav > nav a, header .nav > nav button { line-height: 1.45; }
-}
+@media (max-width:800px) { table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; } }

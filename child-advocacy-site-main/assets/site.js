@@ -800,11 +800,16 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
 
   function isTrackableRoute(route) {
     if (!route) return false;
-    if (/^cases\/[^/]+$/.test(route)) return true;
-    if (/^hearing-records\/[^/]+$/.test(route)) return true;
-    if (/^court-comics\/episode-[^/]+$/.test(route)) return true;
-    if (/^activity-records\/[^/]+$/.test(route) && route !== 'activity-records/albums') return true;
-    if (/^activity-records\/albums\/[^/]+$/.test(route)) return true;
+    // English and Japanese pages retain the same content routes beneath a
+    // locale prefix.  Strip the prefix only for matching; keep it in the key
+    // so each translated article has its own independent count.
+    const contentRoute = route.replace(/^(?:en|ja)\//, '');
+    if (/^cases\/[^/]+$/.test(contentRoute)) return true;
+    if (/^cases\/[^/]+\/features\/[^/]+$/.test(contentRoute)) return true;
+    if (/^hearing-records\/[^/]+$/.test(contentRoute)) return true;
+    if (/^court-comics\/episode-[^/]+$/.test(contentRoute)) return true;
+    if (/^activity-records\/[^/]+$/.test(contentRoute) && contentRoute !== 'activity-records/albums') return true;
+    if (/^activity-records\/albums\/[^/]+$/.test(contentRoute)) return true;
     return false;
   }
 
@@ -924,9 +929,27 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
   }
 
   function formatCount(value) {
-    const locale = document.documentElement.lang === 'zh-Hans' ? 'zh-CN' : 'zh-TW';
+    const lang = document.documentElement.lang;
+    const locale = lang === 'zh-Hans' ? 'zh-CN' : lang === 'en' ? 'en-US' : lang === 'ja' ? 'ja-JP' : 'zh-TW';
     try { return new Intl.NumberFormat(locale).format(value); }
     catch (_) { return String(value); }
+  }
+
+  function viewCounterCopy(kind) {
+    const lang = document.documentElement.lang;
+    if (lang === 'en') return { label: 'Views', unit: kind === 'card' ? 'views' : '' };
+    if (lang === 'ja') return { label: '閲覧', unit: '回' };
+    if (lang === 'zh-Hans') return { label: '浏览', unit: '次' };
+    return { label: '瀏覽', unit: '次' };
+  }
+
+  function viewCounterTitle(value) {
+    const formatted = formatCount(value);
+    const lang = document.documentElement.lang;
+    if (lang === 'en') return `Public view count: ${formatted}`;
+    if (lang === 'ja') return `公開閲覧数：${formatted}回`;
+    if (lang === 'zh-Hans') return `公开浏览次数：${formatted} 次`;
+    return `公開瀏覽次數：${formatted} 次`;
   }
 
   function createEyeIcon() {
@@ -935,10 +958,11 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
 
   function makeBadge(kind = 'article') {
     const el = document.createElement('span');
+    const copy = viewCounterCopy(kind);
     el.className = kind === 'card' ? 'public-view-count public-view-count-card' : 'public-view-count public-view-count-article';
     el.hidden = true;
     el.setAttribute('aria-live', 'polite');
-    el.innerHTML = `${createEyeIcon()}<span class="public-view-label">瀏覽</span><strong class="public-view-number"></strong><span class="public-view-unit">次</span>`;
+    el.innerHTML = `${createEyeIcon()}<span class="public-view-label">${copy.label}</span><strong class="public-view-number"></strong><span class="public-view-unit">${copy.unit}</span>`;
     return el;
   }
 
@@ -947,7 +971,7 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     if (!number) return;
     number.textContent = formatCount(value);
     badge.hidden = false;
-    badge.setAttribute('title', `公開瀏覽次數：${formatCount(value)} 次`);
+    badge.setAttribute('title', viewCounterTitle(value));
   }
 
   async function initArticleCounter() {
