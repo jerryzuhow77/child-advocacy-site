@@ -26,20 +26,12 @@
     });
   }
 
-  function rememberIntro() {
-    try { window.sessionStorage.setItem("chair-special-intro-seen", "1"); } catch (error) { /* Storage can be unavailable. */ }
-  }
-
-  function hasSeenIntro() {
-    try { return window.sessionStorage.getItem("chair-special-intro-seen") === "1"; } catch (error) { return false; }
-  }
-
   function finishIntro() {
     if (!specialIntro) return;
     var moveFocusToTitle = specialIntro.contains(document.activeElement);
     window.clearTimeout(introTimer);
     specialIntro.hidden = true;
-    specialIntro.classList.remove("is-active", "is-closing");
+    specialIntro.classList.remove("is-active", "is-closing", "is-reduced");
     document.body.classList.remove("intro-playing");
     setPageInert(false);
     if (specialTitle && moveFocusToTitle) {
@@ -56,17 +48,16 @@
   }
 
   function showIntro() {
-    if (!specialIntro || reducedMotion) return;
+    if (!specialIntro) return;
     window.clearTimeout(introTimer);
     specialIntro.hidden = false;
-    specialIntro.classList.remove("is-active", "is-closing");
+    specialIntro.classList.remove("is-active", "is-closing", "is-reduced");
     void specialIntro.offsetWidth;
     document.body.classList.add("intro-playing");
     setPageInert(true);
-    specialIntro.classList.add("is-active");
-    rememberIntro();
+    specialIntro.classList.add(reducedMotion ? "is-reduced" : "is-active");
     if (introSkip) window.setTimeout(function () { introSkip.focus({ preventScroll: true }); }, 60);
-    introTimer = window.setTimeout(finishIntro, 7900);
+    introTimer = window.setTimeout(finishIntro, reducedMotion ? 3000 : 7900);
   }
 
   if (specialIntro) {
@@ -88,9 +79,11 @@
   if (introSkip) introSkip.addEventListener("click", closeIntro);
   if (introReplay) introReplay.addEventListener("click", showIntro);
 
-  var forceIntro = /(?:^|[?&])intro=1(?:&|$)/.test(window.location.search) || window.location.hash === "#intro";
-  var directSectionLink = window.location.hash && window.location.hash !== "#intro";
-  if (!reducedMotion && (forceIntro || (!directSectionLink && !hasSeenIntro()))) showIntro();
+  /* Play on every entry or reload. Replay when the page is restored from the browser back/forward cache. */
+  showIntro();
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted) showIntro();
+  });
 
   function clamp(value) {
     return Math.min(Math.max(value, 0), 1);

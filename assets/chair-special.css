@@ -76,6 +76,33 @@ body.chair-special-page.intro-playing {
   animation: intro-skip-exit .46s ease forwards;
 }
 
+.special-intro.is-reduced .intro-paper-world {
+  opacity: .3;
+  transform: none;
+}
+
+.special-intro.is-reduced .intro-hospital-lines {
+  opacity: .48;
+  transform: none;
+}
+
+.special-intro.is-reduced .intro-door,
+.special-intro.is-reduced .intro-cold-light,
+.special-intro.is-reduced .intro-moon,
+.special-intro.is-reduced .intro-chair,
+.special-intro.is-reduced .intro-shadow-child,
+.special-intro.is-reduced .intro-first-line,
+.special-intro.is-reduced .intro-timeline {
+  display: none;
+}
+
+.special-intro.is-reduced .intro-kicker,
+.special-intro.is-reduced .intro-copy h1,
+.special-intro.is-reduced .intro-final-line {
+  opacity: 1;
+  transform: none;
+}
+
 .intro-scene,
 .intro-paper-world,
 .intro-cold-light,
@@ -2077,8 +2104,8 @@ html[lang="ja"] .final-mantra {
     animation: none;
   }
 
-  .intro-replay {
-    display: none;
+  .special-intro.is-closing {
+    animation: none;
   }
 
   .next-chapter-stage {
