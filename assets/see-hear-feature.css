@@ -59,6 +59,14 @@ a{color:inherit}
 
 .sh-breadcrumb{max-width:1120px;margin:auto;padding:24px 24px 0;color:var(--muted);font-size:.88rem}
 .sh-counter-wrap{padding-top:1rem!important;padding-bottom:0!important}
+.sh-concept-visual{position:relative;max-width:1120px;margin:2.4rem auto 5rem;padding:0 24px}
+.sh-concept-visual:before{content:"";position:absolute;z-index:-1;inset:38px 6% -28px;background:linear-gradient(135deg,rgba(122,154,141,.28),rgba(185,140,152,.22));filter:blur(1px)}
+.sh-concept-visual figure{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(240px,.82fr);align-items:center;margin:0;overflow:hidden;border:1px solid rgba(35,58,74,.24);background:#faf7ef;box-shadow:12px 14px 0 rgba(35,58,74,.1)}
+.sh-concept-visual img{display:block;width:100%;height:min(72vh,760px);object-fit:cover;object-position:center}
+.sh-concept-visual figcaption{padding:clamp(28px,5vw,58px);color:#425056}
+.sh-concept-visual figcaption small{display:block;margin-bottom:14px;color:#a67428;font-weight:900;letter-spacing:.16em}
+.sh-concept-visual figcaption strong{display:block;margin-bottom:18px;color:var(--ink);font-family:"Noto Serif TC","Noto Serif JP",serif;font-size:clamp(1.55rem,3vw,2.45rem);line-height:1.35}
+.sh-concept-visual figcaption span{display:block;font-size:1rem;line-height:1.9}
 .sh-layout{max-width:1120px;margin:auto;padding:4rem 24px}
 .sh-section{padding-top:6rem;padding-bottom:6rem;border-top:1px solid rgba(35,58,74,.25)}
 .sh-section h2,.sh-context-bridge h2{font-family:"Noto Serif TC","Noto Serif JP",serif;font-size:clamp(2rem,4vw,3.6rem);line-height:1.25;margin:.2em 0 1em;color:var(--ink);text-wrap:balance}
@@ -183,6 +191,10 @@ a{color:inherit}
   .sh-language-symbol span{width:54px;height:54px}
   .sh-record-template{grid-template-columns:1fr}
   .sh-record-template span:nth-last-child(1){grid-column:auto}
+  .sh-concept-visual{margin:1.5rem auto 4rem;padding:0 20px}
+  .sh-concept-visual figure{grid-template-columns:1fr;box-shadow:7px 9px 0 rgba(35,58,74,.1)}
+  .sh-concept-visual img{height:auto;max-height:none;aspect-ratio:4/5;object-position:center}
+  .sh-concept-visual figcaption{padding:25px 22px 28px}
   .sh-step{grid-template-columns:52px 1fr;gap:12px;padding:20px 16px}
   .sh-support-grid a{grid-template-columns:60px minmax(0,1fr);padding:20px}
   .sh-support-grid span{width:50px;height:50px}
