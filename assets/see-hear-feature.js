@@ -4,6 +4,19 @@
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const revealItems = [...document.querySelectorAll('.reveal')];
 
+  document.querySelectorAll('.sh-lang a[data-site-lang]').forEach(link => {
+    link.addEventListener('click', event => {
+      const lang = link.dataset.siteLang;
+      try { localStorage.setItem('siteLang', lang); } catch (_) {}
+      if ((lang === 'zh-Hant' || lang === 'zh-Hans') &&
+          typeof window.setLang === 'function' &&
+          new URL(link.href, window.location.href).pathname === window.location.pathname) {
+        event.preventDefault();
+        window.setLang(lang);
+      }
+    });
+  });
+
   if (reduceMotion || !('IntersectionObserver' in window)) {
     revealItems.forEach(item => item.classList.add('is-visible'));
   } else {

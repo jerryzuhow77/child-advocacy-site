@@ -182,6 +182,11 @@ document.addEventListener('DOMContentLoaded',()=>{
   observer.observe(document.body,{childList:true,subtree:true});
 });
 
+// Standalone editorial pages can reuse the complete Traditional/Simplified
+// converter without activating the main site's navigation and card modules.
+const converterOnlyMode=Boolean(document.currentScript && document.currentScript.hasAttribute('data-converter-only'));
+if(!converterOnlyMode){
+
 /* ===== Universal mobile dropdown navigation ===== */
 function initMobileMenu(){
   document.querySelectorAll('header .nav').forEach(navWrap=>{
@@ -1114,3 +1119,4 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     initCaseDirectoryCounters();
   });
 })();
+}
