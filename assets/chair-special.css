@@ -3190,6 +3190,49 @@ html[lang] header .nav .special-feature-nav-menu .special-feature-menu-prologue 
 html[lang] header .nav .special-feature-nav-menu .special-feature-menu-prologue:hover,
 html[lang] header .nav .special-feature-nav-menu .special-feature-menu-prologue:focus-visible { border-color: #b9842d; background: #fff8df !important; transform: translateY(-1px); }
 
+.special-feature-prologue-group { min-width: 0; }
+.special-feature-prologue-child {
+  display: grid;
+  grid-template-rows: 0fr;
+  margin-top: 0;
+  opacity: 0;
+  transform: translateY(-5px);
+  visibility: hidden;
+  transition: grid-template-rows .28s ease, margin-top .28s ease, opacity .22s ease, transform .28s ease, visibility 0s linear .28s;
+}
+.special-feature-prologue-child > a { min-height: 0; overflow: hidden; }
+.special-feature-prologue-group.is-expanded .special-feature-prologue-child {
+  grid-template-rows: 1fr;
+  margin-top: 9px;
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  transition-delay: 0s;
+}
+.special-feature-prologue-group.is-expanded .special-feature-menu-prologue b { transform: rotate(90deg); }
+.special-feature-menu-prologue b { transition: transform .22s ease; }
+
+@media (hover:hover) and (min-width:801px) {
+  .special-feature-prologue-group:hover .special-feature-prologue-child,
+  .special-feature-prologue-group:focus-within .special-feature-prologue-child {
+    grid-template-rows: 1fr;
+    margin-top: 9px;
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    transition-delay: 0s;
+  }
+  .special-feature-prologue-group:hover .special-feature-menu-prologue b,
+  .special-feature-prologue-group:focus-within .special-feature-menu-prologue b { transform: rotate(90deg); }
+}
+
+html[lang="en"] .special-feature-menu-prologue strong,
+html[lang="ja"] .special-feature-menu-prologue strong {
+  font-size: 14px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
 html[lang] header .nav .special-feature-nav-menu::before {
   left: auto;
   right: 39px;
@@ -3568,6 +3611,17 @@ html[lang] header .nav .special-feature-nav-menu{
   .special-feature-nav-menu .special-feature-menu-card{
     grid-template-columns:108px minmax(0,1fr)!important;
   }
+  .special-feature-prologue-child { padding-left: 9px; }
+  html[lang="en"] .special-feature-menu-prologue,
+  html[lang="ja"] .special-feature-menu-prologue { grid-template-columns: minmax(0,1fr) auto !important; }
+  html[lang="en"] .special-feature-menu-prologue small,
+  html[lang="ja"] .special-feature-menu-prologue small,
+  html[lang="en"] .special-feature-menu-prologue span,
+  html[lang="ja"] .special-feature-menu-prologue span { grid-column: 1; }
+  html[lang="en"] .special-feature-menu-prologue strong,
+  html[lang="ja"] .special-feature-menu-prologue strong { grid-column: 1; }
+  html[lang="en"] .special-feature-menu-prologue b,
+  html[lang="ja"] .special-feature-menu-prologue b { grid-column: 2; grid-row: 1 / 4; }
 }
 
 @media (max-width:420px){

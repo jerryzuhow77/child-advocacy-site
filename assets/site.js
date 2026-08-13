@@ -739,6 +739,35 @@ function initSpecialFeatureColumns(){
 }
 document.addEventListener('DOMContentLoaded',initSpecialFeatureColumns);
 
+/* 序幕下一層：先顯示序幕，再展開「古老的傳說」 */
+function initSpecialFeaturePrologueChildren(){
+  document.querySelectorAll('.special-feature-prologue-group').forEach(group=>{
+    const prologue=group.querySelector('.special-feature-menu-prologue');
+    if(!prologue) return;
+    const setExpanded=expanded=>{
+      group.classList.toggle('is-expanded',expanded);
+      prologue.setAttribute('aria-expanded',expanded?'true':'false');
+    };
+    prologue.addEventListener('click',event=>{
+      if(!group.classList.contains('is-expanded')){
+        event.preventDefault();
+        event.stopPropagation();
+        setExpanded(true);
+      }
+    });
+    group.addEventListener('mouseleave',()=>{
+      if(window.innerWidth>800) setExpanded(false);
+    });
+    group.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){
+        setExpanded(false);
+        prologue.focus();
+      }
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded',initSpecialFeaturePrologueChildren);
+
 
 /* =====================================================================
    2026-08-10 — 全站紀念標語模組（案件頁大版／其他頁面小版）
