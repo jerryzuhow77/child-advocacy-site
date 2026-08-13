@@ -19,3 +19,16 @@
 @media(max-width:820px){.lx-hero-grid{grid-template-columns:1fr;min-height:auto}.lx-visual{max-width:560px}.lx-status-head,.lx-section,.lx-promo-grid{grid-template-columns:1fr}.lx-status-grid{grid-template-columns:1fr}.lx-status-card{min-height:0}.lx-section-no{position:static}.lx-ledger-row{grid-template-columns:1fr}.lx-ledger-label{text-align:center}.lx-ledger-arrow{transform:rotate(90deg)}.lx-fact-grid,.lx-source-list{grid-template-columns:1fr}.lx-nav{align-items:flex-start}.lx-brand{font-size:.9rem}.lx-nav-links{gap:.3rem}.lx-nav-links a{font-size:.68rem;padding:.42rem .52rem}.lx-visual-label{right:.5rem}.lx-promo-visual{max-width:520px}}
 @media(max-width:480px){.lx-nav-links a:first-child{display:none}.lx-hero h1{font-size:3.25rem}.lx-hero-grid{padding-top:3.7rem}.lx-date-chip b{font-size:2.15rem}.lx-section{padding:3.6rem 0}.lx-mini-alert{grid-template-columns:1fr}.lx-poster-frame{transform:none}.lx-shard{display:none}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}.lx-reveal{opacity:1;transform:none}.lx-poster-frame{transform:none!important}}
+
+/* 2026-08-13 — 简体中文：专页全面改用同一简体无衬线字库。 */
+html[lang="zh-Hans"] .lx-page,
+html[lang="zh-Hans"] .lx-page :where(h1,h2,h3,h4,h5,h6,p,a,button,span,strong,b,small,li,time,figcaption,blockquote,div,section,nav,footer){
+  font-family:"Microsoft YaHei UI","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC","Source Han Sans SC","PingFang SC",Arial,sans-serif!important;
+  font-synthesis:none!important;
+  font-variant-east-asian:normal;
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+}
+html[lang="zh-Hans"] .lx-page{font-weight:400;}
+html[lang="zh-Hans"] .lx-page :where(h1,h2,h3,h4,h5,h6,strong,b){font-weight:700!important;}
+html[lang="zh-Hans"] .lx-page :where(.lx-brand,.lx-kicker,.lx-status,.lx-update,.lx-nav-links a,.lx-ledger-label,.lx-section-no,.lx-timeline-item time,.lx-fact small,.lx-copy-button){font-weight:700!important;}

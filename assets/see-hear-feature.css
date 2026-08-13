@@ -204,3 +204,16 @@ a{color:inherit}
   *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
   .reveal,.sh-signal-stack>*{opacity:1;transform:none}
 }
+
+/* 2026-08-13 — 简体中文：统一字库、字形与笔画粗细。 */
+html[lang="zh-Hans"] body,
+html[lang="zh-Hans"] body :where(h1,h2,h3,h4,h5,h6,p,a,button,span,strong,b,small,li,figcaption,blockquote,div,section,nav,footer){
+  font-family:"Microsoft YaHei UI","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC","Source Han Sans SC","PingFang SC",Arial,sans-serif!important;
+  font-synthesis:none!important;
+  font-variant-east-asian:normal;
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+}
+html[lang="zh-Hans"] body{font-weight:400;}
+html[lang="zh-Hans"] :where(h1,h2,h3,h4,h5,h6,strong,b){font-weight:700!important;}
+html[lang="zh-Hans"] :where(.sh-brand,.sh-kicker,.sh-index,.sh-concept-visual figcaption small,.sh-emergency-detail a){font-weight:700!important;}
