@@ -915,6 +915,11 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     if (contentRoute === 'features/social-observation/see-hear-after') {
       return 'feature-see-hear-after-shared';
     }
+    // Keep homepage cards, case directories and all four language editions
+    // aligned with the dedicated Lin Hsin-Tzu feature counter.
+    if (contentRoute === 'cases/lin-xinci/features/missing-four-days') {
+      return 'case-lin-xinci-missing-four-days-shared';
+    }
     return route.replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
   }
 
