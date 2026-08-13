@@ -6082,6 +6082,26 @@ html[lang="en"] .public-view-count-card .public-view-unit::after,
 html[lang="ja"] .public-view-count-card .public-view-unit::after{content:""}
 html[lang="zh-Hans"] .public-view-count{font-family:"Microsoft YaHei UI","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC","Source Han Sans SC","PingFang SC",sans-serif!important;font-weight:600!important}
 html[lang="zh-Hans"] .public-view-count strong{font-weight:700!important}
+
+/* 2026-08-13: two-level Special Feature navigation */
+.special-feature-nav-menu{
+  width:min(760px,92vw)!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:10px!important
+}
+.special-feature-case-group{min-width:0;padding:6px;border:1px solid #eadfce;border-radius:17px;background:#fffaf1}
+.special-feature-case-toggle{display:flex;width:100%;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:0;border-radius:12px;background:#f4ecdd;color:#173a51;text-align:left;cursor:pointer}
+.special-feature-case-toggle span{min-width:0}.special-feature-case-toggle small{display:block;color:#a4751d;font-size:9px;font-weight:900;letter-spacing:.13em}.special-feature-case-toggle strong{display:block;margin-top:2px;font-size:17px}.special-feature-case-toggle i{font-style:normal;color:#a4751d}
+.special-feature-case-children{display:grid;gap:7px;margin-top:7px}
+header .nav .special-feature-menu-prologue,header .nav .special-feature-menu-card{display:grid!important;padding:11px!important;border:1px solid #eadfce;background:#fff!important}
+.special-feature-menu-prologue small,.special-feature-menu-copy small{display:block;color:#a4751d;font-size:9px;font-weight:900;letter-spacing:.1em}.special-feature-menu-prologue strong,.special-feature-menu-copy strong{display:block;color:#173a51;font-size:15px}.special-feature-menu-prologue span,.special-feature-menu-copy span{display:block;color:#737e83;font-size:11px;line-height:1.55}
+.special-feature-menu-card{grid-template-columns:78px minmax(0,1fr);gap:11px;align-items:center}.special-feature-menu-art img{display:block;width:78px;height:70px;border-radius:10px;object-fit:cover}.special-feature-menu-copy{min-width:0}.special-feature-menu-copy b{display:block;margin-top:5px;color:#8a6118;font-size:10px}
+@media(max-width:800px){
+  .special-feature-nav-menu{grid-template-columns:1fr!important}
+  .special-feature-case-children{display:none}
+  .special-feature-case-group.is-expanded .special-feature-case-children{display:grid}
+  .special-feature-case-group.is-expanded .special-feature-case-toggle i{transform:rotate(90deg)}
+}
 @media(max-width:760px){
   .public-view-count-article{margin:8px 0 16px;padding:7px 10px;font-size:11px}
   .public-view-count-card{font-size:10px;padding:6px 8px}
