@@ -69,6 +69,7 @@ function getConvertibleTextNodes(root=document.body){
       acceptNode(node){
         const p=node.parentElement;
         if(!p) return NodeFilter.FILTER_REJECT;
+        if(p.closest('[data-no-convert]')) return NodeFilter.FILTER_REJECT;
         if(['SCRIPT','STYLE','NOSCRIPT','TEXTAREA','CODE','PRE'].includes(p.tagName))
           return NodeFilter.FILTER_REJECT;
         if(!node.nodeValue || !node.nodeValue.trim())
@@ -117,12 +118,23 @@ function syncLanguageSwitcher(activeLang){
   });
 }
 
+function syncLocalizedImages(isHans, root=document){
+  const images=[];
+  if(root.nodeType===Node.ELEMENT_NODE && root.matches && root.matches('img[data-hans-src]')) images.push(root);
+  root.querySelectorAll('img[data-hans-src]').forEach(img=>images.push(img));
+  images.forEach(img=>{
+    if(!img.dataset.hantSrc) img.dataset.hantSrc=img.getAttribute('src');
+    img.setAttribute('src',isHans ? img.dataset.hansSrc : img.dataset.hantSrc);
+  });
+}
+
 function setLang(l){
   const isHans=l==='zh-Hans';
   document.documentElement.lang=l;
 
   getConvertibleTextNodes().forEach(node=>convertTextNode(node,isHans));
   convertAttributes(isHans);
+  syncLocalizedImages(isHans);
 
   document.title=isHans ? cv(originalDocumentTitle) : originalDocumentTitle;
 
@@ -163,12 +175,18 @@ document.addEventListener('DOMContentLoaded',()=>{
         } else if(n.nodeType===Node.ELEMENT_NODE){
           getConvertibleTextNodes(n).forEach(t=>convertTextNode(t,isHans));
           convertAttributes(isHans,n);
+          syncLocalizedImages(isHans,n);
         }
       });
     });
   });
   observer.observe(document.body,{childList:true,subtree:true});
 });
+
+// Standalone editorial pages can reuse the complete Traditional/Simplified
+// converter without activating the main site's navigation and card modules.
+const converterOnlyMode=Boolean(document.currentScript && document.currentScript.hasAttribute('data-converter-only'));
+if(!converterOnlyMode){
 
 /* ===== Universal mobile dropdown navigation ===== */
 function initMobileMenu(){
@@ -661,6 +679,126 @@ function initSocialCaseDropdowns(){
 }
 document.addEventListener('DOMContentLoaded',initSocialCaseDropdowns);
 
+/* 2026-08-13 — 歷史案件：地區先行的第二層導覽 */
+function initHistoricalRegionMenus(){
+  document.querySelectorAll('.historical-region-group').forEach(group=>{
+    const button=group.querySelector('.historical-region-toggle');
+    if(!button) return;
+    const setExpanded=expanded=>{
+      group.classList.toggle('is-expanded',expanded);
+      button.setAttribute('aria-expanded',expanded?'true':'false');
+    };
+    button.addEventListener('click',event=>{
+      event.preventDefault();
+      event.stopPropagation();
+      setExpanded(!group.classList.contains('is-expanded'));
+    });
+    group.addEventListener('mouseenter',()=>{if(window.innerWidth>800)setExpanded(true)});
+    group.addEventListener('mouseleave',()=>{if(window.innerWidth>800)setExpanded(false)});
+    group.addEventListener('focusin',()=>setExpanded(true));
+    group.addEventListener('focusout',()=>window.setTimeout(()=>{
+      if(!group.contains(document.activeElement)) setExpanded(false);
+    },0));
+    group.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){
+        setExpanded(false);
+        button.focus();
+      }
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded',initHistoricalRegionMenus);
+
+/* =====================================================================
+   2026-08-13 — 特定專題：桌機左右並列、手機手風琴
+   ===================================================================== */
+function initSpecialFeatureColumns(){
+  const menus=[...document.querySelectorAll('.special-feature-nav-menu')];
+  if(!menus.length) return;
+
+  const isCompact=()=>window.innerWidth<=800;
+  const collapse=group=>{
+    group.classList.remove('is-expanded');
+    const button=group.querySelector('.special-feature-case-toggle');
+    if(button) button.setAttribute('aria-expanded','false');
+  };
+  const expand=group=>{
+    const menu=group.closest('.special-feature-nav-menu');
+    if(menu) menu.querySelectorAll('.special-feature-case-group').forEach(item=>{
+      if(item!==group) collapse(item);
+    });
+    group.classList.add('is-expanded');
+    const button=group.querySelector('.special-feature-case-toggle');
+    if(button) button.setAttribute('aria-expanded','true');
+  };
+
+  menus.forEach(menu=>{
+    const groups=[...menu.querySelectorAll('.special-feature-case-group')];
+    groups.forEach((group,index)=>{
+      const button=group.querySelector('.special-feature-case-toggle');
+      if(!button) return;
+      button.addEventListener('click',event=>{
+        if(!isCompact()) return;
+        event.preventDefault();
+        event.stopPropagation();
+        group.classList.contains('is-expanded') ? collapse(group) : expand(group);
+      });
+      button.addEventListener('keydown',event=>{
+        if(!isCompact() && (event.key==='ArrowLeft'||event.key==='ArrowRight')){
+          event.preventDefault();
+          const step=event.key==='ArrowRight'?1:-1;
+          const target=groups[(index+step+groups.length)%groups.length];
+          target.querySelector('.special-feature-case-toggle')?.focus();
+        }
+      });
+    });
+
+    const syncMode=()=>{
+      groups.forEach((group,index)=>{
+        const button=group.querySelector('.special-feature-case-toggle');
+        if(isCompact()){
+          button?.setAttribute('aria-expanded',group.classList.contains('is-expanded')?'true':'false');
+        }else{
+          group.classList.remove('is-expanded');
+          button?.setAttribute('aria-expanded','true');
+        }
+      });
+    };
+    syncMode();
+    window.addEventListener('resize',syncMode);
+  });
+}
+document.addEventListener('DOMContentLoaded',initSpecialFeatureColumns);
+
+/* 序幕下一層：先顯示序幕，再展開「古老的傳說」 */
+function initSpecialFeaturePrologueChildren(){
+  document.querySelectorAll('.special-feature-prologue-group').forEach(group=>{
+    const prologue=group.querySelector('.special-feature-menu-prologue');
+    if(!prologue) return;
+    const setExpanded=expanded=>{
+      group.classList.toggle('is-expanded',expanded);
+      prologue.setAttribute('aria-expanded',expanded?'true':'false');
+    };
+    prologue.addEventListener('click',event=>{
+      if(!group.classList.contains('is-expanded')){
+        event.preventDefault();
+        event.stopPropagation();
+        setExpanded(true);
+      }
+    });
+    group.addEventListener('mouseleave',()=>{
+      if(window.innerWidth>800) setExpanded(false);
+    });
+    group.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){
+        setExpanded(false);
+        prologue.focus();
+      }
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded',initSpecialFeaturePrologueChildren);
+
 
 /* =====================================================================
    2026-08-10 — 全站紀念標語模組（案件頁大版／其他頁面小版）
@@ -669,6 +807,39 @@ function initGlobalMemorialBanner(){
   const path=location.pathname.replace(/index\.html$/,'');
   const normalizedPath=path.endsWith('/') ? path : `${path}/`;
   const isHomepage=normalizedPath==='/' || normalizedPath==='/child-advocacy-site/';
+
+  const declaredLang=(document.documentElement.lang || '').toLowerCase();
+  const pageLang=declaredLang.startsWith('ja') || /\/ja\//.test(normalizedPath)
+    ? 'ja'
+    : declaredLang.startsWith('en') || /\/en\//.test(normalizedPath)
+      ? 'en'
+      : 'zh';
+  const memorialCopy={
+    zh:{
+      title:'記住他，不只是記住一場悲劇。',
+      lead:'願下一個孩子，在傷害發生以前，就有人伸手接住。',
+      note:'我們持續留下案件紀錄、整理司法程序、凝視每一道曾被忽略的求救訊號，不讓孩子的傷與沉默，只在新聞熱度裡短暫被看見。',
+      brand:'護童行動聯盟',
+      focus:'案件紀錄｜司法旁聽｜兒少保護倡議',
+      imageAlt:'剴剴紀念Q版插畫：穿藍色條紋上衣的小男孩'
+    },
+    en:{
+      title:'Remembering him means remembering more than a tragedy.',
+      lead:'May someone reach out and protect the next child before harm occurs.',
+      note:"We continue to document cases, explain judicial proceedings, and attend to every overlooked cry for help, so that children’s suffering and silence are not seen only briefly while a story is in the news.",
+      brand:'Child Protection Action Alliance',
+      focus:'Case Records｜Court Observation｜Child Protection Advocacy',
+      imageAlt:'Memorial illustration of Kaikai: a little boy in a blue striped shirt'
+    },
+    ja:{
+      title:'彼を記憶することは、一つの悲劇だけを記憶することではありません。',
+      lead:'次の子どもが傷つけられる前に、誰かが手を差し伸べ、受け止めてくれますように。',
+      note:'私たちは、事件の記録を残し、司法手続きを整理し、見過ごされてきた一つひとつの救いを求めるサインを見つめ続けます。子どもの傷と沈黙が、ニュースの関心の中で一時的に注目されるだけで終わらないように。',
+      brand:'子供保護行動連盟',
+      focus:'事件記録｜司法傍聴｜児童保護の提言',
+      imageAlt:'カイカイを偲ぶイラスト：青いボーダーシャツを着た男の子'
+    }
+  }[pageLang];
 
   // 首頁保留原本完整排版與「勿忘剴剴」區塊，不插入全站紀念模組。
   if(isHomepage) return;
@@ -695,16 +866,16 @@ function initGlobalMemorialBanner(){
       <div class="container">
         <div class="global-memorial-card">
           <div class="global-memorial-media">
-            <img src="${imageSrc}" alt="剴剴紀念Q版插畫：穿藍色條紋上衣的小男孩" loading="lazy" decoding="async">
+            <img src="${imageSrc}" alt="${memorialCopy.imageAlt}" loading="lazy" decoding="async">
           </div>
           <div class="global-memorial-copy">
             <div class="global-memorial-kicker">REMEMBER ・ PROTECT ・ ACT</div>
-            <h2 id="globalMemorialTitle">記住他，不只是記住一場悲劇。</h2>
-            <p class="global-memorial-lead">願下一個孩子，在傷害發生以前，就有人伸手接住。</p>
-            <p class="global-memorial-note">我們持續留下案件紀錄、整理司法程序、凝視每一道曾被忽略的求救訊號，不讓孩子的傷與沉默，只在新聞熱度裡短暫被看見。</p>
+            <h2 id="globalMemorialTitle">${memorialCopy.title}</h2>
+            <p class="global-memorial-lead">${memorialCopy.lead}</p>
+            <p class="global-memorial-note">${memorialCopy.note}</p>
             <div class="global-memorial-signoff">
-              <strong>護童行動聯盟</strong>
-              <span>案件紀錄｜司法旁聽｜兒少保護倡議</span>
+              <strong>${memorialCopy.brand}</strong>
+              <span>${memorialCopy.focus}</span>
             </div>
           </div>
         </div>
@@ -714,15 +885,15 @@ function initGlobalMemorialBanner(){
       <div class="container">
         <div class="global-memorial-card">
           <div class="global-memorial-media">
-            <img src="${imageSrc}" alt="剴剴紀念Q版插畫：穿藍色條紋上衣的小男孩" loading="lazy" decoding="async">
+            <img src="${imageSrc}" alt="${memorialCopy.imageAlt}" loading="lazy" decoding="async">
           </div>
           <div class="global-memorial-copy">
             <div class="global-memorial-kicker">REMEMBER ・ PROTECT ・ ACT</div>
-            <h2 id="globalMemorialTitle">記住他，不只是記住一場悲劇。</h2>
-            <p class="global-memorial-lead">願下一個孩子，在傷害發生以前，就有人伸手接住。</p>
+            <h2 id="globalMemorialTitle">${memorialCopy.title}</h2>
+            <p class="global-memorial-lead">${memorialCopy.lead}</p>
             <div class="global-memorial-signoff">
-              <strong>護童行動聯盟</strong>
-              <span>案件紀錄｜司法旁聽｜兒少保護倡議</span>
+              <strong>${memorialCopy.brand}</strong>
+              <span>${memorialCopy.focus}</span>
             </div>
           </div>
         </div>
@@ -755,15 +926,35 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
 
   function isTrackableRoute(route) {
     if (!route) return false;
-    if (/^cases\/[^/]+$/.test(route)) return true;
-    if (/^hearing-records\/[^/]+$/.test(route)) return true;
-    if (/^court-comics\/episode-[^/]+$/.test(route)) return true;
-    if (/^activity-records\/[^/]+$/.test(route) && route !== 'activity-records/albums') return true;
-    if (/^activity-records\/albums\/[^/]+$/.test(route)) return true;
+    // English and Japanese pages retain the same content routes beneath a
+    // locale prefix.  Strip the prefix only for matching; keep it in the key
+    // so each translated article has its own independent count.
+    const contentRoute = route.replace(/^(?:en|ja)\//, '');
+    if (/^features\/social-observation\/[^/]+$/.test(contentRoute)) return true;
+    if (/^cases\/[^/]+$/.test(contentRoute)) return true;
+    if (/^cases\/[^/]+\/features\/[^/]+$/.test(contentRoute)) return true;
+    if (/^hearing-records\/[^/]+$/.test(contentRoute)) return true;
+    if (/^court-comics\/episode-[^/]+$/.test(contentRoute)) return true;
+    if (/^activity-records\/[^/]+$/.test(contentRoute) && contentRoute !== 'activity-records/albums') return true;
+    if (/^activity-records\/albums\/[^/]+$/.test(contentRoute)) return true;
+    if (/^historical-cases\/regions\/[^/]+\/[^/]+$/.test(contentRoute)) return true;
     return false;
   }
 
   function keyFromRoute(route) {
+    const contentRoute = route.replace(/^(?:en|ja)\//, '');
+    // The three language editions of this feature share one public count.
+    if (contentRoute === 'features/social-observation/see-hear-after') {
+      return 'feature-see-hear-after-shared';
+    }
+    // Keep homepage cards, case directories and all four language editions
+    // aligned with the dedicated Lin Hsin-Tzu feature counter.
+    if (contentRoute === 'cases/lin-xinci/features/missing-four-days') {
+      return 'case-lin-xinci-missing-four-days-shared';
+    }
+    if (contentRoute === 'historical-cases/regions/japan/kurihara-mia') {
+      return 'historical-kurihara-mia-shared';
+    }
     return route.replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
   }
 
@@ -879,9 +1070,27 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
   }
 
   function formatCount(value) {
-    const locale = document.documentElement.lang === 'zh-Hans' ? 'zh-CN' : 'zh-TW';
+    const lang = document.documentElement.lang;
+    const locale = lang === 'zh-Hans' ? 'zh-CN' : lang === 'en' ? 'en-US' : lang === 'ja' ? 'ja-JP' : 'zh-TW';
     try { return new Intl.NumberFormat(locale).format(value); }
     catch (_) { return String(value); }
+  }
+
+  function viewCounterCopy(kind) {
+    const lang = document.documentElement.lang;
+    if (lang === 'en') return { label: 'Views', unit: kind === 'card' ? 'views' : '' };
+    if (lang === 'ja') return { label: '閲覧', unit: '回' };
+    if (lang === 'zh-Hans') return { label: '浏览', unit: '次' };
+    return { label: '瀏覽', unit: '次' };
+  }
+
+  function viewCounterTitle(value) {
+    const formatted = formatCount(value);
+    const lang = document.documentElement.lang;
+    if (lang === 'en') return `Public view count: ${formatted}`;
+    if (lang === 'ja') return `公開閲覧数：${formatted}回`;
+    if (lang === 'zh-Hans') return `公开浏览次数：${formatted} 次`;
+    return `公開瀏覽次數：${formatted} 次`;
   }
 
   function createEyeIcon() {
@@ -890,10 +1099,11 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
 
   function makeBadge(kind = 'article') {
     const el = document.createElement('span');
+    const copy = viewCounterCopy(kind);
     el.className = kind === 'card' ? 'public-view-count public-view-count-card' : 'public-view-count public-view-count-article';
     el.hidden = true;
     el.setAttribute('aria-live', 'polite');
-    el.innerHTML = `${createEyeIcon()}<span class="public-view-label">瀏覽</span><strong class="public-view-number"></strong><span class="public-view-unit">次</span>`;
+    el.innerHTML = `${createEyeIcon()}<span class="public-view-label">${copy.label}</span><strong class="public-view-number"></strong><span class="public-view-unit">${copy.unit}</span>`;
     return el;
   }
 
@@ -902,7 +1112,7 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     if (!number) return;
     number.textContent = formatCount(value);
     badge.hidden = false;
-    badge.setAttribute('title', `公開瀏覽次數：${formatCount(value)} 次`);
+    badge.setAttribute('title', viewCounterTitle(value));
   }
 
   async function initArticleCounter() {
@@ -978,3 +1188,4 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     initCaseDirectoryCounters();
   });
 })();
+}
