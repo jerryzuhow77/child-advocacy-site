@@ -69,6 +69,7 @@ function getConvertibleTextNodes(root=document.body){
       acceptNode(node){
         const p=node.parentElement;
         if(!p) return NodeFilter.FILTER_REJECT;
+        if(p.closest('[data-no-convert]')) return NodeFilter.FILTER_REJECT;
         if(['SCRIPT','STYLE','NOSCRIPT','TEXTAREA','CODE','PRE'].includes(p.tagName))
           return NodeFilter.FILTER_REJECT;
         if(!node.nodeValue || !node.nodeValue.trim())
@@ -678,6 +679,36 @@ function initSocialCaseDropdowns(){
 }
 document.addEventListener('DOMContentLoaded',initSocialCaseDropdowns);
 
+/* 2026-08-13 — 歷史案件：地區先行的第二層導覽 */
+function initHistoricalRegionMenus(){
+  document.querySelectorAll('.historical-region-group').forEach(group=>{
+    const button=group.querySelector('.historical-region-toggle');
+    if(!button) return;
+    const setExpanded=expanded=>{
+      group.classList.toggle('is-expanded',expanded);
+      button.setAttribute('aria-expanded',expanded?'true':'false');
+    };
+    button.addEventListener('click',event=>{
+      event.preventDefault();
+      event.stopPropagation();
+      setExpanded(!group.classList.contains('is-expanded'));
+    });
+    group.addEventListener('mouseenter',()=>{if(window.innerWidth>800)setExpanded(true)});
+    group.addEventListener('mouseleave',()=>{if(window.innerWidth>800)setExpanded(false)});
+    group.addEventListener('focusin',()=>setExpanded(true));
+    group.addEventListener('focusout',()=>window.setTimeout(()=>{
+      if(!group.contains(document.activeElement)) setExpanded(false);
+    },0));
+    group.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){
+        setExpanded(false);
+        button.focus();
+      }
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded',initHistoricalRegionMenus);
+
 /* =====================================================================
    2026-08-13 — 特定專題：桌機左右並列、手機手風琴
    ===================================================================== */
@@ -906,6 +937,7 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     if (/^court-comics\/episode-[^/]+$/.test(contentRoute)) return true;
     if (/^activity-records\/[^/]+$/.test(contentRoute) && contentRoute !== 'activity-records/albums') return true;
     if (/^activity-records\/albums\/[^/]+$/.test(contentRoute)) return true;
+    if (/^historical-cases\/regions\/[^/]+\/[^/]+$/.test(contentRoute)) return true;
     return false;
   }
 
@@ -919,6 +951,9 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     // aligned with the dedicated Lin Hsin-Tzu feature counter.
     if (contentRoute === 'cases/lin-xinci/features/missing-four-days') {
       return 'case-lin-xinci-missing-four-days-shared';
+    }
+    if (contentRoute === 'historical-cases/regions/japan/kurihara-mia') {
+      return 'historical-kurihara-mia-shared';
     }
     return route.replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
   }
