@@ -1121,7 +1121,16 @@ html[lang="zh-Hans"] .btn {
     background:#f7f2e8;
   }
 
-  body.mobile-menu-active{overflow:hidden}
+  body.mobile-menu-active{overflow-y:auto;overflow-x:hidden;touch-action:pan-y}
+  body.mobile-menu-active header .nav.menu-open>nav,
+  body.mobile-menu-active .art-header .nav.menu-open>nav{
+    max-height:calc(100dvh - 74px);
+    overflow-y:auto;
+    overscroll-behavior-y:contain;
+    -webkit-overflow-scrolling:touch;
+    touch-action:pan-y;
+    scrollbar-gutter:stable;
+  }
 
   .art-hero{
     padding:38px 0 42px;
@@ -7183,6 +7192,90 @@ html[lang="ja"] table{max-width:100%;table-layout:auto}
     font-size:12px!important;
   }
 }
+
+/* 2026-08-12 — 首頁品牌安全網格：圖文完全分欄，避免圖示遮住名稱。 */
+header .nav > .home-brand-safe{
+  position:relative!important;
+  isolation:isolate;
+  display:grid!important;
+  grid-template-columns:42px minmax(76px,92px)!important;
+  align-items:center!important;
+  column-gap:11px!important;
+  flex:0 0 145px!important;
+  width:145px!important;
+  min-width:145px!important;
+  max-width:145px!important;
+  overflow:visible!important;
+}
+header .nav > .home-brand-safe > img{
+  position:relative!important;
+  inset:auto!important;
+  z-index:1!important;
+  display:block!important;
+  width:42px!important;
+  height:42px!important;
+  min-width:42px!important;
+  margin:0!important;
+  transform:none!important;
+  flex:none!important;
+}
+header .nav > .home-brand-safe > .zh-brand-title{
+  position:relative!important;
+  inset:auto!important;
+  z-index:2!important;
+  display:flex!important;
+  width:92px!important;
+  min-width:92px!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  white-space:normal!important;
+  font-size:15px!important;
+  line-height:1.08!important;
+  letter-spacing:.015em!important;
+}
+header .nav > .home-brand-safe .brand-title-line{
+  display:block!important;
+  position:static!important;
+  width:100%!important;
+  white-space:nowrap!important;
+}
+header .nav > .home-brand-safe small{
+  display:block!important;
+  position:static!important;
+  width:92px!important;
+  margin-top:3px!important;
+  font-size:7.5px!important;
+  line-height:1.15!important;
+  letter-spacing:.025em!important;
+  white-space:normal!important;
+}
+@media(min-width:801px) and (max-width:1100px){
+  header .nav > .home-brand-safe{
+    grid-template-columns:40px minmax(0,92px)!important;
+    flex-basis:143px!important;
+    width:143px!important;
+    min-width:143px!important;
+    max-width:143px!important;
+  }
+  header .nav > .home-brand-safe > img{width:40px!important;height:40px!important;min-width:40px!important}
+  header .nav > .home-brand-safe small{display:none!important}
+}
+@media(max-width:800px){
+  header .nav > .home-brand-safe{
+    grid-template-columns:38px minmax(0,88px)!important;
+    column-gap:9px!important;
+    flex-basis:135px!important;
+    width:135px!important;
+    min-width:135px!important;
+    max-width:135px!important;
+  }
+  header .nav > .home-brand-safe > img{width:38px!important;height:38px!important;min-width:38px!important}
+  header .nav > .home-brand-safe > .zh-brand-title{width:88px!important;min-width:88px!important;font-size:14px!important}
+  header .nav > .home-brand-safe small{display:none!important}
+}
 @media(min-width:801px) and (max-width:1100px){
   header .nav,
   .art-header .nav{
@@ -7342,10 +7435,19 @@ img,video,iframe,table { max-width: 100%; }
 
 /* 2026-08-12 — 首頁品牌英文副標改為緊湊雙行，避免擠壓桌面導覽。 */
 @media(min-width:1101px){
+  html[lang="zh-Hant"] .brand-lockup .zh-brand-title,
+  html[lang="zh-Hans"] .brand-lockup .zh-brand-title{
+    width:98px;
+    flex:0 0 98px;
+    white-space:nowrap!important;
+    font-size:15.5px!important;
+    line-height:1.08!important;
+    letter-spacing:.01em!important;
+  }
   html[lang="zh-Hant"] .zh-brand-title small,
   html[lang="zh-Hans"] .zh-brand-title small{
     display:block!important;
-    width:112px;
+    width:98px;
     margin-top:3px;
     white-space:normal!important;
     font-size:8px!important;
