@@ -7040,3 +7040,12 @@ html[lang="ja"] table{max-width:100%;table-layout:auto}
   .premium-hero-actions{grid-template-columns:1fr!important}
   .premium-hero-actions .premium-case-cta{grid-column:auto!important}
 }
+/* 2026-08-12 — Consistent typography and safe wrapping across desktop/mobile. */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { font-kerning: normal; text-rendering: optimizeLegibility; }
+:where(h1,h2,h3,h4,h5,h6,p,li,dt,dd,figcaption,blockquote,a,button,small,strong,span) { overflow-wrap: break-word; }
+:where(h1,h2,h3,h4,h5,h6) { text-wrap: balance; }
+:where(p,li,dd,figcaption,blockquote) { text-wrap: pretty; }
+html[lang="en"] :where(h1,h2,h3,h4,p,a,span,strong), html[lang="ja"] :where(h1,h2,h3,h4,p,a,span,strong) { overflow-wrap: anywhere; }
+img,video,iframe,table { max-width: 100%; }
+@media (max-width:800px) { table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; } }
