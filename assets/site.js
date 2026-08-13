@@ -673,6 +673,67 @@ function initSocialCaseDropdowns(){
 }
 document.addEventListener('DOMContentLoaded',initSocialCaseDropdowns);
 
+/* =====================================================================
+   2026-08-13 — 特定專題：桌機左右並列、手機手風琴
+   ===================================================================== */
+function initSpecialFeatureColumns(){
+  const menus=[...document.querySelectorAll('.special-feature-nav-menu')];
+  if(!menus.length) return;
+
+  const isCompact=()=>window.innerWidth<=800;
+  const collapse=group=>{
+    group.classList.remove('is-expanded');
+    const button=group.querySelector('.special-feature-case-toggle');
+    if(button) button.setAttribute('aria-expanded','false');
+  };
+  const expand=group=>{
+    const menu=group.closest('.special-feature-nav-menu');
+    if(menu) menu.querySelectorAll('.special-feature-case-group').forEach(item=>{
+      if(item!==group) collapse(item);
+    });
+    group.classList.add('is-expanded');
+    const button=group.querySelector('.special-feature-case-toggle');
+    if(button) button.setAttribute('aria-expanded','true');
+  };
+
+  menus.forEach(menu=>{
+    const groups=[...menu.querySelectorAll('.special-feature-case-group')];
+    groups.forEach((group,index)=>{
+      const button=group.querySelector('.special-feature-case-toggle');
+      if(!button) return;
+      button.addEventListener('click',event=>{
+        if(!isCompact()) return;
+        event.preventDefault();
+        event.stopPropagation();
+        group.classList.contains('is-expanded') ? collapse(group) : expand(group);
+      });
+      button.addEventListener('keydown',event=>{
+        if(!isCompact() && (event.key==='ArrowLeft'||event.key==='ArrowRight')){
+          event.preventDefault();
+          const step=event.key==='ArrowRight'?1:-1;
+          const target=groups[(index+step+groups.length)%groups.length];
+          target.querySelector('.special-feature-case-toggle')?.focus();
+        }
+      });
+    });
+
+    const syncMode=()=>{
+      groups.forEach((group,index)=>{
+        const button=group.querySelector('.special-feature-case-toggle');
+        if(isCompact()){
+          button?.setAttribute('aria-expanded',group.classList.contains('is-expanded')?'true':'false');
+        }else{
+          group.classList.remove('is-expanded');
+          button?.setAttribute('aria-expanded','true');
+        }
+      });
+    };
+    syncMode();
+    window.addEventListener('resize',syncMode);
+  });
+}
+document.addEventListener('DOMContentLoaded',initSpecialFeatureColumns);
+
 
 /* =====================================================================
    2026-08-10 — 全站紀念標語模組（案件頁大版／其他頁面小版）
