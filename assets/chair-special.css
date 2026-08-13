@@ -3233,6 +3233,32 @@ html[lang="ja"] .special-feature-menu-prologue strong {
   overflow-wrap: anywhere;
 }
 
+/* English prologue: keep the long translated title on its own rows. */
+html[lang="en"] header .nav .special-feature-nav-menu .special-feature-menu-prologue {
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 3px 10px;
+}
+html[lang="en"] .special-feature-menu-prologue small,
+html[lang="en"] .special-feature-menu-prologue strong,
+html[lang="en"] .special-feature-menu-prologue span {
+  grid-column: 1;
+  min-width: 0;
+}
+html[lang="en"] .special-feature-menu-prologue small {
+  white-space: nowrap;
+}
+html[lang="en"] .special-feature-menu-prologue strong {
+  font-size: 13.5px;
+  line-height: 1.4;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+html[lang="en"] .special-feature-menu-prologue b {
+  grid-column: 2;
+  grid-row: 1 / 4;
+  align-self: center;
+}
+
 html[lang] header .nav .special-feature-nav-menu::before {
   left: auto;
   right: 39px;
