@@ -865,6 +865,7 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     // locale prefix.  Strip the prefix only for matching; keep it in the key
     // so each translated article has its own independent count.
     const contentRoute = route.replace(/^(?:en|ja)\//, '');
+    if (/^features\/social-observation\/[^/]+$/.test(contentRoute)) return true;
     if (/^cases\/[^/]+$/.test(contentRoute)) return true;
     if (/^cases\/[^/]+\/features\/[^/]+$/.test(contentRoute)) return true;
     if (/^hearing-records\/[^/]+$/.test(contentRoute)) return true;
@@ -875,6 +876,11 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
   }
 
   function keyFromRoute(route) {
+    const contentRoute = route.replace(/^(?:en|ja)\//, '');
+    // The three language editions of this feature share one public count.
+    if (contentRoute === 'features/social-observation/see-hear-after') {
+      return 'feature-see-hear-after-shared';
+    }
     return route.replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
   }
 
