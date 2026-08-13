@@ -20,6 +20,14 @@
   --sp-paper-shadow: 0 10px 22px rgba(48, 52, 51, .14), 0 2px 4px rgba(48, 52, 51, .1);
 }
 
+/* 2026-08-13 — 简体模式覆盖专题衬线字，避免同一句出现不同字重。 */
+html[lang="zh-Hans"] body,
+html[lang="zh-Hans"] body :where(h1,h2,h3,h4,h5,h6,p,a,button,span,strong,b,small,li,figcaption,blockquote,div){
+  font-family:"Microsoft YaHei UI","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC","Source Han Sans SC","PingFang SC",Arial,sans-serif!important;
+  font-synthesis:none!important;
+}
+html[lang="zh-Hans"] :where(strong,b,h1,h2,h3,h4,h5,h6){font-weight:700!important;}
+
 html {
   scroll-behavior: smooth;
 }
@@ -3655,3 +3663,13 @@ html[lang] header .nav .special-feature-nav-menu{
     grid-template-columns:88px minmax(0,1fr)!important;
   }
 }
+
+/* 简体字形最终覆盖：置于专题样式末端，确保不被衬线标题规则取代。 */
+html[lang="zh-Hans"] body,
+html[lang="zh-Hans"] body :where(h1,h2,h3,h4,h5,h6,p,a,button,span,strong,b,small,li,figcaption,blockquote,div){
+  font-family:"Microsoft YaHei UI","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC","Source Han Sans SC","PingFang SC",Arial,sans-serif!important;
+  font-synthesis:none!important;
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+}
+html[lang="zh-Hans"] :where(strong,b,h1,h2,h3,h4,h5,h6){font-weight:700!important;}

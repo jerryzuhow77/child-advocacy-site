@@ -7193,6 +7193,22 @@ html[lang="ja"] table{max-width:100%;table-layout:auto}
   }
 }
 
+/* 2026-08-13 — 简体中文统一字形与笔画粗细（优先采用完整简体字库）。 */
+html[lang="zh-Hans"]{
+  --site-font:"Microsoft YaHei UI","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC","Source Han Sans SC","PingFang SC",Arial,sans-serif;
+}
+html[lang="zh-Hans"] body,
+html[lang="zh-Hans"] body :where(h1,h2,h3,h4,h5,h6,p,a,button,input,select,textarea,label,span,strong,b,small,li,dt,dd,time,figcaption,blockquote,table,th,td,div,section,article,aside,nav){
+  font-family:var(--site-font)!important;
+  font-synthesis:none!important;
+  font-variant-east-asian:normal;
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+}
+html[lang="zh-Hans"] :where(strong,b,h1,h2,h3,h4,h5,h6){
+  font-weight:700!important;
+}
+
 /* 2026-08-12 — 首頁品牌安全網格：圖文完全分欄，避免圖示遮住名稱。 */
 header .nav > .home-brand-safe{
   position:relative!important;
