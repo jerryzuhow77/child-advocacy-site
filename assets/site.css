@@ -1121,7 +1121,16 @@ html[lang="zh-Hans"] .btn {
     background:#f7f2e8;
   }
 
-  body.mobile-menu-active{overflow:hidden}
+  body.mobile-menu-active{overflow-y:auto;overflow-x:hidden;touch-action:pan-y}
+  body.mobile-menu-active header .nav.menu-open>nav,
+  body.mobile-menu-active .art-header .nav.menu-open>nav{
+    max-height:calc(100dvh - 74px);
+    overflow-y:auto;
+    overscroll-behavior-y:contain;
+    -webkit-overflow-scrolling:touch;
+    touch-action:pan-y;
+    scrollbar-gutter:stable;
+  }
 
   .art-hero{
     padding:38px 0 42px;

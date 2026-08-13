@@ -23,6 +23,7 @@
   var introReturnFocus = null;
   var introDuration = 10100;
   var reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var chapterAutoShown = false;
 
   function setPageInert(isInert) {
     var regions = document.querySelectorAll("body > header, body > main, body > footer, .back-to-top");
@@ -144,7 +145,6 @@
 
   function setChapterButtonReady(isReady) {
     if (!chapterEnter) return;
-    chapterEnter.disabled = !isReady;
     chapterEnter.setAttribute("aria-disabled", isReady ? "false" : "true");
   }
 
@@ -176,8 +176,9 @@
   }
 
   if (chapterContent) {
+    chapterContent.hidden = false;
+    chapterContent.removeAttribute("inert");
     if (chapterHashIsActive()) openChapter({ moveFocus: false, updateHash: false });
-    else chapterContent.setAttribute("inert", "");
   }
 
   if (chapterEnter) chapterEnter.addEventListener("click", function () { openChapter(); });
@@ -255,6 +256,10 @@
     chapterTransition.style.setProperty("--paper-grain-opacity", (.18 - modern * .15).toFixed(3));
     setMorphGeometry(morphProgress);
     setChapterButtonReady(Boolean(chapterIsOpen || transitionProgress >= .975));
+    if (!chapterAutoShown && transitionProgress >= .84) {
+      chapterAutoShown = true;
+      openChapter({ moveFocus: false, updateHash: false });
+    }
   }
 
   function updateScrollUI() {
@@ -297,6 +302,24 @@
       });
     }, { rootMargin: "0px 0px -8%", threshold: 0.08 });
     revealItems.forEach(function (item) { revealObserver.observe(item); });
+  }
+
+  /* Editorial scroll reveals: prose rises through the city; preview records stack like case files. */
+  var editorialItems = Array.prototype.slice.call(document.querySelectorAll(".prologue-line, .chapter-dialogue-card"));
+  if (reducedMotion || !("IntersectionObserver" in window)) {
+    editorialItems.forEach(function (item) { item.classList.add("is-visible"); });
+  } else {
+    var editorialObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          var cards = Array.prototype.slice.call(document.querySelectorAll(".chapter-dialogue-card"));
+          var activeIndex = cards.indexOf(entry.target);
+          cards.forEach(function (card, index) { card.classList.toggle("is-past", activeIndex > -1 && index < activeIndex); });
+        }
+      });
+    }, { rootMargin: "-12% 0px -18%", threshold: .18 });
+    editorialItems.forEach(function (item) { editorialObserver.observe(item); });
   }
 
   var ticking = false;
