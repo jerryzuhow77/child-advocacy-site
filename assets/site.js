@@ -679,6 +679,20 @@ function initSocialCaseDropdowns(){
 }
 document.addEventListener('DOMContentLoaded',initSocialCaseDropdowns);
 
+/* 2026-08-13 — 社會案件與歷史案件第二層導覽 */
+function initNestedCaseMenus(){
+  document.querySelectorAll('.social-case-tier,.historical-case-nav .social-case-menu-column').forEach(group=>{
+    const button=group.querySelector(':scope > .social-case-tier-toggle,:scope > .historical-region-root-toggle');
+    if(!button) return;
+    const setExpanded=value=>{group.classList.toggle('is-expanded',value);button.setAttribute('aria-expanded',value?'true':'false')};
+    button.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();setExpanded(!group.classList.contains('is-expanded'))});
+    group.addEventListener('mouseenter',()=>{if(window.innerWidth>800)setExpanded(true)});
+    group.addEventListener('mouseleave',()=>{if(window.innerWidth>800)setExpanded(false)});
+    group.addEventListener('keydown',event=>{if(event.key==='Escape'){setExpanded(false);button.focus()}});
+  });
+}
+document.addEventListener('DOMContentLoaded',initNestedCaseMenus);
+
 /* 2026-08-13 — 歷史案件：地區先行的第二層導覽 */
 function initHistoricalRegionMenus(){
   document.querySelectorAll('.historical-region-group').forEach(group=>{
