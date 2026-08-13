@@ -167,6 +167,19 @@ body.km-opening-active{overflow:hidden}
 .km-hero-grid{position:relative;display:grid;grid-template-columns:minmax(0,.9fr) minmax(420px,1.1fr);gap:46px;align-items:center}
 .km-kicker{color:var(--km-beni);font-size:11px;font-weight:850;letter-spacing:.18em}
 .km-hero h1{margin:14px 0 8px;font:600 clamp(52px,7.6vw,92px)/1.04 var(--km-serif);letter-spacing:.02em}
+html[lang="zh-Hant"] .km-hero h1,
+html[lang="zh-Hans"] .km-hero h1{
+  font-size:clamp(44px,5.6vw,72px);
+  line-height:1.12;
+  letter-spacing:.01em;
+  white-space:nowrap
+}
+html[lang="ja"] .km-hero h1{
+  font-size:clamp(36px,4vw,50px);
+  line-height:1.18;
+  letter-spacing:0;
+  white-space:nowrap
+}
 .km-reading-name{margin:0 0 24px;color:#7f6b70;font:500 clamp(25px,3.8vw,45px)/1.42 var(--km-serif)}
 .km-lead{font-size:17px;line-height:2;color:#4f5b5e}
 .km-view-counter{
@@ -346,6 +359,9 @@ html[lang="zh-Hans"] :where(.km-hero h1,.km-reading-name,.km-prose h2,.km-prose 
   .km-brand span{display:none}
   .km-language a{min-width:33px;padding:6px 7px}
   .km-hero{padding-top:48px}
+  html[lang="zh-Hant"] .km-hero h1,
+  html[lang="zh-Hans"] .km-hero h1{font-size:clamp(40px,12vw,52px);letter-spacing:0}
+  html[lang="ja"] .km-hero h1{font-size:clamp(31px,9vw,38px)}
   .km-breadcrumb{font-size:11px}
   .km-guide-links{grid-template-columns:1fr 1fr}
   .km-guide-links a{min-height:80px;padding:15px 12px}
