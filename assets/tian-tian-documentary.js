@@ -160,12 +160,14 @@
         if (i === index) step.setAttribute('aria-current', 'step');
         else step.removeAttribute('aria-current');
       });
+      document.dispatchEvent(new CustomEvent('tt:opening-scene', { detail: { index } }));
     };
     const close = () => {
       stop();
       opening.classList.add('is-gone');
       opening.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('tt-opening-active');
+      document.dispatchEvent(new CustomEvent('tt:opening-close'));
     };
     const play = () => {
       stop();
@@ -192,6 +194,284 @@
     if (replay) replay.addEventListener('click', play);
     if (reducedMotion) close();
     else play();
+  }
+
+  function initSoundscape() {
+    const buttons = $$('[data-tt-audio]');
+    if (!buttons.length) return;
+
+    const AudioCtor = window.AudioContext || window.webkitAudioContext;
+    const SCALE = [146.83, 164.81, 185, 220, 246.94];
+    const transitionPhrases = [
+      [0, 1, 3], [0, 4, 3], [3, 2, 0], [0, 3, 4], [4, 3, 0],
+      [0, 2, 1], [3, 1, 0], [0, 3, 1], [0, 1, 4]
+    ];
+    const seen = new WeakSet();
+    let context = null;
+    let master = null;
+    let musicBus = null;
+    let sfxBus = null;
+    let noiseBuffer = null;
+    let ambientTimer = 0;
+    let audioEnabled = false;
+
+    const getLabel = (button, key) => {
+      const isHans = document.documentElement.lang.toLowerCase() === 'zh-hans';
+      return (isHans && button.dataset[`${key}Hans`]) || button.dataset[key] || '';
+    };
+
+    const setButtonText = (button, value) => {
+      const label = $('[data-tt-audio-label]', button);
+      if (label) label.textContent = value;
+      else button.textContent = value;
+    };
+
+    const updateControls = () => {
+      document.body.classList.toggle('tt-audio-active', audioEnabled);
+      buttons.forEach(button => {
+        button.setAttribute('aria-pressed', audioEnabled ? 'true' : 'false');
+        setButtonText(button, getLabel(button, audioEnabled ? 'labelOn' : 'labelOff'));
+      });
+    };
+
+    const disconnectOnEnd = nodes => () => nodes.forEach(node => {
+      try { node.disconnect(); } catch (_) { /* already disconnected */ }
+    });
+
+    const playTone = (frequency, when, duration, level, type = 'sine', bus = musicBus) => {
+      if (!audioEnabled || !context || !bus) return;
+      const oscillator = context.createOscillator();
+      const gain = context.createGain();
+      const start = Math.max(context.currentTime + .006, when);
+      oscillator.type = type;
+      oscillator.frequency.setValueAtTime(frequency, start);
+      oscillator.detune.setValueAtTime((Math.random() - .5) * 4, start);
+      gain.gain.setValueAtTime(.0001, start);
+      gain.gain.exponentialRampToValueAtTime(Math.max(.0002, level), start + Math.min(.08, duration * .16));
+      gain.gain.exponentialRampToValueAtTime(.0001, start + duration);
+      oscillator.connect(gain);
+      gain.connect(bus);
+      oscillator.start(start);
+      oscillator.stop(start + duration + .03);
+      oscillator.onended = disconnectOnEnd([oscillator, gain]);
+    };
+
+    const playPluck = (frequency, when, level = .075) => {
+      playTone(frequency, when, 1.7, level, 'triangle', musicBus);
+      playTone(frequency * 2.01, when + .012, .86, level * .26, 'sine', musicBus);
+    };
+
+    const noiseBurst = (when, duration, level, frequency = 1200, type = 'bandpass') => {
+      if (!audioEnabled || !context || !noiseBuffer || !sfxBus) return;
+      const source = context.createBufferSource();
+      const filter = context.createBiquadFilter();
+      const gain = context.createGain();
+      const start = Math.max(context.currentTime + .006, when);
+      source.buffer = noiseBuffer;
+      filter.type = type;
+      filter.frequency.setValueAtTime(frequency, start);
+      filter.Q.setValueAtTime(type === 'bandpass' ? .75 : .28, start);
+      gain.gain.setValueAtTime(.0001, start);
+      gain.gain.exponentialRampToValueAtTime(Math.max(.0002, level), start + .025);
+      gain.gain.exponentialRampToValueAtTime(.0001, start + duration);
+      source.connect(filter);
+      filter.connect(gain);
+      gain.connect(sfxBus);
+      source.start(start, Math.random() * .65, Math.min(duration + .04, 1.1));
+      source.onended = disconnectOnEnd([source, filter, gain]);
+    };
+
+    const paperRustle = (when, strength = 1) => {
+      noiseBurst(when, .52, .055 * strength, 1150, 'bandpass');
+      noiseBurst(when + .06, .38, .026 * strength, 2350, 'highpass');
+    };
+
+    const rodClick = (when, frequency = 840, strength = 1) => {
+      noiseBurst(when, .065, .05 * strength, 1750, 'highpass');
+      playTone(frequency, when, .12, .045 * strength, 'triangle', sfxBus);
+    };
+
+    const cueOpening = index => {
+      if (!audioEnabled || !context) return;
+      const now = context.currentTime + .025;
+      if (!reducedMotion) paperRustle(now, .62);
+      playPluck(SCALE[index % SCALE.length], now + .16, .052);
+    };
+
+    const cueTransition = index => {
+      if (!audioEnabled || !context) return;
+      const now = context.currentTime + .025;
+      const phrase = transitionPhrases[index % transitionPhrases.length];
+      if (!reducedMotion) {
+        paperRustle(now, .82);
+        rodClick(now + .14, 760 + index * 29, .9);
+        rodClick(now + .29, 980 - index * 17, .48);
+      }
+      phrase.forEach((note, noteIndex) => {
+        playPluck(SCALE[note], now + .52 + noteIndex * .38, .055 - noteIndex * .006);
+      });
+    };
+
+    const cueEnding = () => {
+      if (!audioEnabled || !context) return;
+      const now = context.currentTime + .03;
+      if (!reducedMotion) paperRustle(now, .55);
+      [110, 162, 230, 289].forEach((frequency, index) => {
+        playTone(frequency, now + .14, 5.2 - index * .45, .052 / (index + 1), 'sine', musicBus);
+      });
+      [0, 1, 3, 0].forEach((note, index) => {
+        playPluck(SCALE[note], now + .8 + index * .72, .052 - index * .006);
+      });
+    };
+
+    const playAmbientPhrase = () => {
+      if (!audioEnabled || !context || document.hidden) return;
+      const now = context.currentTime + .04;
+      const start = Math.floor(Math.random() * SCALE.length);
+      const notes = [start, (start + 3) % SCALE.length, (start + 1) % SCALE.length];
+      notes.forEach((note, index) => playPluck(SCALE[note] / (index === 2 ? 2 : 1), now + index * 1.15, .031));
+      playTone(SCALE[(start + 2) % SCALE.length] / 2, now + .35, 3.6, .019, 'sine', musicBus);
+    };
+
+    const startDrone = () => {
+      if (!context || !musicBus) return;
+      [73.42, 110].forEach((frequency, index) => {
+        const oscillator = context.createOscillator();
+        const gain = context.createGain();
+        oscillator.type = index ? 'sine' : 'triangle';
+        oscillator.frequency.value = frequency;
+        gain.gain.value = index ? .018 : .022;
+        oscillator.connect(gain);
+        gain.connect(musicBus);
+        oscillator.start();
+      });
+    };
+
+    const buildAudioGraph = () => {
+      master = context.createGain();
+      musicBus = context.createGain();
+      sfxBus = context.createGain();
+      const compressor = context.createDynamicsCompressor();
+      const convolver = context.createConvolver();
+      const wetGain = context.createGain();
+
+      master.gain.value = .58;
+      musicBus.gain.value = .13;
+      sfxBus.gain.value = .18;
+      wetGain.gain.value = .13;
+      compressor.threshold.value = -24;
+      compressor.knee.value = 16;
+      compressor.ratio.value = 8;
+      compressor.attack.value = .003;
+      compressor.release.value = .25;
+
+      const impulseLength = Math.floor(context.sampleRate * 1.25);
+      const impulse = context.createBuffer(2, impulseLength, context.sampleRate);
+      for (let channel = 0; channel < impulse.numberOfChannels; channel += 1) {
+        const data = impulse.getChannelData(channel);
+        for (let i = 0; i < data.length; i += 1) {
+          data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / data.length, 2.7);
+        }
+      }
+      convolver.buffer = impulse;
+
+      noiseBuffer = context.createBuffer(1, Math.floor(context.sampleRate * 2), context.sampleRate);
+      const noise = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < noise.length; i += 1) noise[i] = Math.random() * 2 - 1;
+
+      musicBus.connect(master);
+      sfxBus.connect(master);
+      musicBus.connect(convolver);
+      sfxBus.connect(convolver);
+      convolver.connect(wetGain);
+      wetGain.connect(master);
+      master.connect(compressor);
+      compressor.connect(context.destination);
+    };
+
+    const enableAudio = () => {
+      if (audioEnabled || !AudioCtor) return;
+      try {
+        context = new AudioCtor();
+        buildAudioGraph();
+        audioEnabled = true;
+        updateControls();
+        startDrone();
+        context.resume().catch(() => {});
+        const opening = $('[data-tt-opening]');
+        if (opening && !opening.classList.contains('is-gone')) cueOpening(Math.max(0, Number(opening.dataset.scene || 1) - 1));
+        else playAmbientPhrase();
+        window.clearInterval(ambientTimer);
+        ambientTimer = window.setInterval(playAmbientPhrase, 15000);
+      } catch (_) {
+        audioEnabled = false;
+        updateControls();
+      }
+    };
+
+    const disableAudio = () => {
+      if (!audioEnabled) return;
+      audioEnabled = false;
+      window.clearInterval(ambientTimer);
+      ambientTimer = 0;
+      updateControls();
+      const oldContext = context;
+      const oldMaster = master;
+      context = null;
+      master = null;
+      musicBus = null;
+      sfxBus = null;
+      noiseBuffer = null;
+      if (!oldContext) return;
+      try {
+        const now = oldContext.currentTime;
+        oldMaster.gain.cancelScheduledValues(now);
+        oldMaster.gain.setValueAtTime(Math.max(.0001, oldMaster.gain.value), now);
+        oldMaster.gain.exponentialRampToValueAtTime(.0001, now + .25);
+      } catch (_) { /* context may already be interrupted */ }
+      window.setTimeout(() => oldContext.close().catch(() => {}), 290);
+    };
+
+    if (!AudioCtor) {
+      buttons.forEach(button => {
+        button.disabled = true;
+        setButtonText(button, getLabel(button, 'labelUnsupported'));
+      });
+      return;
+    }
+
+    buttons.forEach(button => button.addEventListener('click', () => {
+      if (audioEnabled) disableAudio();
+      else enableAudio();
+    }));
+    updateControls();
+
+    document.addEventListener('tt:opening-scene', event => cueOpening(Number(event.detail && event.detail.index) || 0));
+    document.addEventListener('tt:opening-close', () => {
+      if (!audioEnabled || !context || reducedMotion) return;
+      paperRustle(context.currentTime + .025, .44);
+    });
+
+    if ('IntersectionObserver' in window) {
+      const transitions = $$('.tt-transition');
+      const ending = $('[data-tt-ending]');
+      const cueObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting || seen.has(entry.target)) return;
+          seen.add(entry.target);
+          if (entry.target.matches('[data-tt-ending]')) cueEnding();
+          else cueTransition(transitions.indexOf(entry.target));
+        });
+      }, { rootMargin: '-10% 0px -10% 0px', threshold: .42 });
+      transitions.forEach(transition => cueObserver.observe(transition));
+      if (ending) cueObserver.observe(ending);
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (!audioEnabled || !context) return;
+      if (document.hidden) context.suspend().catch(() => {});
+      else context.resume().catch(() => {});
+    });
   }
 
   function initDocumentaryMotion() {
@@ -247,6 +527,7 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     initShadowStages();
+    initSoundscape();
     initOpening();
     initDocumentaryMotion();
     initReveals();

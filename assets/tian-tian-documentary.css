@@ -677,3 +677,219 @@ html[lang="en"] .tt-shadow-dialogue>small,html[lang="en"] .tt-shadow-dialogue>p 
   .tt-shadow-figure--scribe{transform:scale(.94) rotate(2deg)!important}
   .tt-shadow-door::before,.tt-shadow-door::after,.tt-shadow-open-door::before,.tt-shadow-open-door::after{transform:none!important}
 }
+
+/* Art direction v4: full-scale translucent-leather shadow theatre and opt-in soundscape. */
+.tt-opening::before{
+  background:
+    linear-gradient(90deg,rgba(13,8,6,.84) 0%,rgba(31,18,12,.2) 27%,rgba(20,12,8,.16) 73%,rgba(10,7,6,.88) 100%),
+    linear-gradient(0deg,rgba(10,7,6,.78),transparent 42%,rgba(15,9,6,.24)),
+    url("./art/tian-tian-shadow-theatre-stage-20260814.webp") 50% 50%/cover no-repeat;
+  filter:saturate(.96) contrast(1.04) sepia(.06);
+}
+.tt-stage{
+  width:min(1480px,calc(100% - 42px));
+  min-height:min(760px,88vh);
+  grid-template-columns:1fr;
+  align-items:center;
+  padding:clamp(32px,5vw,72px);
+  border-color:rgba(241,195,109,.38);
+  background:radial-gradient(ellipse at 50% 50%,rgba(57,29,17,.08),rgba(17,10,8,.7) 82%);
+  box-shadow:0 35px 100px rgba(0,0,0,.58),inset 0 0 82px rgba(16,8,5,.42);
+}
+.tt-stage-craft{display:none}
+.tt-stage-copy{
+  width:min(690px,60vw);
+  margin-inline:auto;
+  padding:clamp(24px,3.4vw,46px);
+  border:1px solid rgba(234,187,99,.33);
+  background:linear-gradient(135deg,rgba(25,14,10,.88),rgba(38,20,13,.72));
+  box-shadow:0 22px 55px rgba(10,5,3,.42),inset 0 0 38px rgba(224,167,72,.045);
+  backdrop-filter:blur(5px);
+}
+.tt-opening-kicker{color:#efc878}
+.tt-opening-controls [data-tt-audio]::before,.tt-audio-floating::before{content:"♫";display:inline-block;margin-right:7px;color:#efc878}
+.tt-opening-controls [data-tt-audio]{background:rgba(40,22,15,.78);border-color:rgba(235,189,101,.58)}
+
+.tt-transition[data-shadow-scene]{
+  min-height:clamp(620px,78vh,790px);
+  padding:clamp(30px,4vw,54px) 0;
+  background:
+    repeating-linear-gradient(93deg,rgba(255,235,191,.018) 0 1px,transparent 1px 6px),
+    radial-gradient(ellipse at 50% 47%,#b7783e 0,#5e351f 48%,#1a100c 86%);
+  box-shadow:inset 0 0 110px rgba(10,5,3,.58),0 24px 58px rgba(38,22,14,.14);
+}
+.tt-transition[data-shadow-scene]::before{
+  inset:0;
+  z-index:0;
+  background:linear-gradient(90deg,rgba(5,3,2,.72),transparent 19% 81%,rgba(5,3,2,.74));
+  opacity:.55;
+}
+.tt-transition[data-shadow-scene] .tt-transition-inner{
+  width:min(1480px,calc(100% - 34px));
+  min-height:clamp(540px,68vh,700px);
+  display:grid;
+  grid-template:1fr/1fr;
+  gap:0;
+  padding:0;
+  overflow:hidden;
+  border:1px solid rgba(79,43,24,.92);
+  background:#21120d;
+  box-shadow:inset 0 0 0 8px rgba(45,23,13,.3),0 28px 54px rgba(8,4,3,.38);
+}
+.tt-transition[data-shadow-scene] .tt-shadow-stage,
+.tt-transition[data-shadow-scene] .tt-shadow-dialogue{grid-area:1/1}
+.tt-transition[data-shadow-scene] .tt-shadow-stage{
+  position:relative;
+  z-index:0;
+  width:100%;
+  height:100%;
+  min-height:clamp(540px,68vh,700px);
+  border:0;
+  background:
+    linear-gradient(0deg,rgba(14,7,4,.56),transparent 34%,rgba(18,9,5,.08)),
+    url("./art/tian-tian-shadow-theatre-stage-20260814.webp") 50% 50%/106% auto no-repeat,
+    #2a160d;
+  box-shadow:inset 0 0 0 10px rgba(42,20,11,.23),inset 0 0 110px 24px rgba(15,7,4,.62);
+  filter:saturate(.98) contrast(1.035);
+}
+.tt-transition.is-visible .tt-shadow-stage{animation:tt-stage-camera-v4 8s cubic-bezier(.18,.75,.2,1) both}
+.tt-shadow-screen{display:none}
+.tt-transition[data-shadow-scene] .tt-shadow-vignette{z-index:8;box-shadow:inset 0 0 86px 28px rgba(22,10,5,.64)}
+.tt-transition[data-shadow-scene] .tt-shadow-figure{display:none}
+.tt-transition[data-shadow-scene] .tt-shadow-props{
+  z-index:3;
+  transform:scale(1.28);
+  transform-origin:50% 16%;
+  opacity:.76;
+  filter:drop-shadow(10px 9px 5px rgba(34,15,8,.34));
+}
+.tt-transition[data-shadow-scene] .tt-shadow-dialogue{
+  position:relative;
+  z-index:12;
+  align-self:end;
+  justify-self:center;
+  width:min(730px,58%);
+  margin:0 0 clamp(30px,5vh,58px);
+  padding:clamp(20px,2.5vw,32px) clamp(22px,3vw,38px);
+  border:1px solid rgba(239,195,108,.4);
+  background:linear-gradient(135deg,rgba(25,13,9,.91),rgba(43,22,13,.79));
+  box-shadow:0 19px 48px rgba(9,4,2,.46),inset 0 0 35px rgba(233,175,78,.055);
+  backdrop-filter:blur(6px);
+}
+.tt-transition[data-shadow-scene] .tt-shadow-dialogue::before{
+  content:"";
+  position:absolute;
+  inset:8px;
+  border:1px solid rgba(237,194,110,.09);
+  pointer-events:none;
+}
+.tt-shadow-dialogue>small{color:#f2c879;font-size:11px}
+.tt-shadow-dialogue>p{font-size:clamp(16px,1.35vw,19px);line-height:1.82}
+html[lang="en"] .tt-shadow-dialogue>p{font-size:clamp(15px,1.15vw,17px);line-height:1.72}
+html[lang="ja"] .tt-shadow-dialogue>p{font-size:clamp(15px,1.18vw,17px);line-height:1.86}
+.tt-shadow-dialogue--prologue{max-width:650px;text-align:center}
+.tt-shadow-dialogue--prologue>p{margin:6px 0 0;font-size:clamp(20px,2.05vw,28px);line-height:1.78;text-wrap:balance}
+.tt-transition[data-shadow-scene]::after{z-index:20;bottom:17px;background:rgba(29,14,8,.72);border-color:rgba(239,198,119,.5);color:#e9c278}
+@keyframes tt-stage-camera-v4{
+  from{background-size:100% 100%,112% auto;background-position:50% 50%,49% 50%}
+  to{background-size:100% 100%,106% auto;background-position:50% 50%,50% 50%}
+}
+@keyframes tt-stage-light-v4{from{filter:saturate(.84) brightness(.88)}to{filter:saturate(1) brightness(1)}}
+
+.tt-ending{min-height:100svh;background:#160d09}
+.tt-ending::before{
+  background:
+    linear-gradient(0deg,rgba(11,6,4,.97) 0%,rgba(17,8,5,.76) 35%,rgba(17,8,5,.14) 68%,rgba(14,7,4,.44) 100%),
+    linear-gradient(90deg,rgba(7,4,3,.7),transparent 22% 78%,rgba(7,4,3,.72)),
+    url("./art/tian-tian-shadow-theatre-stage-20260814.webp") 50% 50%/cover no-repeat;
+  filter:saturate(.84) contrast(1.04) sepia(.06);
+}
+.tt-ending.is-visible::before{filter:saturate(.98) contrast(1.03);transform:scale(1.005)}
+.tt-ending-copy{max-width:790px;margin-inline:auto;text-align:center;text-shadow:0 3px 22px rgba(0,0,0,.82)}
+.tt-ending p{margin-inline:auto}.tt-ending-actions{justify-content:center}.tt-ending-seal{margin-inline:auto}
+
+.tt-audio-toggle{
+  cursor:pointer;
+  border:1px solid rgba(218,179,101,.56);
+  border-radius:999px;
+  padding:9px 14px;
+  background:rgba(26,38,39,.94);
+  color:#f5ead2;
+  font-size:12px;
+  font-weight:800;
+  box-shadow:0 8px 25px rgba(0,0,0,.24);
+}
+.tt-audio-floating{position:fixed;z-index:131;right:16px;bottom:62px}
+body.tt-audio-active .tt-audio-toggle{border-color:rgba(239,195,105,.86);background:#74342c;box-shadow:0 8px 28px rgba(0,0,0,.32),0 0 0 3px rgba(209,157,67,.1)}
+.tt-audio-toggle:focus-visible,.tt-replay:focus-visible,.tt-opening-controls button:focus-visible{outline:3px solid #f0ca7a;outline-offset:3px}
+.tt-audio-toggle:disabled,.tt-opening-controls [data-tt-audio]:disabled{cursor:not-allowed;opacity:.55}
+
+@media(max-width:900px){
+  .tt-stage-copy{width:min(720px,78vw)}
+  .tt-transition[data-shadow-scene]{min-height:auto;padding:34px 0 52px}
+  .tt-transition[data-shadow-scene] .tt-transition-inner{width:min(100% - 24px,960px);min-height:620px}
+  .tt-transition[data-shadow-scene] .tt-shadow-stage{min-height:620px;background-size:100% 100%,contain;background-color:#21110b}
+  .tt-transition.is-visible .tt-shadow-stage{animation:tt-stage-light-v4 6.8s ease-out both}
+  .tt-transition[data-shadow-scene] .tt-shadow-dialogue{width:min(710px,74%)}
+}
+
+@media(max-width:720px){
+  .tt-opening::before{background:radial-gradient(ellipse at 50% 24%,#4a2816,#160c08 58%,#090605);filter:none}
+  .tt-stage{width:calc(100% - 14px);min-height:94svh;display:flex;flex-direction:column;justify-content:center;padding:12px;overflow:auto}
+  .tt-stage::before{content:"";position:relative;z-index:1;inset:auto;display:block;flex:0 0 clamp(180px,53vw,230px);width:100%;margin-bottom:10px;border:1px solid rgba(233,183,91,.35);background:url("./art/tian-tian-shadow-theatre-stage-20260814.webp") 50% 50%/contain no-repeat,#1c0f0a;mask-image:none;box-shadow:inset 0 0 34px rgba(10,5,3,.45)}
+  .tt-stage::after{display:none}
+  .tt-stage-copy{width:100%;padding:22px 18px;background:rgba(25,13,9,.84)}
+  .tt-opening-lines{min-height:315px}
+  .tt-opening-line span{font-size:clamp(19px,5.6vw,23px);line-height:1.7}
+  .tt-opening-controls{gap:7px}.tt-opening-controls button{padding:8px 12px;font-size:12px}
+  .tt-opening-controls [data-tt-audio]{width:100%}
+  .tt-opening-note{left:16px;right:16px;bottom:10px;text-align:center;letter-spacing:.06em}
+  .tt-transition[data-shadow-scene]{padding:12px 0 44px}
+  .tt-transition[data-shadow-scene] .tt-transition-inner{
+    width:calc(100% - 12px);
+    min-height:0;
+    grid-template:auto auto/1fr;
+    gap:12px;
+    overflow:visible;
+    border:0;
+    background:transparent;
+    box-shadow:none;
+  }
+  .tt-transition[data-shadow-scene] .tt-shadow-stage,
+  .tt-transition[data-shadow-scene] .tt-shadow-dialogue{grid-area:auto}
+  .tt-transition[data-shadow-scene] .tt-shadow-stage{
+    width:100%;
+    height:clamp(240px,62vw,310px);
+    min-height:0;
+    margin:0;
+    border:1px solid rgba(76,39,22,.9);
+    background-size:100% 100%,contain;
+    background-color:#21110b;
+    box-shadow:inset 0 0 0 5px rgba(42,20,11,.25),inset 0 0 48px 7px rgba(15,7,4,.55),0 14px 28px rgba(8,4,3,.3);
+  }
+  .tt-transition[data-shadow-scene] .tt-shadow-props{transform:scale(.9);transform-origin:50% 8%;opacity:.72}
+  .tt-transition[data-shadow-scene] .tt-shadow-vignette{box-shadow:inset 0 0 42px 12px rgba(22,10,5,.55)}
+  .tt-transition[data-shadow-scene] .tt-shadow-dialogue{
+    width:100%;
+    margin:0;
+    padding:19px 18px 21px;
+    background:linear-gradient(135deg,rgba(25,13,9,.96),rgba(44,23,14,.91));
+    backdrop-filter:none;
+  }
+  .tt-shadow-dialogue>small{font-size:9px;line-height:1.55}
+  .tt-shadow-dialogue>p,html[lang="en"] .tt-shadow-dialogue>p,html[lang="ja"] .tt-shadow-dialogue>p{font-size:15px;line-height:1.78;overflow-wrap:anywhere}
+  .tt-shadow-dialogue--prologue>p{font-size:20px;line-height:1.72}
+  .tt-transition[data-shadow-scene]::after{right:8px;bottom:8px;max-width:calc(100% - 16px)}
+  .tt-ending-copy{padding:72px 20px 96px}.tt-ending h2{font-size:clamp(38px,12vw,52px)}
+  .tt-audio-floating{right:10px;bottom:56px;padding:8px 12px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .tt-transition[data-shadow-scene] .tt-shadow-stage{animation:none!important;background-size:100% 100%,106% auto;background-position:center}
+  .tt-transition[data-shadow-scene] .tt-shadow-props{display:none!important}
+  .tt-transition[data-shadow-scene] .tt-shadow-dialogue>p{opacity:1!important;transform:none!important}
+}
+
+@media print{
+  .tt-audio-toggle{display:none!important}
+}
