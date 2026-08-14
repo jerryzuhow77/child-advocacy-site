@@ -7526,3 +7526,6 @@ img,video,iframe,table { max-width: 100%; }
     text-align:left;
   }
 }
+/* 2026-08-14 — allow a second click to keep nested menus collapsed under the pointer */
+.social-case-tier.is-click-collapsed .social-case-tier-children{display:none!important}
+.historical-case-nav .social-case-menu-column.is-click-collapsed .historical-region-list,.historical-case-nav .social-case-menu-column.is-click-collapsed .historical-region-note{display:none!important}

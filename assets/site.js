@@ -685,9 +685,14 @@ function initNestedCaseMenus(){
     const button=group.querySelector(':scope > .social-case-tier-toggle,:scope > .historical-region-root-toggle');
     if(!button) return;
     const setExpanded=value=>{group.classList.toggle('is-expanded',value);button.setAttribute('aria-expanded',value?'true':'false')};
-    button.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();setExpanded(!group.classList.contains('is-expanded'))});
-    group.addEventListener('mouseenter',()=>{if(window.innerWidth>800)setExpanded(true)});
-    group.addEventListener('mouseleave',()=>{if(window.innerWidth>800)setExpanded(false)});
+    button.addEventListener('click',event=>{
+      event.preventDefault();event.stopPropagation();
+      const closing=group.classList.contains('is-expanded')||(window.innerWidth>800&&group.matches(':hover')&&!group.classList.contains('is-click-collapsed'));
+      group.classList.toggle('is-click-collapsed',closing);
+      setExpanded(!closing);
+    });
+    group.addEventListener('mouseenter',()=>{if(window.innerWidth>800&&!group.classList.contains('is-click-collapsed'))setExpanded(true)});
+    group.addEventListener('mouseleave',()=>{if(window.innerWidth>800){group.classList.remove('is-click-collapsed');setExpanded(false)}});
     group.addEventListener('keydown',event=>{if(event.key==='Escape'){setExpanded(false);button.focus()}});
   });
 }
