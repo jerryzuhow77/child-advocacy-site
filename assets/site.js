@@ -664,18 +664,48 @@ document.addEventListener('DOMContentLoaded',()=>{
 function initSocialCaseDropdowns(){
   const groups=[...document.querySelectorAll('.social-case-nav')];
   if(!groups.length) return;
-  const close=group=>{group.classList.remove('is-open');const btn=group.querySelector('.social-case-nav-toggle');if(btn)btn.setAttribute('aria-expanded','false')};
-  const open=group=>{groups.forEach(g=>{if(g!==group)close(g)});group.classList.add('is-open');const btn=group.querySelector('.social-case-nav-toggle');if(btn)btn.setAttribute('aria-expanded','true')};
+  const closeTimers=new WeakMap();
+  const cancelClose=group=>{
+    const timer=closeTimers.get(group);
+    if(timer) window.clearTimeout(timer);
+    closeTimers.delete(group);
+  };
+  const close=(group,force=false)=>{
+    cancelClose(group);
+    if(!force&&group.classList.contains('is-click-pinned')) return;
+    group.classList.remove('is-open','is-click-pinned');
+    const btn=group.querySelector('.social-case-nav-toggle');
+    if(btn) btn.setAttribute('aria-expanded','false');
+  };
+  const open=(group,pinned=false)=>{
+    cancelClose(group);
+    groups.forEach(g=>{if(g!==group)close(g,true)});
+    group.classList.add('is-open');
+    group.classList.toggle('is-click-pinned',pinned);
+    const btn=group.querySelector('.social-case-nav-toggle');
+    if(btn) btn.setAttribute('aria-expanded','true');
+  };
   groups.forEach(group=>{
     const btn=group.querySelector('.social-case-nav-toggle');if(!btn)return;
-    btn.addEventListener('click',e=>{e.stopPropagation();group.classList.contains('is-open')?close(group):open(group)});
-    group.addEventListener('mouseenter',()=>{if(window.innerWidth>800)open(group)});
-    group.addEventListener('mouseleave',()=>{if(window.innerWidth>800)close(group)});
-    group.addEventListener('keydown',e=>{if(e.key==='Escape'){close(group);btn.focus()}});
-    group.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>close(group)));
+    btn.addEventListener('click',e=>{
+      e.stopPropagation();
+      group.classList.contains('is-click-pinned') ? close(group,true) : open(group,true);
+    });
+    group.addEventListener('mouseenter',()=>{
+      cancelClose(group);
+      if(window.innerWidth>800&&!group.classList.contains('is-open')) open(group,false);
+    });
+    group.addEventListener('mouseleave',()=>{
+      if(window.innerWidth>800){
+        cancelClose(group);
+        closeTimers.set(group,window.setTimeout(()=>close(group,false),160));
+      }
+    });
+    group.addEventListener('keydown',e=>{if(e.key==='Escape'){close(group,true);btn.focus()}});
+    group.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>close(group,true)));
   });
-  document.addEventListener('click',e=>groups.forEach(group=>{if(!group.contains(e.target))close(group)}));
-  window.addEventListener('resize',()=>groups.forEach(close));
+  document.addEventListener('click',e=>groups.forEach(group=>{if(!group.contains(e.target))close(group,true)}));
+  window.addEventListener('resize',()=>groups.forEach(group=>close(group,true)));
 }
 document.addEventListener('DOMContentLoaded',initSocialCaseDropdowns);
 
@@ -729,14 +759,15 @@ function initHistoricalRegionMenus(){
 document.addEventListener('DOMContentLoaded',initHistoricalRegionMenus);
 
 /* =====================================================================
-   2026-08-14 — 特別專題：桌機與手機皆採逐層點擊收放
+   2026-08-15 — 特別專題：桌機 hover、click 固定與手機逐層收放
    ===================================================================== */
 function initSpecialFeatureColumns(){
   const menus=[...document.querySelectorAll('.special-feature-nav-menu')];
   if(!menus.length) return;
 
-  const collapse=group=>{
+  const collapse=(group,clearPinned=true)=>{
     group.classList.remove('is-expanded');
+    if(clearPinned) group.classList.remove('is-feature-click-pinned');
     const button=group.querySelector('.special-feature-case-toggle');
     if(button) button.setAttribute('aria-expanded','false');
     group.querySelectorAll('.special-feature-prologue-group.is-expanded').forEach(nested=>{
@@ -744,12 +775,13 @@ function initSpecialFeatureColumns(){
       nested.querySelector('.special-feature-menu-prologue')?.setAttribute('aria-expanded','false');
     });
   };
-  const expand=group=>{
+  const expand=(group,pinned=false)=>{
     const menu=group.closest('.special-feature-nav-menu');
     if(menu) menu.querySelectorAll('.special-feature-case-group').forEach(item=>{
       if(item!==group) collapse(item);
     });
     group.classList.add('is-expanded');
+    group.classList.toggle('is-feature-click-pinned',pinned);
     const button=group.querySelector('.special-feature-case-toggle');
     if(button) button.setAttribute('aria-expanded','true');
   };
@@ -762,7 +794,26 @@ function initSpecialFeatureColumns(){
       button.addEventListener('click',event=>{
         event.preventDefault();
         event.stopPropagation();
-        group.classList.contains('is-expanded') ? collapse(group) : expand(group);
+        group.classList.contains('is-feature-click-pinned') ? collapse(group) : expand(group,true);
+      });
+      group.addEventListener('mouseenter',()=>{
+        if(window.innerWidth>800&&!group.classList.contains('is-expanded')) expand(group,false);
+      });
+      group.addEventListener('mouseleave',()=>{
+        if(window.innerWidth>800&&!group.classList.contains('is-feature-click-pinned')) collapse(group,false);
+      });
+      group.addEventListener('focusin',()=>{
+        if(window.innerWidth>800&&!group.classList.contains('is-expanded')) expand(group,false);
+      });
+      group.addEventListener('focusout',()=>window.setTimeout(()=>{
+        if(window.innerWidth>800&&!group.contains(document.activeElement)&&!group.classList.contains('is-feature-click-pinned')) collapse(group,false);
+      },0));
+      group.addEventListener('keydown',event=>{
+        if(event.key==='Escape'){
+          event.preventDefault();
+          collapse(group);
+          button.focus();
+        }
       });
       button.addEventListener('keydown',event=>{
         if(window.innerWidth>800 && (event.key==='ArrowLeft'||event.key==='ArrowRight')){
@@ -776,6 +827,7 @@ function initSpecialFeatureColumns(){
 
     const syncMode=()=>{
       groups.forEach(group=>{
+        if(window.innerWidth<=800&&!group.classList.contains('is-feature-click-pinned')) collapse(group,false);
         const button=group.querySelector('.special-feature-case-toggle');
         button?.setAttribute('aria-expanded',group.classList.contains('is-expanded')?'true':'false');
       });

@@ -37,7 +37,7 @@ button{font:inherit}
 /* Opening: an original paper-shadow prologue, silent and skippable. */
 .tt-opening{position:fixed;z-index:400;inset:0;display:grid;place-items:center;overflow:hidden;background:#161d1e;color:#f8eed7;transition:opacity .8s ease,visibility .8s ease}
 .tt-opening.is-gone{opacity:0;visibility:hidden;pointer-events:none}
-.tt-opening::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,16,17,.94) 0%,rgba(20,27,27,.45) 48%,rgba(10,14,15,.84) 100%),url("./art/tian-tian-ink-paper-documentary-20260814.webp") center/cover no-repeat;filter:saturate(.68) contrast(1.05);transform:scale(1.035);animation:tt-opening-camera 22s ease-out both}
+.tt-opening::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,16,17,.94) 0%,rgba(20,27,27,.45) 48%,rgba(10,14,15,.84) 100%),url("./art/tian-tian-ink-paper-documentary-20260815.webp") center/cover no-repeat;filter:saturate(.68) contrast(1.05);transform:scale(1.035);animation:tt-opening-camera 22s ease-out both}
 .tt-opening::after{content:"";position:absolute;inset:18px;border:1px solid rgba(209,174,105,.35);box-shadow:inset 0 0 0 7px rgba(12,18,19,.3),inset 0 0 90px rgba(0,0,0,.42);pointer-events:none}
 .tt-stage{position:relative;z-index:2;width:min(1080px,calc(100% - 54px));min-height:min(650px,82vh);display:grid;grid-template-columns:minmax(210px,.58fr) minmax(0,1.25fr);align-items:end;gap:44px;padding:50px clamp(24px,5vw,70px);border:1px solid rgba(226,190,117,.28);background:linear-gradient(120deg,rgba(15,23,24,.84),rgba(25,34,33,.28));box-shadow:0 35px 100px rgba(0,0,0,.45)}
 .tt-stage-craft{position:relative;height:360px;filter:drop-shadow(21px 18px 10px rgba(0,0,0,.45))}
@@ -176,7 +176,7 @@ button{font:inherit}
 .tt-source-grid strong{display:block;color:#2d474c;font-size:13px}
 .tt-source-note{margin:19px 0 0;color:#6f6b60;font-size:11px;line-height:1.8}
 .tt-ending{position:relative;min-height:82vh;display:grid;align-items:end;overflow:hidden;background:#1d292a;color:#f5ecd8}
-.tt-ending::before{content:"";position:absolute;inset:-2%;background:linear-gradient(0deg,rgba(12,18,19,.92),rgba(18,25,26,.18) 55%,rgba(16,23,24,.52)),url("./art/tian-tian-ink-paper-documentary-20260814.webp") center/cover no-repeat;filter:saturate(.68);transform:scale(1.03);transition:transform 6s ease}
+.tt-ending::before{content:"";position:absolute;inset:-2%;background:linear-gradient(0deg,rgba(12,18,19,.92),rgba(18,25,26,.18) 55%,rgba(16,23,24,.52)),url("./art/tian-tian-ink-paper-documentary-20260815.webp") center/cover no-repeat;filter:saturate(.68);transform:scale(1.03);transition:transform 6s ease}
 .tt-ending.is-visible::before{transform:scale(1)}
 .tt-ending-copy{position:relative;z-index:2;max-width:850px;padding-block:90px}
 .tt-ending small{color:#d2ab61;font-size:10px;font-weight:900;letter-spacing:.18em}
@@ -189,7 +189,7 @@ button{font:inherit}
 
 /* Art direction v2: mineral pigments, paper-shadow, velvet flowers and handcraft. */
 .tt-opening{background:var(--tt-soot)}
-.tt-opening::before{background:linear-gradient(90deg,rgba(10,18,19,.96),rgba(31,47,47,.38) 48%,rgba(10,15,16,.9)),radial-gradient(circle at 72% 18%,rgba(208,162,77,.2),transparent 24%),url("./art/tian-tian-ink-paper-documentary-20260814.webp") center/cover no-repeat;filter:saturate(.78) sepia(.08) contrast(1.06)}
+.tt-opening::before{background:linear-gradient(90deg,rgba(10,18,19,.96),rgba(31,47,47,.38) 48%,rgba(10,15,16,.9)),radial-gradient(circle at 72% 18%,rgba(208,162,77,.2),transparent 24%),url("./art/tian-tian-ink-paper-documentary-20260815.webp") center/cover no-repeat;filter:saturate(.78) sepia(.08) contrast(1.06)}
 .tt-stage{isolation:isolate;background:linear-gradient(122deg,rgba(17,34,36,.92),rgba(59,74,68,.28) 52%,rgba(77,47,42,.3));box-shadow:0 35px 100px rgba(0,0,0,.52),inset 0 0 75px rgba(16,28,29,.55)}
 .tt-stage::before{content:"";position:absolute;z-index:-1;inset:12px;border:1px solid rgba(217,184,113,.25);background:linear-gradient(90deg,transparent 49.8%,rgba(217,184,113,.16) 50%,transparent 50.2%),linear-gradient(transparent 49.8%,rgba(217,184,113,.1) 50%,transparent 50.2%);background-size:84px 84px;mask-image:linear-gradient(90deg,#000,transparent 50%,#000)}
 .tt-stage::after{content:"";position:absolute;z-index:3;top:34px;left:37px;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 50% 50%,#d7a74f 0 9%,transparent 10%),radial-gradient(ellipse at 50% 18%,var(--tt-rouge) 0 15%,transparent 16%),radial-gradient(ellipse at 82% 50%,var(--tt-cinnabar) 0 15%,transparent 16%),radial-gradient(ellipse at 50% 82%,#9f4b42 0 15%,transparent 16%),radial-gradient(ellipse at 18% 50%,#723b44 0 15%,transparent 16%);filter:drop-shadow(0 5px 4px rgba(0,0,0,.35));opacity:.86;animation:tt-velvet-bloom 2.8s ease-in-out infinite alternate}
@@ -282,7 +282,7 @@ button{font:inherit}
 
 .tt-sources{background:linear-gradient(135deg,#dfd1b8,#d8ddcf 75%,#c8d5cf)}
 .tt-ending{isolation:isolate;min-height:92vh;background:var(--tt-soot)}
-.tt-ending::before{z-index:-3;background:linear-gradient(0deg,rgba(10,17,18,.95),rgba(15,25,25,.35) 55%,rgba(15,28,29,.6)),linear-gradient(100deg,rgba(49,94,107,.24),transparent 44%,rgba(139,68,82,.13)),url("./art/tian-tian-ink-paper-documentary-20260814.webp") center/cover no-repeat;filter:saturate(.78) sepia(.09);transform:scale(1.095) translateX(-1.3%);transition:transform 8s cubic-bezier(.18,.8,.18,1),filter 5s ease}
+.tt-ending::before{z-index:-3;background:linear-gradient(0deg,rgba(10,17,18,.95),rgba(15,25,25,.35) 55%,rgba(15,28,29,.6)),linear-gradient(100deg,rgba(49,94,107,.24),transparent 44%,rgba(139,68,82,.13)),url("./art/tian-tian-ink-paper-documentary-20260815.webp") center/cover no-repeat;filter:saturate(.78) sepia(.09);transform:scale(1.095) translateX(-1.3%);transition:transform 8s cubic-bezier(.18,.8,.18,1),filter 5s ease}
 .tt-ending.is-visible::before{transform:scale(1.01);filter:saturate(.92) sepia(.04)}
 .tt-ending::after{content:"";position:absolute;z-index:-1;inset:0;background:radial-gradient(circle at 75% 24%,rgba(208,162,77,.16),transparent 18%),linear-gradient(90deg,rgba(9,16,17,.78),transparent 25% 75%,rgba(9,16,17,.7));opacity:.35;transition:opacity 4s ease 1s}
 .tt-ending.is-visible::after{opacity:1}
@@ -1612,8 +1612,8 @@ html.tt-pose-ready .tt-pose-layer{opacity:1}
   filter:brightness(1.08) saturate(.98);
   will-change:background-position;
 }
-.tt-pose-actor--woman{--tt-pose-sheet:url("./art/tian-tian-shadow-woman-poses-20260814.webp")}
-.tt-pose-actor--scribe{--tt-pose-sheet:url("./art/tian-tian-shadow-scribe-poses-20260814.webp")}
+.tt-pose-actor--woman{--tt-pose-sheet:url("./art/tian-tian-shadow-woman-poses-20260815.webp")}
+.tt-pose-actor--scribe{--tt-pose-sheet:url("./art/tian-tian-shadow-scribe-poses-20260815.webp")}
 
 .tt-pose-layer.is-playing .tt-pose-sprite,
 .tt-pose-actor.is-playing .tt-pose-sprite,
@@ -1723,4 +1723,336 @@ html.tt-pose-ready .tt-ending::before{
     background-position:var(--tt-pose-action,var(--tt-pose-start,0% 0%))!important;
     will-change:auto;
   }
+}
+
+/* Art direction v8: full-height desktop theatre, high-resolution puppets and
+   a richer vocabulary of papercutting, velvet flower and Suzhou embroidery. */
+.tt-hero-art{overflow:hidden}
+.tt-hero-art img{position:relative;z-index:1}
+.tt-hero-art figcaption{
+  position:relative;
+  z-index:7;
+  min-height:76px;
+  padding:16px 18px;
+  background:linear-gradient(100deg,#152628 0%,#263b39 62%,#3b302c 100%);
+  color:#e0ddd0;
+  font-size:11px;
+  line-height:1.8;
+  box-shadow:0 -1px rgba(223,187,112,.28),0 -12px 28px rgba(16,24,23,.18);
+}
+.tt-hero-art figcaption b{display:inline-block;margin-right:.35em}
+.tt-hero-art::after{top:14px;bottom:auto}
+
+/* Xuan-paper fibres and quiet handcraft details continue between chapters. */
+.tt-content{isolation:isolate}
+.tt-content::before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  inset:0;
+  pointer-events:none;
+  background:
+    repeating-linear-gradient(7deg,transparent 0 19px,rgba(68,79,72,.025) 20px 21px),
+    repeating-linear-gradient(97deg,transparent 0 31px,rgba(138,98,57,.022) 32px 33px);
+  mix-blend-mode:multiply;
+}
+.tt-chapter-grid{position:relative;z-index:1}
+.tt-guide-card{position:relative;overflow:hidden;isolation:isolate}
+.tt-guide-card>*{position:relative;z-index:1}
+.tt-guide-card::after{
+  content:"";
+  position:absolute;
+  z-index:0;
+  right:-34px;
+  top:-38px;
+  width:132px;
+  height:132px;
+  border:1px solid rgba(139,68,82,.16);
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(208,162,77,.38) 0 6%,transparent 7%),
+    repeating-conic-gradient(from 22.5deg,rgba(139,68,82,.2) 0 8deg,transparent 9deg 44deg);
+  filter:drop-shadow(0 6px 5px rgba(83,52,34,.12));
+  opacity:.72;
+}
+.tt-box{position:relative;overflow:hidden}
+.tt-box::after{
+  content:"";
+  position:absolute;
+  right:-20px;
+  top:-23px;
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle,rgba(208,162,77,.32) 0 8%,transparent 9%),
+    repeating-conic-gradient(from 0deg,rgba(139,68,82,.12) 0 12deg,transparent 13deg 44deg);
+  opacity:.62;
+  pointer-events:none;
+}
+.tt-fact-grid article,.tt-action-grid article{position:relative;overflow:hidden}
+.tt-fact-grid article::before,.tt-action-grid article::before{
+  content:"";
+  position:absolute;
+  right:11px;
+  top:10px;
+  width:48px;
+  height:28px;
+  border-top:1px dashed rgba(63,102,116,.24);
+  border-right:1px dashed rgba(139,68,82,.2);
+  border-radius:0 16px 0 0;
+  pointer-events:none;
+}
+.tt-chapter-mark::after{
+  content:"";
+  display:block;
+  width:38px;
+  height:38px;
+  margin-top:16px;
+  border:1px dashed color-mix(in srgb,var(--tt-chapter-accent) 48%,transparent);
+  border-radius:50%;
+  box-shadow:inset 0 0 0 5px rgba(255,255,255,.24);
+  background:repeating-conic-gradient(from 12deg,color-mix(in srgb,var(--tt-chapter-accent) 18%,transparent) 0 5deg,transparent 6deg 42deg);
+}
+.tt-source-grid a{
+  background-image:
+    repeating-linear-gradient(90deg,rgba(63,102,116,.06) 0 2px,transparent 2px 11px),
+    linear-gradient(135deg,rgba(248,243,232,.88),rgba(229,232,217,.76));
+  background-size:100% 3px,auto;
+  background-repeat:no-repeat;
+  background-position:0 0,0 0;
+}
+
+/* The craft plaque itself becomes a small moving piece of traditional work. */
+.tt-transition[data-shadow-scene]::after{
+  min-height:32px;
+  display:flex;
+  align-items:center;
+  padding:7px 13px 7px 43px;
+  border-radius:2px;
+  background-color:rgba(29,14,8,.84);
+  background-repeat:no-repeat;
+  background-position:11px 50%;
+  background-size:23px 23px;
+  box-shadow:0 7px 20px rgba(8,4,3,.24),inset 0 0 0 1px rgba(244,214,153,.05);
+  font-size:9px;
+  letter-spacing:.13em;
+  opacity:0;
+  transform:translateX(38px);
+  transition:opacity .8s ease .85s,transform 1.05s cubic-bezier(.2,.8,.18,1) .75s;
+}
+.tt-transition[data-shadow-scene].is-visible::after{opacity:1;transform:none}
+.tt-transition[data-craft="paper-cut"]::after{
+  background-image:repeating-conic-gradient(from 22.5deg,rgba(201,85,72,.92) 0 8deg,transparent 9deg 44deg);
+}
+.tt-transition[data-craft="lattice"]::after{
+  background-image:linear-gradient(45deg,transparent 43%,rgba(216,174,91,.86) 44% 56%,transparent 57%),linear-gradient(-45deg,transparent 43%,rgba(216,174,91,.72) 44% 56%,transparent 57%);
+  background-size:23px 23px,23px 23px;
+}
+.tt-transition[data-craft="lantern"]::after{
+  background-image:radial-gradient(ellipse at 50% 50%,rgba(231,178,82,.95) 0 24%,rgba(139,48,46,.82) 25% 58%,transparent 60%);
+}
+.tt-transition[data-craft="scroll"]::after{
+  background-image:linear-gradient(90deg,rgba(171,112,55,.92) 0 14%,rgba(237,217,173,.88) 15% 85%,rgba(171,112,55,.92) 86%);
+  background-size:25px 15px;
+}
+.tt-transition[data-craft="seal"]::after{
+  background-image:repeating-linear-gradient(45deg,rgba(153,55,46,.9) 0 2px,transparent 2px 5px);
+  background-size:22px 22px;
+  box-shadow:0 7px 20px rgba(8,4,3,.24),inset 0 0 0 1px rgba(244,214,153,.05);
+}
+.tt-transition[data-craft="woodblock"]::after{
+  background-image:repeating-linear-gradient(135deg,rgba(193,142,76,.8) 0 2px,rgba(53,39,30,.82) 2px 5px);
+}
+.tt-transition[data-craft="embroidery"]::after{
+  background-image:repeating-conic-gradient(from 8deg,rgba(94,144,151,.9) 0 7deg,transparent 8deg 28deg);
+  border-style:dashed;
+}
+.tt-transition[data-craft="velvet-flower"]::after{
+  background-image:
+    radial-gradient(circle at 50% 50%,#d6a24c 0 9%,transparent 10%),
+    radial-gradient(ellipse at 50% 17%,rgba(167,68,72,.95) 0 19%,transparent 20%),
+    radial-gradient(ellipse at 83% 50%,rgba(139,68,82,.9) 0 19%,transparent 20%),
+    radial-gradient(ellipse at 50% 83%,rgba(166,75,63,.9) 0 19%,transparent 20%),
+    radial-gradient(ellipse at 17% 50%,rgba(113,62,74,.94) 0 19%,transparent 20%);
+  background-size:23px 23px;
+}
+
+/* High-density sprite sheets: one 1024px source cell per pose. */
+.tt-pose-sprite{
+  image-rendering:auto;
+  backface-visibility:hidden;
+  transform:translateZ(0);
+  filter:brightness(1.075) saturate(1.01) contrast(1.035);
+}
+.tt-pose-actor--woman{--tt-pose-sheet:url("./art/tian-tian-shadow-woman-poses-20260815.webp")}
+.tt-pose-actor--scribe{--tt-pose-sheet:url("./art/tian-tian-shadow-scribe-poses-20260815.webp")}
+
+/* The final curtain resolves into the opening documentary visual while the
+   shadow narrators, lanterns and craft layer remain above it. */
+.tt-ending::before,
+html.tt-pose-ready .tt-ending::before{
+  inset:0!important;
+  background:
+    linear-gradient(0deg,rgba(10,5,4,.97) 0%,rgba(18,9,6,.82) 32%,rgba(18,9,6,.3) 66%,rgba(12,6,4,.5) 100%),
+    linear-gradient(90deg,rgba(7,4,3,.72),transparent 24% 76%,rgba(7,4,3,.74)),
+    url("./art/tian-tian-ink-paper-documentary-20260815.webp") 50% 50%/cover no-repeat;
+  background-position:center,center,50% 50%!important;
+  filter:saturate(.72) sepia(.08) contrast(1.045) brightness(.82);
+}
+.tt-ending.is-visible::before{
+  animation:tt-v8-ending-hero 10s cubic-bezier(.18,.75,.2,1) both!important;
+}
+@keyframes tt-v8-ending-hero{
+  from{background-position:center,center,48% 53%;filter:saturate(.58) sepia(.14) contrast(1.055) brightness(.65)}
+  to{background-position:center,center,50% 50%;filter:saturate(.8) sepia(.05) contrast(1.035) brightness(.86)}
+}
+.tt-ending-seal{width:64px;height:52px;font-size:18px;letter-spacing:.06em}
+
+@media(min-width:901px){
+  /* Keep the opening narrators on the outer thirds so the script panel never
+     hides their full paper silhouettes. */
+  .tt-stage{min-height:min(720px,88vh);padding-inline:clamp(24px,3vw,48px)}
+  .tt-stage-copy{width:min(590px,44%);padding:clamp(24px,2.6vw,38px)}
+  .tt-stage>.tt-pose-layer .tt-pose-actor{bottom:4%;width:min(33%,500px)}
+  .tt-stage>.tt-pose-layer .tt-pose-actor--woman{left:0}
+  .tt-stage>.tt-pose-layer .tt-pose-actor--scribe{right:0}
+
+  /* Desktop transitions become a true two-tier theatre: the complete stage
+     above, the dialogue manuscript below. Nothing covers the performers. */
+  .tt-transition[data-shadow-scene]{min-height:0;padding:clamp(42px,5vw,66px) 0}
+  .tt-transition[data-shadow-scene] .tt-transition-inner{
+    width:min(1180px,calc(100% - 48px));
+    min-height:0;
+    grid-template:auto auto/1fr;
+    overflow:hidden;
+  }
+  .tt-transition[data-shadow-scene] .tt-shadow-stage{
+    grid-area:1/1!important;
+    min-height:0;
+    height:auto;
+    aspect-ratio:16/9;
+  }
+  .tt-transition[data-shadow-scene] .tt-shadow-dialogue{
+    grid-area:2/1!important;
+    align-self:stretch;
+    justify-self:stretch;
+    width:100%;
+    margin:0;
+    padding:24px clamp(34px,5.4vw,82px) 28px;
+    border:0;
+    border-top:1px solid rgba(239,195,108,.34);
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    column-gap:clamp(28px,4vw,66px);
+    background:
+      repeating-linear-gradient(90deg,rgba(231,189,110,.04) 0 1px,transparent 1px 12px),
+      linear-gradient(135deg,rgba(24,12,8,.98),rgba(48,25,15,.96));
+    backdrop-filter:none;
+  }
+  .tt-shadow-dialogue>small{grid-column:1/-1}
+  .tt-shadow-dialogue>p[data-speaker="together"]{grid-column:1/-1}
+  .tt-shadow-dialogue--prologue{grid-template-columns:1fr!important;max-width:none!important;text-align:center}
+  .tt-shadow-dialogue--prologue>small,.tt-shadow-dialogue--prologue>p{grid-column:1}
+  .tt-transition[data-shadow-scene] .tt-shadow-props{
+    display:block!important;
+    z-index:7;
+    opacity:.94!important;
+    transform:none!important;
+    transform-origin:50% 11%!important;
+    filter:drop-shadow(10px 9px 5px rgba(34,15,8,.36)) contrast(1.05);
+  }
+  .tt-transition[data-shadow-scene] .tt-pose-layer{z-index:8;overflow:visible}
+  .tt-transition[data-shadow-scene] .tt-pose-actor{bottom:0;width:min(36%,480px)}
+  .tt-transition[data-shadow-scene] .tt-pose-actor--woman{left:0}
+  .tt-transition[data-shadow-scene] .tt-pose-actor--scribe{right:0}
+  .tt-transition[data-shadow-scene] .tt-shadow-vignette{z-index:9}
+
+  .tt-transition[data-shadow-scene]::after{
+    top:calc(clamp(42px,5vw,66px) + 12px);
+    right:clamp(30px,5vw,78px);
+    bottom:auto;
+  }
+
+  /* Enlarge the chapter craft itself, rather than scaling and clipping the
+     whole prop layer. Each object keeps a clear central silhouette. */
+  .tt-shadow-kite{left:46%;top:62px;width:70px;height:78px}
+  .tt-shadow-kite::after{left:33px;top:70px;height:74px}
+  .tt-shadow-door{left:30%;right:30%;top:58px;bottom:76px}
+  .tt-shadow-lattice{left:32%;right:32%;top:68px;bottom:88px;background-size:52px 52px}
+  .tt-shadow-knot-cord{left:20%;right:20%;top:74px}
+  .tt-shadow-lantern{left:47%;top:82px;width:72px;height:102px}
+  .tt-shadow-wick{left:calc(47% + 32px);top:120px;scale:1.28}
+  .tt-shadow-date{left:43%;bottom:92px;width:104px}
+  .tt-shadow-scroll{left:21%;right:21%;top:72px;height:218px}
+  .tt-shadow-record-line{left:31%;width:38%}
+  .tt-shadow-seal{right:29%;bottom:154px;width:58px;height:58px}
+  .tt-shadow-bars{left:22%;right:22%;top:52px;height:270px}
+  .tt-shadow-stamp{left:34%;top:83px;scale:1.22}
+  .tt-shadow-paper-flower{left:36%;bottom:110px;width:48px;height:48px}
+  .tt-shadow-roof-home{right:22%;bottom:64px;width:102px;height:90px}
+  .tt-shadow-block{width:88px;height:78px}
+  .tt-shadow-block:nth-child(1){left:25%;top:78px}.tt-shadow-block:nth-child(2){left:44%;top:78px}
+  .tt-shadow-block:nth-child(3){left:25%;top:178px}.tt-shadow-block:nth-child(4){left:44%;top:178px}
+  .tt-shadow-boundary{left:67%;top:58px;bottom:84px}
+  .tt-shadow-blurred-record{right:13%;top:92px;width:16%;height:180px}
+  .tt-shadow-moon{top:74px;width:188px;height:188px;margin-left:-94px}
+  .tt-shadow-hanging-thread{top:244px;height:145px}
+  .tt-shadow-open-door{left:37%;right:37%;top:78px;bottom:76px}
+  .tt-shadow-guard-lantern{left:calc(50% - 38px);top:104px;scale:1.35}
+  .tt-shadow-hand{top:300px;scale:1.22}
+  .tt-shadow-bloom{right:22%;top:92px;width:96px;height:96px}
+
+  .tt-ending>.tt-pose-layer .tt-pose-actor{bottom:2%;width:min(31%,500px)}
+  .tt-ending>.tt-pose-layer .tt-pose-actor--woman{left:0}
+  .tt-ending>.tt-pose-layer .tt-pose-actor--scribe{right:0}
+
+  .tt-ending-copy{
+    z-index:4;
+    width:min(660px,calc(100% - 56px));
+    max-width:660px;
+    margin-bottom:clamp(34px,5vh,64px);
+    padding:clamp(30px,3.2vw,44px) clamp(32px,4vw,54px) clamp(34px,3.5vw,48px);
+    border:1px solid rgba(235,195,116,.34);
+    background:
+      repeating-linear-gradient(95deg,rgba(246,226,183,.025) 0 1px,transparent 1px 7px),
+      linear-gradient(135deg,rgba(19,10,7,.91),rgba(42,22,14,.84));
+    box-shadow:0 24px 60px rgba(8,4,3,.42),inset 0 0 48px rgba(227,173,78,.04);
+    backdrop-filter:blur(4px);
+  }
+}
+
+/* v8.1 QA: keep corner craft above the image, while the protected copy remains foremost. */
+.tt-ending-craft{z-index:3}
+.tt-ending-copy{z-index:4}
+
+@media(max-width:900px){
+  .tt-hero-art figcaption{min-height:0;font-size:10px;line-height:1.72}
+  .tt-chapter-mark::after{display:none}
+}
+
+@media(max-width:720px){
+  .tt-transition[data-shadow-scene]::after{
+    min-height:26px;
+    padding:4px 8px 4px 32px;
+    background-position:7px 50%;
+    background-size:17px 17px;
+    font-size:7px;
+    letter-spacing:.09em;
+  }
+  .tt-ending::before,
+  html.tt-pose-ready .tt-ending::before{
+    background:
+      linear-gradient(0deg,rgba(10,5,4,.98) 0%,rgba(18,9,6,.85) 43%,rgba(18,9,6,.26) 72%,rgba(12,6,4,.44) 100%),
+      url("./art/tian-tian-ink-paper-documentary-20260815.webp") 50% 0/auto 58% no-repeat,
+      #120906;
+    background-position:center,50% 0,center!important;
+  }
+  .tt-ending-copy{padding-top:clamp(245px,68vw,322px)}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .tt-ending.is-visible::before{animation:none!important}
+  .tt-transition[data-shadow-scene]::after{opacity:1!important;transform:none!important}
+  .tt-transition[data-shadow-scene] .tt-shadow-props{display:block!important}
 }

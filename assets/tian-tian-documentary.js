@@ -8,8 +8,8 @@
   const SCRIPT_URL = document.currentScript && document.currentScript.src;
   const assetUrl = relativePath => SCRIPT_URL ? new URL(relativePath, SCRIPT_URL).href : relativePath;
   const POSE_SHEETS = {
-    woman: assetUrl('./art/tian-tian-shadow-woman-poses-20260814.webp'),
-    scribe: assetUrl('./art/tian-tian-shadow-scribe-poses-20260814.webp')
+    woman: assetUrl('./art/tian-tian-shadow-woman-poses-20260815.webp'),
+    scribe: assetUrl('./art/tian-tian-shadow-scribe-poses-20260815.webp')
   };
   const SCORE_URL = assetUrl('./audio/tian-tian-original-score-20260814.mp3');
   const POSE_POSITIONS = ['0% 0%', '50% 0%', '100% 0%', '0% 100%', '50% 100%', '100% 100%'];
