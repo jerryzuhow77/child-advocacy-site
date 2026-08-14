@@ -167,19 +167,6 @@ body.km-opening-active{overflow:hidden}
 .km-hero-grid{position:relative;display:grid;grid-template-columns:minmax(0,.9fr) minmax(420px,1.1fr);gap:46px;align-items:center}
 .km-kicker{color:var(--km-beni);font-size:11px;font-weight:850;letter-spacing:.18em}
 .km-hero h1{margin:14px 0 8px;font:600 clamp(52px,7.6vw,92px)/1.04 var(--km-serif);letter-spacing:.02em}
-html[lang="zh-Hant"] .km-hero h1,
-html[lang="zh-Hans"] .km-hero h1{
-  font-size:clamp(44px,5.6vw,72px);
-  line-height:1.12;
-  letter-spacing:.01em;
-  white-space:nowrap
-}
-html[lang="ja"] .km-hero h1{
-  font-size:clamp(36px,4vw,50px);
-  line-height:1.18;
-  letter-spacing:0;
-  white-space:nowrap
-}
 .km-reading-name{margin:0 0 24px;color:#7f6b70;font:500 clamp(25px,3.8vw,45px)/1.42 var(--km-serif)}
 .km-lead{font-size:17px;line-height:2;color:#4f5b5e}
 .km-view-counter{
@@ -190,14 +177,17 @@ html[lang="ja"] .km-hero h1{
 .km-view-counter svg{width:15px;height:15px;fill:var(--km-kuchiba)}
 .km-view-counter strong{color:var(--km-ai);font-size:14px;font-variant-numeric:tabular-nums}
 .km-view-counter[hidden]{display:none}
-.km-hero-art{position:relative;margin:0}
+.km-hero-art{position:relative;margin:0;isolation:isolate}
 .km-hero-art::before{
   content:"";position:absolute;inset:-13px;border:1px solid rgba(178,138,77,.48);border-radius:2px;
   clip-path:polygon(0 0,46% 0,46% 3px,54% 3px,54% 0,100% 0,100% 100%,54% 100%,54% calc(100% - 3px),46% calc(100% - 3px),46% 100%,0 100%)
 }
-.km-hero-art img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;box-shadow:var(--km-shadow)}
+.km-hero-art img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;box-shadow:var(--km-shadow);transform-origin:center center}
 .km-hero-art figcaption{
-  display:flex;gap:12px;align-items:flex-start;padding:14px 2px 0;color:#746e64;font-size:11px;line-height:1.7
+  position:relative;z-index:3;display:flex;gap:12px;align-items:flex-start;
+  margin:0 -2px;padding:16px 10px 3px;
+  background:linear-gradient(180deg,var(--km-washi) 0%,rgba(238,229,211,.97) 72%,rgba(238,229,211,0) 100%);
+  color:#746e64;font-size:11px;line-height:1.7
 }
 .km-hero-art figcaption span{color:var(--km-beni);font-weight:900;white-space:nowrap}
 .km-petal{position:absolute;right:10%;top:-13px;width:19px;height:12px;border-radius:80% 20% 80% 20%;background:var(--km-toki);transform:rotate(28deg);animation:kmPetal 8s ease-in-out infinite}
@@ -316,12 +306,26 @@ html[lang="ja"] .km-hero h1{
 }
 .km-source-grid a:hover{background:#fff}
 .km-editorial-note{margin-top:22px;color:#67665f;font-size:12px;line-height:1.8}
-.km-ending{position:relative;overflow:hidden;padding:110px 0;text-align:center;background:linear-gradient(#e3ddcf,#a9bcc0)}
-.km-ending::before{
-  content:"";position:absolute;inset:0;opacity:.18;
-  background-image:radial-gradient(circle at 50% 100%,transparent 0 22%,#f8f4e9 22.3% 22.8%,transparent 23.1% 100%)
+.km-ending{
+  position:relative;overflow:hidden;display:grid;align-items:center;min-height:min(900px,92vh);
+  padding:110px 0;text-align:center;
+  background:
+    linear-gradient(90deg,rgba(238,229,211,.26),rgba(26,36,41,.18)),
+    url("./art/kurihara-mia-ending-background-20260815.webp") center center/cover no-repeat;
 }
-.km-ending .km-shell{position:relative}
+.km-ending::before{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(180deg,rgba(248,244,233,.10),rgba(30,41,46,.24)),
+    radial-gradient(circle at 50% 100%,transparent 0 22%,rgba(248,244,233,.22) 22.3% 22.8%,transparent 23.1% 100%);
+  pointer-events:none
+}
+.km-ending .km-shell{
+  position:relative;width:min(820px,calc(100% - 40px));padding:48px 54px;
+  border:1px solid rgba(196,161,93,.52);border-radius:3px;
+  background:rgba(248,244,233,.79);box-shadow:0 28px 80px rgba(20,28,32,.24);
+  backdrop-filter:blur(7px)
+}
 .km-ending-emblem{width:82px;margin:0 auto 22px}
 .km-ending h2{margin:0;font:600 clamp(37px,5.8vw,65px)/1.35 var(--km-serif)}
 .km-ending p{max-width:760px;margin:22px auto;color:#3f5156;font:500 18px/2 var(--km-serif)}
@@ -359,9 +363,6 @@ html[lang="zh-Hans"] :where(.km-hero h1,.km-reading-name,.km-prose h2,.km-prose 
   .km-brand span{display:none}
   .km-language a{min-width:33px;padding:6px 7px}
   .km-hero{padding-top:48px}
-  html[lang="zh-Hant"] .km-hero h1,
-  html[lang="zh-Hans"] .km-hero h1{font-size:clamp(40px,12vw,52px);letter-spacing:0}
-  html[lang="ja"] .km-hero h1{font-size:clamp(31px,9vw,38px)}
   .km-breadcrumb{font-size:11px}
   .km-guide-links{grid-template-columns:1fr 1fr}
   .km-guide-links a{min-height:80px;padding:15px 12px}
@@ -374,6 +375,8 @@ html[lang="zh-Hans"] :where(.km-hero h1,.km-reading-name,.km-prose h2,.km-prose 
   .km-craft{grid-template-columns:86px 1fr}
   .km-classic{padding:88px 23px 28px}
   .km-source-grid{grid-template-columns:1fr}
+  .km-ending{min-height:82vh;padding:76px 0;background-position:63% center}
+  .km-ending .km-shell{width:calc(100% - 28px);padding:34px 22px;background:rgba(248,244,233,.84)}
   .km-replay{right:10px;bottom:10px;font-size:11px}
 }
 @media(prefers-reduced-motion:reduce){

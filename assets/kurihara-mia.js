@@ -75,7 +75,7 @@
       const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
       if (progress) progress.style.width = Math.min(100, Math.max(0, window.scrollY / max * 100)) + '%';
       if (art && !reducedMotion && window.scrollY < window.innerHeight * 1.4) {
-        art.style.transform = 'scale(1.025) translateY(' + Math.min(16, window.scrollY * 0.025) + 'px)';
+        art.style.transform = 'scale(' + (1 + Math.min(0.006, window.scrollY * 0.000008)) + ')';
       }
       ticking = false;
     };
