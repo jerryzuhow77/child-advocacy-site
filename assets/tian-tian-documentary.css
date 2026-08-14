@@ -683,7 +683,7 @@ html[lang="en"] .tt-shadow-dialogue>small,html[lang="en"] .tt-shadow-dialogue>p 
   background:
     linear-gradient(90deg,rgba(13,8,6,.84) 0%,rgba(31,18,12,.2) 27%,rgba(20,12,8,.16) 73%,rgba(10,7,6,.88) 100%),
     linear-gradient(0deg,rgba(10,7,6,.78),transparent 42%,rgba(15,9,6,.24)),
-    url("./art/tian-tian-shadow-theatre-stage-20260814.webp") 50% 50%/cover no-repeat;
+    url("./art/tian-tian-shadow-theatre-empty-stage-20260814.webp") 50% 50%/cover no-repeat;
   filter:saturate(.96) contrast(1.04) sepia(.06);
 }
 .tt-stage{
@@ -747,7 +747,7 @@ html[lang="en"] .tt-shadow-dialogue>small,html[lang="en"] .tt-shadow-dialogue>p 
   border:0;
   background:
     linear-gradient(0deg,rgba(14,7,4,.56),transparent 34%,rgba(18,9,5,.08)),
-    url("./art/tian-tian-shadow-theatre-stage-20260814.webp") 50% 50%/106% auto no-repeat,
+    url("./art/tian-tian-shadow-theatre-empty-stage-20260814.webp") 50% 50%/106% auto no-repeat,
     #2a160d;
   box-shadow:inset 0 0 0 10px rgba(42,20,11,.23),inset 0 0 110px 24px rgba(15,7,4,.62);
   filter:saturate(.98) contrast(1.035);
@@ -801,7 +801,7 @@ html[lang="ja"] .tt-shadow-dialogue>p{font-size:clamp(15px,1.18vw,17px);line-hei
   background:
     linear-gradient(0deg,rgba(11,6,4,.97) 0%,rgba(17,8,5,.76) 35%,rgba(17,8,5,.14) 68%,rgba(14,7,4,.44) 100%),
     linear-gradient(90deg,rgba(7,4,3,.7),transparent 22% 78%,rgba(7,4,3,.72)),
-    url("./art/tian-tian-shadow-theatre-stage-20260814.webp") 50% 50%/cover no-repeat;
+    url("./art/tian-tian-shadow-theatre-empty-stage-20260814.webp") 50% 50%/cover no-repeat;
   filter:saturate(.84) contrast(1.04) sepia(.06);
 }
 .tt-ending.is-visible::before{filter:saturate(.98) contrast(1.03);transform:scale(1.005)}
@@ -836,7 +836,7 @@ body.tt-audio-active .tt-audio-toggle{border-color:rgba(239,195,105,.86);backgro
 @media(max-width:720px){
   .tt-opening::before{background:radial-gradient(ellipse at 50% 24%,#4a2816,#160c08 58%,#090605);filter:none}
   .tt-stage{width:calc(100% - 14px);min-height:94svh;display:flex;flex-direction:column;justify-content:center;padding:12px;overflow:auto}
-  .tt-stage::before{content:"";position:relative;z-index:1;inset:auto;display:block;flex:0 0 clamp(180px,53vw,230px);width:100%;margin-bottom:10px;border:1px solid rgba(233,183,91,.35);background:url("./art/tian-tian-shadow-theatre-stage-20260814.webp") 50% 50%/contain no-repeat,#1c0f0a;mask-image:none;box-shadow:inset 0 0 34px rgba(10,5,3,.45)}
+  .tt-stage::before{content:"";position:relative;z-index:1;inset:auto;display:block;flex:0 0 clamp(180px,53vw,230px);width:100%;margin-bottom:10px;border:1px solid rgba(233,183,91,.35);background:url("./art/tian-tian-shadow-theatre-empty-stage-20260814.webp") 50% 50%/contain no-repeat,#1c0f0a;mask-image:none;box-shadow:inset 0 0 34px rgba(10,5,3,.45)}
   .tt-stage::after{display:none}
   .tt-stage-copy{width:100%;padding:22px 18px;background:rgba(25,13,9,.84)}
   .tt-opening-lines{min-height:315px}
@@ -892,4 +892,535 @@ body.tt-audio-active .tt-audio-toggle{border-color:rgba(239,195,105,.86);backgro
 
 @media print{
   .tt-audio-toggle{display:none!important}
+}
+
+/* Art direction v5: empty-screen shadow theatre, articulated paper-cut puppets. */
+.tt-opening::before{
+  background:
+    linear-gradient(90deg,rgba(11,6,4,.88),rgba(38,20,12,.13) 25%,rgba(42,23,13,.1) 74%,rgba(9,5,4,.9)),
+    linear-gradient(0deg,rgba(10,5,3,.78),transparent 40%,rgba(21,11,6,.18)),
+    url("./art/tian-tian-shadow-theatre-empty-stage-20260814.webp") 50% 50%/cover no-repeat;
+  filter:saturate(.98) contrast(1.045) sepia(.055);
+}
+.tt-stage{
+  grid-template-columns:minmax(390px,.92fr) minmax(480px,1.08fr);
+  gap:clamp(34px,5vw,78px);
+  background:
+    linear-gradient(90deg,rgba(18,9,6,.66),rgba(31,16,9,.08) 36% 66%,rgba(17,9,6,.58)),
+    url("./art/tian-tian-shadow-theatre-empty-stage-20260814.webp") 50% 50%/cover no-repeat,
+    #1a0d08;
+  box-shadow:0 38px 110px rgba(0,0,0,.62),inset 0 0 0 8px rgba(59,29,14,.2),inset 0 0 96px 20px rgba(13,6,4,.62);
+}
+.tt-stage-craft{
+  display:block;
+  width:100%;
+  height:clamp(430px,56vh,570px);
+  align-self:center;
+  filter:drop-shadow(25px 19px 10px rgba(18,8,4,.56));
+}
+.tt-stage-copy{width:100%;max-width:720px;margin-inline:auto}
+.tt-stage-craft::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:5% -5% 0;
+  border:1px solid rgba(235,188,99,.22);
+  background:radial-gradient(ellipse at 50% 48%,rgba(248,213,145,.09),transparent 66%);
+  box-shadow:inset 0 0 64px rgba(20,9,5,.48);
+}
+
+/* Opening figures: pierced paper/leather colour, visible joints and rods. */
+.tt-puppet{
+  --tt-open-scale:1;
+  --tt-open-rest:0deg;
+  bottom:clamp(18px,4vh,42px);
+  opacity:.96;
+  animation:none;
+  transform:scale(var(--tt-open-scale)) rotate(var(--tt-open-rest));
+}
+.tt-puppet--girl{--tt-open-scale:.9;--tt-open-rest:-1deg;left:5%}
+.tt-puppet--scribe{--tt-open-scale:1.04;--tt-open-rest:2deg;right:2%}
+.tt-puppet i,.tt-puppet b,.tt-puppet span{
+  border-color:rgba(91,44,24,.94);
+  background-color:rgba(55,28,20,.98);
+  background-image:
+    radial-gradient(circle,rgba(247,207,120,.9) 0 1.2px,transparent 1.7px),
+    repeating-linear-gradient(135deg,transparent 0 9px,rgba(211,147,63,.2) 10px 11px),
+    linear-gradient(120deg,rgba(33,25,22,.98),rgba(139,48,46,.9) 48%,rgba(65,94,72,.88));
+  background-size:10px 10px,100% 100%,100% 100%;
+  background-blend-mode:screen,normal,normal;
+  box-shadow:inset 0 0 0 1px rgba(246,199,104,.19),inset 0 0 18px rgba(18,8,5,.34);
+}
+.tt-puppet--scribe i,.tt-puppet--scribe b,.tt-puppet--scribe span{
+  background-image:
+    radial-gradient(circle,rgba(247,207,120,.86) 0 1.2px,transparent 1.7px),
+    repeating-linear-gradient(45deg,transparent 0 9px,rgba(196,143,68,.2) 10px 11px),
+    linear-gradient(120deg,rgba(31,26,22,.98),rgba(48,82,76,.92) 50%,rgba(128,48,43,.84));
+}
+.tt-puppet i::before{
+  content:"";
+  position:absolute;
+  left:-17px;
+  top:-17px;
+  width:82px;
+  height:28px;
+  border:1px solid rgba(87,42,24,.92);
+  background:radial-gradient(circle at 50% 78%,#d9a650 0 8%,transparent 9%),repeating-radial-gradient(circle,rgba(239,193,98,.62) 0 1px,transparent 1.5px 6px),linear-gradient(90deg,#51231f,#9a3c36 52%,#365d50);
+  clip-path:polygon(0 100%,8% 43%,22% 75%,35% 4%,49% 66%,65% 0,76% 72%,94% 35%,100% 100%);
+  transform-origin:50% 90%;
+}
+.tt-puppet i::after{
+  content:"";
+  position:absolute;
+  right:-13px;
+  top:18px;
+  width:15px;
+  height:11px;
+  border-top:2px solid rgba(54,27,19,.92);
+  border-radius:50%;
+  transform:rotate(17deg);
+}
+.tt-puppet b::before,.tt-puppet span::before{
+  content:"";
+  position:absolute;
+  inset:13px 16px;
+  border:1px solid rgba(236,187,91,.52);
+  background:radial-gradient(circle at 30% 35%,rgba(246,204,112,.65) 0 2px,transparent 2.6px),radial-gradient(circle at 70% 65%,rgba(246,204,112,.58) 0 2px,transparent 2.6px);
+  background-size:17px 17px;
+  clip-path:polygon(50% 0,62% 32%,100% 50%,64% 64%,50% 100%,36% 65%,0 50%,36% 34%);
+}
+.tt-puppet span::after{
+  content:"";
+  position:absolute;
+  left:10%;right:10%;bottom:9px;height:10px;
+  border-block:1px solid rgba(235,184,84,.5);
+  background:repeating-linear-gradient(90deg,rgba(232,176,76,.55) 0 2px,transparent 2px 8px);
+}
+.tt-puppet::before,.tt-puppet::after{
+  z-index:-1;
+  width:clamp(128px,11vw,178px);
+  height:3px;
+  border-color:rgba(76,35,19,.78);
+  background:linear-gradient(90deg,#2b170f,#c08a42 43% 48%,#2c180f 49% 72%,rgba(44,24,15,.2));
+  box-shadow:0 1px rgba(250,211,129,.12),18px 10px 4px rgba(31,14,8,.22);
+}
+.tt-opening[data-scene="1"] .tt-puppet--girl{animation:tt-v5-open-girl-enter 4.1s cubic-bezier(.18,.78,.18,1) both}
+.tt-opening[data-scene="1"] .tt-puppet--scribe{animation:tt-v5-open-scribe-wait 4.1s ease both}
+.tt-opening[data-scene="2"] .tt-puppet--girl{animation:tt-v5-open-girl-listen 4.1s ease both}
+.tt-opening[data-scene="2"] .tt-puppet--scribe{animation:tt-v5-open-scribe-speak 4.1s cubic-bezier(.2,.74,.2,1) both}
+.tt-opening[data-scene="3"] .tt-puppet--girl{animation:tt-v5-open-girl-ask 4.1s cubic-bezier(.2,.74,.2,1) both}
+.tt-opening[data-scene="3"] .tt-puppet--scribe{animation:tt-v5-open-scribe-listen 4.1s ease both}
+.tt-opening[data-scene="4"] .tt-puppet--girl{animation:tt-v5-open-girl-listen 4.1s ease both}
+.tt-opening[data-scene="4"] .tt-puppet--scribe{animation:tt-v5-open-scribe-record 4.1s cubic-bezier(.2,.74,.2,1) both}
+.tt-opening[data-scene="5"] .tt-puppet--girl{animation:tt-v5-open-bow-girl 4.1s cubic-bezier(.2,.74,.2,1) both}
+.tt-opening[data-scene="5"] .tt-puppet--scribe{animation:tt-v5-open-bow-scribe 4.1s cubic-bezier(.2,.74,.2,1) both}
+.tt-puppet--girl i{animation:tt-v5-open-head-girl 4.9s ease-in-out infinite}
+.tt-puppet--scribe i{animation:tt-v5-open-head-scribe 5.3s ease-in-out infinite}
+.tt-puppet b{transform-origin:50% 10%;animation:tt-v5-open-body 5.6s ease-in-out infinite}
+.tt-puppet span{transform-origin:50% 4%;animation:tt-v5-open-skirt 4.8s ease-in-out infinite}
+.tt-puppet--girl::before{animation:tt-v5-open-rod-girl-front 4.2s ease-in-out infinite}
+.tt-puppet--girl::after{animation:tt-v5-open-rod-girl-rear 4.2s ease-in-out infinite}
+.tt-puppet--scribe::before{animation:tt-v5-open-rod-scribe-front 4.55s ease-in-out infinite}
+.tt-puppet--scribe::after{animation:tt-v5-open-rod-scribe-rear 4.55s ease-in-out infinite}
+
+/* One empty theatre screen now carries all nine transitions. */
+.tt-transition[data-shadow-scene]{
+  --tt-v5-duration:7s;
+  --tt-v5-delay:.05s;
+  --tt-v5-head-turn:-6deg;
+  --tt-v5-body-lean:2deg;
+  --tt-v5-upper:-39deg;
+  --tt-v5-lower:-69deg;
+  --tt-v5-rod-front:-24deg;
+  --tt-v5-rod-rear:18deg;
+  min-height:clamp(630px,79vh,810px);
+  background:
+    repeating-linear-gradient(93deg,rgba(255,235,191,.018) 0 1px,transparent 1px 6px),
+    radial-gradient(ellipse at 50% 47%,#b7783e 0,#5e351f 48%,#1a100c 86%);
+}
+.tt-transition[data-shadow-scene] .tt-transition-inner{min-height:clamp(550px,69vh,720px)}
+.tt-transition[data-shadow-scene] .tt-shadow-stage{
+  min-height:clamp(550px,69vh,720px);
+  background:
+    linear-gradient(0deg,rgba(13,6,4,.54),transparent 31%,rgba(18,9,5,.05)),
+    linear-gradient(90deg,rgba(12,6,4,.3),transparent 17% 83%,rgba(12,6,4,.34)),
+    url("./art/tian-tian-shadow-theatre-empty-stage-20260814.webp") 50% 50%/cover no-repeat,
+    #26130c;
+  box-shadow:inset 0 0 0 10px rgba(42,20,11,.24),inset 0 0 126px 28px rgba(15,7,4,.68);
+}
+.tt-transition.is-visible .tt-shadow-stage{
+  animation:tt-v5-stage-lantern 8s cubic-bezier(.18,.75,.2,1) both;
+}
+@keyframes tt-v5-stage-lantern{
+  0%{filter:saturate(.86) contrast(1.02) brightness(.88)}
+  48%{filter:saturate(1.01) contrast(1.045) brightness(1.025)}
+  100%{filter:saturate(.97) contrast(1.035) brightness(1)}
+}
+.tt-shadow-screen{
+  display:block;
+  z-index:1;
+  background:repeating-linear-gradient(91deg,rgba(255,247,220,.045) 0 1px,transparent 1px 5px),repeating-linear-gradient(2deg,rgba(66,39,24,.025) 0 1px,transparent 1px 7px);
+  mix-blend-mode:soft-light;
+  opacity:.66;
+}
+.tt-transition[data-shadow-scene] .tt-shadow-props{z-index:3;opacity:.72}
+
+/* Restored articulated narrators, enlarged to theatre scale. */
+.tt-transition[data-shadow-scene] .tt-shadow-figure{
+  --tt-v5-scale:2.08;
+  --tt-v5-entry-scale:1.9;
+  --tt-v5-rest:0deg;
+  --tt-v5-entry-x:-76px;
+  display:block;
+  z-index:5;
+  bottom:clamp(38px,6vh,68px);
+  opacity:.97;
+  filter:drop-shadow(22px 14px 7px rgba(30,13,7,.56));
+  transform:scale(var(--tt-v5-scale)) rotate(var(--tt-v5-rest));
+}
+.tt-transition[data-shadow-scene] .tt-shadow-figure--woman{left:7%}
+.tt-transition[data-shadow-scene] .tt-shadow-figure--scribe{
+  --tt-v5-scale:1.98;
+  --tt-v5-entry-scale:1.82;
+  --tt-v5-rest:2deg;
+  --tt-v5-entry-x:76px;
+  --tt-v5-head-turn:7deg;
+  --tt-v5-body-lean:-2deg;
+  --tt-v5-upper:-5deg;
+  --tt-v5-lower:-25deg;
+  --tt-v5-rod-front:3deg;
+  --tt-v5-rod-rear:6deg;
+  right:7%;
+}
+.tt-shadow-figure>:is(.tt-shadow-crown,.tt-shadow-head,.tt-shadow-body,.tt-shadow-skirt,.tt-shadow-arm){
+  border-color:rgba(79,37,21,.94);
+  background-color:rgba(67,31,22,.98);
+  background-image:
+    radial-gradient(circle,rgba(247,207,120,.92) 0 1.05px,transparent 1.55px),
+    repeating-linear-gradient(135deg,transparent 0 7px,rgba(218,154,70,.24) 8px 9px),
+    linear-gradient(125deg,rgba(37,27,23,.98),var(--tt-figure-dress) 51%,rgba(62,93,71,.86));
+  background-size:9px 9px,100% 100%,100% 100%;
+  background-blend-mode:screen,normal,normal;
+  box-shadow:inset 0 0 0 1px rgba(244,194,96,.18),inset 0 0 10px rgba(20,8,5,.3);
+}
+.tt-shadow-figure--scribe>:is(.tt-shadow-crown,.tt-shadow-head,.tt-shadow-body,.tt-shadow-skirt,.tt-shadow-arm){
+  background-image:
+    radial-gradient(circle,rgba(244,204,115,.9) 0 1.05px,transparent 1.55px),
+    repeating-linear-gradient(45deg,transparent 0 7px,rgba(204,150,70,.22) 8px 9px),
+    linear-gradient(125deg,rgba(35,27,23,.98),rgba(44,86,78,.96) 50%,rgba(132,49,44,.85));
+}
+.tt-shadow-head::before{
+  content:"";
+  position:absolute;
+  left:-10px;
+  top:-10px;
+  width:45px;
+  height:17px;
+  border:1px solid rgba(74,34,20,.92);
+  background:radial-gradient(circle,#d9a650 0 7%,transparent 8%),repeating-radial-gradient(circle,rgba(239,193,98,.7) 0 1px,transparent 1.5px 5px),linear-gradient(90deg,#54231f,#963a34 52%,#365d50);
+  clip-path:polygon(0 100%,10% 36%,25% 73%,42% 0,58% 68%,75% 12%,88% 73%,100% 42%,100% 100%);
+  transform-origin:52% 90%;
+}
+.tt-shadow-crown::after{
+  content:"";
+  position:absolute;
+  right:-9px;
+  top:6px;
+  width:12px;
+  height:28px;
+  border-right:1px solid rgba(193,136,60,.8);
+  background:repeating-linear-gradient(180deg,rgba(139,47,43,.85) 0 3px,transparent 3px 7px);
+  transform:rotate(-8deg);
+  transform-origin:top;
+}
+.tt-shadow-body::before{
+  content:"";
+  position:absolute;
+  inset:7px 9px 10px;
+  border:1px solid rgba(235,184,84,.56);
+  background:radial-gradient(circle at 50% 50%,transparent 0 18%,rgba(240,190,89,.55) 19% 23%,transparent 24%);
+  clip-path:polygon(50% 0,63% 34%,100% 50%,65% 64%,50% 100%,35% 65%,0 50%,36% 34%);
+}
+.tt-shadow-skirt::before{
+  content:"";
+  position:absolute;
+  left:8px;right:8px;top:10px;bottom:9px;
+  border:1px solid rgba(236,187,87,.45);
+  background:radial-gradient(circle,rgba(242,193,91,.7) 0 1.3px,transparent 1.8px);
+  background-size:11px 11px;
+  clip-path:polygon(50% 0,62% 35%,100% 50%,63% 64%,50% 100%,37% 64%,0 50%,38% 35%);
+}
+.tt-shadow-skirt::after{
+  content:"";
+  position:absolute;
+  left:7%;right:7%;bottom:6px;height:5px;
+  border-block:1px solid rgba(237,184,82,.5);
+  background:repeating-linear-gradient(90deg,rgba(234,176,74,.58) 0 1px,transparent 1px 5px);
+}
+.tt-shadow-arm::before{
+  content:"";
+  position:absolute;
+  left:-3px;
+  top:0;
+  width:7px;
+  height:7px;
+  border:1px solid rgba(68,31,18,.9);
+  border-radius:50%;
+  background:radial-gradient(circle,#f0bd67 0 26%,#6b3424 29% 58%,#d29b4f 61%);
+  box-shadow:0 0 0 1px rgba(240,187,93,.13);
+}
+.tt-shadow-rod{height:1.5px;background:linear-gradient(90deg,#25130c,#b57d3b 40% 44%,#28150d 45% 74%,rgba(42,21,13,.18));box-shadow:0 1px rgba(247,207,122,.1),15px 9px 3px rgba(34,14,7,.25)}
+
+/* Each act changes tempo and gesture without changing the documentary restraint. */
+.tt-transition[data-shadow-scene="scroll-prologue"]{--tt-v5-duration:8.2s;--tt-v5-delay:.22s;--tt-v5-head-turn:-5deg;--tt-v5-body-lean:2deg;--tt-v5-upper:-35deg;--tt-v5-lower:-61deg;--tt-v5-rod-front:-20deg}
+.tt-transition[data-shadow-scene="wind-kite"]{--tt-v5-duration:6.2s;--tt-v5-delay:0s;--tt-v5-head-turn:-8deg;--tt-v5-upper:-47deg;--tt-v5-lower:-78deg;--tt-v5-rod-front:-30deg}
+.tt-transition[data-shadow-scene="ten-knot-door"]{--tt-v5-duration:7.8s;--tt-v5-delay:.18s;--tt-v5-head-turn:-3deg;--tt-v5-body-lean:1deg;--tt-v5-upper:-31deg;--tt-v5-lower:-57deg}
+.tt-transition[data-shadow-scene="frost-lantern"]{--tt-v5-duration:8.4s;--tt-v5-delay:.3s;--tt-v5-head-turn:-10deg;--tt-v5-body-lean:4deg;--tt-v5-upper:-35deg;--tt-v5-lower:-64deg}
+.tt-transition[data-shadow-scene="court-scroll"]{--tt-v5-duration:6.8s;--tt-v5-delay:.08s;--tt-v5-head-turn:-4deg;--tt-v5-upper:-42deg;--tt-v5-lower:-70deg}
+.tt-transition[data-shadow-scene="seal-road"]{--tt-v5-duration:7.2s;--tt-v5-delay:.15s;--tt-v5-head-turn:-7deg;--tt-v5-body-lean:3deg;--tt-v5-upper:-45deg;--tt-v5-lower:-75deg}
+.tt-transition[data-shadow-scene="evidence-blocks"]{--tt-v5-duration:5.8s;--tt-v5-delay:0s;--tt-v5-head-turn:-2deg;--tt-v5-upper:-28deg;--tt-v5-lower:-50deg}
+.tt-transition[data-shadow-scene="seven-moon"]{--tt-v5-duration:8.8s;--tt-v5-delay:.28s;--tt-v5-head-turn:-11deg;--tt-v5-body-lean:4deg;--tt-v5-upper:-48deg;--tt-v5-lower:-81deg}
+.tt-transition[data-shadow-scene="guarded-lamp"]{--tt-v5-duration:7.5s;--tt-v5-delay:.12s;--tt-v5-head-turn:-5deg;--tt-v5-upper:-38deg;--tt-v5-lower:-65deg}
+.tt-transition.is-visible .tt-shadow-figure--woman{animation:tt-v5-woman-enter var(--tt-v5-duration) cubic-bezier(.2,.75,.2,1) var(--tt-v5-delay) both}
+.tt-transition.is-visible .tt-shadow-figure--scribe{animation:tt-v5-scribe-enter var(--tt-v5-duration) cubic-bezier(.2,.75,.2,1) calc(var(--tt-v5-delay) + .2s) both}
+.tt-transition.is-visible .tt-shadow-figure--woman .tt-shadow-head{animation:tt-v5-woman-head var(--tt-v5-duration) ease-in-out calc(var(--tt-v5-delay) + .35s) both}
+.tt-transition.is-visible .tt-shadow-figure--scribe .tt-shadow-head{animation:tt-v5-scribe-head var(--tt-v5-duration) ease-in-out calc(var(--tt-v5-delay) + .55s) both}
+.tt-transition.is-visible .tt-shadow-figure--woman .tt-shadow-body{animation:tt-v5-woman-body var(--tt-v5-duration) ease-in-out var(--tt-v5-delay) both}
+.tt-transition.is-visible .tt-shadow-figure--scribe .tt-shadow-body{animation:tt-v5-scribe-body var(--tt-v5-duration) ease-in-out calc(var(--tt-v5-delay) + .15s) both}
+.tt-transition.is-visible .tt-shadow-figure .tt-shadow-skirt{animation:tt-v5-skirt-sway var(--tt-v5-duration) ease-in-out var(--tt-v5-delay) both}
+.tt-transition.is-visible .tt-shadow-figure--woman .tt-shadow-arm--upper{animation:tt-v5-woman-upper var(--tt-v5-duration) ease-in-out calc(var(--tt-v5-delay) + .25s) both}
+.tt-transition.is-visible .tt-shadow-figure--woman .tt-shadow-arm--lower{animation:tt-v5-woman-lower var(--tt-v5-duration) ease-in-out calc(var(--tt-v5-delay) + .25s) both}
+.tt-transition.is-visible .tt-shadow-figure--scribe .tt-shadow-arm--upper{animation:tt-v5-scribe-upper var(--tt-v5-duration) ease-in-out calc(var(--tt-v5-delay) + .5s) both}
+.tt-transition.is-visible .tt-shadow-figure--scribe .tt-shadow-arm--lower{animation:tt-v5-scribe-lower var(--tt-v5-duration) ease-in-out calc(var(--tt-v5-delay) + .5s) both}
+.tt-transition.is-visible .tt-shadow-figure--woman .tt-shadow-rod--front{animation:tt-v5-woman-rod-front var(--tt-v5-duration) ease-in-out calc(var(--tt-v5-delay) + .25s) both}
+.tt-transition.is-visible .tt-shadow-figure--woman .tt-shadow-rod--rear{animation:tt-v5-woman-rod-rear var(--tt-v5-duration) ease-in-out calc(var(--tt-v5-delay) + .25s) both}
+.tt-transition.is-visible .tt-shadow-figure--scribe .tt-shadow-rod--front{animation:tt-v5-scribe-rod-front var(--tt-v5-duration) ease-in-out calc(var(--tt-v5-delay) + .5s) both}
+.tt-transition.is-visible .tt-shadow-figure--scribe .tt-shadow-rod--rear{animation:tt-v5-scribe-rod-rear var(--tt-v5-duration) ease-in-out calc(var(--tt-v5-delay) + .5s) both}
+
+/* Ending: existing craft layer can support two whole paper silhouettes, but not full joints. */
+.tt-ending{background:#150a06}
+.tt-ending::before{
+  background:
+    linear-gradient(0deg,rgba(10,5,3,.97),rgba(17,8,5,.78) 34%,rgba(17,8,5,.13) 69%,rgba(12,6,4,.43)),
+    linear-gradient(90deg,rgba(6,3,2,.72),transparent 22% 78%,rgba(6,3,2,.74)),
+    url("./art/tian-tian-shadow-theatre-empty-stage-20260814.webp") 50% 50%/cover no-repeat;
+  filter:saturate(.9) contrast(1.045) sepia(.05);
+}
+.tt-ending-craft::before,.tt-ending-craft::after{
+  content:"";
+  position:absolute;
+  z-index:1;
+  bottom:4%;
+  width:88px;
+  height:226px;
+  border:1px solid rgba(72,32,18,.9);
+  background:
+    radial-gradient(circle,rgba(246,204,110,.88) 0 1.2px,transparent 1.7px) 0 0/10px 10px,
+    repeating-linear-gradient(135deg,transparent 0 9px,rgba(220,151,66,.24) 10px 11px),
+    linear-gradient(115deg,#211713,#8c322f 50%,#3d6655);
+  background-blend-mode:screen,normal,normal;
+  clip-path:polygon(35% 0,66% 0,78% 10%,70% 18%,80% 37%,73% 47%,100% 100%,0 100%,28% 48%,19% 38%,31% 18%,23% 10%);
+  filter:drop-shadow(18px 11px 6px rgba(24,10,5,.52));
+  opacity:0;
+  transform-origin:50% 92%;
+}
+.tt-ending-craft::before{left:9%}
+.tt-ending-craft::after{right:9%;transform:scaleX(-1)}
+.tt-ending.is-visible .tt-ending-craft::before{animation:tt-v5-ending-bow-left 7.2s cubic-bezier(.2,.72,.2,1) 3.65s both}
+.tt-ending.is-visible .tt-ending-craft::after{animation:tt-v5-ending-bow-right 7.2s cubic-bezier(.2,.72,.2,1) 3.85s both}
+
+@keyframes tt-v5-open-girl-enter{0%{opacity:0;transform:translateX(-90px) scale(var(--tt-open-scale)) rotate(-7deg)}28%{opacity:.96;transform:translateX(0) scale(var(--tt-open-scale)) rotate(1deg)}100%{opacity:.96;transform:scale(var(--tt-open-scale)) rotate(-1deg)}}
+@keyframes tt-v5-open-scribe-wait{0%{opacity:0;transform:translateX(78px) scale(var(--tt-open-scale)) rotate(7deg)}32%{opacity:.94;transform:translateX(0) scale(var(--tt-open-scale)) rotate(1deg)}100%{opacity:.96;transform:scale(var(--tt-open-scale)) rotate(2deg)}}
+@keyframes tt-v5-open-girl-listen{0%,100%{transform:scale(var(--tt-open-scale)) rotate(-1deg)}46%{transform:scale(var(--tt-open-scale)) rotate(2deg) translateY(-3px)}}
+@keyframes tt-v5-open-scribe-speak{0%,100%{transform:scale(var(--tt-open-scale)) rotate(2deg)}38%{transform:scale(var(--tt-open-scale)) rotate(-2deg) translateX(-5px)}62%{transform:scale(var(--tt-open-scale)) rotate(1deg) translateX(-2px)}}
+@keyframes tt-v5-open-girl-ask{0%,100%{transform:scale(var(--tt-open-scale)) rotate(-1deg)}34%{transform:scale(var(--tt-open-scale)) rotate(-4deg) translateX(5px)}64%{transform:scale(var(--tt-open-scale)) rotate(2deg)}}
+@keyframes tt-v5-open-scribe-listen{0%,100%{transform:scale(var(--tt-open-scale)) rotate(2deg)}44%{transform:scale(var(--tt-open-scale)) rotate(5deg) translateY(2px)}}
+@keyframes tt-v5-open-scribe-record{0%,100%{transform:scale(var(--tt-open-scale)) rotate(2deg)}32%{transform:scale(var(--tt-open-scale)) rotate(-3deg) translateY(4px)}58%{transform:scale(var(--tt-open-scale)) rotate(1deg)}}
+@keyframes tt-v5-open-bow-girl{0%,28%{opacity:.96;transform:scale(var(--tt-open-scale)) rotate(-1deg)}58%,72%{transform:scale(var(--tt-open-scale)) rotate(11deg) translateY(6px)}100%{opacity:.9;transform:scale(var(--tt-open-scale)) rotate(0)}}
+@keyframes tt-v5-open-bow-scribe{0%,30%{opacity:.96;transform:scale(var(--tt-open-scale)) rotate(2deg)}60%,74%{transform:scale(var(--tt-open-scale)) rotate(-10deg) translateY(6px)}100%{opacity:.9;transform:scale(var(--tt-open-scale)) rotate(1deg)}}
+@keyframes tt-v5-open-head-girl{0%,100%{transform:rotate(0)}42%{transform:rotate(-7deg)}58%{transform:rotate(3deg)}}
+@keyframes tt-v5-open-head-scribe{0%,100%{transform:rotate(0)}38%{transform:rotate(6deg)}57%{transform:rotate(-3deg)}}
+@keyframes tt-v5-open-body{0%,100%{transform:skewX(0)}50%{transform:skewX(-2deg)}}
+@keyframes tt-v5-open-skirt{0%,100%{transform:skewX(-1deg) rotate(0)}44%{transform:skewX(3deg) rotate(1deg)}72%{transform:skewX(-2deg) rotate(-.6deg)}}
+@keyframes tt-v5-open-rod-girl-front{0%,100%{transform:rotate(28deg)}45%{transform:rotate(15deg)}68%{transform:rotate(22deg)}}
+@keyframes tt-v5-open-rod-girl-rear{0%,100%{transform:rotate(-17deg)}45%{transform:rotate(-29deg)}68%{transform:rotate(-22deg)}}
+@keyframes tt-v5-open-rod-scribe-front{0%,100%{transform:rotate(28deg)}42%{transform:rotate(36deg)}65%{transform:rotate(31deg)}}
+@keyframes tt-v5-open-rod-scribe-rear{0%,100%{transform:rotate(-17deg)}42%{transform:rotate(-8deg)}65%{transform:rotate(-13deg)}}
+
+@keyframes tt-v5-woman-enter{0%{opacity:0;transform:translateX(var(--tt-v5-entry-x)) scale(var(--tt-v5-entry-scale)) rotate(-8deg)}22%{opacity:.97}36%{transform:translateX(0) scale(var(--tt-v5-scale)) rotate(2deg)}68%{transform:scale(var(--tt-v5-scale)) rotate(var(--tt-v5-body-lean))}100%{opacity:.97;transform:scale(var(--tt-v5-scale)) rotate(var(--tt-v5-rest))}}
+@keyframes tt-v5-scribe-enter{0%{opacity:0;transform:translateX(var(--tt-v5-entry-x)) scale(var(--tt-v5-entry-scale)) rotate(9deg)}24%{opacity:.96}39%{transform:translateX(0) scale(var(--tt-v5-scale)) rotate(-1deg)}69%{transform:scale(var(--tt-v5-scale)) rotate(var(--tt-v5-body-lean))}100%{opacity:.96;transform:scale(var(--tt-v5-scale)) rotate(var(--tt-v5-rest))}}
+@keyframes tt-v5-woman-head{0%,24%,100%{transform:rotate(0)}39%{transform:rotate(var(--tt-v5-head-turn))}52%{transform:rotate(3deg)}72%{transform:rotate(-2deg)}}
+@keyframes tt-v5-scribe-head{0%,27%,100%{transform:rotate(0)}43%{transform:rotate(var(--tt-v5-head-turn))}56%{transform:rotate(-3deg)}75%{transform:rotate(2deg)}}
+@keyframes tt-v5-woman-body{0%,28%,100%{transform:rotate(0)}48%{transform:rotate(var(--tt-v5-body-lean))}66%{transform:rotate(-1deg)}}
+@keyframes tt-v5-scribe-body{0%,30%,100%{transform:rotate(0)}50%{transform:rotate(var(--tt-v5-body-lean))}68%{transform:rotate(1deg)}}
+@keyframes tt-v5-skirt-sway{0%,25%,100%{transform:skewX(0) rotate(0)}44%{transform:skewX(4deg) rotate(1deg)}64%{transform:skewX(-3deg) rotate(-.8deg)}82%{transform:skewX(1.5deg)}}
+@keyframes tt-v5-woman-upper{0%,22%,100%{transform:rotate(-18deg)}43%,58%{transform:rotate(var(--tt-v5-upper))}76%{transform:rotate(-24deg)}}
+@keyframes tt-v5-woman-lower{0%,22%,100%{transform:rotate(-48deg)}43%,58%{transform:rotate(var(--tt-v5-lower))}76%{transform:rotate(-56deg)}}
+@keyframes tt-v5-scribe-upper{0%,25%,100%{transform:rotate(-18deg)}46%,61%{transform:rotate(var(--tt-v5-upper))}78%{transform:rotate(-12deg)}}
+@keyframes tt-v5-scribe-lower{0%,25%,100%{transform:rotate(-48deg)}46%,61%{transform:rotate(var(--tt-v5-lower))}78%{transform:rotate(-35deg)}}
+@keyframes tt-v5-woman-rod-front{0%,22%,100%{transform:rotate(-12deg)}43%,58%{transform:rotate(var(--tt-v5-rod-front))}76%{transform:rotate(-17deg)}}
+@keyframes tt-v5-woman-rod-rear{0%,22%,100%{transform:rotate(13deg)}43%,58%{transform:rotate(var(--tt-v5-rod-rear))}76%{transform:rotate(15deg)}}
+@keyframes tt-v5-scribe-rod-front{0%,25%,100%{transform:rotate(-12deg)}46%,61%{transform:rotate(var(--tt-v5-rod-front))}78%{transform:rotate(-8deg)}}
+@keyframes tt-v5-scribe-rod-rear{0%,25%,100%{transform:rotate(13deg)}46%,61%{transform:rotate(var(--tt-v5-rod-rear))}78%{transform:rotate(9deg)}}
+@keyframes tt-v5-ending-bow-left{0%{opacity:0;transform:translateX(-90px) rotate(-8deg) scale(.9)}20%{opacity:.82;transform:translateX(0) rotate(0) scale(1)}48%{transform:rotate(0)}62%,72%{opacity:.82;transform:rotate(13deg) translateY(7px)}100%{opacity:0;transform:translateX(-120px) rotate(5deg) scale(.92)}}
+@keyframes tt-v5-ending-bow-right{0%{opacity:0;transform:translateX(90px) rotate(8deg) scaleX(-1) scale(.9)}22%{opacity:.8;transform:translateX(0) rotate(0) scaleX(-1)}50%{transform:scaleX(-1)}64%,74%{opacity:.8;transform:rotate(-13deg) translateY(7px) scaleX(-1)}100%{opacity:0;transform:translateX(120px) rotate(-5deg) scaleX(-1) scale(.92)}}
+
+@media(max-width:980px){
+  .tt-stage{grid-template-columns:1fr;gap:16px;align-content:center;overflow:auto}
+  .tt-stage-craft{display:block;width:min(720px,100%);height:clamp(280px,37vh,390px);margin-inline:auto}
+  .tt-stage-copy{width:min(720px,100%)}
+  .tt-puppet--girl{--tt-open-scale:.76;left:10%}.tt-puppet--scribe{--tt-open-scale:.88;right:10%}
+}
+
+@media(max-width:720px){
+  .tt-opening::before{
+    background:linear-gradient(0deg,rgba(9,5,3,.72),rgba(20,10,6,.08) 45%,rgba(10,5,3,.34)),url("./art/tian-tian-shadow-theatre-empty-stage-20260814.webp") 50% 50%/cover no-repeat;
+    filter:saturate(.95) contrast(1.03);
+  }
+  .tt-stage{
+    display:flex;
+    min-height:94svh;
+    gap:9px;
+    background:linear-gradient(0deg,rgba(14,7,4,.72),rgba(25,13,8,.12)),url("./art/tian-tian-shadow-theatre-empty-stage-20260814.webp") 50% 38%/cover no-repeat,#180c08;
+  }
+  .tt-stage::before{display:none}
+  .tt-stage-craft{display:block;flex:0 0 clamp(250px,68vw,310px);width:100%;height:clamp(250px,68vw,310px);margin:0}
+  .tt-stage-craft::after{inset:2% 0 0}
+  .tt-stage-copy{flex:0 0 auto;width:100%;padding:20px 17px}
+  .tt-puppet{bottom:-10px}.tt-puppet--girl{--tt-open-scale:.61;left:2%}.tt-puppet--scribe{--tt-open-scale:.68;right:0}
+  .tt-puppet::before,.tt-puppet::after{width:120px}
+
+  .tt-transition[data-shadow-scene]{min-height:auto;padding:12px 0 46px}
+  .tt-transition[data-shadow-scene] .tt-transition-inner{min-height:0}
+  .tt-transition[data-shadow-scene] .tt-shadow-stage{
+    height:clamp(250px,70vw,315px);
+    min-height:250px;
+    background-size:100% 100%,100% 100%,contain,auto;
+    background-position:center;
+    background-repeat:no-repeat;
+  }
+  .tt-transition[data-shadow-scene] .tt-shadow-figure{--tt-v5-scale:1.15;--tt-v5-entry-scale:1.03;bottom:20px;filter:drop-shadow(12px 8px 4px rgba(30,13,7,.5))}
+  .tt-transition[data-shadow-scene] .tt-shadow-figure--woman{left:5%}
+  .tt-transition[data-shadow-scene] .tt-shadow-figure--scribe{--tt-v5-scale:1.1;--tt-v5-entry-scale:1;right:5%}
+  .tt-transition[data-shadow-scene] .tt-shadow-props{transform:scale(.88);transform-origin:50% 7%}
+  .tt-ending-craft::before,.tt-ending-craft::after{bottom:5%;width:55px;height:144px}
+  .tt-ending-craft::before{left:2%}.tt-ending-craft::after{right:2%}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .tt-opening::before,.tt-stage-craft,.tt-stage-craft *,.tt-transition[data-shadow-scene] .tt-shadow-stage,.tt-shadow-stage *,.tt-ending-craft::before,.tt-ending-craft::after{animation:none!important;transition:none!important}
+  .tt-stage-craft{display:block!important}
+  .tt-puppet--girl{opacity:.96!important;transform:scale(var(--tt-open-scale)) rotate(-1deg)!important}
+  .tt-puppet--scribe{opacity:.96!important;transform:scale(var(--tt-open-scale)) rotate(2deg)!important}
+  .tt-puppet i,.tt-puppet b{transform:none!important}
+  .tt-puppet span{transform:skewX(-1deg)!important}
+  .tt-puppet--girl::before,.tt-puppet--scribe::before{transform:rotate(28deg)!important}
+  .tt-puppet--girl::after,.tt-puppet--scribe::after{transform:rotate(-17deg)!important}
+
+  .tt-transition[data-shadow-scene] .tt-shadow-stage{
+    background-size:100% 100%,100% 100%,cover,auto!important;
+    background-position:center!important;
+    filter:saturate(.96) contrast(1.03)!important;
+  }
+  .tt-transition[data-shadow-scene] .tt-shadow-props{display:block!important;opacity:.72!important}
+  .tt-transition[data-shadow-scene] .tt-shadow-figure--woman{opacity:.97!important;transform:scale(var(--tt-v5-scale)) rotate(0)!important}
+  .tt-transition[data-shadow-scene] .tt-shadow-figure--scribe{opacity:.96!important;transform:scale(var(--tt-v5-scale)) rotate(2deg)!important}
+  .tt-shadow-stage .tt-shadow-cast{transform:skewX(10deg) scaleX(1.12)!important}
+  .tt-shadow-stage .tt-shadow-head,.tt-shadow-stage .tt-shadow-body{transform:none!important}
+  .tt-shadow-stage .tt-shadow-skirt{transform:skewX(0)!important}
+  .tt-shadow-figure--woman .tt-shadow-arm--upper,.tt-shadow-figure--scribe .tt-shadow-arm--upper{transform:rotate(-18deg)!important}
+  .tt-shadow-figure--woman .tt-shadow-arm--lower,.tt-shadow-figure--scribe .tt-shadow-arm--lower{transform:rotate(-48deg)!important}
+  .tt-shadow-stage .tt-shadow-rod--front{transform:rotate(-12deg)!important}
+  .tt-shadow-stage .tt-shadow-rod--rear{transform:rotate(13deg)!important}
+  .tt-shadow-stage .tt-shadow-kite{transform:rotate(-10deg)!important}
+  .tt-shadow-stage .tt-shadow-lattice{transform:scale(.94)!important}
+  .tt-shadow-stage .tt-shadow-stamp{transform:rotate(-12deg)!important}
+  .tt-shadow-stage .tt-shadow-hand{transform:rotate(var(--tt-hand-angle))!important}
+  .tt-shadow-stage .tt-shadow-petal{transform:rotate(var(--tt-petal-angle))!important}
+  .tt-shadow-line path{stroke-dashoffset:0!important}
+  .tt-shadow-open-door::before{transform:rotateY(-72deg)!important}
+  .tt-shadow-open-door::after{transform:rotateY(72deg)!important}
+  .tt-ending-craft::before{opacity:.76!important;transform:rotate(7deg)!important}
+  .tt-ending-craft::after{opacity:.76!important;transform:scaleX(-1) rotate(-7deg)!important}
+}
+
+/* v5 ending articulation: replace the temporary whole-silhouette stand-ins. */
+.tt-ending-craft::before,.tt-ending-craft::after{
+  content:none!important;
+  display:none!important;
+  animation:none!important;
+}
+.tt-ending .tt-shadow-figure--ending{
+  --tt-end-scale:1.92;
+  display:block;
+  z-index:1;
+  bottom:clamp(42px,7vh,78px);
+  opacity:0;
+  filter:drop-shadow(22px 14px 7px rgba(25,10,5,.58));
+  transform-origin:50% 94%;
+}
+.tt-ending .tt-shadow-figure--ending.tt-shadow-figure--woman{left:8%;transform:scale(var(--tt-end-scale))}
+.tt-ending .tt-shadow-figure--ending.tt-shadow-figure--scribe{right:8%;scale:-1 1;transform:scale(var(--tt-end-scale)) rotate(2deg)}
+.tt-ending.is-visible .tt-shadow-figure--ending.tt-shadow-figure--woman{animation:tt-v5-ending-woman-exit 8.6s cubic-bezier(.2,.72,.2,1) 3.55s both}
+.tt-ending.is-visible .tt-shadow-figure--ending.tt-shadow-figure--scribe{animation:tt-v5-ending-scribe-exit 8.6s cubic-bezier(.2,.72,.2,1) 3.78s both}
+.tt-ending.is-visible .tt-shadow-figure--ending.tt-shadow-figure--woman .tt-shadow-head{animation:tt-v5-ending-woman-look 8.6s ease-in-out 3.55s both}
+.tt-ending.is-visible .tt-shadow-figure--ending.tt-shadow-figure--scribe .tt-shadow-head{animation:tt-v5-ending-scribe-look 8.6s ease-in-out 3.78s both}
+.tt-ending.is-visible .tt-shadow-figure--ending .tt-shadow-body{animation:tt-v5-ending-body-bow 8.6s ease-in-out 3.6s both}
+.tt-ending.is-visible .tt-shadow-figure--ending .tt-shadow-skirt{animation:tt-v5-ending-skirt 8.6s ease-in-out 3.6s both}
+.tt-ending.is-visible .tt-shadow-figure--ending.tt-shadow-figure--woman .tt-shadow-arm--upper{animation:tt-v5-ending-woman-upper 8.6s ease-in-out 3.55s both}
+.tt-ending.is-visible .tt-shadow-figure--ending.tt-shadow-figure--woman .tt-shadow-arm--lower{animation:tt-v5-ending-woman-lower 8.6s ease-in-out 3.55s both}
+.tt-ending.is-visible .tt-shadow-figure--ending.tt-shadow-figure--scribe .tt-shadow-arm--upper{animation:tt-v5-ending-scribe-upper 8.6s ease-in-out 3.78s both}
+.tt-ending.is-visible .tt-shadow-figure--ending.tt-shadow-figure--scribe .tt-shadow-arm--lower{animation:tt-v5-ending-scribe-lower 8.6s ease-in-out 3.78s both}
+.tt-ending.is-visible .tt-shadow-figure--ending.tt-shadow-figure--woman .tt-shadow-rod--front{animation:tt-v5-ending-woman-rod-front 8.6s ease-in-out 3.55s both}
+.tt-ending.is-visible .tt-shadow-figure--ending.tt-shadow-figure--woman .tt-shadow-rod--rear{animation:tt-v5-ending-woman-rod-rear 8.6s ease-in-out 3.55s both}
+.tt-ending.is-visible .tt-shadow-figure--ending.tt-shadow-figure--scribe .tt-shadow-rod--front{animation:tt-v5-ending-scribe-rod-front 8.6s ease-in-out 3.78s both}
+.tt-ending.is-visible .tt-shadow-figure--ending.tt-shadow-figure--scribe .tt-shadow-rod--rear{animation:tt-v5-ending-scribe-rod-rear 8.6s ease-in-out 3.78s both}
+
+@keyframes tt-v5-ending-woman-exit{
+  0%{opacity:0;transform:translateX(-92px) scale(1.7) rotate(-7deg)}
+  18%{opacity:.94;transform:translateX(0) scale(var(--tt-end-scale)) rotate(1deg)}
+  39%{transform:scale(var(--tt-end-scale)) rotate(0)}
+  50%,59%{transform:scale(var(--tt-end-scale)) rotate(12deg) translateY(8px)}
+  69%{opacity:.94;transform:scale(var(--tt-end-scale)) rotate(-2deg)}
+  79%{transform:translateX(-12px) scale(var(--tt-end-scale)) rotate(-5deg)}
+  100%{opacity:0;transform:translateX(-176px) scale(1.76) rotate(-8deg)}
+}
+@keyframes tt-v5-ending-scribe-exit{
+  0%{opacity:0;transform:translateX(-92px) scale(1.7) rotate(7deg)}
+  20%{opacity:.93;transform:translateX(0) scale(var(--tt-end-scale)) rotate(-1deg)}
+  40%{transform:scale(var(--tt-end-scale)) rotate(0)}
+  51%,60%{transform:scale(var(--tt-end-scale)) rotate(-12deg) translateY(8px)}
+  70%{opacity:.93;transform:scale(var(--tt-end-scale)) rotate(2deg)}
+  80%{transform:translateX(-12px) scale(var(--tt-end-scale)) rotate(5deg)}
+  100%{opacity:0;transform:translateX(-176px) scale(1.76) rotate(8deg)}
+}
+@keyframes tt-v5-ending-woman-look{0%,31%{transform:rotate(0)}43%{transform:rotate(-8deg)}58%{transform:rotate(6deg)}70%{transform:rotate(-12deg)}82%,100%{transform:rotate(-5deg)}}
+@keyframes tt-v5-ending-scribe-look{0%,32%{transform:rotate(0)}44%{transform:rotate(8deg)}59%{transform:rotate(-6deg)}71%{transform:rotate(12deg)}83%,100%{transform:rotate(5deg)}}
+@keyframes tt-v5-ending-body-bow{0%,38%{transform:rotate(0)}49%,59%{transform:rotate(7deg) translateY(2px)}69%{transform:rotate(-1deg)}100%{transform:rotate(2deg)}}
+@keyframes tt-v5-ending-skirt{0%,28%{transform:skewX(0) rotate(0)}43%{transform:skewX(4deg) rotate(1deg)}55%{transform:skewX(-3deg) rotate(-1deg)}69%{transform:skewX(2deg)}100%{transform:skewX(-5deg) rotate(-2deg)}}
+@keyframes tt-v5-ending-woman-upper{0%,31%{transform:rotate(-18deg)}43%,59%{transform:rotate(-48deg)}70%{transform:rotate(-25deg)}100%{transform:rotate(-12deg)}}
+@keyframes tt-v5-ending-woman-lower{0%,31%{transform:rotate(-48deg)}43%,59%{transform:rotate(-82deg)}70%{transform:rotate(-56deg)}100%{transform:rotate(-40deg)}}
+@keyframes tt-v5-ending-scribe-upper{0%,32%{transform:rotate(-18deg)}44%,60%{transform:rotate(-3deg)}71%{transform:rotate(-13deg)}100%{transform:rotate(-24deg)}}
+@keyframes tt-v5-ending-scribe-lower{0%,32%{transform:rotate(-48deg)}44%,60%{transform:rotate(-20deg)}71%{transform:rotate(-36deg)}100%{transform:rotate(-58deg)}}
+@keyframes tt-v5-ending-woman-rod-front{0%,31%{transform:rotate(-12deg)}43%,59%{transform:rotate(-31deg)}70%{transform:rotate(-18deg)}100%{transform:rotate(-8deg)}}
+@keyframes tt-v5-ending-woman-rod-rear{0%,31%{transform:rotate(13deg)}43%,59%{transform:rotate(21deg)}70%{transform:rotate(15deg)}100%{transform:rotate(9deg)}}
+@keyframes tt-v5-ending-scribe-rod-front{0%,32%{transform:rotate(-12deg)}44%,60%{transform:rotate(6deg)}71%{transform:rotate(-7deg)}100%{transform:rotate(-17deg)}}
+@keyframes tt-v5-ending-scribe-rod-rear{0%,32%{transform:rotate(13deg)}44%,60%{transform:rotate(4deg)}71%{transform:rotate(10deg)}100%{transform:rotate(17deg)}}
+
+@media(max-width:720px){
+  .tt-ending .tt-shadow-figure--ending{--tt-end-scale:1.08;bottom:24px;filter:drop-shadow(12px 8px 4px rgba(25,10,5,.52))}
+  .tt-ending .tt-shadow-figure--ending.tt-shadow-figure--woman{left:2%}
+  .tt-ending .tt-shadow-figure--ending.tt-shadow-figure--scribe{right:2%}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .tt-ending .tt-shadow-figure--ending,.tt-ending .tt-shadow-figure--ending *{animation:none!important;transition:none!important}
+  .tt-ending .tt-shadow-figure--ending.tt-shadow-figure--woman{opacity:.88!important;transform:scale(var(--tt-end-scale)) rotate(0)!important}
+  .tt-ending .tt-shadow-figure--ending.tt-shadow-figure--scribe{opacity:.88!important;scale:-1 1!important;transform:scale(var(--tt-end-scale)) rotate(2deg)!important}
+  .tt-ending .tt-shadow-figure--ending .tt-shadow-head,.tt-ending .tt-shadow-figure--ending .tt-shadow-body{transform:none!important}
+  .tt-ending .tt-shadow-figure--ending .tt-shadow-skirt{transform:skewX(0)!important}
+  .tt-ending .tt-shadow-figure--ending .tt-shadow-arm--upper{transform:rotate(-18deg)!important}
+  .tt-ending .tt-shadow-figure--ending .tt-shadow-arm--lower{transform:rotate(-48deg)!important}
+  .tt-ending .tt-shadow-figure--ending .tt-shadow-rod--front{transform:rotate(-12deg)!important}
+  .tt-ending .tt-shadow-figure--ending .tt-shadow-rod--rear{transform:rotate(13deg)!important}
 }

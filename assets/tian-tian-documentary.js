@@ -131,6 +131,15 @@
       fallback.replaceWith(makeShadowStage(scene));
       transition.classList.add('tt-shadow-ready');
     });
+
+    const endingCraft = $('.tt-ending-craft');
+    if (endingCraft && !$('.tt-shadow-figure', endingCraft)) {
+      const woman = makeShadowFigure('woman');
+      const scribe = makeShadowFigure('scribe');
+      woman.classList.add('tt-shadow-figure--ending');
+      scribe.classList.add('tt-shadow-figure--ending');
+      endingCraft.append(woman, scribe);
+    }
   }
 
   function initOpening() {
@@ -201,10 +210,47 @@
     if (!buttons.length) return;
 
     const AudioCtor = window.AudioContext || window.webkitAudioContext;
-    const SCALE = [146.83, 164.81, 185, 220, 246.94];
+    // D yu mode / D minor pentatonic: D, F, G, A, C. The modal cells below
+    // were written for this page and do not quote or reconstruct any score.
+    const SCALE = [146.83, 174.61, 196, 220, 261.63];
     const transitionPhrases = [
-      [0, 1, 3], [0, 4, 3], [3, 2, 0], [0, 3, 4], [4, 3, 0],
-      [0, 2, 1], [3, 1, 0], [0, 3, 1], [0, 1, 4]
+      [0, 2, 1], [0, 4, 3], [3, 2, 0], [0, 3, 1], [4, 3, 0],
+      [0, 1, 2], [3, 1, 0], [0, 2, 4], [1, 0, 3]
+    ];
+    const transitionXiaoTurns = [
+      [{ degree: 3, at: 0, hold: 2.35, glide: -54, fall: -32 }, { degree: 1, at: 1.62, hold: 2.7, glide: 38, fall: -48 }],
+      [{ degree: 4, at: 0, hold: 2.15, glide: -42, fall: -24 }, { degree: 3, at: 1.5, hold: 2.8, glide: 34, fall: -45 }],
+      [{ degree: 2, at: 0, hold: 2.55, glide: 46, fall: -38 }, { degree: 0, at: 1.9, hold: 2.9, glide: 31, fall: -56 }],
+      [{ degree: 0, at: 0, hold: 2.25, glide: -48, fall: -22 }, { degree: 3, at: 1.55, hold: 2.55, glide: -36, fall: -41 }],
+      [{ degree: 4, at: 0, hold: 2.4, glide: 37, fall: -35 }, { degree: 1, at: 1.78, hold: 2.95, glide: 42, fall: -52 }],
+      [{ degree: 1, at: 0, hold: 2.55, glide: -45, fall: -34 }, { degree: 2, at: 1.82, hold: 2.5, glide: -32, fall: -47 }],
+      [{ degree: 3, at: 0, hold: 2.25, glide: 42, fall: -29 }, { degree: 0, at: 1.64, hold: 3.05, glide: 36, fall: -58 }],
+      [{ degree: 0, at: 0, hold: 2.35, glide: -40, fall: -31 }, { degree: 4, at: 1.72, hold: 2.65, glide: -51, fall: -44 }],
+      [{ degree: 1, at: 0, hold: 2.3, glide: 36, fall: -27 }, { degree: 0, at: 1.58, hold: 3.25, glide: 48, fall: -62 }]
+    ];
+    const ambientXiaoPhrases = [
+      [
+        { degree: 3, at: 0, hold: 2.75, glide: -58, fall: -31 },
+        { degree: 2, at: 2.25, hold: 2.7, glide: 36, fall: -43 },
+        { degree: 0, at: 4.52, hold: 3.25, glide: 45, fall: -62 }
+      ],
+      [
+        { degree: 4, at: 0, hold: 2.4, glide: -44, fall: -28 },
+        { degree: 3, at: 1.95, hold: 2.85, glide: 39, fall: -47 },
+        { degree: 1, at: 4.35, hold: 3.35, glide: 33, fall: -59 }
+      ],
+      [
+        { degree: 1, at: 0, hold: 2.65, glide: -51, fall: -35 },
+        { degree: 4, at: 2.18, hold: 2.45, glide: -37, fall: -42 },
+        { degree: 2, at: 4.12, hold: 2.7, glide: 43, fall: -49 },
+        { degree: 0, at: 6.38, hold: 3.2, glide: 34, fall: -64 }
+      ]
+    ];
+    const endingXiaoPhrase = [
+      { degree: 4, at: 0, hold: 2.65, glide: -52, fall: -34 },
+      { degree: 3, at: 2.18, hold: 3.05, glide: 41, fall: -49 },
+      { degree: 1, at: 4.72, hold: 3.35, glide: 36, fall: -57 },
+      { degree: 0, at: 7.55, hold: 4.15, glide: 48, fall: -72 }
     ];
     const seen = new WeakSet();
     let context = null;
@@ -213,6 +259,7 @@
     let sfxBus = null;
     let noiseBuffer = null;
     let ambientTimer = 0;
+    let ambientPhraseIndex = 0;
     let audioEnabled = false;
 
     const getLabel = (button, key) => {
@@ -261,6 +308,126 @@
       playTone(frequency * 2.01, when + .012, .86, level * .26, 'sine', musicBus);
     };
 
+    const modeFrequency = degree => {
+      const scaleIndex = ((degree % SCALE.length) + SCALE.length) % SCALE.length;
+      const octave = Math.floor(degree / SCALE.length) + 1;
+      return SCALE[scaleIndex] * Math.pow(2, octave);
+    };
+
+    const playXiaoNote = (frequency, when, duration, level = .038, expression = {}) => {
+      if (!audioEnabled || !context || !musicBus || !noiseBuffer) return;
+      const start = Math.max(context.currentTime + .006, when);
+      const length = Math.max(1.15, duration);
+      const end = start + length;
+      const attack = Math.min(.58, Math.max(.28, length * .18));
+      const release = Math.min(.86, Math.max(.48, length * .25));
+      const sustainEnd = Math.max(start + attack + .08, end - release);
+      const glideEnd = start + Math.min(.62, attack + .15);
+      const fallStart = Math.max(start + attack + .12, end - Math.min(.48, release * .72));
+      const glideCents = Number(expression.glide) || 0;
+      const fallCents = Number(expression.fall) || -28;
+      const vibratoDepth = Number(expression.vibrato) || 7.5;
+      const vibratoRate = Number(expression.vibratoRate) || (4.25 + Math.random() * .55);
+
+      const carrier = context.createOscillator();
+      const overtone = context.createOscillator();
+      const overtoneGain = context.createGain();
+      const toneFilter = context.createBiquadFilter();
+      const toneGain = context.createGain();
+      const breath = context.createBufferSource();
+      const breathFilter = context.createBiquadFilter();
+      const breathGain = context.createGain();
+      const vibrato = context.createOscillator();
+      const vibratoGain = context.createGain();
+
+      const setExpressivePitch = (oscillator, target) => {
+        const initial = target * Math.pow(2, glideCents / 1200);
+        const final = target * Math.pow(2, fallCents / 1200);
+        oscillator.frequency.setValueAtTime(initial, start);
+        oscillator.frequency.exponentialRampToValueAtTime(target, glideEnd);
+        oscillator.frequency.setValueAtTime(target, fallStart);
+        oscillator.frequency.exponentialRampToValueAtTime(final, end);
+      };
+
+      carrier.type = 'sine';
+      overtone.type = 'sine';
+      setExpressivePitch(carrier, frequency);
+      setExpressivePitch(overtone, frequency * 2.002);
+      overtoneGain.gain.setValueAtTime(.13, start);
+      overtoneGain.gain.linearRampToValueAtTime(.085, sustainEnd);
+
+      toneFilter.type = 'lowpass';
+      toneFilter.frequency.setValueAtTime(Math.min(1900, 920 + frequency * 2.25), start);
+      toneFilter.frequency.linearRampToValueAtTime(Math.min(1450, 760 + frequency * 1.65), sustainEnd);
+      toneFilter.Q.setValueAtTime(.82, start);
+
+      toneGain.gain.setValueAtTime(.0001, start);
+      toneGain.gain.exponentialRampToValueAtTime(Math.max(.0002, level), start + attack);
+      toneGain.gain.linearRampToValueAtTime(level * .72, sustainEnd);
+      toneGain.gain.exponentialRampToValueAtTime(.0001, end);
+
+      breath.buffer = noiseBuffer;
+      breath.loop = true;
+      breath.playbackRate.setValueAtTime(.82 + Math.random() * .18, start);
+      breathFilter.type = 'bandpass';
+      breathFilter.frequency.setValueAtTime(1780 + Math.random() * 310, start);
+      breathFilter.frequency.linearRampToValueAtTime(1450 + Math.random() * 240, sustainEnd);
+      breathFilter.Q.setValueAtTime(.72, start);
+      breathGain.gain.setValueAtTime(.0001, start);
+      breathGain.gain.exponentialRampToValueAtTime(Math.max(.0002, level * .34), start + attack * .76);
+      breathGain.gain.linearRampToValueAtTime(level * .19, sustainEnd);
+      breathGain.gain.exponentialRampToValueAtTime(.0001, end);
+
+      vibrato.type = 'sine';
+      vibrato.frequency.setValueAtTime(vibratoRate, start);
+      vibratoGain.gain.setValueAtTime(.0001, start);
+      vibratoGain.gain.linearRampToValueAtTime(vibratoDepth, start + attack + .38);
+      vibratoGain.gain.setValueAtTime(vibratoDepth, sustainEnd);
+      vibratoGain.gain.linearRampToValueAtTime(vibratoDepth * .38, end);
+
+      carrier.connect(toneFilter);
+      overtone.connect(overtoneGain);
+      overtoneGain.connect(toneFilter);
+      toneFilter.connect(toneGain);
+      toneGain.connect(musicBus);
+      breath.connect(breathFilter);
+      breathFilter.connect(breathGain);
+      breathGain.connect(musicBus);
+      vibrato.connect(vibratoGain);
+      vibratoGain.connect(carrier.detune);
+      vibratoGain.connect(overtone.detune);
+
+      carrier.start(start);
+      overtone.start(start);
+      breath.start(start, Math.random() * .7);
+      vibrato.start(start);
+      carrier.stop(end + .035);
+      overtone.stop(end + .035);
+      breath.stop(end + .035);
+      vibrato.stop(end + .035);
+      carrier.onended = disconnectOnEnd([
+        carrier, overtone, overtoneGain, toneFilter, toneGain,
+        breath, breathFilter, breathGain, vibrato, vibratoGain
+      ]);
+    };
+
+    const playXiaoPhrase = (phrase, when, level = .036) => {
+      phrase.forEach((turn, index) => {
+        playXiaoNote(
+          modeFrequency(turn.degree),
+          when + turn.at,
+          turn.hold,
+          Math.max(.024, level - index * .0025),
+          {
+            glide: turn.glide,
+            fall: turn.fall,
+            vibrato: 6.5 + index * 1.15,
+            vibratoRate: 4.25 + index * .18
+          }
+        );
+      });
+    };
+
     const noiseBurst = (when, duration, level, frequency = 1200, type = 'bandpass') => {
       if (!audioEnabled || !context || !noiseBuffer || !sfxBus) return;
       const source = context.createBufferSource();
@@ -294,22 +461,32 @@
     const cueOpening = index => {
       if (!audioEnabled || !context) return;
       const now = context.currentTime + .025;
+      const openingDegrees = [0, 2, 3, 1];
       if (!reducedMotion) paperRustle(now, .62);
-      playPluck(SCALE[index % SCALE.length], now + .16, .052);
+      playPluck(SCALE[index % SCALE.length], now + .16, .044);
+      playXiaoNote(
+        modeFrequency(openingDegrees[index % openingDegrees.length]),
+        now + .22,
+        2.65,
+        .033,
+        { glide: index % 2 ? 38 : -48, fall: -38 - index * 4, vibrato: 7.2 }
+      );
     };
 
     const cueTransition = index => {
       if (!audioEnabled || !context) return;
       const now = context.currentTime + .025;
       const phrase = transitionPhrases[index % transitionPhrases.length];
+      const xiaoTurn = transitionXiaoTurns[index % transitionXiaoTurns.length];
       if (!reducedMotion) {
         paperRustle(now, .82);
         rodClick(now + .14, 760 + index * 29, .9);
         rodClick(now + .29, 980 - index * 17, .48);
       }
       phrase.forEach((note, noteIndex) => {
-        playPluck(SCALE[note], now + .52 + noteIndex * .38, .055 - noteIndex * .006);
+        playPluck(SCALE[note], now + .52 + noteIndex * .46, .045 - noteIndex * .005);
       });
+      playXiaoPhrase(xiaoTurn, now + .72, .0335);
     };
 
     const cueEnding = () => {
@@ -320,17 +497,22 @@
         playTone(frequency, now + .14, 5.2 - index * .45, .052 / (index + 1), 'sine', musicBus);
       });
       [0, 1, 3, 0].forEach((note, index) => {
-        playPluck(SCALE[note], now + .8 + index * .72, .052 - index * .006);
+        playPluck(SCALE[note], now + .8 + index * .82, .044 - index * .005);
       });
+      playXiaoPhrase(endingXiaoPhrase, now + .72, .036);
     };
 
     const playAmbientPhrase = () => {
       if (!audioEnabled || !context || document.hidden) return;
       const now = context.currentTime + .04;
-      const start = Math.floor(Math.random() * SCALE.length);
-      const notes = [start, (start + 3) % SCALE.length, (start + 1) % SCALE.length];
-      notes.forEach((note, index) => playPluck(SCALE[note] / (index === 2 ? 2 : 1), now + index * 1.15, .031));
-      playTone(SCALE[(start + 2) % SCALE.length] / 2, now + .35, 3.6, .019, 'sine', musicBus);
+      const phrase = ambientXiaoPhrases[ambientPhraseIndex % ambientXiaoPhrases.length];
+      const supportNotes = [[0, 3, 1], [0, 4, 2], [0, 1, 3]][ambientPhraseIndex % 3];
+      ambientPhraseIndex += 1;
+      supportNotes.forEach((note, index) => {
+        playPluck(SCALE[note] / (index === 2 ? 2 : 1), now + .12 + index * 2.18, .025 - index * .002);
+      });
+      playTone(73.42, now + .3, 5.4, .013, 'sine', musicBus);
+      playXiaoPhrase(phrase, now + .36, .032);
     };
 
     const startDrone = () => {
@@ -338,12 +520,14 @@
       [73.42, 110].forEach((frequency, index) => {
         const oscillator = context.createOscillator();
         const gain = context.createGain();
+        const now = context.currentTime;
         oscillator.type = index ? 'sine' : 'triangle';
         oscillator.frequency.value = frequency;
-        gain.gain.value = index ? .018 : .022;
+        gain.gain.setValueAtTime(.0001, now);
+        gain.gain.exponentialRampToValueAtTime(index ? .014 : .017, now + 1.8 + index * .35);
         oscillator.connect(gain);
         gain.connect(musicBus);
-        oscillator.start();
+        oscillator.start(now);
       });
     };
 
@@ -394,6 +578,7 @@
       try {
         context = new AudioCtor();
         buildAudioGraph();
+        ambientPhraseIndex = 0;
         audioEnabled = true;
         updateControls();
         startDrone();
@@ -402,7 +587,7 @@
         if (opening && !opening.classList.contains('is-gone')) cueOpening(Math.max(0, Number(opening.dataset.scene || 1) - 1));
         else playAmbientPhrase();
         window.clearInterval(ambientTimer);
-        ambientTimer = window.setInterval(playAmbientPhrase, 15000);
+        ambientTimer = window.setInterval(playAmbientPhrase, 19000);
       } catch (_) {
         audioEnabled = false;
         updateControls();
