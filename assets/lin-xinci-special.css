@@ -32,3 +32,5 @@ html[lang="zh-Hans"] .lx-page :where(h1,h2,h3,h4,h5,h6,p,a,button,span,strong,b,
 html[lang="zh-Hans"] .lx-page{font-weight:400;}
 html[lang="zh-Hans"] .lx-page :where(h1,h2,h3,h4,h5,h6,strong,b){font-weight:700!important;}
 html[lang="zh-Hans"] .lx-page :where(.lx-brand,.lx-kicker,.lx-status,.lx-update,.lx-nav-links a,.lx-ledger-label,.lx-section-no,.lx-timeline-item time,.lx-fact small,.lx-copy-button){font-weight:700!important;}
+/* 2026-08-14 — the hero caption now carries the case purpose. */
+.lx-visual-label{max-width:min(92%,34rem);letter-spacing:.035em;font-weight:700;line-height:1.75}

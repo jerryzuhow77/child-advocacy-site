@@ -7526,6 +7526,39 @@ img,video,iframe,table { max-width: 100%; }
     text-align:left;
   }
 }
-/* 2026-08-14 — allow a second click to keep nested menus collapsed under the pointer */
+/* 2026-08-14 — 土城兩歲男童案：完整網站開頭導覽動畫 */
+body.tucheng-intro-active{overflow:hidden}
+.case-intro-cinematic-card{grid-template-columns:minmax(0,.9fr) minmax(300px,1.1fr);background:linear-gradient(135deg,#fffdf8,#f4eadb)}
+.tucheng-intro-replay{margin-top:18px;border:0;cursor:pointer}
+.tucheng-intro-preview{position:relative;overflow:hidden;margin:0;border-radius:20px;background:#071b2c;box-shadow:0 15px 35px rgba(4,24,39,.2)}
+.tucheng-intro-preview img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;filter:saturate(.72) contrast(.96)}
+.tucheng-intro-preview figcaption{position:absolute;inset:auto 0 0;padding:34px 20px 15px;background:linear-gradient(transparent,rgba(3,17,28,.9));color:#f6e8ca;font-size:12px;line-height:1.55}
+.tucheng-intro[hidden]{display:none}
+.tucheng-intro{position:fixed;z-index:99999;inset:0;display:grid;place-items:center;overflow:hidden;background:#061522;color:#fff;opacity:0;transition:opacity .42s ease}
+.tucheng-intro.is-playing{opacity:1}
+.tucheng-intro-bg{position:absolute;inset:-4%;background:url('art/tucheng-two-year-old-case-poster.jpg') center/cover no-repeat;filter:brightness(.28) saturate(.62);transform:scale(1.08);transition:transform 12s cubic-bezier(.2,.7,.2,1),filter 8s ease}
+.tucheng-intro.is-playing .tucheng-intro-bg{transform:scale(1);filter:brightness(.38) saturate(.72)}
+.tucheng-intro-vignette{position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,transparent 10%,rgba(2,12,20,.3) 48%,rgba(2,10,17,.88) 100%),linear-gradient(90deg,rgba(4,16,26,.55),transparent 42%,rgba(4,16,26,.55))}
+.tucheng-intro-skip{position:absolute;z-index:4;right:clamp(18px,4vw,52px);top:clamp(18px,4vw,42px);padding:9px 15px;border:1px solid rgba(255,255,255,.38);border-radius:999px;background:rgba(4,20,32,.54);color:#fff;cursor:pointer;backdrop-filter:blur(8px)}
+.tucheng-intro-story{position:relative;z-index:3;width:min(900px,88vw);min-height:460px;display:grid;place-items:center;text-align:center}
+.tucheng-intro-line,.tucheng-intro-title{position:absolute;width:100%;margin:0;opacity:0;transform:translateY(18px);font-family:"Noto Serif TC","Noto Serif CJK TC",serif;text-shadow:0 3px 24px rgba(0,0,0,.8)}
+.tucheng-intro-line{font-size:clamp(21px,3vw,38px);line-height:1.75;letter-spacing:.04em}
+.tucheng-intro.is-playing .line-1{animation:tuchengLine 2.7s .35s both}
+.tucheng-intro.is-playing .line-2{animation:tuchengLine 3.2s 2.75s both}
+.tucheng-intro.is-playing .line-3{animation:tuchengLine 2.8s 5.75s both}
+.tucheng-intro-title small{display:block;margin-bottom:12px;color:#d6aa51;font-family:inherit;font-size:11px;font-weight:900;letter-spacing:.22em}
+.tucheng-intro-title h2{margin:0;color:#fff7e7;font-size:clamp(38px,6vw,74px);line-height:1.25}
+.tucheng-intro-title h2 span{color:#e0b864}
+.tucheng-intro-title p{margin:18px auto 25px;max-width:640px;color:#d6dce0;font-size:clamp(14px,1.7vw,18px);line-height:1.75}
+.tucheng-intro-title .btn{border:0;cursor:pointer}
+.tucheng-intro.is-playing .tucheng-intro-title{animation:tuchengTitle 1.3s 8.3s both}
+.tucheng-intro-milk{position:absolute;z-index:2;left:50%;bottom:8%;display:flex;gap:18px;opacity:.38;transform:translateX(-50%)}
+.tucheng-intro-milk i{position:relative;width:22px;height:64px;border:1px solid rgba(248,232,196,.5);border-radius:7px 7px 10px 10px;background:linear-gradient(to top,rgba(245,232,202,.7) 56%,rgba(255,255,255,.08) 57%);box-shadow:0 0 30px rgba(227,186,96,.16)}
+.tucheng-intro-milk i:before{content:"";position:absolute;left:5px;top:-10px;width:10px;height:12px;border:1px solid rgba(248,232,196,.45);border-radius:3px 3px 0 0}
+@keyframes tuchengLine{0%{opacity:0;transform:translateY(18px)}18%,72%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-12px)}}
+@keyframes tuchengTitle{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@media(max-width:820px){.case-intro-cinematic-card{grid-template-columns:1fr}.tucheng-intro-story{min-height:520px}.tucheng-intro-line{font-size:clamp(19px,5.2vw,29px)}.tucheng-intro-title h2{font-size:clamp(34px,10vw,52px)}}
+@media(prefers-reduced-motion:reduce){.tucheng-intro-bg{transition:none;transform:none}.tucheng-intro-line{display:none}.tucheng-intro.is-playing .tucheng-intro-title{animation:none;opacity:1;transform:none}}
+/* Preserve the homepage nested-menu second-click collapse behavior. */
 .social-case-tier.is-click-collapsed .social-case-tier-children{display:none!important}
 .historical-case-nav .social-case-menu-column.is-click-collapsed .historical-region-list,.historical-case-nav .social-case-menu-column.is-click-collapsed .historical-region-note{display:none!important}
