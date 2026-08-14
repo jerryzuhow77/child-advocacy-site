@@ -729,17 +729,20 @@ function initHistoricalRegionMenus(){
 document.addEventListener('DOMContentLoaded',initHistoricalRegionMenus);
 
 /* =====================================================================
-   2026-08-13 — 特定專題：桌機左右並列、手機手風琴
+   2026-08-14 — 特別專題：桌機與手機皆採逐層點擊收放
    ===================================================================== */
 function initSpecialFeatureColumns(){
   const menus=[...document.querySelectorAll('.special-feature-nav-menu')];
   if(!menus.length) return;
 
-  const isCompact=()=>window.innerWidth<=800;
   const collapse=group=>{
     group.classList.remove('is-expanded');
     const button=group.querySelector('.special-feature-case-toggle');
     if(button) button.setAttribute('aria-expanded','false');
+    group.querySelectorAll('.special-feature-prologue-group.is-expanded').forEach(nested=>{
+      nested.classList.remove('is-expanded');
+      nested.querySelector('.special-feature-menu-prologue')?.setAttribute('aria-expanded','false');
+    });
   };
   const expand=group=>{
     const menu=group.closest('.special-feature-nav-menu');
@@ -757,13 +760,12 @@ function initSpecialFeatureColumns(){
       const button=group.querySelector('.special-feature-case-toggle');
       if(!button) return;
       button.addEventListener('click',event=>{
-        if(!isCompact()) return;
         event.preventDefault();
         event.stopPropagation();
         group.classList.contains('is-expanded') ? collapse(group) : expand(group);
       });
       button.addEventListener('keydown',event=>{
-        if(!isCompact() && (event.key==='ArrowLeft'||event.key==='ArrowRight')){
+        if(window.innerWidth>800 && (event.key==='ArrowLeft'||event.key==='ArrowRight')){
           event.preventDefault();
           const step=event.key==='ArrowRight'?1:-1;
           const target=groups[(index+step+groups.length)%groups.length];
@@ -773,14 +775,9 @@ function initSpecialFeatureColumns(){
     });
 
     const syncMode=()=>{
-      groups.forEach((group,index)=>{
+      groups.forEach(group=>{
         const button=group.querySelector('.special-feature-case-toggle');
-        if(isCompact()){
-          button?.setAttribute('aria-expanded',group.classList.contains('is-expanded')?'true':'false');
-        }else{
-          group.classList.remove('is-expanded');
-          button?.setAttribute('aria-expanded','true');
-        }
+        button?.setAttribute('aria-expanded',group.classList.contains('is-expanded')?'true':'false');
       });
     };
     syncMode();
@@ -799,14 +796,9 @@ function initSpecialFeaturePrologueChildren(){
       prologue.setAttribute('aria-expanded',expanded?'true':'false');
     };
     prologue.addEventListener('click',event=>{
-      if(!group.classList.contains('is-expanded')){
-        event.preventDefault();
-        event.stopPropagation();
-        setExpanded(true);
-      }
-    });
-    group.addEventListener('mouseleave',()=>{
-      if(window.innerWidth>800) setExpanded(false);
+      event.preventDefault();
+      event.stopPropagation();
+      setExpanded(!group.classList.contains('is-expanded'));
     });
     group.addEventListener('keydown',event=>{
       if(event.key==='Escape'){
