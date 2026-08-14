@@ -21,17 +21,28 @@
     { woman: [3, 1, 4, 0], scribe: [3, 2, 4, 0] }
   ];
   const ACT_POSES = {
-    'scroll-prologue': { woman: [0, 1, 2, 0], scribe: [0, 1, 1, 0] },
-    'wind-kite': { woman: [0, 1, 2, 5], scribe: [0, 2, 2, 0] },
-    'ten-knot-door': { woman: [0, 1, 0, 3], scribe: [0, 2, 0, 3] },
-    'frost-lantern': { woman: [0, 3, 4, 3], scribe: [0, 3, 4, 3] },
-    'court-scroll': { woman: [0, 2, 1, 0], scribe: [0, 1, 2, 0] },
-    'seal-road': { woman: [0, 5, 1, 5], scribe: [0, 2, 3, 0] },
-    'evidence-blocks': { woman: [0, 2, 1, 0], scribe: [0, 1, 2, 3] },
-    'seven-moon': { woman: [0, 1, 2, 3], scribe: [0, 2, 3, 0] },
-    'guarded-lamp': { woman: [3, 1, 4, 0], scribe: [3, 2, 4, 0] }
+    'scroll-prologue': { woman: [0, 0, 1, 0], scribe: [0, 1, 3, 0] },
+    'wind-kite': { woman: [0, 1, 0, 5], scribe: [0, 0, 2, 0] },
+    'ten-knot-door': { woman: [0, 1, 0, 3], scribe: [0, 0, 2, 3] },
+    'frost-lantern': { woman: [0, 3, 4, 3], scribe: [0, 0, 2, 0] },
+    'court-scroll': { woman: [0, 0, 2, 0], scribe: [0, 1, 0, 0] },
+    'seal-road': { woman: [0, 5, 1, 3], scribe: [0, 0, 2, 3] },
+    'evidence-blocks': { woman: [0, 0, 1, 0], scribe: [0, 1, 2, 3] },
+    'seven-moon': { woman: [0, 1, 2, 3], scribe: [0, 0, 2, 0] },
+    'guarded-lamp': { woman: [3, 1, 5, 4], scribe: [3, 0, 2, 4] }
   };
   const ENDING_POSES = { woman: [0, 5, 4, 3], scribe: [0, 5, 4, 3] };
+  const ACT_STORY_DURATIONS = {
+    'scroll-prologue': 7.2,
+    'wind-kite': 8,
+    'ten-knot-door': 8.2,
+    'frost-lantern': 8,
+    'court-scroll': 8.4,
+    'seal-road': 8.6,
+    'evidence-blocks': 8.2,
+    'seven-moon': 9,
+    'guarded-lamp': 9.2
+  };
 
   const makePart = (tag, className) => {
     const node = document.createElement(tag);
@@ -187,7 +198,18 @@
       const scene = transition.dataset.shadowScene;
       const fallback = $('.tt-transition-puppet', transition);
       if (!scene || !fallback || $('.tt-shadow-stage', transition)) return;
-      fallback.replaceWith(makeShadowStage(scene));
+      const stage = makeShadowStage(scene);
+      const speakers = $$('.tt-shadow-dialogue p[data-speaker]', transition)
+        .map(line => line.dataset.speaker)
+        .filter(Boolean);
+      const storyFlow = speakers.length ? speakers.join('-') : 'together';
+      const storyDuration = ACT_STORY_DURATIONS[scene] || 8;
+      transition.dataset.ttStoryFlow = storyFlow;
+      transition.style.setProperty('--tt-story-duration', `${storyDuration}s`);
+      stage.dataset.ttStoryFlow = storyFlow;
+      const poseLayer = $('.tt-pose-layer--transition', stage);
+      if (poseLayer) poseLayer.style.setProperty('--tt-pose-duration', `${storyDuration}s`);
+      fallback.replaceWith(stage);
       transition.classList.add('tt-shadow-ready');
     });
   }

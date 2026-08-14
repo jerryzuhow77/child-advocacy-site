@@ -1546,6 +1546,121 @@ body.tt-audio-active .tt-audio-toggle{border-color:rgba(239,195,105,.86);backgro
   }
 }
 
+/* v9 story choreography: each interlude now follows the order of its
+   dialogue. The original puppet designs stay untouched; pose, light, prop and
+   camera beats create the dramatic action around them. */
+.tt-pose-layer--transition{--tt-pose-duration:var(--tt-act-duration,8s)}
+.tt-transition[data-shadow-scene="scroll-prologue"]{--tt-act-duration:7.2s;--tt-cam-from:108% auto;--tt-cam-to:102% auto;--tt-story-light:rgba(235,194,118,.34)}
+.tt-transition[data-shadow-scene="wind-kite"]{--tt-act-duration:8s;--tt-cam-from:102% auto;--tt-cam-to:105% auto;--tt-story-light:rgba(241,201,120,.36)}
+.tt-transition[data-shadow-scene="ten-knot-door"]{--tt-act-duration:8.2s;--tt-cam-from:101% auto;--tt-cam-to:105% auto;--tt-story-light:rgba(213,140,82,.32)}
+.tt-transition[data-shadow-scene="frost-lantern"]{--tt-act-duration:8s;--tt-cam-from:106% auto;--tt-cam-to:101% auto;--tt-story-light:rgba(190,219,211,.3)}
+.tt-transition[data-shadow-scene="court-scroll"]{--tt-act-duration:8.4s;--tt-cam-from:103% auto;--tt-cam-to:101% auto;--tt-story-light:rgba(235,184,103,.31)}
+.tt-transition[data-shadow-scene="seal-road"]{--tt-act-duration:8.6s;--tt-cam-from:104% auto;--tt-cam-to:101% auto;--tt-story-light:rgba(222,164,104,.32)}
+.tt-transition[data-shadow-scene="evidence-blocks"]{--tt-act-duration:8.2s;--tt-cam-from:101% auto;--tt-cam-to:101% auto;--tt-story-light:rgba(210,191,144,.3)}
+.tt-transition[data-shadow-scene="seven-moon"]{--tt-act-duration:9s;--tt-cam-from:106% auto;--tt-cam-to:102% auto;--tt-story-light:rgba(190,211,213,.34)}
+.tt-transition[data-shadow-scene="guarded-lamp"]{--tt-act-duration:9.2s;--tt-cam-from:106% auto;--tt-cam-to:100% auto;--tt-story-light:rgba(247,203,113,.4)}
+
+/* A hand-lit pool follows the current speaker: left for the woman, right for
+   the scribe, and centre when both voices join. It sits below craft props and
+   puppets, so no face, garment or control rod is washed out. */
+.tt-shadow-stage::before{
+  content:"";
+  position:absolute;
+  z-index:2;
+  top:-14%;
+  bottom:-14%;
+  left:18%;
+  right:18%;
+  background:radial-gradient(ellipse at 50% 57%,var(--tt-story-light,rgba(239,199,122,.34)) 0,rgba(239,199,122,.12) 27%,transparent 66%);
+  filter:blur(11px);
+  mix-blend-mode:screen;
+  opacity:0;
+  pointer-events:none;
+  will-change:transform,opacity;
+}
+.tt-transition.is-visible[data-tt-story-flow="woman-scribe"] .tt-shadow-stage::before{animation:tt-story-light-woman-scribe var(--tt-story-duration,var(--tt-act-duration,8s)) ease-in-out both}
+.tt-transition.is-visible[data-tt-story-flow="scribe-woman"] .tt-shadow-stage::before{animation:tt-story-light-scribe-woman var(--tt-story-duration,var(--tt-act-duration,8s)) ease-in-out both}
+.tt-transition.is-visible[data-tt-story-flow="woman-scribe-together"] .tt-shadow-stage::before{animation:tt-story-light-three var(--tt-story-duration,var(--tt-act-duration,9.2s)) ease-in-out both}
+.tt-transition.is-visible[data-tt-story-flow="together"] .tt-shadow-stage::before{animation:tt-story-light-together var(--tt-story-duration,var(--tt-act-duration,7.2s)) ease-in-out both}
+@keyframes tt-story-light-woman-scribe{
+  0%{opacity:0;transform:translate3d(-49%,1%,0) scale(.88)}
+  13%,42%{opacity:.78;transform:translate3d(-49%,0,0) scale(1)}
+  52%{opacity:.38;transform:translate3d(0,0,0) scale(.94)}
+  62%,90%{opacity:.72;transform:translate3d(49%,0,0) scale(1)}
+  100%{opacity:.16;transform:translate3d(49%,1%,0) scale(.96)}
+}
+@keyframes tt-story-light-scribe-woman{
+  0%{opacity:0;transform:translate3d(49%,1%,0) scale(.88)}
+  13%,42%{opacity:.76;transform:translate3d(49%,0,0) scale(1)}
+  52%{opacity:.38;transform:translate3d(0,0,0) scale(.94)}
+  62%,90%{opacity:.72;transform:translate3d(-49%,0,0) scale(1)}
+  100%{opacity:.16;transform:translate3d(-49%,1%,0) scale(.96)}
+}
+@keyframes tt-story-light-three{
+  0%{opacity:0;transform:translate3d(-49%,1%,0) scale(.88)}
+  12%,34%{opacity:.78;transform:translate3d(-49%,0,0) scale(1)}
+  43%,64%{opacity:.72;transform:translate3d(49%,0,0) scale(1)}
+  73%,94%{opacity:.8;transform:translate3d(0,-1%,0) scale(1.18)}
+  100%{opacity:.22;transform:translate3d(0,0,0) scale(1.05)}
+}
+@keyframes tt-story-light-together{
+  0%{opacity:0;transform:scale(.82)}
+  18%,78%{opacity:.72;transform:scale(1.12)}
+  100%{opacity:.2;transform:scale(1)}
+}
+
+/* Dialogue appears in the same rhythm as the puppet gestures instead of all
+   lines arriving together. */
+.tt-transition.is-visible[data-tt-story-flow="together"] .tt-shadow-dialogue>p:nth-of-type(1){animation-delay:.9s}
+.tt-transition.is-visible:is([data-tt-story-flow="woman-scribe"],[data-tt-story-flow="scribe-woman"]) .tt-shadow-dialogue>p:nth-of-type(1){animation-delay:.72s}
+.tt-transition.is-visible:is([data-tt-story-flow="woman-scribe"],[data-tt-story-flow="scribe-woman"]) .tt-shadow-dialogue>p:nth-of-type(2){animation-delay:3.55s}
+.tt-transition.is-visible[data-tt-story-flow="woman-scribe-together"] .tt-shadow-dialogue>p:nth-of-type(1){animation-delay:.68s}
+.tt-transition.is-visible[data-tt-story-flow="woman-scribe-together"] .tt-shadow-dialogue>p:nth-of-type(2){animation-delay:3.05s}
+.tt-transition.is-visible[data-tt-story-flow="woman-scribe-together"] .tt-shadow-dialogue>p:nth-of-type(3){animation-delay:5.95s}
+
+/* Scene-specific stage business: doors answer the knock, hands arrive before
+   the door opens, then velvet petals bloom only after both narrators speak. */
+.tt-transition[data-shadow-scene="ten-knot-door"].is-visible .tt-shadow-door::before,
+.tt-transition[data-shadow-scene="ten-knot-door"].is-visible .tt-shadow-door::after{animation-delay:1s}
+.tt-transition[data-shadow-scene="ten-knot-door"].is-visible .tt-shadow-lattice{animation-delay:.9s}
+.tt-transition[data-shadow-scene="guarded-lamp"].is-visible .tt-shadow-open-door::before,
+.tt-transition[data-shadow-scene="guarded-lamp"].is-visible .tt-shadow-open-door::after{animation-delay:1.7s}
+.tt-transition[data-shadow-scene="guarded-lamp"].is-visible .tt-shadow-hand{animation-delay:calc(.8s + var(--tt-delay-knot))}
+.tt-transition[data-shadow-scene="guarded-lamp"].is-visible .tt-shadow-petal{animation-delay:calc(4.1s + var(--tt-delay-petal))}
+.tt-transition.is-visible .tt-shadow-screen{animation:tt-story-paper-breathe var(--tt-story-duration,var(--tt-act-duration,8s)) ease-in-out both}
+@keyframes tt-story-paper-breathe{0%{opacity:.42}42%{opacity:.78}78%{opacity:.62}100%{opacity:.52}}
+
+@media(min-width:721px){
+  .tt-transition.is-visible .tt-pose-actor--woman{animation:tt-story-actor-woman var(--tt-story-duration,var(--tt-act-duration,8s)) cubic-bezier(.2,.72,.2,1) both}
+  .tt-transition.is-visible .tt-pose-actor--scribe{animation:tt-story-actor-scribe var(--tt-story-duration,var(--tt-act-duration,8s)) cubic-bezier(.2,.72,.2,1) both}
+  .tt-transition[data-shadow-scene="frost-lantern"].is-visible .tt-pose-actor--woman{animation-name:tt-story-lament-woman}
+  .tt-transition[data-shadow-scene="guarded-lamp"].is-visible .tt-pose-actor--woman{animation-name:tt-story-gather-woman}
+  .tt-transition[data-shadow-scene="guarded-lamp"].is-visible .tt-pose-actor--scribe{animation-name:tt-story-gather-scribe}
+  @keyframes tt-story-actor-woman{0%{opacity:.7;transform:translate3d(-2.8%,1.2%,0) rotate(-.35deg)}22%{opacity:1;transform:translate3d(0,0,0)}68%{transform:translate3d(1.1%,-.35%,0) rotate(.2deg)}100%{opacity:.98;transform:none}}
+  @keyframes tt-story-actor-scribe{0%{opacity:.7;transform:translate3d(2.8%,1.2%,0) rotate(.35deg)}22%{opacity:1;transform:translate3d(0,0,0)}68%{transform:translate3d(-1.1%,-.35%,0) rotate(-.2deg)}100%{opacity:.98;transform:none}}
+  @keyframes tt-story-lament-woman{0%{opacity:.72;transform:translate3d(-2%,0,0)}28%{opacity:1;transform:none}58%,78%{transform:translate3d(.5%,1.7%,0) rotate(.45deg)}100%{opacity:.96;transform:translate3d(0,1%,0)}}
+  @keyframes tt-story-gather-woman{0%{opacity:.75;transform:translate3d(-2%,1%,0)}28%{opacity:1;transform:none}72%,92%{transform:translate3d(3.2%,0,0)}100%{opacity:.98;transform:translate3d(2.1%,0,0)}}
+  @keyframes tt-story-gather-scribe{0%{opacity:.75;transform:translate3d(2%,1%,0)}28%{opacity:1;transform:none}72%,92%{transform:translate3d(-3.2%,0,0)}100%{opacity:.98;transform:translate3d(-2.1%,0,0)}}
+}
+
+@media(min-width:901px){
+  html.tt-pose-ready .tt-transition.is-visible .tt-shadow-stage{
+    animation:tt-act-camera var(--tt-act-duration,8s) cubic-bezier(.18,.75,.2,1) both,tt-v6-fixed-tableau-light var(--tt-act-duration,8s) ease-out both;
+  }
+  @keyframes tt-act-camera{
+    from{background-size:100% 100%,100% 100%,var(--tt-cam-from,103% auto)}
+    to{background-size:100% 100%,100% 100%,var(--tt-cam-to,101% auto)}
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .tt-shadow-stage::before{display:none!important;animation:none!important}
+  .tt-transition.is-visible .tt-shadow-stage,
+  .tt-transition.is-visible .tt-shadow-screen,
+  .tt-transition.is-visible .tt-pose-actor{animation:none!important;transform:none!important}
+  .tt-transition .tt-shadow-dialogue>p{opacity:1!important;transform:none!important;animation:none!important}
+}
+
 @media(prefers-reduced-motion:reduce){
   .tt-opening::before,
   .tt-stage,
@@ -2056,3 +2171,74 @@ html.tt-pose-ready .tt-ending::before{
   .tt-transition[data-shadow-scene]::after{opacity:1!important;transform:none!important}
   .tt-transition[data-shadow-scene] .tt-shadow-props{display:block!important}
 }
+
+/* v8.2 ending legibility: a translucent Xuan-paper glass pane protects the
+   copy without laying an opaque rectangle over the child in the hero image. */
+.tt-ending-copy{
+  isolation:isolate;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+.tt-ending-copy::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:0;
+  border:1px solid rgba(238,201,128,.38);
+  background:
+    repeating-linear-gradient(96deg,rgba(247,226,183,.035) 0 1px,transparent 1px 8px),
+    linear-gradient(135deg,rgba(14,8,6,.82),rgba(37,19,12,.76));
+  box-shadow:0 22px 56px rgba(7,3,2,.32),inset 0 0 44px rgba(226,173,82,.035);
+  pointer-events:none;
+}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .tt-ending-copy::before{
+    background:
+      repeating-linear-gradient(96deg,rgba(247,226,183,.04) 0 1px,transparent 1px 8px),
+      linear-gradient(135deg,rgba(14,8,6,.66),rgba(37,19,12,.58));
+    backdrop-filter:blur(7px) brightness(.4) saturate(.72);
+    -webkit-backdrop-filter:blur(7px) brightness(.4) saturate(.72);
+  }
+}
+.tt-ending h2{color:#fff7e7;text-shadow:0 3px 18px rgba(0,0,0,.92)}
+.tt-ending p{color:#f0ede4;text-shadow:0 2px 12px rgba(0,0,0,.9)}
+.tt-ending-question{color:#f0cb7d;text-shadow:0 2px 12px rgba(0,0,0,.94)}
+
+@media(min-width:901px){
+  .tt-ending-copy{
+    width:min(600px,46vw);
+    max-width:600px;
+    margin-right:clamp(30px,6vw,98px);
+    margin-left:auto;
+    padding:clamp(28px,3vw,40px) clamp(30px,3.6vw,48px) clamp(32px,3.2vw,44px);
+  }
+}
+
+@media(max-width:900px){
+  .tt-ending::before,
+  html.tt-pose-ready .tt-ending::before{
+    background:
+      linear-gradient(0deg,rgba(10,5,4,.98) 0%,rgba(18,9,6,.78) 38%,rgba(18,9,6,.15) 72%,rgba(12,6,4,.28) 100%),
+      url("./art/tian-tian-ink-paper-documentary-20260815.webp") 50% 0/auto clamp(300px,55vw,430px) no-repeat,
+      #120906;
+    background-position:center,50% 0,center!important;
+  }
+  .tt-ending-copy{
+    width:min(100% - 24px,680px);
+    max-width:680px;
+    margin:0 auto 18px;
+    padding:clamp(330px,62vw,470px) clamp(18px,5vw,34px) 82px;
+  }
+  .tt-ending-copy::before{
+    top:clamp(318px,60vw,454px);
+    right:0;
+    bottom:42px;
+    left:0;
+  }
+}
+
+/* Keep the scene-defined duration after all legacy pose defaults. */
+.tt-pose-layer--transition{--tt-pose-duration:var(--tt-act-duration,8s)}
