@@ -7547,6 +7547,52 @@ body.tucheng-intro-active{overflow:hidden}
 .tucheng-intro.is-playing .line-2{animation:tuchengLine 3.2s 2.75s both}
 .tucheng-intro.is-playing .line-3{animation:tuchengLine 2.8s 5.75s both}
 .tucheng-intro-title small{display:block;margin-bottom:12px;color:#d6aa51;font-family:inherit;font-size:11px;font-weight:900;letter-spacing:.22em}
+
+/* 2026-08-14 — Inner Mongolia Tian Tian feature cards and shared copy rhythm. */
+.is-tian-tian .home-news-card-media,
+.home-case-reel-card.is-tian-tian .home-case-reel-media{
+  background:#332f2a;
+}
+.is-tian-tian .home-news-card-media img,
+.home-case-reel-card.is-tian-tian .home-case-reel-media img{
+  object-position:center 58%;
+  filter:saturate(.82) contrast(1.03);
+}
+.is-tian-tian .home-news-card-media::after,
+.home-case-reel-card.is-tian-tian .home-case-reel-media::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(110deg,rgba(28,27,25,.42),transparent 48%,rgba(191,151,78,.08));
+}
+.is-tian-tian .home-news-card-copy strong,
+.home-progress-card.is-tian-tian strong,
+.home-case-reel-card.is-tian-tian .home-case-reel-copy strong{
+  text-wrap:balance;
+}
+.is-tian-tian .home-news-card-copy p,
+.home-progress-card.is-tian-tian p,
+.home-case-reel-card.is-tian-tian .home-case-reel-copy > span{
+  color:#6d665e;
+  text-wrap:pretty;
+}
+html[lang="en"] .is-tian-tian .home-news-card-copy strong,
+html[lang="en"] .home-progress-card.is-tian-tian strong,
+html[lang="en"] .home-case-reel-card.is-tian-tian .home-case-reel-copy strong{
+  font-size:1rem!important;
+  line-height:1.48!important;
+}
+html[lang="ja"] .is-tian-tian .home-news-card-copy strong,
+html[lang="ja"] .home-progress-card.is-tian-tian strong,
+html[lang="ja"] .home-case-reel-card.is-tian-tian .home-case-reel-copy strong{
+  font-size:1.02rem!important;
+  line-height:1.62!important;
+}
+@media(max-width:560px){
+  .is-tian-tian .home-news-card-copy,
+  .home-case-reel-card.is-tian-tian .home-case-reel-copy{padding-inline:15px}
+}
 .tucheng-intro-title h2{margin:0;color:#fff7e7;font-size:clamp(38px,6vw,74px);line-height:1.25}
 .tucheng-intro-title h2 span{color:#e0b864}
 .tucheng-intro-title p{margin:18px auto 25px;max-width:640px;color:#d6dce0;font-size:clamp(14px,1.7vw,18px);line-height:1.75}

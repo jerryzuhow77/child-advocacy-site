@@ -974,6 +974,11 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     if (contentRoute === 'historical-cases/regions/japan/kurihara-mia') {
       return 'historical-kurihara-mia-shared';
     }
+    // The Traditional/Simplified, English and Japanese Tian Tian features,
+    // plus every homepage card that links to them, use one public count.
+    if (contentRoute === 'historical-cases/regions/mainland-china/tian-tian') {
+      return 'historical-tian-tian-shared';
+    }
     return route.replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
   }
 
