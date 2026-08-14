@@ -5,6 +5,33 @@
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const SVG_NS = 'http://www.w3.org/2000/svg';
+  const SCRIPT_URL = document.currentScript && document.currentScript.src;
+  const assetUrl = relativePath => SCRIPT_URL ? new URL(relativePath, SCRIPT_URL).href : relativePath;
+  const POSE_SHEETS = {
+    woman: assetUrl('./art/tian-tian-shadow-woman-poses-20260814.webp'),
+    scribe: assetUrl('./art/tian-tian-shadow-scribe-poses-20260814.webp')
+  };
+  const SCORE_URL = assetUrl('./audio/tian-tian-original-score-20260814.mp3');
+  const POSE_POSITIONS = ['0% 0%', '50% 0%', '100% 0%', '0% 100%', '50% 100%', '100% 100%'];
+  const OPENING_POSES = [
+    { woman: [0, 1, 0, 0], scribe: [0, 0, 1, 0] },
+    { woman: [0, 1, 0, 0], scribe: [0, 1, 2, 0] },
+    { woman: [0, 2, 1, 0], scribe: [0, 2, 0, 0] },
+    { woman: [0, 3, 5, 3], scribe: [0, 1, 3, 0] },
+    { woman: [3, 1, 4, 0], scribe: [3, 2, 4, 0] }
+  ];
+  const ACT_POSES = {
+    'scroll-prologue': { woman: [0, 1, 2, 0], scribe: [0, 1, 1, 0] },
+    'wind-kite': { woman: [0, 1, 2, 5], scribe: [0, 2, 2, 0] },
+    'ten-knot-door': { woman: [0, 1, 0, 3], scribe: [0, 2, 0, 3] },
+    'frost-lantern': { woman: [0, 3, 4, 3], scribe: [0, 3, 4, 3] },
+    'court-scroll': { woman: [0, 2, 1, 0], scribe: [0, 1, 2, 0] },
+    'seal-road': { woman: [0, 5, 1, 5], scribe: [0, 2, 3, 0] },
+    'evidence-blocks': { woman: [0, 2, 1, 0], scribe: [0, 1, 2, 3] },
+    'seven-moon': { woman: [0, 1, 2, 3], scribe: [0, 2, 3, 0] },
+    'guarded-lamp': { woman: [3, 1, 4, 0], scribe: [3, 2, 4, 0] }
+  };
+  const ENDING_POSES = { woman: [0, 5, 4, 3], scribe: [0, 5, 4, 3] };
 
   const makePart = (tag, className) => {
     const node = document.createElement(tag);
@@ -44,20 +71,53 @@
     return svg;
   }
 
-  function makeShadowFigure(role) {
-    const figure = makePart('span', `tt-shadow-figure tt-shadow-figure--${role}`);
-    [
-      'tt-shadow-cast',
-      'tt-shadow-crown',
-      'tt-shadow-head',
-      'tt-shadow-body',
-      'tt-shadow-skirt',
-      'tt-shadow-arm tt-shadow-arm--upper',
-      'tt-shadow-arm tt-shadow-arm--lower',
-      'tt-shadow-rod tt-shadow-rod--front',
-      'tt-shadow-rod tt-shadow-rod--rear'
-    ].forEach(className => figure.append(makePart('i', className)));
-    return figure;
+  function makePoseActor(role) {
+    const actor = makePart('span', `tt-pose-actor tt-pose-actor--${role}`);
+    actor.dataset.ttPoseRole = role;
+    actor.append(makePart('i', 'tt-pose-sprite'));
+    return actor;
+  }
+
+  function applyPoseSequence(layer, sequence, play = true) {
+    if (!layer || !sequence) return;
+    ['woman', 'scribe'].forEach(role => {
+      const actor = $(`[data-tt-pose-role="${role}"]`, layer);
+      const frames = sequence[role] || [0, 0, 0, 0];
+      if (!actor) return;
+      actor.style.setProperty('--tt-pose-start', POSE_POSITIONS[frames[0]] || POSE_POSITIONS[0]);
+      actor.style.setProperty('--tt-pose-mid', POSE_POSITIONS[frames[1]] || POSE_POSITIONS[0]);
+      actor.style.setProperty('--tt-pose-action', POSE_POSITIONS[frames[2]] || POSE_POSITIONS[0]);
+      actor.style.setProperty('--tt-pose-end', POSE_POSITIONS[frames[3]] || POSE_POSITIONS[0]);
+    });
+    layer.classList.remove('is-playing');
+    if (!play || reducedMotion) return;
+    window.requestAnimationFrame(() => {
+      void layer.offsetWidth;
+      layer.classList.add('is-playing');
+    });
+  }
+
+  function makePoseLayer(context, sequence) {
+    const layer = makePart('span', `tt-pose-layer tt-pose-layer--${context}`);
+    layer.setAttribute('aria-hidden', 'true');
+    layer.append(makePoseActor('woman'), makePoseActor('scribe'));
+    applyPoseSequence(layer, sequence, false);
+    return layer;
+  }
+
+  function preloadPoseSheets() {
+    const requests = Object.values(POSE_SHEETS).map(src => new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = resolve;
+      image.onerror = reject;
+      image.src = src;
+      if (image.complete && image.naturalWidth) resolve();
+    }));
+    Promise.all(requests).then(() => {
+      document.documentElement.classList.add('tt-pose-ready');
+    }).catch(() => {
+      document.documentElement.classList.add('tt-pose-fallback');
+    });
   }
 
   function makeShadowStage(scene) {
@@ -118,8 +178,7 @@
     }
 
     stage.append(props);
-    stage.append(makeShadowFigure('woman'));
-    stage.append(makeShadowFigure('scribe'));
+    stage.append(makePoseLayer('transition', ACT_POSES[scene] || ACT_POSES['scroll-prologue']));
     return stage;
   }
 
@@ -131,15 +190,40 @@
       fallback.replaceWith(makeShadowStage(scene));
       transition.classList.add('tt-shadow-ready');
     });
+  }
 
-    const endingCraft = $('.tt-ending-craft');
-    if (endingCraft && !$('.tt-shadow-figure', endingCraft)) {
-      const woman = makeShadowFigure('woman');
-      const scribe = makeShadowFigure('scribe');
-      woman.classList.add('tt-shadow-figure--ending');
-      scribe.classList.add('tt-shadow-figure--ending');
-      endingCraft.append(woman, scribe);
+  function initPoseTheatre() {
+    const openingStage = $('.tt-stage');
+    if (openingStage && !$('.tt-pose-layer--opening', openingStage)) {
+      openingStage.append(makePoseLayer('opening', OPENING_POSES[0]));
     }
+    const ending = $('[data-tt-ending]');
+    if (ending && !$('.tt-pose-layer--ending', ending)) {
+      ending.append(makePoseLayer('ending', ENDING_POSES));
+    }
+
+    preloadPoseSheets();
+
+    const targets = [...$$('[data-shadow-scene]'), ...(ending ? [ending] : [])];
+    if (reducedMotion || !('IntersectionObserver' in window)) {
+      targets.forEach(target => {
+        const layer = $('.tt-pose-layer', target);
+        const scene = target.dataset.shadowScene;
+        applyPoseSequence(layer, scene ? ACT_POSES[scene] : ENDING_POSES, false);
+      });
+      return;
+    }
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const target = entry.target;
+        const layer = $('.tt-pose-layer', target);
+        const scene = target.dataset.shadowScene;
+        applyPoseSequence(layer, scene ? ACT_POSES[scene] : ENDING_POSES, true);
+        observer.unobserve(target);
+      });
+    }, { rootMargin: '-8% 0px -8% 0px', threshold: .28 });
+    targets.forEach(target => observer.observe(target));
   }
 
   function initOpening() {
@@ -169,6 +253,7 @@
         if (i === index) step.setAttribute('aria-current', 'step');
         else step.removeAttribute('aria-current');
       });
+      applyPoseSequence($('.tt-pose-layer--opening', opening), OPENING_POSES[index], true);
       document.dispatchEvent(new CustomEvent('tt:opening-scene', { detail: { index } }));
     };
     const close = () => {
@@ -218,39 +303,37 @@
       [0, 1, 2], [3, 1, 0], [0, 2, 4], [1, 0, 3]
     ];
     const transitionXiaoTurns = [
-      [{ degree: 3, at: 0, hold: 2.35, glide: -54, fall: -32 }, { degree: 1, at: 1.62, hold: 2.7, glide: 38, fall: -48 }],
-      [{ degree: 4, at: 0, hold: 2.15, glide: -42, fall: -24 }, { degree: 3, at: 1.5, hold: 2.8, glide: 34, fall: -45 }],
-      [{ degree: 2, at: 0, hold: 2.55, glide: 46, fall: -38 }, { degree: 0, at: 1.9, hold: 2.9, glide: 31, fall: -56 }],
-      [{ degree: 0, at: 0, hold: 2.25, glide: -48, fall: -22 }, { degree: 3, at: 1.55, hold: 2.55, glide: -36, fall: -41 }],
-      [{ degree: 4, at: 0, hold: 2.4, glide: 37, fall: -35 }, { degree: 1, at: 1.78, hold: 2.95, glide: 42, fall: -52 }],
-      [{ degree: 1, at: 0, hold: 2.55, glide: -45, fall: -34 }, { degree: 2, at: 1.82, hold: 2.5, glide: -32, fall: -47 }],
-      [{ degree: 3, at: 0, hold: 2.25, glide: 42, fall: -29 }, { degree: 0, at: 1.64, hold: 3.05, glide: 36, fall: -58 }],
-      [{ degree: 0, at: 0, hold: 2.35, glide: -40, fall: -31 }, { degree: 4, at: 1.72, hold: 2.65, glide: -51, fall: -44 }],
-      [{ degree: 1, at: 0, hold: 2.3, glide: 36, fall: -27 }, { degree: 0, at: 1.58, hold: 3.25, glide: 48, fall: -62 }]
+      [{ degree: 3, at: 0, hold: 3.25, glide: -54, fall: -36 }, { degree: 1, at: 2.72, hold: 3.6, glide: 38, fall: -52 }],
+      [{ degree: 4, at: 0, hold: 3.05, glide: -42, fall: -28 }, { degree: 3, at: 2.55, hold: 3.75, glide: 34, fall: -49 }],
+      [{ degree: 2, at: 0, hold: 3.45, glide: 46, fall: -42 }, { degree: 0, at: 2.95, hold: 3.9, glide: 31, fall: -60 }],
+      [{ degree: 0, at: 0, hold: 3.15, glide: -48, fall: -26 }, { degree: 3, at: 2.62, hold: 3.5, glide: -36, fall: -45 }],
+      [{ degree: 4, at: 0, hold: 3.3, glide: 37, fall: -39 }, { degree: 1, at: 2.78, hold: 4.05, glide: 42, fall: -56 }],
+      [{ degree: 1, at: 0, hold: 3.45, glide: -45, fall: -38 }, { degree: 2, at: 2.92, hold: 3.4, glide: -32, fall: -51 }],
+      [{ degree: 3, at: 0, hold: 3.15, glide: 42, fall: -33 }, { degree: 0, at: 2.64, hold: 4.15, glide: 36, fall: -62 }],
+      [{ degree: 0, at: 0, hold: 3.25, glide: -40, fall: -35 }, { degree: 4, at: 2.72, hold: 3.55, glide: -51, fall: -48 }],
+      [{ degree: 1, at: 0, hold: 3.2, glide: 36, fall: -31 }, { degree: 0, at: 2.58, hold: 4.35, glide: 48, fall: -66 }]
     ];
     const ambientXiaoPhrases = [
       [
-        { degree: 3, at: 0, hold: 2.75, glide: -58, fall: -31 },
-        { degree: 2, at: 2.25, hold: 2.7, glide: 36, fall: -43 },
-        { degree: 0, at: 4.52, hold: 3.25, glide: 45, fall: -62 }
+        { degree: 3, at: 0, hold: 4.35, glide: -58, fall: -35 },
+        { degree: 0, at: 4.72, hold: 5.15, glide: 45, fall: -68 }
       ],
       [
-        { degree: 4, at: 0, hold: 2.4, glide: -44, fall: -28 },
-        { degree: 3, at: 1.95, hold: 2.85, glide: 39, fall: -47 },
-        { degree: 1, at: 4.35, hold: 3.35, glide: 33, fall: -59 }
+        { degree: 4, at: 0, hold: 3.95, glide: -44, fall: -32 },
+        { degree: 3, at: 4.38, hold: 4.25, glide: 39, fall: -51 },
+        { degree: 1, at: 8.92, hold: 4.75, glide: 33, fall: -65 }
       ],
       [
-        { degree: 1, at: 0, hold: 2.65, glide: -51, fall: -35 },
-        { degree: 4, at: 2.18, hold: 2.45, glide: -37, fall: -42 },
-        { degree: 2, at: 4.12, hold: 2.7, glide: 43, fall: -49 },
-        { degree: 0, at: 6.38, hold: 3.2, glide: 34, fall: -64 }
+        { degree: 1, at: 0, hold: 4.15, glide: -51, fall: -39 },
+        { degree: 2, at: 4.62, hold: 4.35, glide: 43, fall: -53 },
+        { degree: 0, at: 9.28, hold: 5.05, glide: 34, fall: -70 }
       ]
     ];
     const endingXiaoPhrase = [
-      { degree: 4, at: 0, hold: 2.65, glide: -52, fall: -34 },
-      { degree: 3, at: 2.18, hold: 3.05, glide: 41, fall: -49 },
-      { degree: 1, at: 4.72, hold: 3.35, glide: 36, fall: -57 },
-      { degree: 0, at: 7.55, hold: 4.15, glide: 48, fall: -72 }
+      { degree: 4, at: 0, hold: 3.85, glide: -52, fall: -38 },
+      { degree: 3, at: 4.18, hold: 4.25, glide: 41, fall: -53 },
+      { degree: 1, at: 8.72, hold: 4.75, glide: 36, fall: -61 },
+      { degree: 0, at: 13.75, hold: 6.15, glide: 48, fall: -78 }
     ];
     const seen = new WeakSet();
     let context = null;
@@ -261,6 +344,37 @@
     let ambientTimer = 0;
     let ambientPhraseIndex = 0;
     let audioEnabled = false;
+    let soundtrackFailed = false;
+    let soundtrackFadeFrame = 0;
+    let endingFadeActive = false;
+    const soundtrack = new Audio(SCORE_URL);
+    soundtrack.preload = 'auto';
+    soundtrack.loop = true;
+    soundtrack.volume = 0;
+    soundtrack.addEventListener('error', () => { soundtrackFailed = true; });
+
+    const fadeSoundtrack = (target, duration = 900, pauseAtEnd = false, onComplete) => {
+      window.cancelAnimationFrame(soundtrackFadeFrame);
+      const from = Number.isFinite(soundtrack.volume) ? soundtrack.volume : 0;
+      const started = performance.now();
+      const finish = () => {
+        soundtrack.volume = Math.max(0, Math.min(1, target));
+        if (pauseAtEnd) soundtrack.pause();
+        if (typeof onComplete === 'function') onComplete();
+      };
+      if (duration <= 0) {
+        finish();
+        return;
+      }
+      const tick = now => {
+        const progress = Math.min(1, (now - started) / duration);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        soundtrack.volume = Math.max(0, Math.min(1, from + (target - from) * eased));
+        if (progress < 1) soundtrackFadeFrame = window.requestAnimationFrame(tick);
+        else finish();
+      };
+      soundtrackFadeFrame = window.requestAnimationFrame(tick);
+    };
 
     const getLabel = (button, key) => {
       const isHans = document.documentElement.lang.toLowerCase() === 'zh-hans';
@@ -319,15 +433,15 @@
       const start = Math.max(context.currentTime + .006, when);
       const length = Math.max(1.15, duration);
       const end = start + length;
-      const attack = Math.min(.58, Math.max(.28, length * .18));
-      const release = Math.min(.86, Math.max(.48, length * .25));
+      const attack = Math.min(.78, Math.max(.38, length * .2));
+      const release = Math.min(1.28, Math.max(.68, length * .29));
       const sustainEnd = Math.max(start + attack + .08, end - release);
       const glideEnd = start + Math.min(.62, attack + .15);
       const fallStart = Math.max(start + attack + .12, end - Math.min(.48, release * .72));
       const glideCents = Number(expression.glide) || 0;
       const fallCents = Number(expression.fall) || -28;
       const vibratoDepth = Number(expression.vibrato) || 7.5;
-      const vibratoRate = Number(expression.vibratoRate) || (4.25 + Math.random() * .55);
+      const vibratoRate = Number(expression.vibratoRate) || (3.82 + Math.random() * .42);
 
       const carrier = context.createOscillator();
       const overtone = context.createOscillator();
@@ -374,8 +488,8 @@
       breathFilter.frequency.linearRampToValueAtTime(1450 + Math.random() * 240, sustainEnd);
       breathFilter.Q.setValueAtTime(.72, start);
       breathGain.gain.setValueAtTime(.0001, start);
-      breathGain.gain.exponentialRampToValueAtTime(Math.max(.0002, level * .34), start + attack * .76);
-      breathGain.gain.linearRampToValueAtTime(level * .19, sustainEnd);
+      breathGain.gain.exponentialRampToValueAtTime(Math.max(.0002, level * .42), start + attack * .76);
+      breathGain.gain.linearRampToValueAtTime(level * .24, sustainEnd);
       breathGain.gain.exponentialRampToValueAtTime(.0001, end);
 
       vibrato.type = 'sine';
@@ -421,8 +535,8 @@
           {
             glide: turn.glide,
             fall: turn.fall,
-            vibrato: 6.5 + index * 1.15,
-            vibratoRate: 4.25 + index * .18
+            vibrato: 5.8 + index * 1.05,
+            vibratoRate: 3.82 + index * .16
           }
         );
       });
@@ -461,57 +575,42 @@
     const cueOpening = index => {
       if (!audioEnabled || !context) return;
       const now = context.currentTime + .025;
-      const openingDegrees = [0, 2, 3, 1];
       if (!reducedMotion) paperRustle(now, .62);
-      playPluck(SCALE[index % SCALE.length], now + .16, .044);
-      playXiaoNote(
-        modeFrequency(openingDegrees[index % openingDegrees.length]),
-        now + .22,
-        2.65,
-        .033,
-        { glide: index % 2 ? 38 : -48, fall: -38 - index * 4, vibrato: 7.2 }
-      );
+      if (!reducedMotion) rodClick(now + .17, 720 + index * 36, .34);
     };
 
     const cueTransition = index => {
       if (!audioEnabled || !context) return;
       const now = context.currentTime + .025;
-      const phrase = transitionPhrases[index % transitionPhrases.length];
-      const xiaoTurn = transitionXiaoTurns[index % transitionXiaoTurns.length];
       if (!reducedMotion) {
         paperRustle(now, .82);
-        rodClick(now + .14, 760 + index * 29, .9);
-        rodClick(now + .29, 980 - index * 17, .48);
+        rodClick(now + .14, 760 + index * 29, .72);
       }
-      phrase.forEach((note, noteIndex) => {
-        playPluck(SCALE[note], now + .52 + noteIndex * .46, .045 - noteIndex * .005);
-      });
-      playXiaoPhrase(xiaoTurn, now + .72, .0335);
     };
 
     const cueEnding = () => {
-      if (!audioEnabled || !context) return;
-      const now = context.currentTime + .03;
-      if (!reducedMotion) paperRustle(now, .55);
-      [110, 162, 230, 289].forEach((frequency, index) => {
-        playTone(frequency, now + .14, 5.2 - index * .45, .052 / (index + 1), 'sine', musicBus);
+      if (!audioEnabled) return;
+      endingFadeActive = true;
+      if (context) {
+        const now = context.currentTime + .03;
+        if (!reducedMotion) paperRustle(now, .55);
+        [110, 162, 230, 289].forEach((frequency, index) => {
+          playTone(frequency, now + .14, 5.2 - index * .45, .052 / (index + 1), 'sine', musicBus);
+        });
+      }
+      fadeSoundtrack(0, 5200, true, () => {
+        if (audioEnabled) disableAudio(true);
       });
-      [0, 1, 3, 0].forEach((note, index) => {
-        playPluck(SCALE[note], now + .8 + index * .82, .044 - index * .005);
-      });
-      playXiaoPhrase(endingXiaoPhrase, now + .72, .036);
     };
 
     const playAmbientPhrase = () => {
       if (!audioEnabled || !context || document.hidden) return;
       const now = context.currentTime + .04;
       const phrase = ambientXiaoPhrases[ambientPhraseIndex % ambientXiaoPhrases.length];
-      const supportNotes = [[0, 3, 1], [0, 4, 2], [0, 1, 3]][ambientPhraseIndex % 3];
+      const supportNote = [0, 0, 1][ambientPhraseIndex % 3];
       ambientPhraseIndex += 1;
-      supportNotes.forEach((note, index) => {
-        playPluck(SCALE[note] / (index === 2 ? 2 : 1), now + .12 + index * 2.18, .025 - index * .002);
-      });
-      playTone(73.42, now + .3, 5.4, .013, 'sine', musicBus);
+      playPluck(SCALE[supportNote] / 2, now + .12, .019);
+      playTone(73.42, now + .3, 7.4, .011, 'sine', musicBus);
       playXiaoPhrase(phrase, now + .36, .032);
     };
 
@@ -549,7 +648,7 @@
       compressor.attack.value = .003;
       compressor.release.value = .25;
 
-      const impulseLength = Math.floor(context.sampleRate * 1.25);
+      const impulseLength = Math.floor(context.sampleRate * 1.8);
       const impulse = context.createBuffer(2, impulseLength, context.sampleRate);
       for (let channel = 0; channel < impulse.numberOfChannels; channel += 1) {
         const data = impulse.getChannelData(channel);
@@ -573,32 +672,59 @@
       compressor.connect(context.destination);
     };
 
+    const startFallbackScore = () => {
+      if (!context || ambientTimer) return;
+      startDrone();
+      playAmbientPhrase();
+      ambientTimer = window.setInterval(playAmbientPhrase, 23000);
+    };
+
+    const startOriginalScore = () => {
+      if (soundtrackFailed) {
+        startFallbackScore();
+        return;
+      }
+      soundtrack.volume = 0;
+      const playback = soundtrack.play();
+      if (playback && typeof playback.then === 'function') {
+        playback.then(() => fadeSoundtrack(.34, 1800)).catch(() => {
+          soundtrackFailed = true;
+          startFallbackScore();
+        });
+      } else {
+        fadeSoundtrack(.34, 1800);
+      }
+    };
+
     const enableAudio = () => {
-      if (audioEnabled || !AudioCtor) return;
+      if (audioEnabled) return;
       try {
-        context = new AudioCtor();
-        buildAudioGraph();
+        if (AudioCtor) {
+          context = new AudioCtor();
+          buildAudioGraph();
+          context.resume().catch(() => {});
+        }
         ambientPhraseIndex = 0;
+        endingFadeActive = false;
         audioEnabled = true;
         updateControls();
-        startDrone();
-        context.resume().catch(() => {});
+        startOriginalScore();
         const opening = $('[data-tt-opening]');
         if (opening && !opening.classList.contains('is-gone')) cueOpening(Math.max(0, Number(opening.dataset.scene || 1) - 1));
-        else playAmbientPhrase();
-        window.clearInterval(ambientTimer);
-        ambientTimer = window.setInterval(playAmbientPhrase, 19000);
       } catch (_) {
         audioEnabled = false;
+        soundtrack.pause();
         updateControls();
       }
     };
 
-    const disableAudio = () => {
+    const disableAudio = (immediate = false) => {
       if (!audioEnabled) return;
       audioEnabled = false;
+      endingFadeActive = false;
       window.clearInterval(ambientTimer);
       ambientTimer = 0;
+      fadeSoundtrack(0, immediate ? 0 : 650, true);
       updateControls();
       const oldContext = context;
       const oldMaster = master;
@@ -607,7 +733,7 @@
       musicBus = null;
       sfxBus = null;
       noiseBuffer = null;
-      if (!oldContext) return;
+      if (!oldContext || !oldMaster) return;
       try {
         const now = oldContext.currentTime;
         oldMaster.gain.cancelScheduledValues(now);
@@ -616,14 +742,6 @@
       } catch (_) { /* context may already be interrupted */ }
       window.setTimeout(() => oldContext.close().catch(() => {}), 290);
     };
-
-    if (!AudioCtor) {
-      buttons.forEach(button => {
-        button.disabled = true;
-        setButtonText(button, getLabel(button, 'labelUnsupported'));
-      });
-      return;
-    }
 
     buttons.forEach(button => button.addEventListener('click', () => {
       if (audioEnabled) disableAudio();
@@ -653,9 +771,17 @@
     }
 
     document.addEventListener('visibilitychange', () => {
-      if (!audioEnabled || !context) return;
-      if (document.hidden) context.suspend().catch(() => {});
-      else context.resume().catch(() => {});
+      if (!audioEnabled) return;
+      if (document.hidden) {
+        if (context) context.suspend().catch(() => {});
+        soundtrack.pause();
+        return;
+      }
+      if (context) context.resume().catch(() => {});
+      if (!soundtrackFailed && !endingFadeActive) {
+        const playback = soundtrack.play();
+        if (playback && typeof playback.then === 'function') playback.then(() => fadeSoundtrack(.34, 650)).catch(() => {});
+      }
     });
   }
 
@@ -712,6 +838,7 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     initShadowStages();
+    initPoseTheatre();
     initSoundscape();
     initOpening();
     initDocumentaryMotion();

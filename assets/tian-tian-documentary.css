@@ -1424,3 +1424,303 @@ body.tt-audio-active .tt-audio-toggle{border-color:rgba(239,195,105,.86);backgro
   .tt-ending .tt-shadow-figure--ending .tt-shadow-rod--front{transform:rotate(-12deg)!important}
   .tt-ending .tt-shadow-figure--ending .tt-shadow-rod--rear{transform:rotate(13deg)!important}
 }
+
+/* Art direction v6: the male and female shadow puppets are a fixed tableau. */
+.tt-opening::before{
+  animation:none!important;
+  transform:none!important;
+  background:
+    linear-gradient(90deg,rgba(8,4,3,.76),rgba(30,15,9,.04) 26% 74%,rgba(8,4,3,.78)),
+    linear-gradient(0deg,rgba(8,4,3,.68),transparent 42%,rgba(20,10,6,.16)),
+    url("./art/tian-tian-shadow-theatre-empty-stage-20260814.webp") 50% 50%/cover no-repeat;
+  filter:saturate(.96) contrast(1.035) sepia(.04);
+}
+.tt-stage{
+  grid-template-columns:1fr;
+  gap:0;
+  background:
+    linear-gradient(90deg,rgba(12,6,4,.48),transparent 22% 78%,rgba(12,6,4,.5)) 0 0/100% 100% no-repeat,
+    linear-gradient(0deg,rgba(10,5,3,.56),transparent 35%,rgba(16,8,5,.06)) 0 0/100% 100% no-repeat,
+    url("./art/tian-tian-shadow-theatre-static-duet-20260814.webp") 50% 50%/contain no-repeat,
+    #170d09;
+  background-position:center!important;
+  transform:none!important;
+}
+.tt-stage-craft,
+.tt-stage-craft .tt-puppet,
+.tt-transition[data-shadow-scene] .tt-transition-puppet,
+.tt-transition[data-shadow-scene] .tt-shadow-figure,
+.tt-ending .tt-shadow-figure--ending{
+  display:none!important;
+  animation:none!important;
+  transform:none!important;
+}
+.tt-ending-craft::before,
+.tt-ending-craft::after{
+  content:none!important;
+  display:none!important;
+  animation:none!important;
+}
+.tt-stage-copy{
+  position:relative;
+  z-index:4;
+  width:min(720px,56vw);
+  margin-inline:auto;
+}
+.tt-transition[data-shadow-scene] .tt-shadow-stage{
+  background:
+    linear-gradient(0deg,rgba(13,6,4,.5),transparent 31%,rgba(18,9,5,.04)) 0 0/100% 100% no-repeat,
+    linear-gradient(90deg,rgba(12,6,4,.22),transparent 16% 84%,rgba(12,6,4,.24)) 0 0/100% 100% no-repeat,
+    url("./art/tian-tian-shadow-theatre-static-duet-20260814.webp") 50% 50%/contain no-repeat,
+    #21130d;
+  background-position:center!important;
+  transform:none!important;
+}
+.tt-transition.is-visible .tt-shadow-stage{
+  animation:tt-v6-fixed-tableau-light 8s ease-out both;
+}
+@keyframes tt-v6-fixed-tableau-light{
+  0%{filter:saturate(.87) contrast(1.02) brightness(.9)}
+  48%{filter:saturate(.99) contrast(1.04) brightness(1.02)}
+  100%{filter:saturate(.96) contrast(1.035) brightness(1)}
+}
+.tt-ending::before{
+  background:
+    linear-gradient(0deg,rgba(9,4,3,.97),rgba(16,8,5,.72) 34%,rgba(16,8,5,.08) 70%,rgba(10,5,3,.38)) 0 0/100% 100% no-repeat,
+    linear-gradient(90deg,rgba(6,3,2,.62),transparent 20% 80%,rgba(6,3,2,.64)) 0 0/100% 100% no-repeat,
+    url("./art/tian-tian-shadow-theatre-static-duet-20260814.webp") 50% 50%/contain no-repeat,
+    #120906;
+  background-position:center!important;
+  transform:none!important;
+}
+.tt-ending.is-visible::before{
+  transform:none!important;
+  animation:tt-v6-ending-lamp 7.5s ease-out both;
+}
+@keyframes tt-v6-ending-lamp{
+  0%{filter:saturate(.78) contrast(1.035) brightness(.73)}
+  55%{filter:saturate(.91) contrast(1.045) brightness(.94)}
+  100%{filter:saturate(.84) contrast(1.04) brightness(.84)}
+}
+
+@media(max-width:980px){
+  .tt-stage-copy{width:min(700px,74vw)}
+}
+
+@media(max-width:720px){
+  .tt-opening::before{
+    background:
+      linear-gradient(0deg,rgba(8,4,3,.8),rgba(19,9,6,.04) 38%,rgba(9,4,3,.32)),
+      url("./art/tian-tian-shadow-theatre-empty-stage-20260814.webp") 50% 8%/100% auto no-repeat,
+      #120906;
+  }
+  .tt-stage{
+    min-height:94svh;
+    justify-content:flex-start;
+    padding-top:clamp(224px,57vw,286px);
+    background:
+      linear-gradient(0deg,rgba(13,6,4,.86),rgba(20,10,6,.04) 50%,rgba(9,4,3,.2)) 0 0/100% 100% no-repeat,
+      url("./art/tian-tian-shadow-theatre-static-duet-20260814.webp") 50% 8px/100% auto no-repeat,
+      #150a07;
+    background-position:center top!important;
+  }
+  .tt-stage-copy{width:100%;margin-top:0}
+  .tt-transition[data-shadow-scene] .tt-shadow-stage{
+    height:clamp(250px,70vw,315px);
+    min-height:250px;
+    background:
+      linear-gradient(0deg,rgba(13,6,4,.46),transparent 36%,rgba(18,9,5,.03)) 0 0/100% 100% no-repeat,
+      url("./art/tian-tian-shadow-theatre-static-duet-20260814.webp") 50% 50%/contain no-repeat,
+      #21130d;
+    background-position:center!important;
+  }
+  .tt-ending::before{
+    background:
+      linear-gradient(0deg,rgba(9,4,3,.98),rgba(16,8,5,.78) 43%,rgba(16,8,5,.07) 72%,rgba(10,5,3,.3)) 0 0/100% 100% no-repeat,
+      url("./art/tian-tian-shadow-theatre-static-duet-20260814.webp") 50% 10%/100% auto no-repeat,
+      #120906;
+    background-position:center top!important;
+  }
+  .tt-ending-copy{
+    padding-top:clamp(265px,70vw,330px);
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .tt-opening::before,
+  .tt-stage,
+  .tt-transition[data-shadow-scene] .tt-shadow-stage,
+  .tt-ending::before{
+    animation:none!important;
+    transition:none!important;
+    transform:none!important;
+  }
+}
+
+/* Art direction v7: preserve the reference designs; animate them with a six-pose paper-shadow sheet. */
+.tt-stage-craft,
+.tt-stage-craft .tt-puppet,
+.tt-transition[data-shadow-scene] .tt-transition-puppet,
+.tt-transition[data-shadow-scene] .tt-shadow-figure,
+.tt-ending .tt-shadow-figure--ending{
+  display:none!important;
+  animation:none!important;
+  transform:none!important;
+}
+
+html.tt-motion-ready .tt-transition[data-shadow-scene] .tt-transition-inner{
+  transform:none!important;
+}
+
+.tt-pose-layer{
+  position:absolute;
+  z-index:5;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+  opacity:0;
+}
+html.tt-pose-ready .tt-pose-layer{opacity:1}
+.tt-stage>.tt-pose-layer{z-index:2}
+.tt-shadow-stage>.tt-pose-layer{z-index:5}
+.tt-ending>.tt-pose-layer{z-index:1}
+.tt-pose-layer--opening{--tt-pose-duration:3.55s}
+.tt-pose-layer--transition{--tt-pose-duration:6.8s}
+.tt-pose-layer--ending{--tt-pose-duration:8.6s}
+
+.tt-pose-actor{
+  position:absolute;
+  bottom:0;
+  width:min(48%,700px);
+  height:auto;
+  aspect-ratio:1;
+  filter:drop-shadow(22px 15px 8px rgba(28,12,6,.56));
+  transform-origin:50% 94%;
+}
+.tt-pose-actor--woman{left:-1.5%}
+.tt-pose-actor--scribe{right:-1.5%}
+.tt-pose-sprite{
+  position:absolute;
+  inset:0;
+  display:block;
+  background-color:transparent;
+  background-image:var(--tt-pose-sheet);
+  background-repeat:no-repeat;
+  background-size:300% 200%;
+  background-position:var(--tt-pose-start,0% 0%);
+  mix-blend-mode:multiply;
+  filter:brightness(1.08) saturate(.98);
+  will-change:background-position;
+}
+.tt-pose-actor--woman{--tt-pose-sheet:url("./art/tian-tian-shadow-woman-poses-20260814.webp")}
+.tt-pose-actor--scribe{--tt-pose-sheet:url("./art/tian-tian-shadow-scribe-poses-20260814.webp")}
+
+.tt-pose-layer.is-playing .tt-pose-sprite,
+.tt-pose-actor.is-playing .tt-pose-sprite,
+.tt-transition.is-visible .tt-pose-sprite,
+.tt-ending.is-visible .tt-pose-sprite{
+  animation:tt-pose-sequence var(--tt-pose-duration,7s) steps(1,end) both;
+}
+@keyframes tt-pose-sequence{
+  0%,20%{background-position:var(--tt-pose-start,0% 0%)}
+  20.01%,43%{background-position:var(--tt-pose-mid,50% 0%)}
+  43.01%,78%{background-position:var(--tt-pose-action,100% 0%)}
+  78.01%,100%{background-position:var(--tt-pose-end,0% 100%)}
+}
+
+/* Keep the baked duet as a robust no-JS/loading fallback. Once both pose sheets
+   are ready, the empty screen replaces it in the same state change. */
+html.tt-pose-ready .tt-stage{
+  background:
+    linear-gradient(90deg,rgba(12,6,4,.48),transparent 22% 78%,rgba(12,6,4,.5)) 0 0/100% 100% no-repeat,
+    linear-gradient(0deg,rgba(10,5,3,.56),transparent 35%,rgba(16,8,5,.06)) 0 0/100% 100% no-repeat,
+    url("./art/tian-tian-shadow-theatre-empty-stage-20260814.webp") 50% 50%/cover no-repeat,
+    #170d09;
+  background-position:center!important;
+}
+html.tt-pose-ready .tt-transition[data-shadow-scene] .tt-shadow-stage{
+  background:
+    linear-gradient(0deg,rgba(13,6,4,.5),transparent 31%,rgba(18,9,5,.04)) 0 0/100% 100% no-repeat,
+    linear-gradient(90deg,rgba(12,6,4,.22),transparent 16% 84%,rgba(12,6,4,.24)) 0 0/100% 100% no-repeat,
+    url("./art/tian-tian-shadow-theatre-empty-stage-20260814.webp") 50% 50%/cover no-repeat,
+    #21130d;
+  background-position:center!important;
+}
+.tt-ending::before{inset:0!important}
+html.tt-pose-ready .tt-ending::before{
+  inset:0!important;
+  background:
+    linear-gradient(0deg,rgba(9,4,3,.97),rgba(16,8,5,.72) 34%,rgba(16,8,5,.08) 70%,rgba(10,5,3,.38)) 0 0/100% 100% no-repeat,
+    linear-gradient(90deg,rgba(6,3,2,.62),transparent 20% 80%,rgba(6,3,2,.64)) 0 0/100% 100% no-repeat,
+    url("./art/tian-tian-shadow-theatre-empty-stage-20260814.webp") 50% 50%/cover no-repeat,
+    #120906;
+  background-position:center!important;
+}
+
+@media(max-width:980px){
+  .tt-pose-actor{width:min(49%,610px)}
+}
+
+@media(max-width:720px){
+  .tt-stage{
+    padding-top:clamp(222px,58vw,286px);
+  }
+  .tt-pose-layer--opening,
+  .tt-pose-layer--ending{
+    inset:0 0 auto;
+    width:100%;
+    height:auto;
+    aspect-ratio:16/9;
+  }
+  .tt-transition[data-shadow-scene] .tt-shadow-stage{
+    width:100%;
+    height:auto!important;
+    min-height:0!important;
+    aspect-ratio:16/9;
+  }
+  .tt-pose-actor{
+    bottom:0;
+    width:56.25%;
+    height:auto;
+    filter:drop-shadow(10px 7px 4px rgba(28,12,6,.52));
+  }
+  .tt-pose-actor--woman{left:-2%}
+  .tt-pose-actor--scribe{right:-2%}
+  html.tt-pose-ready .tt-stage{
+    background:
+      linear-gradient(0deg,rgba(13,6,4,.86),rgba(20,10,6,.04) 50%,rgba(9,4,3,.2)) 0 0/100% 100% no-repeat,
+      url("./art/tian-tian-shadow-theatre-empty-stage-20260814.webp") 50% 8px/100% auto no-repeat,
+      #150a07;
+    background-position:center top!important;
+  }
+  html.tt-pose-ready .tt-transition[data-shadow-scene] .tt-shadow-stage{
+    background:
+      linear-gradient(0deg,rgba(13,6,4,.46),transparent 36%,rgba(18,9,5,.03)) 0 0/100% 100% no-repeat,
+      url("./art/tian-tian-shadow-theatre-empty-stage-20260814.webp") 50% 50%/cover no-repeat,
+      #21130d;
+    background-position:center!important;
+  }
+  html.tt-pose-ready .tt-ending::before{
+    background:
+      linear-gradient(0deg,rgba(9,4,3,.98),rgba(16,8,5,.78) 43%,rgba(16,8,5,.07) 72%,rgba(10,5,3,.3)) 0 0/100% 100% no-repeat,
+      url("./art/tian-tian-shadow-theatre-empty-stage-20260814.webp") 50% 0/100% auto no-repeat,
+      #120906;
+    background-position:center top!important;
+  }
+  .tt-ending-copy{padding-top:clamp(226px,62vw,304px)}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .tt-pose-layer,
+  .tt-pose-actor,
+  .tt-pose-sprite{
+    animation:none!important;
+    transition:none!important;
+    transform:none!important;
+  }
+  html.tt-pose-ready .tt-pose-layer{opacity:1!important}
+  .tt-pose-sprite{
+    background-position:var(--tt-pose-action,var(--tt-pose-start,0% 0%))!important;
+    will-change:auto;
+  }
+}
