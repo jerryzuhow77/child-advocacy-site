@@ -4,6 +4,134 @@
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+
+  const makePart = (tag, className) => {
+    const node = document.createElement(tag);
+    node.className = className;
+    return node;
+  };
+
+  function makeParts(className, count) {
+    return Array.from({ length: count }, (_, index) => {
+      const node = makePart('i', className);
+      node.style.setProperty('--i', String(index));
+      node.style.setProperty('--tt-delay-knot', `${(index * .16).toFixed(2)}s`);
+      node.style.setProperty('--tt-delay-block', `${(index * .55).toFixed(2)}s`);
+      node.style.setProperty('--tt-delay-petal', `${(index * .11).toFixed(2)}s`);
+      node.style.setProperty('--tt-hand-left', `${14 + index * 17}%`);
+      node.style.setProperty('--tt-hand-angle', `${-24 + index * 16}deg`);
+      node.style.setProperty('--tt-petal-angle', `${index * 45}deg`);
+      node.style.setProperty('--tt-record-top', `${76 + index * 31}px`);
+      node.style.setProperty('--tt-record-top-mobile', `${49 + index * 21}px`);
+      return node;
+    });
+  }
+
+  function makeShadowLine(className, paths) {
+    const svg = document.createElementNS(SVG_NS, 'svg');
+    svg.setAttribute('class', className);
+    svg.setAttribute('viewBox', '0 0 300 180');
+    svg.setAttribute('preserveAspectRatio', 'none');
+    paths.forEach((d, index) => {
+      const path = document.createElementNS(SVG_NS, 'path');
+      path.setAttribute('d', d);
+      path.setAttribute('pathLength', '1');
+      path.style.setProperty('--i', String(index));
+      path.style.setProperty('--tt-delay-stitch', `${(index * .36).toFixed(2)}s`);
+      svg.append(path);
+    });
+    return svg;
+  }
+
+  function makeShadowFigure(role) {
+    const figure = makePart('span', `tt-shadow-figure tt-shadow-figure--${role}`);
+    [
+      'tt-shadow-cast',
+      'tt-shadow-crown',
+      'tt-shadow-head',
+      'tt-shadow-body',
+      'tt-shadow-skirt',
+      'tt-shadow-arm tt-shadow-arm--upper',
+      'tt-shadow-arm tt-shadow-arm--lower',
+      'tt-shadow-rod tt-shadow-rod--front',
+      'tt-shadow-rod tt-shadow-rod--rear'
+    ].forEach(className => figure.append(makePart('i', className)));
+    return figure;
+  }
+
+  function makeShadowStage(scene) {
+    const stage = makePart('div', `tt-shadow-stage tt-shadow-stage--${scene}`);
+    stage.setAttribute('aria-hidden', 'true');
+    stage.append(makePart('span', 'tt-shadow-screen'));
+    stage.append(makePart('span', 'tt-shadow-vignette'));
+    const props = makePart('span', 'tt-shadow-props');
+
+    if (scene === 'wind-kite') {
+      props.append(makePart('i', 'tt-shadow-roof'));
+      props.append(makePart('i', 'tt-shadow-kite'));
+      props.append(makeShadowLine('tt-shadow-line tt-shadow-thread', ['M38 139 C91 73 155 153 260 44']));
+    } else if (scene === 'ten-knot-door') {
+      props.append(makePart('i', 'tt-shadow-door'));
+      props.append(makePart('i', 'tt-shadow-lattice'));
+      const cord = makePart('i', 'tt-shadow-knot-cord');
+      makeParts('tt-shadow-knot', 10).forEach(knot => cord.append(knot));
+      props.append(cord);
+    } else if (scene === 'frost-lantern') {
+      props.append(makePart('i', 'tt-shadow-lantern'));
+      props.append(makePart('i', 'tt-shadow-wick'));
+      props.append(makePart('i', 'tt-shadow-frost'));
+      props.append(makePart('i', 'tt-shadow-date'));
+    } else if (scene === 'court-scroll') {
+      props.append(makePart('i', 'tt-shadow-scroll'));
+      makeParts('tt-shadow-record-line', 3).forEach(line => props.append(line));
+      props.append(makePart('i', 'tt-shadow-seal'));
+      props.append(makePart('i', 'tt-shadow-bars'));
+    } else if (scene === 'seal-road') {
+      props.append(makePart('i', 'tt-shadow-stamp'));
+      props.append(makeShadowLine('tt-shadow-line tt-shadow-road', ['M25 154 C98 125 160 145 278 82']));
+      props.append(makePart('i', 'tt-shadow-paper-flower'));
+      props.append(makePart('i', 'tt-shadow-roof-home'));
+    } else if (scene === 'evidence-blocks') {
+      makeParts('tt-shadow-block', 4).forEach(block => props.append(block));
+      props.append(makePart('i', 'tt-shadow-boundary'));
+      props.append(makePart('i', 'tt-shadow-blurred-record'));
+    } else if (scene === 'seven-moon') {
+      props.append(makePart('i', 'tt-shadow-moon'));
+      props.append(makeShadowLine('tt-shadow-line tt-shadow-stitches', [
+        'M108 70 C118 42 143 37 157 57',
+        'M140 45 C171 35 187 55 179 78',
+        'M177 64 C201 77 198 103 179 113',
+        'M184 108 C174 135 148 140 132 122',
+        'M139 132 C108 141 91 118 101 96',
+        'M103 108 C78 93 83 68 103 58',
+        'M116 87 C127 70 151 67 166 82'
+      ]));
+      props.append(makePart('i', 'tt-shadow-hanging-thread'));
+    } else if (scene === 'guarded-lamp') {
+      props.append(makePart('i', 'tt-shadow-open-door'));
+      props.append(makePart('i', 'tt-shadow-guard-lantern'));
+      makeParts('tt-shadow-hand', 4).forEach(hand => props.append(hand));
+      const bloom = makePart('i', 'tt-shadow-bloom');
+      makeParts('tt-shadow-petal', 8).forEach(petal => bloom.append(petal));
+      props.append(bloom);
+    }
+
+    stage.append(props);
+    stage.append(makeShadowFigure('woman'));
+    stage.append(makeShadowFigure('scribe'));
+    return stage;
+  }
+
+  function initShadowStages() {
+    $$('[data-shadow-scene]').forEach(transition => {
+      const scene = transition.dataset.shadowScene;
+      const fallback = $('.tt-transition-puppet', transition);
+      if (!scene || !fallback || $('.tt-shadow-stage', transition)) return;
+      fallback.replaceWith(makeShadowStage(scene));
+      transition.classList.add('tt-shadow-ready');
+    });
+  }
 
   function initOpening() {
     const opening = $('[data-tt-opening]');
@@ -114,9 +242,11 @@
       });
     }, { rootMargin: '-8% 0px -8% 0px', threshold: .18 });
     cinematicTargets.forEach(target => cinematicObserver.observe(target));
+    document.documentElement.classList.add('tt-motion-ready');
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    initShadowStages();
     initOpening();
     initDocumentaryMotion();
     initReveals();
