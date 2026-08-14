@@ -321,14 +321,20 @@ body.km-opening-active{overflow:hidden}
   pointer-events:none
 }
 .km-ending .km-shell{
-  position:relative;width:min(820px,calc(100% - 40px));padding:48px 54px;
-  border:1px solid rgba(196,161,93,.52);border-radius:3px;
-  background:rgba(248,244,233,.79);box-shadow:0 28px 80px rgba(20,28,32,.24);
-  backdrop-filter:blur(7px)
+  position:relative;width:min(880px,calc(100% - 40px));padding:48px 54px;
+  border:0;background:transparent;box-shadow:none;backdrop-filter:none
 }
 .km-ending-emblem{width:82px;margin:0 auto 22px}
-.km-ending h2{margin:0;font:600 clamp(37px,5.8vw,65px)/1.35 var(--km-serif)}
-.km-ending p{max-width:760px;margin:22px auto;color:#3f5156;font:500 18px/2 var(--km-serif)}
+.km-ending h2{
+  max-width:820px;margin:0 auto;color:#263d46;
+  font:600 clamp(34px,5.2vw,62px)/1.35 var(--km-serif);letter-spacing:.035em;
+  text-wrap:balance;text-shadow:0 1px 0 rgba(255,255,255,.9),0 3px 18px rgba(248,244,233,.86)
+}
+.km-ending p{
+  max-width:760px;margin:24px auto 0;color:#344b54;
+  font:500 18px/2.05 var(--km-serif);letter-spacing:.025em;text-align:center;text-wrap:pretty;
+  text-shadow:0 1px 0 rgba(255,255,255,.95),0 2px 14px rgba(248,244,233,.9)
+}
 .km-ending-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:30px}
 .km-ending-actions a{padding:11px 17px;border:1px solid #355767;text-decoration:none;background:rgba(248,244,233,.7);font-weight:800;font-size:13px}
 .km-replay{
@@ -376,7 +382,9 @@ html[lang="zh-Hans"] :where(.km-hero h1,.km-reading-name,.km-prose h2,.km-prose 
   .km-classic{padding:88px 23px 28px}
   .km-source-grid{grid-template-columns:1fr}
   .km-ending{min-height:82vh;padding:76px 0;background-position:63% center}
-  .km-ending .km-shell{width:calc(100% - 28px);padding:34px 22px;background:rgba(248,244,233,.84)}
+  .km-ending .km-shell{width:calc(100% - 28px);padding:34px 14px;background:transparent}
+  .km-ending h2{font-size:clamp(31px,9.5vw,44px);line-height:1.4;letter-spacing:.02em}
+  .km-ending p{font-size:16px;line-height:2;letter-spacing:.015em;text-align:left}
   .km-replay{right:10px;bottom:10px;font-size:11px}
 }
 @media(prefers-reduced-motion:reduce){
