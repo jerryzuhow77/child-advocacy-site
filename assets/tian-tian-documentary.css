@@ -2242,3 +2242,218 @@ html.tt-pose-ready .tt-ending::before{
 
 /* Keep the scene-defined duration after all legacy pose defaults. */
 .tt-pose-layer--transition{--tt-pose-duration:var(--tt-act-duration,8s)}
+
+/* v9.1 ending typography: the final image and both shadow figures remain
+   unobstructed. Legibility comes from the letterforms, never a panel. */
+.tt-ending-copy{
+  isolation:auto;
+  background:none!important;
+  border:0!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+.tt-ending-copy::before{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+  border:0!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+.tt-ending-copy small,
+.tt-ending-copy h2,
+.tt-ending-copy p,
+.tt-ending-copy .tt-ending-question{
+  -webkit-text-stroke:.24px rgba(7,4,3,.72);
+  paint-order:stroke fill;
+  text-shadow:0 1px 2px rgba(4,2,2,.94),0 0 10px rgba(5,3,2,.62);
+}
+.tt-ending-copy h2{
+  color:#fff8e9;
+  text-shadow:0 2px 3px rgba(3,2,1,.98),0 0 16px rgba(4,2,2,.72);
+}
+.tt-ending-copy p{
+  color:#f5f0e7;
+  letter-spacing:.012em;
+  text-wrap:pretty;
+}
+.tt-ending-copy .tt-ending-question{
+  width:auto;
+  max-width:100%;
+  color:#f3cf82;
+  line-height:1.55;
+  text-wrap:pretty;
+  text-shadow:0 1px 2px rgba(3,2,1,1),0 0 12px rgba(4,2,2,.68);
+}
+
+@media(min-width:901px){
+  .tt-ending-copy{
+    align-self:start;
+    width:min(640px,47vw);
+    max-width:640px;
+    margin-top:clamp(20px,3vh,34px);
+    margin-right:clamp(28px,5vw,82px);
+    margin-bottom:0;
+    margin-left:auto;
+    padding:24px 20px 30px;
+  }
+  .tt-ending-copy h2{
+    margin-block:8px 16px;
+    line-height:1.16;
+  }
+  .tt-ending-copy p{
+    max-width:100%;
+    font-size:clamp(15.5px,1.18vw,17px);
+    line-height:1.9;
+  }
+  .tt-ending-copy .tt-ending-question{
+    margin-block:22px;
+    font-size:clamp(20px,1.75vw,26px);
+  }
+  html[lang="zh-Hant"] .tt-ending-copy h2,
+  html[lang="zh-Hans"] .tt-ending-copy h2{
+    white-space:nowrap;
+    font-size:clamp(42px,4vw,56px);
+    letter-spacing:.035em;
+  }
+  html[lang="zh-Hant"] .tt-ending-copy p,
+  html[lang="zh-Hans"] .tt-ending-copy p{
+    text-align:justify;
+    text-align-last:left;
+    text-justify:inter-ideograph;
+    letter-spacing:.045em;
+  }
+  html[lang="zh-Hant"] .tt-ending-copy .tt-ending-question,
+  html[lang="zh-Hans"] .tt-ending-copy .tt-ending-question{white-space:nowrap}
+  html[lang="en"] .tt-ending-copy h2{font-size:clamp(36px,3.55vw,50px)}
+  html[lang="en"] .tt-ending-copy p{
+    text-align:left;
+    hyphens:auto;
+    overflow-wrap:break-word;
+  }
+  html[lang="ja"] .tt-ending-copy h2{
+    font-size:clamp(34px,3.25vw,45px);
+    line-height:1.25;
+    letter-spacing:.015em;
+  }
+  html[lang="ja"] .tt-ending-copy p{
+    text-align:justify;
+    text-align-last:left;
+    text-justify:inter-character;
+    letter-spacing:.035em;
+  }
+}
+
+@media print{
+  .tt-ending-copy small,
+  .tt-ending-copy h2,
+  .tt-ending-copy p,
+  .tt-ending-copy .tt-ending-question{
+    color:#000!important;
+    -webkit-text-stroke:0!important;
+    text-shadow:none!important;
+  }
+}
+
+@media(max-width:900px){
+  .tt-ending-copy{
+    width:min(100% - 24px,680px);
+    max-width:680px;
+    margin:0 auto 18px;
+    padding:clamp(330px,62vw,470px) clamp(18px,5vw,34px) 82px;
+    text-align:left;
+  }
+  .tt-ending-copy small{display:block;text-align:center}
+  .tt-ending-copy h2{
+    margin:8px 0 16px;
+    font-size:clamp(34px,9vw,46px);
+    line-height:1.24;
+    text-align:center;
+  }
+  .tt-ending-copy p{
+    max-width:620px;
+    margin-inline:auto;
+    font-size:clamp(15px,4vw,17px);
+    line-height:1.9;
+  }
+  .tt-ending-copy .tt-ending-question{
+    display:block;
+    max-width:620px;
+    margin:22px auto;
+    font-size:clamp(19px,5.25vw,25px);
+    line-height:1.55;
+  }
+  .tt-ending-copy .tt-ending-seal{margin-inline:auto}
+  .tt-ending-copy .tt-ending-actions{justify-content:center}
+  html[lang="zh-Hant"] .tt-ending-copy h2,
+  html[lang="zh-Hans"] .tt-ending-copy h2{white-space:nowrap;letter-spacing:.025em}
+  html[lang="zh-Hant"] .tt-ending-copy p,
+  html[lang="zh-Hans"] .tt-ending-copy p{
+    text-align:justify;
+    text-align-last:left;
+    text-justify:inter-ideograph;
+    letter-spacing:.035em;
+  }
+  html[lang="en"] .tt-ending-copy p{
+    text-align:left;
+    hyphens:auto;
+    overflow-wrap:break-word;
+  }
+  html[lang="ja"] .tt-ending-copy p{
+    text-align:justify;
+    text-align-last:left;
+    text-justify:inter-character;
+    letter-spacing:.025em;
+  }
+}
+
+/* v9.2 mobile typography audit: keep all four language presentations readable
+   without loosening the documentary layout. */
+@media(max-width:720px){
+  .tt-hero-art figcaption{font-size:12px;line-height:1.72}
+  .tt-guide-copy p{font-size:13px;line-height:1.75}
+  .tt-guide-links a{font-size:12px;line-height:1.5}
+  .tt-source-note{font-size:12px;line-height:1.82}
+  .tt-transition[data-shadow-scene]::after{font-size:10px;letter-spacing:.08em}
+  .tt-opening-note{max-width:min(680px,calc(100% - 32px));line-height:1.55;text-wrap:pretty}
+  .tt-classic blockquote{margin-right:36px;font-size:20px;line-height:1.68}
+  .tt-classic-explain b{display:block;margin:0 0 4px}
+  html[lang="en"] .tt-ending-copy h2{font-size:clamp(31px,8.5vw,40px);line-height:1.14}
+  html[lang="en"] .tt-ending-copy p{line-height:1.74}
+  html[lang="ja"] .tt-ending-copy h2{font-size:clamp(29px,7.8vw,38px);line-height:1.38}
+  html[lang="ja"] .tt-ending-copy p{line-height:1.9;line-break:strict;word-break:normal;overflow-wrap:normal}
+  html[lang="en"] .tt-shadow-dialogue>p{hyphens:auto;word-break:normal;overflow-wrap:break-word}
+  html[lang="ja"] .tt-shadow-dialogue>p{line-break:strict;word-break:normal;overflow-wrap:normal}
+}
+
+@media(max-width:480px){
+  .tt-guide-links{grid-template-columns:1fr}
+}
+
+/* v9.3 language-specific rhythm and line-breaking. */
+html[lang="en"] .tt-deck{line-height:1.72}
+html[lang="en"] .tt-prose p{line-height:1.76}
+
+@media(min-width:901px){
+  html[lang="en"] .tt-prose{width:100%;max-width:72ch}
+}
+
+@media(max-width:620px){
+  html[lang="en"] .tt-breadcrumb{
+    hyphens:auto;
+    overflow-wrap:normal;
+    word-break:normal;
+  }
+  html[lang="ja"] .tt-breadcrumb{
+    overflow-wrap:normal;
+    word-break:normal;
+    line-break:strict;
+  }
+}
+
+@media(max-width:380px){
+  html[lang="en"] .tt-brand>span,
+  html[lang="ja"] .tt-brand>span{display:none}
+}
