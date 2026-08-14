@@ -22,6 +22,7 @@
     };
     const show = next => {
       index = Math.max(0, Math.min(lines.length - 1, next));
+      opening.dataset.scene = String(index + 1);
       lines.forEach((line, i) => {
         line.classList.toggle('is-active', i === index);
         line.setAttribute('aria-hidden', i === index ? 'false' : 'true');
@@ -89,9 +90,13 @@
   }
 
   function initReveals() {
-    const targets = $$('[data-tt-reveal], .tt-chapter, .tt-transition, .tt-ending');
+    const targets = $$('[data-tt-reveal], .tt-chapter');
+    const cinematicTargets = $$('.tt-transition, .tt-ending');
+    $$('.tt-transition').forEach((target, index) => {
+      target.style.setProperty('--tt-scene-index', String(index + 1));
+    });
     if (reducedMotion || !('IntersectionObserver' in window)) {
-      targets.forEach(target => target.classList.add('is-visible'));
+      [...targets, ...cinematicTargets].forEach(target => target.classList.add('is-visible'));
       return;
     }
     const observer = new IntersectionObserver(entries => {
@@ -102,6 +107,13 @@
       });
     }, { rootMargin: '0px 0px -9% 0px', threshold: .13 });
     targets.forEach(target => observer.observe(target));
+
+    const cinematicObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        entry.target.classList.toggle('is-visible', entry.isIntersecting);
+      });
+    }, { rootMargin: '-8% 0px -8% 0px', threshold: .18 });
+    cinematicTargets.forEach(target => cinematicObserver.observe(target));
   }
 
   document.addEventListener('DOMContentLoaded', () => {
