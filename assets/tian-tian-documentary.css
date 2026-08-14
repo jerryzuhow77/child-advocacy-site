@@ -2457,3 +2457,259 @@ html[lang="en"] .tt-prose p{line-height:1.76}
   html[lang="en"] .tt-brand>span,
   html[lang="ja"] .tt-brand>span{display:none}
 }
+
+/* v9.4 mobile opening framing: reserve real headroom inside the 16:9 theatre
+   and show the documentary artwork at its intrinsic ratio. */
+@media(max-width:720px){
+  .tt-stage{
+    padding-top:clamp(228px,54vw,310px);
+  }
+  .tt-pose-layer--opening{
+    --tt-opening-puppet-size:clamp(176px,47vw,270px);
+    height:calc(var(--tt-opening-puppet-size) + clamp(14px,4vw,24px));
+    aspect-ratio:auto;
+  }
+  .tt-pose-layer--opening .tt-pose-actor{
+    bottom:0;
+    width:var(--tt-opening-puppet-size);
+  }
+}
+
+@media(max-width:900px){
+  .tt-hero-art img{
+    height:auto;
+    aspect-ratio:auto;
+    object-fit:contain;
+    object-position:50% 50%;
+    transform:none!important;
+  }
+}
+
+/* v10 scroll prologue: a visible craft tableau for the line “lower the case
+   file”.  The JS owns the 7.2-second choreography; these rules provide the
+   paper-cut, mounting-scroll and velvet-flower forms at every viewport size. */
+.tt-shadow-stage--scroll-prologue .tt-shadow-props{
+  display:block!important;
+  opacity:.96!important;
+}
+.tt-shadow-prologue-cloud{
+  z-index:1;
+  inset:2% auto auto 16%;
+  width:68%;
+  height:31%;
+  opacity:.68;
+}
+.tt-shadow-prologue-cloud path{
+  stroke:rgba(132,43,39,.86);
+  stroke-width:2.2;
+  filter:drop-shadow(4px 5px 2px rgba(44,21,13,.28));
+}
+.tt-shadow-prologue-ornament{
+  z-index:2;
+  top:8%;
+  width:clamp(64px,7.8vw,102px);
+  aspect-ratio:1;
+  border:0!important;
+  clip-path:polygon(50% 0,63% 18%,86% 14%,82% 37%,100% 50%,82% 63%,86% 86%,63% 82%,50% 100%,37% 82%,14% 86%,18% 63%,0 50%,18% 37%,14% 14%,37% 18%);
+  background:
+    radial-gradient(circle at 50% 50%,transparent 0 16%,rgba(225,183,97,.9) 17% 21%,transparent 22% 31%,rgba(119,42,38,.92) 32% 38%,transparent 39%),
+    repeating-conic-gradient(from 22.5deg,rgba(137,44,40,.92) 0 8deg,rgba(226,177,88,.74) 8deg 15deg,transparent 15deg 45deg),
+    rgba(78,39,31,.2);
+  filter:drop-shadow(7px 8px 3px rgba(42,20,13,.35));
+}
+.tt-shadow-prologue-ornament::before,
+.tt-shadow-prologue-ornament::after{
+  content:"";
+  position:absolute;
+  inset:20%;
+  border:1px solid rgba(242,208,136,.76);
+  clip-path:polygon(50% 0,62% 36%,100% 50%,62% 64%,50% 100%,38% 64%,0 50%,38% 36%);
+}
+.tt-shadow-prologue-ornament::after{
+  inset:34%;
+  border:0;
+  border-radius:50%;
+  background:radial-gradient(circle,#d5a44e 0 26%,#7d2c2d 27% 52%,transparent 53%);
+}
+.tt-shadow-prologue-ornament--left{left:18%}
+.tt-shadow-prologue-ornament--right{right:18%}
+
+.tt-shadow-scroll--prologue{
+  z-index:3;
+  left:24%;
+  right:24%;
+  top:11%;
+  height:37%;
+  border:1px solid rgba(91,54,32,.78)!important;
+  background:
+    repeating-linear-gradient(91deg,rgba(93,55,34,.06) 0 1px,transparent 1px 9px),
+    linear-gradient(90deg,#6f352b 0 13px,rgba(238,213,164,.92) 14px calc(100% - 14px),#6f352b calc(100% - 13px));
+  box-shadow:
+    -10px 0 0 rgba(61,31,23,.42),
+    10px 0 0 rgba(61,31,23,.42),
+    inset 0 0 34px rgba(94,54,29,.25),
+    0 13px 20px rgba(48,23,15,.23);
+  transform-origin:50% 0;
+}
+.tt-shadow-scroll--prologue::before,
+.tt-shadow-scroll--prologue::after{
+  content:"";
+  position:absolute;
+  top:-5px;
+  bottom:-5px;
+  width:10px;
+  border-radius:7px;
+  background:linear-gradient(90deg,#40221c,#b37045 48%,#45231c);
+  box-shadow:0 0 0 1px rgba(43,22,16,.52);
+}
+.tt-shadow-scroll--prologue::before{left:-8px}
+.tt-shadow-scroll--prologue::after{right:-8px}
+.tt-shadow-record-line--prologue{
+  z-index:4;
+  left:32%;
+  width:36%;
+  height:5px;
+  border:0!important;
+  background:linear-gradient(90deg,rgba(42,43,36,.82),rgba(102,61,37,.64) 72%,transparent);
+  box-shadow:0 7px 0 rgba(87,54,35,.05);
+}
+.tt-shadow-seal--prologue{
+  z-index:5;
+  top:31%;
+  right:31%;
+  bottom:auto;
+  width:clamp(38px,4.2vw,56px);
+  height:clamp(38px,4.2vw,56px);
+}
+.tt-shadow-paper-flower--prologue{
+  z-index:6;
+  left:21%;
+  bottom:13%;
+  width:clamp(38px,4.2vw,55px);
+  height:clamp(38px,4.2vw,55px);
+}
+.tt-shadow-bloom--prologue{
+  z-index:6;
+  top:auto;
+  right:20%;
+  bottom:12%;
+  width:clamp(66px,7vw,94px);
+  height:clamp(66px,7vw,94px);
+}
+.tt-shadow-prologue-name-space{
+  --tt-prologue-child-width:clamp(56px,6.4vw,82px);
+  z-index:6;
+  left:50%;
+  bottom:5%;
+  width:var(--tt-prologue-child-width);
+  height:clamp(91px,10.5vw,136px);
+  margin-left:calc(var(--tt-prologue-child-width) * -.5);
+  border:0!important;
+  background:none!important;
+  filter:drop-shadow(8px 9px 4px rgba(46,23,15,.34));
+}
+.tt-shadow-prologue-name-space::before,
+.tt-shadow-prologue-name-space::after{
+  content:"";
+  position:absolute;
+  display:block;
+  background:
+    repeating-linear-gradient(96deg,rgba(101,61,37,.08) 0 1px,transparent 1px 7px),
+    linear-gradient(145deg,rgba(248,225,177,.94),rgba(207,171,106,.84));
+  box-shadow:inset 0 0 0 1px rgba(91,54,33,.42);
+}
+.tt-shadow-prologue-name-space::before{
+  top:3%;
+  left:34%;
+  width:32%;
+  aspect-ratio:1;
+  border-radius:50%;
+}
+.tt-shadow-prologue-name-space::after{
+  top:27%;
+  right:10%;
+  bottom:0;
+  left:10%;
+  clip-path:polygon(39% 0,61% 0,72% 15%,80% 38%,100% 100%,0 100%,20% 38%,28% 15%);
+}
+
+@media(max-width:720px){
+  .tt-shadow-stage--scroll-prologue .tt-pose-actor{
+    width:50%;
+  }
+  .tt-shadow-prologue-cloud{
+    inset:1% auto auto 15%;
+    width:70%;
+    height:34%;
+  }
+  .tt-shadow-prologue-cloud path{stroke-width:1.45}
+  .tt-shadow-prologue-ornament{
+    top:6%;
+    width:clamp(27px,9vw,42px);
+  }
+  .tt-shadow-prologue-ornament--right{right:19%}
+  .tt-shadow-prologue-ornament--left{left:19%}
+  .tt-shadow-scroll--prologue{
+    left:27%;
+    right:27%;
+    top:11%;
+    height:47%;
+    box-shadow:-5px 0 rgba(61,31,23,.38),5px 0 rgba(61,31,23,.38),inset 0 0 17px rgba(94,54,29,.22),0 7px 12px rgba(48,23,15,.2);
+  }
+  .tt-shadow-scroll--prologue::before,
+  .tt-shadow-scroll--prologue::after{top:-3px;bottom:-3px;width:6px}
+  .tt-shadow-scroll--prologue::before{left:-5px}
+  .tt-shadow-scroll--prologue::after{right:-5px}
+  .tt-shadow-record-line--prologue{
+    left:32%;
+    width:36%;
+    height:3px;
+  }
+  .tt-shadow-seal--prologue{
+    top:34%;
+    right:30%;
+    width:clamp(24px,7.2vw,34px);
+    height:clamp(24px,7.2vw,34px);
+    scale:1;
+  }
+  .tt-shadow-paper-flower--prologue{
+    left:18%;
+    bottom:9%;
+    width:clamp(24px,7vw,34px);
+    height:clamp(24px,7vw,34px);
+    scale:1;
+  }
+  .tt-shadow-bloom--prologue{
+    right:15%;
+    bottom:7%;
+    width:clamp(38px,11vw,52px);
+    height:clamp(38px,11vw,52px);
+    scale:1;
+  }
+  .tt-shadow-bloom--prologue .tt-shadow-petal{
+    left:calc(50% - 7px);
+    top:2px;
+    width:14px;
+    height:calc(50% - 2px);
+    transform-origin:50% 100%;
+  }
+  .tt-shadow-bloom--prologue::after{
+    left:calc(50% - 7px);
+    top:calc(50% - 7px);
+    width:14px;
+    height:14px;
+  }
+  .tt-shadow-prologue-name-space{
+    --tt-prologue-child-width:clamp(32px,9vw,43px);
+    bottom:4%;
+    height:clamp(53px,15vw,72px);
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .tt-shadow-stage--scroll-prologue [data-tt-story-prop]{
+    opacity:.86!important;
+    animation:none!important;
+  }
+  .tt-shadow-prologue-cloud path{stroke-dashoffset:0!important}
+}

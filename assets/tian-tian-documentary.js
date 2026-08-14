@@ -21,7 +21,11 @@
     { woman: [3, 1, 4, 0], scribe: [3, 2, 4, 0] }
   ];
   const ACT_POSES = {
-    'scroll-prologue': { woman: [0, 0, 1, 0], scribe: [0, 1, 3, 0] },
+    // The prologue starts with the record held open, lowers it, bows to the
+    // child's place in the centre of the screen, then opens both silhouettes
+    // back toward the audience. These deliberately distinct cells keep the
+    // gesture legible even on a narrow phone stage.
+    'scroll-prologue': { woman: [0, 2, 4, 5], scribe: [1, 0, 3, 5] },
     'wind-kite': { woman: [0, 1, 0, 5], scribe: [0, 0, 2, 0] },
     'ten-knot-door': { woman: [0, 1, 0, 3], scribe: [0, 0, 2, 3] },
     'frost-lantern': { woman: [0, 3, 4, 3], scribe: [0, 0, 2, 0] },
@@ -43,6 +47,7 @@
     'seven-moon': 9,
     'guarded-lamp': 9.2
   };
+  const prologueAnimations = new WeakMap();
 
   const makePart = (tag, className) => {
     const node = document.createElement(tag);
@@ -80,6 +85,66 @@
       svg.append(path);
     });
     return svg;
+  }
+
+  function markStoryProp(node, name) {
+    node.dataset.ttStoryProp = name;
+    return node;
+  }
+
+  function appendPrologueProps(props) {
+    props.dataset.ttSceneProps = 'scroll-prologue';
+
+    // Keep the prologue useful before any scene-specific CSS arrives by
+    // composing it from the same visible craft primitives as the later acts.
+    // Modifier classes and data attributes give the stylesheet stable hooks
+    // for the prologue's more spacious desktop and phone arrangements.
+    const cloud = markStoryProp(makeShadowLine(
+      'tt-shadow-line tt-shadow-prologue-cloud',
+      [
+        'M18 92 C49 55 83 55 112 88 C135 54 176 48 205 82 C230 62 259 63 286 92',
+        'M35 119 C73 91 103 99 132 119 C164 88 206 91 235 116'
+      ]
+    ), 'paper-cut-cloud');
+    props.append(cloud);
+
+    props.append(
+      markStoryProp(makePart('i', 'tt-shadow-prologue-ornament tt-shadow-prologue-ornament--left'), 'paper-cut-left'),
+      markStoryProp(makePart('i', 'tt-shadow-prologue-ornament tt-shadow-prologue-ornament--right'), 'paper-cut-right')
+    );
+
+    props.append(markStoryProp(
+      makePart('i', 'tt-shadow-scroll tt-shadow-scroll--prologue'),
+      'case-file'
+    ));
+    makeParts('tt-shadow-record-line tt-shadow-record-line--prologue', 4).forEach((line, index) => {
+      line.dataset.ttStoryProp = 'record-line';
+      line.dataset.ttRecordLine = String(index + 1);
+      props.append(line);
+    });
+    props.append(markStoryProp(
+      makePart('i', 'tt-shadow-seal tt-shadow-seal--prologue'),
+      'vermilion-seal'
+    ));
+    props.append(markStoryProp(
+      makePart('i', 'tt-shadow-paper-flower tt-shadow-paper-flower--prologue'),
+      'paper-flower'
+    ));
+
+    const bloom = markStoryProp(
+      makePart('i', 'tt-shadow-bloom tt-shadow-bloom--prologue'),
+      'velvet-flower'
+    );
+    makeParts('tt-shadow-petal tt-shadow-petal--prologue', 8).forEach(petal => bloom.append(petal));
+    props.append(bloom);
+
+    // This unprinted cartouche is the deliberate empty space revealed when
+    // the record descends: a child is placed before the case number without
+    // reenacting harm or inventing her likeness.
+    props.append(markStoryProp(
+      makePart('i', 'tt-shadow-prologue-name-space'),
+      'child-before-record'
+    ));
   }
 
   function makePoseActor(role) {
@@ -134,11 +199,14 @@
   function makeShadowStage(scene) {
     const stage = makePart('div', `tt-shadow-stage tt-shadow-stage--${scene}`);
     stage.setAttribute('aria-hidden', 'true');
+    stage.dataset.ttShadowScene = scene;
     stage.append(makePart('span', 'tt-shadow-screen'));
     stage.append(makePart('span', 'tt-shadow-vignette'));
     const props = makePart('span', 'tt-shadow-props');
 
-    if (scene === 'wind-kite') {
+    if (scene === 'scroll-prologue') {
+      appendPrologueProps(props);
+    } else if (scene === 'wind-kite') {
       props.append(makePart('i', 'tt-shadow-roof'));
       props.append(makePart('i', 'tt-shadow-kite'));
       props.append(makeShadowLine('tt-shadow-line tt-shadow-thread', ['M38 139 C91 73 155 153 260 44']));
@@ -193,11 +261,143 @@
     return stage;
   }
 
+  function cancelPrologueStory(transition) {
+    const animations = prologueAnimations.get(transition) || [];
+    animations.forEach(animation => {
+      try { animation.cancel(); } catch (_) { /* detached/replaced animation */ }
+    });
+    prologueAnimations.delete(transition);
+    transition.classList.remove('is-story-playing');
+    const stage = $('.tt-shadow-stage--scroll-prologue', transition);
+    if (stage) stage.classList.remove('is-story-playing');
+  }
+
+  function playPrologueStory(transition, play = true) {
+    if (!transition || transition.dataset.shadowScene !== 'scroll-prologue') return;
+    cancelPrologueStory(transition);
+
+    const stage = $('.tt-shadow-stage--scroll-prologue', transition);
+    if (!stage) return;
+    stage.dataset.ttStoryState = play && !reducedMotion ? 'playing' : 'settled';
+    if (!play || reducedMotion || typeof stage.animate !== 'function') return;
+
+    const duration = (ACT_STORY_DURATIONS['scroll-prologue'] || 7.2) * 1000;
+    const animations = [];
+    const animate = (node, keyframes, options = {}) => {
+      if (!node || typeof node.animate !== 'function') return;
+      animations.push(node.animate(keyframes, {
+        duration,
+        fill: 'both',
+        easing: 'cubic-bezier(.2,.72,.2,1)',
+        ...options
+      }));
+    };
+
+    transition.classList.add('is-story-playing');
+    stage.classList.add('is-story-playing');
+
+    // The physical record opens first, then descends roughly one visual inch.
+    // The empty cartouche is revealed only after it has moved out of the way.
+    animate($('[data-tt-story-prop="case-file"]', stage), [
+      { opacity: .12, transform: 'translate3d(0,-14px,0) scaleX(.18)', offset: 0 },
+      { opacity: 1, transform: 'translate3d(0,0,0) scaleX(1)', offset: .3 },
+      { opacity: 1, transform: 'translate3d(0,0,0) scaleX(1)', offset: .5 },
+      { opacity: .9, transform: 'translate3d(0,24px,0) scaleX(.92)', offset: .78 },
+      { opacity: .84, transform: 'translate3d(0,28px,0) scaleX(.92)', offset: 1 }
+    ]);
+    $$('[data-tt-story-prop="record-line"]', stage).forEach((line, index) => {
+      const enter = .2 + index * .045;
+      animate(line, [
+        { opacity: 0, transform: 'scaleX(0)', offset: 0 },
+        { opacity: 0, transform: 'scaleX(0)', offset: enter },
+        { opacity: .9, transform: 'scaleX(1)', offset: Math.min(.48, enter + .12) },
+        { opacity: .9, transform: 'translate3d(0,0,0) scaleX(1)', offset: .5 },
+        { opacity: .62, transform: 'translate3d(0,24px,0) scaleX(.92)', offset: .78 },
+        { opacity: .55, transform: 'translate3d(0,28px,0) scaleX(.92)', offset: 1 }
+      ]);
+    });
+    animate($('[data-tt-story-prop="vermilion-seal"]', stage), [
+      { opacity: 0, transform: 'translate3d(0,-10px,0) scale(1.7) rotate(-12deg)', offset: 0 },
+      { opacity: 0, transform: 'translate3d(0,-10px,0) scale(1.7) rotate(-12deg)', offset: .33 },
+      { opacity: .94, transform: 'translate3d(0,0,0) scale(.94) rotate(-3deg)', offset: .51 },
+      { opacity: .72, transform: 'translate3d(0,24px,0) scale(.9) rotate(-5deg)', offset: .79 },
+      { opacity: .66, transform: 'translate3d(0,28px,0) scale(.9) rotate(-5deg)', offset: 1 }
+    ]);
+    animate($('[data-tt-story-prop="child-before-record"]', stage), [
+      { opacity: 0, transform: 'translate3d(0,12px,0) scale(.84)', offset: 0 },
+      { opacity: 0, transform: 'translate3d(0,12px,0) scale(.84)', offset: .48 },
+      { opacity: .92, transform: 'translate3d(0,0,0) scale(1)', offset: .72 },
+      { opacity: .78, transform: 'translate3d(0,-2px,0) scale(1.02)', offset: 1 }
+    ]);
+
+    // Paper-cut clouds, a white paper flower and a velvet bloom frame the
+    // action as craft objects rather than decorative emoji-like symbols.
+    $$('[data-tt-story-prop="paper-cut-cloud"] path', stage).forEach((path, index) => {
+      animate(path, [
+        { opacity: .08, strokeDashoffset: 1, offset: 0 },
+        { opacity: .08, strokeDashoffset: 1, offset: .08 + index * .04 },
+        { opacity: .68, strokeDashoffset: 0, offset: .38 + index * .06 },
+        { opacity: .4, strokeDashoffset: 0, offset: 1 }
+      ]);
+    });
+    $$('[data-tt-story-prop^="paper-cut-"]', stage).forEach(ornament => {
+      if (ornament.matches('svg')) return;
+      const isRight = ornament.classList.contains('tt-shadow-prologue-ornament--right');
+      animate(ornament, [
+        { opacity: 0, transform: `translate3d(${isRight ? 12 : -12}px,0,0) rotate(${isRight ? 8 : -8}deg)`, offset: 0 },
+        { opacity: .72, transform: 'translate3d(0,0,0) rotate(0deg)', offset: .32 },
+        { opacity: .5, transform: `translate3d(${isRight ? 3 : -3}px,-2px,0) rotate(${isRight ? 2 : -2}deg)`, offset: 1 }
+      ]);
+    });
+    ['paper-flower', 'velvet-flower'].forEach((name, index) => {
+      animate($(`[data-tt-story-prop="${name}"]`, stage), [
+        { opacity: 0, transform: 'scale(.22) rotate(-18deg)', offset: 0 },
+        { opacity: 0, transform: 'scale(.22) rotate(-18deg)', offset: .46 + index * .06 },
+        { opacity: .9, transform: 'scale(1.04) rotate(2deg)', offset: .74 + index * .05 },
+        { opacity: .72, transform: 'scale(1) rotate(0deg)', offset: 1 }
+      ]);
+    });
+
+    // A WAAPI pose track backs up the CSS sprite animation. This prevents the
+    // prologue from appearing frozen if it enters while styles or images are
+    // still settling, and it works identically on desktop and mobile.
+    Object.entries(ACT_POSES['scroll-prologue']).forEach(([role, frames]) => {
+      const actor = $(`[data-tt-pose-role="${role}"]`, stage);
+      const sprite = actor && $('.tt-pose-sprite', actor);
+      const positions = frames.map(frame => POSE_POSITIONS[frame] || POSE_POSITIONS[0]);
+      animate(sprite, [
+        { backgroundPosition: positions[0], offset: 0 },
+        { backgroundPosition: positions[0], offset: .2 },
+        { backgroundPosition: positions[1], offset: .201 },
+        { backgroundPosition: positions[1], offset: .43 },
+        { backgroundPosition: positions[2], offset: .431 },
+        { backgroundPosition: positions[2], offset: .78 },
+        { backgroundPosition: positions[3], offset: .781 },
+        { backgroundPosition: positions[3], offset: 1 }
+      ], { easing: 'steps(1,end)' });
+      animate(actor, role === 'scribe' ? [
+        { opacity: .7, transform: 'translate3d(10px,0,0)', offset: 0 },
+        { opacity: 1, transform: 'translate3d(0,0,0)', offset: .22 },
+        { opacity: 1, transform: 'translate3d(-3px,-2px,0)', offset: .43 },
+        { opacity: .98, transform: 'translate3d(-5px,5px,0)', offset: .78 },
+        { opacity: .96, transform: 'translate3d(-2px,3px,0)', offset: 1 }
+      ] : [
+        { opacity: .7, transform: 'translate3d(-10px,0,0)', offset: 0 },
+        { opacity: 1, transform: 'translate3d(0,0,0)', offset: .22 },
+        { opacity: 1, transform: 'translate3d(3px,-2px,0)', offset: .43 },
+        { opacity: .98, transform: 'translate3d(5px,4px,0)', offset: .78 },
+        { opacity: .96, transform: 'translate3d(2px,2px,0)', offset: 1 }
+      ]);
+    });
+
+    prologueAnimations.set(transition, animations);
+  }
+
   function initShadowStages() {
     $$('[data-shadow-scene]').forEach(transition => {
       const scene = transition.dataset.shadowScene;
       const fallback = $('.tt-transition-puppet', transition);
-      if (!scene || !fallback || $('.tt-shadow-stage', transition)) return;
+      if (!scene || $('.tt-shadow-stage', transition)) return;
       const stage = makeShadowStage(scene);
       const speakers = $$('.tt-shadow-dialogue p[data-speaker]', transition)
         .map(line => line.dataset.speaker)
@@ -209,7 +409,12 @@
       stage.dataset.ttStoryFlow = storyFlow;
       const poseLayer = $('.tt-pose-layer--transition', stage);
       if (poseLayer) poseLayer.style.setProperty('--tt-pose-duration', `${storyDuration}s`);
-      fallback.replaceWith(stage);
+      if (fallback) fallback.replaceWith(stage);
+      else {
+        const inner = $('.tt-transition-inner', transition);
+        if (inner) inner.prepend(stage);
+        else transition.prepend(stage);
+      }
       transition.classList.add('tt-shadow-ready');
     });
   }
@@ -232,6 +437,7 @@
         const layer = $('.tt-pose-layer', target);
         const scene = target.dataset.shadowScene;
         applyPoseSequence(layer, scene ? ACT_POSES[scene] : ENDING_POSES, false);
+        if (scene === 'scroll-prologue') playPrologueStory(target, false);
       });
       return;
     }
@@ -242,6 +448,12 @@
         const layer = $('.tt-pose-layer', target);
         const scene = target.dataset.shadowScene;
         applyPoseSequence(layer, scene ? ACT_POSES[scene] : ENDING_POSES, true);
+        if (scene === 'scroll-prologue') {
+          playPrologueStory(target, true);
+          // Keep observing the prologue so the narrative gesture can be seen
+          // again after a reader scrolls away and returns to the passage.
+          return;
+        }
         observer.unobserve(target);
       });
     }, { rootMargin: '-8% 0px -8% 0px', threshold: .28 });
