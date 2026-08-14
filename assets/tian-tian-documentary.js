@@ -441,22 +441,42 @@
       });
       return;
     }
+    const prologue = $('[data-shadow-scene="scroll-prologue"]');
+    let prologueVisible = false;
+    const playVisiblePrologue = () => {
+      if (!prologue || !prologueVisible || document.body.classList.contains('tt-opening-active')) return;
+      const layer = $('.tt-pose-layer', prologue);
+      applyPoseSequence(layer, ACT_POSES['scroll-prologue'], true);
+      playPrologueStory(prologue, true);
+    };
+    document.addEventListener('tt:opening-close', () => {
+      window.requestAnimationFrame(playVisiblePrologue);
+    });
+
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
         const target = entry.target;
-        const layer = $('.tt-pose-layer', target);
         const scene = target.dataset.shadowScene;
-        applyPoseSequence(layer, scene ? ACT_POSES[scene] : ENDING_POSES, true);
         if (scene === 'scroll-prologue') {
+          prologueVisible = entry.isIntersecting && entry.intersectionRatio >= .58;
+          if (!prologueVisible) {
+            cancelPrologueStory(target);
+            return;
+          }
+          if (document.body.classList.contains('tt-opening-active')) return;
+          const layer = $('.tt-pose-layer', target);
+          applyPoseSequence(layer, ACT_POSES[scene], true);
           playPrologueStory(target, true);
-          // Keep observing the prologue so the narrative gesture can be seen
-          // again after a reader scrolls away and returns to the passage.
+          // Keep observing the prologue so its complete 7.2-second narrative
+          // begins only when the stage is mostly visible, and replays on return.
           return;
         }
+        if (!entry.isIntersecting) return;
+        const layer = $('.tt-pose-layer', target);
+        applyPoseSequence(layer, scene ? ACT_POSES[scene] : ENDING_POSES, true);
         observer.unobserve(target);
       });
-    }, { rootMargin: '-8% 0px -8% 0px', threshold: .28 });
+    }, { rootMargin: '-6% 0px -6% 0px', threshold: [.18, .58] });
     targets.forEach(target => observer.observe(target));
   }
 

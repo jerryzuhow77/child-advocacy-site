@@ -2462,11 +2462,11 @@ html[lang="en"] .tt-prose p{line-height:1.76}
    and show the documentary artwork at its intrinsic ratio. */
 @media(max-width:720px){
   .tt-stage{
-    padding-top:clamp(228px,54vw,310px);
+    padding-top:clamp(246px,60vw,336px);
   }
   .tt-pose-layer--opening{
     --tt-opening-puppet-size:clamp(176px,47vw,270px);
-    height:calc(var(--tt-opening-puppet-size) + clamp(14px,4vw,24px));
+    height:calc(var(--tt-opening-puppet-size) + clamp(28px,8vw,48px));
     aspect-ratio:auto;
   }
   .tt-pose-layer--opening .tt-pose-actor{
