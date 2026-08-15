@@ -20,14 +20,6 @@
   --sp-paper-shadow: 0 10px 22px rgba(48, 52, 51, .14), 0 2px 4px rgba(48, 52, 51, .1);
 }
 
-/* 2026-08-13 — 简体模式覆盖专题衬线字，避免同一句出现不同字重。 */
-html[lang="zh-Hans"] body,
-html[lang="zh-Hans"] body :where(h1,h2,h3,h4,h5,h6,p,a,button,span,strong,b,small,li,figcaption,blockquote,div){
-  font-family:"Microsoft YaHei UI","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC","Source Han Sans SC","PingFang SC",Arial,sans-serif!important;
-  font-synthesis:none!important;
-}
-html[lang="zh-Hans"] :where(strong,b,h1,h2,h3,h4,h5,h6){font-weight:700!important;}
-
 html {
   scroll-behavior: smooth;
 }
@@ -3172,10 +3164,6 @@ html[lang] header .nav .special-feature-nav-menu {
   border-left: 2px solid rgba(185,132,45,.46);
 }
 .special-feature-case-group.is-expanded .special-feature-case-children { display: grid; }
-@media (hover:hover) and (min-width:801px) {
-  .special-feature-case-group:hover .special-feature-case-children { display: grid; }
-  .special-feature-case-group:hover .special-feature-case-toggle i { transform: rotate(90deg); }
-}
 
 html[lang] header .nav .special-feature-nav-menu .special-feature-menu-prologue {
   display: grid !important;
@@ -3239,32 +3227,6 @@ html[lang="ja"] .special-feature-menu-prologue strong {
   font-size: 14px;
   line-height: 1.45;
   overflow-wrap: anywhere;
-}
-
-/* English prologue: keep the long translated title on its own rows. */
-html[lang="en"] header .nav .special-feature-nav-menu .special-feature-menu-prologue {
-  grid-template-columns: minmax(0, 1fr) auto !important;
-  gap: 3px 10px;
-}
-html[lang="en"] .special-feature-menu-prologue small,
-html[lang="en"] .special-feature-menu-prologue strong,
-html[lang="en"] .special-feature-menu-prologue span {
-  grid-column: 1;
-  min-width: 0;
-}
-html[lang="en"] .special-feature-menu-prologue small {
-  white-space: nowrap;
-}
-html[lang="en"] .special-feature-menu-prologue strong {
-  font-size: 13.5px;
-  line-height: 1.4;
-  word-break: normal;
-  overflow-wrap: break-word;
-}
-html[lang="en"] .special-feature-menu-prologue b {
-  grid-column: 2;
-  grid-row: 1 / 4;
-  align-self: center;
 }
 
 html[lang] header .nav .special-feature-nav-menu::before {
@@ -3536,7 +3498,7 @@ html[lang] header .nav .special-feature-nav-menu{
 }
 
 .special-feature-nav-menu .special-feature-case-children{
-  display:grid;
+  display:none;
   align-content:start;
   gap:9px;
   margin-top:9px;
@@ -3544,11 +3506,18 @@ html[lang] header .nav .special-feature-nav-menu{
   border-left:0;
 }
 
+.special-feature-nav-menu .special-feature-case-group.is-expanded .special-feature-case-children{
+  display:grid;
+}
+
 .special-feature-nav-menu .special-feature-case-toggle{
   min-height:64px;
-  cursor:default;
+  cursor:pointer;
 }
 .special-feature-nav-menu .special-feature-case-toggle i{
+  transform:none;
+}
+.special-feature-nav-menu .special-feature-case-group.is-expanded .special-feature-case-toggle i{
   transform:rotate(90deg);
 }
 
@@ -3596,6 +3565,9 @@ html[lang] header .nav .special-feature-nav-menu{
     box-shadow:3px 3px 0 rgba(214,182,108,.2);
   }
   .special-feature-nav-menu .special-feature-case-children{
+    display:none!important;
+  }
+  .special-feature-nav-menu .special-feature-case-group.is-expanded .special-feature-case-children{
     display:grid!important;
   }
 }
@@ -3663,13 +3635,3 @@ html[lang] header .nav .special-feature-nav-menu{
     grid-template-columns:88px minmax(0,1fr)!important;
   }
 }
-
-/* 简体字形最终覆盖：置于专题样式末端，确保不被衬线标题规则取代。 */
-html[lang="zh-Hans"] body,
-html[lang="zh-Hans"] body :where(h1,h2,h3,h4,h5,h6,p,a,button,span,strong,b,small,li,figcaption,blockquote,div){
-  font-family:"Microsoft YaHei UI","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC","Source Han Sans SC","PingFang SC",Arial,sans-serif!important;
-  font-synthesis:none!important;
-  text-rendering:optimizeLegibility;
-  -webkit-font-smoothing:antialiased;
-}
-html[lang="zh-Hans"] :where(strong,b,h1,h2,h3,h4,h5,h6){font-weight:700!important;}
