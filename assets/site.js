@@ -1023,6 +1023,13 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     if (contentRoute === 'historical-cases/regions/mainland-china/tian-tian') {
       return 'historical-tian-tian-shared';
     }
+    // Xuanxuan is an independent editorial longform page with its own
+    // explicit counter widget. Keep its widget and all homepage/directory
+    // cards on one stable key across Traditional, Simplified, English and
+    // Japanese.
+    if (contentRoute === 'cases/xuanxuan') {
+      return 'case-xuanxuan-shared';
+    }
     return route.replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
   }
 

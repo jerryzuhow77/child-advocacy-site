@@ -7618,3 +7618,63 @@ html[lang="ja"] .home-case-reel-card.is-tian-tian .home-case-reel-copy strong{
 /* Preserve the homepage nested-menu second-click collapse behavior. */
 .social-case-tier.is-click-collapsed .social-case-tier-children{display:none!important}
 .historical-case-nav .social-case-menu-column.is-click-collapsed .historical-region-list,.historical-case-nav .social-case-menu-column.is-click-collapsed .historical-region-note{display:none!important}
+
+/* 2026-08-14 — Xuanxuan observational-documentary cards and four-language rhythm. */
+.is-xuanxuan .home-news-card-media,
+.home-case-reel-card.is-xuanxuan .home-case-reel-media{
+  background:#1a2b33;
+}
+.is-xuanxuan .home-news-card-media img,
+.home-case-reel-card.is-xuanxuan .home-case-reel-media img{
+  object-position:center 52%;
+  filter:saturate(.78) contrast(1.04) brightness(.94);
+}
+.is-xuanxuan .home-news-card-media::after,
+.home-case-reel-card.is-xuanxuan .home-case-reel-media::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(112deg,rgba(17,35,43,.46),transparent 48%,rgba(198,161,91,.1));
+}
+.is-xuanxuan .home-news-card-copy strong,
+.home-progress-card.is-xuanxuan strong,
+.home-case-reel-card.is-xuanxuan .home-case-reel-copy strong,
+.xuanxuan-directory-card h3{
+  text-wrap:balance;
+  overflow-wrap:anywhere;
+}
+.is-xuanxuan .home-news-card-copy p,
+.home-progress-card.is-xuanxuan p,
+.home-case-reel-card.is-xuanxuan .home-case-reel-copy > span{
+  color:#686662;
+  text-wrap:pretty;
+}
+html[lang="en"] .is-xuanxuan .home-news-card-copy strong,
+html[lang="en"] .home-progress-card.is-xuanxuan strong,
+html[lang="en"] .home-case-reel-card.is-xuanxuan .home-case-reel-copy strong,
+html[lang="en"] .xuanxuan-directory-card h3{
+  font-size:clamp(.98rem,1.45vw,1.14rem)!important;
+  line-height:1.5!important;
+  hyphens:auto;
+}
+html[lang="ja"] .is-xuanxuan .home-news-card-copy strong,
+html[lang="ja"] .home-progress-card.is-xuanxuan strong,
+html[lang="ja"] .home-case-reel-card.is-xuanxuan .home-case-reel-copy strong,
+html[lang="ja"] .xuanxuan-directory-card h3{
+  font-size:clamp(.98rem,1.45vw,1.12rem)!important;
+  line-height:1.68!important;
+  line-break:strict;
+  word-break:normal;
+}
+html[lang="zh-Hans"] .is-xuanxuan,
+html[lang="zh-Hans"] .xuanxuan-directory-card{
+  font-family:"Microsoft YaHei","Noto Sans SC","Source Han Sans SC",sans-serif;
+  font-synthesis:none;
+}
+@media(max-width:560px){
+  .is-xuanxuan .home-news-card-copy,
+  .home-case-reel-card.is-xuanxuan .home-case-reel-copy{padding-inline:15px}
+  html[lang="en"] .home-progress-card.is-xuanxuan strong,
+  html[lang="ja"] .home-progress-card.is-xuanxuan strong{font-size:.98rem!important}
+}
