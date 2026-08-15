@@ -562,3 +562,10 @@ html[lang="ja"] .xx-case-summary p,html[lang="ja"] .xx-record-block p{line-heigh
   .xx-content-note,.xx-legal-caution,.xx-policy-note{padding:.95rem 1rem}
   .xx-policy-grid article{padding:1.15rem}
 }
+
+/* The case record is taller than a mobile viewport. Keep the outer record
+   visible; smaller elements retain their existing motion and transitions. */
+.xx-case-record.reveal{
+  opacity:1;
+  transform:none;
+}
