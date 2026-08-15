@@ -759,15 +759,14 @@ function initHistoricalRegionMenus(){
 document.addEventListener('DOMContentLoaded',initHistoricalRegionMenus);
 
 /* =====================================================================
-   2026-08-15 — 特別專題：桌機 hover、click 固定與手機逐層收放
+   2026-08-15 — 特別專題：桌機與手機統一採逐層點擊收放
    ===================================================================== */
 function initSpecialFeatureColumns(){
   const menus=[...document.querySelectorAll('.special-feature-nav-menu')];
   if(!menus.length) return;
 
-  const collapse=(group,clearPinned=true)=>{
+  const collapse=group=>{
     group.classList.remove('is-expanded');
-    if(clearPinned) group.classList.remove('is-feature-click-pinned');
     const button=group.querySelector('.special-feature-case-toggle');
     if(button) button.setAttribute('aria-expanded','false');
     group.querySelectorAll('.special-feature-prologue-group.is-expanded').forEach(nested=>{
@@ -775,13 +774,12 @@ function initSpecialFeatureColumns(){
       nested.querySelector('.special-feature-menu-prologue')?.setAttribute('aria-expanded','false');
     });
   };
-  const expand=(group,pinned=false)=>{
+  const expand=group=>{
     const menu=group.closest('.special-feature-nav-menu');
     if(menu) menu.querySelectorAll('.special-feature-case-group').forEach(item=>{
       if(item!==group) collapse(item);
     });
     group.classList.add('is-expanded');
-    group.classList.toggle('is-feature-click-pinned',pinned);
     const button=group.querySelector('.special-feature-case-toggle');
     if(button) button.setAttribute('aria-expanded','true');
   };
@@ -794,20 +792,8 @@ function initSpecialFeatureColumns(){
       button.addEventListener('click',event=>{
         event.preventDefault();
         event.stopPropagation();
-        group.classList.contains('is-feature-click-pinned') ? collapse(group) : expand(group,true);
+        group.classList.contains('is-expanded') ? collapse(group) : expand(group);
       });
-      group.addEventListener('mouseenter',()=>{
-        if(window.innerWidth>800&&!group.classList.contains('is-expanded')) expand(group,false);
-      });
-      group.addEventListener('mouseleave',()=>{
-        if(window.innerWidth>800&&!group.classList.contains('is-feature-click-pinned')) collapse(group,false);
-      });
-      group.addEventListener('focusin',()=>{
-        if(window.innerWidth>800&&!group.classList.contains('is-expanded')) expand(group,false);
-      });
-      group.addEventListener('focusout',()=>window.setTimeout(()=>{
-        if(window.innerWidth>800&&!group.contains(document.activeElement)&&!group.classList.contains('is-feature-click-pinned')) collapse(group,false);
-      },0));
       group.addEventListener('keydown',event=>{
         if(event.key==='Escape'){
           event.preventDefault();
@@ -825,13 +811,10 @@ function initSpecialFeatureColumns(){
       });
     });
 
-    const syncMode=()=>{
-      groups.forEach(group=>{
-        if(window.innerWidth<=800&&!group.classList.contains('is-feature-click-pinned')) collapse(group,false);
-        const button=group.querySelector('.special-feature-case-toggle');
-        button?.setAttribute('aria-expanded',group.classList.contains('is-expanded')?'true':'false');
-      });
-    };
+    const syncMode=()=>groups.forEach(group=>{
+      const button=group.querySelector('.special-feature-case-toggle');
+      button?.setAttribute('aria-expanded',group.classList.contains('is-expanded')?'true':'false');
+    });
     syncMode();
     window.addEventListener('resize',syncMode);
   });

@@ -169,13 +169,40 @@ html[lang="zh-Hans"] .xx-proverb blockquote{font-family:"Noto Serif TC","Source 
 .xx-interlude-copy h2{max-width:850px;margin:.7rem 0 1rem;font-size:clamp(2.25rem,5.7vw,5rem);line-height:1.12;text-wrap:balance;text-shadow:0 .3rem 1.6rem rgba(0,0,0,.62)}
 .xx-interlude-copy p{max-width:720px;color:#e6e1d8;font-size:1rem}
 .xx-interlude-copy .xx-replay{margin-top:.7rem}
-.xx-puppet{position:absolute;z-index:2;bottom:10%;width:clamp(85px,12vw,170px);height:clamp(170px,27vw,355px);border-radius:47% 47% 18% 18%;background:linear-gradient(90deg,#071116,#23434b 42%,#9f7445 45% 48%,#17333b 52%,#071116);filter:drop-shadow(0 1.4rem 1rem rgba(0,0,0,.55));opacity:0}
-.xx-puppet::before{content:"";position:absolute;top:-18%;left:31%;width:38%;aspect-ratio:1;border-radius:50% 50% 44% 44%;background:#121d1d;border:2px solid #9f7445;box-shadow:0 -12px 0 -5px #9f4a45}
-.xx-puppet::after{content:"";position:absolute;left:-30%;top:22%;width:160%;height:23%;background:linear-gradient(90deg,transparent,#efe3cc 22%,#1b414a 38% 62%,#efe3cc 78%,transparent);clip-path:polygon(0 34%,50% 0,100% 34%,84% 100%,50% 55%,16% 100%)}
-.xx-puppet.is-left{left:7%;transform:translateX(-140%) rotate(-4deg)}
-.xx-puppet.is-right{right:7%;transform:translateX(140%) rotate(4deg)}
-.xx-scene.is-active .xx-puppet.is-left{animation:xxPuppetLeft 5.8s 1.5s ease-in-out both}
-.xx-scene.is-active .xx-puppet.is-right{animation:xxPuppetRight 5.8s 1.7s ease-in-out both}
+.xx-puppet{
+  --xx-entry:0;
+  --xx-drift:0;
+  --xx-turn:0deg;
+  --xx-settle-turn:0deg;
+  --xx-accent-turn:0deg;
+  --xx-delay:1.45s;
+  position:absolute;
+  z-index:2;
+  bottom:-2%;
+  display:block;
+  width:auto;
+  height:min(69svh,740px);
+  max-width:min(46vw,660px);
+  object-fit:contain;
+  object-position:center bottom;
+  opacity:0;
+  filter:drop-shadow(0 1.5rem 1.35rem rgba(0,0,0,.68)) saturate(.92) brightness(.82);
+  transform-origin:50% 88%;
+  will-change:transform,opacity,filter;
+}
+.xx-puppet.is-left{--xx-entry:-42vw;--xx-drift:-2.4vw;--xx-turn:-5deg;--xx-settle-turn:-1deg;--xx-accent-turn:2deg;--xx-delay:1.35s;left:clamp(1rem,4vw,5rem)}
+.xx-puppet.is-right{--xx-entry:42vw;--xx-drift:2.4vw;--xx-turn:5deg;--xx-settle-turn:1deg;--xx-accent-turn:-2deg;--xx-delay:1.62s;right:clamp(1rem,4vw,5rem)}
+.xx-puppet.is-solo{height:min(73svh,790px);max-width:min(54vw,760px)}
+.xx-puppet--messenger{height:min(67svh,715px)}
+.xx-puppet--examiner{height:min(72svh,780px)}
+.xx-puppet--guide{height:min(70svh,750px)}
+.xx-scene.is-active .xx-puppet{animation:xxPuppetEnter 7.4s var(--xx-delay) cubic-bezier(.2,.72,.24,1) both}
+.xx-scene.is-active .xx-puppet.xx-motion-point{animation-name:xxPuppetPoint}
+.xx-scene.is-active .xx-puppet.xx-motion-receive{animation-name:xxPuppetReceive}
+.xx-scene.is-active .xx-puppet.xx-motion-weigh{animation-name:xxPuppetWeigh}
+.xx-scene.is-active .xx-puppet.xx-motion-thread{animation-name:xxPuppetThread}
+.xx-scene.is-active .xx-puppet.xx-motion-pause{animation-name:xxPuppetPause}
+.xx-scene.is-active .xx-puppet.xx-motion-finale{animation-name:xxPuppetFinale}
 .xx-gold-thread,.xx-indigo-stitch{position:absolute;z-index:2;left:17%;right:17%;top:54%;height:2px;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,#d2aa55 0 74%,transparent 74%);filter:drop-shadow(0 0 6px #d2aa55)}
 .xx-indigo-stitch{height:4px;background:repeating-linear-gradient(90deg,#e1be70 0 12px,transparent 12px 23px)}
 .xx-scene.is-active .xx-gold-thread,.xx-scene.is-active .xx-indigo-stitch{animation:xxThread 3.5s 2.2s ease-out both}
@@ -207,8 +234,51 @@ html[lang="zh-Hans"] .xx-proverb blockquote{font-family:"Noto Serif TC","Source 
 @keyframes xxLampIn{0%{opacity:0;transform:translateY(15px) scale(.7)}70%{opacity:1;transform:translateY(0) scale(1.15)}100%{opacity:.92;transform:scale(1)}}
 @keyframes xxDolly{from{transform:scale(1.1) translate3d(-1.5%,1.5%,0)}to{transform:scale(1.01) translate3d(0,0,0)}}
 @keyframes xxStageCopy{to{opacity:1;transform:none}}
-@keyframes xxPuppetLeft{0%{opacity:0;transform:translateX(-140%) rotate(-4deg)}30%,72%{opacity:.82;transform:translateX(0) rotate(2deg)}100%{opacity:.28;transform:translateX(-12%) rotate(-2deg)}}
-@keyframes xxPuppetRight{0%{opacity:0;transform:translateX(140%) rotate(4deg)}30%,72%{opacity:.82;transform:translateX(0) rotate(-2deg)}100%{opacity:.28;transform:translateX(12%) rotate(2deg)}}
+@keyframes xxPuppetEnter{
+  0%{opacity:0;transform:translate3d(var(--xx-entry),8%,0) rotate(var(--xx-turn)) scale(.94);filter:drop-shadow(0 1.5rem 1.35rem rgba(0,0,0,.68)) saturate(.72) brightness(.58)}
+  28%{opacity:.9;transform:translate3d(0,0,0) rotate(0) scale(1);filter:drop-shadow(0 1.5rem 1.35rem rgba(0,0,0,.68)) saturate(.98) brightness(.9)}
+  68%{opacity:.88;transform:translate3d(0,-1.2%,0) rotate(var(--xx-accent-turn)) scale(1.015)}
+  100%{opacity:.76;transform:translate3d(var(--xx-drift),0,0) rotate(var(--xx-settle-turn)) scale(1)}
+}
+@keyframes xxPuppetPoint{
+  0%{opacity:0;transform:translate3d(var(--xx-entry),7%,0) rotate(var(--xx-turn)) scale(.93)}
+  26%{opacity:.92;transform:translate3d(0,0,0) rotate(0) scale(1)}
+  48%{transform:translate3d(0,-1.8%,0) rotate(var(--xx-accent-turn)) scale(1.025)}
+  72%{opacity:.9;transform:translate3d(0,-.7%,0) rotate(0) scale(1.01)}
+  100%{opacity:.78;transform:translate3d(var(--xx-drift),0,0) rotate(var(--xx-settle-turn)) scale(1)}
+}
+@keyframes xxPuppetReceive{
+  0%{opacity:0;transform:translate3d(var(--xx-entry),5%,0) rotate(var(--xx-turn)) scale(.94)}
+  30%{opacity:.9;transform:translate3d(0,0,0) rotate(0) scale(1)}
+  52%{transform:translate3d(0,-2.2%,0) rotate(var(--xx-accent-turn)) scale(1.02)}
+  78%{opacity:.9;transform:translate3d(0,-.8%,0) rotate(0) scale(1.01)}
+  100%{opacity:.76;transform:translate3d(var(--xx-drift),0,0) rotate(var(--xx-settle-turn)) scale(1)}
+}
+@keyframes xxPuppetWeigh{
+  0%{opacity:0;transform:translate3d(var(--xx-entry),10%,0) rotate(var(--xx-turn)) scale(.94)}
+  30%{opacity:.92;transform:translate3d(0,0,0) rotate(var(--xx-settle-turn)) scale(1)}
+  48%{transform:translate3d(0,-1.2%,0) rotate(var(--xx-accent-turn)) scale(1.01)}
+  66%{transform:translate3d(0,-.5%,0) rotate(var(--xx-settle-turn)) scale(1.01)}
+  100%{opacity:.79;transform:translate3d(var(--xx-drift),0,0) rotate(.45deg) scale(1)}
+}
+@keyframes xxPuppetThread{
+  0%{opacity:0;transform:translate3d(var(--xx-entry),6%,0) rotate(var(--xx-turn)) scale(.93)}
+  29%{opacity:.92;transform:translate3d(0,0,0) rotate(0) scale(1)}
+  54%{transform:translate3d(0,-1.6%,0) rotate(var(--xx-accent-turn)) scale(1.018)}
+  75%{opacity:.9;transform:translate3d(0,-.6%,0) rotate(0) scale(1.01)}
+  100%{opacity:.77;transform:translate3d(var(--xx-drift),0,0) rotate(var(--xx-settle-turn)) scale(1)}
+}
+@keyframes xxPuppetPause{
+  0%{opacity:0;transform:translate3d(var(--xx-entry),12%,0) rotate(var(--xx-turn)) scale(.92)}
+  32%{opacity:.9;transform:translate3d(0,0,0) rotate(0) scale(1)}
+  58%,76%{opacity:.88;transform:translate3d(0,-1%,0) rotate(0) scale(1.01)}
+  100%{opacity:.74;transform:translate3d(var(--xx-drift),0,0) rotate(var(--xx-settle-turn)) scale(1)}
+}
+@keyframes xxPuppetFinale{
+  0%{opacity:0;transform:translate3d(var(--xx-entry),7%,0) rotate(var(--xx-turn)) scale(.94)}
+  30%,68%{opacity:.86;transform:translate3d(0,0,0) rotate(0) scale(1)}
+  100%{opacity:.2;transform:translate3d(var(--xx-entry),5%,0) rotate(var(--xx-turn)) scale(.92)}
+}
 @keyframes xxThread{to{transform:scaleX(1)}}
 @keyframes xxSeal{0%{opacity:0;transform:translate(-50%,-180%) rotate(-8deg)}72%{opacity:.92;transform:translate(-50%,0) rotate(-8deg)}100%{opacity:.5;transform:translate(-50%,-4%) rotate(-8deg)}}
 @keyframes xxScale{0%{opacity:0;transform:translateX(-50%) rotate(-7deg)}35%{opacity:.85}65%{transform:translateX(-50%) rotate(6deg)}100%{opacity:.58;transform:translateX(-50%) rotate(-2deg)}}
@@ -234,12 +304,14 @@ html[lang="ja"] .xx-proverb blockquote,html[lang="ja"] .xx-proverb p{line-break:
   .xx-opening-lamp{left:calc(22% + var(--lamp)*14%);bottom:31%}
   .xx-prologue{padding:4.6rem 1rem}.xx-prologue h2{font-size:clamp(2rem,10vw,3.6rem)}.xx-prologue-copy{padding:1.15rem;box-shadow:.75rem .75rem 0 rgba(20,45,53,.045)}.xx-prologue-copy p{font-size:.94rem}
   .xx-page .xx-chapter.is-reversed .xx-art{order:0}
-  .xx-interlude{min-height:68svh}
+  .xx-interlude{min-height:max(760px,100svh)}
   .xx-interlude::after{inset:3.8rem 18px 0}
-  .xx-interlude-copy{padding:6.5rem 1.15rem 2.8rem}
+  .xx-interlude-copy{padding:clamp(28rem,61svh,34rem) 1.15rem 2.8rem}
   .xx-interlude-copy h2{font-size:clamp(2rem,10vw,3.45rem)}
   .xx-interlude-copy p{font-size:.88rem}
-  .xx-puppet{width:72px;height:150px;bottom:13%}.xx-puppet.is-left{left:5%}.xx-puppet.is-right{right:5%}
+  .xx-puppet{top:4.7rem;bottom:auto;height:min(46svh,410px);max-width:72vw;filter:drop-shadow(0 1rem 1rem rgba(0,0,0,.72)) saturate(.92) brightness(.8)}
+  .xx-puppet.is-left{left:-12%}.xx-puppet.is-right{right:-12%}
+  .xx-puppet.is-solo{height:min(53svh,470px);max-width:88vw}.xx-puppet.is-solo.is-left{left:1%}.xx-puppet.is-solo.is-right{right:1%}
   .xx-mosaic-piece{width:42px;height:42px}.xx-court-door{width:72px;height:105px}
 }
 @media(max-width:430px){
@@ -247,13 +319,16 @@ html[lang="ja"] .xx-proverb blockquote,html[lang="ja"] .xx-proverb p{line-break:
   .xx-controls .xx-replay{padding-inline:.65rem}.xx-audio-state{width:100%;text-align:center}
   .xx-opening-frame .xx-opera-sleeve{display:none}
   .xx-proverb blockquote{font-size:1.06rem;line-height:1.72}
-  .xx-interlude{min-height:620px}
+  .xx-interlude{min-height:780px}
+  .xx-interlude-copy{padding-top:29rem}
+  .xx-puppet{top:4.4rem;height:360px;max-width:78vw}.xx-puppet.is-left{left:-20%}.xx-puppet.is-right{right:-20%}
+  .xx-puppet.is-solo{height:405px;max-width:94vw}.xx-puppet.is-solo.is-left{left:-4%}.xx-puppet.is-solo.is-right{right:-4%}
   .xx-interlude-copy h2 br{display:none}
 }
 @media(prefers-reduced-motion:reduce){
   .xx-scene *{animation:none!important;transition:none!important}
   .xx-curtain.is-left{transform:translateX(-72%) scaleX(.62)}.xx-curtain.is-right{transform:translateX(72%) scaleX(.62)}
   .xx-interlude-bg{transform:none}.xx-interlude-copy{opacity:1;transform:none}.xx-opening-lamp,.xx-finale-lamp{opacity:.82}
-  .xx-puppet{opacity:.35}.xx-puppet.is-left{transform:translateX(0)}.xx-puppet.is-right{transform:translateX(0)}
+  .xx-puppet{opacity:.78;transform:translate3d(0,0,0) rotate(0) scale(1);filter:drop-shadow(0 1rem 1rem rgba(0,0,0,.6)) saturate(.92) brightness(.84)}
   .xx-audio-toggle,.xx-replay{display:none}
 }
