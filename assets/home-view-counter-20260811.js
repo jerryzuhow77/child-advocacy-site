@@ -9,11 +9,13 @@
     'homepage-zh-hant',
     'homepage-zh-hans',
     'homepage-en',
-    'homepage-ja'
+    'homepage-ja',
+    'homepage-shared'
   ]);
   const COOLDOWN_MS = 30 * 60 * 1000;
   const TIMEOUT_MS = 6500;
-  const STORAGE_PREFIX = 'cpa-home-viewed-v3:';
+  const STORAGE_PREFIX = 'cpa-home-viewed-v1:';
+  const HOMEPAGE_STORAGE_PREFIX = 'cpa-home-viewed-v3:';
   const TOTAL_FLOOR_KEY = 'cpa-home-total-floor-v3';
 
   function counterUrl(key, readOnly, callbackName = '') {
@@ -94,7 +96,8 @@
 
   function hasRecentView(key) {
     try {
-      const lastViewed = Number(localStorage.getItem(`${STORAGE_PREFIX}${key}`) || 0);
+      const prefix = key === SHARED_COUNTER_KEY ? HOMEPAGE_STORAGE_PREFIX : STORAGE_PREFIX;
+      const lastViewed = Number(localStorage.getItem(`${prefix}${key}`) || 0);
       return Boolean(lastViewed && Date.now() - lastViewed < COOLDOWN_MS);
     } catch (_) {
       return false;
@@ -102,7 +105,8 @@
   }
 
   function markViewed(key) {
-    try { localStorage.setItem(`${STORAGE_PREFIX}${key}`, String(Date.now())); }
+    const prefix = key === SHARED_COUNTER_KEY ? HOMEPAGE_STORAGE_PREFIX : STORAGE_PREFIX;
+    try { localStorage.setItem(`${prefix}${key}`, String(Date.now())); }
     catch (_) {}
   }
 
@@ -144,7 +148,8 @@
     const number = widget.querySelector('[data-home-view-number]');
     const label = widget.querySelector('.home-view-counter-label');
     const unit = widget.querySelector('.home-view-counter-value span');
-    if (!number) return;
+    const configuredKey = localizedData(widget, 'counterKey');
+    if (!number || !configuredKey) return;
 
     const labelCopy = localizedData(widget, 'counterLabel');
     const unitCopy = localizedData(widget, 'counterUnit');
@@ -154,20 +159,26 @@
     if (label && labelCopy) label.textContent = labelCopy;
     if (unit && unitCopy) unit.textContent = unitCopy;
 
-    const readOnly = hasRecentView(SHARED_COUNTER_KEY);
+    const isHomepageTotal = configuredKey === SHARED_COUNTER_KEY || LEGACY_COUNTER_KEYS.includes(configuredKey);
+    const counterKey = isHomepageTotal ? SHARED_COUNTER_KEY : configuredKey;
+    const readOnly = hasRecentView(counterKey);
     try {
-      const [sharedValue, previousLanguageTotals] = await Promise.all([
-        requestCounter(SHARED_COUNTER_KEY, readOnly),
-        legacyTotal()
-      ]);
-      if (!readOnly) markViewed(SHARED_COUNTER_KEY);
+      let value;
+      if (isHomepageTotal) {
+        const sharedValue = await requestCounter(SHARED_COUNTER_KEY, readOnly);
+        if (!readOnly) markViewed(SHARED_COUNTER_KEY);
+        const previousLanguageTotals = await legacyTotal();
 
-      // Preserve every count collected before the four language counters were
-      // unified. The local floor also prevents a temporary provider rollback
-      // from making the number visibly decrease in a returning browser.
-      const combinedValue = previousLanguageTotals + sharedValue;
-      const value = Math.max(combinedValue, storedTotalFloor());
-      rememberTotalFloor(value);
+        // Preserve every count collected before the language counters were
+        // unified. The local floor also prevents a temporary provider rollback
+        // from making the number visibly decrease in a returning browser.
+        const combinedValue = previousLanguageTotals + sharedValue;
+        value = Math.max(combinedValue, storedTotalFloor());
+        rememberTotalFloor(value);
+      } else {
+        value = await requestCounter(counterKey, readOnly);
+        if (!readOnly) markViewed(counterKey);
+      }
       const formatted = formatNumber(value, locale);
       number.textContent = formatted;
       widget.title = `${titleCopy}: ${formatted} ${unitCopy}`.trim();

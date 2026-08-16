@@ -105,7 +105,7 @@
 
   const theatreCopy = {
     zh: {
-      notice: '原創布袋戲詩劇｜女角「守門人」與男角「說書人」皆為象徵角色，不是王昊、家屬、被告或司法人員；台詞不是案件史料，也不重演受害情節。',
+      notice: '原創皮影詩劇｜女角「守門人」與男角「說書人」皆為象徵角色，不是王昊、家屬、被告或司法人員；台詞不是案件史料，也不重演受害情節。',
       noticeTitle: '舞臺聲明', transcript: '展開本幕完整台詞', replay: '重看本幕',
       labels: { female: '女・守門人', male: '男・說書人', chorus: '合聲' },
       seals: { minnan: '閩南剪黏', hakka: '客家藍染', postwar: '眷村家書' },
@@ -131,7 +131,7 @@
       }
     },
     en: {
-      notice: 'Original glove-puppet verse drama | The woman, “Keeper of the Threshold,” and the man, “Storyteller,” are symbolic figures created for this feature. They do not represent Wang Hao, his family, any defendant, or any judicial actor. Their words are not evidence and do not reenact abuse.',
+      notice: 'Original shadow-puppet verse drama | The woman, “Keeper of the Threshold,” and the man, “Storyteller,” are symbolic figures created for this feature. They do not represent Wang Hao, his family, any defendant, or any judicial actor. Their words are not evidence and do not reenact abuse.',
       noticeTitle: 'Stage notice', transcript: 'Open the complete dialogue', replay: 'Replay this scene',
       labels: { female: 'Woman · Keeper of the Threshold', male: 'Man · Storyteller', chorus: 'Together' },
       seals: { minnan: 'Minnan mosaic', hakka: 'Hakka indigo', postwar: 'Settlement letter' },
@@ -157,7 +157,7 @@
       }
     },
     ja: {
-      notice: 'オリジナル布袋戯詩劇｜女の「門守り」と男の「語り部」は、本特集のために創作した象徴的な役です。王昊、家族、被告、司法関係者のいずれも演じません。台詞は事件資料ではなく、被害の再現でもありません。',
+      notice: 'オリジナル皮影戯詩劇｜女の「門守り」と男の「語り部」は、本特集のために創作した象徴的な役です。王昊、家族、被告、司法関係者のいずれも演じません。台詞は事件資料ではなく、被害の再現でもありません。',
       noticeTitle: '舞台上の注記', transcript: 'この場面の台詞全文を開く', replay: 'この場面を再生',
       labels: { female: '女・門守り', male: '男・語り部', chorus: '合唱' },
       seals: { minnan: '閩南の剪黏', hakka: '客家の藍染', postwar: '眷村の家書' },
@@ -199,10 +199,13 @@
 
   function puppetStage(scene, mode, copy) {
     const stage = document.createElement('div');
+    const sceneIndex = copy.scenes.indexOf(scene);
+    const motionSequence = ['arrival', 'incline', 'step', 'turn', 'incline', 'arrival', 'step', 'turn'];
     stage.className = 'wh-puppet-play';
     stage.dataset.puppetPlay = '';
     stage.dataset.puppetMode = mode;
-    stage.dataset.puppetScene = String(copy.scenes.indexOf(scene));
+    stage.dataset.puppetScene = String(sceneIndex);
+    stage.dataset.puppetMotion = motionSequence[sceneIndex] || 'arrival';
     stage.dataset.dialogueDelay = mode === 'finale' ? '1850' : '1650';
     stage.dataset.dialogueHold = document.documentElement.lang === 'en' ? '6100' : '5200';
     stage.setAttribute('aria-label', scene.title);
@@ -220,7 +223,8 @@
     ).join('');
     stage.innerHTML = `
       <div class="wh-stage-curtain" aria-hidden="true"><span class="wh-curtain-panel is-left"></span><span class="wh-curtain-panel is-right"></span></div>
-      <div class="wh-puppet is-female" aria-hidden="true"></div><div class="wh-puppet is-male" aria-hidden="true"></div>
+      <figure class="wh-puppet is-female" aria-hidden="true"><span class="wh-puppet-art"></span><i class="wh-control-rod is-body"></i><i class="wh-control-rod is-hand"></i></figure>
+      <figure class="wh-puppet is-male" aria-hidden="true"><span class="wh-puppet-art"></span><i class="wh-control-rod is-body"></i><i class="wh-control-rod is-hand"></i></figure>
       <div class="wh-puppet-dialogues" aria-live="polite">${dialogueHTML}</div>
       ${sealHTML ? `<div class="wh-cultural-seals" aria-label="${escapeHTML(copy.culture.title)}">${sealHTML}</div>` : ''}
       <details class="wh-puppet-transcript"><summary>${escapeHTML(copy.transcript)}</summary>${transcriptHTML}</details>
