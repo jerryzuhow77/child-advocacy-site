@@ -7678,3 +7678,65 @@ html[lang="zh-Hans"] .xuanxuan-directory-card{
   html[lang="en"] .home-progress-card.is-xuanxuan strong,
   html[lang="ja"] .home-progress-card.is-xuanxuan strong{font-size:.98rem!important}
 }
+
+/* 2026-08-16 — Wang Hao: traditional-colour case cards and four-language rhythm. */
+.is-wanghao .home-news-card-media,
+.home-case-reel-card.is-wanghao .home-case-reel-media{
+  background:#252d35;
+}
+.is-wanghao .home-news-card-media img,
+.home-case-reel-card.is-wanghao .home-case-reel-media img{
+  object-position:center 50%;
+  filter:saturate(.82) contrast(1.03) brightness(.94);
+}
+.is-wanghao .home-news-card-media::after,
+.home-case-reel-card.is-wanghao .home-case-reel-media::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(112deg,rgba(37,45,53,.44),transparent 50%,rgba(216,188,116,.12));
+}
+.is-wanghao .home-news-card-copy strong,
+.home-progress-card.is-wanghao strong,
+.home-case-reel-card.is-wanghao .home-case-reel-copy strong,
+.wanghao-directory-card h3{
+  text-wrap:balance;
+  overflow-wrap:anywhere;
+}
+.is-wanghao .home-news-card-copy p,
+.home-progress-card.is-wanghao p,
+.home-case-reel-card.is-wanghao .home-case-reel-copy > span{
+  color:#686b68;
+  line-height:1.72;
+  text-wrap:pretty;
+}
+html[lang="en"] .is-wanghao .home-news-card-copy strong,
+html[lang="en"] .home-progress-card.is-wanghao strong,
+html[lang="en"] .home-case-reel-card.is-wanghao .home-case-reel-copy strong,
+html[lang="en"] .wanghao-directory-card h3{
+  font-size:clamp(.94rem,1.4vw,1.08rem)!important;
+  line-height:1.52!important;
+  hyphens:auto;
+}
+html[lang="ja"] .is-wanghao .home-news-card-copy strong,
+html[lang="ja"] .home-progress-card.is-wanghao strong,
+html[lang="ja"] .home-case-reel-card.is-wanghao .home-case-reel-copy strong,
+html[lang="ja"] .wanghao-directory-card h3{
+  font-size:clamp(.96rem,1.42vw,1.1rem)!important;
+  line-height:1.7!important;
+  line-break:strict;
+  word-break:normal;
+}
+html[lang="zh-Hans"] .is-wanghao,
+html[lang="zh-Hans"] .wanghao-directory-card{
+  font-family:"Microsoft YaHei UI","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC","Source Han Sans SC","PingFang SC",sans-serif!important;
+  font-synthesis:none;
+}
+@media(max-width:560px){
+  .is-wanghao .home-news-card-copy,
+  .home-case-reel-card.is-wanghao .home-case-reel-copy{padding-inline:15px}
+  html[lang="en"] .home-progress-card.is-wanghao strong,
+  html[lang="ja"] .home-progress-card.is-wanghao strong{font-size:.94rem!important}
+  .home-progress-card.is-wanghao{min-height:196px}
+}

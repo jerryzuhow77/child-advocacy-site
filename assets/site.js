@@ -989,23 +989,15 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
 
   function isTrackableRoute(route) {
     if (!route) return false;
-    // English and Japanese pages retain the same content routes beneath a
-    // locale prefix.  Strip the prefix only for matching; keep it in the key
-    // so each translated article has its own independent count.
-    const contentRoute = route.replace(/^(?:en|ja)\//, '');
-    if (/^features\/social-observation\/[^/]+$/.test(contentRoute)) return true;
-    if (/^cases\/[^/]+$/.test(contentRoute)) return true;
-    if (/^cases\/[^/]+\/features\/[^/]+$/.test(contentRoute)) return true;
-    if (/^hearing-records\/[^/]+$/.test(contentRoute)) return true;
-    if (/^court-comics\/episode-[^/]+$/.test(contentRoute)) return true;
-    if (/^activity-records\/[^/]+$/.test(contentRoute) && contentRoute !== 'activity-records/albums') return true;
-    if (/^activity-records\/albums\/[^/]+$/.test(contentRoute)) return true;
-    if (/^historical-cases\/regions\/[^/]+\/[^/]+$/.test(contentRoute)) return true;
-    return false;
+    // Every deployed page below a language homepage is a public child page.
+    // English and Japanese pages retain the same content route beneath a
+    // locale prefix, so matching is performed on the locale-neutral route.
+    const contentRoute = route.replace(/^(?:en|ja)(?:\/|$)/, '');
+    return Boolean(contentRoute);
   }
 
   function keyFromRoute(route) {
-    const contentRoute = route.replace(/^(?:en|ja)\//, '');
+    const contentRoute = route.replace(/^(?:en|ja)(?:\/|$)/, '');
     // The three language editions of this feature share one public count.
     if (contentRoute === 'features/social-observation/see-hear-after') {
       return 'feature-see-hear-after-shared';
@@ -1030,7 +1022,14 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     if (contentRoute === 'cases/xuanxuan') {
       return 'case-xuanxuan-shared';
     }
-    return route.replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
+    // Wang Hao is filed as a Taiwan historical case.  Its homepage feature
+    // card and all four language editions use one stable public count.
+    if (contentRoute === 'historical-cases/regions/taiwan/wanghao') {
+      return 'historical-wanghao-shared';
+    }
+    // All translated editions of the same route share a public count.  This
+    // keeps a homepage card, its article page, and the EN/JA editions in sync.
+    return contentRoute.replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
   }
 
   // Important: increment requests deliberately OMIT readOnly=false.
@@ -1196,7 +1195,12 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     const key = keyFromRoute(route);
     if (!key) return;
 
-    const heading = document.querySelector('main h1');
+    // Bespoke features already render their own shared counter.  Avoid a
+    // second increment even if a future template loads the full site bundle.
+    if (document.querySelector('[data-home-view-counter], [data-lx-counter], [data-km-view-counter]')) return;
+    // Legacy templates place the page title in either <main> or a hero
+    // <header>.  The final fallback covers compact chapter and archive pages.
+    const heading = document.querySelector('main h1, body > header h1') || document.querySelector('h1');
     if (!heading || document.querySelector('.public-view-count-article')) return;
     const badge = makeBadge('article');
     heading.insertAdjacentElement('afterend', badge);
