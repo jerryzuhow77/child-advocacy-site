@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta content="width=device-width,initial-scale=1" name="viewport">
 <title>護童行動聯盟｜官方網站・兒少保護・法院旁聽・案件追蹤</title>
-<link href="./assets/site.css?v=20260815-xuanxuan-safe1" rel="stylesheet">
+<link href="./assets/site.css?v=20260816-wanghao-history1" rel="stylesheet">
 <link href="./assets/home-view-counter-20260811.css?v=2" rel="stylesheet">
 <link href="./assets/chair-special.css?v=20260815-special-accordion2" rel="stylesheet">
 <link href="./assets/brand/favicon.jpg" rel="icon">
@@ -75,7 +75,11 @@
 <div aria-label="歷史案件導覽" class="social-case-nav-menu" role="group"><section class="social-case-menu-column">
 <button class="social-case-menu-heading historical-region-root-toggle" type="button" aria-expanded="false"><small>HISTORICAL CASES</small><strong>案件地區</strong><span>先選地區，再閱讀案件專題</span><i>›</i></button>
 <div class="historical-region-list">
-<span class="historical-region-static">台灣</span>
+<div class="historical-region-group">
+<button class="historical-region-toggle" type="button" aria-expanded="false" aria-controls="historicalTaiwanZh"><span>台灣</span><i aria-hidden="true">›</i></button>
+<div class="historical-region-children" id="historicalTaiwanZh">
+<a href="./historical-cases/regions/taiwan/wanghao/"><img alt="" src="./assets/images/wanghao-home-case-guide-v3.webp"><span><b>王昊案</b><small>｜名字寫進了法條，保護不能停在紙上</small></span></a>
+</div></div>
 <div class="historical-region-group">
 <button class="historical-region-toggle" type="button" aria-expanded="false" aria-controls="historicalMainlandZh"><span>大陸</span><i aria-hidden="true">›</i></button>
 <div class="historical-region-children" id="historicalMainlandZh">
@@ -88,7 +92,7 @@
 <a href="./historical-cases/regions/japan/kurihara-mia/"><img alt="" src="./assets/art/kurihara-mia-mono-no-aware-hero-20260813.webp"><span><b>栗原心愛事件</b><small>｜守不住的問卷，與沒有走完的冬天</small></span></a>
 </div></div>
 <span class="historical-region-static">其他地區</span>
-</div><small class="historical-region-note">滑鼠移入或點擊「大陸」或「日本」，即可顯示案件連結。</small>
+</div><small class="historical-region-note">滑鼠移入或點擊「台灣」、「大陸」或「日本」，即可顯示案件連結。</small>
 </section></div></div>
 <a href="./activity-records/">活動紀錄</a>
 <a href="./activity-records/albums/">活動相簿</a>
@@ -239,6 +243,10 @@
 <section aria-labelledby="newsFlashTitle" class="home-news-stream" id="news-flash">
 <div class="home-news-stream-head"><div><span class="stream-icon">●</span><h3 id="newsFlashTitle">最新快報</h3><p>重要案件進度，用最短時間看懂。</p></div><a href="./cases/">查看全部案件 →</a></div>
 <div class="home-news-reel">
+<a class="home-news-card is-special-feature is-wanghao" href="./historical-cases/regions/taiwan/wanghao/">
+<div class="home-news-card-media"><img alt="王昊案：名字寫進了法條，保護不能停在紙上" src="./assets/images/wanghao-home-case-guide-v3.webp"><span>歷史案件新刊</span></div>
+<div class="home-news-card-copy"><small>2026.08.16 · HISTORICAL CASES</small><strong>王昊案｜名字寫進了法條，保護不能停在紙上</strong><p>刑事判決已定讞；俗稱「王昊條款」的《兒童及少年福利與權益保障法》第54條之1現行有效，保護仍需持續落實。</p></div>
+</a>
 <a class="home-news-card is-special-feature is-xuanxuan" href="./cases/xuanxuan/">
 <div class="home-news-card-media"><img alt="萱萱案專題：五盞守望燈與跨城市司法檔案的象徵性藝術視覺" src="./assets/art/xuanxuan-home-documentary-20260814.webp"><span>案件專題新刊</span></div>
 <div class="home-news-card-copy"><small>2026.08.14 · INVESTIGATIVE DOCUMENTARY</small><strong>萱萱案｜她曾被看見，卻沒有被接住</strong><p>五次警訊、兩座城市，以及一場沒有完成的安全確認。</p></div>
@@ -269,11 +277,11 @@
 </a>
 <a class="home-news-card" href="./cases/kaikai/">
 <div class="home-news-card-media"><img alt="剴剴案生命最後115天" src="./assets/art/kaikai-115-banner.webp"><span class="is-final">三審定讞</span></div>
-<div class="home-news-card-copy"><small>2026.07.23</small><strong>剴剴案｜最高法院駁回上訴</strong><p>劉彩萱無期徒刑、劉若琳有期徒刑18年定讞。</p></div>
+<div class="home-news-card-copy"><small>2026.07.23</small><strong>剴剴案｜生命最後115天</strong><p>最高法院駁回上訴；劉彩萱無期徒刑、劉若琳有期徒刑18年定讞。</p></div>
 </a>
 <a class="home-news-card" href="./cases/chen-shangjie/">
 <div class="home-news-card-media"><img alt="陳尚潔案" src="./assets/art/chen-shangjie-case-poster.png"><span>二審中</span></div>
-<div class="home-news-card-copy"><small>最新庭期 09.16</small><strong>陳尚潔案進入二審程序</strong><p>過失致死一審有罪；量刑與偽造文書無罪部分均進入上訴審。</p></div>
+<div class="home-news-card-copy"><small>最新庭期 09.16</small><strong>陳尚潔案｜三次訪視，沒有抵達的救援</strong><p>過失致死一審有罪；量刑與偽造文書無罪部分均進入上訴審。</p></div>
 </a>
 <a class="home-news-card" href="./cases/pan-cai-children/">
 <div class="home-news-card-media"><img alt="潘蔡兩童案" src="./assets/art/pan-cai-paper-art.webp"><span class="is-pending">審理中</span></div>
@@ -551,6 +559,6 @@
 </a>
 </div>
 </footer>
-<script src="./assets/site.js?v=20260815-special-accordion1"></script>
-<script src="./assets/home-view-counter-20260811.js?v=3"></script>
+<script src="./assets/site.js?v=20260816-shared-view1"></script>
+<script src="./assets/home-view-counter-20260811.js?v=5"></script>
 </body></html>
