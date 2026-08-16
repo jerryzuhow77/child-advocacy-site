@@ -530,7 +530,20 @@ html[lang="ja"] .case-fu__medical-lead { font-family: "Noto Serif JP", "Yu Minch
 .case-fu__modern { margin-top: 18px; padding: 14px 16px; border-left: 3px solid var(--fu-indigo); background: rgba(51, 72, 92, 0.07); font-size: 0.92rem; }
 
 /* Symbolic paper-shadow stage. The figures represent a Recorder and a Guardian, never case participants. */
-.case-fu__scene { --scene-duration: 5s; margin: 32px 0 22px; }
+.case-fu__scene {
+  --scene-duration: 45s;
+  --shadow-start: 1.9s;
+  --shadow-duration: 26s;
+  --core-delay: 2.2s;
+  --core-duration: 1.55s;
+  --modern-start: 28.8s;
+  --modern-duration: 10s;
+  --focus-start: 39s;
+  --focus-duration: 2.45s;
+  --curtain-close-delay: 41.6s;
+  --curtain-close-duration: 1.8s;
+  margin: 32px 0 22px;
+}
 .case-fu__stage {
   position: relative;
   isolation: isolate;
@@ -598,23 +611,35 @@ html[lang="ja"] .case-fu__stage-core { font-family: "Noto Serif JP", "Yu Mincho"
   width: clamp(116px, 19%, 238px);
   height: 76%;
   opacity: 0;
-  background-position: center bottom;
-  background-repeat: no-repeat;
-  background-size: contain;
   filter: drop-shadow(0 12px 16px rgba(0, 0, 0, 0.42)) saturate(0.92);
   will-change: transform, opacity;
 }
-.case-fu__puppet > i { display: none; }
 .case-fu__puppet--recorder {
   left: 3.5%;
   transform: translateX(-34%);
-  background-image: url("art/fu-xiaodi-shadow-recorder-male-20260817.png");
 }
 .case-fu__puppet--guardian {
   right: 3.5%;
   transform: translateX(34%);
-  background-image: url("art/fu-xiaodi-shadow-guardian-female-20260817.png");
 }
+
+.case-fu__character-pose {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+.case-fu__character-pose[class$="-0"] { opacity: 1; }
+.case-fu__character-pose--shadow-recorder-0 { background-image: url("art/fu-xiaodi-shadow-recorder-male-20260817.png"); }
+.case-fu__character-pose--shadow-recorder-1 { background-image: url("art/fu-xiaodi-shadow-recorder-male-ledger-raised-20260817.png"); }
+.case-fu__character-pose--shadow-recorder-2 { background-image: url("art/fu-xiaodi-shadow-recorder-male-turn-listen-20260817.png"); }
+.case-fu__character-pose--shadow-guardian-0 { background-image: url("art/fu-xiaodi-shadow-guardian-female-20260817.png"); }
+.case-fu__character-pose--shadow-guardian-1 { background-image: url("art/fu-xiaodi-shadow-guardian-female-point-seal-20260817.png"); }
+.case-fu__character-pose--shadow-guardian-2 { background-image: url("art/fu-xiaodi-shadow-guardian-female-hand-heart-20260817.png"); }
 
 .case-fu__symbol {
   position: absolute;
@@ -686,36 +711,76 @@ html[lang="ja"] .case-fu__stage-core { font-family: "Noto Serif JP", "Yu Mincho"
 html[lang="en"] .case-fu__curtain-cue { font-family: Georgia, "Times New Roman", serif; }
 html[lang="ja"] .case-fu__curtain-cue { font-family: "Noto Serif JP", "Yu Mincho", serif; }
 
-.case-fu__romance {
+.case-fu__shadow-script {
   position: absolute;
   z-index: 18;
-  top: 21%;
-  left: 50%;
-  width: min(74%, 720px);
-  padding: clamp(13px, 2vw, 22px);
-  color: #f5e7c8;
-  background: linear-gradient(90deg, transparent, rgba(12, 28, 38, 0.74) 14% 86%, transparent);
-  transform: translate(-50%, 12px);
+  inset: 0;
+  overflow: hidden;
   opacity: 0;
-  text-align: center;
   pointer-events: none;
 }
-.case-fu__romance small {
-  display: block;
-  margin-bottom: 8px;
+.case-fu__script-heading {
+  position: absolute;
+  z-index: 3;
+  top: 17%;
+  left: 50%;
+  width: min(82%, 820px);
+  transform: translateX(-50%);
   color: #cfb47c;
-  font-size: 0.62rem;
+  font-size: 0.59rem;
   font-weight: 820;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.08em;
   line-height: 1.45;
+  text-align: center;
 }
-.case-fu__romance p {
+.case-fu__script-line {
+  position: absolute;
+  z-index: 4;
   margin: 0;
-  font: 650 clamp(0.83rem, 1.7vw, 1.04rem)/1.85 "Noto Serif TC", "Songti TC", Georgia, serif;
+  padding: 12px 16px 13px;
+  color: #f6ead0;
+  border: 1px solid rgba(231, 201, 143, 0.28);
+  background: linear-gradient(90deg, rgba(7, 22, 31, 0.92), rgba(16, 36, 46, 0.82));
+  box-shadow: 0 13px 34px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transform: translateY(9px);
+  text-align: left;
+  will-change: opacity, transform;
+}
+.case-fu__script-line b {
+  display: block;
+  margin-bottom: 4px;
+  color: #d5b978;
+  font-size: 0.63rem;
+  letter-spacing: 0.11em;
+}
+.case-fu__script-line p {
+  margin: 0;
+  font: 650 clamp(0.78rem, 1.55vw, 1rem)/1.72 "Noto Serif TC", "Songti TC", Georgia, serif;
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.65);
 }
-html[lang="en"] .case-fu__romance p { font-family: Georgia, "Times New Roman", serif; font-style: italic; }
-html[lang="ja"] .case-fu__romance p { font-family: "Noto Serif JP", "Yu Mincho", serif; line-height: 2; }
+.case-fu__shadow-line--recorder {
+  top: 23%;
+  left: 25%;
+  width: min(69%, 720px);
+  border-left: 4px solid #bd9c5e;
+}
+.case-fu__shadow-line--guardian {
+  top: 43%;
+  right: 25%;
+  width: min(69%, 720px);
+  border-right: 4px solid #b88679;
+}
+.case-fu__shadow-line--together {
+  top: 34%;
+  left: 50%;
+  width: min(72%, 740px);
+  transform: translate(-50%, 9px);
+  text-align: center;
+}
+html[lang="en"] .case-fu__script-line p { font-family: Georgia, "Times New Roman", serif; }
+html[lang="en"] .case-fu__shadow-script .case-fu__script-line[data-line-source="elegy"] p { font-style: italic; }
+html[lang="ja"] .case-fu__script-line p { font-family: "Noto Serif JP", "Yu Mincho", serif; line-height: 1.84; }
 
 .case-fu__modern-world {
   position: absolute;
@@ -779,22 +844,23 @@ html[lang="ja"] .case-fu__romance p { font-family: "Noto Serif JP", "Yu Mincho",
   width: clamp(92px, 17%, 205px);
   height: 60%;
   opacity: 0;
-  background-position: center bottom;
-  background-repeat: no-repeat;
-  background-size: contain;
   filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.55)) saturate(0.76);
   will-change: transform, opacity;
 }
 .case-fu__modern-person--researcher {
   left: 14%;
-  background-image: url("art/fu-xiaodi-modern-researcher-male-20260817.png");
   transform: translateX(-140%);
 }
 .case-fu__modern-person--archivist {
   right: 13%;
-  background-image: url("art/fu-xiaodi-modern-archivist-female-20260817.png");
   transform: translateX(140%);
 }
+.case-fu__character-pose--modern-researcher-0 { background-image: url("art/fu-xiaodi-modern-researcher-male-20260817.png"); }
+.case-fu__character-pose--modern-researcher-1 { background-image: url("art/fu-xiaodi-modern-researcher-male-crouch-note-20260817.png"); }
+.case-fu__character-pose--modern-researcher-2 { background-image: url("art/fu-xiaodi-modern-researcher-male-turn-back-20260817.png"); }
+.case-fu__character-pose--modern-archivist-0 { background-image: url("art/fu-xiaodi-modern-archivist-female-20260817.png"); }
+.case-fu__character-pose--modern-archivist-1 { background-image: url("art/fu-xiaodi-modern-archivist-female-open-file-20260817.png"); }
+.case-fu__character-pose--modern-archivist-2 { background-image: url("art/fu-xiaodi-modern-archivist-female-listen-door-20260817.png"); }
 .case-fu__modern-label {
   position: absolute;
   z-index: 26;
@@ -811,10 +877,15 @@ html[lang="ja"] .case-fu__romance p { font-family: "Noto Serif JP", "Yu Mincho",
   line-height: 1.45;
   text-align: center;
 }
-.case-fu__modern-dialogue {
+.case-fu__modern-script {
   position: absolute;
   z-index: 28;
-  width: min(38%, 390px);
+  inset: 0;
+}
+.case-fu__modern-line {
+  position: absolute;
+  z-index: 28;
+  width: min(48%, 480px);
   padding: 11px 13px 12px;
   color: #eef0e9;
   border: 1px solid rgba(191, 203, 191, 0.26);
@@ -823,18 +894,26 @@ html[lang="ja"] .case-fu__romance p { font-family: "Noto Serif JP", "Yu Mincho",
   opacity: 0;
   transform: translateY(10px);
 }
-.case-fu__modern-dialogue--researcher { left: 4.5%; top: 18%; }
-.case-fu__modern-dialogue--archivist { right: 4.5%; top: 35%; }
-.case-fu__modern-dialogue b {
+.case-fu__modern-line--researcher { left: 4.5%; top: 17%; border-left: 4px solid #94aeb0; }
+.case-fu__modern-line--archivist { right: 4.5%; top: 36%; border-right: 4px solid #c6a76b; }
+.case-fu__modern-line--note {
+  left: 50%;
+  top: 27%;
+  width: min(66%, 680px);
+  transform: translate(-50%, 10px);
+  border-left: 4px solid #b77c70;
+  background: rgba(18, 25, 29, 0.94);
+}
+.case-fu__modern-line b {
   display: block;
   margin-bottom: 3px;
   color: #d3b679;
   font-size: 0.62rem;
   letter-spacing: 0.1em;
 }
-.case-fu__modern-dialogue p { margin: 0; font-size: clamp(0.72rem, 1.35vw, 0.91rem); line-height: 1.55; }
-html[lang="en"] .case-fu__modern-dialogue p { font-family: Georgia, "Times New Roman", serif; }
-html[lang="ja"] .case-fu__modern-dialogue p { line-height: 1.68; }
+.case-fu__modern-line p { margin: 0; font-size: clamp(0.72rem, 1.35vw, 0.91rem); line-height: 1.55; }
+html[lang="en"] .case-fu__modern-line p { font-family: Georgia, "Times New Roman", serif; }
+html[lang="ja"] .case-fu__modern-line p { line-height: 1.68; }
 
 .case-fu__focus-panel {
   position: absolute;
@@ -886,34 +965,95 @@ html[lang="ja"] .case-fu__modern-dialogue p { line-height: 1.68; }
 .case-fu__focus-button[aria-pressed="true"] { color: #fff; background: var(--fu-indigo); }
 .case-fu__focus-button:disabled { cursor: wait; opacity: 0.48; }
 
-.case-fu__scene.is-playing .case-fu__puppet--recorder { animation: fu-recorder-in var(--scene-duration) ease-in-out both; }
-.case-fu__scene.is-playing .case-fu__puppet--guardian { animation: fu-guardian-in var(--scene-duration) ease-in-out both; }
-.case-fu__scene.is-playing .case-fu__symbol { animation: fu-symbol-in var(--scene-duration) ease-in-out both; }
-.case-fu__scene.is-playing .case-fu__stage::before { animation: fu-curtain-top var(--scene-duration) ease-in-out both; }
-.case-fu__scene.is-playing .case-fu__stage::after { animation: fu-curtain-bottom var(--scene-duration) ease-in-out both; }
-.case-fu__scene.is-playing .case-fu__curtain--left { animation: fu-curtain-left var(--scene-duration) cubic-bezier(.65,0,.35,1) both; }
-.case-fu__scene.is-playing .case-fu__curtain--right { animation: fu-curtain-right var(--scene-duration) cubic-bezier(.65,0,.35,1) both; }
-.case-fu__scene.is-playing .case-fu__curtain-cue span:first-child { animation: fu-cue-open var(--scene-duration) ease both; }
-.case-fu__scene.is-playing .case-fu__curtain-cue span:last-child { animation: fu-cue-close var(--scene-duration) ease both; }
-.case-fu__scene.is-playing .case-fu__romance { animation: fu-romance-phase var(--scene-duration) ease both; }
-.case-fu__scene.is-playing .case-fu__modern-world { animation: fu-modern-phase var(--scene-duration) ease-in-out both; }
-.case-fu__scene.is-playing .case-fu__modern-person--researcher { animation: fu-modern-researcher var(--scene-duration) ease-in-out both; }
-.case-fu__scene.is-playing .case-fu__modern-person--archivist { animation: fu-modern-archivist var(--scene-duration) ease-in-out both; }
-.case-fu__scene.is-playing .case-fu__modern-dialogue--researcher { animation: fu-modern-dialogue-a var(--scene-duration) ease both; }
-.case-fu__scene.is-playing .case-fu__modern-dialogue--archivist { animation: fu-modern-dialogue-b var(--scene-duration) ease both; }
-.case-fu__scene.is-playing .case-fu__modern-rain { animation: fu-modern-rain var(--scene-duration) linear both; }
-.case-fu__scene.is-playing .case-fu__modern-beam { animation: fu-modern-beam var(--scene-duration) ease-in-out both; }
-.case-fu__scene.is-playing .case-fu__stage-core { animation: fu-core-phase var(--scene-duration) ease both; }
-.case-fu__scene.is-playing .case-fu__focus-panel { animation: fu-focus-phase var(--scene-duration) ease both; }
+.case-fu__scene.is-playing .case-fu__puppet--recorder {
+  animation: fu-shadow-recorder-phase var(--shadow-duration) ease-in-out var(--shadow-start) both;
+}
+.case-fu__scene.is-playing .case-fu__puppet--guardian {
+  animation: fu-shadow-guardian-phase var(--shadow-duration) ease-in-out var(--shadow-start) both;
+}
+.case-fu__scene.is-playing .case-fu__symbol {
+  animation: fu-shadow-symbol-phase var(--shadow-duration) ease-in-out var(--shadow-start) both;
+}
+.case-fu__scene.is-playing .case-fu__shadow-script {
+  animation: fu-shadow-script-phase var(--shadow-duration) ease var(--shadow-start) both;
+}
+.case-fu__scene.is-playing .case-fu__stage::before {
+  animation:
+    fu-curtain-top-open 1700ms ease-in-out 0ms forwards,
+    fu-curtain-top-close var(--curtain-close-duration) ease-in-out var(--curtain-close-delay) forwards;
+}
+.case-fu__scene.is-playing .case-fu__stage::after {
+  animation:
+    fu-curtain-bottom-open 1700ms ease-in-out 0ms forwards,
+    fu-curtain-bottom-close var(--curtain-close-duration) ease-in-out var(--curtain-close-delay) forwards;
+}
+.case-fu__scene.is-playing .case-fu__curtain--left {
+  animation:
+    fu-curtain-left-open 1700ms cubic-bezier(.65,0,.35,1) 0ms forwards,
+    fu-curtain-left-close var(--curtain-close-duration) cubic-bezier(.65,0,.35,1) var(--curtain-close-delay) forwards;
+}
+.case-fu__scene.is-playing .case-fu__curtain--right {
+  animation:
+    fu-curtain-right-open 1700ms cubic-bezier(.65,0,.35,1) 0ms forwards,
+    fu-curtain-right-close var(--curtain-close-duration) cubic-bezier(.65,0,.35,1) var(--curtain-close-delay) forwards;
+}
+.case-fu__scene.is-playing .case-fu__curtain-cue span:first-child { animation: fu-cue 1450ms ease 110ms both; }
+.case-fu__scene.is-playing .case-fu__curtain-cue span:last-child { animation: fu-cue 1450ms ease var(--curtain-close-delay) both; }
+.case-fu__scene.is-playing .case-fu__stage-core { animation: fu-core-cue var(--core-duration) ease var(--core-delay) both; }
+.case-fu__scene.is-playing .case-fu__script-line:not(.case-fu__shadow-line--together):not(.case-fu__modern-line--note) {
+  animation: fu-script-line var(--line-duration) ease var(--line-delay) both;
+}
+.case-fu__scene.is-playing .case-fu__shadow-line--together,
+.case-fu__scene.is-playing .case-fu__modern-line--note {
+  animation: fu-script-line-centered var(--line-duration) ease var(--line-delay) both;
+}
+.case-fu__scene.is-playing .case-fu__modern-world {
+  animation: fu-modern-layer-phase var(--modern-duration) ease-in-out var(--modern-start) both;
+}
+.case-fu__scene.is-playing .case-fu__modern-person--researcher {
+  animation: fu-modern-researcher-phase var(--modern-duration) ease-in-out var(--modern-start) both;
+}
+.case-fu__scene.is-playing .case-fu__modern-person--archivist {
+  animation: fu-modern-archivist-phase var(--modern-duration) ease-in-out var(--modern-start) both;
+}
+.case-fu__scene.is-playing .case-fu__modern-rain {
+  animation: fu-modern-rain-phase var(--modern-duration) linear var(--modern-start) both;
+}
+.case-fu__scene.is-playing .case-fu__modern-beam {
+  animation: fu-modern-beam-phase var(--modern-duration) ease-in-out var(--modern-start) both;
+}
+.case-fu__scene.is-playing .case-fu__focus-panel {
+  animation: fu-focus-cue var(--focus-duration) ease var(--focus-start) both;
+}
+.case-fu__scene.is-playing .case-fu__puppet .case-fu__character-pose:nth-child(1) {
+  animation: fu-pose-one var(--shadow-duration) linear var(--shadow-start) both;
+}
+.case-fu__scene.is-playing .case-fu__puppet .case-fu__character-pose:nth-child(2) {
+  animation: fu-pose-two var(--shadow-duration) linear var(--shadow-start) both;
+}
+.case-fu__scene.is-playing .case-fu__puppet .case-fu__character-pose:nth-child(3) {
+  animation: fu-pose-three var(--shadow-duration) linear var(--shadow-start) both;
+}
+.case-fu__scene.is-playing .case-fu__modern-person .case-fu__character-pose:nth-child(1) {
+  animation: fu-pose-one var(--modern-duration) linear var(--modern-start) both;
+}
+.case-fu__scene.is-playing .case-fu__modern-person .case-fu__character-pose:nth-child(2) {
+  animation: fu-pose-two var(--modern-duration) linear var(--modern-start) both;
+}
+.case-fu__scene.is-playing .case-fu__modern-person .case-fu__character-pose:nth-child(3) {
+  animation: fu-pose-three var(--modern-duration) linear var(--modern-start) both;
+}
 
 .case-fu__scene.is-complete .case-fu__puppet,
 .case-fu__scene.is-complete .case-fu__symbol,
-.case-fu__scene.is-complete .case-fu__romance,
+.case-fu__scene.is-complete .case-fu__shadow-script,
 .case-fu__scene.is-complete .case-fu__stage-core,
 .case-fu__scene.is-complete .case-fu__curtain-cue { opacity: 0; }
 .case-fu__scene.is-complete .case-fu__modern-world { opacity: 1; transform: scale(1); }
 .case-fu__scene.is-complete .case-fu__modern-person { opacity: 0.9; transform: translateX(0); }
-.case-fu__scene.is-complete .case-fu__modern-dialogue { opacity: 1; transform: translateY(0); }
+.case-fu__scene.is-complete .case-fu__modern-line { opacity: 0; }
+.case-fu__scene.is-complete .case-fu__modern-dialogue--researcher,
+.case-fu__scene.is-complete .case-fu__modern-dialogue--archivist { opacity: 1; transform: translateY(0); }
 .case-fu__scene.is-complete .case-fu__modern-beam { opacity: 0.34; }
 .case-fu__scene.is-complete .case-fu__focus-panel { opacity: 1; transform: translate(-50%, 0); }
 .case-fu__scene.is-complete .case-fu__curtain--left { transform: translateX(-96%); }
@@ -929,37 +1069,43 @@ html[lang="ja"] .case-fu__modern-dialogue p { line-height: 1.68; }
 .case-fu__scene[data-focus="2"].is-complete .case-fu__modern-person--researcher { transform: translateX(4%); }
 .case-fu__scene[data-focus="2"].is-complete .case-fu__modern-person--archivist { transform: translateX(-4%); }
 
-@keyframes fu-recorder-in {
-  0%, 10% { transform: translateX(-48%) rotate(-1.5deg); opacity: 0; }
-  20%, 44% { transform: translateX(0) rotate(0.6deg); opacity: 0.96; }
-  52%, 100% { transform: translateX(-18%) rotate(-0.5deg); opacity: 0; }
+@keyframes fu-shadow-recorder-phase {
+  0% { transform: translateX(-48%) rotate(-1.5deg); opacity: 0; }
+  7%, 91% { transform: translateX(0) rotate(0.35deg); opacity: 0.96; }
+  100% { transform: translateX(-16%) rotate(-0.5deg); opacity: 0; }
 }
-@keyframes fu-guardian-in {
-  0%, 12% { transform: translateX(48%) rotate(1.5deg); opacity: 0; }
-  22%, 44% { transform: translateX(0) rotate(-0.6deg); opacity: 0.96; }
-  52%, 100% { transform: translateX(18%) rotate(0.5deg); opacity: 0; }
+@keyframes fu-shadow-guardian-phase {
+  0% { transform: translateX(48%) rotate(1.5deg); opacity: 0; }
+  7%, 91% { transform: translateX(0) rotate(-0.35deg); opacity: 0.96; }
+  100% { transform: translateX(16%) rotate(0.5deg); opacity: 0; }
 }
-@keyframes fu-symbol-in {
-  0%, 18% { transform: translate(-50%, -50%) scale(0.9); opacity: 0; }
-  28%, 45% { transform: translate(-50%, -50%) scale(1); opacity: 0.78; }
-  56%, 100% { transform: translate(-50%, -50%) scale(1.08); opacity: 0; }
+@keyframes fu-shadow-symbol-phase {
+  0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0; }
+  8%, 90% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
+  100% { transform: translate(-50%, -50%) scale(1.07); opacity: 0; }
 }
-@keyframes fu-curtain-top { 0%, 8%, 100% { transform: translateY(0); } 18%, 88% { transform: translateY(-28%); } }
-@keyframes fu-curtain-bottom { 0%, 8%, 100% { transform: rotate(180deg) translateY(0); } 18%, 88% { transform: rotate(180deg) translateY(-28%); } }
-@keyframes fu-curtain-left { 0%, 7%, 100% { transform: translateX(0); } 18%, 88% { transform: translateX(-96%); } }
-@keyframes fu-curtain-right { 0%, 7%, 100% { transform: translateX(0); } 18%, 88% { transform: translateX(96%); } }
-@keyframes fu-cue-open { 0%, 2% { opacity: 0; transform: translateY(10px); } 5%, 9% { opacity: 1; transform: translateY(0); } 14%, 100% { opacity: 0; } }
-@keyframes fu-cue-close { 0%, 88% { opacity: 0; transform: translateY(10px); } 92%, 97% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; } }
-@keyframes fu-romance-phase { 0%, 19% { opacity: 0; transform: translate(-50%, 12px); } 25%, 47% { opacity: 1; transform: translate(-50%, 0); } 56%, 100% { opacity: 0; transform: translate(-50%, -10px); } }
-@keyframes fu-modern-phase { 0%, 47% { opacity: 0; transform: scale(1.055); clip-path: inset(0 50%); } 57%, 91% { opacity: 1; transform: scale(1); clip-path: inset(0 0); } 96%, 100% { opacity: 0; transform: scale(1.015); clip-path: inset(0 0); } }
-@keyframes fu-modern-researcher { 0%, 53% { transform: translateX(-145%); opacity: 0; } 64% { transform: translateX(-14%); opacity: 0.9; } 70%, 89% { transform: translateX(0); opacity: 0.92; } 96%, 100% { transform: translateX(8%); opacity: 0; } }
-@keyframes fu-modern-archivist { 0%, 56% { transform: translateX(145%); opacity: 0; } 68% { transform: translateX(12%); opacity: 0.9; } 74%, 89% { transform: translateX(0); opacity: 0.92; } 96%, 100% { transform: translateX(-8%); opacity: 0; } }
-@keyframes fu-modern-dialogue-a { 0%, 62% { opacity: 0; transform: translateY(10px); } 67%, 75% { opacity: 1; transform: translateY(0); } 81%, 100% { opacity: 0; transform: translateY(-5px); } }
-@keyframes fu-modern-dialogue-b { 0%, 71% { opacity: 0; transform: translateY(10px); } 76%, 88% { opacity: 1; transform: translateY(0); } 94%, 100% { opacity: 0; transform: translateY(-5px); } }
-@keyframes fu-modern-rain { 0%, 47% { transform: translateY(-12%); opacity: 0; } 58% { opacity: 0.32; } 94% { opacity: 0.38; } 100% { transform: translateY(12%); opacity: 0; } }
-@keyframes fu-modern-beam { 0%, 56% { opacity: 0; transform: rotate(-8deg); } 65% { opacity: 0.42; } 73% { opacity: 0.18; transform: rotate(4deg); } 86% { opacity: 0.34; transform: rotate(-1deg); } 95%, 100% { opacity: 0; } }
-@keyframes fu-core-phase { 0%, 16% { opacity: 0; transform: translate(-50%, 8px); } 25%, 47% { opacity: 1; transform: translate(-50%, 0); } 56%, 100% { opacity: 0; transform: translate(-50%, -7px); } }
-@keyframes fu-focus-phase { 0%, 78% { opacity: 0; transform: translate(-50%, 12px); } 84%, 91% { opacity: 1; transform: translate(-50%, 0); } 96%, 100% { opacity: 0; transform: translate(-50%, -8px); } }
+@keyframes fu-shadow-script-phase { 0%, 3% { opacity: 0; } 7%, 92% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes fu-curtain-top-open { from { transform: translateY(0); } to { transform: translateY(-28%); } }
+@keyframes fu-curtain-top-close { from { transform: translateY(-28%); } to { transform: translateY(0); } }
+@keyframes fu-curtain-bottom-open { from { transform: rotate(180deg) translateY(0); } to { transform: rotate(180deg) translateY(-28%); } }
+@keyframes fu-curtain-bottom-close { from { transform: rotate(180deg) translateY(-28%); } to { transform: rotate(180deg) translateY(0); } }
+@keyframes fu-curtain-left-open { from { transform: translateX(0); } to { transform: translateX(-96%); } }
+@keyframes fu-curtain-left-close { from { transform: translateX(-96%); } to { transform: translateX(0); } }
+@keyframes fu-curtain-right-open { from { transform: translateX(0); } to { transform: translateX(96%); } }
+@keyframes fu-curtain-right-close { from { transform: translateX(96%); } to { transform: translateX(0); } }
+@keyframes fu-cue { 0%, 100% { opacity: 0; transform: translateY(10px); } 22%, 68% { opacity: 1; transform: translateY(0); } }
+@keyframes fu-core-cue { 0%, 100% { opacity: 0; transform: translate(-50%, 8px); } 15%, 78% { opacity: 1; transform: translate(-50%, 0); } }
+@keyframes fu-script-line { 0%, 100% { opacity: 0; transform: translateY(9px); } 11%, 84% { opacity: 1; transform: translateY(0); } }
+@keyframes fu-script-line-centered { 0%, 100% { opacity: 0; transform: translate(-50%, 9px); } 11%, 84% { opacity: 1; transform: translate(-50%, 0); } }
+@keyframes fu-modern-layer-phase { 0% { opacity: 0; transform: scale(1.055); clip-path: inset(0 50%); } 9%, 90% { opacity: 1; transform: scale(1); clip-path: inset(0 0); } 100% { opacity: 0; transform: scale(1.012); clip-path: inset(0 0); } }
+@keyframes fu-modern-researcher-phase { 0% { transform: translateX(-145%); opacity: 0; } 12%, 89% { transform: translateX(0); opacity: 0.92; } 100% { transform: translateX(8%); opacity: 0; } }
+@keyframes fu-modern-archivist-phase { 0% { transform: translateX(145%); opacity: 0; } 12%, 89% { transform: translateX(0); opacity: 0.92; } 100% { transform: translateX(-8%); opacity: 0; } }
+@keyframes fu-modern-rain-phase { 0% { transform: translateY(-12%); opacity: 0; } 9%, 91% { opacity: 0.34; } 100% { transform: translateY(12%); opacity: 0; } }
+@keyframes fu-modern-beam-phase { 0%, 100% { opacity: 0; transform: rotate(-8deg); } 14% { opacity: 0.42; } 48% { opacity: 0.18; transform: rotate(4deg); } 82% { opacity: 0.34; transform: rotate(-1deg); } }
+@keyframes fu-focus-cue { 0%, 100% { opacity: 0; transform: translate(-50%, 12px); } 14%, 83% { opacity: 1; transform: translate(-50%, 0); } }
+@keyframes fu-pose-one { 0%, 29% { opacity: 1; transform: translateY(0) rotate(0); } 34%, 100% { opacity: 0; transform: translateY(2px) rotate(-0.35deg); } }
+@keyframes fu-pose-two { 0%, 28% { opacity: 0; transform: translateY(3px); } 34%, 62% { opacity: 1; transform: translateY(0); } 68%, 100% { opacity: 0; transform: translateY(-2px); } }
+@keyframes fu-pose-three { 0%, 61% { opacity: 0; transform: translateY(2px) rotate(0.25deg); } 68%, 94% { opacity: 1; transform: translateY(0) rotate(0); } 100% { opacity: 0; transform: translateY(-2px); } }
 @keyframes fu-dialogue-pulse { 0% { opacity: 0.46; filter: brightness(0.78); } 55% { opacity: 1; filter: brightness(1.18); } 100% { opacity: 1; filter: brightness(1); } }
 
 .case-fu__scene-controls { margin-top: 11px; align-items: center; }
@@ -1066,27 +1212,33 @@ html[lang="ja"] .case-fu__modern-dialogue p { line-height: 1.68; }
   .case-fu__flow-step { min-height: 0; }
   .case-fu__flow-step::after { top: auto; right: 50%; bottom: -12px; transform: translateX(50%) rotate(90deg); }
   .case-fu__flow-step:nth-child(3)::after { display: grid; }
-  .case-fu__stage { min-height: min(74svh, 640px); }
-  .case-fu__puppet { width: 34%; height: 60%; bottom: 16%; }
+  .case-fu__stage { min-height: min(82svh, 720px); }
+  .case-fu__puppet { width: 31%; height: 55%; bottom: 11%; }
   .case-fu__puppet--recorder { left: 0; }
   .case-fu__puppet--guardian { right: 0; }
   .case-fu__symbol { width: 48%; height: 27%; top: 45%; }
-  .case-fu__stage-label { top: 12%; width: 88%; font-size: 0.62rem; }
+  .case-fu__stage-label { top: 11%; width: 90%; font-size: 0.6rem; }
   .case-fu__stage-core { width: 88%; bottom: 12%; padding: 11px 12px; font-size: 0.88rem; line-height: 1.65; }
-  .case-fu__romance { top: 19%; width: 88%; padding: 10px 8px; }
-  .case-fu__romance small { font-size: 0.55rem; }
-  .case-fu__romance p { font-size: 0.76rem; line-height: 1.72; }
-  html[lang="ja"] .case-fu__romance p { line-height: 1.82; }
+  .case-fu__script-heading { top: 16%; width: 90%; font-size: 0.51rem; letter-spacing: 0.04em; }
+  .case-fu__script-line { width: 78%; padding: 9px 10px 10px; }
+  .case-fu__shadow-line--recorder { top: 23%; left: 17%; }
+  .case-fu__shadow-line--guardian { top: 43%; right: 17%; }
+  .case-fu__shadow-line--together { top: 34%; left: 50%; width: 82%; }
+  .case-fu__script-line b { font-size: 0.55rem; }
+  .case-fu__script-line p { font-size: 0.77rem; line-height: 1.58; }
+  html[lang="en"] .case-fu__script-line p,
+  html[lang="ja"] .case-fu__script-line p { font-size: 0.74rem; line-height: 1.64; }
   .case-fu__modern-label { top: 3%; width: 94%; font-size: 0.51rem; letter-spacing: 0.04em; }
-  .case-fu__modern-person { width: 29%; height: 46%; bottom: 4%; }
+  .case-fu__modern-person { width: 27%; height: 42%; bottom: 3%; }
   .case-fu__modern-person--researcher { left: 6%; }
   .case-fu__modern-person--archivist { right: 5%; }
-  .case-fu__modern-dialogue { width: 68%; padding: 9px 10px; }
-  .case-fu__modern-dialogue--researcher { left: 3%; top: 16%; }
-  .case-fu__modern-dialogue--archivist { right: 3%; top: 38%; }
-  .case-fu__modern-dialogue p { font-size: 0.68rem; line-height: 1.48; }
-  html[lang="en"] .case-fu__modern-dialogue p,
-  html[lang="ja"] .case-fu__modern-dialogue p { font-size: 0.64rem; }
+  .case-fu__modern-line { width: 76%; padding: 9px 10px; }
+  .case-fu__modern-line--researcher { left: 3%; top: 15%; }
+  .case-fu__modern-line--archivist { right: 3%; top: 37%; }
+  .case-fu__modern-line--note { left: 50%; top: 25%; width: 84%; }
+  .case-fu__modern-line p { font-size: 0.76rem; line-height: 1.52; }
+  html[lang="en"] .case-fu__modern-line p,
+  html[lang="ja"] .case-fu__modern-line p { font-size: 0.73rem; }
   .case-fu__focus-panel { left: 50%; bottom: 3%; width: calc(100% - 28px); padding: 12px 13px; }
   .case-fu__focus-panel span { font-size: 0.8rem; }
   .case-fu__interaction { grid-template-columns: 1fr; padding: 12px; }
@@ -1116,12 +1268,14 @@ html[lang="ja"] .case-fu__modern-dialogue p { line-height: 1.68; }
   *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
   .case-fu__puppet,
   .case-fu__symbol,
-  .case-fu__romance,
+  .case-fu__shadow-script,
   .case-fu__stage-core,
   .case-fu__curtain-cue { opacity: 0 !important; }
   .case-fu__modern-world { opacity: 1 !important; transform: none !important; clip-path: none !important; }
-  .case-fu__modern-person,
-  .case-fu__modern-dialogue { opacity: 1 !important; transform: none !important; }
+  .case-fu__modern-person { opacity: 1 !important; transform: none !important; }
+  .case-fu__modern-line { opacity: 0 !important; }
+  .case-fu__modern-dialogue--researcher,
+  .case-fu__modern-dialogue--archivist { opacity: 1 !important; transform: none !important; }
   .case-fu__modern-beam { opacity: 0.28 !important; }
   .case-fu__focus-panel { opacity: 1 !important; transform: translate(-50%, 0) !important; }
   .case-fu__curtain--left { transform: translateX(-96%) !important; }

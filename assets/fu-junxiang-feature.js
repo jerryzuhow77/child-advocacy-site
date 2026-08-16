@@ -20,6 +20,8 @@
       interactionNote: '只切換可核對的日期、記錄與保護行動；不模擬傷害，也不改寫案件結果。',
       researcher: '紀錄研究者',
       archivist: '兒少檔案員',
+      transcriptLabel: '本幕完整逐字稿｜與下方「閱讀本幕完整逐字稿」逐句同步',
+      recordNote: '查核註記',
       curtainOpen: '幕開',
       curtainClose: '幕謝'
     },
@@ -30,6 +32,8 @@
       interactionNote: 'Switch only among verified dates, records, and protective actions. No harm is simulated and no outcome is rewritten.',
       researcher: 'Records researcher',
       archivist: 'Child-welfare archivist',
+      transcriptLabel: 'Full scene transcript · every line is synchronized with the transcript below',
+      recordNote: 'Verified record note',
       curtainOpen: 'CURTAIN RISES',
       curtainClose: 'CURTAIN CALL'
     },
@@ -40,6 +44,8 @@
       interactionNote: '確認可能な日付・記録・保護行動だけを切り替えます。被害を模擬せず、結末を書き換えません。',
       researcher: '記録調査員',
       archivist: '児童福祉アーキビスト',
+      transcriptLabel: '本幕の完全逐字稿｜下の「本幕の完全逐字稿」と一句ずつ同期',
+      recordNote: '検証記録ノート',
       curtainOpen: '幕開き',
       curtainClose: '幕謝'
     }
@@ -189,16 +195,97 @@
     ]
   }[sceneLanguage];
 
+  const clamp = (value, minimum, maximum) => Math.min(maximum, Math.max(minimum, value));
+
+  function roleForSpeaker(speaker = '') {
+    const normalized = speaker.toLowerCase();
+    if (/(\u5408\u8072|\u4e8c\u4eba|together)/u.test(normalized)) return 'together';
+    if (/(\u5b88\u8b77|\u5b88\u671b|\u898b\u5b88|guardian)/u.test(normalized)) return 'guardian';
+    return 'recorder';
+  }
+
+  function splitRomanceLine(rawLine) {
+    return String(rawLine || '').split(/\s*[\uff5c|]\s*/u).filter(Boolean).map((part, index) => {
+      const match = part.match(/^(.{1,32}?)(?:\uff1a|:|\u2014\u2014|\u2014)\s*(.+)$/u);
+      const speaker = match ? match[1].trim() : (index ? theatreCopy.archivist : theatreCopy.researcher);
+      const text = match ? match[2].trim() : part.trim();
+      return { speaker, text, role: roleForSpeaker(speaker), source: 'elegy' };
+    });
+  }
+
+  function readSceneTranscript(scene) {
+    const shadow = [];
+    const notes = [];
+    scene.querySelectorAll('.case-fu__verse-body > p').forEach(paragraph => {
+      const speakerNode = paragraph.querySelector('.case-fu__speaker');
+      if (speakerNode) {
+        const speaker = speakerNode.textContent.trim();
+        const raw = paragraph.textContent.trim();
+        shadow.push({
+          speaker,
+          text: raw.slice(speaker.length).trim(),
+          role: roleForSpeaker(speaker),
+          source: 'transcript'
+        });
+      } else if (paragraph.classList.contains('case-fu__modern')) {
+        notes.push({ speaker: theatreCopy.recordNote, text: paragraph.textContent.trim(), role: 'note', source: 'transcript' });
+      }
+    });
+    return { shadow, notes };
+  }
+
+  function lineHold(text) {
+    const plainText = String(text || '').replace(/\s+/g, ' ').trim();
+    if (sceneLanguage === 'en') {
+      const words = plainText ? plainText.split(' ').length : 0;
+      return clamp(2350 + words * 92, 3100, 5600);
+    }
+    return clamp(2200 + [...plainText].length * 46, 3000, 5400);
+  }
+
+  function addPoseLayers(character, family) {
+    character.replaceChildren();
+    for (let poseIndex = 0; poseIndex < 3; poseIndex += 1) {
+      const pose = document.createElement('i');
+      pose.className = `case-fu__character-pose case-fu__character-pose--${family}-${poseIndex}`;
+      pose.setAttribute('aria-hidden', 'true');
+      character.appendChild(pose);
+    }
+  }
+
+  function makeScriptLine(modifier, line) {
+    const article = document.createElement('article');
+    article.className = `case-fu__script-line case-fu__${modifier}`;
+    article.dataset.lineSource = line.source || 'original';
+    const label = document.createElement('b');
+    label.textContent = line.speaker;
+    const text = document.createElement('p');
+    text.textContent = line.text;
+    article.append(label, text);
+    return { article, text, line };
+  }
+
+  function scheduleLine(item, absoluteDelay) {
+    const duration = lineHold(item.line.text);
+    item.article.style.setProperty('--line-delay', `${absoluteDelay}ms`);
+    item.article.style.setProperty('--line-duration', `${duration}ms`);
+    return absoluteDelay + duration + 110;
+  }
+
   function addTheatreLayers() {
     scenes.forEach((scene, index) => {
       const stage = scene.querySelector('.case-fu__stage');
       if (!stage || stage.querySelector('.case-fu__curtain')) return;
 
-      const requestedDuration = Number(scene.dataset.sceneDuration || 0);
-      const minimumDuration = index === 0 ? 21500 : index === scenes.length - 1 ? 20000 : 17000;
-      const duration = Math.max(requestedDuration, minimumDuration);
-      scene.dataset.sceneDuration = String(duration);
-      scene.style.setProperty('--scene-duration', `${duration}ms`);
+      const transcript = readSceneTranscript(scene);
+      const elegyLines = splitRomanceLine(romanceLines[index] || romanceLines[romanceLines.length - 1]);
+      const shadowLines = [...elegyLines, ...transcript.shadow];
+      const baseDialogue = modernDialogues[index] || modernDialogues[modernDialogues.length - 1];
+      const modernLines = [
+        { speaker: theatreCopy.researcher, text: baseDialogue[0], role: 'researcher', source: 'original' },
+        { speaker: theatreCopy.archivist, text: baseDialogue[1], role: 'archivist', source: 'original' },
+        ...transcript.notes
+      ];
 
       const curtainLeft = document.createElement('i');
       curtainLeft.className = 'case-fu__curtain case-fu__curtain--left';
@@ -212,13 +299,24 @@
       cue.setAttribute('aria-hidden', 'true');
       cue.innerHTML = `<span>${theatreCopy.curtainOpen}</span><span>${theatreCopy.curtainClose}</span>`;
 
-      const romance = document.createElement('div');
-      romance.className = 'case-fu__romance';
-      const romanceSmall = document.createElement('small');
-      romanceSmall.textContent = theatreCopy.romanceLabel;
-      const romanceText = document.createElement('p');
-      romanceText.textContent = romanceLines[index] || romanceLines[romanceLines.length - 1];
-      romance.append(romanceSmall, romanceText);
+      const recorder = stage.querySelector('.case-fu__puppet--recorder');
+      const guardian = stage.querySelector('.case-fu__puppet--guardian');
+      if (recorder) addPoseLayers(recorder, 'shadow-recorder');
+      if (guardian) addPoseLayers(guardian, 'shadow-guardian');
+
+      const shadowScript = document.createElement('div');
+      shadowScript.className = 'case-fu__shadow-script';
+      shadowScript.setAttribute('role', 'group');
+      shadowScript.setAttribute('aria-label', `${theatreCopy.romanceLabel}. ${theatreCopy.transcriptLabel}`);
+      const shadowHeading = document.createElement('small');
+      shadowHeading.className = 'case-fu__script-heading';
+      shadowHeading.textContent = `${theatreCopy.romanceLabel} · ${theatreCopy.transcriptLabel}`;
+      shadowScript.appendChild(shadowHeading);
+      const shadowItems = shadowLines.map(line => {
+        const item = makeScriptLine(`shadow-line case-fu__shadow-line--${line.role}`, line);
+        shadowScript.appendChild(item.article);
+        return item;
+      });
 
       const modern = document.createElement('div');
       modern.className = 'case-fu__modern-world';
@@ -233,32 +331,66 @@
       const modernResearcher = document.createElement('i');
       modernResearcher.className = 'case-fu__modern-person case-fu__modern-person--researcher';
       modernResearcher.setAttribute('aria-hidden', 'true');
+      addPoseLayers(modernResearcher, 'modern-researcher');
       const modernArchivist = document.createElement('i');
       modernArchivist.className = 'case-fu__modern-person case-fu__modern-person--archivist';
       modernArchivist.setAttribute('aria-hidden', 'true');
+      addPoseLayers(modernArchivist, 'modern-archivist');
       const modernLabel = document.createElement('span');
       modernLabel.className = 'case-fu__modern-label';
       modernLabel.textContent = theatreCopy.modernLabel;
-
-      const makeDialogue = (modifier, speaker) => {
-        const dialogue = document.createElement('div');
-        dialogue.className = `case-fu__modern-dialogue case-fu__modern-dialogue--${modifier}`;
-        const label = document.createElement('b');
-        label.textContent = speaker;
-        const text = document.createElement('p');
-        dialogue.append(label, text);
-        return { dialogue, text };
-      };
-      const researcherDialogue = makeDialogue('researcher', theatreCopy.researcher);
-      const archivistDialogue = makeDialogue('archivist', theatreCopy.archivist);
-      const baseDialogue = modernDialogues[index] || modernDialogues[modernDialogues.length - 1];
+      const modernScript = document.createElement('div');
+      modernScript.className = 'case-fu__modern-script';
+      const modernItems = modernLines.map(line => {
+        const item = makeScriptLine(`modern-line case-fu__modern-line--${line.role}`, line);
+        if (line.role === 'researcher' || line.role === 'archivist') {
+          item.article.classList.add('case-fu__modern-dialogue', `case-fu__modern-dialogue--${line.role}`);
+        }
+        modernScript.appendChild(item.article);
+        return item;
+      });
+      const researcherDialogue = modernItems.find(item => item.line.role === 'researcher');
+      const archivistDialogue = modernItems.find(item => item.line.role === 'archivist');
       const setModernDialogue = pair => {
         const safePair = pair || baseDialogue;
-        researcherDialogue.text.textContent = safePair[0];
-        archivistDialogue.text.textContent = safePair[1];
+        if (researcherDialogue) researcherDialogue.text.textContent = safePair[0];
+        if (archivistDialogue) archivistDialogue.text.textContent = safePair[1];
       };
-      setModernDialogue(baseDialogue);
-      modern.append(modernRain, modernBeam, modernResearcher, modernArchivist, modernLabel, researcherDialogue.dialogue, archivistDialogue.dialogue);
+      modern.append(modernRain, modernBeam, modernResearcher, modernArchivist, modernLabel, modernScript);
+
+      const shadowStart = 1900;
+      const coreDelay = shadowStart + 320;
+      const coreDuration = 1550;
+      let cursor = coreDelay + coreDuration + 250;
+      shadowItems.forEach(item => { cursor = scheduleLine(item, cursor); });
+      const shadowEnd = cursor + 520;
+      const shadowDuration = shadowEnd - shadowStart;
+      const modernStart = shadowEnd + 850;
+      cursor = modernStart + 950;
+      modernItems.forEach(item => { cursor = scheduleLine(item, cursor); });
+      const modernEnd = cursor + 520;
+      const modernDuration = modernEnd - modernStart;
+      const focusStart = modernEnd + 260;
+      const focusDuration = 2450;
+      const curtainCloseDelay = focusStart + focusDuration + 140;
+      const curtainCloseDuration = 1800;
+      const duration = curtainCloseDelay + curtainCloseDuration;
+
+      scene.dataset.sceneDuration = String(duration);
+      scene.dataset.shadowLineCount = String(shadowItems.length);
+      scene.dataset.transcriptLineCount = String(transcript.shadow.length + transcript.notes.length);
+      scene.dataset.modernLineCount = String(modernItems.length);
+      scene.style.setProperty('--scene-duration', `${duration}ms`);
+      scene.style.setProperty('--shadow-start', `${shadowStart}ms`);
+      scene.style.setProperty('--shadow-duration', `${shadowDuration}ms`);
+      scene.style.setProperty('--core-delay', `${coreDelay}ms`);
+      scene.style.setProperty('--core-duration', `${coreDuration}ms`);
+      scene.style.setProperty('--modern-start', `${modernStart}ms`);
+      scene.style.setProperty('--modern-duration', `${modernDuration}ms`);
+      scene.style.setProperty('--focus-start', `${focusStart}ms`);
+      scene.style.setProperty('--focus-duration', `${focusDuration}ms`);
+      scene.style.setProperty('--curtain-close-delay', `${curtainCloseDelay}ms`);
+      scene.style.setProperty('--curtain-close-duration', `${curtainCloseDuration}ms`);
 
       const focusPanel = document.createElement('div');
       focusPanel.className = 'case-fu__focus-panel';
@@ -266,7 +398,7 @@
       const focusTitle = document.createElement('b');
       const focusText = document.createElement('span');
       focusPanel.append(focusTitle, focusText);
-      stage.append(modern, romance, focusPanel, cue, curtainLeft, curtainRight);
+      stage.append(modern, shadowScript, focusPanel, cue, curtainLeft, curtainRight);
 
       const interaction = document.createElement('div');
       interaction.className = 'case-fu__interaction';
