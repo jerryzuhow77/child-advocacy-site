@@ -7740,3 +7740,64 @@ html[lang="zh-Hans"] .wanghao-directory-card{
   html[lang="ja"] .home-progress-card.is-wanghao strong{font-size:.94rem!important}
   .home-progress-card.is-wanghao{min-height:196px}
 }
+
+/* 2026-08-16 — Little Fu historical-case cards: one title, one note and one
+   counter rhythm across Traditional/Simplified Chinese, English and Japanese. */
+.is-fu-xiaodi .home-news-card-media,
+.home-case-reel-card.is-fu-xiaodi .home-case-reel-media{
+  background:linear-gradient(145deg,#182c3a,#344c59);
+}
+.is-fu-xiaodi .home-news-card-media img,
+.home-case-reel-card.is-fu-xiaodi .home-case-reel-media img{
+  object-fit:cover;
+  object-position:center;
+  filter:saturate(.8) contrast(1.04) brightness(.94);
+}
+.is-fu-xiaodi .home-news-card-media::after,
+.home-case-reel-card.is-fu-xiaodi .home-case-reel-media::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(112deg,rgba(16,35,47,.42),transparent 50%,rgba(213,181,117,.12));
+}
+.is-fu-xiaodi .home-news-card-copy strong,
+.home-case-reel-card.is-fu-xiaodi .home-case-reel-copy strong{
+  text-wrap:balance;
+  overflow-wrap:anywhere;
+}
+.is-fu-xiaodi .home-news-card-copy p,
+.home-case-reel-card.is-fu-xiaodi .home-case-reel-copy > span{
+  color:#626864;
+  line-height:1.7;
+  text-wrap:pretty;
+}
+.historical-region-children a[data-view-counter-key="historical-fu-junxiang-shared"] img{
+  object-fit:cover;
+  object-position:center;
+  background:#203744;
+}
+html[lang="en"] .is-fu-xiaodi .home-news-card-copy strong,
+html[lang="en"] .home-case-reel-card.is-fu-xiaodi .home-case-reel-copy strong{
+  font-size:clamp(.92rem,1.36vw,1.06rem)!important;
+  line-height:1.5!important;
+  hyphens:auto;
+}
+html[lang="ja"] .is-fu-xiaodi .home-news-card-copy strong,
+html[lang="ja"] .home-case-reel-card.is-fu-xiaodi .home-case-reel-copy strong{
+  font-size:clamp(.95rem,1.4vw,1.08rem)!important;
+  line-height:1.72!important;
+  line-break:strict;
+  word-break:normal;
+}
+html[lang="zh-Hans"] .is-fu-xiaodi,
+html[lang="zh-Hans"] .historical-region-children a[data-view-counter-key="historical-fu-junxiang-shared"]{
+  font-family:"Microsoft YaHei UI","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC","Source Han Sans SC","PingFang SC",sans-serif!important;
+  font-synthesis:none;
+}
+@media(max-width:560px){
+  .is-fu-xiaodi .home-news-card-copy,
+  .home-case-reel-card.is-fu-xiaodi .home-case-reel-copy{padding-inline:15px}
+  .is-fu-xiaodi .home-news-card-copy p,
+  .home-case-reel-card.is-fu-xiaodi .home-case-reel-copy > span{font-size:.84rem;line-height:1.65}
+}

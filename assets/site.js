@@ -1027,6 +1027,12 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     if (contentRoute === 'historical-cases/regions/taiwan/wanghao') {
       return 'historical-wanghao-shared';
     }
+    // The Fu / Little Fu feature uses the same stable public count on the
+    // Traditional/Simplified article, EN/JA editions, homepage cards, and
+    // Taiwan historical-case directory links.
+    if (contentRoute === 'historical-cases/regions/taiwan/fu-junxiang') {
+      return 'historical-fu-junxiang-shared';
+    }
     // All translated editions of the same route share a public count.  This
     // keeps a homepage card, its article page, and the EN/JA editions in sync.
     return contentRoute.replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
@@ -1221,6 +1227,7 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     if (anchor.classList.contains('home-news-card')) return anchor.querySelector('.home-news-card-copy') || anchor;
     if (anchor.classList.contains('home-case-reel-card')) return anchor.querySelector('.home-case-reel-copy') || anchor;
     if (anchor.classList.contains('home-progress-card')) return anchor;
+    if (anchor.closest('.historical-region-children')) return anchor.querySelector('span') || anchor;
     return anchor;
   }
 
@@ -1229,7 +1236,7 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     const route = routeFromUrl(anchor.href || anchor.getAttribute('href'));
     if (!isTrackableRoute(route)) return;
     anchor.dataset.viewCounterReady = '1';
-    const key = keyFromRoute(route);
+    const key = anchor.dataset.viewCounterKey || keyFromRoute(route);
     const target = cardTargetFor(anchor);
     const badge = makeBadge('card');
     target.appendChild(badge);
@@ -1243,7 +1250,7 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
   }
 
   function initHomepageCardCounters() {
-    document.querySelectorAll('a.home-news-card[href], a.home-progress-card[href], a.home-case-reel-card[href]').forEach(addReadOnlyBadge);
+    document.querySelectorAll('a.home-news-card[href], a.home-progress-card[href], a.home-case-reel-card[href], .historical-region-children a[data-view-counter-key][href]').forEach(addReadOnlyBadge);
   }
 
   function initCaseDirectoryCounters() {
