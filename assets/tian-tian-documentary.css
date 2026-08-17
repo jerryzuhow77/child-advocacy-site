@@ -2714,9 +2714,9 @@ html[lang="en"] .tt-prose p{line-height:1.76}
   .tt-shadow-prologue-cloud path{stroke-dashoffset:0!important}
 }
 
-/* v11 / 2026-08-17: original Ronghua artwork.
-   The blue-white branch and phoenix ornament are transparent craft layers;
-   they stay behind the narrators and never carry documentary information. */
+/* v11.1 / 2026-08-17: four original Ronghua designs.
+   Blue-white branch, moon-white lotus, phoenix and peony-butterfly ornaments
+   stay decorative, behind the narrators, and never carry case information. */
 .tt-ronghua,
 .tt-transition[data-craft="velvet-flower"] .tt-shadow-stage::after{
   --tt-ronghua-opacity:.58;
@@ -2737,13 +2737,17 @@ html[lang="en"] .tt-prose p{line-height:1.76}
   image-rendering:auto;
   will-change:opacity,transform;
 }
-.tt-ronghua--opening,
-.tt-ronghua--hero,
-.tt-ronghua--ending{
+.tt-ronghua--opening{
   background-image:url("./art/tian-tian-ronghua-blue-branch-20260817.svg");
+}
+.tt-ronghua--hero{
+  background-image:url("./art/tian-tian-ronghua-lotus-20260817.svg");
 }
 .tt-ronghua--guide{
   background-image:url("./art/tian-tian-ronghua-phoenix-20260817.svg");
+}
+.tt-ronghua--ending{
+  background-image:url("./art/tian-tian-ronghua-peony-butterfly-20260817.svg");
 }
 @keyframes tt-ronghua-reveal{
   0%{opacity:0;transform:var(--tt-ronghua-start)}
@@ -2767,7 +2771,7 @@ html[lang="en"] .tt-prose p{line-height:1.76}
   animation:tt-ronghua-reveal 1.75s cubic-bezier(.18,.78,.2,1) .2s both;
 }
 
-/* The hero branch is a corner frame, kept away from the anonymous child. */
+/* The moon-white lotus frames the hero corner, away from the anonymous child. */
 .tt-ronghua--hero{
   --tt-ronghua-opacity:.68;
   --tt-ronghua-start:translate3d(-22px,14px,0) scale(.7) rotate(-15deg);
@@ -2781,9 +2785,9 @@ html[lang="en"] .tt-prose p{line-height:1.76}
   animation:tt-ronghua-reveal 1.65s cubic-bezier(.18,.8,.18,1) .35s both;
 }
 
-/* A low-opacity phoenix watermark carries the craft language into navigation. */
+/* A visible but restrained phoenix watermark carries the craft language into navigation. */
 .tt-guide-card>.tt-ronghua--guide{
-  --tt-ronghua-opacity:.16;
+  --tt-ronghua-opacity:.24;
   --tt-ronghua-start:translate3d(18px,-8px,0) scale(.74) rotate(9deg);
   --tt-ronghua-over:translate3d(0,0,0) scale(1.025) rotate(4deg);
   --tt-ronghua-rest:translate3d(0,0,0) scale(1) rotate(4deg);
@@ -2792,8 +2796,50 @@ html[lang="en"] .tt-prose p{line-height:1.76}
   right:-48px;
   top:-38px;
   width:250px;
-  filter:saturate(.72) sepia(.06);
+  filter:saturate(.82) sepia(.03);
   animation:tt-ronghua-reveal 1.5s cubic-bezier(.2,.78,.2,1) .5s both;
+}
+
+/* Four distinct ornaments remain visible together beneath the reading map. */
+.tt-ronghua-gallery{
+  position:relative;
+  z-index:2;
+  grid-column:1/-1;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin-top:2px;
+  padding:18px 4px 0;
+  border-top:1px solid rgba(63,102,116,.18);
+  pointer-events:none;
+}
+.tt-ronghua-gallery>span{
+  --tt-ronghua-art:none;
+  min-height:118px;
+  border:1px solid rgba(94,76,44,.16);
+  border-radius:52% 48% 50% 46%/44% 52% 48% 56%;
+  background-image:
+    var(--tt-ronghua-art),
+    radial-gradient(ellipse at 50% 52%,rgba(248,242,229,.96),rgba(217,228,222,.52) 58%,rgba(63,102,116,.08) 100%);
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:contain,auto;
+  box-shadow:inset 0 0 0 6px rgba(255,255,255,.18),0 8px 22px rgba(46,61,57,.08);
+  filter:saturate(.92) contrast(1.02);
+  opacity:.96;
+  transform-origin:50% 70%;
+  animation:tt-ronghua-swatch-in .9s cubic-bezier(.18,.8,.18,1) both;
+}
+.tt-ronghua-gallery>span:nth-child(2){animation-delay:.08s}
+.tt-ronghua-gallery>span:nth-child(3){animation-delay:.16s}
+.tt-ronghua-gallery>span:nth-child(4){animation-delay:.24s}
+.tt-ronghua-gallery>[data-ronghua="blue-branch"]{--tt-ronghua-art:url("./art/tian-tian-ronghua-blue-branch-20260817.svg")}
+.tt-ronghua-gallery>[data-ronghua="lotus"]{--tt-ronghua-art:url("./art/tian-tian-ronghua-lotus-20260817.svg")}
+.tt-ronghua-gallery>[data-ronghua="phoenix"]{--tt-ronghua-art:url("./art/tian-tian-ronghua-phoenix-20260817.svg")}
+.tt-ronghua-gallery>[data-ronghua="peony-butterfly"]{--tt-ronghua-art:url("./art/tian-tian-ronghua-peony-butterfly-20260817.svg")}
+@keyframes tt-ronghua-swatch-in{
+  from{opacity:0;transform:translateY(10px) scale(.86)}
+  to{opacity:.96;transform:none}
 }
 
 /* Act VIII blooms inside the theatre, behind its props and paper narrators. */
@@ -2807,14 +2853,14 @@ html[lang="en"] .tt-prose p{line-height:1.76}
   right:-6%;
   top:1.5%;
   width:clamp(240px,29vw,400px);
-  background-image:url("./art/tian-tian-ronghua-phoenix-20260817.svg");
+  background-image:url("./art/tian-tian-ronghua-peony-butterfly-20260817.svg");
   filter:saturate(.9) brightness(.94) drop-shadow(0 13px 10px rgba(7,3,2,.48));
 }
 .tt-transition[data-craft="velvet-flower"].is-visible .tt-shadow-stage::after{
   animation:tt-ronghua-reveal 1.9s cubic-bezier(.16,.82,.18,1) 4.05s both;
 }
 
-/* The closing branch remains in the upper-left safe area; copy stays clear. */
+/* The closing peony and butterfly remain in the upper-left safe area; copy stays clear. */
 .tt-ronghua--ending{
   --tt-ronghua-opacity:.48;
   --tt-ronghua-start:translate3d(-18px,18px,0) scale(.66) rotate(-13deg);
@@ -2837,12 +2883,19 @@ html[lang="en"] .tt-prose p{line-height:1.76}
   .tt-ronghua--ending{left:-10%;top:5px;width:40vw}
 }
 
+@media(max-width:720px){
+  .tt-ronghua-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding-top:14px}
+  .tt-ronghua-gallery>span{min-height:104px}
+}
+
 @media(max-width:480px){
   .tt-ronghua--opening{--tt-ronghua-opacity:.38;left:-8%;width:44vw}
   .tt-ronghua--hero{--tt-ronghua-opacity:.57;left:-22%;top:-2%;width:62%}
   .tt-guide-card>.tt-ronghua--guide{--tt-ronghua-opacity:.13;right:-73px;top:-10px;width:168px}
   .tt-transition[data-craft="velvet-flower"] .tt-shadow-stage::after{--tt-ronghua-opacity:.35;right:-22%;top:3%;width:58vw}
   .tt-ronghua--ending{--tt-ronghua-opacity:.38;left:-18%;top:8px;width:47vw}
+  .tt-ronghua-gallery{gap:7px;padding-inline:0}
+  .tt-ronghua-gallery>span{min-height:88px;border-radius:20px}
 }
 
 @media(prefers-reduced-motion:reduce){
@@ -2862,9 +2915,10 @@ html[lang="en"] .tt-prose p{line-height:1.76}
   }
   .tt-ronghua--opening{opacity:0!important}
   .tt-opening[data-scene="5"] .tt-ronghua--opening{opacity:var(--tt-ronghua-opacity)!important}
+  .tt-ronghua-gallery>span{animation:none!important;opacity:.96!important;transform:none!important}
 }
 
 @media print{
-  .tt-ronghua{display:none!important}
+  .tt-ronghua,.tt-ronghua-gallery{display:none!important}
   .tt-transition[data-craft="velvet-flower"] .tt-shadow-stage::after{content:none!important;display:none!important}
 }
