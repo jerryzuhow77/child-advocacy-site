@@ -231,11 +231,14 @@
     const stage = document.createElement('div');
     const sceneIndex = copy.scenes.indexOf(scene);
     const motionSequence = ['arrival', 'incline', 'step', 'turn', 'raise', 'unfold', 'search', 'guard'];
+    const stampSequence = ['minnan-03', 'hakka-03', 'waisheng-03', '', '', 'minnan-04', 'hakka-04', 'waisheng-04'];
+    const stageStamp = stampSequence[sceneIndex] || '';
     stage.className = 'wh-puppet-play';
     stage.dataset.puppetPlay = '';
     stage.dataset.puppetMode = mode;
     stage.dataset.puppetScene = String(sceneIndex);
     stage.dataset.puppetMotion = motionSequence[sceneIndex] || 'arrival';
+    if (stageStamp) stage.dataset.stageStamp = stageStamp;
     stage.dataset.dialogueDelay = mode === 'finale' ? '1850' : '1650';
     stage.dataset.dialogueHold = document.documentElement.lang === 'en' ? '6100' : '5200';
     stage.setAttribute('aria-label', scene.title);
@@ -253,8 +256,9 @@
     ).join('');
     stage.innerHTML = `
       <div class="wh-stage-curtain" aria-hidden="true"><span class="wh-curtain-panel is-left"></span><span class="wh-curtain-panel is-right"></span></div>
-      <figure class="wh-puppet is-female" aria-hidden="true"><span class="wh-puppet-art"></span><i class="wh-control-rod is-body"></i><i class="wh-control-rod is-hand"></i></figure>
-      <figure class="wh-puppet is-male" aria-hidden="true"><span class="wh-puppet-art"></span><i class="wh-control-rod is-body"></i><i class="wh-control-rod is-hand"></i></figure>
+      ${stageStamp ? '<span class="wh-stage-stamp" aria-hidden="true"></span>' : ''}
+      <figure class="wh-puppet is-female" aria-hidden="true"><span class="wh-puppet-motion-layer"><span class="wh-puppet-art"></span><i class="wh-control-rod is-body"></i><i class="wh-control-rod is-hand"></i></span></figure>
+      <figure class="wh-puppet is-male" aria-hidden="true"><span class="wh-puppet-motion-layer"><span class="wh-puppet-art"></span><i class="wh-control-rod is-body"></i><i class="wh-control-rod is-hand"></i></span></figure>
       <div class="wh-puppet-dialogues" aria-live="polite">${dialogueHTML}</div>
       ${sealHTML ? `<div class="wh-cultural-seals" aria-label="${escapeHTML(copy.culture.title)}">${sealHTML}</div>` : ''}
       <details class="wh-puppet-transcript"><summary>${escapeHTML(copy.transcript)}</summary>${transcriptHTML}</details>

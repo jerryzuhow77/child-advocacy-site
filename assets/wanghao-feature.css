@@ -56,6 +56,15 @@ html[lang="ja"] body.wh-page{font-family:"Noto Serif JP","Yu Mincho","Hiragino M
 }
 .wh-puppet-play::before{content:"";position:absolute;z-index:15;inset:0 0 auto;height:clamp(8px,1vw,14px);pointer-events:none;background:linear-gradient(90deg,#5b292d,#d7ad50 12%,#725033 50%,#d7ad50 88%,#5b292d);box-shadow:0 7px 18px rgba(0,0,0,.34)}
 .wh-puppet-play::after{content:"";position:absolute;z-index:3;inset:auto 0 0;height:17%;pointer-events:none;background:linear-gradient(180deg,rgba(101,72,44,.12),rgba(19,25,24,.88)),repeating-linear-gradient(90deg,rgba(193,156,91,.12) 0 1px,transparent 1px 11%);border-top:1px solid rgba(215,169,61,.42);transform:perspective(360px) rotateX(7deg);transform-origin:bottom}
+.wh-puppet-play[data-stage-stamp="minnan-03"]{--wh-stage-stamp-position:0 0;--wh-stage-stamp-rotation:-5deg}
+.wh-puppet-play[data-stage-stamp="minnan-04"]{--wh-stage-stamp-position:50% 0;--wh-stage-stamp-rotation:4deg}
+.wh-puppet-play[data-stage-stamp="hakka-03"]{--wh-stage-stamp-position:100% 0;--wh-stage-stamp-rotation:5deg}
+.wh-puppet-play[data-stage-stamp="hakka-04"]{--wh-stage-stamp-position:0 100%;--wh-stage-stamp-rotation:-4deg}
+.wh-puppet-play[data-stage-stamp="waisheng-03"]{--wh-stage-stamp-position:50% 100%;--wh-stage-stamp-rotation:-5deg}
+.wh-puppet-play[data-stage-stamp="waisheng-04"]{--wh-stage-stamp-position:100% 100%;--wh-stage-stamp-rotation:4deg}
+.wh-stage-stamp{position:absolute;z-index:4;top:16%;right:1.8%;width:clamp(108px,17vw,205px);aspect-ratio:1;pointer-events:none;background:#070a09 url("images/wanghao-cultural-seals-set-v1.jpg") var(--wh-stage-stamp-position) / 300% 200% no-repeat;border-radius:50%;opacity:.2;filter:saturate(.78) contrast(1.08);transform:rotate(var(--wh-stage-stamp-rotation));box-shadow:0 0 34px rgba(211,177,98,.12);-webkit-mask-image:radial-gradient(circle,#000 56%,rgba(0,0,0,.82) 68%,transparent 83%);mask-image:radial-gradient(circle,#000 56%,rgba(0,0,0,.82) 68%,transparent 83%)}
+.wh-puppet-play[data-puppet-scene="1"] .wh-stage-stamp,.wh-puppet-play[data-puppet-scene="5"] .wh-stage-stamp,.wh-puppet-play[data-puppet-scene="7"] .wh-stage-stamp{right:auto;left:1.8%}
+.wh-puppet-play[data-puppet-scene="2"] .wh-stage-stamp,.wh-puppet-play[data-puppet-scene="6"] .wh-stage-stamp{top:21%}
 .wh-stage-curtain{position:absolute;z-index:20;inset:0;overflow:hidden;pointer-events:none}
 .wh-stage-curtain::before,.wh-stage-curtain::after,.wh-stage-curtain .wh-curtain-panel{content:"";position:absolute;inset:0 auto 0;width:52.5%;background:repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0 2%,rgba(0,0,0,.12) 3% 7%,transparent 8% 13%),linear-gradient(90deg,#3b2026,var(--wh-stage-red-hi) 54%,#4f272d);box-shadow:inset -18px 0 26px rgba(0,0,0,.26);will-change:transform}
 .wh-stage-curtain::before,.wh-stage-curtain .wh-curtain-panel.is-left{left:0;transform:translateX(-91%);border-right:2px solid rgba(218,176,76,.76)}
@@ -73,6 +82,7 @@ html[lang="ja"] body.wh-page{font-family:"Noto Serif JP","Yu Mincho","Hiragino M
   margin:0;transform-origin:50% 94%;transform-style:preserve-3d;opacity:0;will-change:transform,opacity;
   filter:drop-shadow(0 19px 12px rgba(0,0,0,.46));pointer-events:none
 }
+.wh-puppet-motion-layer{position:absolute;inset:0;display:block;transform-origin:50% 92%;transform-style:preserve-3d;will-change:transform}
 .wh-puppet-art{
   position:absolute;z-index:2;inset:0;background-repeat:no-repeat;background-position:center bottom;background-size:contain;
   transform-origin:50% 88%;transform-style:preserve-3d;will-change:transform;image-rendering:auto
@@ -133,9 +143,36 @@ html[lang="ja"] body.wh-page{font-family:"Noto Serif JP","Yu Mincho","Hiragino M
 .wh-puppet-play[data-puppet-motion="guard"].is-speaking-chorus .wh-puppet.is-female .wh-control-rod.is-hand{animation:whShadowGuardChorusRodFemale 3.6s ease-in-out infinite}
 .wh-puppet-play[data-puppet-motion="guard"].is-speaking-chorus .wh-puppet.is-male .wh-control-rod.is-hand{animation:whShadowGuardChorusRodMale 3.6s ease-in-out infinite}
 
+/* Four unmistakable paired choreographies. Both figures move together; speech motion remains layered inside. */
+.wh-puppet-play[data-puppet-motion="raise"].is-playing .wh-puppet.is-female .wh-puppet-motion-layer{animation:whPairRaiseFemale 4.8s 2.15s cubic-bezier(.45,0,.25,1) infinite}
+.wh-puppet-play[data-puppet-motion="raise"].is-playing .wh-puppet.is-male .wh-puppet-motion-layer{animation:whPairRaiseMale 4.8s 2.15s cubic-bezier(.45,0,.25,1) infinite}
+.wh-puppet-play[data-puppet-motion="unfold"].is-playing .wh-puppet.is-female .wh-puppet-motion-layer{animation:whPairUnfoldFemale 5.2s 2.15s cubic-bezier(.45,0,.25,1) infinite}
+.wh-puppet-play[data-puppet-motion="unfold"].is-playing .wh-puppet.is-male .wh-puppet-motion-layer{animation:whPairUnfoldMale 5.2s 2.15s cubic-bezier(.45,0,.25,1) infinite}
+.wh-puppet-play[data-puppet-motion="search"].is-playing .wh-puppet.is-female .wh-puppet-motion-layer{animation:whPairSearchFemale 4.4s 2.15s cubic-bezier(.38,0,.28,1) infinite}
+.wh-puppet-play[data-puppet-motion="search"].is-playing .wh-puppet.is-male .wh-puppet-motion-layer{animation:whPairSearchMale 4.4s 2.15s cubic-bezier(.38,0,.28,1) infinite}
+.wh-puppet-play[data-puppet-motion="guard"].is-playing .wh-puppet.is-female .wh-puppet-motion-layer{animation:whPairGuardFemale 5.4s 2.15s cubic-bezier(.46,0,.24,1) infinite}
+.wh-puppet-play[data-puppet-motion="guard"].is-playing .wh-puppet.is-male .wh-puppet-motion-layer{animation:whPairGuardMale 5.4s 2.15s cubic-bezier(.46,0,.24,1) infinite}
+.wh-puppet-play[data-puppet-motion="raise"].is-playing .wh-puppet.is-female .wh-control-rod.is-hand{animation:whShadowRaiseRodFemale 4.8s 2.15s ease-in-out infinite!important}
+.wh-puppet-play[data-puppet-motion="raise"].is-playing .wh-puppet.is-male .wh-control-rod.is-hand{animation:whShadowRaiseRodMale 4.8s 2.15s ease-in-out infinite!important}
+.wh-puppet-play[data-puppet-motion="raise"].is-playing .wh-puppet.is-female .wh-control-rod.is-body{animation:whShadowRaiseBodyFemale 4.8s 2.15s ease-in-out infinite!important}
+.wh-puppet-play[data-puppet-motion="raise"].is-playing .wh-puppet.is-male .wh-control-rod.is-body{animation:whShadowRaiseBodyMale 4.8s 2.15s ease-in-out infinite!important}
+.wh-puppet-play[data-puppet-motion="unfold"].is-playing .wh-puppet.is-female .wh-control-rod.is-hand{animation:whShadowUnfoldRodFemale 5.2s 2.15s ease-in-out infinite!important}
+.wh-puppet-play[data-puppet-motion="unfold"].is-playing .wh-puppet.is-male .wh-control-rod.is-hand{animation:whShadowUnfoldRodMale 5.2s 2.15s ease-in-out infinite!important}
+.wh-puppet-play[data-puppet-motion="unfold"].is-playing .wh-puppet.is-female .wh-control-rod.is-body{animation:whShadowUnfoldBodyFemale 5.2s 2.15s ease-in-out infinite!important}
+.wh-puppet-play[data-puppet-motion="unfold"].is-playing .wh-puppet.is-male .wh-control-rod.is-body{animation:whShadowUnfoldBodyMale 5.2s 2.15s ease-in-out infinite!important}
+.wh-puppet-play[data-puppet-motion="search"].is-playing .wh-puppet.is-female .wh-control-rod.is-hand{animation:whShadowSearchRodFemale 4.4s 2.15s ease-in-out infinite!important}
+.wh-puppet-play[data-puppet-motion="search"].is-playing .wh-puppet.is-male .wh-control-rod.is-hand{animation:whShadowSearchRodMale 4.4s 2.15s ease-in-out infinite!important}
+.wh-puppet-play[data-puppet-motion="search"].is-playing .wh-puppet.is-female .wh-control-rod.is-body{animation:whShadowSearchBodyFemale 4.4s 2.15s ease-in-out infinite!important}
+.wh-puppet-play[data-puppet-motion="search"].is-playing .wh-puppet.is-male .wh-control-rod.is-body{animation:whShadowSearchBodyMale 4.4s 2.15s ease-in-out infinite!important}
+.wh-puppet-play[data-puppet-motion="guard"].is-playing .wh-puppet.is-female .wh-control-rod.is-hand{animation:whShadowGuardRodFemale 5.4s 2.15s ease-in-out infinite!important}
+.wh-puppet-play[data-puppet-motion="guard"].is-playing .wh-puppet.is-male .wh-control-rod.is-hand{animation:whShadowGuardRodMale 5.4s 2.15s ease-in-out infinite!important}
+.wh-puppet-play[data-puppet-motion="guard"].is-playing .wh-puppet.is-female .wh-control-rod.is-body{animation:whShadowGuardBodyFemale 5.4s 2.15s ease-in-out infinite!important}
+.wh-puppet-play[data-puppet-motion="guard"].is-playing .wh-puppet.is-male .wh-control-rod.is-body{animation:whShadowGuardBodyMale 5.4s 2.15s ease-in-out infinite!important}
+
 .wh-puppet-dialogues{position:absolute;z-index:10;left:50%;top:clamp(76px,10vw,112px);width:min(560px,52%);min-height:clamp(142px,21vw,220px);transform:translateX(-50%);pointer-events:none;transition:opacity .72s ease}
 .wh-puppet-dialogue{position:absolute;inset:0;margin:0;padding:clamp(.85rem,2.2vw,1.35rem) clamp(1rem,2.7vw,1.7rem);overflow:auto;max-height:clamp(150px,24vw,245px);border:1px solid rgba(215,169,61,.72);border-radius:2px;background:linear-gradient(135deg,rgba(250,246,236,.97),rgba(229,216,187,.94));box-shadow:0 15px 38px rgba(0,0,0,.34),inset 0 0 0 4px rgba(118,56,61,.09);color:#243239;font-size:clamp(.85rem,1.45vw,1.03rem);line-height:1.72;text-align:left;opacity:0;transform:translateY(14px) scale(.985);transition:opacity .82s ease,transform .82s ease;pointer-events:none}
 .wh-puppet-dialogue::before{content:attr(data-label);display:block;margin:0 0 .38rem;color:#8a4a3d;font:800 .66rem/1.3 system-ui,sans-serif;letter-spacing:.13em;text-transform:uppercase}
+.wh-puppet-play[data-stage-stamp] .wh-puppet-dialogue::after{content:"";position:absolute;z-index:-1;right:.42rem;bottom:.35rem;width:clamp(42px,6vw,62px);aspect-ratio:1;pointer-events:none;background:#101514 url("images/wanghao-cultural-seals-set-v1.jpg") var(--wh-stage-stamp-position) / 300% 200% no-repeat;border-radius:50%;opacity:.12;filter:grayscale(.18) sepia(.18);transform:rotate(var(--wh-stage-stamp-rotation))}
 .wh-puppet-dialogue[data-speaker="chorus"]{border-color:rgba(232,204,133,.78);background:linear-gradient(135deg,rgba(19,41,49,.95),rgba(49,73,77,.94));color:#f6efdf;text-align:center}.wh-puppet-dialogue[data-speaker="chorus"]::before{color:#efd28b}
 .wh-puppet-dialogue.is-current{z-index:2;opacity:1;transform:none;pointer-events:auto}
 .wh-puppet-dialogue.is-spoken:not(.is-current){opacity:0;transform:translateY(-10px)}
@@ -169,6 +206,14 @@ html[lang="ja"] body.wh-page{font-family:"Noto Serif JP","Yu Mincho","Hiragino M
 @keyframes whShadowStepMale{0%,100%{transform:perspective(900px) translate3d(0,0,0) rotateY(0)}30%{transform:perspective(900px) translate3d(-12px,-6px,18px) rotateY(5deg)}62%{transform:perspective(900px) translate3d(-6px,0,8px) rotateY(2deg)}}
 @keyframes whShadowTurnFemale{0%,100%{transform:perspective(900px) translate3d(0,0,0) rotateY(0)}38%{transform:perspective(900px) translate3d(3px,-3px,24px) rotateY(-9deg)}68%{transform:perspective(900px) translate3d(0,-2px,12px) rotateY(4deg)}}
 @keyframes whShadowTurnMale{0%,100%{transform:perspective(900px) translate3d(0,0,0) rotateY(0)}38%{transform:perspective(900px) translate3d(-3px,-3px,24px) rotateY(9deg)}68%{transform:perspective(900px) translate3d(0,-2px,12px) rotateY(-4deg)}}
+@keyframes whPairRaiseFemale{0%,12%,100%{transform:perspective(900px) translate3d(0,0,0) rotateY(0) rotateZ(0) scale3d(1,1,1)}32%{transform:perspective(900px) translate3d(10px,-22px,32px) rotateY(-7deg) rotateZ(5.5deg) scale3d(1.02,1.02,1)}50%{transform:perspective(900px) translate3d(18px,-32px,44px) rotateY(-11deg) rotateZ(8deg) scale3d(1.04,1.04,1)}68%{transform:perspective(900px) translate3d(12px,-18px,24px) rotateY(-5deg) rotateZ(3deg) scale3d(1.02,1.02,1)}84%{transform:perspective(900px) translate3d(3px,-5px,8px) rotateY(-1deg) rotateZ(.8deg) scale3d(1.01,1.01,1)}}
+@keyframes whPairRaiseMale{0%,12%,100%{transform:perspective(900px) translate3d(0,0,0) rotateY(0) rotateZ(0) scale3d(1,1,1)}32%{transform:perspective(900px) translate3d(-10px,-22px,32px) rotateY(7deg) rotateZ(-5.5deg) scale3d(1.02,1.02,1)}50%{transform:perspective(900px) translate3d(-18px,-32px,44px) rotateY(11deg) rotateZ(-8deg) scale3d(1.04,1.04,1)}68%{transform:perspective(900px) translate3d(-12px,-18px,24px) rotateY(5deg) rotateZ(-3deg) scale3d(1.02,1.02,1)}84%{transform:perspective(900px) translate3d(-3px,-5px,8px) rotateY(1deg) rotateZ(-.8deg) scale3d(1.01,1.01,1)}}
+@keyframes whPairUnfoldFemale{0%,10%,100%{transform:perspective(900px) translate3d(0,0,0) rotateY(0) rotateZ(0) scale3d(1,1,1)}24%{transform:perspective(900px) translate3d(-16px,-4px,18px) rotateY(8deg) rotateZ(-4deg) scale3d(.98,.98,1)}48%,64%{transform:perspective(900px) translate3d(30px,-12px,46px) rotateY(-12deg) rotateZ(5deg) scale3d(1.05,1.05,1)}82%{transform:perspective(900px) translate3d(12px,-5px,18px) rotateY(-4deg) rotateZ(1.5deg) scale3d(1.02,1.02,1)}}
+@keyframes whPairUnfoldMale{0%,10%,100%{transform:perspective(900px) translate3d(0,0,0) rotateY(0) rotateZ(0) scale3d(1,1,1)}24%{transform:perspective(900px) translate3d(16px,-4px,18px) rotateY(-8deg) rotateZ(4deg) scale3d(.98,.98,1)}48%,64%{transform:perspective(900px) translate3d(-30px,-12px,46px) rotateY(12deg) rotateZ(-5deg) scale3d(1.05,1.05,1)}82%{transform:perspective(900px) translate3d(-12px,-5px,18px) rotateY(4deg) rotateZ(-1.5deg) scale3d(1.02,1.02,1)}}
+@keyframes whPairSearchFemale{0%,8%,100%{transform:perspective(900px) translate3d(0,0,0) rotateX(0) rotateY(0) rotateZ(0)}20%{transform:perspective(900px) translate3d(14px,-10px,24px) rotateX(-2deg) rotateY(-5deg) rotateZ(4deg)}38%{transform:perspective(900px) translate3d(30px,2px,42px) rotateX(-7deg) rotateY(-10deg) rotateZ(1deg)}54%{transform:perspective(900px) translate3d(8px,-5px,18px) rotateX(-2deg) rotateY(4deg) rotateZ(-2deg)}72%{transform:perspective(900px) translate3d(32px,-8px,46px) rotateX(-6deg) rotateY(-11deg) rotateZ(4.5deg)}88%{transform:perspective(900px) translate3d(12px,-2px,14px) rotateX(-1deg) rotateY(-3deg) rotateZ(1deg)}}
+@keyframes whPairSearchMale{0%,8%,100%{transform:perspective(900px) translate3d(0,0,0) rotateX(0) rotateY(0) rotateZ(0)}20%{transform:perspective(900px) translate3d(-14px,-10px,24px) rotateX(-2deg) rotateY(5deg) rotateZ(-4deg)}38%{transform:perspective(900px) translate3d(-30px,2px,42px) rotateX(-7deg) rotateY(10deg) rotateZ(-1deg)}54%{transform:perspective(900px) translate3d(-8px,-5px,18px) rotateX(-2deg) rotateY(-4deg) rotateZ(2deg)}72%{transform:perspective(900px) translate3d(-32px,-8px,46px) rotateX(-6deg) rotateY(11deg) rotateZ(-4.5deg)}88%{transform:perspective(900px) translate3d(-12px,-2px,14px) rotateX(-1deg) rotateY(3deg) rotateZ(-1deg)}}
+@keyframes whPairGuardFemale{0%,10%,100%{transform:perspective(900px) translate3d(0,0,0) rotateX(0) rotateY(0) rotateZ(0)}24%{transform:perspective(900px) translate3d(18px,-5px,28px) rotateX(-3deg) rotateY(-6deg) rotateZ(3deg)}44%,62%{transform:perspective(900px) translate3d(28px,14px,40px) rotateX(-14deg) rotateY(-8deg) rotateZ(3deg)}80%{transform:perspective(900px) translate3d(20px,-6px,24px) rotateX(-3deg) rotateY(-4deg) rotateZ(1.5deg)}}
+@keyframes whPairGuardMale{0%,10%,100%{transform:perspective(900px) translate3d(0,0,0) rotateX(0) rotateY(0) rotateZ(0)}24%{transform:perspective(900px) translate3d(-18px,-5px,28px) rotateX(-3deg) rotateY(6deg) rotateZ(-3deg)}44%,62%{transform:perspective(900px) translate3d(-28px,14px,40px) rotateX(-14deg) rotateY(8deg) rotateZ(-3deg)}80%{transform:perspective(900px) translate3d(-20px,-6px,24px) rotateX(-3deg) rotateY(4deg) rotateZ(-1.5deg)}}
 @keyframes whShadowRaiseFemale{0%,100%{transform:perspective(900px) translate3d(0,0,0) rotateY(0) rotateZ(0)}32%{transform:perspective(900px) translate3d(5px,-13px,24px) rotateY(-4deg) rotateZ(2.8deg)}64%{transform:perspective(900px) translate3d(8px,-9px,17px) rotateY(-2deg) rotateZ(1.4deg)}}
 @keyframes whShadowRaiseMale{0%,100%{transform:perspective(900px) translate3d(0,0,0) rotateY(0) rotateZ(0)}32%{transform:perspective(900px) translate3d(-5px,-13px,24px) rotateY(4deg) rotateZ(-2.8deg)}64%{transform:perspective(900px) translate3d(-8px,-9px,17px) rotateY(2deg) rotateZ(-1.4deg)}}
 @keyframes whShadowRaiseRodFemale{0%,100%{transform:rotate(12deg)}32%{transform:translate3d(10px,-31px,16px) rotate(42deg)}64%{transform:translate3d(7px,-22px,10px) rotate(31deg)}}
@@ -236,7 +281,8 @@ html:not(.js) .wh-puppet-replay,.wh-puppet-play.is-static .wh-puppet-replay{disp
 @media(prefers-reduced-motion:reduce){
   .wh-puppet-play{min-height:0;padding:5.7rem 1rem 13rem}
   .wh-stage-curtain{display:none!important}
-  .wh-puppet,.wh-puppet .wh-puppet-art,.wh-puppet .wh-control-rod{animation:none!important;opacity:1;transform:none}
+  .wh-puppet,.wh-puppet .wh-puppet-motion-layer,.wh-puppet .wh-puppet-art,.wh-puppet .wh-control-rod{animation:none!important;opacity:1;transform:none}
+  .wh-stage-stamp{animation:none!important}
   .wh-puppet-dialogues{position:relative;left:auto;top:auto;width:min(760px,100%);min-height:0;margin:auto;display:grid;gap:.8rem;transform:none;opacity:1!important;pointer-events:auto;transition:none}
   .wh-puppet-dialogue,.wh-puppet-dialogue.is-current,.wh-puppet-dialogue.is-spoken{position:relative;inset:auto;max-height:none;opacity:1;transform:none;pointer-events:auto;transition:none}
   .wh-puppet-play>.wh-puppet-transcript{position:relative;left:auto;right:auto;bottom:auto;max-width:72ch;max-height:none;margin:1rem auto 0}
@@ -246,6 +292,7 @@ html:not(.js) .wh-puppet-replay,.wh-puppet-play.is-static .wh-puppet-replay{disp
   .wh-puppet-play,.wh-puppet-dialogue,.wh-cultural-seal,.wh-puppet-transcript,.wh-puppet-replay{border:1px solid CanvasText}
   .wh-stage-curtain::before,.wh-stage-curtain::after,.wh-stage-curtain .wh-curtain-panel{background:Canvas}
   .wh-puppet-dialogue,.wh-puppet-transcript{background:Canvas;color:CanvasText}
+  .wh-stage-stamp,.wh-puppet-dialogue::after{display:none}
 }
 
 /* Public cultural-memory marks: decorative context, never case identity or evidence. */
