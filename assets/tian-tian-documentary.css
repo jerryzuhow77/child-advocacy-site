@@ -3325,50 +3325,100 @@ html.tt-pose-ready .tt-ending-theatre-puppet{opacity:1}
   .tt-ending .tt-ending-copy{visibility:visible!important;opacity:1!important;pointer-events:auto!important;animation:none!important}
 }
 
-/* v11.5 visibly dispersed ronghua, skippable epilogue, and the supplied snow-landscape ending panorama. */
+/* v11.6 nine large chapter-specific ronghua, skippable epilogue, and the supplied snow-landscape ending panorama. */
 .tt-chapter{isolation:isolate}
 .tt-chapter>.tt-chapter-grid{position:relative;z-index:1}
 .tt-ronghua-scatter{
+  --tt-ronghua-opacity:.25;
+  --tt-ronghua-rotate:0deg;
+  --tt-ronghua-enter:36px;
   position:absolute;
   z-index:0;
   display:block;
-  width:clamp(260px,27vw,430px);
+  width:clamp(380px,43vw,700px);
   aspect-ratio:1200/760;
   background-position:center;
   background-repeat:no-repeat;
   background-size:contain;
-  opacity:.22;
+  opacity:0;
   pointer-events:none;
-  filter:saturate(.88) contrast(1.02) drop-shadow(0 12px 14px rgba(44,56,52,.16));
+  filter:saturate(.9) contrast(1.025) drop-shadow(0 16px 18px rgba(44,56,52,.16));
   transform-origin:50% 72%;
+  transform:translate3d(var(--tt-ronghua-enter),18px,0) rotate(var(--tt-ronghua-rotate)) scale(.92);
+  transition:opacity 1.4s ease .12s,transform 1.8s cubic-bezier(.2,.72,.2,1) .12s;
 }
-.tt-ronghua-scatter--blue{
-  top:8%;
-  left:max(-56px,-3.2vw);
+.tt-chapter.is-visible>.tt-ronghua-scatter{
+  opacity:var(--tt-ronghua-opacity);
+  transform:translate3d(0,0,0) rotate(var(--tt-ronghua-rotate)) scale(1);
+}
+.tt-ronghua-scatter--ch00{
+  --tt-ronghua-opacity:.28;
+  --tt-ronghua-rotate:-9deg;
+  --tt-ronghua-enter:-36px;
+  top:2%;
+  left:max(-82px,-4.8vw);
   background-image:url("./art/tian-tian-ronghua-blue-branch-20260817.svg");
-  transform:rotate(-11deg);
 }
-.tt-ronghua-scatter--lotus{
-  top:11%;
-  right:max(-48px,-2.8vw);
+.tt-ronghua-scatter--ch01{
+  --tt-ronghua-opacity:.27;
+  --tt-ronghua-rotate:6deg;
+  right:max(-86px,-5vw);
+  bottom:1%;
+  background-image:url("./art/tian-tian-ronghua-magnolia-snow-20260818.svg");
+}
+.tt-ronghua-scatter--ch02{
+  --tt-ronghua-opacity:.25;
+  --tt-ronghua-rotate:-3deg;
+  --tt-ronghua-enter:-34px;
+  top:3%;
+  left:max(-70px,-4vw);
+  background-image:url("./art/tian-tian-ronghua-camellia-knots-20260818.svg");
+}
+.tt-ronghua-scatter--ch03{
+  --tt-ronghua-opacity:.24;
+  --tt-ronghua-rotate:3deg;
+  right:max(-76px,-4.4vw);
+  bottom:0;
+  background-image:url("./art/tian-tian-ronghua-chrysanthemum-frost-20260818.svg");
+}
+.tt-ronghua-scatter--ch04{
+  --tt-ronghua-opacity:.27;
+  --tt-ronghua-rotate:-7deg;
+  --tt-ronghua-enter:-36px;
+  top:6%;
+  left:max(-88px,-5.2vw);
   background-image:url("./art/tian-tian-ronghua-lotus-20260817.svg");
-  opacity:.20;
-  transform:rotate(8deg);
 }
-.tt-ronghua-scatter--phoenix{
-  bottom:4%;
-  left:max(-68px,-3.8vw);
-  width:clamp(300px,31vw,500px);
+.tt-ronghua-scatter--ch05{
+  --tt-ronghua-opacity:.28;
+  --tt-ronghua-rotate:5deg;
+  right:max(-68px,-4vw);
+  bottom:1%;
+  background-image:url("./art/tian-tian-ronghua-osmanthus-moon-20260818.svg");
+}
+.tt-ronghua-scatter--ch06{
+  --tt-ronghua-opacity:.23;
+  --tt-ronghua-rotate:-2deg;
+  --tt-ronghua-enter:-34px;
+  top:4%;
+  left:max(-72px,-4.2vw);
+  background-image:url("./art/tian-tian-ronghua-four-evidence-20260818.svg");
+}
+.tt-ronghua-scatter--ch07{
+  --tt-ronghua-opacity:.22;
+  --tt-ronghua-rotate:4deg;
+  right:max(-104px,-6vw);
+  bottom:1%;
+  width:clamp(440px,48vw,760px);
   background-image:url("./art/tian-tian-ronghua-phoenix-20260817.svg");
-  opacity:.18;
-  transform:rotate(-5deg);
 }
-.tt-ronghua-scatter--peony{
-  right:max(-58px,-3.2vw);
-  bottom:6%;
+.tt-ronghua-scatter--ch08{
+  --tt-ronghua-opacity:.27;
+  --tt-ronghua-rotate:-5deg;
+  --tt-ronghua-enter:-34px;
+  top:4%;
+  left:max(-78px,-4.6vw);
   background-image:url("./art/tian-tian-ronghua-peony-butterfly-20260817.svg");
-  opacity:.21;
-  transform:rotate(7deg);
 }
 
 /* The theatre remains above the memorial image until the curtain has closed,
@@ -3464,11 +3514,11 @@ html.tt-pose-ready .tt-ending-theatre-puppet{opacity:1}
 }
 
 @media(max-width:900px){
-  .tt-ronghua-scatter{width:clamp(200px,40vw,320px);opacity:.18}
-  .tt-ronghua-scatter--blue{left:-52px}
-  .tt-ronghua-scatter--lotus{right:-48px;opacity:.17}
-  .tt-ronghua-scatter--phoenix{left:-62px;width:clamp(235px,46vw,370px);opacity:.15}
-  .tt-ronghua-scatter--peony{right:-52px;opacity:.17}
+  .tt-ronghua-scatter{--tt-ronghua-opacity:.20;width:clamp(330px,72vw,520px)}
+  .tt-ronghua-scatter--ch00,.tt-ronghua-scatter--ch02,.tt-ronghua-scatter--ch04,.tt-ronghua-scatter--ch06,.tt-ronghua-scatter--ch08{left:-16vw}
+  .tt-ronghua-scatter--ch01,.tt-ronghua-scatter--ch03,.tt-ronghua-scatter--ch05,.tt-ronghua-scatter--ch07{right:-16vw}
+  .tt-ronghua-scatter--ch06{--tt-ronghua-opacity:.18}
+  .tt-ronghua-scatter--ch07{--tt-ronghua-opacity:.18;width:clamp(360px,78vw,560px)}
   .tt-ending-panorama{
     right:0;
     bottom:auto;
@@ -3480,15 +3530,20 @@ html.tt-pose-ready .tt-ending-theatre-puppet{opacity:1}
 }
 
 @media(max-width:480px){
-  .tt-ronghua-scatter{width:56vw;opacity:.17}
-  .tt-ronghua-scatter--blue{left:-16vw}
-  .tt-ronghua-scatter--lotus{right:-15vw;opacity:.16}
-  .tt-ronghua-scatter--phoenix{left:-18vw;width:64vw;opacity:.14}
-  .tt-ronghua-scatter--peony{right:-16vw;opacity:.16}
+  .tt-ronghua-scatter{--tt-ronghua-opacity:.19;width:clamp(320px,92vw,430px)}
+  .tt-ronghua-scatter--ch00,.tt-ronghua-scatter--ch02,.tt-ronghua-scatter--ch04,.tt-ronghua-scatter--ch06,.tt-ronghua-scatter--ch08{left:-24vw}
+  .tt-ronghua-scatter--ch01,.tt-ronghua-scatter--ch03,.tt-ronghua-scatter--ch05,.tt-ronghua-scatter--ch07{right:-24vw}
+  .tt-ronghua-scatter--ch06,.tt-ronghua-scatter--ch07{--tt-ronghua-opacity:.17}
+  .tt-ronghua-scatter--ch07{width:clamp(350px,98vw,460px)}
   .tt-ending-theatre-skip{top:10px;right:10px;padding:8px 12px;font-size:11px;letter-spacing:.03em}
 }
 
 @media(prefers-reduced-motion:reduce){
+  .tt-ronghua-scatter{
+    opacity:var(--tt-ronghua-opacity)!important;
+    transform:rotate(var(--tt-ronghua-rotate)) scale(1)!important;
+    transition:none!important;
+  }
   .tt-ending.is-visible .tt-ending-theatre{animation:none!important}
   .tt-ending-theatre-skip,
   .tt-ending.is-visible .tt-ending-theatre-skip{

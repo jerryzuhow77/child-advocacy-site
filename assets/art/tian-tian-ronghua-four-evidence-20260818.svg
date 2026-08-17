@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Four-evidence Ronghua cluster</title>
+  <desc id="desc">An original four-part velvet flower ornament in stone blue, ochre gold, cinnabar rouge and celadon green, held within a clear golden lattice.</desc>
+  <defs>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9e4de"/><stop offset=".45" stop-color="#6f94a1"/><stop offset="1" stop-color="#315e6b"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3d783"/><stop offset=".48" stop-color="#d0a24d"/><stop offset="1" stop-color="#9b6630"/></linearGradient>
+    <linearGradient id="rouge" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#efc3bd"/><stop offset=".48" stop-color="#b96769"/><stop offset="1" stop-color="#8e3d31"/></linearGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d8dfcf"/><stop offset=".48" stop-color="#7c9185"/><stop offset="1" stop-color="#3e665a"/></linearGradient>
+    <radialGradient id="pearl" cx="31%" cy="26%" r="72%"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#f6efdf"/><stop offset="1" stop-color="#77766f"/></radialGradient>
+    <filter id="velvet" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".034 .61" numOctaves="2" seed="95" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="B"/>
+    </filter>
+    <path id="petal" d="M0 6C-40-25-46-94 0-138C46-94 40-25 0 6Z"/>
+    <g id="flowerBlue" filter="url(#velvet)"><g fill="url(#blue)" stroke="#e9f0e8" stroke-width="3"><use href="#petal"/><use href="#petal" transform="rotate(60)"/><use href="#petal" transform="rotate(120)"/><use href="#petal" transform="rotate(180)"/><use href="#petal" transform="rotate(240)"/><use href="#petal" transform="rotate(300)"/></g><circle r="24" fill="url(#pearl)" stroke="#d0a24d" stroke-width="4"/></g>
+    <g id="flowerGold" filter="url(#velvet)"><g fill="url(#gold)" stroke="#fae4a8" stroke-width="3"><use href="#petal"/><use href="#petal" transform="rotate(45)"/><use href="#petal" transform="rotate(90)"/><use href="#petal" transform="rotate(135)"/><use href="#petal" transform="rotate(180)"/><use href="#petal" transform="rotate(225)"/><use href="#petal" transform="rotate(270)"/><use href="#petal" transform="rotate(315)"/></g><circle r="24" fill="url(#pearl)" stroke="#a16f47" stroke-width="4"/></g>
+    <g id="flowerRouge" filter="url(#velvet)"><g fill="url(#rouge)" stroke="#f3c6bd" stroke-width="3"><use href="#petal"/><use href="#petal" transform="rotate(60)"/><use href="#petal" transform="rotate(120)"/><use href="#petal" transform="rotate(180)"/><use href="#petal" transform="rotate(240)"/><use href="#petal" transform="rotate(300)"/></g><circle r="24" fill="url(#pearl)" stroke="#8e3d31" stroke-width="4"/></g>
+    <g id="flowerGreen" filter="url(#velvet)"><g fill="url(#green)" stroke="#e4eadc" stroke-width="3"><use href="#petal"/><use href="#petal" transform="rotate(45)"/><use href="#petal" transform="rotate(90)"/><use href="#petal" transform="rotate(135)"/><use href="#petal" transform="rotate(180)"/><use href="#petal" transform="rotate(225)"/><use href="#petal" transform="rotate(270)"/><use href="#petal" transform="rotate(315)"/></g><circle r="24" fill="url(#pearl)" stroke="#6e8779" stroke-width="4"/></g>
+  </defs>
+
+  <rect x="110" y="82" width="980" height="596" rx="54" fill="none" stroke="url(#gold)" stroke-width="13" opacity=".72"/>
+  <path d="M600 96V664M124 380H1076" stroke="url(#gold)" stroke-width="8" opacity=".58"/>
+  <path d="M148 122L1052 638M1052 122L148 638" stroke="#d0a24d" stroke-width="3" opacity=".28"/>
+
+  <g transform="translate(360 266) scale(1.12)"><use href="#flowerBlue"/></g>
+  <g transform="translate(840 266) scale(1.08)"><use href="#flowerGold"/></g>
+  <g transform="translate(360 504) scale(1.06)"><use href="#flowerRouge"/></g>
+  <g transform="translate(840 504) scale(1.1)"><use href="#flowerGreen"/></g>
+  <g transform="translate(600 380) scale(.8)"><use href="#flowerGold"/></g>
+
+  <g fill="url(#pearl)" stroke="#d0a24d" stroke-width="3">
+    <circle cx="110" cy="82" r="18"/><circle cx="1090" cy="82" r="18"/><circle cx="110" cy="678" r="18"/><circle cx="1090" cy="678" r="18"/>
+  </g>
+  <g fill="none" stroke="#d0a24d" stroke-width="7" stroke-linecap="round">
+    <path d="M190 678C178 712 183 735 206 752M1010 678C1022 712 1017 735 994 752"/>
+  </g>
+  <g fill="url(#rouge)" stroke="#f1c3ba" stroke-width="3" filter="url(#velvet)">
+    <path d="M188 716C159 737 164 760 201 768C227 748 220 726 198 716Z"/>
+    <path d="M1012 716C1041 737 1036 760 999 768C973 748 980 726 1002 716Z"/>
+  </g>
+</svg>
