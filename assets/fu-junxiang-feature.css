@@ -1233,7 +1233,7 @@ html[lang="ja"] .case-fu__modern-line p { line-height: 1.68; }
 .case-fu__audio-state { margin: 0; color: rgba(255, 255, 255, 0.66); font-size: 0.7rem; line-height: 1.35; }
 .case-fu__audio-top audio { display: none; }
 
-/* Original cultural-pattern easter eggs: decorative composites, not official emblems. */
+/* Supplied cultural stamp sheet: decorative inner-page motifs, not official emblems. */
 .case-fu__heritage-eggs {
   position: absolute;
   z-index: 3;
@@ -1246,16 +1246,22 @@ html[lang="ja"] .case-fu__modern-line p { line-height: 1.68; }
 .case-fu__heritage-eggs--right { right: 14px; }
 .case-fu__heritage-badge {
   position: relative;
-  width: 34px;
-  height: 34px;
+  width: 38px;
+  height: 38px;
   display: block;
-  border: 1px solid rgba(41, 63, 67, 0.36);
-  box-shadow: inset 0 0 0 3px rgba(239, 240, 233, 0.48);
+  overflow: visible;
+  border: 1px solid rgba(41, 63, 67, 0.48);
+  border-radius: 50%;
+  background-color: #11100e;
+  background-image: url("art/fu-xiaodi-taiwan-cultural-stamps-20260817.png");
+  background-repeat: no-repeat;
+  background-size: 384% 256%;
+  box-shadow: 0 4px 11px rgba(24, 30, 28, 0.26), inset 0 0 0 1px rgba(239, 240, 233, 0.5);
   transition: opacity 160ms ease, transform 160ms ease;
 }
 .case-fu__section--indigo .case-fu__heritage-badge,
 .case-fu__opening .case-fu__heritage-badge,
-.case-fu__finale .case-fu__heritage-badge { border-color: rgba(239, 240, 233, 0.42); box-shadow: inset 0 0 0 3px rgba(32, 54, 59, 0.38); }
+.case-fu__finale .case-fu__heritage-badge { border-color: rgba(239, 240, 233, 0.5); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.34), inset 0 0 0 1px rgba(239, 240, 233, 0.34); }
 .case-fu__heritage-badge:hover,
 .case-fu__heritage-badge:focus-visible { z-index: 5; opacity: 1; transform: translateY(-2px) scale(1.08); }
 .case-fu__heritage-badge::after {
@@ -1285,31 +1291,97 @@ html[lang="ja"] .case-fu__modern-line p { line-height: 1.68; }
 .case-fu__heritage-eggs--right .case-fu__heritage-badge::after { right: 0; left: auto; transform: translate(0, -4px); }
 .case-fu__heritage-eggs--right .case-fu__heritage-badge:hover::after,
 .case-fu__heritage-eggs--right .case-fu__heritage-badge:focus-visible::after { transform: translate(0, 0); }
-.case-fu__heritage-badge--minnan {
-  border-radius: 5px 5px 12px 12px;
+.case-fu__heritage-badge--minnan-01,
+.case-fu__heritage-gallery-stamp--minnan-01 { background-position: 5% 5%; }
+.case-fu__heritage-badge--minnan-02,
+.case-fu__heritage-gallery-stamp--minnan-02 { background-position: 50% 5%; }
+.case-fu__heritage-badge--hakka-01,
+.case-fu__heritage-gallery-stamp--hakka-01 { background-position: 95% 5%; }
+.case-fu__heritage-badge--hakka-02,
+.case-fu__heritage-gallery-stamp--hakka-02 { background-position: 5% 81%; }
+.case-fu__heritage-badge--waisheng-01,
+.case-fu__heritage-gallery-stamp--waisheng-01 { background-position: 50% 81%; }
+.case-fu__heritage-badge--waisheng-02,
+.case-fu__heritage-gallery-stamp--waisheng-02 { background-position: 95% 81%; }
+
+.case-fu__heritage-gallery {
+  position: relative;
+  margin: 30px 0 28px;
+  padding: clamp(22px, 4vw, 34px);
+  overflow: hidden;
+  border: 1px solid rgba(128, 99, 69, 0.32);
+  border-radius: 10px;
+  color: #2f3f3f;
   background:
-    linear-gradient(153deg, transparent 0 39%, #9b4f46 40% 47%, transparent 48%) left top / 50% 55% no-repeat,
-    linear-gradient(207deg, transparent 0 39%, #9b4f46 40% 47%, transparent 48%) right top / 50% 55% no-repeat,
-    repeating-linear-gradient(45deg, #9b4f46 0 3px, #d1a06f 3px 5px);
+    linear-gradient(135deg, rgba(248, 240, 222, 0.96), rgba(231, 220, 195, 0.92)),
+    repeating-linear-gradient(0deg, transparent 0 8px, rgba(112, 87, 61, 0.035) 8px 9px);
+  box-shadow: 0 16px 40px rgba(45, 51, 48, 0.08);
 }
-.case-fu__heritage-badge--hakka {
+.case-fu__heritage-gallery::before,
+.case-fu__heritage-gallery::after {
+  content: "";
+  position: absolute;
+  width: 86px;
+  height: 86px;
+  border: 1px solid rgba(151, 73, 60, 0.2);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+.case-fu__heritage-gallery::before { top: -54px; left: -42px; }
+.case-fu__heritage-gallery::after { right: -42px; bottom: -54px; }
+.case-fu__heritage-gallery-eyebrow {
+  margin: 0 0 7px;
+  color: #875149;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+}
+.case-fu__heritage-gallery-title {
+  margin: 0;
+  color: #263d3f;
+  font: 800 clamp(1.25rem, 2.5vw, 1.7rem)/1.3 "Noto Serif TC", Georgia, serif;
+}
+.case-fu__heritage-gallery-note {
+  max-width: 72ch;
+  margin: 10px 0 22px;
+  color: #5c625c;
+  font-size: 0.84rem;
+  line-height: 1.8;
+}
+.case-fu__heritage-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(10px, 2vw, 18px);
+}
+.case-fu__heritage-gallery-item {
+  min-width: 0;
+  margin: 0;
+  text-align: center;
+}
+.case-fu__heritage-gallery-stamp {
+  width: min(100%, 118px);
+  aspect-ratio: 1;
+  display: block;
+  margin: 0 auto;
+  border: 1px solid rgba(63, 67, 60, 0.3);
   border-radius: 50%;
-  background:
-    radial-gradient(circle at 50% 20%, #eee4d7 0 12%, transparent 13%),
-    radial-gradient(circle at 78% 43%, #eee4d7 0 12%, transparent 13%),
-    radial-gradient(circle at 67% 75%, #eee4d7 0 12%, transparent 13%),
-    radial-gradient(circle at 33% 75%, #eee4d7 0 12%, transparent 13%),
-    radial-gradient(circle at 22% 43%, #eee4d7 0 12%, transparent 13%),
-    radial-gradient(circle, #c9a45f 0 9%, #36545a 10% 100%);
+  background-color: #11100e;
+  background-image: url("art/fu-xiaodi-taiwan-cultural-stamps-20260817.png");
+  background-repeat: no-repeat;
+  background-size: 384% 256%;
+  box-shadow: 0 7px 18px rgba(45, 40, 32, 0.18), inset 0 0 0 2px rgba(246, 236, 214, 0.38);
+  transition: transform 180ms ease, box-shadow 180ms ease;
 }
-.case-fu__heritage-badge--mainlander {
-  border-radius: 6px;
-  background:
-    radial-gradient(circle at 50% 50%, #d9c38d 0 9%, transparent 10%),
-    repeating-linear-gradient(45deg, transparent 0 6px, rgba(223, 233, 230, 0.72) 6px 7px),
-    repeating-linear-gradient(-45deg, transparent 0 6px, rgba(223, 233, 230, 0.58) 6px 7px),
-    #708b7e;
+.case-fu__heritage-gallery-item:hover .case-fu__heritage-gallery-stamp { transform: translateY(-3px) rotate(-1deg); box-shadow: 0 10px 24px rgba(45, 40, 32, 0.23), inset 0 0 0 2px rgba(246, 236, 214, 0.46); }
+.case-fu__heritage-gallery-item:nth-child(even):hover .case-fu__heritage-gallery-stamp { transform: translateY(-3px) rotate(1deg); }
+.case-fu__heritage-gallery-item figcaption {
+  margin-top: 9px;
+  color: #4f5c59;
+  font-size: 0.68rem;
+  line-height: 1.5;
 }
+html[lang="en"] .case-fu__heritage-gallery-item figcaption,
+html[lang="ja"] .case-fu__heritage-gallery-item figcaption { font-size: 0.64rem; }
 
 .case-fu__finale { padding: clamp(78px, 12vw, 160px) 0; color: #f7f1e6; background: linear-gradient(145deg, #20363b, #293f43 58%, #4b3e44); }
 .case-fu__finale .case-fu__heading { max-width: 22ch; }
@@ -1412,6 +1484,8 @@ html[lang="ja"] .case-fu__modern-line p { line-height: 1.68; }
   .case-fu__heritage-eggs--left { left: 7px; }
   .case-fu__heritage-eggs--right { right: 7px; }
   .case-fu__heritage-badge { width: 27px; height: 27px; }
+  .case-fu__heritage-gallery-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 20px; }
+  .case-fu__heritage-gallery-stamp { width: min(100%, 112px); }
 }
 
 @media (max-width: 430px) {
@@ -1424,6 +1498,10 @@ html[lang="ja"] .case-fu__modern-line p { line-height: 1.68; }
   .case-fu__court { grid-template-columns: 36px minmax(0, 1fr); gap: 10px; padding: 16px; }
   .case-fu__help-card { min-height: 180px; }
   .case-fu__help-number { font-size: 3rem; }
+  .case-fu__heritage-gallery { margin-inline: -4px; padding: 20px 16px; }
+  .case-fu__heritage-gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; }
+  .case-fu__heritage-gallery-stamp { width: min(100%, 126px); }
+  .case-fu__heritage-gallery-item figcaption { font-size: 0.67rem; }
 }
 
 @media (prefers-reduced-motion: reduce), (max-height: 419px) and (orientation: landscape) {
@@ -1450,6 +1528,7 @@ html[lang="ja"] .case-fu__modern-line p { line-height: 1.68; }
   .case-fu__opening,
   .case-fu__scene,
   .case-fu__audio-dock,
+  .case-fu__heritage-eggs,
   .case-fu__actions { display: none !important; }
   body.case-fu { color: #000; background: #fff; font-size: 11pt; line-height: 1.55; }
   .case-fu__section,

@@ -65,20 +65,47 @@
 
   const heritageCopy = {
     zh: [
-      ['minnan', '閩南｜燕尾脊與紅磚花紋'],
-      ['hakka', '客家｜桐花與靛藍圓紋'],
-      ['mainlander', '外省族群｜眷村窗花與行李記憶']
+      ['minnan-01', '閩南｜燕尾厝、紅磚與海浪'],
+      ['minnan-02', '閩南｜戲曲與傳統花紋'],
+      ['hakka-01', '客家｜藍衫與桐花'],
+      ['hakka-02', '客家｜茶山與擂茶'],
+      ['waisheng-01', '外省族群｜眷村、竹籬與行李記憶'],
+      ['waisheng-02', '外省族群｜窗花、紅磚與麵食記憶']
     ],
     en: [
-      ['minnan', 'Minnan · swallowtail roof and red-brick lattice'],
-      ['hakka', 'Hakka · tung blossom and indigo roundel'],
-      ['mainlander', 'Post-war mainlander communities · village lattice and luggage memory']
+      ['minnan-01', 'Minnan · swallowtail roof, red brick, and sea'],
+      ['minnan-02', 'Minnan · traditional theatre and floral pattern'],
+      ['hakka-01', 'Hakka · indigo tunic and tung blossoms'],
+      ['hakka-02', 'Hakka · tea hills and lei cha'],
+      ['waisheng-01', 'Post-war mainlander communities · military dependents’ village, bamboo fence, and luggage'],
+      ['waisheng-02', 'Post-war mainlander communities · lattice window, red brick, and noodle traditions']
     ],
     ja: [
-      ['minnan', '閩南｜燕尾屋根と赤煉瓦の文様'],
-      ['hakka', '客家｜桐の花と藍色の円文'],
-      ['mainlander', '戦後外省系コミュニティ｜眷村の窓格子と旅の記憶']
+      ['minnan-01', '閩南｜燕尾屋根・赤煉瓦・海'],
+      ['minnan-02', '閩南｜伝統演劇と花文様'],
+      ['hakka-01', '客家｜藍衫と桐の花'],
+      ['hakka-02', '客家｜茶畑と擂茶'],
+      ['waisheng-01', '戦後外省系コミュニティ｜眷村・竹垣・旅鞄の記憶'],
+      ['waisheng-02', '戦後外省系コミュニティ｜窓格子・赤煉瓦・麺食の記憶']
     ]
+  }[sceneLanguage];
+
+  const heritageGalleryCopy = {
+    zh: {
+      eyebrow: 'TAIWAN CULTURAL STAMPS · INNER-PAGE EASTER EGGS',
+      title: '臺灣生活文化圖章',
+      note: '六枚原創圖章取材自閩南、客家與戰後外省族群的生活意象，作為內頁彩蛋與導讀標記；它們不是官方族群徽章，也不替任何族群作單一定義。'
+    },
+    en: {
+      eyebrow: 'TAIWAN CULTURAL STAMPS · INNER-PAGE EASTER EGGS',
+      title: 'Stamps of Taiwan’s lived cultures',
+      note: 'These six original stamps draw on everyday imagery associated with Minnan, Hakka, and post-war mainlander communities. They serve as page easter eggs and reading markers; they are not official emblems and do not define any community.'
+    },
+    ja: {
+      eyebrow: 'TAIWAN CULTURAL STAMPS · INNER-PAGE EASTER EGGS',
+      title: '台湾の暮らしを映す文化図章',
+      note: '閩南・客家・戦後外省系コミュニティの暮らしの意匠をもとにした六つのオリジナル図章です。内ページの小さな彩りと読書案内であり、公式の民族徽章でも、いずれかの共同体を一つの像で定義するものでもありません。'
+    }
   }[sceneLanguage];
 
   const romanceLines = {
@@ -527,6 +554,55 @@
 
   addTheatreLayers();
 
+  function createHeritageStamp(key, label, className) {
+    const stamp = document.createElement('span');
+    stamp.className = `${className} ${className}--${key}`;
+    stamp.setAttribute('role', 'img');
+    stamp.setAttribute('aria-label', label);
+    return stamp;
+  }
+
+  function addHeritageGallery() {
+    const host = document.querySelector('#reading-guide .case-fu__copy');
+    if (!host || host.querySelector('.case-fu__heritage-gallery')) return;
+
+    const gallery = document.createElement('aside');
+    gallery.className = 'case-fu__heritage-gallery';
+    gallery.setAttribute('aria-labelledby', 'case-fu-heritage-title');
+
+    const eyebrow = document.createElement('p');
+    eyebrow.className = 'case-fu__heritage-gallery-eyebrow';
+    eyebrow.textContent = heritageGalleryCopy.eyebrow;
+
+    const title = document.createElement('h3');
+    title.className = 'case-fu__heritage-gallery-title';
+    title.id = 'case-fu-heritage-title';
+    title.textContent = heritageGalleryCopy.title;
+
+    const note = document.createElement('p');
+    note.className = 'case-fu__heritage-gallery-note';
+    note.textContent = heritageGalleryCopy.note;
+
+    const grid = document.createElement('div');
+    grid.className = 'case-fu__heritage-gallery-grid';
+    heritageCopy.forEach(([key, label]) => {
+      const item = document.createElement('figure');
+      item.className = 'case-fu__heritage-gallery-item';
+      const stamp = createHeritageStamp(key, label, 'case-fu__heritage-gallery-stamp');
+      const caption = document.createElement('figcaption');
+      caption.textContent = label;
+      item.append(stamp, caption);
+      grid.appendChild(item);
+    });
+
+    gallery.append(eyebrow, title, note, grid);
+    const notice = host.querySelector('.case-fu__notice');
+    if (notice) notice.insertAdjacentElement('afterend', gallery);
+    else host.appendChild(gallery);
+  }
+
+  addHeritageGallery();
+
   function addHeritageEasterEggs() {
     const targets = [
       '.case-fu__opening', '.case-fu__hero', '#reading-guide', '#case-summary', '#chapter-00', '#chapter-02', '#chapter-03',
@@ -538,13 +614,10 @@
       const rail = document.createElement('div');
       rail.className = `case-fu__heritage-eggs case-fu__heritage-eggs--${index % 2 ? 'right' : 'left'}`;
       rail.setAttribute('aria-label', sceneLanguage === 'en' ? 'Taiwan community-pattern easter eggs' : sceneLanguage === 'ja' ? '台湾のコミュニティ文様の小さな意匠' : '台灣族群文化紋樣彩蛋');
-      const ordered = heritageCopy.map((item, itemIndex) => heritageCopy[(itemIndex + index) % heritageCopy.length]);
+      const ordered = [0, 2, 4].map((offset) => heritageCopy[(index + offset) % heritageCopy.length]);
       ordered.forEach(([key, label]) => {
-        const badge = document.createElement('span');
-        badge.className = `case-fu__heritage-badge case-fu__heritage-badge--${key}`;
+        const badge = createHeritageStamp(key, label, 'case-fu__heritage-badge');
         badge.tabIndex = 0;
-        badge.setAttribute('role', 'img');
-        badge.setAttribute('aria-label', label);
         badge.dataset.label = label;
         rail.appendChild(badge);
       });
