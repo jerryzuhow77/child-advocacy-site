@@ -86,20 +86,20 @@ a{color:inherit}
 .sh-cultural-principle{display:grid;grid-template-columns:70px minmax(0,1fr) 70px;align-items:center;gap:22px;margin-top:34px;padding:23px;border:1px solid rgba(237,211,158,.34);background:rgba(255,255,255,.065);font-family:"Noto Serif TC","Noto Serif JP",serif;font-size:1.2rem;line-height:1.8}
 .sh-principle-weave,.sh-support-weave{display:block;width:58px;height:58px;background:conic-gradient(from 45deg,#ba6c55 0 12.5%,#e6c98d 0 25%,#78998a 0 37.5%,#6e8ca0 0 50%,#ba6c55 0 62.5%,#e6c98d 0 75%,#78998a 0 87.5%,#6e8ca0 0);clip-path:polygon(50% 0,63% 29%,100% 50%,63% 71%,50% 100%,37% 71%,0 50%,37% 29%)}
 .sh-principle-flower,.sh-support-flower{display:block;width:58px;height:58px;border-radius:50%;background:radial-gradient(circle,#e5ca90 0 11%,transparent 12%),repeating-conic-gradient(#b86c55 0 20deg,transparent 20deg 45deg);border:2px solid rgba(229,202,144,.7)}
+.sh-stamp-disclaimer{position:relative;z-index:2;margin:22px 0 0;padding:13px 16px;border-left:4px solid rgba(237,211,158,.62);background:rgba(255,255,255,.055);color:#cfd9d5;font-size:.82rem;line-height:1.75}
 
-.sh-cultural-seals{position:relative;overflow:hidden;padding:6.5rem 24px;background:linear-gradient(135deg,#e8e0d0 0 47%,#f6f1e6 47% 100%);border-top:1px solid rgba(35,58,74,.24);border-bottom:1px solid rgba(35,58,74,.24)}
-.sh-cultural-seals:before,.sh-cultural-seals:after{content:"";position:absolute;width:320px;aspect-ratio:1;border:1px solid rgba(155,79,67,.15);border-radius:50%;box-shadow:0 0 0 28px rgba(122,154,141,.07),0 0 0 56px rgba(179,145,80,.06);pointer-events:none}
-.sh-cultural-seals:before{left:-190px;top:-145px}
-.sh-cultural-seals:after{right:-185px;bottom:-170px}
-.sh-seal-layout{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(300px,.92fr);align-items:center;gap:clamp(36px,6vw,78px);max-width:1120px;margin:auto}
-.sh-seal-art{position:relative;margin:0;padding:14px;background:var(--ink);border:1px solid rgba(179,145,80,.72);box-shadow:15px 17px 0 rgba(35,58,74,.12)}
-.sh-seal-art:before{content:"";position:absolute;inset:-13px 22px 22px -13px;z-index:-1;border:1px solid rgba(155,79,67,.28)}
-.sh-seal-art img{display:block;width:100%;height:auto;aspect-ratio:1463/1536;object-fit:cover;background:#000;transform-origin:center;animation:sealDrift 11s ease-in-out 1s infinite}
-.sh-seal-art figcaption{padding:12px 8px 3px;color:#d9d6ce;font-size:.76rem;line-height:1.65;letter-spacing:.04em;text-align:center}
-.sh-seal-copy .sh-index{color:#986633}
-.sh-seal-copy h2{margin:.25em 0 .75em;color:var(--ink);font-family:"Noto Serif TC","Noto Serif JP",serif;font-size:clamp(2rem,4vw,3.45rem);line-height:1.28;text-wrap:balance}
-.sh-seal-copy p{color:#445254}
-.sh-seal-note{position:relative;margin-top:28px;padding:20px 22px 20px 25px;border-left:6px solid var(--terracotta);background:rgba(255,255,255,.68);color:var(--indigo);font-family:"Noto Serif TC","Noto Serif JP",serif;font-size:1.08rem;font-weight:800;box-shadow:6px 7px 0 rgba(156,122,76,.1)}
+/* Nine cultural seals are cropped from one lightweight sprite and dispersed through the story. */
+.sh-hero-copy:after,.sh-context-bridge .sh-layout:after,#intro .sh-quote:before,#see .sh-note:after,#hear .sh-quote:before,#respond .sh-quote:before,#record .sh-privacy-note:after,#act .sh-note:after,.sh-ending-call:after{content:"";position:absolute;display:block;width:96px;aspect-ratio:1463/1536;background-image:url("art/cultural-protection-seals.jpg");background-repeat:no-repeat;background-size:300% 300%;clip-path:circle(43% at 50% 42%);pointer-events:none;filter:saturate(.82) contrast(.96) drop-shadow(0 7px 8px rgba(17,42,55,.18));animation:stampPulse 8s ease-in-out infinite}
+.sh-hero-copy:after{right:1%;top:11%;z-index:-1;width:clamp(150px,18vw,255px);opacity:.16;background-position:0 0;rotate:-7deg;animation-delay:-1s}
+.sh-context-bridge .sh-layout:after{right:-46px;bottom:-64px;z-index:0;width:250px;opacity:.16;background-position:50% 0;rotate:8deg;filter:saturate(.75) brightness(1.16) drop-shadow(0 8px 12px rgba(0,0,0,.18));animation-delay:-2s}
+#intro .sh-quote:before{right:18px;top:50%;width:94px;opacity:.26;background-position:100% 0;translate:0 -50%;rotate:5deg;animation-delay:-3s}
+#see .sh-note:after{right:15px;top:50%;width:92px;opacity:.28;background-position:0 50%;translate:0 -50%;rotate:-6deg;filter:saturate(.72) brightness(1.36) drop-shadow(0 7px 8px rgba(0,0,0,.2));animation-delay:-4s}
+#hear .sh-quote:before{right:17px;top:50%;width:92px;opacity:.25;background-position:50% 50%;translate:0 -50%;rotate:6deg;animation-delay:-5s}
+#respond .sh-quote:before{right:17px;top:50%;width:92px;opacity:.25;background-position:100% 50%;translate:0 -50%;rotate:-5deg;animation-delay:-6s}
+#record .sh-privacy-note:after{right:16px;top:50%;width:90px;opacity:.24;background-position:0 100%;translate:0 -50%;rotate:5deg;animation-delay:-7s}
+#act .sh-note:after{right:15px;top:50%;width:92px;opacity:.28;background-position:50% 100%;translate:0 -50%;rotate:-6deg;filter:saturate(.72) brightness(1.36) drop-shadow(0 7px 8px rgba(0,0,0,.2));animation-delay:-8s}
+.sh-ending-call:after{right:-20px;top:50%;width:108px;opacity:.24;background-position:100% 100%;translate:0 -50%;rotate:7deg;animation-delay:-9s}
+#intro .sh-quote,#hear .sh-quote,#respond .sh-quote,#see .sh-note,#act .sh-note,#record .sh-privacy-note,.sh-ending .sh-ending-call{padding-right:132px}
 
 .sh-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 .sh-card{position:relative;overflow:hidden;background:#fff;border:1px solid rgba(35,58,74,.2);border-top:8px solid var(--indigo);padding:28px;box-shadow:8px 8px 0 rgba(156,122,76,.13);transition:transform .25s ease,box-shadow .25s ease}
@@ -109,7 +109,7 @@ a{color:inherit}
 .sh-card:nth-child(3){border-top-color:var(--green)}
 .sh-card:nth-child(4){border-top-color:var(--gold)}
 .sh-card ul{padding-left:1.2em}
-.sh-note{background:var(--ink);color:#fff;padding:24px;margin-top:20px;border-left:7px solid var(--gold)}
+.sh-note{position:relative;overflow:hidden;background:var(--ink);color:#fff;padding:24px;margin-top:20px;border-left:7px solid var(--gold)}
 
 .sh-language-panel{display:grid;grid-template-columns:180px minmax(0,1fr);gap:32px;margin-top:44px;padding:34px;background:linear-gradient(135deg,#e5e0d2,#f7f3e9);border:1px solid rgba(35,58,74,.18);box-shadow:10px 10px 0 rgba(122,154,141,.18)}
 .sh-language-symbol{display:grid;place-content:center;grid-template-columns:repeat(3,54px);gap:0;min-height:190px;background:radial-gradient(circle at center,rgba(255,255,255,.76),rgba(255,255,255,.18) 67%,transparent 68%)}
@@ -125,7 +125,7 @@ a{color:inherit}
 .sh-record-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:18px}
 .sh-record-grid article{padding:28px;background:#fff;border-top:7px solid var(--indigo);box-shadow:7px 7px 0 rgba(136,169,182,.15)}
 .sh-record-grid article+article{border-top-color:var(--terracotta)}
-.sh-privacy-note{margin-top:22px;padding:22px 25px;border:1px solid rgba(155,79,67,.34);border-left:7px solid var(--red);background:#eee2df}
+.sh-privacy-note{position:relative;overflow:hidden;margin-top:22px;padding:22px 25px;border:1px solid rgba(155,79,67,.34);border-left:7px solid var(--red);background:#eee2df}
 .sh-record-template{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;margin-top:22px;padding:1px;background:rgba(35,58,74,.24)}
 .sh-record-template span{min-height:67px;padding:14px;background:#faf7ef;color:#52605e;font-weight:700}
 .sh-record-template span:nth-last-child(1){grid-column:1/-1}
@@ -161,7 +161,7 @@ a{color:inherit}
 .sh-ending>*:not(.sh-ending-pattern){position:relative;z-index:2}
 .sh-ending p{max-width:780px;margin:1rem auto}
 .sh-final{font-family:"Noto Serif TC","Noto Serif JP",serif;font-size:clamp(2rem,5vw,4.5rem);color:var(--ink);line-height:1.25}
-.sh-ending-call{margin:2.5rem auto!important;padding:21px;border-top:1px solid rgba(35,58,74,.34);border-bottom:1px solid rgba(35,58,74,.34);font-family:"Noto Serif TC","Noto Serif JP",serif;font-size:1.35rem;color:var(--red)}
+.sh-ending-call{position:relative;overflow:hidden;margin:2.5rem auto!important;padding:21px;border-top:1px solid rgba(35,58,74,.34);border-bottom:1px solid rgba(35,58,74,.34);font-family:"Noto Serif TC","Noto Serif JP",serif;font-size:1.35rem;color:var(--red)}
 .sh-ending-pattern{position:absolute;left:50%;top:50%;width:min(900px,90vw);aspect-ratio:1;transform:translate(-50%,-50%);opacity:.09;background:repeating-conic-gradient(from 22.5deg,var(--indigo) 0 5deg,transparent 5deg 22.5deg),radial-gradient(circle,transparent 0 24%,var(--terracotta) 25% 26%,transparent 27% 45%,var(--green) 46% 47%,transparent 48%);border-radius:50%;animation:endingTurn 90s linear infinite}
 .sh-footer{background:var(--ink);color:#fff;padding:32px;text-align:center}
 .sh-footer p{max-width:920px;margin:0 auto 12px;color:#ccd3d1;font-size:.86rem}
@@ -173,7 +173,7 @@ a{color:inherit}
 @keyframes frameBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.012)}}
 @keyframes kaikaiFloat{0%,100%{transform:translateX(-50%) translateY(0) rotate(-.35deg)}50%{transform:translateX(-50%) translateY(-9px) rotate(.35deg)}}
 @keyframes kaikaiGlow{0%,100%{opacity:.62;transform:translateX(-50%) scale(.96)}50%{opacity:.88;transform:translateX(-50%) scale(1.04)}}
-@keyframes sealDrift{0%,100%{transform:scale(1)}50%{transform:scale(1.012)}}
+@keyframes stampPulse{0%,100%{scale:1}50%{scale:1.045}}
 @keyframes weaveTurn{to{transform:rotate(360deg)}}
 @keyframes endingTurn{to{transform:translate(-50%,-50%) rotate(360deg)}}
 @keyframes flowerPulse{0%,100%{transform:scale(.96);opacity:.52}50%{transform:scale(1.03);opacity:.77}}
@@ -183,8 +183,6 @@ a{color:inherit}
   .sh-language-panel{grid-template-columns:1fr}
   .sh-language-symbol{min-height:130px}
   .sh-record-grid{grid-template-columns:1fr}
-  .sh-seal-layout{grid-template-columns:1fr;max-width:720px}
-  .sh-seal-copy{padding-top:12px}
 }
 
 @media(max-width:760px){
@@ -219,9 +217,10 @@ a{color:inherit}
   .sh-step{grid-template-columns:52px 1fr;gap:12px;padding:20px 16px}
   .sh-support-grid a{grid-template-columns:60px minmax(0,1fr);padding:20px}
   .sh-support-grid span{width:50px;height:50px}
-  .sh-cultural-seals{padding:4.5rem 20px}
-  .sh-seal-art{padding:9px;box-shadow:8px 10px 0 rgba(35,58,74,.12)}
-  .sh-seal-copy h2{font-size:2.25rem}
+  .sh-hero-copy:after{right:-26px;top:8%;width:140px;opacity:.12}
+  .sh-context-bridge .sh-layout:after{right:-54px;bottom:-30px;width:165px;opacity:.13}
+  #intro .sh-quote:before,#see .sh-note:after,#hear .sh-quote:before,#respond .sh-quote:before,#record .sh-privacy-note:after,#act .sh-note:after,.sh-ending-call:after{right:8px;width:68px;opacity:.22}
+  #intro .sh-quote,#hear .sh-quote,#respond .sh-quote,#see .sh-note,#act .sh-note,#record .sh-privacy-note,.sh-ending .sh-ending-call{padding-right:86px}
 }
 
 @media(prefers-reduced-motion:reduce){
