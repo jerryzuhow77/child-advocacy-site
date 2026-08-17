@@ -2713,3 +2713,158 @@ html[lang="en"] .tt-prose p{line-height:1.76}
   }
   .tt-shadow-prologue-cloud path{stroke-dashoffset:0!important}
 }
+
+/* v11 / 2026-08-17: original Ronghua artwork.
+   The blue-white branch and phoenix ornament are transparent craft layers;
+   they stay behind the narrators and never carry documentary information. */
+.tt-ronghua,
+.tt-transition[data-craft="velvet-flower"] .tt-shadow-stage::after{
+  --tt-ronghua-opacity:.58;
+  --tt-ronghua-start:translate3d(0,18px,0) scale(.72) rotate(-7deg);
+  --tt-ronghua-over:translate3d(0,-2px,0) scale(1.035) rotate(1deg);
+  --tt-ronghua-rest:translate3d(0,0,0) scale(1) rotate(0deg);
+  position:absolute;
+  display:block;
+  aspect-ratio:3/2;
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:contain;
+  opacity:0;
+  pointer-events:none;
+  user-select:none;
+  transform:var(--tt-ronghua-start);
+  transform-origin:50% 76%;
+  image-rendering:auto;
+  will-change:opacity,transform;
+}
+.tt-ronghua--opening,
+.tt-ronghua--hero,
+.tt-ronghua--ending{
+  background-image:url("./art/tian-tian-ronghua-blue-branch-20260817.svg");
+}
+.tt-ronghua--guide{
+  background-image:url("./art/tian-tian-ronghua-phoenix-20260817.svg");
+}
+@keyframes tt-ronghua-reveal{
+  0%{opacity:0;transform:var(--tt-ronghua-start)}
+  72%{opacity:var(--tt-ronghua-opacity);transform:var(--tt-ronghua-over)}
+  100%{opacity:var(--tt-ronghua-opacity);transform:var(--tt-ronghua-rest)}
+}
+
+/* The final opening scene receives a quiet bloom behind the paper narrators. */
+.tt-ronghua--opening{
+  --tt-ronghua-opacity:.5;
+  --tt-ronghua-start:translate3d(-12px,20px,0) scale(.68) rotate(-11deg);
+  --tt-ronghua-over:translate3d(0,-2px,0) scale(1.04) rotate(-4deg);
+  --tt-ronghua-rest:translate3d(0,0,0) scale(1) rotate(-5deg);
+  z-index:1;
+  left:-1%;
+  bottom:1.5%;
+  width:min(390px,31vw);
+  filter:saturate(.86) brightness(.87) drop-shadow(0 13px 11px rgba(8,4,3,.42));
+}
+.tt-opening[data-scene="5"] .tt-ronghua--opening{
+  animation:tt-ronghua-reveal 1.75s cubic-bezier(.18,.78,.2,1) .2s both;
+}
+
+/* The hero branch is a corner frame, kept away from the anonymous child. */
+.tt-ronghua--hero{
+  --tt-ronghua-opacity:.68;
+  --tt-ronghua-start:translate3d(-22px,14px,0) scale(.7) rotate(-15deg);
+  --tt-ronghua-over:translate3d(0,0,0) scale(1.035) rotate(-8deg);
+  --tt-ronghua-rest:translate3d(0,0,0) scale(1) rotate(-9deg);
+  z-index:4;
+  left:-10%;
+  top:-7%;
+  width:44%;
+  filter:saturate(.9) brightness(.95) drop-shadow(0 10px 9px rgba(14,25,26,.38));
+  animation:tt-ronghua-reveal 1.65s cubic-bezier(.18,.8,.18,1) .35s both;
+}
+
+/* A low-opacity phoenix watermark carries the craft language into navigation. */
+.tt-guide-card>.tt-ronghua--guide{
+  --tt-ronghua-opacity:.16;
+  --tt-ronghua-start:translate3d(18px,-8px,0) scale(.74) rotate(9deg);
+  --tt-ronghua-over:translate3d(0,0,0) scale(1.025) rotate(4deg);
+  --tt-ronghua-rest:translate3d(0,0,0) scale(1) rotate(4deg);
+  position:absolute;
+  z-index:0;
+  right:-48px;
+  top:-38px;
+  width:250px;
+  filter:saturate(.72) sepia(.06);
+  animation:tt-ronghua-reveal 1.5s cubic-bezier(.2,.78,.2,1) .5s both;
+}
+
+/* Act VIII blooms inside the theatre, behind its props and paper narrators. */
+.tt-transition[data-craft="velvet-flower"] .tt-shadow-stage::after{
+  --tt-ronghua-opacity:.46;
+  --tt-ronghua-start:translate3d(18px,12px,0) scale(.55) rotate(-12deg);
+  --tt-ronghua-over:translate3d(0,0,0) scale(1.04) rotate(-5deg);
+  --tt-ronghua-rest:translate3d(0,0,0) scale(1) rotate(-6deg);
+  content:"";
+  z-index:2;
+  right:-6%;
+  top:1.5%;
+  width:clamp(240px,29vw,400px);
+  background-image:url("./art/tian-tian-ronghua-phoenix-20260817.svg");
+  filter:saturate(.9) brightness(.94) drop-shadow(0 13px 10px rgba(7,3,2,.48));
+}
+.tt-transition[data-craft="velvet-flower"].is-visible .tt-shadow-stage::after{
+  animation:tt-ronghua-reveal 1.9s cubic-bezier(.16,.82,.18,1) 4.05s both;
+}
+
+/* The closing branch remains in the upper-left safe area; copy stays clear. */
+.tt-ronghua--ending{
+  --tt-ronghua-opacity:.48;
+  --tt-ronghua-start:translate3d(-18px,18px,0) scale(.66) rotate(-13deg);
+  --tt-ronghua-over:translate3d(0,0,0) scale(1.035) rotate(-6deg);
+  --tt-ronghua-rest:translate3d(0,0,0) scale(1) rotate(-7deg);
+  left:-2%;
+  top:1.5%;
+  width:min(470px,29vw);
+  filter:saturate(.82) brightness(.9) drop-shadow(0 14px 12px rgba(5,3,2,.48));
+}
+.tt-ending.is-visible .tt-ronghua--ending{
+  animation:tt-ronghua-reveal 1.9s cubic-bezier(.18,.8,.18,1) 2.7s both;
+}
+
+@media(max-width:900px){
+  .tt-ronghua--opening{left:-4%;bottom:1%;width:min(330px,42vw)}
+  .tt-ronghua--hero{left:-15%;top:-4%;width:54%}
+  .tt-guide-card>.tt-ronghua--guide{right:-66px;top:-24px;width:205px}
+  .tt-transition[data-craft="velvet-flower"] .tt-shadow-stage::after{right:-13%;top:2%;width:48vw}
+  .tt-ronghua--ending{left:-10%;top:5px;width:40vw}
+}
+
+@media(max-width:480px){
+  .tt-ronghua--opening{--tt-ronghua-opacity:.38;left:-8%;width:44vw}
+  .tt-ronghua--hero{--tt-ronghua-opacity:.57;left:-22%;top:-2%;width:62%}
+  .tt-guide-card>.tt-ronghua--guide{--tt-ronghua-opacity:.13;right:-73px;top:-10px;width:168px}
+  .tt-transition[data-craft="velvet-flower"] .tt-shadow-stage::after{--tt-ronghua-opacity:.35;right:-22%;top:3%;width:58vw}
+  .tt-ronghua--ending{--tt-ronghua-opacity:.38;left:-18%;top:8px;width:47vw}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .tt-ronghua{
+    animation:none!important;
+    transition:none!important;
+    opacity:var(--tt-ronghua-opacity)!important;
+    transform:var(--tt-ronghua-rest)!important;
+    will-change:auto;
+  }
+  .tt-transition[data-craft="velvet-flower"] .tt-shadow-stage::after{
+    animation:none!important;
+    transition:none!important;
+    opacity:var(--tt-ronghua-opacity)!important;
+    transform:var(--tt-ronghua-rest)!important;
+    will-change:auto;
+  }
+  .tt-ronghua--opening{opacity:0!important}
+  .tt-opening[data-scene="5"] .tt-ronghua--opening{opacity:var(--tt-ronghua-opacity)!important}
+}
+
+@media print{
+  .tt-ronghua{display:none!important}
+  .tt-transition[data-craft="velvet-flower"] .tt-shadow-stage::after{content:none!important;display:none!important}
+}
