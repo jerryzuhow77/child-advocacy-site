@@ -15,40 +15,70 @@
   const theatreCopy = {
     zh: {
       romanceLabel: '原創浪漫感傷詩句｜向古典悲劇的月光、誓言與獨白語彙致意',
-      modernLabel: '原創年代校園心理懸疑轉場｜男性紀錄研究者與女性兒少檔案員均為虛構象徵人物',
+      modernLabel: '原創年代校園心理懸疑轉場｜男性紀錄研究者與女性兒少保護員均為虛構象徵人物',
       interactionLabel: '現代敘事互動：調閱制度線索',
       interactionNote: '只切換可核對的日期、記錄與保護行動；不模擬傷害，也不改寫案件結果。',
       researcher: '紀錄研究者',
-      archivist: '兒少檔案員',
-      transcriptLabel: '本幕完整逐字稿｜與下方「閱讀本幕完整逐字稿」逐句同步',
+      archivist: '兒少保護員',
+      transcriptLabel: '本幕完整逐字稿｜與下方逐句同步',
+      fullTranscriptSummary: '閱讀本幕完整逐字稿（含動畫及互動全部對話）',
+      shadowTranscriptLabel: '皮影詩劇｜原創挽歌與本幕對話',
+      modernTranscriptLabel: '年代校園心理懸疑｜初始對話與查核註記',
+      interactionTranscriptLabel: '互動線索｜三組切換對話',
       recordNote: '查核註記',
       curtainOpen: '幕開',
       curtainClose: '幕謝'
     },
     en: {
       romanceLabel: 'Original romantic elegy · an homage to the moonlit vows and soliloquies of classical tragedy',
-      modernLabel: 'Original period-campus psychological suspense · the male records researcher and female child-welfare archivist are fictional symbolic figures',
+      modernLabel: 'Original period-campus psychological suspense · the male records researcher and female child protection officer are fictional symbolic figures',
       interactionLabel: 'Modern narrative interaction: inspect a systems clue',
       interactionNote: 'Switch only among verified dates, records, and protective actions. No harm is simulated and no outcome is rewritten.',
       researcher: 'Records researcher',
-      archivist: 'Child-welfare archivist',
-      transcriptLabel: 'Full scene transcript · every line is synchronized with the transcript below',
+      archivist: 'Child protection officer',
+      transcriptLabel: 'Full scene transcript · every line is synchronized below',
+      fullTranscriptSummary: 'Read the complete transcript (all animated and interactive dialogue)',
+      shadowTranscriptLabel: 'Shadow theatre · original elegy and scene dialogue',
+      modernTranscriptLabel: 'Period-campus suspense · opening exchange and record note',
+      interactionTranscriptLabel: 'Interactive clues · all three switchable exchanges',
       recordNote: 'Verified record note',
       curtainOpen: 'CURTAIN RISES',
       curtainClose: 'CURTAIN CALL'
     },
     ja: {
       romanceLabel: 'オリジナルの浪漫的哀歌｜古典悲劇の月、誓い、独白の語彙へのオマージュ',
-      modernLabel: 'オリジナルの年代校園心理サスペンス｜男性記録調査員と女性児童福祉アーキビストは創作上の象徴的人物です',
+      modernLabel: 'オリジナルの年代もの・校内心理サスペンス｜男性記録調査員と女性児童保護担当者は創作上の象徴的人物です',
       interactionLabel: '現代叙事インタラクション：制度上の手掛かりを調べる',
       interactionNote: '確認可能な日付・記録・保護行動だけを切り替えます。被害を模擬せず、結末を書き換えません。',
       researcher: '記録調査員',
-      archivist: '児童福祉アーキビスト',
-      transcriptLabel: '本幕の完全逐字稿｜下の「本幕の完全逐字稿」と一句ずつ同期',
+      archivist: '児童保護担当者',
+      transcriptLabel: '本幕の完全逐字稿｜下の記録と一句ずつ同期',
+      fullTranscriptSummary: '本幕の完全逐字稿を読む（アニメ・操作時の全会話を収録）',
+      shadowTranscriptLabel: '影絵劇｜オリジナル哀歌と本幕の会話',
+      modernTranscriptLabel: '年代ものの校内心理サスペンス｜導入会話と検証注記',
+      interactionTranscriptLabel: '操作できる手掛かり｜切替時の全3組の会話',
       recordNote: '検証記録ノート',
       curtainOpen: '幕開き',
       curtainClose: '幕謝'
     }
+  }[sceneLanguage];
+
+  const heritageCopy = {
+    zh: [
+      ['minnan', '閩南｜燕尾脊與紅磚花紋'],
+      ['hakka', '客家｜桐花與靛藍圓紋'],
+      ['mainlander', '外省族群｜眷村窗花與行李記憶']
+    ],
+    en: [
+      ['minnan', 'Minnan · swallowtail roof and red-brick lattice'],
+      ['hakka', 'Hakka · tung blossom and indigo roundel'],
+      ['mainlander', 'Post-war mainlander communities · village lattice and luggage memory']
+    ],
+    ja: [
+      ['minnan', '閩南｜燕尾屋根と赤煉瓦の文様'],
+      ['hakka', '客家｜桐の花と藍色の円文'],
+      ['mainlander', '戦後外省系コミュニティ｜眷村の窓格子と旅の記憶']
+    ]
   }[sceneLanguage];
 
   const romanceLines = {
@@ -234,6 +264,38 @@
     return { shadow, notes };
   }
 
+  function transcriptParagraph(line) {
+    const paragraph = document.createElement('p');
+    paragraph.className = `case-fu__transcript-line case-fu__transcript-line--${line.role || 'note'}`;
+    paragraph.dataset.lineSource = line.source || 'original';
+    const label = document.createElement('span');
+    label.className = 'case-fu__speaker';
+    const speaker = String(line.speaker || theatreCopy.recordNote).trim();
+    label.textContent = /[:：]$/u.test(speaker) ? speaker : `${speaker}${sceneLanguage === 'en' ? ':' : '：'}`;
+    paragraph.append(label, document.createTextNode(` ${line.text}`));
+    return paragraph;
+  }
+
+  function transcriptGroup(label, lines) {
+    const section = document.createElement('section');
+    section.className = 'case-fu__transcript-group';
+    const heading = document.createElement('h4');
+    heading.textContent = label;
+    section.appendChild(heading);
+    lines.forEach(line => section.appendChild(transcriptParagraph(line)));
+    return section;
+  }
+
+  function renderCompleteTranscript(scene, groups) {
+    const details = scene.querySelector('.case-fu__verse');
+    const transcriptBody = details && details.querySelector('.case-fu__verse-body');
+    if (!details || !transcriptBody) return;
+    const summary = details.querySelector('summary');
+    if (summary) summary.textContent = theatreCopy.fullTranscriptSummary;
+    transcriptBody.replaceChildren(...groups.map(group => transcriptGroup(group.label, group.lines)));
+    details.dataset.transcriptComplete = 'true';
+  }
+
   function lineHold(text) {
     const plainText = String(text || '').replace(/\s+/g, ' ').trim();
     if (sceneLanguage === 'en') {
@@ -286,6 +348,15 @@
         { speaker: theatreCopy.archivist, text: baseDialogue[1], role: 'archivist', source: 'original' },
         ...transcript.notes
       ];
+      const interactionTranscript = focusDialogues.flatMap(pair => [
+        { speaker: theatreCopy.researcher, text: pair[0], role: 'researcher', source: 'interaction' },
+        { speaker: theatreCopy.archivist, text: pair[1], role: 'archivist', source: 'interaction' }
+      ]);
+      renderCompleteTranscript(scene, [
+        { label: theatreCopy.shadowTranscriptLabel, lines: shadowLines },
+        { label: theatreCopy.modernTranscriptLabel, lines: modernLines },
+        { label: theatreCopy.interactionTranscriptLabel, lines: interactionTranscript }
+      ]);
 
       const curtainLeft = document.createElement('i');
       curtainLeft.className = 'case-fu__curtain case-fu__curtain--left';
@@ -456,6 +527,33 @@
 
   addTheatreLayers();
 
+  function addHeritageEasterEggs() {
+    const targets = [
+      '.case-fu__opening', '.case-fu__hero', '#reading-guide', '#case-summary', '#chapter-00', '#chapter-02', '#chapter-03',
+      '#case-courts', '#chapter-06', '#chapter-07', '#policy-response', '#case-sources', '#finale'
+    ];
+    targets.forEach((selector, index) => {
+      const section = document.querySelector(selector);
+      if (!section || section.querySelector(':scope > .case-fu__heritage-eggs')) return;
+      const rail = document.createElement('div');
+      rail.className = `case-fu__heritage-eggs case-fu__heritage-eggs--${index % 2 ? 'right' : 'left'}`;
+      rail.setAttribute('aria-label', sceneLanguage === 'en' ? 'Taiwan community-pattern easter eggs' : sceneLanguage === 'ja' ? '台湾のコミュニティ文様の小さな意匠' : '台灣族群文化紋樣彩蛋');
+      const ordered = heritageCopy.map((item, itemIndex) => heritageCopy[(itemIndex + index) % heritageCopy.length]);
+      ordered.forEach(([key, label]) => {
+        const badge = document.createElement('span');
+        badge.className = `case-fu__heritage-badge case-fu__heritage-badge--${key}`;
+        badge.tabIndex = 0;
+        badge.setAttribute('role', 'img');
+        badge.setAttribute('aria-label', label);
+        badge.dataset.label = label;
+        rail.appendChild(badge);
+      });
+      section.prepend(rail);
+    });
+  }
+
+  addHeritageEasterEggs();
+
   const sceneCopy = {
     playing: body.dataset.scenePlaying || 'Scene playing',
     paused: body.dataset.scenePaused || 'Scene paused',
@@ -499,7 +597,7 @@
   }
 
   function startScene(scene, { replay = false } = {}) {
-    if (!scene || ((reducedMotion || saveData || shortLandscape) && !replay)) {
+    if (!scene || reducedMotion || saveData || shortLandscape) {
       finishScene(scene);
       return;
     }
@@ -547,6 +645,16 @@
     if (skip) finishScene(skip.closest('[data-fu-scene]'), sceneCopy.skipped);
   });
 
+  scenes.forEach(scene => {
+    scene.addEventListener('pointerenter', event => {
+      if (event.pointerType === 'touch' || scene.classList.contains('is-playing')) return;
+      startScene(scene, { replay: true });
+    });
+    scene.addEventListener('focusin', () => {
+      if (scene.dataset.scenePlayed !== '1' && !scene.classList.contains('is-playing')) startScene(scene);
+    });
+  });
+
   if (!reducedMotion && !saveData && !shortLandscape && 'IntersectionObserver' in window) {
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -555,7 +663,7 @@
         if (scene.dataset.sceneManual !== 'true') startScene(scene);
         observer.unobserve(scene);
       });
-    }, { threshold: 0.28 });
+    }, { threshold: 0.08, rootMargin: '-8% 0px -24% 0px' });
     scenes.forEach(scene => observer.observe(scene));
   } else {
     scenes.forEach(scene => finishScene(scene));
@@ -731,6 +839,8 @@
     if (!audioEnabled || helpLocked) return;
     helpLocked = true;
     await stopAll(800);
+    audioEnabled = false;
+    paintAudioToggle(false);
     setAudioState(audioCopy.help);
     if (continueButton) continueButton.hidden = false;
   }

@@ -1,13 +1,19 @@
 :root {
-  --fu-paper: #f2eee5;
-  --fu-paper-deep: #e5dccd;
-  --fu-ink: #222724;
-  --fu-indigo: #33485c;
-  --fu-indigo-deep: #172b3b;
-  --fu-sage: #6c796e;
-  --fu-umber: #786253;
-  --fu-vermilion: #a54838;
-  --fu-muted: #626965;
+  --fu-paper: #edf0e9;
+  --fu-paper-deep: #d9ddd3;
+  --fu-ink: #222b29;
+  --fu-indigo: #36545a;
+  --fu-indigo-deep: #20363b;
+  --fu-sage: #708b7e;
+  --fu-umber: #826a54;
+  --fu-vermilion: #9b4f46;
+  --fu-muted: #5c6864;
+  --fu-moon-white: #dfe9e6;
+  --fu-crab-blue: #8ea9a0;
+  --fu-lotus: #a98592;
+  --fu-autumn: #a39158;
+  --fu-cinnabar: #9b4f46;
+  --fu-ink-wash: #293f43;
   --fu-focus: #0b6e99;
   --fu-rule: rgba(51, 72, 92, 0.2);
   --fu-shell: min(1160px, calc(100% - 48px));
@@ -21,8 +27,9 @@ body.case-fu {
   margin: 0;
   color: var(--fu-ink);
   background:
-    radial-gradient(circle at 10% 8%, rgba(120, 98, 83, 0.09), transparent 32rem),
-    linear-gradient(180deg, #f8f5ee 0%, var(--fu-paper) 42%, #ebe4d8 100%);
+    radial-gradient(circle at 11% 7%, rgba(169, 133, 146, 0.11), transparent 31rem),
+    radial-gradient(circle at 88% 27%, rgba(142, 169, 160, 0.14), transparent 34rem),
+    linear-gradient(180deg, #f7f4ec 0%, var(--fu-paper) 43%, #e5e1d5 100%);
   font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
   font-size: 18px;
   line-height: 1.82;
@@ -73,7 +80,7 @@ img, svg { display: block; max-width: 100%; }
   z-index: 100;
   top: 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(23, 43, 59, 0.96);
+  background: rgba(32, 54, 59, 0.96);
   color: #fff;
   backdrop-filter: blur(18px);
 }
@@ -136,7 +143,9 @@ img, svg { display: block; max-width: 100%; }
 
 .case-fu__opening {
   color: #f5efe2;
-  background: var(--fu-indigo-deep);
+  background:
+    radial-gradient(circle at 82% 18%, rgba(169, 133, 146, 0.19), transparent 28rem),
+    linear-gradient(135deg, #1c3338, #293f43 58%, #4a4144);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -179,7 +188,7 @@ img, svg { display: block; max-width: 100%; }
 .case-fu__opening-copy > p { max-width: 58ch; color: rgba(255, 255, 255, 0.78); }
 .case-fu__opening-note {
   padding: 15px 18px;
-  border-left: 3px solid #d9bc85;
+  border-left: 3px solid #c7b477;
   background: rgba(255, 255, 255, 0.06);
   color: rgba(255, 255, 255, 0.9) !important;
 }
@@ -220,8 +229,9 @@ img, svg { display: block; max-width: 100%; }
   padding: clamp(50px, 8vw, 110px) 0;
   border-bottom: 1px solid var(--fu-rule);
   background:
-    linear-gradient(90deg, rgba(242, 238, 229, 0.98), rgba(242, 238, 229, 0.8)),
-    repeating-linear-gradient(0deg, transparent 0 49px, rgba(51, 72, 92, 0.08) 49px 50px);
+    radial-gradient(circle at 13% 22%, rgba(142, 169, 160, 0.18), transparent 28rem),
+    linear-gradient(90deg, rgba(239, 240, 233, 0.98), rgba(234, 233, 223, 0.82)),
+    repeating-linear-gradient(0deg, transparent 0 49px, rgba(54, 84, 90, 0.08) 49px 50px);
 }
 
 .case-fu__hero-inner {
@@ -316,10 +326,23 @@ html[lang="ja"] .case-fu__title { max-width: 18ch; font-family: "Noto Serif JP",
 
 .case-fu__section { padding: clamp(62px, 9vw, 128px) 0; }
 .case-fu__section + .case-fu__section { border-top: 1px solid var(--fu-rule); }
-.case-fu__section--paper { background: rgba(255, 255, 255, 0.46); }
-.case-fu__section--indigo { color: #f7f2e7; background: var(--fu-indigo-deep); }
+.case-fu__section--paper {
+  background:
+    radial-gradient(circle at 88% 16%, rgba(163, 145, 88, 0.09), transparent 23rem),
+    rgba(255, 255, 255, 0.46);
+}
+.case-fu__section--indigo {
+  color: #f7f2e7;
+  background:
+    radial-gradient(circle at 8% 90%, rgba(142, 169, 160, 0.15), transparent 26rem),
+    linear-gradient(145deg, var(--fu-indigo-deep), #2d4245 58%, #4a3d43);
+}
 .case-fu__section--indigo a { color: #e7c98f; }
-.case-fu__section--quiet { background: #e9e2d6; }
+.case-fu__section--quiet {
+  background:
+    radial-gradient(circle at 92% 24%, rgba(169, 133, 146, 0.1), transparent 25rem),
+    #e5e3d9;
+}
 
 .case-fu__heading {
   margin: 0 0 22px;
@@ -427,7 +450,7 @@ html[lang="en"] .case-fu__copy { max-width: 68ch; }
 .case-fu__details {
   margin: 30px 0;
   border: 1px solid rgba(165, 72, 56, 0.42);
-  background: #f8f2ea;
+  background: linear-gradient(145deg, #f6f1e9, #e8ece5);
 }
 .case-fu__details summary { padding: 18px 20px; color: #6f2f26; cursor: pointer; font-weight: 820; }
 .case-fu__details-body { padding: 0 20px 20px; }
@@ -440,6 +463,15 @@ html[lang="en"] .case-fu__copy { max-width: 68ch; }
   font-family: "Noto Serif TC", "Songti TC", Georgia, serif;
   line-height: 1.85;
 }
+.case-fu__label-explainer {
+  padding: 16px 18px;
+  border: 1px solid rgba(155, 79, 70, 0.24);
+  border-left: 4px solid var(--fu-cinnabar);
+  color: #403b37;
+  background: linear-gradient(100deg, rgba(155, 79, 70, 0.07), rgba(169, 133, 146, 0.055));
+  line-height: 1.82;
+}
+.case-fu__label-explainer strong { color: #713a35; }
 html[lang="en"] .case-fu__medical-lead { font-family: Georgia, "Times New Roman", serif; }
 html[lang="ja"] .case-fu__medical-lead { font-family: "Noto Serif JP", "Yu Mincho", serif; line-height: 1.95; }
 
@@ -521,13 +553,50 @@ html[lang="ja"] .case-fu__medical-lead { font-family: "Noto Serif JP", "Yu Minch
 .case-fu__verse {
   margin: 28px 0 0;
   border: 1px solid rgba(51, 72, 92, 0.24);
-  background: rgba(255, 255, 255, 0.48);
+  background: rgba(250, 249, 243, 0.62);
 }
 .case-fu__verse summary { padding: 16px 18px; cursor: pointer; color: var(--fu-indigo-deep); font-weight: 820; }
 .case-fu__verse-body { padding: 0 20px 20px; }
 .case-fu__verse-body p { margin: 0 0 1em; }
 .case-fu__speaker { color: var(--fu-umber); font-weight: 850; }
 .case-fu__modern { margin-top: 18px; padding: 14px 16px; border-left: 3px solid var(--fu-indigo); background: rgba(51, 72, 92, 0.07); font-size: 0.92rem; }
+.case-fu__transcript-group {
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid rgba(54, 84, 90, 0.19);
+  background: rgba(255, 255, 255, 0.48);
+}
+.case-fu__transcript-group:first-child { margin-top: 0; }
+.case-fu__transcript-group h4 {
+  margin: 0 0 15px;
+  color: var(--fu-indigo-deep);
+  font-family: "Noto Serif TC", "Songti TC", Georgia, serif;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+.case-fu__transcript-line { padding-left: 13px; border-left: 3px solid rgba(130, 106, 84, 0.42); }
+.case-fu__transcript-line--guardian,
+.case-fu__transcript-line--archivist { border-left-color: var(--fu-lotus); }
+.case-fu__transcript-line--researcher { border-left-color: var(--fu-crab-blue); }
+.case-fu__transcript-line--note { padding: 12px 14px; border-left-color: var(--fu-cinnabar); background: rgba(155, 79, 70, 0.06); font-size: 0.92rem; }
+.case-fu__transcript-line[data-line-source="elegy"] { font-family: "Noto Serif TC", "Songti TC", Georgia, serif; }
+html[lang="en"] .case-fu__transcript-group h4,
+html[lang="en"] .case-fu__transcript-line[data-line-source="elegy"] { font-family: Georgia, "Times New Roman", serif; }
+html[lang="en"] .case-fu__transcript-line[data-line-source="elegy"] { font-style: italic; }
+html[lang="ja"] .case-fu__transcript-group h4,
+html[lang="ja"] .case-fu__transcript-line[data-line-source="elegy"] { font-family: "Noto Serif JP", "Yu Mincho", serif; }
+.case-fu__opening .case-fu__verse,
+.case-fu__section--indigo .case-fu__verse,
+.case-fu__finale .case-fu__verse { border-color: rgba(223, 233, 230, 0.22); background: rgba(10, 28, 31, 0.36); }
+.case-fu__opening .case-fu__verse summary,
+.case-fu__section--indigo .case-fu__verse summary,
+.case-fu__finale .case-fu__verse summary { color: #f1e8d5; }
+.case-fu__opening .case-fu__transcript-group,
+.case-fu__section--indigo .case-fu__transcript-group,
+.case-fu__finale .case-fu__transcript-group { border-color: rgba(223, 233, 230, 0.18); background: rgba(255, 255, 255, 0.055); }
+.case-fu__opening .case-fu__transcript-group h4,
+.case-fu__section--indigo .case-fu__transcript-group h4,
+.case-fu__finale .case-fu__transcript-group h4 { color: #e7d6ad; }
 
 /* Symbolic paper-shadow stage. The figures represent a Recorder and a Guardian, never case participants. */
 .case-fu__scene {
@@ -678,7 +747,7 @@ html[lang="ja"] .case-fu__stage-core { font-family: "Noto Serif JP", "Yu Mincho"
   pointer-events: none;
   background:
     radial-gradient(ellipse at 50% 5%, rgba(226, 193, 127, 0.22), transparent 28%),
-    repeating-linear-gradient(90deg, #241d26 0 7%, #432b31 7% 14%, #171923 14% 21%);
+    repeating-linear-gradient(90deg, #24282c 0 7%, #5a454e 7% 14%, #20383c 14% 21%);
   box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.58), 0 0 28px rgba(0, 0, 0, 0.3);
 }
 .case-fu__curtain::before {
@@ -1112,53 +1181,143 @@ html[lang="ja"] .case-fu__modern-line p { line-height: 1.68; }
 .case-fu__scene-controls .case-fu__button { min-height: 42px; padding: 9px 14px; font-size: 0.84rem; }
 .case-fu__scene-status { color: var(--fu-muted); font-size: 0.82rem; }
 
-.case-fu__audio-dock {
-  position: fixed;
-  z-index: 90;
-  right: 18px;
-  bottom: calc(18px + env(safe-area-inset-bottom));
-  width: min(410px, calc(100vw - 36px));
-  padding: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 16px;
+.case-fu__audio-dock.case-fu__audio-top {
+  width: min(620px, 100%);
+  margin: 18px 0 0;
+  padding: 10px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid rgba(223, 233, 230, 0.22);
   color: #fff;
-  background: rgba(23, 43, 59, 0.95);
-  box-shadow: 0 16px 44px rgba(10, 28, 39, 0.28);
-  backdrop-filter: blur(16px);
 }
-.case-fu__audio-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.case-fu__audio-head b { font-size: 0.86rem; }
-.case-fu__audio-head button { width: 38px; height: 38px; border: 0; border-radius: 50%; color: #fff; background: rgba(255, 255, 255, 0.1); cursor: pointer; }
-.case-fu__audio-tracks { margin-top: 10px; }
-.case-fu__audio-master,
-.case-fu__audio-continue {
-  min-height: 46px;
-  padding: 9px 11px;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: 10px;
-  color: #fff;
-  background: transparent;
+.case-fu__audio-master {
+  min-height: 52px;
+  flex: 0 1 auto;
+  padding: 8px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  border: 1px solid rgba(223, 233, 230, 0.34);
+  border-radius: 999px;
+  color: #f4ecda;
+  background: rgba(255, 255, 255, 0.055);
   cursor: pointer;
-  font-size: 0.75rem;
-  line-height: 1.35;
   text-align: left;
 }
-.case-fu__audio-master { flex: 1 1 250px; display: grid; gap: 2px; }
-.case-fu__audio-master strong { color: #f1debb; font-size: 0.8rem; }
-.case-fu__audio-master small { color: rgba(255, 255, 255, 0.66); }
-.case-fu__audio-master[aria-pressed="true"] { color: var(--fu-indigo-deep); background: #ead8b6; }
-.case-fu__audio-master[aria-pressed="true"] strong { color: var(--fu-indigo-deep); }
-.case-fu__audio-master[aria-pressed="true"] small { color: rgba(23, 43, 59, 0.75); }
-.case-fu__audio-continue { flex: 0 1 auto; text-align: center; }
-.case-fu__audio-dock[data-score="a"] .case-fu__audio-head b::after { content: " · I"; color: #d9bc85; }
-.case-fu__audio-dock[data-score="b"] .case-fu__audio-head b::after { content: " · II"; color: #d9bc85; }
-.case-fu__audio-state { margin: 9px 0 0; color: rgba(255, 255, 255, 0.68); font-size: 0.74rem; line-height: 1.4; }
-.case-fu__audio-dock.is-collapsed .case-fu__audio-tracks,
-.case-fu__audio-dock.is-collapsed .case-fu__audio-state { display: none; }
+.case-fu__audio-copy { display: grid; gap: 1px; }
+.case-fu__audio-copy strong { color: #f0deb5; font-size: 0.82rem; }
+.case-fu__audio-copy small { color: rgba(255, 255, 255, 0.64); font-size: 0.69rem; line-height: 1.35; }
+.case-fu__audio-toggle-indicator {
+  position: relative;
+  width: 42px;
+  height: 24px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.22);
+}
+.case-fu__audio-toggle-indicator::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #dfe9e6;
+  transition: transform 180ms ease, background 180ms ease;
+}
+.case-fu__audio-master[aria-pressed="true"] { border-color: #d8bf84; background: rgba(163, 145, 88, 0.18); }
+.case-fu__audio-master[aria-pressed="true"] .case-fu__audio-toggle-indicator::after { transform: translateX(18px); background: #d8bf84; }
+.case-fu__audio-state { margin: 0; color: rgba(255, 255, 255, 0.66); font-size: 0.7rem; line-height: 1.35; }
+.case-fu__audio-top audio { display: none; }
 
-.case-fu__finale { padding: clamp(78px, 12vw, 160px) 0; color: #f7f1e6; background: var(--fu-indigo-deep); }
+/* Original cultural-pattern easter eggs: decorative composites, not official emblems. */
+.case-fu__heritage-eggs {
+  position: absolute;
+  z-index: 3;
+  top: 18px;
+  display: flex;
+  gap: 7px;
+  opacity: 0.44;
+}
+.case-fu__heritage-eggs--left { left: 14px; }
+.case-fu__heritage-eggs--right { right: 14px; }
+.case-fu__heritage-badge {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  display: block;
+  border: 1px solid rgba(41, 63, 67, 0.36);
+  box-shadow: inset 0 0 0 3px rgba(239, 240, 233, 0.48);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+.case-fu__section--indigo .case-fu__heritage-badge,
+.case-fu__opening .case-fu__heritage-badge,
+.case-fu__finale .case-fu__heritage-badge { border-color: rgba(239, 240, 233, 0.42); box-shadow: inset 0 0 0 3px rgba(32, 54, 59, 0.38); }
+.case-fu__heritage-badge:hover,
+.case-fu__heritage-badge:focus-visible { z-index: 5; opacity: 1; transform: translateY(-2px) scale(1.08); }
+.case-fu__heritage-badge::after {
+  content: attr(data-label);
+  position: absolute;
+  z-index: 9;
+  top: calc(100% + 8px);
+  left: 50%;
+  width: max-content;
+  max-width: min(260px, 72vw);
+  padding: 6px 8px;
+  border-radius: 4px;
+  color: #f6efe2;
+  background: rgba(32, 54, 59, 0.96);
+  font-size: 0.62rem;
+  line-height: 1.4;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -4px);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+.case-fu__heritage-badge:hover::after,
+.case-fu__heritage-badge:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
+.case-fu__heritage-eggs--left .case-fu__heritage-badge::after { left: 0; transform: translate(0, -4px); }
+.case-fu__heritage-eggs--left .case-fu__heritage-badge:hover::after,
+.case-fu__heritage-eggs--left .case-fu__heritage-badge:focus-visible::after { transform: translate(0, 0); }
+.case-fu__heritage-eggs--right .case-fu__heritage-badge::after { right: 0; left: auto; transform: translate(0, -4px); }
+.case-fu__heritage-eggs--right .case-fu__heritage-badge:hover::after,
+.case-fu__heritage-eggs--right .case-fu__heritage-badge:focus-visible::after { transform: translate(0, 0); }
+.case-fu__heritage-badge--minnan {
+  border-radius: 5px 5px 12px 12px;
+  background:
+    linear-gradient(153deg, transparent 0 39%, #9b4f46 40% 47%, transparent 48%) left top / 50% 55% no-repeat,
+    linear-gradient(207deg, transparent 0 39%, #9b4f46 40% 47%, transparent 48%) right top / 50% 55% no-repeat,
+    repeating-linear-gradient(45deg, #9b4f46 0 3px, #d1a06f 3px 5px);
+}
+.case-fu__heritage-badge--hakka {
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 20%, #eee4d7 0 12%, transparent 13%),
+    radial-gradient(circle at 78% 43%, #eee4d7 0 12%, transparent 13%),
+    radial-gradient(circle at 67% 75%, #eee4d7 0 12%, transparent 13%),
+    radial-gradient(circle at 33% 75%, #eee4d7 0 12%, transparent 13%),
+    radial-gradient(circle at 22% 43%, #eee4d7 0 12%, transparent 13%),
+    radial-gradient(circle, #c9a45f 0 9%, #36545a 10% 100%);
+}
+.case-fu__heritage-badge--mainlander {
+  border-radius: 6px;
+  background:
+    radial-gradient(circle at 50% 50%, #d9c38d 0 9%, transparent 10%),
+    repeating-linear-gradient(45deg, transparent 0 6px, rgba(223, 233, 230, 0.72) 6px 7px),
+    repeating-linear-gradient(-45deg, transparent 0 6px, rgba(223, 233, 230, 0.58) 6px 7px),
+    #708b7e;
+}
+
+.case-fu__finale { padding: clamp(78px, 12vw, 160px) 0; color: #f7f1e6; background: linear-gradient(145deg, #20363b, #293f43 58%, #4b3e44); }
 .case-fu__finale .case-fu__heading { max-width: 22ch; }
 .case-fu__finale blockquote { margin: 30px 0; padding: 0 0 0 22px; border-left: 4px solid #d7bb84; color: #ead8b6; font: 700 clamp(1.3rem, 2.6vw, 2rem)/1.6 "Noto Serif TC", Georgia, serif; }
+.case-fu__finale .case-fu__button { color: #f4ecda; border-color: rgba(244, 236, 218, 0.48); }
+.case-fu__finale .case-fu__button:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
+.case-fu__finale .case-fu__source-jump,
+.case-fu__finale a[href="#case-sources"] { color: #f4ecda; text-decoration-color: rgba(244, 236, 218, 0.62); }
 .case-fu__legal { padding: 26px 24px; color: #565e59; background: #e4dccf; font-size: 0.82rem; }
 .case-fu__legal p { width: var(--fu-shell); margin: 0 auto; }
 .case-fu__footer { padding: 28px 24px; color: rgba(255, 255, 255, 0.72); background: #0d202d; text-align: center; font-size: 0.82rem; }
@@ -1247,8 +1406,12 @@ html[lang="ja"] .case-fu__modern-line p { line-height: 1.68; }
   .case-fu__scene-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .case-fu__scene-controls .case-fu__button { width: 100%; }
   .case-fu__scene-status { grid-column: 1 / -1; }
-  .case-fu__audio-dock { right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); width: calc(100vw - 24px); }
-  .case-fu__audio-master { flex-basis: 100%; }
+  .case-fu__audio-dock.case-fu__audio-top { align-items: stretch; flex-direction: column; }
+  .case-fu__audio-master { width: 100%; }
+  .case-fu__heritage-eggs { top: 8px; gap: 4px; opacity: 0.3; }
+  .case-fu__heritage-eggs--left { left: 7px; }
+  .case-fu__heritage-eggs--right { right: 7px; }
+  .case-fu__heritage-badge { width: 27px; height: 27px; }
 }
 
 @media (max-width: 430px) {
