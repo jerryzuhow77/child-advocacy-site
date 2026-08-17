@@ -781,3 +781,273 @@ html[lang="ja"] .xx-case-summary p, html[lang="ja"] .xx-record-block p { line-he
   .xx-method::after { opacity: 0.19; transform: rotate(-9deg) scaleX(-1); }
   .xx-interlude-copy::after { opacity: 0.16; transform: none; }
 }
+
+/* 2026-08-17｜臺灣絨花敘事層 V2
+   四款不同花型分幕輪替：五瓣未竟梅、客家藍染茶花、粉白菊簪、朱砂金線鳳尾花。
+   僅作用於 .xx- 萱萱專頁命名空間，不修改全站導覽、計數器、音樂或共用互動。 */
+
+/* 01｜五瓣未竟梅：開場、第一／五章與結尾，保留未完成的第五瓣。 */
+.xx-prologue::after,
+#chapter-01::before,
+#chapter-05::before,
+.xx-ending::after {
+  background: url("art/xuanxuan-ronghua/ronghua-five-warning-unfinished-20260817.webp") center / contain no-repeat;
+  aspect-ratio: 3 / 2;
+  mix-blend-mode: normal;
+  -webkit-mask-image: none;
+  mask-image: none;
+  filter: saturate(0.88) contrast(0.96);
+}
+
+.xx-prologue::after {
+  top: -3.4rem;
+  right: -2.2rem;
+  width: clamp(360px, 44vw, 680px);
+  opacity: 0.42;
+  transform: rotate(3deg);
+}
+
+.xx-prologue.is-visible::after {
+  animation: xxRonghuaV2Branch 2.2s 0.18s cubic-bezier(0.2, 0.72, 0.2, 1) both;
+}
+
+#chapter-01::before,
+#chapter-05::before {
+  top: clamp(1rem, 5vw, 4rem);
+  width: clamp(330px, 34vw, 560px);
+  opacity: 0.28;
+}
+
+#chapter-01::before {
+  right: clamp(-8rem, -5vw, -3rem);
+  left: auto;
+  transform: rotate(7deg);
+}
+
+#chapter-05::before {
+  right: auto;
+  left: clamp(-8rem, -5vw, -3rem);
+  transform: rotate(-7deg) scaleX(-1);
+}
+
+.xx-ending::after {
+  right: clamp(-8rem, -4vw, -2rem);
+  bottom: clamp(-5rem, -3vw, -1.5rem);
+  width: clamp(500px, 62vw, 940px);
+  opacity: 0.34;
+  transform: rotate(-2deg);
+}
+
+/* 02｜客家藍染茶花：閱讀方法與跨城章節。 */
+.xx-method::after,
+#chapter-03::before {
+  background: url("art/xuanxuan-ronghua/ronghua-hakka-indigo-camellia-20260817.webp") center / contain no-repeat;
+  aspect-ratio: 1;
+  mix-blend-mode: multiply;
+  filter: saturate(0.86) contrast(1.04);
+  -webkit-mask-image: radial-gradient(circle at 42% 60%, #000 45%, rgba(0, 0, 0, 0.9) 61%, transparent 82%);
+  mask-image: radial-gradient(circle at 42% 60%, #000 45%, rgba(0, 0, 0, 0.9) 61%, transparent 82%);
+}
+
+.xx-method::after {
+  right: -4.2rem;
+  bottom: -5.4rem;
+  width: clamp(310px, 35vw, 540px);
+  opacity: 0.36;
+  transform: rotate(-8deg);
+}
+
+.xx-method.is-visible::after {
+  animation: xxRonghuaV2Indigo 2s 0.3s cubic-bezier(0.2, 0.72, 0.2, 1) both;
+}
+
+#chapter-03::before {
+  top: clamp(2rem, 7vw, 6rem);
+  right: auto;
+  left: clamp(-7rem, -4vw, -2.5rem);
+  width: clamp(280px, 28vw, 450px);
+  opacity: 0.3;
+  transform: rotate(-6deg);
+}
+
+/* 03｜粉白菊簪：案件經過、分類、確認與責任章。 */
+.xx-case-record-inner::before,
+#chapter-02::before,
+#chapter-04::before,
+#chapter-06::before {
+  background: url("art/xuanxuan-ronghua/ronghua-powder-chrysanthemum-20260817.webp") center / contain no-repeat;
+  aspect-ratio: 5 / 4;
+  mix-blend-mode: multiply;
+  filter: saturate(0.84) contrast(1.03);
+  -webkit-mask-image: radial-gradient(ellipse at 60% 48%, #000 46%, rgba(0, 0, 0, 0.9) 64%, transparent 84%);
+  mask-image: radial-gradient(ellipse at 60% 48%, #000 46%, rgba(0, 0, 0, 0.9) 64%, transparent 84%);
+}
+
+.xx-case-record-inner::before {
+  z-index: 0;
+  top: -3.8rem;
+  right: -4.8rem;
+  width: clamp(330px, 38vw, 590px);
+  opacity: 0.31;
+  transform: rotate(5deg);
+}
+
+.xx-case-record-inner > * {
+  position: relative;
+  z-index: 1;
+}
+
+#chapter-02::before,
+#chapter-04::before,
+#chapter-06::before {
+  top: clamp(2rem, 7vw, 6rem);
+  right: clamp(-7rem, -4vw, -2.5rem);
+  left: auto;
+  width: clamp(310px, 29vw, 470px);
+  opacity: 0.27;
+  transform: rotate(6deg);
+}
+
+#chapter-04::before {
+  right: auto;
+  left: clamp(-7rem, -4vw, -2.5rem);
+  transform: rotate(-6deg) scaleX(-1);
+}
+
+/* 04｜朱砂金線鳳尾花：深色戲臺轉場與終曲，以 screen 消去黑底。 */
+.xx-interlude[data-xx-scene="chapter-02"] .xx-interlude-copy::after,
+.xx-interlude[data-xx-scene="chapter-04"] .xx-interlude-copy::after,
+.xx-interlude[data-xx-scene="chapter-06"] .xx-interlude-copy::after,
+.xx-interlude[data-xx-scene="finale"] .xx-interlude-copy::after {
+  right: clamp(-2.5rem, -1vw, -0.5rem);
+  bottom: -1rem;
+  width: clamp(260px, 30vw, 460px);
+  aspect-ratio: 4 / 5;
+  background: url("art/xuanxuan-ronghua/ronghua-vermilion-phoenix-tail-20260817.webp") center / contain no-repeat;
+  mix-blend-mode: screen;
+  filter: saturate(0.82) brightness(0.9);
+  -webkit-mask-image: radial-gradient(ellipse at 54% 58%, #000 51%, rgba(0, 0, 0, 0.9) 67%, transparent 86%);
+  mask-image: radial-gradient(ellipse at 54% 58%, #000 51%, rgba(0, 0, 0, 0.9) 67%, transparent 86%);
+}
+
+.xx-interlude[data-xx-scene="chapter-01"] .xx-interlude-copy::after,
+.xx-interlude[data-xx-scene="chapter-03"] .xx-interlude-copy::after,
+.xx-interlude[data-xx-scene="chapter-05"] .xx-interlude-copy::after {
+  right: clamp(-5rem, -3vw, -2rem);
+  bottom: 0.2rem;
+  width: clamp(340px, 39vw, 600px);
+  aspect-ratio: 3 / 2;
+  background: url("art/xuanxuan-ronghua/ronghua-five-warning-unfinished-20260817.webp") center / contain no-repeat;
+  mix-blend-mode: normal;
+  filter: saturate(0.8) brightness(0.88);
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.xx-interlude.is-active .xx-interlude-copy::after {
+  animation: xxRonghuaV2Stage 2.35s 0.65s cubic-bezier(0.2, 0.72, 0.2, 1) both;
+}
+
+@keyframes xxRonghuaV2Branch {
+  from { opacity: 0; transform: translate3d(36px, -12px, 0) rotate(6deg) scale(0.92); }
+  to { opacity: 0.42; transform: translate3d(0, 0, 0) rotate(3deg) scale(1); }
+}
+
+@keyframes xxRonghuaV2Indigo {
+  from { opacity: 0; transform: translate3d(26px, 20px, 0) rotate(-12deg) scale(0.9); }
+  to { opacity: 0.36; transform: translate3d(0, 0, 0) rotate(-8deg) scale(1); }
+}
+
+@keyframes xxRonghuaV2Stage {
+  0% { opacity: 0; transform: translate3d(32px, 18px, 0) rotate(3deg) scale(0.92); }
+  58% { opacity: 0.3; }
+  100% { opacity: 0.24; transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+}
+
+@media (max-width: 780px) {
+  .xx-prologue::after {
+    top: 0.5rem;
+    right: -7.5rem;
+    width: min(92vw, 460px);
+    opacity: 0.34;
+  }
+
+  .xx-method::after {
+    right: -5.8rem;
+    bottom: -2.5rem;
+    width: min(76vw, 350px);
+    opacity: 0.31;
+  }
+
+  .xx-case-record-inner::before {
+    top: -1rem;
+    right: -6.2rem;
+    width: min(88vw, 430px);
+    opacity: 0.25;
+  }
+
+  #chapter-01::before,
+  #chapter-05::before {
+    top: 1.4rem;
+    right: -8rem;
+    left: auto;
+    width: min(92vw, 430px);
+    opacity: 0.22;
+    transform: rotate(5deg);
+  }
+
+  #chapter-02::before,
+  #chapter-03::before,
+  #chapter-04::before,
+  #chapter-06::before {
+    top: 1.5rem;
+    right: -6.5rem;
+    left: auto;
+    width: min(73vw, 340px);
+    opacity: 0.23;
+    transform: rotate(5deg);
+  }
+
+  .xx-interlude[data-xx-scene] .xx-interlude-copy::after {
+    right: -4.6rem;
+    bottom: 2.8rem;
+    width: min(66vw, 340px);
+  }
+
+  .xx-interlude[data-xx-scene="chapter-01"] .xx-interlude-copy::after,
+  .xx-interlude[data-xx-scene="chapter-03"] .xx-interlude-copy::after,
+  .xx-interlude[data-xx-scene="chapter-05"] .xx-interlude-copy::after {
+    right: -7rem;
+    width: min(92vw, 430px);
+  }
+
+  .xx-ending::after {
+    right: -9rem;
+    bottom: -1rem;
+    width: min(116vw, 650px);
+    opacity: 0.28;
+  }
+}
+
+@media (max-width: 480px) {
+  .xx-prologue::after { right: -9rem; }
+  .xx-method::after { right: -7rem; }
+  .xx-case-record-inner::before { right: -8rem; }
+
+  .xx-interlude[data-xx-scene] .xx-interlude-copy::after {
+    right: -6.5rem;
+    opacity: 0.2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xx-prologue::after,
+  .xx-method::after,
+  .xx-interlude-copy::after {
+    animation: none !important;
+  }
+
+  .xx-prologue::after { opacity: 0.42; transform: rotate(3deg); }
+  .xx-method::after { opacity: 0.36; transform: rotate(-8deg); }
+  .xx-interlude-copy::after { opacity: 0.24; transform: none; }
+}
