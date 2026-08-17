@@ -18,13 +18,25 @@
       modernLabel: '原創年代校園心理懸疑轉場｜男性紀錄研究者與女性兒少保護員均為虛構象徵人物',
       interactionLabel: '現代敘事互動：調閱制度線索',
       interactionNote: '只切換可核對的日期、記錄與保護行動；不模擬傷害，也不改寫案件結果。',
+      recorder: '紀錄者',
+      guardian: '守護者',
+      together: '合聲',
       researcher: '紀錄研究者',
       archivist: '兒少保護員',
-      transcriptLabel: '本幕完整逐字稿｜與下方逐句同步',
-      fullTranscriptSummary: '閱讀本幕完整逐字稿（含動畫及互動全部對話）',
+      transcriptLabel: '動畫全部逐字稿｜與下方逐句同步',
+      fullTranscriptSummary: '閱讀本幕動畫全部逐字稿（含幕序、字幕、台詞、查核註記及互動文字）',
+      stageOpeningTranscriptLabel: '幕開、舞台標示與中央字幕',
       shadowTranscriptLabel: '皮影詩劇｜原創挽歌與本幕對話',
       modernTranscriptLabel: '年代校園心理懸疑｜初始對話與查核註記',
-      interactionTranscriptLabel: '互動線索｜三組切換對話',
+      interactionTranscriptLabel: '互動線索｜三張卡片與全部切換對話',
+      stageClosingTranscriptLabel: '幕謝',
+      stageNotice: '舞台標示',
+      centreCaption: '中央字幕',
+      shadowNotice: '皮影標示',
+      transitionNotice: '轉場標示',
+      interactionGuide: '互動說明',
+      interactionCard: '互動卡片',
+      curtainCue: '幕序',
       recordNote: '查核註記',
       curtainOpen: '幕開',
       curtainClose: '幕謝'
@@ -34,13 +46,25 @@
       modernLabel: 'Original period-campus psychological suspense · the male records researcher and female child protection officer are fictional symbolic figures',
       interactionLabel: 'Modern narrative interaction: inspect a systems clue',
       interactionNote: 'Switch only among verified dates, records, and protective actions. No harm is simulated and no outcome is rewritten.',
+      recorder: 'Recorder',
+      guardian: 'Guardian',
+      together: 'Together',
       researcher: 'Records researcher',
       archivist: 'Child protection officer',
-      transcriptLabel: 'Full scene transcript · every line is synchronized below',
-      fullTranscriptSummary: 'Read the complete transcript (all animated and interactive dialogue)',
+      transcriptLabel: 'Complete animation transcript · every line is synchronized below',
+      fullTranscriptSummary: 'Read the complete animation transcript (curtain cues, captions, dialogue, record notes, and interactive text)',
+      stageOpeningTranscriptLabel: 'Curtain rise, stage notice, and central caption',
       shadowTranscriptLabel: 'Shadow theatre · original elegy and scene dialogue',
       modernTranscriptLabel: 'Period-campus suspense · opening exchange and record note',
-      interactionTranscriptLabel: 'Interactive clues · all three switchable exchanges',
+      interactionTranscriptLabel: 'Interactive clues · all three cards and switchable exchanges',
+      stageClosingTranscriptLabel: 'Curtain call',
+      stageNotice: 'Stage notice',
+      centreCaption: 'Central caption',
+      shadowNotice: 'Shadow-theatre label',
+      transitionNotice: 'Transition label',
+      interactionGuide: 'Interaction guide',
+      interactionCard: 'Interactive card',
+      curtainCue: 'Curtain cue',
       recordNote: 'Verified record note',
       curtainOpen: 'CURTAIN RISES',
       curtainClose: 'CURTAIN CALL'
@@ -50,13 +74,25 @@
       modernLabel: 'オリジナルの年代もの・校内心理サスペンス｜男性記録調査員と女性児童保護担当者は創作上の象徴的人物です',
       interactionLabel: '現代叙事インタラクション：制度上の手掛かりを調べる',
       interactionNote: '確認可能な日付・記録・保護行動だけを切り替えます。被害を模擬せず、結末を書き換えません。',
+      recorder: '記録者',
+      guardian: '見守る者',
+      together: '合声',
       researcher: '記録調査員',
       archivist: '児童保護担当者',
-      transcriptLabel: '本幕の完全逐字稿｜下の記録と一句ずつ同期',
-      fullTranscriptSummary: '本幕の完全逐字稿を読む（アニメ・操作時の全会話を収録）',
+      transcriptLabel: 'アニメ全編の完全逐字稿｜下の記録と一句ずつ同期',
+      fullTranscriptSummary: '本幕のアニメ全編逐字稿を読む（幕の合図・字幕・全会話・検証注記・操作時の文字を収録）',
+      stageOpeningTranscriptLabel: '幕開き・舞台表示・中央字幕',
       shadowTranscriptLabel: '影絵劇｜オリジナル哀歌と本幕の会話',
       modernTranscriptLabel: '年代ものの校内心理サスペンス｜導入会話と検証注記',
-      interactionTranscriptLabel: '操作できる手掛かり｜切替時の全3組の会話',
+      interactionTranscriptLabel: '操作できる手掛かり｜3枚のカードと切替時の全会話',
+      stageClosingTranscriptLabel: '幕謝',
+      stageNotice: '舞台表示',
+      centreCaption: '中央字幕',
+      shadowNotice: '影絵劇表示',
+      transitionNotice: '転換表示',
+      interactionGuide: '操作説明',
+      interactionCard: '操作カード',
+      curtainCue: '幕の合図',
       recordNote: '検証記録ノート',
       curtainOpen: '幕開き',
       curtainClose: '幕謝'
@@ -192,6 +228,48 @@
     ]
   }[sceneLanguage];
 
+  const recordNotes = {
+    zh: [
+      '本劇角色皆為制度象徵，不代表案件人物。全頁不虛構傅小弟的言行，也不重現傷害；象徵交接表不是案件證物。',
+      '傅小弟出生於2002年11月27日，於2005年11月26日死亡。本頁不虛構可靠資料未留下的生活細節。',
+      '同時代報導曾公開全名；裁判公開版本多採去識別形式。本頁依指定統一稱「傅小弟」，不重列住址與私密傷勢。',
+      '裁判記載，張姓男子於2005年9月16日接手照顧。現有裁判可證明交接發生，不能證明當時已有正式評估或持續回訪。',
+      '2005年9月16日至11月26日相隔71日；若首尾皆計，為72個曆日。這不是死亡倒數。',
+      '2005年11月26日，傅小弟先被送往怡仁綜合醫院，後轉送長庚紀念醫院；醫院通報警方。死亡原因不得簡化為單一傷勢或手段。',
+      '第一審與第一次二審均判無期徒刑；案件兩度經最高法院撤銷發回，第二次更審改判16年。',
+      '更二審量刑同時記載行為危害、犯後態度、悔意及附帶民事和解等情狀。本站呈現理由，不代表要求讀者接受其價值判斷。',
+      '下列六項為本站由案件推導的最小安全閉環，不是法院對特定機關的違法認定。',
+      '通報者不必先證明犯罪。求助區維持靜音；電話與線上通報入口皆可直接操作。',
+      ''
+    ],
+    en: [
+      'All characters in this piece are institutional symbols, not people in the case. The page neither invents words or conduct for Little Fu nor reenacts harm; the symbolic handover ledger is not evidence.',
+      'Little Fu was born on 27 November 2002 and died on 26 November 2005. This page does not invent personal details absent from reliable records.',
+      'Contemporary reports published the full name; public court texts generally use redaction. At the user’s request, this page calls the child “Little Fu” throughout and does not republish addresses or intimate injury details.',
+      'The rulings state that a man surnamed Chang assumed care on 16 September 2005. They establish that the handover occurred, but do not establish that a formal assessment or continuing visits were already in place.',
+      'There are 71 days between 16 September and 26 November 2005; counting both endpoints gives 72 calendar dates. This is not a death countdown.',
+      'On 26 November 2005, Little Fu was first taken to Yi-Jen General Hospital and then transferred to Chang Gung Memorial Hospital; the hospital notified police. The cause of death must not be reduced to one injury or method.',
+      'The trial court and first appellate court both imposed or affirmed life imprisonment; the Supreme Court reversed and remanded twice, and the second retrial on remand imposed sixteen years.',
+      'The second retrial’s sentencing reasons also record the harm, post-offense attitude, remorse, and settlement in the attached civil action. This page presents those reasons; it does not ask readers to accept their value judgment.',
+      'The six items below are this site’s proposed minimum closed safety loop derived from the case, not a judicial finding that a particular agency acted unlawfully.',
+      'A reporter need not first prove a crime. The help section remains silent; telephone and online reporting links are directly usable.',
+      ''
+    ],
+    ja: [
+      '本劇の登場人物は制度を象徴する創作上の存在で、事件関係者ではありません。傅小弟の言動を創作せず、被害を再現しません。象徴的な引継ぎ記録も証拠品ではありません。',
+      '傅小弟は2002年11月27日に生まれ、2005年11月26日に死亡しました。信頼できる記録にない生活上の細部は創作しません。',
+      '同時代の報道では実名が公開され、公開裁判文書では多くが伏字です。本ページは指定に従って「傅小弟」に統一し、住所や私的な傷害情報を再掲しません。',
+      '裁判文書によれば、張姓の男性は2005年9月16日に養育を引き受けました。引継ぎがあったことは確認できますが、当時すでに正式な評価や継続訪問があったことまでは確認できません。',
+      '2005年9月16日から11月26日までは71日で、両端の日を数えれば72暦日です。これは死亡へのカウントダウンではありません。',
+      '2005年11月26日、傅小弟はまず怡仁総合病院へ搬送され、その後、長庚紀念病院へ転送されました。病院は警察へ通報しました。死因を単一の傷や手段へ縮減してはなりません。',
+      '一審と最初の控訴審はいずれも無期懲役とし、最高法院は二度破棄差戻しを行い、第2次差戻審が懲役16年を言い渡しました。',
+      '第2次差戻審の量刑理由には、行為の重大性に加え、犯行後の態度、悔悟、付帯民事訴訟上の和解も記されています。本ページは理由を示すもので、その価値判断への同意を求めるものではありません。',
+      '以下の六項目は、本サイトが事件から導いた最小限の安全確認ループであり、特定機関の違法を認定した裁判所の判断ではありません。',
+      '通報者が先に犯罪を証明する必要はありません。支援案内は無音のまま、電話とオンライン通報を直接利用できます。',
+      ''
+    ]
+  }[sceneLanguage];
+
   const focusDialogues = {
     zh: [
       ['先讀可核對的第一欄。', '線索不是結論；讓它與日期和來源對讀。'],
@@ -256,17 +334,24 @@
 
   function roleForSpeaker(speaker = '') {
     const normalized = speaker.toLowerCase();
-    if (/(\u5408\u8072|\u4e8c\u4eba|together)/u.test(normalized)) return 'together';
+    if (/(\u5408\u8072|\u5408\u58f0|\u4e8c\u4eba|together)/u.test(normalized)) return 'together';
     if (/(\u5b88\u8b77|\u5b88\u671b|\u898b\u5b88|guardian)/u.test(normalized)) return 'guardian';
     return 'recorder';
+  }
+
+  function canonicalShadowSpeaker(role) {
+    if (role === 'guardian') return theatreCopy.guardian;
+    if (role === 'together') return theatreCopy.together;
+    return theatreCopy.recorder;
   }
 
   function splitRomanceLine(rawLine) {
     return String(rawLine || '').split(/\s*[\uff5c|]\s*/u).filter(Boolean).map((part, index) => {
       const match = part.match(/^(.{1,32}?)(?:\uff1a|:|\u2014\u2014|\u2014)\s*(.+)$/u);
-      const speaker = match ? match[1].trim() : (index ? theatreCopy.archivist : theatreCopy.researcher);
+      const rawSpeaker = match ? match[1].trim() : (index ? theatreCopy.guardian : theatreCopy.recorder);
       const text = match ? match[2].trim() : part.trim();
-      return { speaker, text, role: roleForSpeaker(speaker), source: 'elegy' };
+      const role = roleForSpeaker(rawSpeaker);
+      return { speaker: canonicalShadowSpeaker(role), text, role, source: 'elegy' };
     });
   }
 
@@ -276,12 +361,13 @@
     scene.querySelectorAll('.case-fu__verse-body > p').forEach(paragraph => {
       const speakerNode = paragraph.querySelector('.case-fu__speaker');
       if (speakerNode) {
-        const speaker = speakerNode.textContent.trim();
+        const rawSpeaker = speakerNode.textContent.trim();
         const raw = paragraph.textContent.trim();
+        const role = roleForSpeaker(rawSpeaker);
         shadow.push({
-          speaker,
-          text: raw.slice(speaker.length).trim(),
-          role: roleForSpeaker(speaker),
+          speaker: canonicalShadowSpeaker(role),
+          text: raw.slice(rawSpeaker.length).trim(),
+          role,
           source: 'transcript'
         });
       } else if (paragraph.classList.contains('case-fu__modern')) {
@@ -370,20 +456,50 @@
       const elegyLines = splitRomanceLine(romanceLines[index] || romanceLines[romanceLines.length - 1]);
       const shadowLines = [...elegyLines, ...transcript.shadow];
       const baseDialogue = modernDialogues[index] || modernDialogues[modernDialogues.length - 1];
+      const clues = clueSets[index] || clueSets[clueSets.length - 1];
+      const recordNote = String(recordNotes[index] || '').trim();
       const modernLines = [
         { speaker: theatreCopy.researcher, text: baseDialogue[0], role: 'researcher', source: 'original' },
         { speaker: theatreCopy.archivist, text: baseDialogue[1], role: 'archivist', source: 'original' },
-        ...transcript.notes
+        ...(recordNote ? [{ speaker: theatreCopy.recordNote, text: recordNote, role: 'note', source: 'record-note' }] : [])
       ];
-      const interactionTranscript = focusDialogues.flatMap(pair => [
-        { speaker: theatreCopy.researcher, text: pair[0], role: 'researcher', source: 'interaction' },
-        { speaker: theatreCopy.archivist, text: pair[1], role: 'archivist', source: 'interaction' }
-      ]);
-      renderCompleteTranscript(scene, [
-        { label: theatreCopy.shadowTranscriptLabel, lines: shadowLines },
-        { label: theatreCopy.modernTranscriptLabel, lines: modernLines },
-        { label: theatreCopy.interactionTranscriptLabel, lines: interactionTranscript }
-      ]);
+      const stageNoticeText = String(stage.querySelector('.case-fu__stage-label')?.textContent || '').trim();
+      const centreCaptionText = String(stage.querySelector('.case-fu__stage-core')?.textContent || '').trim();
+      const stageOpeningLines = [
+        { speaker: theatreCopy.curtainCue, text: theatreCopy.curtainOpen, role: 'note', source: 'curtain' },
+        ...(stageNoticeText ? [{ speaker: theatreCopy.stageNotice, text: stageNoticeText, role: 'note', source: 'stage' }] : []),
+        ...(centreCaptionText ? [{ speaker: theatreCopy.centreCaption, text: centreCaptionText, role: 'note', source: 'stage-caption' }] : [])
+      ];
+      const shadowTranscriptLines = [
+        { speaker: theatreCopy.shadowNotice, text: `${theatreCopy.romanceLabel} · ${theatreCopy.transcriptLabel}`, role: 'note', source: 'stage' },
+        ...shadowLines
+      ];
+      const modernTranscriptLines = [
+        { speaker: theatreCopy.transitionNotice, text: theatreCopy.modernLabel, role: 'note', source: 'transition' },
+        ...modernLines
+      ];
+      const interactionTranscript = [
+        { speaker: theatreCopy.interactionGuide, text: `${theatreCopy.interactionLabel} — ${theatreCopy.interactionNote}`, role: 'note', source: 'interaction-guide' },
+        ...clues.flatMap((clue, clueIndex) => {
+          const pair = focusDialogues[clueIndex] || focusDialogues[0];
+          return [
+            { speaker: `${theatreCopy.interactionCard} ${clueIndex + 1} · ${clue[0]}`, text: clue[1], role: 'note', source: 'interaction-card' },
+            { speaker: theatreCopy.researcher, text: pair[0], role: 'researcher', source: 'interaction' },
+            { speaker: theatreCopy.archivist, text: pair[1], role: 'archivist', source: 'interaction' }
+          ];
+        })
+      ];
+      const stageClosingLines = [
+        { speaker: theatreCopy.curtainCue, text: theatreCopy.curtainClose, role: 'note', source: 'curtain' }
+      ];
+      const completeTranscriptGroups = [
+        { label: theatreCopy.stageOpeningTranscriptLabel, lines: stageOpeningLines },
+        { label: theatreCopy.shadowTranscriptLabel, lines: shadowTranscriptLines },
+        { label: theatreCopy.modernTranscriptLabel, lines: modernTranscriptLines },
+        { label: theatreCopy.interactionTranscriptLabel, lines: interactionTranscript },
+        { label: theatreCopy.stageClosingTranscriptLabel, lines: stageClosingLines }
+      ];
+      renderCompleteTranscript(scene, completeTranscriptGroups);
 
       const curtainLeft = document.createElement('i');
       curtainLeft.className = 'case-fu__curtain case-fu__curtain--left';
@@ -476,7 +592,7 @@
 
       scene.dataset.sceneDuration = String(duration);
       scene.dataset.shadowLineCount = String(shadowItems.length);
-      scene.dataset.transcriptLineCount = String(transcript.shadow.length + transcript.notes.length);
+      scene.dataset.transcriptLineCount = String(completeTranscriptGroups.reduce((sum, group) => sum + group.lines.length, 0));
       scene.dataset.modernLineCount = String(modernItems.length);
       scene.style.setProperty('--scene-duration', `${duration}ms`);
       scene.style.setProperty('--shadow-start', `${shadowStart}ms`);
@@ -512,7 +628,6 @@
       buttons.setAttribute('role', 'group');
       buttons.setAttribute('aria-label', theatreCopy.interactionLabel);
 
-      const clues = clueSets[index] || clueSets[clueSets.length - 1];
       const showClue = (clueIndex, interactive = false) => {
         const clue = clues[clueIndex] || clues[0];
         focusTitle.textContent = clue[0];

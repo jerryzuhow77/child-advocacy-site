@@ -579,6 +579,12 @@ html[lang="ja"] .case-fu__medical-lead { font-family: "Noto Serif JP", "Yu Minch
 .case-fu__transcript-line--archivist { border-left-color: var(--fu-lotus); }
 .case-fu__transcript-line--researcher { border-left-color: var(--fu-crab-blue); }
 .case-fu__transcript-line--note { padding: 12px 14px; border-left-color: var(--fu-cinnabar); background: rgba(155, 79, 70, 0.06); font-size: 0.92rem; }
+.case-fu__transcript-line[data-line-source="curtain"] { border-left-color: var(--fu-autumn); background: rgba(163, 145, 88, 0.1); text-align: center; }
+.case-fu__transcript-line[data-line-source="stage"],
+.case-fu__transcript-line[data-line-source="stage-caption"],
+.case-fu__transcript-line[data-line-source="transition"],
+.case-fu__transcript-line[data-line-source="interaction-guide"] { border-left-color: var(--fu-indigo); background: rgba(51, 72, 92, 0.075); }
+.case-fu__transcript-line[data-line-source="interaction-card"] { border-left-color: var(--fu-sage); background: rgba(74, 109, 100, 0.08); }
 .case-fu__transcript-line[data-line-source="elegy"] { font-family: "Noto Serif TC", "Songti TC", Georgia, serif; }
 html[lang="en"] .case-fu__transcript-group h4,
 html[lang="en"] .case-fu__transcript-line[data-line-source="elegy"] { font-family: Georgia, "Times New Roman", serif; }
