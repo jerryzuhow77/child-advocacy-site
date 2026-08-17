@@ -50,7 +50,8 @@ a{color:inherit}
 
 .sh-hero-art{position:relative;height:100%;overflow:hidden;background-position:center calc(50% + var(--sh-scroll-shift,0px))}
 .sh-hero-art:before{content:"";position:absolute;inset:8% 10%;border:12px solid rgba(156,122,76,.74);background:repeating-linear-gradient(45deg,transparent 0 24px,rgba(35,58,74,.19) 25px 27px),rgba(241,236,226,.34);clip-path:polygon(0 0,100% 0,100% 44%,91% 44%,91% 55%,100% 55%,100% 100%,0 100%);box-shadow:0 18px 45px rgba(17,42,55,.17);animation:frameBreathe 8s ease-in-out infinite}
-.sh-child-silhouette{position:absolute;z-index:4;width:28%;aspect-ratio:.58;left:36%;top:29%;background:var(--paper);clip-path:polygon(44% 0,63% 5%,72% 20%,70% 42%,84% 62%,78% 100%,22% 100%,16% 62%,30% 42%,28% 20%,37% 5%);filter:drop-shadow(0 8px 18px rgba(0,0,0,.22));animation:childFloat 6s ease-in-out infinite}
+.sh-kaikai-chibi{position:absolute;z-index:5;left:50%;bottom:4%;display:block;width:auto;height:min(72%,660px);object-fit:contain;transform-origin:50% 88%;filter:drop-shadow(0 17px 20px rgba(17,42,55,.24));animation:kaikaiFloat 6s ease-in-out infinite}
+.sh-hero-art:after{content:"";position:absolute;z-index:1;left:50%;bottom:10%;width:54%;aspect-ratio:1;border-radius:50%;transform:translateX(-50%);background:radial-gradient(circle,rgba(240,216,163,.5) 0 17%,rgba(136,169,182,.2) 38%,transparent 70%);filter:blur(5px);animation:kaikaiGlow 7s ease-in-out infinite}
 
 .sh-weave-mark{position:absolute;z-index:3;width:128px;height:128px;opacity:.72;background:conic-gradient(from 45deg,#b96550 0 12.5%,#efd39c 0 25%,#315365 0 37.5%,#789887 0 50%,#b96550 0 62.5%,#efd39c 0 75%,#315365 0 87.5%,#789887 0);clip-path:polygon(50% 0,61% 28%,85% 15%,72% 39%,100% 50%,72% 61%,85% 85%,61% 72%,50% 100%,39% 72%,15% 85%,28% 61%,0 50%,28% 39%,15% 15%,39% 28%);filter:drop-shadow(0 8px 13px rgba(24,44,55,.18));animation:weaveTurn 25s linear infinite}
 .sh-weave-mark-one{top:13%;right:8%}
@@ -85,6 +86,20 @@ a{color:inherit}
 .sh-cultural-principle{display:grid;grid-template-columns:70px minmax(0,1fr) 70px;align-items:center;gap:22px;margin-top:34px;padding:23px;border:1px solid rgba(237,211,158,.34);background:rgba(255,255,255,.065);font-family:"Noto Serif TC","Noto Serif JP",serif;font-size:1.2rem;line-height:1.8}
 .sh-principle-weave,.sh-support-weave{display:block;width:58px;height:58px;background:conic-gradient(from 45deg,#ba6c55 0 12.5%,#e6c98d 0 25%,#78998a 0 37.5%,#6e8ca0 0 50%,#ba6c55 0 62.5%,#e6c98d 0 75%,#78998a 0 87.5%,#6e8ca0 0);clip-path:polygon(50% 0,63% 29%,100% 50%,63% 71%,50% 100%,37% 71%,0 50%,37% 29%)}
 .sh-principle-flower,.sh-support-flower{display:block;width:58px;height:58px;border-radius:50%;background:radial-gradient(circle,#e5ca90 0 11%,transparent 12%),repeating-conic-gradient(#b86c55 0 20deg,transparent 20deg 45deg);border:2px solid rgba(229,202,144,.7)}
+
+.sh-cultural-seals{position:relative;overflow:hidden;padding:6.5rem 24px;background:linear-gradient(135deg,#e8e0d0 0 47%,#f6f1e6 47% 100%);border-top:1px solid rgba(35,58,74,.24);border-bottom:1px solid rgba(35,58,74,.24)}
+.sh-cultural-seals:before,.sh-cultural-seals:after{content:"";position:absolute;width:320px;aspect-ratio:1;border:1px solid rgba(155,79,67,.15);border-radius:50%;box-shadow:0 0 0 28px rgba(122,154,141,.07),0 0 0 56px rgba(179,145,80,.06);pointer-events:none}
+.sh-cultural-seals:before{left:-190px;top:-145px}
+.sh-cultural-seals:after{right:-185px;bottom:-170px}
+.sh-seal-layout{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(300px,.92fr);align-items:center;gap:clamp(36px,6vw,78px);max-width:1120px;margin:auto}
+.sh-seal-art{position:relative;margin:0;padding:14px;background:var(--ink);border:1px solid rgba(179,145,80,.72);box-shadow:15px 17px 0 rgba(35,58,74,.12)}
+.sh-seal-art:before{content:"";position:absolute;inset:-13px 22px 22px -13px;z-index:-1;border:1px solid rgba(155,79,67,.28)}
+.sh-seal-art img{display:block;width:100%;height:auto;aspect-ratio:1463/1536;object-fit:cover;background:#000;transform-origin:center;animation:sealDrift 11s ease-in-out 1s infinite}
+.sh-seal-art figcaption{padding:12px 8px 3px;color:#d9d6ce;font-size:.76rem;line-height:1.65;letter-spacing:.04em;text-align:center}
+.sh-seal-copy .sh-index{color:#986633}
+.sh-seal-copy h2{margin:.25em 0 .75em;color:var(--ink);font-family:"Noto Serif TC","Noto Serif JP",serif;font-size:clamp(2rem,4vw,3.45rem);line-height:1.28;text-wrap:balance}
+.sh-seal-copy p{color:#445254}
+.sh-seal-note{position:relative;margin-top:28px;padding:20px 22px 20px 25px;border-left:6px solid var(--terracotta);background:rgba(255,255,255,.68);color:var(--indigo);font-family:"Noto Serif TC","Noto Serif JP",serif;font-size:1.08rem;font-weight:800;box-shadow:6px 7px 0 rgba(156,122,76,.1)}
 
 .sh-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 .sh-card{position:relative;overflow:hidden;background:#fff;border:1px solid rgba(35,58,74,.2);border-top:8px solid var(--indigo);padding:28px;box-shadow:8px 8px 0 rgba(156,122,76,.13);transition:transform .25s ease,box-shadow .25s ease}
@@ -156,7 +171,9 @@ a{color:inherit}
 
 @keyframes signalIn{to{opacity:1;transform:none}}
 @keyframes frameBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.012)}}
-@keyframes childFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes kaikaiFloat{0%,100%{transform:translateX(-50%) translateY(0) rotate(-.35deg)}50%{transform:translateX(-50%) translateY(-9px) rotate(.35deg)}}
+@keyframes kaikaiGlow{0%,100%{opacity:.62;transform:translateX(-50%) scale(.96)}50%{opacity:.88;transform:translateX(-50%) scale(1.04)}}
+@keyframes sealDrift{0%,100%{transform:scale(1)}50%{transform:scale(1.012)}}
 @keyframes weaveTurn{to{transform:rotate(360deg)}}
 @keyframes endingTurn{to{transform:translate(-50%,-50%) rotate(360deg)}}
 @keyframes flowerPulse{0%,100%{transform:scale(.96);opacity:.52}50%{transform:scale(1.03);opacity:.77}}
@@ -166,6 +183,8 @@ a{color:inherit}
   .sh-language-panel{grid-template-columns:1fr}
   .sh-language-symbol{min-height:130px}
   .sh-record-grid{grid-template-columns:1fr}
+  .sh-seal-layout{grid-template-columns:1fr;max-width:720px}
+  .sh-seal-copy{padding-top:12px}
 }
 
 @media(max-width:760px){
@@ -177,6 +196,8 @@ a{color:inherit}
   .sh-hero{grid-template-columns:1fr;min-height:auto;background:var(--ink)}
   .sh-hero-copy{padding:12vh 24px 7vh}
   .sh-hero-art{height:47vh;background:linear-gradient(rgba(241,236,226,.74),rgba(241,236,226,.88)),url("art/see-hear-feature-concept.png") center/cover}
+  .sh-kaikai-chibi{height:82%;bottom:1%}
+  .sh-hero-art:after{width:70%;bottom:4%}
   .sh-weave-mark-one{right:7%}
   .sh-grid,.sh-response,.sh-call-grid,.sh-support-grid{grid-template-columns:1fr}
   .sh-myth{grid-template-columns:1fr}
@@ -198,22 +219,12 @@ a{color:inherit}
   .sh-step{grid-template-columns:52px 1fr;gap:12px;padding:20px 16px}
   .sh-support-grid a{grid-template-columns:60px minmax(0,1fr);padding:20px}
   .sh-support-grid span{width:50px;height:50px}
+  .sh-cultural-seals{padding:4.5rem 20px}
+  .sh-seal-art{padding:9px;box-shadow:8px 10px 0 rgba(35,58,74,.12)}
+  .sh-seal-copy h2{font-size:2.25rem}
 }
 
 @media(prefers-reduced-motion:reduce){
   *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
   .reveal,.sh-signal-stack>*{opacity:1;transform:none}
 }
-
-/* 2026-08-13 — 简体中文：统一字库、字形与笔画粗细。 */
-html[lang="zh-Hans"] body,
-html[lang="zh-Hans"] body :where(h1,h2,h3,h4,h5,h6,p,a,button,span,strong,b,small,li,figcaption,blockquote,div,section,nav,footer){
-  font-family:"Microsoft YaHei UI","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC","Source Han Sans SC","PingFang SC",Arial,sans-serif!important;
-  font-synthesis:none!important;
-  font-variant-east-asian:normal;
-  text-rendering:optimizeLegibility;
-  -webkit-font-smoothing:antialiased;
-}
-html[lang="zh-Hans"] body{font-weight:400;}
-html[lang="zh-Hans"] :where(h1,h2,h3,h4,h5,h6,strong,b){font-weight:700!important;}
-html[lang="zh-Hans"] :where(.sh-brand,.sh-kicker,.sh-index,.sh-concept-visual figcaption small,.sh-emergency-detail a){font-weight:700!important;}
