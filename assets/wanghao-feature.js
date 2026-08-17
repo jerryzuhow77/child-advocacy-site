@@ -121,7 +121,17 @@
       ],
       culture: {
         kicker: 'TAIWAN CULTURAL MEMORY · 裝飾性文化語彙', title: '臺灣公共文化圖章',
-        intro: '三枚圖章把地方手工藝與戰後生活記憶帶進專題舞臺；它們只負責頁面的文化節奏，不替案件人物標示身分。',
+        intro: '六枚圖章把地方手工藝與戰後生活記憶帶進專題舞臺；它們只負責頁面的文化節奏，不替案件人物標示身分。',
+        stampTitle: '六枚新作文化圖章',
+        stampIntro: '紙纖維、套色版印與歲月磨痕延續全頁的傳統色調；每一枚都是裝飾性文化圖像，不是案件證據或身分標記。',
+        stamps: [
+          ['minnan-03', '閩南 03｜燕影與厝院'],
+          ['minnan-04', '閩南 04｜彩棚與獅首'],
+          ['hakka-03', '客家 03｜柿果與紙傘'],
+          ['hakka-04', '客家 04｜花田與水圳'],
+          ['waisheng-03', '戰後外省移居生活記憶 03｜車站與家書'],
+          ['waisheng-04', '戰後外省移居生活記憶 04｜露天電影與收音機']
+        ],
         cards: [
           ['minnan', '臺灣閩南生活工藝', '剪黏花片', '以抽象陶片與屋脊弧線引用剪黏手藝的材料感，不重製廟徽或宗教標誌。'],
           ['hakka', '臺灣客家手作記憶', '藍染布與縫線', '以靛藍布褶與細密縫線呈現手作痕跡，也呼應制度交接不能斷線。'],
@@ -146,8 +156,18 @@
         { title: 'Finale | Dawn breaks and the curtain closes', female: 'Dawn whitens the roof ridge as the curtain closes; I still fear a name carved too deeply may hide the road others must continue.', male: 'We cannot turn back the calendar of 2011, but the next file can find the child sooner and let protection arrive before danger.', chorus: 'We are not the child’s voice, only threshold keeper and storyteller; the curtain falls, responsibility does not—may every door be reached.', seals: ['minnan', 'hakka', 'postwar'] }
       ],
       culture: {
-        kicker: 'TAIWAN CULTURAL MEMORY · DECORATIVE CONTEXT', title: 'Three marks of everyday cultural memory',
-        intro: 'These marks bring local craft and postwar everyday memory into the visual language of the feature. They do not identify anyone in the case.',
+        kicker: 'TAIWAN CULTURAL MEMORY · DECORATIVE CONTEXT', title: 'Taiwan public cultural stamps',
+        intro: 'Six stamps bring local craft and postwar everyday memory into the visual language of the feature. They do not identify anyone in the case.',
+        stampTitle: 'Six newly designed cultural stamps',
+        stampIntro: 'Paper grain, layered block-print color, and gently weathered edges continue the page’s traditional palette. Every stamp is decorative cultural imagery—not evidence or an identity marker.',
+        stamps: [
+          ['minnan-03', 'Minnan 03 | Courtyard and swallow'],
+          ['minnan-04', 'Minnan 04 | Festival canopy and lion motif'],
+          ['hakka-03', 'Hakka 03 | Persimmons and paper parasol'],
+          ['hakka-04', 'Hakka 04 | Flower field and irrigation channel'],
+          ['waisheng-03', 'Postwar migrant memory 03 | Station and family letters'],
+          ['waisheng-04', 'Postwar migrant memory 04 | Outdoor cinema and radio']
+        ],
         cards: [
           ['minnan', 'Taiwanese Minnan craft', 'Cut-and-paste ceramic mosaic', 'Abstract ceramic fragments and a roofline curve recall the material language of jian-nian without reproducing a temple emblem or religious sign.'],
           ['hakka', 'Taiwan Hakka handwork', 'Indigo cloth and stitching', 'An indigo fold and stitch line evoke handwork while echoing a safeguarding handoff that must not be allowed to break.'],
@@ -172,8 +192,18 @@
         { title: '終幕｜東の空が白み、幕が閉じる', female: '屋根の稜線が白み、幕が閉じる。深く刻まれた名が、後に続く者の道を隠さないか、私はなお恐れる。', male: '2011年の暦は戻せない。それでも次の記録は、より早く子どもを見つけ、危険より先に保護を届けられる。', chorus: '私たちは子どもの声ではなく、門守りと語り部にすぎない。幕が下りても責任は終わらず、すべての扉に誰かがたどり着くように。', seals: ['minnan', 'hakka', 'postwar'] }
       ],
       culture: {
-        kicker: 'TAIWAN CULTURAL MEMORY · 装飾上の文化的文脈', title: '台湾の生活文化を示す三つの図章',
-        intro: '地方工芸と戦後の日常記憶を特集の視覚言語へ取り入れるための図章です。事件関係者の背景を示すものではありません。',
+        kicker: 'TAIWAN CULTURAL MEMORY · 装飾上の文化的文脈', title: '台湾公共文化図章',
+        intro: '六つの図章で地方工芸と戦後の日常記憶を特集の視覚言語へ取り入れます。事件関係者の背景を示すものではありません。',
+        stampTitle: '新作の文化図章・六点',
+        stampIntro: '紙の繊維、重ね刷りの色、穏やかな経年の痕跡が、ページ全体の伝統色を引き継ぎます。いずれも装飾的な文化図像であり、事件の証拠や身分表示ではありません。',
+        stamps: [
+          ['minnan-03', '閩南 03｜燕と家屋の中庭'],
+          ['minnan-04', '閩南 04｜祭礼の彩棚と獅子意匠'],
+          ['hakka-03', '客家 03｜柿と紙傘'],
+          ['hakka-04', '客家 04｜花畑と水路'],
+          ['waisheng-03', '戦後外省系移住生活の記憶 03｜駅と家族への手紙'],
+          ['waisheng-04', '戦後外省系移住生活の記憶 04｜野外映画とラジオ']
+        ],
         cards: [
           ['minnan', '台湾閩南の生活工芸', '剪黏の陶片', '抽象化した陶片と屋根の曲線で剪黏の素材感を表し、寺廟の紋章や宗教的標識は再現しません。'],
           ['hakka', '台湾客家の手仕事の記憶', '藍染の布と縫い目', '藍色の布の折り目と縫い目で手仕事を表し、保護制度の引継ぎを途切れさせないという主題にも重ねます。'],
@@ -272,6 +302,12 @@
       strip.innerHTML = `<div class="wh-culture-inner">
         <div class="wh-kicker">${escapeHTML(culture.kicker)}</div><h2 id="culture-title">${escapeHTML(culture.title)}</h2>
         <p class="wh-culture-intro">${escapeHTML(culture.intro)}</p>
+        <section class="wh-stamp-set" aria-labelledby="culture-stamp-title">
+          <div class="wh-stamp-heading"><h3 id="culture-stamp-title">${escapeHTML(culture.stampTitle)}</h3><p>${escapeHTML(culture.stampIntro)}</p></div>
+          <ul class="wh-stamp-list" role="list">${culture.stamps.map(([stamp, label]) =>
+            `<li class="wh-stamp-item" data-stamp="${stamp}"><span class="wh-stamp-art" aria-hidden="true"></span><span class="wh-stamp-caption">${escapeHTML(label)}</span></li>`
+          ).join('')}</ul>
+        </section>
         <ul class="wh-culture-list" role="list">${culture.cards.map(([kind, title, subtitle, description]) =>
           `<li class="wh-culture-card" data-culture="${kind}">${cultureMark(kind)}<div class="wh-culture-copy"><h3>${escapeHTML(title)}</h3><small>${escapeHTML(subtitle)}</small><p>${escapeHTML(description)}</p></div></li>`
         ).join('')}</ul>

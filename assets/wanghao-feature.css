@@ -267,6 +267,22 @@ html:not(.js) .wh-puppet-replay,.wh-puppet-play.is-static .wh-puppet-replay{disp
 .wh-culture-inner{position:relative;width:min(1160px,100%);margin:auto}
 .wh-culture-strip h2{margin:.35rem 0 .55rem;color:var(--wh-xuan);font-size:clamp(1.8rem,3.5vw,3rem);line-height:1.24;text-wrap:balance}
 .wh-culture-intro{max-width:760px;color:#4a585d}
+.wh-stamp-set{margin:clamp(1.6rem,4vw,2.7rem) 0 1.45rem;padding:clamp(1rem,2.8vw,1.55rem);border:1px solid rgba(39,69,82,.22);background:linear-gradient(145deg,rgba(19,29,31,.96),rgba(37,50,49,.94));box-shadow:0 22px 50px rgba(34,39,37,.14),inset 0 0 0 1px rgba(225,194,126,.08)}
+.wh-stamp-heading{display:grid;grid-template-columns:minmax(190px,.72fr) minmax(0,1.28fr);gap:1.25rem;align-items:end;margin:0 0 1.25rem;padding:0 0 1rem;border-bottom:1px solid rgba(224,193,125,.24)}
+.wh-stamp-heading h3{margin:0;color:#f0d99c;font-size:clamp(1.08rem,2vw,1.45rem);line-height:1.35;letter-spacing:.04em}
+.wh-stamp-heading p{max-width:720px;margin:0;color:#d9ded8;font-size:.8rem;line-height:1.72}
+.wh-stamp-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(.7rem,1.8vw,1.15rem);margin:0;padding:0;list-style:none}
+.wh-stamp-item{min-width:0;margin:0;padding:.55rem .55rem .72rem;border:1px solid rgba(224,193,125,.22);background:rgba(4,10,11,.7);box-shadow:0 12px 25px rgba(0,0,0,.2);transform:rotate(var(--wh-stamp-tilt,0));transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease}
+.wh-stamp-item:nth-child(2),.wh-stamp-item:nth-child(5){--wh-stamp-tilt:.45deg}.wh-stamp-item:nth-child(3),.wh-stamp-item:nth-child(4){--wh-stamp-tilt:-.45deg}
+.wh-stamp-item:hover{transform:translateY(-4px) rotate(0);border-color:rgba(236,207,139,.55);box-shadow:0 18px 34px rgba(0,0,0,.28)}
+.wh-stamp-art{display:block;width:100%;aspect-ratio:1;background-color:#050706;background-image:url("images/wanghao-cultural-seals-set-v1.jpg");background-repeat:no-repeat;background-size:300% 200%;box-shadow:inset 0 0 24px rgba(0,0,0,.48);filter:saturate(.94) contrast(1.02)}
+.wh-stamp-item[data-stamp="minnan-03"] .wh-stamp-art{background-position:0 0}
+.wh-stamp-item[data-stamp="minnan-04"] .wh-stamp-art{background-position:50% 0}
+.wh-stamp-item[data-stamp="hakka-03"] .wh-stamp-art{background-position:100% 0}
+.wh-stamp-item[data-stamp="hakka-04"] .wh-stamp-art{background-position:0 100%}
+.wh-stamp-item[data-stamp="waisheng-03"] .wh-stamp-art{background-position:50% 100%}
+.wh-stamp-item[data-stamp="waisheng-04"] .wh-stamp-art{background-position:100% 100%}
+.wh-stamp-caption{display:block;min-height:2.9em;margin:.62rem .25rem 0;color:#f2e7cd;font:700 clamp(.67rem,1vw,.76rem)/1.45 system-ui,sans-serif;letter-spacing:.025em;text-align:center;text-wrap:balance}
 .wh-culture-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;margin:1.4rem 0 0;padding:0;list-style:none}
 .wh-culture-card{display:grid;grid-template-columns:76px 1fr;gap:1rem;align-items:center;min-width:0;padding:1.15rem;border:1px solid rgba(39,69,82,.2);background:rgba(250,246,236,.91);box-shadow:0 16px 34px rgba(41,48,45,.06)}
 .wh-culture-mark{display:grid;place-items:center;width:72px;aspect-ratio:1;border:1px solid currentColor;border-radius:50%;box-shadow:inset 0 0 0 5px rgba(255,255,255,.5)}
@@ -280,7 +296,7 @@ html:not(.js) .wh-puppet-replay,.wh-puppet-play.is-static .wh-puppet-replay{disp
 .wh-culture-note{margin:1rem 0 0;padding:.78rem 1rem;border-left:3px solid var(--wh-teng);background:rgba(255,255,255,.48);font-size:.78rem;line-height:1.72}
 .wh-culture-note strong{color:var(--wh-ya)}
 
-@media(max-width:880px){.wh-culture-list{grid-template-columns:1fr}.wh-culture-card{grid-template-columns:68px 1fr}.wh-culture-mark{width:64px}.wh-culture-mark svg{width:45px;height:45px}}
-@media(max-width:430px){.wh-culture-strip{padding-inline:1rem}.wh-culture-card{grid-template-columns:58px 1fr;padding:.9rem;gap:.8rem}.wh-culture-mark{width:55px}.wh-culture-mark svg{width:39px;height:39px}}
-@media(prefers-reduced-motion:reduce){.wh-culture-card[data-culture="postwar"] .wh-culture-mark{transform:none}}
-@media(forced-colors:active){.wh-puppet-notice,.wh-culture-card,.wh-culture-mark,.wh-culture-note{border:1px solid CanvasText}.wh-culture-strip{background:Canvas;color:CanvasText}}
+@media(max-width:880px){.wh-stamp-heading{grid-template-columns:1fr;gap:.4rem}.wh-stamp-list{grid-template-columns:repeat(2,minmax(0,1fr))}.wh-culture-list{grid-template-columns:1fr}.wh-culture-card{grid-template-columns:68px 1fr}.wh-culture-mark{width:64px}.wh-culture-mark svg{width:45px;height:45px}}
+@media(max-width:430px){.wh-culture-strip{padding-inline:1rem}.wh-stamp-set{padding:.72rem}.wh-stamp-list{gap:.55rem}.wh-stamp-item{padding:.38rem .38rem .55rem}.wh-stamp-caption{margin-top:.45rem;font-size:.61rem;line-height:1.38}.wh-culture-card{grid-template-columns:58px 1fr;padding:.9rem;gap:.8rem}.wh-culture-mark{width:55px}.wh-culture-mark svg{width:39px;height:39px}}
+@media(prefers-reduced-motion:reduce){.wh-stamp-item,.wh-stamp-item:hover,.wh-culture-card[data-culture="postwar"] .wh-culture-mark{transform:none;transition:none}}
+@media(forced-colors:active){.wh-puppet-notice,.wh-stamp-set,.wh-stamp-item,.wh-culture-card,.wh-culture-mark,.wh-culture-note{border:1px solid CanvasText}.wh-stamp-art{background-image:none;border:1px solid CanvasText}.wh-culture-strip,.wh-stamp-set,.wh-stamp-item{background:Canvas;color:CanvasText}.wh-stamp-heading h3,.wh-stamp-heading p,.wh-stamp-caption{color:CanvasText}}
