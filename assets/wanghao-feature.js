@@ -200,7 +200,7 @@
   function puppetStage(scene, mode, copy) {
     const stage = document.createElement('div');
     const sceneIndex = copy.scenes.indexOf(scene);
-    const motionSequence = ['arrival', 'incline', 'step', 'turn', 'incline', 'arrival', 'step', 'turn'];
+    const motionSequence = ['arrival', 'incline', 'step', 'turn', 'raise', 'unfold', 'search', 'guard'];
     stage.className = 'wh-puppet-play';
     stage.dataset.puppetPlay = '';
     stage.dataset.puppetMode = mode;
