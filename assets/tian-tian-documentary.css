@@ -3325,7 +3325,7 @@ html.tt-pose-ready .tt-ending-theatre-puppet{opacity:1}
   .tt-ending .tt-ending-copy{visibility:visible!important;opacity:1!important;pointer-events:auto!important;animation:none!important}
 }
 
-/* v11.4 dispersed ronghua, skippable epilogue, and the supplied snow-landscape ending panorama. */
+/* v11.5 visibly dispersed ronghua, skippable epilogue, and the supplied snow-landscape ending panorama. */
 .tt-chapter{isolation:isolate}
 .tt-chapter>.tt-chapter-grid{position:relative;z-index:1}
 .tt-ronghua-scatter{
@@ -3337,37 +3337,37 @@ html.tt-pose-ready .tt-ending-theatre-puppet{opacity:1}
   background-position:center;
   background-repeat:no-repeat;
   background-size:contain;
-  opacity:.13;
+  opacity:.22;
   pointer-events:none;
-  filter:saturate(.72) contrast(.96) drop-shadow(0 12px 14px rgba(44,56,52,.1));
+  filter:saturate(.88) contrast(1.02) drop-shadow(0 12px 14px rgba(44,56,52,.16));
   transform-origin:50% 72%;
 }
 .tt-ronghua-scatter--blue{
   top:8%;
-  left:max(-150px,-8vw);
+  left:max(-56px,-3.2vw);
   background-image:url("./art/tian-tian-ronghua-blue-branch-20260817.svg");
   transform:rotate(-11deg);
 }
 .tt-ronghua-scatter--lotus{
   top:11%;
-  right:max(-128px,-7vw);
+  right:max(-48px,-2.8vw);
   background-image:url("./art/tian-tian-ronghua-lotus-20260817.svg");
-  opacity:.12;
+  opacity:.20;
   transform:rotate(8deg);
 }
 .tt-ronghua-scatter--phoenix{
   bottom:4%;
-  left:max(-178px,-9vw);
+  left:max(-68px,-3.8vw);
   width:clamp(300px,31vw,500px);
   background-image:url("./art/tian-tian-ronghua-phoenix-20260817.svg");
-  opacity:.105;
+  opacity:.18;
   transform:rotate(-5deg);
 }
 .tt-ronghua-scatter--peony{
-  right:max(-145px,-8vw);
+  right:max(-58px,-3.2vw);
   bottom:6%;
   background-image:url("./art/tian-tian-ronghua-peony-butterfly-20260817.svg");
-  opacity:.125;
+  opacity:.21;
   transform:rotate(7deg);
 }
 
@@ -3464,11 +3464,11 @@ html.tt-pose-ready .tt-ending-theatre-puppet{opacity:1}
 }
 
 @media(max-width:900px){
-  .tt-ronghua-scatter{width:clamp(210px,37vw,330px);opacity:.09}
-  .tt-ronghua-scatter--blue{left:-120px}
-  .tt-ronghua-scatter--lotus{right:-108px}
-  .tt-ronghua-scatter--phoenix{left:-145px;width:clamp(250px,45vw,390px);opacity:.075}
-  .tt-ronghua-scatter--peony{right:-120px}
+  .tt-ronghua-scatter{width:clamp(200px,40vw,320px);opacity:.18}
+  .tt-ronghua-scatter--blue{left:-52px}
+  .tt-ronghua-scatter--lotus{right:-48px;opacity:.17}
+  .tt-ronghua-scatter--phoenix{left:-62px;width:clamp(235px,46vw,370px);opacity:.15}
+  .tt-ronghua-scatter--peony{right:-52px;opacity:.17}
   .tt-ending-panorama{
     right:0;
     bottom:auto;
@@ -3480,11 +3480,11 @@ html.tt-pose-ready .tt-ending-theatre-puppet{opacity:1}
 }
 
 @media(max-width:480px){
-  .tt-ronghua-scatter{width:54vw;opacity:.07}
-  .tt-ronghua-scatter--blue{left:-30vw}
-  .tt-ronghua-scatter--lotus{right:-29vw}
-  .tt-ronghua-scatter--phoenix{left:-34vw;width:65vw;opacity:.06}
-  .tt-ronghua-scatter--peony{right:-30vw}
+  .tt-ronghua-scatter{width:56vw;opacity:.17}
+  .tt-ronghua-scatter--blue{left:-16vw}
+  .tt-ronghua-scatter--lotus{right:-15vw;opacity:.16}
+  .tt-ronghua-scatter--phoenix{left:-18vw;width:64vw;opacity:.14}
+  .tt-ronghua-scatter--peony{right:-16vw;opacity:.16}
   .tt-ending-theatre-skip{top:10px;right:10px;padding:8px 12px;font-size:11px;letter-spacing:.03em}
 }
 
