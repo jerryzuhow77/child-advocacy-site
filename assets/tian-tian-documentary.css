@@ -3325,7 +3325,7 @@ html.tt-pose-ready .tt-ending-theatre-puppet{opacity:1}
   .tt-ending .tt-ending-copy{visibility:visible!important;opacity:1!important;pointer-events:auto!important;animation:none!important}
 }
 
-/* v11.3 dispersed ronghua, skippable epilogue, and white-ronghua panorama. */
+/* v11.4 dispersed ronghua, skippable epilogue, and the supplied snow-landscape ending panorama. */
 .tt-chapter{isolation:isolate}
 .tt-chapter>.tt-chapter-grid{position:relative;z-index:1}
 .tt-ronghua-scatter{
@@ -3372,7 +3372,7 @@ html.tt-pose-ready .tt-ending-theatre-puppet{opacity:1}
 }
 
 /* The theatre remains above the memorial image until the curtain has closed,
-   then dissolves to reveal the full white-ronghua panorama. */
+   then dissolves to reveal the supplied snow-landscape panorama. */
 .tt-ending.is-visible .tt-ending-theatre{
   animation:tt-ending-theatre-dismiss 1.05s ease 18.4s both;
 }
