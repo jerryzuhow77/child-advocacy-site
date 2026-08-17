@@ -3324,3 +3324,205 @@ html.tt-pose-ready .tt-ending-theatre-puppet{opacity:1}
   .tt-stage-curtain,.tt-ending-theatre{display:none!important}
   .tt-ending .tt-ending-copy{visibility:visible!important;opacity:1!important;pointer-events:auto!important;animation:none!important}
 }
+
+/* v11.3 dispersed ronghua, skippable epilogue, and white-ronghua panorama. */
+.tt-chapter{isolation:isolate}
+.tt-chapter>.tt-chapter-grid{position:relative;z-index:1}
+.tt-ronghua-scatter{
+  position:absolute;
+  z-index:0;
+  display:block;
+  width:clamp(260px,27vw,430px);
+  aspect-ratio:1200/760;
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:contain;
+  opacity:.13;
+  pointer-events:none;
+  filter:saturate(.72) contrast(.96) drop-shadow(0 12px 14px rgba(44,56,52,.1));
+  transform-origin:50% 72%;
+}
+.tt-ronghua-scatter--blue{
+  top:8%;
+  left:max(-150px,-8vw);
+  background-image:url("./art/tian-tian-ronghua-blue-branch-20260817.svg");
+  transform:rotate(-11deg);
+}
+.tt-ronghua-scatter--lotus{
+  top:11%;
+  right:max(-128px,-7vw);
+  background-image:url("./art/tian-tian-ronghua-lotus-20260817.svg");
+  opacity:.12;
+  transform:rotate(8deg);
+}
+.tt-ronghua-scatter--phoenix{
+  bottom:4%;
+  left:max(-178px,-9vw);
+  width:clamp(300px,31vw,500px);
+  background-image:url("./art/tian-tian-ronghua-phoenix-20260817.svg");
+  opacity:.105;
+  transform:rotate(-5deg);
+}
+.tt-ronghua-scatter--peony{
+  right:max(-145px,-8vw);
+  bottom:6%;
+  background-image:url("./art/tian-tian-ronghua-peony-butterfly-20260817.svg");
+  opacity:.125;
+  transform:rotate(7deg);
+}
+
+/* The theatre remains above the memorial image until the curtain has closed,
+   then dissolves to reveal the full white-ronghua panorama. */
+.tt-ending.is-visible .tt-ending-theatre{
+  animation:tt-ending-theatre-dismiss 1.05s ease 18.4s both;
+}
+.tt-ending-panorama{
+  position:absolute;
+  z-index:9;
+  inset:0;
+  margin:0;
+  overflow:hidden;
+  background:#0d1b21;
+  visibility:hidden;
+  opacity:0;
+  pointer-events:none;
+}
+.tt-ending-panorama::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,transparent 0 45%,rgba(8,15,17,.12) 58%,rgba(7,13,15,.62) 100%);
+  pointer-events:none;
+}
+.tt-ending-panorama img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:50% 50%;
+}
+.tt-ending.is-visible .tt-ending-panorama{
+  animation:tt-ending-panorama-reveal 1.3s ease 18.35s both;
+}
+
+.tt-ending-theatre-skip{
+  position:absolute;
+  z-index:30;
+  top:clamp(14px,2.5vw,32px);
+  right:clamp(14px,2.8vw,38px);
+  border:1px solid rgba(239,198,119,.62);
+  border-radius:999px;
+  padding:9px 15px;
+  background:rgba(21,10,7,.86);
+  color:#f7e9cb;
+  font-family:var(--tt-sans);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.06em;
+  box-shadow:0 9px 24px rgba(7,3,2,.36);
+  opacity:0;
+  cursor:pointer;
+  backdrop-filter:blur(4px);
+}
+.tt-ending-theatre-skip:hover{background:#703139;border-color:#efc778}
+.tt-ending-theatre-skip:focus-visible{outline:3px solid #f0ca7a;outline-offset:3px}
+.tt-ending-theatre-skip[hidden]{display:none!important}
+.tt-ending.is-visible .tt-ending-theatre-skip{animation:tt-ending-skip-lifecycle 20s linear both}
+
+.tt-ending.is-epilogue-skipped .tt-ending-theatre{display:none!important;animation:none!important}
+.tt-ending.is-epilogue-skipped .tt-ending-theatre-skip{display:none!important}
+.tt-ending.is-epilogue-skipped .tt-ending-panorama{
+  visibility:visible!important;
+  opacity:1!important;
+  animation:none!important;
+}
+.tt-ending.is-epilogue-skipped .tt-ending-copy{
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  animation:none!important;
+}
+.tt-ending.is-epilogue-skipped .tt-ending-copy>*{
+  opacity:1!important;
+  transform:none!important;
+  animation:none!important;
+}
+
+@keyframes tt-ending-theatre-dismiss{
+  0%{visibility:visible;opacity:1}
+  99%{visibility:visible;opacity:0}
+  100%{visibility:hidden;opacity:0}
+}
+@keyframes tt-ending-panorama-reveal{
+  0%{visibility:visible;opacity:0;filter:saturate(.72) brightness(.72)}
+  100%{visibility:visible;opacity:1;filter:saturate(1) brightness(1)}
+}
+@keyframes tt-ending-skip-lifecycle{
+  0%{visibility:visible;opacity:0;transform:translateY(-5px)}
+  2%,78%{visibility:visible;opacity:1;transform:none}
+  82%,100%{visibility:hidden;opacity:0;transform:translateY(-4px)}
+}
+
+@media(max-width:900px){
+  .tt-ronghua-scatter{width:clamp(210px,37vw,330px);opacity:.09}
+  .tt-ronghua-scatter--blue{left:-120px}
+  .tt-ronghua-scatter--lotus{right:-108px}
+  .tt-ronghua-scatter--phoenix{left:-145px;width:clamp(250px,45vw,390px);opacity:.075}
+  .tt-ronghua-scatter--peony{right:-120px}
+  .tt-ending-panorama{
+    right:0;
+    bottom:auto;
+    left:0;
+    height:clamp(300px,55vw,430px);
+  }
+  .tt-ending-panorama::after{background:linear-gradient(0deg,rgba(8,15,17,.2),transparent 38%)}
+  .tt-ending-panorama img{object-fit:contain;object-position:50% 0}
+}
+
+@media(max-width:480px){
+  .tt-ronghua-scatter{width:54vw;opacity:.07}
+  .tt-ronghua-scatter--blue{left:-30vw}
+  .tt-ronghua-scatter--lotus{right:-29vw}
+  .tt-ronghua-scatter--phoenix{left:-34vw;width:65vw;opacity:.06}
+  .tt-ronghua-scatter--peony{right:-30vw}
+  .tt-ending-theatre-skip{top:10px;right:10px;padding:8px 12px;font-size:11px;letter-spacing:.03em}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .tt-ending.is-visible .tt-ending-theatre{animation:none!important}
+  .tt-ending-theatre-skip,
+  .tt-ending.is-visible .tt-ending-theatre-skip{
+    visibility:visible!important;
+    opacity:1!important;
+    transform:none!important;
+    animation:none!important;
+  }
+  .tt-ending-panorama,
+  .tt-ending.is-visible .tt-ending-panorama{
+    position:relative;
+    inset:auto;
+    width:100%;
+    height:auto;
+    aspect-ratio:16/9;
+    visibility:visible!important;
+    opacity:1!important;
+    filter:none!important;
+    animation:none!important;
+  }
+  .tt-ending-panorama img{height:auto;aspect-ratio:16/9;object-fit:contain}
+}
+
+@media print{
+  .tt-ronghua-scatter,.tt-ending-theatre-skip{display:none!important}
+  .tt-ending-panorama{
+    position:relative!important;
+    inset:auto!important;
+    display:block!important;
+    width:100%!important;
+    height:auto!important;
+    aspect-ratio:16/9;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+  .tt-ending-panorama img{height:auto!important;object-fit:contain!important}
+}
