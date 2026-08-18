@@ -74,27 +74,27 @@
       /* Four deliberately different silhouettes: raise, unfold, search, guard.
          The rotations stay within the range of a riveted shadow puppet so the
          limbs remain expressive without opening visible gaps at the joints. */
-      leadUpper: [440, 490, -28, 18, -16, 13, 22],
-      leadFore: [693, 620, -36, -18, -22, 18, 30],
-      leadHand: [878, 520, -18, 15, -22, 20, 20],
-      trailUpper: [440, 490, 14, -19, 12, -10, -17],
-      trailFore: [320, 660, 22, 18, 18, -16, -24],
-      trailHand: [265, 860, 20, -17, 24, -22, -18],
-      leadLeg: [585, 1350, -8, 8, -7, 6, 6],
-      leadFoot: [595, 1500, 14, -12, 13, -11, -9],
-      trailLeg: [412, 1350, 6, -7, 6, -6, -5],
-      trailFoot: [390, 1500, -11, 12, -12, 11, 9]
+      leadUpper: [440, 490, -14, 8, -8, 6, 10],
+      leadFore: [693, 620, -20, -9, -11, 9, 14],
+      leadHand: [878, 520, -8, 7, -10, 9, 9],
+      trailUpper: [440, 490, 7, -9, 6, -5, -8],
+      trailFore: [320, 660, 10, 9, 9, -7, -11],
+      trailHand: [265, 860, 9, -8, 11, -10, -8],
+      leadLeg: [585, 1350, -3, 3, -3, 2.5, 2.5],
+      leadFoot: [595, 1500, 6, -5, 6, -5, -4],
+      trailLeg: [412, 1350, 2.5, -3, 2.5, -2.5, -2],
+      trailFoot: [390, 1500, -5, 5, -6, 5, 4]
     } : {
-      leadUpper: [543, 450, 28, -18, 16, -13, -22],
-      leadFore: [413, 600, 36, 18, 22, -18, -30],
-      leadHand: [229, 575, 18, -15, 22, -20, -20],
-      trailUpper: [703, 450, -14, 19, -12, 10, 17],
-      trailFore: [801, 735, -22, -18, -18, 16, 24],
-      trailHand: [819, 884, -20, 17, -24, 22, 18],
-      leadLeg: [412, 1340, 8, -8, 7, -6, -6],
-      leadFoot: [412, 1495, -14, 12, -13, 11, 9],
-      trailLeg: [748, 1340, -6, 7, -6, 6, 5],
-      trailFoot: [748, 1495, 11, -12, 12, -11, -9]
+      leadUpper: [543, 450, 14, -8, 8, -6, -10],
+      leadFore: [413, 600, 20, 9, 11, -9, -14],
+      leadHand: [229, 575, 8, -7, 10, -9, -9],
+      trailUpper: [703, 450, -7, 9, -6, 5, 8],
+      trailFore: [801, 735, -10, -9, -9, 7, 11],
+      trailHand: [819, 884, -9, 8, -11, 10, 8],
+      leadLeg: [412, 1340, 3, -3, 3, -2.5, -2.5],
+      leadFoot: [412, 1495, -6, 5, -6, 5, 4],
+      trailLeg: [748, 1340, -2.5, 3, -2.5, 2.5, 2],
+      trailFoot: [748, 1495, 5, -5, 6, -5, -4]
     };
     const motionDurations = { raise: '4.8s', unfold: '5.2s', search: '4.4s', guard: '5.4s' };
     const jointAnimation = role => {
@@ -128,22 +128,17 @@
       `<clipPath id="${prefix}-${role}" clipPathUnits="userSpaceOnUse">${expandedJointShape(role, path)}</clipPath>`
     ).join('');
     const image = clip => `<image href="${imageURL}" width="1024" height="1664" preserveAspectRatio="none" clip-path="url(#${prefix}-${clip})"/>`;
-    const jointPin = role => {
-      const [x, y] = joints[role];
-      const radius = /Hand|Foot/.test(role) ? 10 : /Fore|Leg/.test(role) ? 13 : 16;
-      return `<circle class="wh-rig-pin" cx="${x}" cy="${y}" r="${radius}" vector-effect="non-scaling-stroke"/>`;
-    };
     return `<svg class="wh-puppet-art wh-puppet-rig" data-rig="${kind}"${supportsSMIL ? ' data-native-joints="true"' : ''} viewBox="0 0 945 1665" preserveAspectRatio="xMidYMax meet" focusable="false" aria-hidden="true">
       <defs>
         <mask id="${prefix}-body" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1664"><rect width="1024" height="1664" fill="#fff"/>${bodyCutouts}</mask>
         ${clipPaths}
       </defs>
       <g class="wh-rig-coordinate-map" transform="scale(.9228515625 1.0006009615)">
-        <g class="wh-rig-leg is-trail">${jointAnimation('trailLeg')}${image('trailLeg')}${jointPin('trailLeg')}<g class="wh-rig-foot">${jointAnimation('trailFoot')}${image('trailFoot')}${jointPin('trailFoot')}</g></g>
-        <g class="wh-rig-leg is-lead">${jointAnimation('leadLeg')}${image('leadLeg')}${jointPin('leadLeg')}<g class="wh-rig-foot">${jointAnimation('leadFoot')}${image('leadFoot')}${jointPin('leadFoot')}</g></g>
+        <g class="wh-rig-leg is-trail">${jointAnimation('trailLeg')}${image('trailLeg')}<g class="wh-rig-foot">${jointAnimation('trailFoot')}${image('trailFoot')}</g></g>
+        <g class="wh-rig-leg is-lead">${jointAnimation('leadLeg')}${image('leadLeg')}<g class="wh-rig-foot">${jointAnimation('leadFoot')}${image('leadFoot')}</g></g>
         <g class="wh-rig-body"><image href="${imageURL}" width="1024" height="1664" preserveAspectRatio="none" mask="url(#${prefix}-body)"/></g>
-        <g class="wh-rig-upper-arm is-trail">${jointAnimation('trailUpper')}${image('trailUpper')}${jointPin('trailUpper')}<g class="wh-rig-forearm">${jointAnimation('trailFore')}${image('trailFore')}${jointPin('trailFore')}<g class="wh-rig-hand">${jointAnimation('trailHand')}${image('trailHand')}${jointPin('trailHand')}</g></g></g>
-        <g class="wh-rig-upper-arm is-lead">${jointAnimation('leadUpper')}${image('leadUpper')}${jointPin('leadUpper')}<g class="wh-rig-forearm">${jointAnimation('leadFore')}${image('leadFore')}${jointPin('leadFore')}<g class="wh-rig-hand">${jointAnimation('leadHand')}${image('leadHand')}${jointPin('leadHand')}</g></g></g>
+        <g class="wh-rig-upper-arm is-trail">${jointAnimation('trailUpper')}${image('trailUpper')}<g class="wh-rig-forearm">${jointAnimation('trailFore')}${image('trailFore')}<g class="wh-rig-hand">${jointAnimation('trailHand')}${image('trailHand')}</g></g></g>
+        <g class="wh-rig-upper-arm is-lead">${jointAnimation('leadUpper')}${image('leadUpper')}<g class="wh-rig-forearm">${jointAnimation('leadFore')}${image('leadFore')}<g class="wh-rig-hand">${jointAnimation('leadHand')}${image('leadHand')}</g></g></g>
       </g>
     </svg>`;
   }
