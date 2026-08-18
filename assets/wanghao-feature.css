@@ -95,6 +95,10 @@ html[lang="ja"] body.wh-page{font-family:"Noto Serif JP","Yu Mincho","Hiragino M
 .wh-puppet.is-female .wh-puppet-art,.wh-puppet-female .wh-puppet-art,.wh-puppet[data-puppet="female"] .wh-puppet-art{background-image:url("images/wanghao-shadow-keeper-female-v1.png")}
 .wh-puppet.is-male,.wh-puppet-male,.wh-puppet[data-puppet="male"]{right:4%}
 .wh-puppet.is-male .wh-puppet-art,.wh-puppet-male .wh-puppet-art,.wh-puppet[data-puppet="male"] .wh-puppet-art{background-image:url("images/wanghao-shadow-storyteller-male-v1.png")}
+.wh-puppet .wh-puppet-pose{
+  display:block;width:100%;height:100%;object-fit:contain;object-position:center bottom;
+  background-image:none!important;opacity:1;filter:contrast(1.08) saturate(1.05);pointer-events:none
+}
 .wh-puppet .wh-puppet-rig{z-index:2;display:block;width:100%;height:100%;overflow:visible;background-image:none!important;filter:contrast(1.1) saturate(1.08);shape-rendering:geometricPrecision}
 .wh-puppet-play.is-playing .wh-puppet:has(.wh-puppet-rig[data-native-joints]) .wh-puppet-fallback{opacity:.28;filter:contrast(1.12) saturate(1.06)}
 .wh-puppet-rig image{pointer-events:none}
@@ -186,7 +190,8 @@ html[lang="ja"] body.wh-page{font-family:"Noto Serif JP","Yu Mincho","Hiragino M
 .wh-puppet-play[data-puppet-motion="guard"].is-speaking-chorus .wh-puppet.is-female .wh-control-rod.is-hand{animation:whShadowGuardChorusRodFemale 3.6s ease-in-out infinite}
 .wh-puppet-play[data-puppet-motion="guard"].is-speaking-chorus .wh-puppet.is-male .wh-control-rod.is-hand{animation:whShadowGuardChorusRodMale 3.6s ease-in-out infinite}
 
-/* Four unmistakable paired choreographies. Both figures move together; speech motion remains layered inside. */
+/* One original stance plus three intact paired poses. Motion is applied only to
+   the complete figure; no arm, hand, leg or foot is split into a separate layer. */
 .wh-puppet-play[data-puppet-motion="raise"].is-playing .wh-puppet.is-female .wh-puppet-motion-layer{animation:whPairRaiseFemale 4.8s 2.15s cubic-bezier(.45,0,.25,1) 1 both}
 .wh-puppet-play[data-puppet-motion="raise"].is-playing .wh-puppet.is-male .wh-puppet-motion-layer{animation:whPairRaiseMale 4.8s 2.15s cubic-bezier(.45,0,.25,1) 1 both}
 .wh-puppet-play[data-puppet-motion="unfold"].is-playing .wh-puppet.is-female .wh-puppet-motion-layer{animation:whPairUnfoldFemale 5.2s 2.15s cubic-bezier(.45,0,.25,1) 1 both}

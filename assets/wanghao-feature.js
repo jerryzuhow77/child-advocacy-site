@@ -3,7 +3,6 @@
 
   document.documentElement.classList.add('js');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const supportsSMIL = !reducedMotion && typeof document.createElementNS('http://www.w3.org/2000/svg', 'animateTransform').beginElement === 'function';
   const reveals = [...document.querySelectorAll('.reveal')];
   let stageSoundEnabled = false;
   let stageAudioContext = null;
@@ -14,133 +13,26 @@
     return stylesheet && stylesheet.href ? new URL('.', stylesheet.href) : new URL('/assets/', location.origin);
   })();
 
-  function puppetImageURL(kind) {
-    const imageName = kind === 'female'
-      ? 'wanghao-shadow-keeper-female-v1.png'
-      : 'wanghao-shadow-storyteller-male-v1.png';
-    return new URL(`images/${imageName}`, featureAssetBaseURL).href;
-  }
+  const puppetImages = {
+    female: [
+      'wanghao-shadow-keeper-female-v1.png',
+      'wanghao-shadow-keeper-female-pose2-v1.webp',
+      'wanghao-shadow-keeper-female-pose3-v1.webp',
+      'wanghao-shadow-keeper-female-pose4-v1.webp'
+    ],
+    male: [
+      'wanghao-shadow-storyteller-male-v1.png',
+      'wanghao-shadow-storyteller-male-pose2-v1.webp',
+      'wanghao-shadow-storyteller-male-pose3-v1.webp',
+      'wanghao-shadow-storyteller-male-pose4-v1.webp'
+    ]
+  };
 
-  function puppetFallback(kind, sceneIndex) {
+  function puppetPose(kind, sceneIndex) {
+    const poseIndex = sceneIndex % puppetImages[kind].length;
+    const imageURL = new URL(`images/${puppetImages[kind][poseIndex]}`, featureAssetBaseURL).href;
     const loading = sceneIndex === 0 ? 'eager' : 'lazy';
-    return `<img class="wh-puppet-fallback" src="${puppetImageURL(kind)}" alt="" aria-hidden="true" decoding="async" loading="${loading}">`;
-  }
-
-  function puppetRig(kind, sceneIndex) {
-    const female = kind === 'female';
-    const prefix = `wh-rig-${sceneIndex}-${kind}`;
-    const imageURL = puppetImageURL(kind);
-    const geometry = female ? {
-      bodyCuts: [
-        'M447 430C548 430 693 500 812 520L956 432 994 646 781 767 613 724 501 604Z',
-        'M278 428C394 420 438 504 420 662L356 916 262 1050 126 928 204 692Z',
-        'M214 1320H490V1664H194Z',
-        'M455 1296H744V1664H426Z'
-      ],
-      clips: {
-        leadUpper: 'M446 425 612 442 792 548 786 748 621 735 500 619Z',
-        leadFore: 'M612 515 835 487 953 450 1008 619 830 696 680 756 610 691Z',
-        leadHand: 'M825 435 1008 431 1024 626 845 635Z',
-        trailUpper: 'M270 416 455 430 421 710 330 823 205 730Z',
-        trailFore: 'M190 666 365 708 330 1008 209 1082 112 959Z',
-        trailHand: 'M0 858 327 830 338 1425 0 1425Z',
-        leadLeg: 'M427 1284 735 1284 724 1568 452 1583Z',
-        leadFoot: 'M411 1454 750 1454 750 1664 408 1664Z',
-        trailLeg: 'M195 1300 512 1300 493 1569 202 1588Z',
-        trailFoot: 'M170 1450 519 1450 519 1664 168 1664Z'
-      }
-    } : {
-      bodyCuts: [
-        'M409 379C324 392 234 490 134 484L50 367 29 744 263 785 465 637 512 488Z',
-        'M592 378C724 391 788 499 823 675L897 923 748 990 634 784 583 559Z',
-        'M216 1264H546V1664H196Z',
-        'M492 1262H834V1664H470Z'
-      ],
-      clips: {
-        leadUpper: 'M391 375 574 392 493 632 330 756 233 651Z',
-        leadFore: 'M112 438 370 454 371 745 171 800 64 670Z',
-        leadHand: 'M43 326 261 326 273 756 42 756Z',
-        trailUpper: 'M571 372 748 397 817 682 689 783 596 627Z',
-        trailFore: 'M661 649 840 638 908 938 758 1002 683 842Z',
-        trailHand: 'M704 806 914 795 924 1025 719 1025Z',
-        leadLeg: 'M190 1247 548 1247 553 1560 214 1581Z',
-        leadFoot: 'M171 1446 548 1446 548 1664 167 1664Z',
-        trailLeg: 'M470 1241 847 1241 833 1568 490 1577Z',
-        trailFoot: 'M467 1445 862 1445 862 1664 464 1664Z'
-      }
-    };
-    const motion = ['raise', 'unfold', 'search', 'guard'][sceneIndex % 4];
-    const joints = female ? {
-      /* Four deliberately different silhouettes: raise, unfold, search, guard.
-         The rotations stay within the range of a riveted shadow puppet so the
-         limbs remain expressive without opening visible gaps at the joints. */
-      leadUpper: [440, 490, -7, 4, -3, 3, 5],
-      leadFore: [693, 620, 4, -5, 2, -2, -3.5],
-      leadHand: [878, 520, 2, 2, 1.5, -1.5, 1],
-      trailUpper: [440, 490, 4, -4, 2.5, -2.5, -3.5],
-      trailFore: [320, 660, -3, 4, -2, 2, 2.5],
-      trailHand: [265, 860, 1, -1, 1, -1, -1],
-      leadLeg: [585, 1350, -1.5, 1.5, -1, 1, 1],
-      leadFoot: [595, 1500, 1.5, -1.5, 1, -1, -1],
-      trailLeg: [412, 1350, 1, -1, .8, -.8, -.8],
-      trailFoot: [390, 1500, -1, 1, -.8, .8, .8]
-    } : {
-      leadUpper: [543, 450, 7, -4, 3, -3, -5],
-      leadFore: [413, 600, -4, 5, -2, 2, 3.5],
-      leadHand: [229, 575, -2, -2, -1.5, 1.5, -1],
-      trailUpper: [703, 450, -4, 4, -2.5, 2.5, 3.5],
-      trailFore: [801, 735, 3, -4, 2, -2, -2.5],
-      trailHand: [819, 884, -1, 1, -1, 1, 1],
-      leadLeg: [412, 1340, 1.5, -1.5, 1, -1, -1],
-      leadFoot: [412, 1495, -1.5, 1.5, -1, 1, 1],
-      trailLeg: [748, 1340, -1, 1, -.8, .8, .8],
-      trailFoot: [748, 1495, 1, -1, .8, -.8, -.8]
-    };
-    const motionDurations = { raise: '4.8s', unfold: '5.2s', search: '4.4s', guard: '5.4s' };
-    const jointAnimation = role => {
-      if (!supportsSMIL) return '';
-      const [x, y, raise, unfold, searchA, searchB, guard] = joints[role];
-      const settle = Number((raise * .34).toFixed(2));
-      const point = angle => `${angle} ${x} ${y}`;
-      const sequences = {
-        raise: { times: '0;.38;.58;.76;1', values: [0, raise, raise, settle, 0] },
-        unfold: { times: '0;.27;.5;.65;.83;1', values: [0, settle, unfold, unfold, settle, 0] },
-        search: { times: '0;.22;.45;.69;.87;1', values: [0, searchA, searchB, searchA, searchB, 0] },
-        guard: { times: '0;.3;.68;.84;1', values: [0, guard, guard, settle, 0] }
-      };
-      const sequence = sequences[motion];
-      return `<animateTransform class="wh-rig-joint-animation" attributeName="transform" type="rotate" begin="indefinite" dur="${motionDurations[motion]}" repeatCount="1" fill="remove" keyTimes="${sequence.times}" values="${sequence.values.map(point).join(';')}"/>`;
-    };
-    /* Every moving piece overlaps the next one around its true pivot. The same
-       expanded silhouettes are removed from the still body and rebuilt above
-       it, so shoulder/elbow/wrist/hip/knee/ankle seams remain continuously
-       covered throughout the rotation. */
-    const jointRadius = role => /Hand|Foot/.test(role) ? 24 : /Fore|Leg/.test(role) ? 32 : 38;
-    const expandedJointShape = (role, path, fill = '') => {
-      const [x, y] = joints[role];
-      const fillAttribute = fill ? ` fill="${fill}"` : '';
-      return `<path d="${path}"${fillAttribute}/><circle cx="${x}" cy="${y}" r="${jointRadius(role)}"${fillAttribute}/>`;
-    };
-    const bodyCutouts = Object.entries(geometry.clips).map(([role, path]) =>
-      expandedJointShape(role, path, '#000')
-    ).join('');
-    const clipPaths = Object.entries(geometry.clips).map(([role, path]) =>
-      `<clipPath id="${prefix}-${role}" clipPathUnits="userSpaceOnUse">${expandedJointShape(role, path)}</clipPath>`
-    ).join('');
-    const image = clip => `<image href="${imageURL}" width="1024" height="1664" preserveAspectRatio="none" clip-path="url(#${prefix}-${clip})"/>`;
-    return `<svg class="wh-puppet-art wh-puppet-rig" data-rig="${kind}"${supportsSMIL ? ' data-native-joints="true"' : ''} viewBox="0 0 945 1665" preserveAspectRatio="xMidYMax meet" focusable="false" aria-hidden="true">
-      <defs>
-        <mask id="${prefix}-body" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1664"><rect width="1024" height="1664" fill="#fff"/>${bodyCutouts}</mask>
-        ${clipPaths}
-      </defs>
-      <g class="wh-rig-coordinate-map" transform="scale(.9228515625 1.0006009615)">
-        <g class="wh-rig-leg is-trail">${jointAnimation('trailLeg')}${image('trailLeg')}<g class="wh-rig-foot">${jointAnimation('trailFoot')}${image('trailFoot')}</g></g>
-        <g class="wh-rig-leg is-lead">${jointAnimation('leadLeg')}${image('leadLeg')}<g class="wh-rig-foot">${jointAnimation('leadFoot')}${image('leadFoot')}</g></g>
-        <g class="wh-rig-body"><image href="${imageURL}" width="1024" height="1664" preserveAspectRatio="none" mask="url(#${prefix}-body)"/></g>
-        <g class="wh-rig-upper-arm is-trail">${jointAnimation('trailUpper')}${image('trailUpper')}<g class="wh-rig-forearm">${jointAnimation('trailFore')}${image('trailFore')}<g class="wh-rig-hand">${jointAnimation('trailHand')}${image('trailHand')}</g></g></g>
-        <g class="wh-rig-upper-arm is-lead">${jointAnimation('leadUpper')}${image('leadUpper')}<g class="wh-rig-forearm">${jointAnimation('leadFore')}${image('leadFore')}<g class="wh-rig-hand">${jointAnimation('leadHand')}${image('leadHand')}</g></g></g>
-      </g>
-    </svg>`;
+    return `<img class="wh-puppet-art wh-puppet-pose" data-pose="${poseIndex + 1}" src="${imageURL}" alt="" aria-hidden="true" decoding="async" loading="${loading}">`;
   }
 
   function getStageAudioContext() {
@@ -366,8 +258,8 @@
   function puppetStage(scene, mode, copy) {
     const stage = document.createElement('div');
     const sceneIndex = copy.scenes.indexOf(scene);
-    /* Repeat the four fully articulated paired choreographies across all eight stages,
-       so hands, arms, legs and feet are already visibly moving in the opening scene. */
+    /* Repeat one original stance and three newly drawn intact paired poses across
+       all eight stages. No limb is ever split, clipped or animated separately. */
     const motionSequence = ['raise', 'unfold', 'search', 'guard', 'raise', 'unfold', 'search', 'guard'];
     const stampSequence = ['minnan-03', 'hakka-03', 'waisheng-03', '', '', 'minnan-04', 'hakka-04', 'waisheng-04'];
     const stageStamp = stampSequence[sceneIndex] || '';
@@ -395,8 +287,8 @@
     stage.innerHTML = `
       <div class="wh-stage-curtain" aria-hidden="true"><span class="wh-curtain-panel is-left"></span><span class="wh-curtain-panel is-right"></span></div>
       ${stageStamp ? '<span class="wh-stage-stamp" aria-hidden="true"></span>' : ''}
-      <figure class="wh-puppet is-female" aria-hidden="true"><span class="wh-puppet-motion-layer">${puppetFallback('female', sceneIndex)}${puppetRig('female', sceneIndex)}<i class="wh-control-rod is-body"></i><i class="wh-control-rod is-hand"></i></span></figure>
-      <figure class="wh-puppet is-male" aria-hidden="true"><span class="wh-puppet-motion-layer">${puppetFallback('male', sceneIndex)}${puppetRig('male', sceneIndex)}<i class="wh-control-rod is-body"></i><i class="wh-control-rod is-hand"></i></span></figure>
+      <figure class="wh-puppet is-female" aria-hidden="true"><span class="wh-puppet-motion-layer">${puppetPose('female', sceneIndex)}</span></figure>
+      <figure class="wh-puppet is-male" aria-hidden="true"><span class="wh-puppet-motion-layer">${puppetPose('male', sceneIndex)}</span></figure>
       <div class="wh-puppet-dialogues" aria-live="polite">${dialogueHTML}</div>
       ${sealHTML ? `<div class="wh-cultural-seals" aria-label="${escapeHTML(copy.culture.title)}">${sealHTML}</div>` : ''}
       <details class="wh-puppet-transcript"><summary>${escapeHTML(copy.transcript)}</summary>${transcriptHTML}</details>
@@ -477,9 +369,6 @@
 
   function resetPuppetStage(stage) {
     clearPuppetTimers(stage);
-    stage.querySelectorAll('.wh-rig-joint-animation').forEach(animation => {
-      try { animation.endElement(); } catch (_) { /* SMIL fallback: nothing has begun yet. */ }
-    });
     stage.classList.remove(
       'is-playing', 'is-closing', 'is-complete',
       'is-speaking-female', 'is-speaking-male', 'is-speaking-chorus'
@@ -505,11 +394,6 @@
     stage.dataset.puppetPlayed = 'true';
     stage.classList.add('is-playing');
     playStageSound('open');
-    queuePuppetTimer(stage, () => {
-      stage.querySelectorAll('.wh-rig-joint-animation').forEach(animation => {
-        try { animation.beginElement(); } catch (_) { /* CSS fallback remains available. */ }
-      });
-    }, 1350);
 
     const dialogues = [...stage.querySelectorAll('.wh-puppet-dialogue')];
     const openingDelay = Math.max(900, Number(stage.dataset.dialogueDelay) || 1750);
