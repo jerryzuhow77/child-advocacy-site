@@ -939,11 +939,18 @@ html[lang="ja"] .case-fu__script-line p { font-family: "Noto Serif JP", "Yu Minc
 }
 .case-fu__modern-person--archivist {
   right: 3%;
+  /* A slightly taller private frame lets the open-file pose match the
+     researcher's head scale without clipping hair or boots. */
+  height: 66%;
   transform: translateX(140%);
 }
 .case-fu__modern-person .case-fu__character-pose { background-size: auto 100%; }
 .case-fu__modern-person--researcher .case-fu__character-pose { background-position: left bottom; }
-.case-fu__modern-person--archivist .case-fu__character-pose { background-position: right bottom; }
+.case-fu__modern-person--archivist .case-fu__character-pose {
+  background-position: right bottom;
+  /* 91% of the 66%-high frame preserves the original standing scale. */
+  background-size: auto 91%;
+}
 .case-fu__character-pose--modern-researcher-0 { background-image: url("art/fu-xiaodi-modern-researcher-male-20260817.png"); }
 .case-fu__character-pose--modern-researcher-1 { background-image: url("art/fu-xiaodi-modern-researcher-male-crouch-note-20260817.png"); }
 .case-fu__modern-person .case-fu__character-pose--modern-researcher-1 {
@@ -956,7 +963,10 @@ html[lang="ja"] .case-fu__script-line p { font-family: "Noto Serif JP", "Yu Minc
 .case-fu__character-pose--modern-archivist-1 { background-image: url("art/fu-xiaodi-modern-archivist-female-open-file-20260817.png"); }
 .case-fu__character-pose--modern-archivist-2 { background-image: url("art/fu-xiaodi-modern-archivist-female-listen-door-20260817.png"); }
 .case-fu__modern-person .case-fu__character-pose--modern-researcher-2 { background-size: auto 107%; }
-.case-fu__modern-person .case-fu__character-pose--modern-archivist-1 { background-size: auto 100%; }
+.case-fu__modern-person .case-fu__character-pose--modern-archivist-1 {
+  background-position: right center;
+  background-size: auto 105%;
+}
 .case-fu__modern-label {
   position: absolute;
   z-index: 26;
@@ -1489,7 +1499,7 @@ html[lang="ja"] .case-fu__heritage-gallery-item figcaption { font-size: 0.64rem;
   .case-fu__modern-label { top: 3%; width: 94%; font-size: 0.51rem; letter-spacing: 0.04em; }
   .case-fu__modern-person { width: 45%; height: 42%; bottom: 3%; }
   .case-fu__modern-person--researcher { left: 2%; width: 72%; }
-  .case-fu__modern-person--archivist { right: 2%; }
+  .case-fu__modern-person--archivist { right: 2%; height: 46%; }
   .case-fu__modern-line { width: 76%; padding: 9px 10px; }
   .case-fu__modern-line--researcher { left: 3%; top: 15%; }
   .case-fu__modern-line--archivist { right: 3%; top: 37%; }
