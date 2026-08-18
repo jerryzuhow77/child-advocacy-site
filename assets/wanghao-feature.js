@@ -74,27 +74,27 @@
       /* Four deliberately different silhouettes: raise, unfold, search, guard.
          The rotations stay within the range of a riveted shadow puppet so the
          limbs remain expressive without opening visible gaps at the joints. */
-      leadUpper: [440, 490, -14, 8, -8, 6, 10],
-      leadFore: [693, 620, -20, -9, -11, 9, 14],
-      leadHand: [878, 520, -8, 7, -10, 9, 9],
-      trailUpper: [440, 490, 7, -9, 6, -5, -8],
-      trailFore: [320, 660, 10, 9, 9, -7, -11],
-      trailHand: [265, 860, 9, -8, 11, -10, -8],
-      leadLeg: [585, 1350, -3, 3, -3, 2.5, 2.5],
-      leadFoot: [595, 1500, 6, -5, 6, -5, -4],
-      trailLeg: [412, 1350, 2.5, -3, 2.5, -2.5, -2],
-      trailFoot: [390, 1500, -5, 5, -6, 5, 4]
+      leadUpper: [440, 490, -7, 4, -3, 3, 5],
+      leadFore: [693, 620, 4, -5, 2, -2, -3.5],
+      leadHand: [878, 520, 2, 2, 1.5, -1.5, 1],
+      trailUpper: [440, 490, 4, -4, 2.5, -2.5, -3.5],
+      trailFore: [320, 660, -3, 4, -2, 2, 2.5],
+      trailHand: [265, 860, 1, -1, 1, -1, -1],
+      leadLeg: [585, 1350, -1.5, 1.5, -1, 1, 1],
+      leadFoot: [595, 1500, 1.5, -1.5, 1, -1, -1],
+      trailLeg: [412, 1350, 1, -1, .8, -.8, -.8],
+      trailFoot: [390, 1500, -1, 1, -.8, .8, .8]
     } : {
-      leadUpper: [543, 450, 14, -8, 8, -6, -10],
-      leadFore: [413, 600, 20, 9, 11, -9, -14],
-      leadHand: [229, 575, 8, -7, 10, -9, -9],
-      trailUpper: [703, 450, -7, 9, -6, 5, 8],
-      trailFore: [801, 735, -10, -9, -9, 7, 11],
-      trailHand: [819, 884, -9, 8, -11, 10, 8],
-      leadLeg: [412, 1340, 3, -3, 3, -2.5, -2.5],
-      leadFoot: [412, 1495, -6, 5, -6, 5, 4],
-      trailLeg: [748, 1340, -2.5, 3, -2.5, 2.5, 2],
-      trailFoot: [748, 1495, 5, -5, 6, -5, -4]
+      leadUpper: [543, 450, 7, -4, 3, -3, -5],
+      leadFore: [413, 600, -4, 5, -2, 2, 3.5],
+      leadHand: [229, 575, -2, -2, -1.5, 1.5, -1],
+      trailUpper: [703, 450, -4, 4, -2.5, 2.5, 3.5],
+      trailFore: [801, 735, 3, -4, 2, -2, -2.5],
+      trailHand: [819, 884, -1, 1, -1, 1, 1],
+      leadLeg: [412, 1340, 1.5, -1.5, 1, -1, -1],
+      leadFoot: [412, 1495, -1.5, 1.5, -1, 1, 1],
+      trailLeg: [748, 1340, -1, 1, -.8, .8, .8],
+      trailFoot: [748, 1495, 1, -1, .8, -.8, -.8]
     };
     const motionDurations = { raise: '4.8s', unfold: '5.2s', search: '4.4s', guard: '5.4s' };
     const jointAnimation = role => {
@@ -109,7 +109,7 @@
         guard: { times: '0;.3;.68;.84;1', values: [0, guard, guard, settle, 0] }
       };
       const sequence = sequences[motion];
-      return `<animateTransform class="wh-rig-joint-animation" attributeName="transform" type="rotate" begin="indefinite" dur="${motionDurations[motion]}" repeatCount="indefinite" keyTimes="${sequence.times}" values="${sequence.values.map(point).join(';')}"/>`;
+      return `<animateTransform class="wh-rig-joint-animation" attributeName="transform" type="rotate" begin="indefinite" dur="${motionDurations[motion]}" repeatCount="1" fill="remove" keyTimes="${sequence.times}" values="${sequence.values.map(point).join(';')}"/>`;
     };
     /* Every moving piece overlaps the next one around its true pivot. The same
        expanded silhouettes are removed from the still body and rebuilt above
