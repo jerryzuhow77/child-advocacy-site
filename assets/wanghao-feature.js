@@ -71,27 +71,30 @@
     };
     const motion = ['raise', 'unfold', 'search', 'guard'][sceneIndex % 4];
     const joints = female ? {
-      leadUpper: [440, 490, -13, 10, -7, 6, 12],
-      leadFore: [693, 620, -18, -10, -10, 8, 15],
-      leadHand: [878, 520, -9, 8, -11, 10, 10],
-      trailUpper: [440, 490, 7, -11, 6, -5, -9],
-      trailFore: [320, 660, 11, 10, 8, -8, -12],
-      trailHand: [265, 860, 9, -8, 11, -10, -10],
-      leadLeg: [585, 1350, -4, 6, -5, 4, 4],
-      leadFoot: [595, 1500, 9, -7, 9, -7, -5],
-      trailLeg: [412, 1350, 3, -5, 4, -4, -3],
-      trailFoot: [390, 1500, -6, 7, -7, 6, 5]
+      /* Four deliberately different silhouettes: raise, unfold, search, guard.
+         Angles are intentionally theatrical so hands, elbows, knees and feet
+         remain legible on both desktop and mobile stages. */
+      leadUpper: [440, 490, -38, 28, -24, 18, 32],
+      leadFore: [693, 620, -54, -28, -34, 26, 45],
+      leadHand: [878, 520, -26, 22, -32, 30, 30],
+      trailUpper: [440, 490, 18, -28, 16, -15, -24],
+      trailFore: [320, 660, 30, 28, 28, -25, -36],
+      trailHand: [265, 860, 28, -24, 35, -32, -26],
+      leadLeg: [585, 1350, -14, 13, -12, 10, 10],
+      leadFoot: [595, 1500, 22, -20, 20, -18, -15],
+      trailLeg: [412, 1350, 9, -11, 10, -9, -8],
+      trailFoot: [390, 1500, -16, 17, -18, 16, 13]
     } : {
-      leadUpper: [543, 450, 13, -10, 7, -6, -12],
-      leadFore: [413, 600, 18, 10, 10, -8, -15],
-      leadHand: [229, 575, 9, -8, 11, -10, -10],
-      trailUpper: [703, 450, -7, 11, -6, 5, 9],
-      trailFore: [801, 735, -11, -10, -8, 8, 12],
-      trailHand: [819, 884, -9, 8, -11, 10, 10],
-      leadLeg: [412, 1340, 4, -6, 5, -4, -4],
-      leadFoot: [412, 1495, -9, 7, -9, 7, 5],
-      trailLeg: [748, 1340, -3, 5, -4, 4, 3],
-      trailFoot: [748, 1495, 6, -7, 7, -6, -5]
+      leadUpper: [543, 450, 38, -28, 24, -18, -32],
+      leadFore: [413, 600, 54, 28, 34, -26, -45],
+      leadHand: [229, 575, 26, -22, 32, -30, -30],
+      trailUpper: [703, 450, -18, 28, -16, 15, 24],
+      trailFore: [801, 735, -30, -28, -28, 25, 36],
+      trailHand: [819, 884, -28, 24, -35, 32, 26],
+      leadLeg: [412, 1340, 14, -13, 12, -10, -10],
+      leadFoot: [412, 1495, -22, 20, -20, 18, 15],
+      trailLeg: [748, 1340, -9, 11, -10, 9, 8],
+      trailFoot: [748, 1495, 16, -17, 18, -16, -13]
     };
     const motionDurations = { raise: '4.8s', unfold: '5.2s', search: '4.4s', guard: '5.4s' };
     const jointAnimation = role => {
