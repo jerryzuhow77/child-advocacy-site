@@ -962,7 +962,15 @@ html[lang="ja"] .case-fu__script-line p { font-family: "Noto Serif JP", "Yu Minc
 .case-fu__character-pose--modern-archivist-0 { background-image: url("art/fu-xiaodi-modern-archivist-female-20260817.png"); }
 .case-fu__character-pose--modern-archivist-1 { background-image: url("art/fu-xiaodi-modern-archivist-female-open-file-20260817.png"); }
 .case-fu__character-pose--modern-archivist-2 { background-image: url("art/fu-xiaodi-modern-archivist-female-listen-door-20260817.png"); }
-.case-fu__modern-person .case-fu__character-pose--modern-researcher-2 { background-size: auto 107%; }
+.case-fu__modern-person .case-fu__character-pose--modern-researcher-2 {
+  /* The third pose gets its own oversized transparent frame. The artwork is
+     centred inside that frame, so its visible head/body scale stays aligned
+     with pose one while the crown keeps a reliable clear margin. */
+  top: -8%;
+  bottom: -2%;
+  background-position: left center;
+  background-size: auto 96%;
+}
 .case-fu__modern-person .case-fu__character-pose--modern-archivist-1 {
   background-position: right center;
   background-size: auto 105%;
@@ -1155,25 +1163,81 @@ html[lang="ja"] .case-fu__modern-line p { line-height: 1.68; }
 .case-fu__scene.is-complete .case-fu__shadow-script,
 .case-fu__scene.is-complete .case-fu__stage-core,
 .case-fu__scene.is-complete .case-fu__curtain-cue { opacity: 0; }
-.case-fu__scene.is-complete .case-fu__modern-world { opacity: 1; transform: scale(1); }
-.case-fu__scene.is-complete .case-fu__modern-person { opacity: 0.9; transform: translateX(0); }
+.case-fu__scene.is-complete .case-fu__modern-world {
+  opacity: 0;
+  transform: scale(1.012);
+  clip-path: inset(0 0);
+}
+.case-fu__scene.is-complete .case-fu__modern-person { opacity: 0; }
 .case-fu__scene.is-complete .case-fu__modern-line { opacity: 0; }
 .case-fu__scene.is-complete .case-fu__modern-dialogue--researcher,
-.case-fu__scene.is-complete .case-fu__modern-dialogue--archivist { opacity: 1; transform: translateY(0); }
-.case-fu__scene.is-complete .case-fu__modern-beam { opacity: 0.34; }
-.case-fu__scene.is-complete .case-fu__focus-panel { opacity: 1; transform: translate(-50%, 0); }
-.case-fu__scene.is-complete .case-fu__curtain--left { transform: translateX(-96%); }
-.case-fu__scene.is-complete .case-fu__curtain--right { transform: translateX(96%); }
-.case-fu__scene.is-complete .case-fu__stage::before { transform: translateY(-12%); }
-.case-fu__scene.is-complete .case-fu__stage::after { transform: rotate(180deg) translateY(-12%); }
+.case-fu__scene.is-complete .case-fu__modern-dialogue--archivist { opacity: 0; }
+.case-fu__scene.is-complete .case-fu__modern-beam { opacity: 0; }
+.case-fu__scene.is-complete .case-fu__focus-panel { opacity: 0; transform: translate(-50%, 12px); }
+.case-fu__scene.is-complete .case-fu__curtain--left { transform: translateX(0); }
+.case-fu__scene.is-complete .case-fu__curtain--right { transform: translateX(0); }
+.case-fu__scene.is-complete .case-fu__stage::before { transform: translateY(0); }
+.case-fu__scene.is-complete .case-fu__stage::after { transform: rotate(180deg) translateY(0); }
+
+/* Hold the completed animation on its curtain-call frame. An explicit clue
+   button may reopen the modern layer, preserving the interactive epilogue
+   without the mobile end-of-animation flash. */
+.case-fu__scene.is-complete.is-focus-open .case-fu__modern-world { opacity: 1; transform: scale(1); }
+.case-fu__scene.is-complete.is-focus-open .case-fu__modern-person { opacity: 0.9; transform: translateX(0); }
+.case-fu__scene.is-complete.is-focus-open .case-fu__modern-dialogue--researcher,
+.case-fu__scene.is-complete.is-focus-open .case-fu__modern-dialogue--archivist { opacity: 1; transform: translateY(0); }
+.case-fu__scene.is-complete.is-focus-open .case-fu__modern-beam { opacity: 0.34; }
+.case-fu__scene.is-complete.is-focus-open .case-fu__focus-panel { opacity: 1; transform: translate(-50%, 0); }
+.case-fu__scene.is-complete.is-focus-open .case-fu__curtain--left { transform: translateX(-96%); }
+.case-fu__scene.is-complete.is-focus-open .case-fu__curtain--right { transform: translateX(96%); }
+.case-fu__scene.is-complete.is-focus-open .case-fu__stage::before { transform: translateY(-12%); }
+.case-fu__scene.is-complete.is-focus-open .case-fu__stage::after { transform: rotate(180deg) translateY(-12%); }
 .case-fu__scene.is-paused *,
 .case-fu__scene.is-paused .case-fu__stage::before,
 .case-fu__scene.is-paused .case-fu__stage::after { animation-play-state: paused !important; }
 .case-fu__scene.is-dialogue-pulse .case-fu__modern-dialogue { animation: fu-dialogue-pulse 520ms ease both; }
-.case-fu__scene[data-focus="0"].is-complete .case-fu__modern-person--researcher { transform: translateX(2%) rotate(-0.5deg); }
-.case-fu__scene[data-focus="1"].is-complete .case-fu__modern-person--archivist { transform: translateX(-3%) rotate(0.5deg); }
-.case-fu__scene[data-focus="2"].is-complete .case-fu__modern-person--researcher { transform: translateX(4%); }
-.case-fu__scene[data-focus="2"].is-complete .case-fu__modern-person--archivist { transform: translateX(-4%); }
+.case-fu__scene[data-focus="0"].is-complete.is-focus-open .case-fu__modern-person--researcher { transform: translateX(2%) rotate(-0.5deg); }
+.case-fu__scene[data-focus="1"].is-complete.is-focus-open .case-fu__modern-person--archivist { transform: translateX(-3%) rotate(0.5deg); }
+.case-fu__scene[data-focus="2"].is-complete.is-focus-open .case-fu__modern-person--researcher { transform: translateX(4%); }
+.case-fu__scene[data-focus="2"].is-complete.is-focus-open .case-fu__modern-person--archivist { transform: translateX(-4%); }
+
+/* Hard terminal state: once the curtain call finishes, no retained animation,
+   mobile compositor layer, or reduced-motion override may reveal the modern
+   theatre again. A clue click removes this class before reopening the scene. */
+.case-fu__scene.is-curtain-locked .case-fu__modern-world,
+.case-fu__scene.is-curtain-locked .case-fu__modern-world *,
+.case-fu__scene.is-curtain-locked .case-fu__focus-panel {
+  animation: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+.case-fu__scene.is-curtain-locked .case-fu__puppet,
+.case-fu__scene.is-curtain-locked .case-fu__symbol,
+.case-fu__scene.is-curtain-locked .case-fu__shadow-script,
+.case-fu__scene.is-curtain-locked .case-fu__stage-core,
+.case-fu__scene.is-curtain-locked .case-fu__curtain-cue {
+  animation: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+.case-fu__scene.is-curtain-locked .case-fu__curtain {
+  animation: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+.case-fu__scene.is-curtain-locked .case-fu__curtain--left { transform: translateX(0) !important; }
+.case-fu__scene.is-curtain-locked .case-fu__curtain--right { transform: translateX(0) !important; }
+.case-fu__scene.is-curtain-locked .case-fu__stage::before {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+.case-fu__scene.is-curtain-locked .case-fu__stage::after {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: rotate(180deg) translateY(0) !important;
+}
 
 @keyframes fu-shadow-recorder-phase {
   0% { transform: translateX(-48%) rotate(-1.5deg); opacity: 0; }
