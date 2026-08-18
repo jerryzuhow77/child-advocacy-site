@@ -83,6 +83,10 @@ html[lang="ja"] body.wh-page{font-family:"Noto Serif JP","Yu Mincho","Hiragino M
   filter:drop-shadow(0 19px 12px rgba(0,0,0,.46));pointer-events:none
 }
 .wh-puppet-motion-layer{position:absolute;inset:0;display:block;transform-origin:50% 92%;transform-style:preserve-3d;will-change:transform}
+.wh-puppet-fallback{
+  position:absolute;z-index:1;inset:0;display:block;width:100%;height:100%;object-fit:contain;object-position:center bottom;
+  opacity:.86;transform-origin:50% 88%;image-rendering:auto;pointer-events:none
+}
 .wh-puppet-art{
   position:absolute;z-index:2;inset:0;background-repeat:no-repeat;background-position:center bottom;background-size:contain;
   transform-origin:50% 88%;transform-style:preserve-3d;will-change:transform;image-rendering:auto
@@ -91,7 +95,7 @@ html[lang="ja"] body.wh-page{font-family:"Noto Serif JP","Yu Mincho","Hiragino M
 .wh-puppet.is-female .wh-puppet-art,.wh-puppet-female .wh-puppet-art,.wh-puppet[data-puppet="female"] .wh-puppet-art{background-image:url("images/wanghao-shadow-keeper-female-v1.png")}
 .wh-puppet.is-male,.wh-puppet-male,.wh-puppet[data-puppet="male"]{right:4%}
 .wh-puppet.is-male .wh-puppet-art,.wh-puppet-male .wh-puppet-art,.wh-puppet[data-puppet="male"] .wh-puppet-art{background-image:url("images/wanghao-shadow-storyteller-male-v1.png")}
-.wh-puppet .wh-puppet-rig{display:block;width:100%;height:100%;overflow:visible;background-image:none!important}
+.wh-puppet .wh-puppet-rig{z-index:2;display:block;width:100%;height:100%;overflow:visible;background-image:none!important}
 .wh-puppet-rig image{pointer-events:none}
 .wh-puppet-rig .wh-rig-upper-arm,.wh-puppet-rig .wh-rig-forearm,.wh-puppet-rig .wh-rig-hand,
 .wh-puppet-rig .wh-rig-leg,.wh-puppet-rig .wh-rig-foot{transform-box:view-box;will-change:transform}
@@ -311,6 +315,8 @@ html[lang="ja"] body.wh-page{font-family:"Noto Serif JP","Yu Mincho","Hiragino M
 html:not(.js) .wh-puppet-play,.wh-puppet-play.is-static{min-height:0;padding:5.7rem 1rem 13rem}
 html:not(.js) .wh-stage-curtain,.wh-puppet-play.is-static .wh-stage-curtain{display:none}
 html:not(.js) .wh-puppet,.wh-puppet-play.is-static .wh-puppet{opacity:1;transform:none}
+html:not(.js) .wh-puppet-fallback,.wh-puppet-play.is-static .wh-puppet-fallback{opacity:1}
+html:not(.js) .wh-puppet-rig,.wh-puppet-play.is-static .wh-puppet-rig{display:none}
 html:not(.js) .wh-puppet-dialogues,.wh-puppet-play.is-static .wh-puppet-dialogues{position:relative;left:auto;top:auto;width:min(760px,100%);min-height:0;margin:auto;display:grid;gap:.8rem;transform:none;pointer-events:auto}
 html:not(.js) .wh-puppet-dialogue,.wh-puppet-play.is-static .wh-puppet-dialogue{position:relative;inset:auto;max-height:none;opacity:1;transform:none;pointer-events:auto}
 html:not(.js) .wh-puppet-play>.wh-puppet-transcript,.wh-puppet-play.is-static>.wh-puppet-transcript{position:relative;left:auto;right:auto;bottom:auto;max-width:72ch;max-height:none;margin:1rem auto 0}

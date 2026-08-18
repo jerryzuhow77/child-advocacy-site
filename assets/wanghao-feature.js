@@ -14,11 +14,22 @@
     return stylesheet && stylesheet.href ? new URL('.', stylesheet.href) : new URL('/assets/', location.origin);
   })();
 
+  function puppetImageURL(kind) {
+    const imageName = kind === 'female'
+      ? 'wanghao-shadow-keeper-female-v1.png'
+      : 'wanghao-shadow-storyteller-male-v1.png';
+    return new URL(`images/${imageName}`, featureAssetBaseURL).href;
+  }
+
+  function puppetFallback(kind, sceneIndex) {
+    const loading = sceneIndex === 0 ? 'eager' : 'lazy';
+    return `<img class="wh-puppet-fallback" src="${puppetImageURL(kind)}" alt="" aria-hidden="true" decoding="async" loading="${loading}">`;
+  }
+
   function puppetRig(kind, sceneIndex) {
     const female = kind === 'female';
     const prefix = `wh-rig-${sceneIndex}-${kind}`;
-    const imageName = female ? 'wanghao-shadow-keeper-female-v1.png' : 'wanghao-shadow-storyteller-male-v1.png';
-    const imageURL = new URL(`images/${imageName}`, featureAssetBaseURL).href;
+    const imageURL = puppetImageURL(kind);
     const geometry = female ? {
       bodyCuts: [
         'M447 430C548 430 693 500 812 520L956 432 994 646 781 767 613 724 501 604Z',
@@ -372,8 +383,8 @@
     stage.innerHTML = `
       <div class="wh-stage-curtain" aria-hidden="true"><span class="wh-curtain-panel is-left"></span><span class="wh-curtain-panel is-right"></span></div>
       ${stageStamp ? '<span class="wh-stage-stamp" aria-hidden="true"></span>' : ''}
-      <figure class="wh-puppet is-female" aria-hidden="true"><span class="wh-puppet-motion-layer">${puppetRig('female', sceneIndex)}<i class="wh-control-rod is-body"></i><i class="wh-control-rod is-hand"></i></span></figure>
-      <figure class="wh-puppet is-male" aria-hidden="true"><span class="wh-puppet-motion-layer">${puppetRig('male', sceneIndex)}<i class="wh-control-rod is-body"></i><i class="wh-control-rod is-hand"></i></span></figure>
+      <figure class="wh-puppet is-female" aria-hidden="true"><span class="wh-puppet-motion-layer">${puppetFallback('female', sceneIndex)}${puppetRig('female', sceneIndex)}<i class="wh-control-rod is-body"></i><i class="wh-control-rod is-hand"></i></span></figure>
+      <figure class="wh-puppet is-male" aria-hidden="true"><span class="wh-puppet-motion-layer">${puppetFallback('male', sceneIndex)}${puppetRig('male', sceneIndex)}<i class="wh-control-rod is-body"></i><i class="wh-control-rod is-hand"></i></span></figure>
       <div class="wh-puppet-dialogues" aria-live="polite">${dialogueHTML}</div>
       ${sealHTML ? `<div class="wh-cultural-seals" aria-label="${escapeHTML(copy.culture.title)}">${sealHTML}</div>` : ''}
       <details class="wh-puppet-transcript"><summary>${escapeHTML(copy.transcript)}</summary>${transcriptHTML}</details>
