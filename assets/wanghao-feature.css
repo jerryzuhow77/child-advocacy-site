@@ -91,6 +91,44 @@ html[lang="ja"] body.wh-page{font-family:"Noto Serif JP","Yu Mincho","Hiragino M
 .wh-puppet.is-female .wh-puppet-art,.wh-puppet-female .wh-puppet-art,.wh-puppet[data-puppet="female"] .wh-puppet-art{background-image:url("images/wanghao-shadow-keeper-female-v1.png")}
 .wh-puppet.is-male,.wh-puppet-male,.wh-puppet[data-puppet="male"]{right:4%}
 .wh-puppet.is-male .wh-puppet-art,.wh-puppet-male .wh-puppet-art,.wh-puppet[data-puppet="male"] .wh-puppet-art{background-image:url("images/wanghao-shadow-storyteller-male-v1.png")}
+.wh-puppet .wh-puppet-rig{display:block;width:100%;height:100%;overflow:visible;background-image:none!important}
+.wh-puppet-rig image{pointer-events:none}
+.wh-puppet-rig .wh-rig-upper-arm,.wh-puppet-rig .wh-rig-forearm,.wh-puppet-rig .wh-rig-hand,
+.wh-puppet-rig .wh-rig-leg,.wh-puppet-rig .wh-rig-foot{transform-box:view-box;will-change:transform}
+
+/* True joint pivots: each actor is rebuilt from the same painted puppet into
+   independent upper arms, forearms/hands, legs and feet. Nested groups keep
+   elbow, wrist, knee and ankle motion mechanically connected. */
+.wh-puppet-rig[data-rig="female"] .wh-rig-upper-arm.is-lead{transform-origin:49% 31%;--raise-angle:-24deg;--raise-x:4px;--raise-y:-9px;--raise-return:-8deg;--unfold-angle:14deg;--unfold-x:8px;--search-a:-11deg;--search-b:8deg;--guard-angle:19deg;--guard-x:7px}
+.wh-puppet-rig[data-rig="female"] .wh-rig-upper-arm.is-lead>.wh-rig-forearm{transform-origin:68% 41%;--raise-angle:-31deg;--raise-y:-5px;--raise-return:-10deg;--unfold-angle:-14deg;--unfold-x:7px;--search-a:-16deg;--search-b:12deg;--guard-angle:27deg;--guard-x:5px}
+.wh-puppet-rig[data-rig="female"] .wh-rig-upper-arm.is-lead .wh-rig-hand{transform-origin:87% 32%;--raise-angle:-18deg;--raise-return:-5deg;--unfold-angle:13deg;--search-a:-19deg;--search-b:18deg;--guard-angle:19deg}
+.wh-puppet-rig[data-rig="female"] .wh-rig-upper-arm.is-trail{transform-origin:38% 31%;--raise-angle:13deg;--raise-y:-3px;--raise-return:5deg;--unfold-angle:-19deg;--unfold-x:-6px;--search-a:9deg;--search-b:-8deg;--guard-angle:-13deg;--guard-x:-4px}
+.wh-puppet-rig[data-rig="female"] .wh-rig-upper-arm.is-trail>.wh-rig-forearm{transform-origin:29% 52%;--raise-angle:21deg;--raise-return:7deg;--unfold-angle:19deg;--unfold-x:-4px;--search-a:15deg;--search-b:-14deg;--guard-angle:-22deg}
+.wh-puppet-rig[data-rig="female"] .wh-rig-upper-arm.is-trail .wh-rig-hand{transform-origin:24% 59%;--raise-angle:17deg;--raise-return:5deg;--unfold-angle:-15deg;--search-a:20deg;--search-b:-18deg;--guard-angle:-17deg}
+.wh-puppet-rig[data-rig="female"] .wh-rig-leg.is-lead{transform-origin:55% 82%;--raise-angle:-7deg;--raise-x:7px;--raise-y:-7px;--raise-return:-2deg;--unfold-angle:8deg;--unfold-x:8px;--search-a:-8deg;--search-b:5deg;--guard-angle:6deg;--guard-x:8px}
+.wh-puppet-rig[data-rig="female"] .wh-rig-leg.is-lead>.wh-rig-foot{transform-origin:56% 92%;--raise-angle:17deg;--raise-return:5deg;--unfold-angle:-12deg;--search-a:16deg;--search-b:-12deg;--guard-angle:-8deg}
+.wh-puppet-rig[data-rig="female"] .wh-rig-leg.is-trail{transform-origin:38% 82%;--raise-angle:5deg;--raise-x:-4px;--raise-y:2px;--raise-return:2deg;--unfold-angle:-7deg;--unfold-x:-6px;--search-a:6deg;--search-b:-7deg;--guard-angle:-5deg;--guard-x:-6px}
+.wh-puppet-rig[data-rig="female"] .wh-rig-leg.is-trail>.wh-rig-foot{transform-origin:39% 92%;--raise-angle:-9deg;--raise-return:-3deg;--unfold-angle:10deg;--search-a:-12deg;--search-b:10deg;--guard-angle:7deg}
+
+.wh-puppet-rig[data-rig="male"] .wh-rig-upper-arm.is-lead{transform-origin:46% 30%;--raise-angle:24deg;--raise-x:-4px;--raise-y:-9px;--raise-return:8deg;--unfold-angle:-14deg;--unfold-x:-8px;--search-a:11deg;--search-b:-8deg;--guard-angle:-19deg;--guard-x:-7px}
+.wh-puppet-rig[data-rig="male"] .wh-rig-upper-arm.is-lead>.wh-rig-forearm{transform-origin:30% 39%;--raise-angle:31deg;--raise-y:-5px;--raise-return:10deg;--unfold-angle:14deg;--unfold-x:-7px;--search-a:16deg;--search-b:-12deg;--guard-angle:-27deg;--guard-x:-5px}
+.wh-puppet-rig[data-rig="male"] .wh-rig-upper-arm.is-lead .wh-rig-hand{transform-origin:18% 35%;--raise-angle:18deg;--raise-return:5deg;--unfold-angle:-13deg;--search-a:19deg;--search-b:-18deg;--guard-angle:-19deg}
+.wh-puppet-rig[data-rig="male"] .wh-rig-upper-arm.is-trail{transform-origin:63% 30%;--raise-angle:-13deg;--raise-y:-3px;--raise-return:-5deg;--unfold-angle:19deg;--unfold-x:6px;--search-a:-9deg;--search-b:8deg;--guard-angle:13deg;--guard-x:4px}
+.wh-puppet-rig[data-rig="male"] .wh-rig-upper-arm.is-trail>.wh-rig-forearm{transform-origin:73% 49%;--raise-angle:-21deg;--raise-return:-7deg;--unfold-angle:-19deg;--unfold-x:4px;--search-a:-15deg;--search-b:14deg;--guard-angle:22deg}
+.wh-puppet-rig[data-rig="male"] .wh-rig-upper-arm.is-trail .wh-rig-hand{transform-origin:77% 56%;--raise-angle:-17deg;--raise-return:-5deg;--unfold-angle:15deg;--search-a:-20deg;--search-b:18deg;--guard-angle:17deg}
+.wh-puppet-rig[data-rig="male"] .wh-rig-leg.is-lead{transform-origin:36% 80%;--raise-angle:7deg;--raise-x:-7px;--raise-y:-7px;--raise-return:2deg;--unfold-angle:-8deg;--unfold-x:-8px;--search-a:8deg;--search-b:-5deg;--guard-angle:-6deg;--guard-x:-8px}
+.wh-puppet-rig[data-rig="male"] .wh-rig-leg.is-lead>.wh-rig-foot{transform-origin:36% 91%;--raise-angle:-17deg;--raise-return:-5deg;--unfold-angle:12deg;--search-a:-16deg;--search-b:12deg;--guard-angle:8deg}
+.wh-puppet-rig[data-rig="male"] .wh-rig-leg.is-trail{transform-origin:64% 80%;--raise-angle:-5deg;--raise-x:4px;--raise-y:2px;--raise-return:-2deg;--unfold-angle:7deg;--unfold-x:6px;--search-a:-6deg;--search-b:7deg;--guard-angle:5deg;--guard-x:6px}
+.wh-puppet-rig[data-rig="male"] .wh-rig-leg.is-trail>.wh-rig-foot{transform-origin:65% 91%;--raise-angle:9deg;--raise-return:3deg;--unfold-angle:-10deg;--search-a:12deg;--search-b:-10deg;--guard-angle:-7deg}
+
+.wh-puppet-play[data-puppet-motion="raise"].is-playing .wh-puppet-rig:not([data-native-joints]) :is(.wh-rig-upper-arm,.wh-rig-forearm,.wh-rig-hand,.wh-rig-leg,.wh-rig-foot){animation:whRigJointRaise 4.8s 2.15s cubic-bezier(.4,0,.24,1) infinite}
+.wh-puppet-play[data-puppet-motion="unfold"].is-playing .wh-puppet-rig:not([data-native-joints]) :is(.wh-rig-upper-arm,.wh-rig-forearm,.wh-rig-hand,.wh-rig-leg,.wh-rig-foot){animation:whRigJointUnfold 5.2s 2.15s cubic-bezier(.4,0,.24,1) infinite}
+.wh-puppet-play[data-puppet-motion="search"].is-playing .wh-puppet-rig:not([data-native-joints]) :is(.wh-rig-upper-arm,.wh-rig-forearm,.wh-rig-hand,.wh-rig-leg,.wh-rig-foot){animation:whRigJointSearch 4.4s 2.15s cubic-bezier(.4,0,.24,1) infinite}
+.wh-puppet-play[data-puppet-motion="guard"].is-playing .wh-puppet-rig:not([data-native-joints]) :is(.wh-rig-upper-arm,.wh-rig-forearm,.wh-rig-hand,.wh-rig-leg,.wh-rig-foot){animation:whRigJointGuard 5.4s 2.15s cubic-bezier(.4,0,.24,1) infinite}
+@keyframes whRigJointRaise{0%,12%,100%{transform:translate(0,0) rotate(0)}38%,58%{transform:translate(var(--raise-x,0),var(--raise-y,0)) rotate(var(--raise-angle,0deg))}76%{transform:translate(0,-2px) rotate(var(--raise-return,0deg))}}
+@keyframes whRigJointUnfold{0%,10%,100%{transform:translate(0,0) rotate(0)}27%{transform:translate(0,2px) rotate(var(--raise-return,0deg))}50%,65%{transform:translate(var(--unfold-x,0),0) rotate(var(--unfold-angle,0deg))}83%{transform:translate(0,0) rotate(var(--raise-return,0deg))}}
+@keyframes whRigJointSearch{0%,8%,100%{transform:translate(0,0) rotate(0)}22%{transform:translate(2px,-2px) rotate(var(--search-a,0deg))}45%{transform:translate(-1px,1px) rotate(var(--search-b,0deg))}69%{transform:translate(3px,-3px) rotate(var(--search-a,0deg))}87%{transform:translate(0,0) rotate(var(--search-b,0deg))}}
+@keyframes whRigJointGuard{0%,10%,100%{transform:translate(0,0) rotate(0)}30%{transform:translate(var(--guard-x,0),-3px) rotate(var(--guard-angle,0deg))}45%,68%{transform:translate(var(--guard-x,0),1px) rotate(var(--guard-angle,0deg))}84%{transform:translate(0,-1px) rotate(var(--raise-return,0deg))}}
 .wh-control-rod{
   position:absolute;z-index:3;display:block;width:2px;height:62%;bottom:-5%;left:50%;border-radius:999px;
   background:linear-gradient(180deg,rgba(221,194,128,.24),rgba(80,51,34,.9) 22%,rgba(16,17,16,.96));
@@ -281,7 +319,7 @@ html:not(.js) .wh-puppet-replay,.wh-puppet-play.is-static .wh-puppet-replay{disp
 @media(prefers-reduced-motion:reduce){
   .wh-puppet-play{min-height:0;padding:5.7rem 1rem 13rem}
   .wh-stage-curtain{display:none!important}
-  .wh-puppet,.wh-puppet .wh-puppet-motion-layer,.wh-puppet .wh-puppet-art,.wh-puppet .wh-control-rod{animation:none!important;opacity:1;transform:none}
+  .wh-puppet,.wh-puppet .wh-puppet-motion-layer,.wh-puppet .wh-puppet-art,.wh-puppet .wh-puppet-rig *,.wh-puppet .wh-control-rod{animation:none!important;opacity:1;transform:none}
   .wh-stage-stamp{animation:none!important}
   .wh-puppet-dialogues{position:relative;left:auto;top:auto;width:min(760px,100%);min-height:0;margin:auto;display:grid;gap:.8rem;transform:none;opacity:1!important;pointer-events:auto;transition:none}
   .wh-puppet-dialogue,.wh-puppet-dialogue.is-current,.wh-puppet-dialogue.is-spoken{position:relative;inset:auto;max-height:none;opacity:1;transform:none;pointer-events:auto;transition:none}

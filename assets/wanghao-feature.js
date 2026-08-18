@@ -3,9 +3,122 @@
 
   document.documentElement.classList.add('js');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const supportsSMIL = !reducedMotion && typeof document.createElementNS('http://www.w3.org/2000/svg', 'animateTransform').beginElement === 'function';
   const reveals = [...document.querySelectorAll('.reveal')];
   let stageSoundEnabled = false;
   let stageAudioContext = null;
+  const featureAssetBaseURL = (() => {
+    const script = document.currentScript;
+    if (script && script.src) return new URL('.', script.src);
+    const stylesheet = [...document.styleSheets].find(sheet => /wanghao-feature\.css/i.test(sheet.href || ''));
+    return stylesheet && stylesheet.href ? new URL('.', stylesheet.href) : new URL('/assets/', location.origin);
+  })();
+
+  function puppetRig(kind, sceneIndex) {
+    const female = kind === 'female';
+    const prefix = `wh-rig-${sceneIndex}-${kind}`;
+    const imageName = female ? 'wanghao-shadow-keeper-female-v1.png' : 'wanghao-shadow-storyteller-male-v1.png';
+    const imageURL = new URL(`images/${imageName}`, featureAssetBaseURL).href;
+    const geometry = female ? {
+      bodyCuts: [
+        'M447 430C548 430 693 500 812 520L956 432 994 646 781 767 613 724 501 604Z',
+        'M278 428C394 420 438 504 420 662L356 916 262 1050 126 928 204 692Z',
+        'M214 1320H490V1664H194Z',
+        'M455 1296H744V1664H426Z'
+      ],
+      clips: {
+        leadUpper: 'M446 425 612 442 792 548 786 748 621 735 500 619Z',
+        leadFore: 'M612 515 835 487 953 450 1008 619 830 696 680 756 610 691Z',
+        leadHand: 'M825 435 1008 431 1024 626 845 635Z',
+        trailUpper: 'M270 416 455 430 421 710 330 823 205 730Z',
+        trailFore: 'M190 666 365 708 330 1008 209 1082 112 959Z',
+        trailHand: 'M0 858 327 830 338 1425 0 1425Z',
+        leadLeg: 'M427 1284 735 1284 724 1568 452 1583Z',
+        leadFoot: 'M411 1454 750 1454 750 1664 408 1664Z',
+        trailLeg: 'M195 1300 512 1300 493 1569 202 1588Z',
+        trailFoot: 'M170 1450 519 1450 519 1664 168 1664Z'
+      }
+    } : {
+      bodyCuts: [
+        'M409 379C324 392 234 490 134 484L50 367 29 744 263 785 465 637 512 488Z',
+        'M592 378C724 391 788 499 823 675L897 923 748 990 634 784 583 559Z',
+        'M216 1264H546V1664H196Z',
+        'M492 1262H834V1664H470Z'
+      ],
+      clips: {
+        leadUpper: 'M391 375 574 392 493 632 330 756 233 651Z',
+        leadFore: 'M112 438 370 454 371 745 171 800 64 670Z',
+        leadHand: 'M43 326 261 326 273 756 42 756Z',
+        trailUpper: 'M571 372 748 397 817 682 689 783 596 627Z',
+        trailFore: 'M661 649 840 638 908 938 758 1002 683 842Z',
+        trailHand: 'M704 806 914 795 924 1025 719 1025Z',
+        leadLeg: 'M190 1247 548 1247 553 1560 214 1581Z',
+        leadFoot: 'M171 1446 548 1446 548 1664 167 1664Z',
+        trailLeg: 'M470 1241 847 1241 833 1568 490 1577Z',
+        trailFoot: 'M467 1445 862 1445 862 1664 464 1664Z'
+      }
+    };
+    const motion = ['raise', 'unfold', 'search', 'guard'][sceneIndex % 4];
+    const joints = female ? {
+      leadUpper: [440, 490, -13, 10, -7, 6, 12],
+      leadFore: [693, 620, -18, -10, -10, 8, 15],
+      leadHand: [878, 520, -9, 8, -11, 10, 10],
+      trailUpper: [440, 490, 7, -11, 6, -5, -9],
+      trailFore: [320, 660, 11, 10, 8, -8, -12],
+      trailHand: [265, 860, 9, -8, 11, -10, -10],
+      leadLeg: [585, 1350, -4, 6, -5, 4, 4],
+      leadFoot: [595, 1500, 9, -7, 9, -7, -5],
+      trailLeg: [412, 1350, 3, -5, 4, -4, -3],
+      trailFoot: [390, 1500, -6, 7, -7, 6, 5]
+    } : {
+      leadUpper: [543, 450, 13, -10, 7, -6, -12],
+      leadFore: [413, 600, 18, 10, 10, -8, -15],
+      leadHand: [229, 575, 9, -8, 11, -10, -10],
+      trailUpper: [703, 450, -7, 11, -6, 5, 9],
+      trailFore: [801, 735, -11, -10, -8, 8, 12],
+      trailHand: [819, 884, -9, 8, -11, 10, 10],
+      leadLeg: [412, 1340, 4, -6, 5, -4, -4],
+      leadFoot: [412, 1495, -9, 7, -9, 7, 5],
+      trailLeg: [748, 1340, -3, 5, -4, 4, 3],
+      trailFoot: [748, 1495, 6, -7, 7, -6, -5]
+    };
+    const motionDurations = { raise: '4.8s', unfold: '5.2s', search: '4.4s', guard: '5.4s' };
+    const jointAnimation = role => {
+      if (!supportsSMIL) return '';
+      const [x, y, raise, unfold, searchA, searchB, guard] = joints[role];
+      const settle = Number((raise * .34).toFixed(2));
+      const point = angle => `${angle} ${x} ${y}`;
+      const sequences = {
+        raise: { times: '0;.38;.58;.76;1', values: [0, raise, raise, settle, 0] },
+        unfold: { times: '0;.27;.5;.65;.83;1', values: [0, settle, unfold, unfold, settle, 0] },
+        search: { times: '0;.22;.45;.69;.87;1', values: [0, searchA, searchB, searchA, searchB, 0] },
+        guard: { times: '0;.3;.68;.84;1', values: [0, guard, guard, settle, 0] }
+      };
+      const sequence = sequences[motion];
+      return `<animateTransform class="wh-rig-joint-animation" attributeName="transform" type="rotate" begin="indefinite" dur="${motionDurations[motion]}" repeatCount="indefinite" keyTimes="${sequence.times}" values="${sequence.values.map(point).join(';')}"/>`;
+    };
+    /* Subtract the exact union of the rendered limb clips from the still body.
+       At rest this reconstructs the source art pixel-for-pixel; in motion it
+       prevents a static arm or foot from remaining underneath the moved limb. */
+    const bodyCutouts = Object.values(geometry.clips).map(path => `<path d="${path}" fill="#000"/>`).join('');
+    const clipPaths = Object.entries(geometry.clips).map(([name, path]) =>
+      `<clipPath id="${prefix}-${name}" clipPathUnits="userSpaceOnUse"><path d="${path}"/></clipPath>`
+    ).join('');
+    const image = clip => `<image href="${imageURL}" width="1024" height="1664" preserveAspectRatio="none" clip-path="url(#${prefix}-${clip})"/>`;
+    return `<svg class="wh-puppet-art wh-puppet-rig" data-rig="${kind}"${supportsSMIL ? ' data-native-joints="true"' : ''} viewBox="0 0 945 1665" preserveAspectRatio="xMidYMax meet" focusable="false" aria-hidden="true">
+      <defs>
+        <mask id="${prefix}-body" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1664"><rect width="1024" height="1664" fill="#fff"/>${bodyCutouts}</mask>
+        ${clipPaths}
+      </defs>
+      <g class="wh-rig-coordinate-map" transform="scale(.9228515625 1.0006009615)">
+        <g class="wh-rig-leg is-trail">${jointAnimation('trailLeg')}${image('trailLeg')}<g class="wh-rig-foot">${jointAnimation('trailFoot')}${image('trailFoot')}</g></g>
+        <g class="wh-rig-leg is-lead">${jointAnimation('leadLeg')}${image('leadLeg')}<g class="wh-rig-foot">${jointAnimation('leadFoot')}${image('leadFoot')}</g></g>
+        <g class="wh-rig-body"><image href="${imageURL}" width="1024" height="1664" preserveAspectRatio="none" mask="url(#${prefix}-body)"/></g>
+        <g class="wh-rig-upper-arm is-trail">${jointAnimation('trailUpper')}${image('trailUpper')}<g class="wh-rig-forearm">${jointAnimation('trailFore')}${image('trailFore')}<g class="wh-rig-hand">${jointAnimation('trailHand')}${image('trailHand')}</g></g></g>
+        <g class="wh-rig-upper-arm is-lead">${jointAnimation('leadUpper')}${image('leadUpper')}<g class="wh-rig-forearm">${jointAnimation('leadFore')}${image('leadFore')}<g class="wh-rig-hand">${jointAnimation('leadHand')}${image('leadHand')}</g></g></g>
+      </g>
+    </svg>`;
+  }
 
   function getStageAudioContext() {
     if (!stageSoundEnabled || document.hidden) return null;
@@ -230,7 +343,9 @@
   function puppetStage(scene, mode, copy) {
     const stage = document.createElement('div');
     const sceneIndex = copy.scenes.indexOf(scene);
-    const motionSequence = ['arrival', 'incline', 'step', 'turn', 'raise', 'unfold', 'search', 'guard'];
+    /* Repeat the four fully articulated paired choreographies across all eight stages,
+       so hands, arms, legs and feet are already visibly moving in the opening scene. */
+    const motionSequence = ['raise', 'unfold', 'search', 'guard', 'raise', 'unfold', 'search', 'guard'];
     const stampSequence = ['minnan-03', 'hakka-03', 'waisheng-03', '', '', 'minnan-04', 'hakka-04', 'waisheng-04'];
     const stageStamp = stampSequence[sceneIndex] || '';
     stage.className = 'wh-puppet-play';
@@ -257,8 +372,8 @@
     stage.innerHTML = `
       <div class="wh-stage-curtain" aria-hidden="true"><span class="wh-curtain-panel is-left"></span><span class="wh-curtain-panel is-right"></span></div>
       ${stageStamp ? '<span class="wh-stage-stamp" aria-hidden="true"></span>' : ''}
-      <figure class="wh-puppet is-female" aria-hidden="true"><span class="wh-puppet-motion-layer"><span class="wh-puppet-art"></span><i class="wh-control-rod is-body"></i><i class="wh-control-rod is-hand"></i></span></figure>
-      <figure class="wh-puppet is-male" aria-hidden="true"><span class="wh-puppet-motion-layer"><span class="wh-puppet-art"></span><i class="wh-control-rod is-body"></i><i class="wh-control-rod is-hand"></i></span></figure>
+      <figure class="wh-puppet is-female" aria-hidden="true"><span class="wh-puppet-motion-layer">${puppetRig('female', sceneIndex)}<i class="wh-control-rod is-body"></i><i class="wh-control-rod is-hand"></i></span></figure>
+      <figure class="wh-puppet is-male" aria-hidden="true"><span class="wh-puppet-motion-layer">${puppetRig('male', sceneIndex)}<i class="wh-control-rod is-body"></i><i class="wh-control-rod is-hand"></i></span></figure>
       <div class="wh-puppet-dialogues" aria-live="polite">${dialogueHTML}</div>
       ${sealHTML ? `<div class="wh-cultural-seals" aria-label="${escapeHTML(copy.culture.title)}">${sealHTML}</div>` : ''}
       <details class="wh-puppet-transcript"><summary>${escapeHTML(copy.transcript)}</summary>${transcriptHTML}</details>
@@ -339,6 +454,9 @@
 
   function resetPuppetStage(stage) {
     clearPuppetTimers(stage);
+    stage.querySelectorAll('.wh-rig-joint-animation').forEach(animation => {
+      try { animation.endElement(); } catch (_) { /* SMIL fallback: nothing has begun yet. */ }
+    });
     stage.classList.remove(
       'is-playing', 'is-closing', 'is-complete',
       'is-speaking-female', 'is-speaking-male', 'is-speaking-chorus'
@@ -364,6 +482,11 @@
     stage.dataset.puppetPlayed = 'true';
     stage.classList.add('is-playing');
     playStageSound('open');
+    queuePuppetTimer(stage, () => {
+      stage.querySelectorAll('.wh-rig-joint-animation').forEach(animation => {
+        try { animation.beginElement(); } catch (_) { /* CSS fallback remains available. */ }
+      });
+    }, 1350);
 
     const dialogues = [...stage.querySelectorAll('.wh-puppet-dialogue')];
     const openingDelay = Math.max(900, Number(stage.dataset.dialogueDelay) || 1750);
