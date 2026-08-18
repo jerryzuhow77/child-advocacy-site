@@ -3325,7 +3325,7 @@ html.tt-pose-ready .tt-ending-theatre-puppet{opacity:1}
   .tt-ending .tt-ending-copy{visibility:visible!important;opacity:1!important;pointer-events:auto!important;animation:none!important}
 }
 
-/* v11.6 nine large chapter-specific ronghua, skippable epilogue, and the supplied snow-landscape ending panorama. */
+/* v11.7 nine large, high-detail chapter-specific ronghua; skippable epilogue; supplied snow-landscape ending panorama. */
 .tt-chapter{isolation:isolate}
 .tt-chapter>.tt-chapter-grid{position:relative;z-index:1}
 .tt-ronghua-scatter{
@@ -3336,7 +3336,7 @@ html.tt-pose-ready .tt-ending-theatre-puppet{opacity:1}
   z-index:0;
   display:block;
   width:clamp(380px,43vw,700px);
-  aspect-ratio:1200/760;
+  aspect-ratio:3/2;
   background-position:center;
   background-repeat:no-repeat;
   background-size:contain;
@@ -3357,14 +3357,14 @@ html.tt-pose-ready .tt-ending-theatre-puppet{opacity:1}
   --tt-ronghua-enter:-36px;
   top:2%;
   left:max(-82px,-4.8vw);
-  background-image:url("./art/tian-tian-ronghua-blue-branch-20260817.svg");
+  background-image:url("./art/tian-tian-ronghua-refined-blue-branch-20260818.webp");
 }
 .tt-ronghua-scatter--ch01{
   --tt-ronghua-opacity:.27;
   --tt-ronghua-rotate:6deg;
   right:max(-86px,-5vw);
   bottom:1%;
-  background-image:url("./art/tian-tian-ronghua-magnolia-snow-20260818.svg");
+  background-image:url("./art/tian-tian-ronghua-refined-snow-magnolia-20260818.webp");
 }
 .tt-ronghua-scatter--ch02{
   --tt-ronghua-opacity:.25;
@@ -3372,14 +3372,14 @@ html.tt-pose-ready .tt-ending-theatre-puppet{opacity:1}
   --tt-ronghua-enter:-34px;
   top:3%;
   left:max(-70px,-4vw);
-  background-image:url("./art/tian-tian-ronghua-camellia-knots-20260818.svg");
+  background-image:url("./art/tian-tian-ronghua-refined-ten-knot-camellia-20260818.webp");
 }
 .tt-ronghua-scatter--ch03{
   --tt-ronghua-opacity:.24;
   --tt-ronghua-rotate:3deg;
   right:max(-76px,-4.4vw);
   bottom:0;
-  background-image:url("./art/tian-tian-ronghua-chrysanthemum-frost-20260818.svg");
+  background-image:url("./art/tian-tian-ronghua-refined-frost-chrysanthemum-20260818.webp");
 }
 .tt-ronghua-scatter--ch04{
   --tt-ronghua-opacity:.27;
@@ -3387,14 +3387,14 @@ html.tt-pose-ready .tt-ending-theatre-puppet{opacity:1}
   --tt-ronghua-enter:-36px;
   top:6%;
   left:max(-88px,-5.2vw);
-  background-image:url("./art/tian-tian-ronghua-lotus-20260817.svg");
+  background-image:url("./art/tian-tian-ronghua-refined-moon-lotus-20260818.webp");
 }
 .tt-ronghua-scatter--ch05{
   --tt-ronghua-opacity:.28;
   --tt-ronghua-rotate:5deg;
   right:max(-68px,-4vw);
   bottom:1%;
-  background-image:url("./art/tian-tian-ronghua-osmanthus-moon-20260818.svg");
+  background-image:url("./art/tian-tian-ronghua-refined-osmanthus-crescent-20260818.webp");
 }
 .tt-ronghua-scatter--ch06{
   --tt-ronghua-opacity:.23;
@@ -3402,7 +3402,7 @@ html.tt-pose-ready .tt-ending-theatre-puppet{opacity:1}
   --tt-ronghua-enter:-34px;
   top:4%;
   left:max(-72px,-4.2vw);
-  background-image:url("./art/tian-tian-ronghua-four-evidence-20260818.svg");
+  background-image:url("./art/tian-tian-ronghua-refined-four-evidence-20260818.webp");
 }
 .tt-ronghua-scatter--ch07{
   --tt-ronghua-opacity:.22;
@@ -3410,7 +3410,7 @@ html.tt-pose-ready .tt-ending-theatre-puppet{opacity:1}
   right:max(-104px,-6vw);
   bottom:1%;
   width:clamp(440px,48vw,760px);
-  background-image:url("./art/tian-tian-ronghua-phoenix-20260817.svg");
+  background-image:url("./art/tian-tian-ronghua-refined-vermilion-phoenix-20260818.webp");
 }
 .tt-ronghua-scatter--ch08{
   --tt-ronghua-opacity:.27;
@@ -3418,7 +3418,7 @@ html.tt-pose-ready .tt-ending-theatre-puppet{opacity:1}
   --tt-ronghua-enter:-34px;
   top:4%;
   left:max(-78px,-4.6vw);
-  background-image:url("./art/tian-tian-ronghua-peony-butterfly-20260817.svg");
+  background-image:url("./art/tian-tian-ronghua-refined-peony-butterfly-20260818.webp");
 }
 
 /* The theatre remains above the memorial image until the curtain has closed,
