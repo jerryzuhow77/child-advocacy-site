@@ -719,7 +719,7 @@ html[lang="ja"] .case-fu__stage-core { font-family: "Noto Serif JP", "Yu Mincho"
 .case-fu__character-pose[class$="-0"] { opacity: 1; }
 .case-fu__character-pose--shadow-recorder-0 { background-image: url("art/fu-xiaodi-shadow-recorder-male-20260817.png"); }
 .case-fu__character-pose--shadow-recorder-1 { background-image: url("art/fu-xiaodi-shadow-recorder-male-ledger-raised-20260817.png"); }
-.case-fu__character-pose--shadow-recorder-2 { background-image: url("art/fu-xiaodi-shadow-recorder-male-turn-listen-corrected-v2-20260818.png"); }
+.case-fu__character-pose--shadow-recorder-2 { background-image: url("art/fu-xiaodi-shadow-recorder-male-turn-listen-clean-v3-20260818.png"); }
 .case-fu__character-pose--shadow-guardian-0 { background-image: url("art/fu-xiaodi-shadow-guardian-female-20260817.png"); }
 .case-fu__character-pose--shadow-guardian-1 { background-image: url("art/fu-xiaodi-shadow-guardian-female-point-seal-20260817.png"); }
 .case-fu__character-pose--shadow-guardian-2 { background-image: url("art/fu-xiaodi-shadow-guardian-female-hand-heart-20260817.png"); }
@@ -924,7 +924,9 @@ html[lang="ja"] .case-fu__script-line p { font-family: "Noto Serif JP", "Yu Minc
   position: absolute;
   z-index: 14;
   bottom: 4.5%;
-  width: clamp(92px, 17%, 205px);
+  /* Standing researcher and archivist art use different source widths.  Give
+     both a wide enough frame so their shared height—not image width—sets scale. */
+  width: clamp(164px, 22%, 230px);
   height: 60%;
   opacity: 0;
   filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.55)) saturate(0.76);
@@ -932,18 +934,25 @@ html[lang="ja"] .case-fu__script-line p { font-family: "Noto Serif JP", "Yu Minc
 }
 .case-fu__modern-person--researcher {
   left: 14%;
+  width: clamp(226px, 24%, 250px);
   transform: translateX(-140%);
 }
 .case-fu__modern-person--archivist {
   right: 13%;
   transform: translateX(140%);
 }
+.case-fu__modern-person .case-fu__character-pose { background-size: auto 100%; }
+.case-fu__modern-person--researcher .case-fu__character-pose { background-position: left bottom; }
+.case-fu__modern-person--archivist .case-fu__character-pose { background-position: right bottom; }
 .case-fu__character-pose--modern-researcher-0 { background-image: url("art/fu-xiaodi-modern-researcher-male-20260817.png"); }
 .case-fu__character-pose--modern-researcher-1 { background-image: url("art/fu-xiaodi-modern-researcher-male-crouch-note-20260817.png"); }
+.case-fu__modern-person .case-fu__character-pose--modern-researcher-1 { background-size: contain; }
 .case-fu__character-pose--modern-researcher-2 { background-image: url("art/fu-xiaodi-modern-researcher-male-turn-back-20260817.png"); }
 .case-fu__character-pose--modern-archivist-0 { background-image: url("art/fu-xiaodi-modern-archivist-female-20260817.png"); }
 .case-fu__character-pose--modern-archivist-1 { background-image: url("art/fu-xiaodi-modern-archivist-female-open-file-20260817.png"); }
 .case-fu__character-pose--modern-archivist-2 { background-image: url("art/fu-xiaodi-modern-archivist-female-listen-door-20260817.png"); }
+.case-fu__modern-person .case-fu__character-pose--modern-researcher-2,
+.case-fu__modern-person .case-fu__character-pose--modern-archivist-1 { background-size: auto 107%; }
 .case-fu__modern-label {
   position: absolute;
   z-index: 26;
@@ -1474,7 +1483,7 @@ html[lang="ja"] .case-fu__heritage-gallery-item figcaption { font-size: 0.64rem;
   html[lang="en"] .case-fu__script-line p,
   html[lang="ja"] .case-fu__script-line p { font-size: 0.74rem; line-height: 1.64; }
   .case-fu__modern-label { top: 3%; width: 94%; font-size: 0.51rem; letter-spacing: 0.04em; }
-  .case-fu__modern-person { width: 27%; height: 42%; bottom: 3%; }
+  .case-fu__modern-person { width: 45%; height: 42%; bottom: 3%; }
   .case-fu__modern-person--researcher { left: 6%; }
   .case-fu__modern-person--archivist { right: 5%; }
   .case-fu__modern-line { width: 76%; padding: 9px 10px; }
