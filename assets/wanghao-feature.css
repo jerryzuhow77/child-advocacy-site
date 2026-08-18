@@ -95,8 +95,8 @@ html[lang="ja"] body.wh-page{font-family:"Noto Serif JP","Yu Mincho","Hiragino M
 .wh-puppet.is-female .wh-puppet-art,.wh-puppet-female .wh-puppet-art,.wh-puppet[data-puppet="female"] .wh-puppet-art{background-image:url("images/wanghao-shadow-keeper-female-v1.png")}
 .wh-puppet.is-male,.wh-puppet-male,.wh-puppet[data-puppet="male"]{right:4%}
 .wh-puppet.is-male .wh-puppet-art,.wh-puppet-male .wh-puppet-art,.wh-puppet[data-puppet="male"] .wh-puppet-art{background-image:url("images/wanghao-shadow-storyteller-male-v1.png")}
-.wh-puppet .wh-puppet-rig{z-index:2;display:block;width:100%;height:100%;overflow:visible;background-image:none!important}
-.wh-puppet-play.is-playing .wh-puppet:has(.wh-puppet-rig[data-native-joints]) .wh-puppet-fallback{opacity:.16}
+.wh-puppet .wh-puppet-rig{z-index:2;display:block;width:100%;height:100%;overflow:visible;background-image:none!important;filter:contrast(1.1) saturate(1.08)}
+.wh-puppet-play.is-playing .wh-puppet:has(.wh-puppet-rig[data-native-joints]) .wh-puppet-fallback{opacity:.52;filter:contrast(1.12) saturate(1.06)}
 .wh-puppet-rig image{pointer-events:none}
 .wh-puppet-rig .wh-rig-upper-arm,.wh-puppet-rig .wh-rig-forearm,.wh-puppet-rig .wh-rig-hand,
 .wh-puppet-rig .wh-rig-leg,.wh-puppet-rig .wh-rig-foot{transform-box:view-box;will-change:transform}

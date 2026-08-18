@@ -114,7 +114,10 @@
     /* Subtract the exact union of the rendered limb clips from the still body.
        At rest this reconstructs the source art pixel-for-pixel; in motion it
        prevents a static arm or foot from remaining underneath the moved limb. */
-    const bodyCutouts = Object.values(geometry.clips).map(path => `<path d="${path}" fill="#000"/>`).join('');
+    /* Keep the head, torso and robe fully opaque. Only the four coherent limb
+       silhouettes are removed from the still body; the smaller joint clips
+       are used solely to rebuild the moving upper/lower limbs. */
+    const bodyCutouts = geometry.bodyCuts.map(path => `<path d="${path}" fill="#000"/>`).join('');
     const clipPaths = Object.entries(geometry.clips).map(([name, path]) =>
       `<clipPath id="${prefix}-${name}" clipPathUnits="userSpaceOnUse"><path d="${path}"/></clipPath>`
     ).join('');
