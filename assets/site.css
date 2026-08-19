@@ -6690,6 +6690,7 @@ body.art-site.morandi-tone .premium-home-hero .premium-hero-copy h1{
 .home-news-tabs a.is-active{
   background:var(--micro-indigo)!important;
   border-color:var(--micro-indigo)!important;
+  color:#fffaf2!important;
 }
 
 /* 關於我們：肉粉與蟹青僅用在圈線、標籤與時間軸。 */
