@@ -7802,3 +7802,131 @@ html[lang="zh-Hans"] .historical-region-children a[data-view-counter-key="histor
   .is-fu-xiaodi .home-news-card-copy p,
   .home-case-reel-card.is-fu-xiaodi .home-case-reel-copy > span{font-size:.84rem;line-height:1.65}
 }
+
+
+/* 2026-08-19 — Homepage medium palette refinement: Chinese traditional × Morandi. */
+.home-medium-palette{
+  --home-paper:#f4eee7;
+  --home-almond:#f2e3d5;
+  --home-lotus:#d9b8bd;
+  --home-flesh:#e7c2b7;
+  --home-crab:#aab9b2;
+  --home-dusty:#d7c0c2;
+  --home-mist:#c8bec9;
+  --home-blue:#aebcc2;
+  --home-ink:#334e57;
+  --home-copy:#625f5b;
+  background:
+    radial-gradient(circle at 10% 8%,rgba(231,194,183,.28),transparent 24rem),
+    radial-gradient(circle at 88% 17%,rgba(200,190,201,.24),transparent 28rem),
+    linear-gradient(180deg,#f4eee7 0%,#f2e8df 46%,#f4eee7 100%);
+  color:var(--home-copy);
+}
+.home-medium-palette::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  opacity:.22;
+  background-image:
+    radial-gradient(circle at 18% 24%,rgba(130,100,88,.14) 0 1px,transparent 1.4px),
+    radial-gradient(circle at 72% 68%,rgba(255,255,255,.58) 0 1px,transparent 1.5px);
+  background-size:31px 29px,37px 41px;
+  mix-blend-mode:multiply;
+}
+.home-medium-palette .premium-home-hero{
+  background:
+    radial-gradient(circle at 14% 18%,rgba(231,194,183,.43),transparent 31%),
+    radial-gradient(circle at 83% 24%,rgba(200,190,201,.34),transparent 32%),
+    radial-gradient(circle at 50% 100%,rgba(170,185,178,.24),transparent 36%),
+    linear-gradient(135deg,#f7f1e9 0%,#f2e3d5 52%,#d7c0c2 100%)!important;
+  color:var(--home-ink);
+}
+.home-medium-palette .premium-home-hero h1,
+.home-medium-palette .premium-home-hero h1 span,
+.home-medium-palette .premium-home-hero .premium-hero-lead,
+.home-medium-palette .premium-home-hero .premium-hero-note{color:var(--home-ink)!important}
+.home-medium-palette .premium-kicker,
+.home-medium-palette .premium-home-hero .art-eyebrow{color:#8b6268!important}
+.home-medium-palette .premium-hero-bottomline{
+  background:rgba(51,78,87,.92)!important;
+  border-color:rgba(255,250,242,.24)!important;
+}
+.home-medium-palette .premium-art-card,
+.home-medium-palette .home-view-counter{
+  background:rgba(255,250,246,.78)!important;
+  border-color:rgba(184,139,128,.26)!important;
+  box-shadow:0 18px 42px rgba(82,67,66,.12)!important;
+  backdrop-filter:blur(8px);
+}
+.home-medium-palette .home-protection-wall{
+  background:
+    radial-gradient(circle at 12% 34%,rgba(217,184,189,.38),transparent 34%),
+    radial-gradient(circle at 86% 70%,rgba(170,185,178,.32),transparent 32%),
+    linear-gradient(135deg,#f1e3db,#e8d7d8 52%,#dde4df)!important;
+}
+.home-medium-palette .home-protection-wall-card{
+  background:rgba(255,250,246,.72)!important;
+  border-color:rgba(169,124,113,.28)!important;
+  box-shadow:0 20px 48px rgba(83,67,66,.12)!important;
+}
+.home-medium-palette .home-news-hub{
+  background:
+    radial-gradient(circle at 90% 8%,rgba(200,190,201,.20),transparent 27rem),
+    linear-gradient(180deg,#f6f0e9,#efe5dc)!important;
+}
+.home-medium-palette .home-news-focus,
+.home-medium-palette .home-news-card,
+.home-medium-palette .home-progress-card,
+.home-medium-palette .home-advocacy-grid>a{
+  background:rgba(255,250,246,.80)!important;
+  border-color:rgba(121,104,94,.16)!important;
+  box-shadow:0 15px 34px rgba(69,65,62,.09)!important;
+  backdrop-filter:blur(6px);
+}
+.home-medium-palette .home-news-tabs a{
+  color:#4f6064;
+  background:rgba(255,250,246,.74);
+  border-color:rgba(98,95,91,.15);
+}
+.home-medium-palette .home-news-tabs a:nth-child(2){background:rgba(242,227,213,.88)}
+.home-medium-palette .home-news-tabs a:nth-child(3){background:rgba(174,188,194,.60)}
+.home-medium-palette .home-news-tabs a:nth-child(4){background:rgba(231,194,183,.68)}
+.home-medium-palette .home-news-tabs a:nth-child(5){background:rgba(200,190,201,.68)}
+.home-medium-palette .home-news-tabs a:nth-child(6){background:rgba(170,185,178,.68)}
+.home-medium-palette .home-news-tabs a:hover,
+.home-medium-palette .home-news-tabs a.is-active{
+  background:var(--home-ink)!important;
+  border-color:var(--home-ink)!important;
+  color:#fffaf2!important;
+}
+.home-medium-palette :where(.remember-kaikai-section,.impact-section,.home-action-section,.home-belief-section,.volunteer-logo-section,.official-social-section){
+  background-color:rgba(244,238,231,.88);
+}
+.home-medium-palette :where(.remember-kaikai-section,.home-action-section,.volunteer-logo-section){
+  background-image:
+    radial-gradient(circle at 8% 18%,rgba(217,184,189,.17),transparent 26rem),
+    radial-gradient(circle at 92% 82%,rgba(170,185,178,.16),transparent 24rem);
+}
+.home-medium-palette :where(h1,h2,h3,.home-news-stream-head strong){color:var(--home-ink)}
+.home-medium-palette :where(p,li,.home-news-card-copy){color:var(--home-copy)}
+.home-medium-palette .btn.art-primary,
+.home-medium-palette .premium-main-cta,
+.home-medium-palette .home-protection-wall-cta{
+  background:var(--home-ink)!important;
+  color:#fffaf2!important;
+  border-color:var(--home-ink)!important;
+}
+@media(max-width:800px){
+  .home-medium-palette .premium-home-hero{
+    background:
+      radial-gradient(circle at 15% 12%,rgba(231,194,183,.40),transparent 32%),
+      radial-gradient(circle at 88% 42%,rgba(200,190,201,.30),transparent 38%),
+      linear-gradient(160deg,#f7f1e9,#f2e3d5 58%,#d9c8cb 100%)!important;
+  }
+  .home-medium-palette::before{opacity:.15}
+  .home-medium-palette .home-news-focus,
+  .home-medium-palette .home-news-card,
+  .home-medium-palette .home-progress-card{backdrop-filter:none}
+}
