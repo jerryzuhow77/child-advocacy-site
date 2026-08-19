@@ -79,17 +79,17 @@ html[lang="ja"] body.wh-page{font-family:"Noto Serif JP","Yu Mincho","Hiragino M
 
 .wh-puppet{
   position:absolute;z-index:7;bottom:8.5%;width:clamp(158px,24vw,280px);height:clamp(250px,50%,390px);
-  margin:0;transform-origin:50% 94%;transform-style:preserve-3d;opacity:0;will-change:transform,opacity;
+  margin:0;transform-origin:50% 94%;transform-style:flat;opacity:0;will-change:transform,opacity;
   filter:drop-shadow(0 19px 12px rgba(0,0,0,.46));pointer-events:none
 }
-.wh-puppet-motion-layer{position:absolute;inset:0;display:block;overflow:visible;transform-origin:50% 92%;transform-style:preserve-3d;will-change:transform}
+.wh-puppet-motion-layer{position:absolute;inset:0;display:block;overflow:visible;transform-origin:50% 92%;transform-style:flat;will-change:transform}
 .wh-puppet-fallback{
   position:absolute;z-index:1;inset:0;display:block;width:100%;height:100%;object-fit:contain;object-position:center bottom;
   opacity:.86;transform-origin:50% 88%;image-rendering:auto;pointer-events:none;transition:opacity .55s ease
 }
 .wh-puppet-art{
   position:absolute;z-index:2;inset:0;background-repeat:no-repeat;background-position:center bottom;background-size:contain;
-  transform-origin:50% 88%;transform-style:preserve-3d;will-change:transform;image-rendering:auto
+  transform-origin:50% 88%;transform-style:flat;will-change:opacity;image-rendering:auto
 }
 .wh-puppet.is-female,.wh-puppet-female,.wh-puppet[data-puppet="female"]{left:4%}
 .wh-puppet.is-female .wh-puppet-art,.wh-puppet-female .wh-puppet-art,.wh-puppet[data-puppet="female"] .wh-puppet-art{background-image:url("images/wanghao-shadow-keeper-female-v1.png")}
@@ -320,7 +320,11 @@ html.gsap-ready .wh-puppet-play .wh-puppet-pose:not(.is-active){opacity:0}
   .wh-puppet-play::before{height:70px}
   .wh-puppet-dialogues{top:76px;width:calc(100% - 1.35rem);min-height:210px}
   .wh-puppet-dialogue{max-height:220px;padding:.82rem .9rem;font-size:.82rem;line-height:1.63}
-  .wh-puppet{bottom:4%;width:clamp(128px,43vw,174px);height:clamp(190px,38%,220px)}
+  .wh-puppet{bottom:4%;width:clamp(128px,43vw,174px);height:clamp(190px,38%,220px);isolation:isolate;filter:none;transform-style:flat;backface-visibility:visible}
+  .wh-puppet::after{content:"";position:absolute;z-index:0;left:16%;right:16%;bottom:-1%;height:8%;border-radius:50%;background:rgba(0,0,0,.34);filter:blur(7px);pointer-events:none}
+  .wh-puppet-motion-layer{z-index:1;transform-style:flat;backface-visibility:visible;perspective:none;will-change:transform}
+  .wh-puppet .wh-puppet-pose{z-index:2;display:block;visibility:visible;opacity:1;transform:none!important;transform-style:flat;backface-visibility:visible;will-change:opacity;contain:paint;filter:none!important;clip-path:none!important;-webkit-mask-image:none!important;mask-image:none!important}
+  .wh-puppet .wh-puppet-pose:not(.is-active){visibility:hidden;opacity:0}
   .wh-puppet.is-female,.wh-puppet-female,.wh-puppet[data-puppet="female"]{left:-1%}
   .wh-puppet.is-male,.wh-puppet-male,.wh-puppet[data-puppet="male"]{right:-1%}
   .wh-puppet-play>.wh-cultural-seals{bottom:2%;width:48%;gap:.3rem}

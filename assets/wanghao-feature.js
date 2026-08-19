@@ -6,6 +6,7 @@
   const gsapEngine = !reducedMotion && window.gsap && typeof window.gsap.timeline === 'function'
     ? window.gsap
     : null;
+  const compactPuppetViewport = matchMedia('(max-width: 780px)');
   if (gsapEngine) document.documentElement.classList.add('gsap-ready');
   const reveals = [...document.querySelectorAll('.reveal')];
   let stageSoundEnabled = false;
@@ -30,12 +31,32 @@
     ]
   };
 
+  const puppetPoseURLs = Object.fromEntries(Object.entries(puppetImages).map(([kind, imageNames]) => [
+    kind,
+    imageNames.map(imageName => new URL(`images/${imageName}`, featureAssetBaseURL).href)
+  ]));
+  const puppetPosePreloads = new Map();
+
+  function preloadPuppetPose(source) {
+    if (puppetPosePreloads.has(source)) return puppetPosePreloads.get(source).ready;
+    const image = new Image();
+    image.decoding = 'async';
+    image.src = source;
+    const ready = typeof image.decode === 'function'
+      ? image.decode().catch(() => undefined)
+      : Promise.resolve();
+    puppetPosePreloads.set(source, { image, ready });
+    return ready;
+  }
+
+  Object.values(puppetPoseURLs).flat().forEach(preloadPuppetPose);
+
   function puppetPoseSet(kind) {
-    return puppetImages[kind].map((imageName, poseIndex) => {
-      const imageURL = new URL(`images/${imageName}`, featureAssetBaseURL).href;
-      const activeClass = poseIndex === 0 ? ' is-active' : '';
-      return `<img class="wh-puppet-art wh-puppet-pose${activeClass}" data-pose="${poseIndex + 1}" src="${imageURL}" alt="" aria-hidden="true" decoding="async" loading="eager">`;
-    }).join('');
+    const sources = puppetPoseURLs[kind];
+    const sourceAttributes = sources.map((source, poseIndex) =>
+      `data-pose-src-${poseIndex + 1}="${source}"`
+    ).join(' ');
+    return `<img class="wh-puppet-art wh-puppet-pose is-active" data-puppet-kind="${kind}" data-pose="1" ${sourceAttributes} src="${sources[0]}" alt="" aria-hidden="true" decoding="async" loading="eager">`;
   }
 
   function getStageAudioContext() {
@@ -393,6 +414,7 @@
   const puppetTimers = new WeakMap();
   const puppetTimelines = new WeakMap();
   const activePuppetTimelines = new Set();
+  let puppetPoseRequestId = 0;
 
   function clearPuppetTimers(stage) {
     (puppetTimers.get(stage) || []).forEach(window.clearTimeout);
@@ -408,27 +430,48 @@
   function setPuppetPose(stage, poseNumber, animate = false) {
     const normalizedPose = Math.max(1, Math.min(3, Number(poseNumber) || 1));
     const poseImages = [...stage.querySelectorAll('.wh-puppet-pose')];
-    const outgoing = poseImages.filter(image => image.classList.contains('is-active') && image.dataset.pose !== String(normalizedPose));
-    const incoming = poseImages.filter(image => image.dataset.pose === String(normalizedPose));
+    const requestedSources = poseImages.map(image => image.getAttribute(`data-pose-src-${normalizedPose}`));
+    const requestId = String(++puppetPoseRequestId);
+    const applyPose = () => {
+      if (stage.dataset.poseRequest !== requestId) return;
+      poseImages.forEach((image, index) => {
+        const source = requestedSources[index];
+        if (source && image.getAttribute('src') !== source) image.src = source;
+        image.dataset.pose = String(normalizedPose);
+        image.classList.add('is-active');
+      });
+      stage.dataset.activePose = String(normalizedPose);
+    };
+
+    stage.dataset.poseRequest = requestId;
     stage.dataset.activePose = String(normalizedPose);
-    poseImages.forEach(image => {
-      image.classList.toggle('is-active', image.dataset.pose === String(normalizedPose));
-    });
     if (!gsapEngine || !animate) {
+      applyPose();
       gsapEngine?.set(poseImages, { clearProps: 'opacity,visibility,transform' });
       return;
     }
+
     gsapEngine.killTweensOf(poseImages);
-    if (outgoing.length) {
-      gsapEngine.fromTo(outgoing,
-        { autoAlpha: 1, scale: 1 },
-        { autoAlpha: 0, scale: .985, duration: .48, ease: 'power2.inOut' }
-      );
-    }
-    gsapEngine.fromTo(incoming,
-      { autoAlpha: 0, scale: .985 },
-      { autoAlpha: 1, scale: 1, duration: .62, ease: 'power3.out' }
-    );
+    const fadeOutDuration = compactPuppetViewport.matches ? .1 : .16;
+    const fadeInDuration = compactPuppetViewport.matches ? .24 : .34;
+    gsapEngine.to(poseImages, {
+      autoAlpha: 0,
+      duration: fadeOutDuration,
+      ease: 'power1.out',
+      onComplete: () => {
+        Promise.all(requestedSources.filter(Boolean).map(preloadPuppetPose)).finally(() => {
+          if (stage.dataset.poseRequest !== requestId) return;
+          applyPose();
+          gsapEngine.set(poseImages, { x: 0, y: 0, scale: 1, rotation: 0 });
+          gsapEngine.to(poseImages, {
+            autoAlpha: 1,
+            duration: fadeInDuration,
+            ease: 'power2.out',
+            overwrite: 'auto'
+          });
+        });
+      }
+    });
   }
 
   function clearPuppetTimeline(stage) {
@@ -486,7 +529,7 @@
       : stage.querySelectorAll(`.wh-puppet.is-${speaker} .wh-puppet-motion-layer`);
     gsapEngine.fromTo(actors,
       { y: 0, rotation: 0 },
-      { y: -3, rotation: speaker === 'male' ? -.3 : .3, duration: .78, repeat: 1, yoyo: true, ease: 'sine.inOut' }
+      { y: compactPuppetViewport.matches ? -2 : -3, rotation: compactPuppetViewport.matches ? 0 : (speaker === 'male' ? -.3 : .3), duration: .78, repeat: 1, yoyo: true, ease: 'sine.inOut' }
     );
     playStageSound(speaker);
   }
@@ -512,8 +555,8 @@
 
     gsapEngine.set(leftCurtain, { xPercent: 0 });
     gsapEngine.set(rightCurtain, { xPercent: 0, scaleX: -1 });
-    gsapEngine.set(female, { autoAlpha: 0, xPercent: -66, y: 4, rotation: -1.4 });
-    gsapEngine.set(male, { autoAlpha: 0, xPercent: 66, y: 4, rotation: 1.4 });
+    gsapEngine.set(female, { autoAlpha: 0, xPercent: -66, y: 4, rotation: compactPuppetViewport.matches ? 0 : -1.4 });
+    gsapEngine.set(male, { autoAlpha: 0, xPercent: 66, y: 4, rotation: compactPuppetViewport.matches ? 0 : 1.4 });
     gsapEngine.set(dialogueWrap, { autoAlpha: 1 });
     gsapEngine.set(dialogues, { autoAlpha: 0, y: 14, scale: .985 });
     if (stageStamp) gsapEngine.set(stageStamp, { autoAlpha: 0, scale: .86 });
