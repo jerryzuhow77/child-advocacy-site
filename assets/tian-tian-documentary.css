@@ -3581,3 +3581,96 @@ html.tt-pose-ready .tt-ending-theatre-puppet{opacity:1}
   }
   .tt-ending-panorama img{height:auto!important;object-fit:contain!important}
 }
+
+/* v12.0 GSAP progressive enhancement.
+   GSAP owns coordinated transforms and opacity only after both the core and
+   ScrollTrigger have loaded. Without them, every established CSS animation
+   above remains the complete visual fallback. */
+html.tt-gsap-ready .tt-opening-line{transition:none}
+html.tt-gsap-ready .tt-chapter,
+html.tt-gsap-ready .tt-transition{
+  opacity:1;
+  transform:none;
+  transition:none;
+}
+html.tt-gsap-ready .tt-transition .tt-transition-inner{
+  opacity:1;
+  transform:none;
+  transition:none;
+}
+html.tt-gsap-ready .tt-chapter>.tt-ronghua-scatter{
+  transition:none;
+}
+
+/* Avoid a CSS/GSAP transform race while preserving the decorative pseudo
+   elements and pose-sheet frame changes that do not share those properties. */
+html.tt-gsap-ready .tt-transition.is-visible .tt-shadow-stage,
+html.tt-gsap-ready .tt-transition.is-visible .tt-shadow-screen,
+html.tt-gsap-ready .tt-transition.is-visible .tt-pose-actor,
+html.tt-gsap-ready .tt-transition.is-visible .tt-shadow-figure,
+html.tt-gsap-ready .tt-transition.is-visible .tt-shadow-props *,
+html.tt-gsap-ready .tt-transition.is-visible .tt-shadow-dialogue>p,
+html.tt-gsap-ready .tt-transition--prologue.is-visible .tt-stage-curtain--opening .tt-stage-curtain-panel,
+html.tt-gsap-ready .tt-transition--prologue.is-visible .tt-stage-curtain--opening .tt-stage-curtain-valance,
+html.tt-gsap-ready .tt-transition--prologue.is-visible .tt-shadow-dialogue--prologue{
+  animation:none!important;
+  transition:none!important;
+}
+
+/* The final four-line duet, curtain close and panorama reveal are one GSAP
+   timeline. The old keyframes remain available whenever enhancement fails. */
+html.tt-gsap-ready .tt-ending.is-visible .tt-ending-theatre,
+html.tt-gsap-ready .tt-ending.is-visible .tt-ending-theatre-light,
+html.tt-gsap-ready .tt-ending.is-visible .tt-ending-theatre-bloom,
+html.tt-gsap-ready .tt-ending.is-visible .tt-ending-theatre-puppet,
+html.tt-gsap-ready .tt-ending.is-visible .tt-ending-theatre-puppet>i,
+html.tt-gsap-ready .tt-ending.is-visible .tt-stage-curtain--ending .tt-stage-curtain-panel,
+html.tt-gsap-ready .tt-ending.is-visible .tt-stage-curtain--ending .tt-stage-curtain-valance,
+html.tt-gsap-ready .tt-ending.is-visible .tt-ending-theatre-script>small,
+html.tt-gsap-ready .tt-ending.is-visible .tt-ending-theatre-script>p,
+html.tt-gsap-ready .tt-ending.is-visible .tt-ending-theatre-skip,
+html.tt-gsap-ready .tt-ending.is-visible .tt-ending-panorama,
+html.tt-gsap-ready .tt-ending.is-visible .tt-ending-copy,
+html.tt-gsap-ready .tt-ending.is-visible .tt-ending-copy>*{
+  animation:none!important;
+  transition:none!important;
+}
+
+html.tt-gsap-ready .tt-hero-art,
+html.tt-gsap-ready .tt-hero-art img,
+html.tt-gsap-ready .tt-shadow-stage,
+html.tt-gsap-ready .tt-ending-theatre,
+html.tt-gsap-ready .tt-ending-panorama img{
+  backface-visibility:hidden;
+}
+html.tt-gsap-ready .tt-guide-links a,
+html.tt-gsap-ready .tt-source-grid a,
+html.tt-gsap-ready .tt-ending-actions a{
+  transform:translateZ(0);
+}
+
+html.tt-gsap-ready .tt-ending.is-gsap-complete .tt-ending-theatre,
+html.tt-gsap-ready .tt-ending.is-epilogue-skipped .tt-ending-theatre{
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+html.tt-gsap-ready .tt-ending.is-gsap-complete .tt-ending-panorama,
+html.tt-gsap-ready .tt-ending.is-gsap-complete .tt-ending-copy,
+html.tt-gsap-ready .tt-ending.is-epilogue-skipped .tt-ending-panorama,
+html.tt-gsap-ready .tt-ending.is-epilogue-skipped .tt-ending-copy{
+  visibility:visible!important;
+  opacity:1!important;
+}
+html.tt-gsap-ready .tt-ending.is-gsap-complete .tt-ending-copy,
+html.tt-gsap-ready .tt-ending.is-epilogue-skipped .tt-ending-copy{
+  pointer-events:auto!important;
+}
+
+@media(prefers-reduced-motion:reduce){
+  html.tt-gsap-reduced .tt-hero-art,
+  html.tt-gsap-reduced .tt-hero-art img,
+  html.tt-gsap-reduced .tt-ronghua-scatter{
+    will-change:auto!important;
+  }
+}
