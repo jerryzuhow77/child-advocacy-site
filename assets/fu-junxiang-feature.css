@@ -722,7 +722,7 @@ html[lang="ja"] .case-fu__stage-core { font-family: "Noto Serif JP", "Yu Mincho"
 .case-fu__character-pose--shadow-recorder-2 { background-image: url("art/fu-xiaodi-shadow-recorder-male-turn-listen-clean-v3-20260818.png"); }
 .case-fu__character-pose--shadow-guardian-0 { background-image: url("art/fu-xiaodi-shadow-guardian-female-20260817.png"); }
 .case-fu__character-pose--shadow-guardian-1 { background-image: url("art/fu-xiaodi-shadow-guardian-female-point-seal-20260817.png"); }
-.case-fu__character-pose--shadow-guardian-2 { background-image: url("art/fu-xiaodi-shadow-guardian-female-hand-heart-20260817.png"); }
+.case-fu__character-pose--shadow-guardian-2 { background-image: url("art/fu-xiaodi-shadow-guardian-female-hand-heart-20260817.png?v=20260819-2"); }
 
 .case-fu__symbol {
   position: absolute;
@@ -1156,6 +1156,33 @@ html[lang="ja"] .case-fu__modern-line p { line-height: 1.68; }
 }
 .case-fu__scene.is-playing .case-fu__modern-person .case-fu__character-pose:nth-child(3) {
   animation: fu-pose-three var(--modern-duration) linear var(--modern-start) both;
+}
+
+/* GSAP owns the element timeline when available. The stage's top and bottom
+   pseudo-curtains keep their CSS fallback animation, so the original
+   presentation remains functional whenever GSAP is unavailable. */
+.case-fu-gsap .case-fu__scene.is-gsap-playing.is-playing .case-fu__curtain,
+.case-fu-gsap .case-fu__scene.is-gsap-playing.is-playing .case-fu__curtain-cue span,
+.case-fu-gsap .case-fu__scene.is-gsap-playing.is-playing .case-fu__stage-core,
+.case-fu-gsap .case-fu__scene.is-gsap-playing.is-playing .case-fu__puppet,
+.case-fu-gsap .case-fu__scene.is-gsap-playing.is-playing .case-fu__symbol,
+.case-fu-gsap .case-fu__scene.is-gsap-playing.is-playing .case-fu__shadow-script,
+.case-fu-gsap .case-fu__scene.is-gsap-playing.is-playing .case-fu__script-line,
+.case-fu-gsap .case-fu__scene.is-gsap-playing.is-playing .case-fu__modern-world,
+.case-fu-gsap .case-fu__scene.is-gsap-playing.is-playing .case-fu__modern-person,
+.case-fu-gsap .case-fu__scene.is-gsap-playing.is-playing .case-fu__modern-rain,
+.case-fu-gsap .case-fu__scene.is-gsap-playing.is-playing .case-fu__modern-beam,
+.case-fu-gsap .case-fu__scene.is-gsap-playing.is-playing .case-fu__focus-panel,
+.case-fu-gsap .case-fu__scene.is-gsap-playing.is-playing .case-fu__character-pose {
+  animation: none !important;
+}
+.case-fu-gsap .case-fu__stage { perspective: 1100px; }
+.case-fu-gsap .case-fu__curtain,
+.case-fu-gsap .case-fu__puppet,
+.case-fu-gsap .case-fu__modern-world,
+.case-fu-gsap .case-fu__modern-person,
+.case-fu-gsap .case-fu__script-line {
+  backface-visibility: hidden;
 }
 
 .case-fu__scene.is-complete .case-fu__puppet,

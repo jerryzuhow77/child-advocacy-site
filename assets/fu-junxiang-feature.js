@@ -8,6 +8,11 @@
   const shortLandscape = matchMedia('(max-height: 419px) and (orientation: landscape)').matches;
   const scenes = [...document.querySelectorAll('[data-fu-scene]')];
   const sceneTimers = new WeakMap();
+  const sceneTimelines = new WeakMap();
+  const gsapEngine = !reducedMotion && !saveData && !shortLandscape && window.gsap && typeof window.gsap.timeline === 'function'
+    ? window.gsap
+    : null;
+  if (gsapEngine) document.documentElement.classList.add('case-fu-gsap');
   let activeScene = null;
 
   const pageLanguage = (document.documentElement.lang || 'zh-Hant').toLowerCase();
@@ -458,6 +463,80 @@
 
   addTheatreLayers();
 
+  function initGsapPageMotion() {
+    if (!gsapEngine) return;
+
+    const hero = document.querySelector('.case-fu__hero');
+    if (hero) {
+      const media = hero.querySelector('.case-fu__hero-media');
+      const copy = [...hero.querySelectorAll([
+        '.case-fu__eyebrow',
+        '.case-fu__title',
+        '.case-fu__subtitle',
+        '.case-fu__lead',
+        '.case-fu__actions',
+        '.case-fu__facts'
+      ].join(','))];
+      const heroTimeline = gsapEngine.timeline({ defaults: { ease: 'power3.out' } });
+      if (media) {
+        heroTimeline.fromTo(media,
+          { autoAlpha: 0, scale: 1.035, clipPath: 'inset(0 0 12% 0)' },
+          { autoAlpha: 1, scale: 1, clipPath: 'inset(0 0 0% 0)', duration: 1.05, clearProps: 'opacity,visibility,transform,clipPath' },
+          0.04
+        );
+      }
+      if (copy.length) {
+        heroTimeline.fromTo(copy,
+          { autoAlpha: 0, y: 18 },
+          { autoAlpha: 1, y: 0, duration: 0.72, stagger: 0.075, clearProps: 'opacity,visibility,transform' },
+          0.12
+        );
+      }
+    }
+
+    if (!('IntersectionObserver' in window)) return;
+    const sectionTargets = new WeakMap();
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const targets = sectionTargets.get(entry.target) || [];
+        if (targets.length) {
+          gsapEngine.to(targets, {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.68,
+            stagger: 0.045,
+            ease: 'power2.out',
+            overwrite: 'auto',
+            clearProps: 'opacity,visibility,transform'
+          });
+        }
+        revealObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -7% 0px' });
+
+    document.querySelectorAll('.case-fu__section').forEach(section => {
+      const candidates = [...section.querySelectorAll([
+        '.case-fu__heading',
+        '.case-fu__card',
+        '.case-fu__flow-step',
+        '.case-fu__court',
+        '.case-fu__question',
+        '.case-fu__help-card',
+        '.case-fu__source',
+        '.case-fu__advocacy',
+        '.case-fu__finale-inner'
+      ].join(','))].filter(node => !node.closest('[data-fu-scene]'));
+      const targets = candidates.filter(node => !candidates.some(other => other !== node && node.contains(other)));
+      if (!targets.length) return;
+      gsapEngine.set(targets, { autoAlpha: 0, y: matchMedia('(max-width: 767px)').matches ? 14 : 22 });
+      sectionTargets.set(section, targets);
+      revealObserver.observe(section);
+    });
+  }
+
+  initGsapPageMotion();
+
   const sceneCopy = {
     playing: body.dataset.scenePlaying || 'Scene playing',
     paused: body.dataset.scenePaused || 'Scene paused',
@@ -487,10 +566,230 @@
     sceneTimers.set(scene, timer);
   }
 
+  function cssTimeMs(node, property, fallback = 0) {
+    if (!node) return fallback;
+    const raw = String(node.style.getPropertyValue(property) || getComputedStyle(node).getPropertyValue(property) || '').trim();
+    const value = Number.parseFloat(raw);
+    if (!Number.isFinite(value)) return fallback;
+    return raw.endsWith('ms') ? value : raw.endsWith('s') ? value * 1000 : value;
+  }
+
+  function gsapAnimatedNodes(scene) {
+    return [...scene.querySelectorAll([
+      '.case-fu__curtain',
+      '.case-fu__curtain-cue span',
+      '.case-fu__stage-core',
+      '.case-fu__puppet',
+      '.case-fu__symbol',
+      '.case-fu__shadow-script',
+      '.case-fu__script-line',
+      '.case-fu__modern-world',
+      '.case-fu__modern-person',
+      '.case-fu__modern-rain',
+      '.case-fu__modern-beam',
+      '.case-fu__focus-panel',
+      '.case-fu__character-pose'
+    ].join(','))];
+  }
+
+  function clearSceneTimeline(scene, resetStyles = true) {
+    if (!scene || !gsapEngine) return;
+    const timeline = sceneTimelines.get(scene);
+    if (timeline) {
+      timeline.eventCallback('onComplete', null);
+      timeline.kill();
+      sceneTimelines.delete(scene);
+    }
+    if (resetStyles) {
+      const nodes = gsapAnimatedNodes(scene);
+      if (nodes.length) gsapEngine.set(nodes, { clearProps: 'opacity,visibility,transform,clipPath,filter' });
+    }
+    scene.classList.remove('is-gsap-playing');
+    delete scene.dataset.animationEngine;
+  }
+
+  function animatePoseFamily(timeline, character, start, duration) {
+    if (!character) return;
+    const poses = [...character.querySelectorAll('.case-fu__character-pose')];
+    if (poses.length < 3) return;
+    const secondPoseAt = start + duration * 0.315;
+    const thirdPoseAt = start + duration * 0.655;
+    timeline.set(poses, { autoAlpha: 0, y: 0, rotation: 0 }, 0);
+    timeline.set(poses[0], { autoAlpha: 1 }, start);
+    // Hard swaps prevent two silhouettes from overlapping into extra limbs.
+    timeline.set(poses[0], { autoAlpha: 0 }, secondPoseAt);
+    timeline.set(poses[1], { autoAlpha: 1 }, secondPoseAt);
+    timeline.set(poses[1], { autoAlpha: 0 }, thirdPoseAt);
+    timeline.set(poses[2], { autoAlpha: 1 }, thirdPoseAt);
+    timeline.set(poses, { autoAlpha: 0 }, start + duration * 0.975);
+  }
+
+  function animateScriptLine(timeline, line) {
+    const start = cssTimeMs(line, '--line-delay', 0) / 1000;
+    const duration = Math.max(0.8, cssTimeMs(line, '--line-duration', 3000) / 1000);
+    const centered = line.classList.contains('case-fu__shadow-line--together') || line.classList.contains('case-fu__modern-line--note');
+    timeline.fromTo(line,
+      { autoAlpha: 0, y: centered ? 0 : 10, scale: centered ? 0.985 : 1 },
+      { autoAlpha: 1, y: 0, scale: 1, duration: 0.32, ease: 'power2.out' },
+      start
+    );
+    timeline.to(line,
+      { autoAlpha: 0, y: centered ? 0 : -6, scale: centered ? 0.992 : 1, duration: 0.28, ease: 'power1.in' },
+      start + Math.max(0.48, duration - 0.28)
+    );
+  }
+
+  function buildSceneTimeline(scene) {
+    if (!gsapEngine) return null;
+    clearSceneTimeline(scene);
+
+    const mobile = matchMedia('(max-width: 767px)').matches;
+    const duration = Math.max(1, Number(scene.dataset.sceneDuration || 5000)) / 1000;
+    const shadowStart = cssTimeMs(scene, '--shadow-start', 1900) / 1000;
+    const shadowDuration = Math.max(1, cssTimeMs(scene, '--shadow-duration', 8000) / 1000);
+    const shadowEnd = shadowStart + shadowDuration;
+    const coreStart = cssTimeMs(scene, '--core-delay', 2220) / 1000;
+    const coreDuration = Math.max(0.8, cssTimeMs(scene, '--core-duration', 1550) / 1000);
+    const modernStart = cssTimeMs(scene, '--modern-start', shadowEnd * 1000 + 850) / 1000;
+    const modernDuration = Math.max(1, cssTimeMs(scene, '--modern-duration', 6500) / 1000);
+    const modernEnd = modernStart + modernDuration;
+    const focusStart = cssTimeMs(scene, '--focus-start', modernEnd * 1000 + 260) / 1000;
+    const focusDuration = Math.max(0.8, cssTimeMs(scene, '--focus-duration', 2450) / 1000);
+    const curtainCloseAt = cssTimeMs(scene, '--curtain-close-delay', (duration - 1.8) * 1000) / 1000;
+    const curtainCloseDuration = Math.max(0.8, cssTimeMs(scene, '--curtain-close-duration', 1800) / 1000);
+    const timeline = gsapEngine.timeline({
+      paused: true,
+      defaults: { overwrite: 'auto' },
+      onComplete: () => finishScene(scene)
+    });
+
+    const curtainLeft = scene.querySelector('.case-fu__curtain--left');
+    const curtainRight = scene.querySelector('.case-fu__curtain--right');
+    const cueSpans = [...scene.querySelectorAll('.case-fu__curtain-cue span')];
+    const stageCore = scene.querySelector('.case-fu__stage-core');
+    const recorder = scene.querySelector('.case-fu__puppet--recorder');
+    const guardian = scene.querySelector('.case-fu__puppet--guardian');
+    const symbol = scene.querySelector('.case-fu__symbol');
+    const shadowScript = scene.querySelector('.case-fu__shadow-script');
+    const modernWorld = scene.querySelector('.case-fu__modern-world');
+    const modernResearcher = scene.querySelector('.case-fu__modern-person--researcher');
+    const modernArchivist = scene.querySelector('.case-fu__modern-person--archivist');
+    const modernRain = scene.querySelector('.case-fu__modern-rain');
+    const modernBeam = scene.querySelector('.case-fu__modern-beam');
+    const focusPanel = scene.querySelector('.case-fu__focus-panel');
+
+    if (curtainLeft) {
+      timeline.fromTo(curtainLeft, { autoAlpha: 1, xPercent: 0 }, { xPercent: -96, duration: 1.7, ease: 'power3.inOut' }, 0);
+      timeline.to(curtainLeft, { autoAlpha: 1, xPercent: 0, duration: curtainCloseDuration, ease: 'power3.inOut' }, curtainCloseAt);
+    }
+    if (curtainRight) {
+      timeline.fromTo(curtainRight, { autoAlpha: 1, xPercent: 0 }, { xPercent: 96, duration: 1.7, ease: 'power3.inOut' }, 0);
+      timeline.to(curtainRight, { autoAlpha: 1, xPercent: 0, duration: curtainCloseDuration, ease: 'power3.inOut' }, curtainCloseAt);
+    }
+    if (cueSpans[0]) {
+      timeline.fromTo(cueSpans[0], { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.28, ease: 'power2.out' }, 0.11);
+      timeline.to(cueSpans[0], { autoAlpha: 0, y: -7, duration: 0.34, ease: 'power1.in' }, 1.05);
+    }
+    if (cueSpans[1]) {
+      timeline.fromTo(cueSpans[1], { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.3, ease: 'power2.out' }, curtainCloseAt);
+      timeline.to(cueSpans[1], { autoAlpha: 0, y: -7, duration: 0.34, ease: 'power1.in' }, curtainCloseAt + Math.max(0.5, curtainCloseDuration - 0.4));
+    }
+
+    if (stageCore) {
+      timeline.fromTo(stageCore, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.34, ease: 'power2.out' }, coreStart);
+      timeline.to(stageCore, { autoAlpha: 0, y: -5, duration: 0.3, ease: 'power1.in' }, coreStart + Math.max(0.48, coreDuration - 0.3));
+    }
+
+    const puppetTravel = mobile ? 34 : 48;
+    if (recorder) {
+      timeline.fromTo(recorder,
+        { autoAlpha: 0, xPercent: -puppetTravel, rotation: -1.5, scale: 0.985 },
+        { autoAlpha: 0.96, xPercent: 0, rotation: 0.35, scale: 1, duration: 0.78, ease: 'power3.out' },
+        shadowStart
+      );
+      const drift = Math.max(0.7, (shadowDuration - 1.8) / 2);
+      timeline.to(recorder, { y: -3, rotation: -0.18, duration: drift, repeat: 1, yoyo: true, ease: 'sine.inOut' }, shadowStart + 0.8);
+      timeline.to(recorder, { autoAlpha: 0, xPercent: -12, rotation: -0.5, duration: 0.65, ease: 'power2.in' }, shadowEnd - 0.65);
+      animatePoseFamily(timeline, recorder, shadowStart, shadowDuration);
+    }
+    if (guardian) {
+      timeline.fromTo(guardian,
+        { autoAlpha: 0, xPercent: puppetTravel, rotation: 1.5, scale: 0.985 },
+        { autoAlpha: 0.96, xPercent: 0, rotation: -0.35, scale: 1, duration: 0.78, ease: 'power3.out' },
+        shadowStart
+      );
+      const drift = Math.max(0.7, (shadowDuration - 1.8) / 2);
+      timeline.to(guardian, { y: 3, rotation: 0.18, duration: drift, repeat: 1, yoyo: true, ease: 'sine.inOut' }, shadowStart + 0.8);
+      timeline.to(guardian, { autoAlpha: 0, xPercent: 12, rotation: 0.5, duration: 0.65, ease: 'power2.in' }, shadowEnd - 0.65);
+      animatePoseFamily(timeline, guardian, shadowStart, shadowDuration);
+    }
+    if (symbol) {
+      timeline.fromTo(symbol, { autoAlpha: 0, scale: 0.92 }, { autoAlpha: 0.4, scale: 1, duration: 0.82, ease: 'power2.out' }, shadowStart + 0.08);
+      timeline.to(symbol, { autoAlpha: 0, scale: 1.06, duration: 0.62, ease: 'power2.in' }, shadowEnd - 0.62);
+    }
+    if (shadowScript) {
+      timeline.fromTo(shadowScript, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.52, ease: 'power1.out' }, shadowStart + 0.18);
+      timeline.to(shadowScript, { autoAlpha: 0, duration: 0.45, ease: 'power1.in' }, shadowEnd - 0.45);
+    }
+
+    scene.querySelectorAll('.case-fu__script-line').forEach(line => animateScriptLine(timeline, line));
+
+    if (modernWorld) {
+      timeline.fromTo(modernWorld,
+        { autoAlpha: 0, scale: 1.055, clipPath: 'inset(0 50%)' },
+        { autoAlpha: 1, scale: 1, clipPath: 'inset(0 0%)', duration: 0.88, ease: 'power3.inOut' },
+        modernStart
+      );
+      timeline.to(modernWorld, { autoAlpha: 0, scale: 1.012, duration: 0.62, ease: 'power2.in' }, modernEnd - 0.62);
+    }
+    const modernTravel = mobile ? 112 : 145;
+    if (modernResearcher) {
+      timeline.fromTo(modernResearcher,
+        { autoAlpha: 0, xPercent: -modernTravel, rotation: -0.8 },
+        { autoAlpha: 0.92, xPercent: 0, rotation: 0, duration: 0.9, ease: 'power3.out' },
+        modernStart + 0.08
+      );
+      timeline.to(modernResearcher, { y: -4, duration: Math.max(0.7, (modernDuration - 2.1) / 2), repeat: 1, yoyo: true, ease: 'sine.inOut' }, modernStart + 0.95);
+      timeline.to(modernResearcher, { autoAlpha: 0, xPercent: 8, duration: 0.56, ease: 'power2.in' }, modernEnd - 0.56);
+      animatePoseFamily(timeline, modernResearcher, modernStart, modernDuration);
+    }
+    if (modernArchivist) {
+      timeline.fromTo(modernArchivist,
+        { autoAlpha: 0, xPercent: modernTravel, rotation: 0.8 },
+        { autoAlpha: 0.92, xPercent: 0, rotation: 0, duration: 0.9, ease: 'power3.out' },
+        modernStart + 0.08
+      );
+      timeline.to(modernArchivist, { y: 4, duration: Math.max(0.7, (modernDuration - 2.1) / 2), repeat: 1, yoyo: true, ease: 'sine.inOut' }, modernStart + 0.95);
+      timeline.to(modernArchivist, { autoAlpha: 0, xPercent: -8, duration: 0.56, ease: 'power2.in' }, modernEnd - 0.56);
+      animatePoseFamily(timeline, modernArchivist, modernStart, modernDuration);
+    }
+    if (modernRain) {
+      timeline.fromTo(modernRain, { autoAlpha: 0, yPercent: -12 }, { autoAlpha: 0.34, yPercent: 0, duration: 0.74, ease: 'power1.out' }, modernStart + 0.08);
+      timeline.to(modernRain, { autoAlpha: 0, yPercent: 12, duration: Math.max(0.8, modernDuration - 0.82), ease: 'none' }, modernStart + 0.82);
+    }
+    if (modernBeam) {
+      timeline.fromTo(modernBeam, { autoAlpha: 0, rotation: -8 }, { autoAlpha: 0.42, rotation: 1, duration: 0.8, ease: 'power2.out' }, modernStart + 0.18);
+      timeline.to(modernBeam, { autoAlpha: 0.2, rotation: 4, duration: Math.max(0.5, modernDuration * 0.38), ease: 'sine.inOut' }, modernStart + 0.98);
+      timeline.to(modernBeam, { autoAlpha: 0, rotation: -1, duration: 0.52, ease: 'power2.in' }, modernEnd - 0.52);
+    }
+    if (focusPanel) {
+      timeline.fromTo(focusPanel, { autoAlpha: 0, y: 12, scale: 0.98 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.36, ease: 'power2.out' }, focusStart);
+      timeline.to(focusPanel, { autoAlpha: 0, y: -5, duration: 0.3, ease: 'power1.in' }, focusStart + Math.max(0.5, focusDuration - 0.3));
+    }
+
+    // Ensure onComplete fires at the CSS-authored duration even if a scene has fewer lines.
+    timeline.to({}, { duration: 0.001 }, duration);
+    scene.dataset.animationEngine = 'gsap';
+    scene.classList.add('is-gsap-playing');
+    sceneTimelines.set(scene, timeline);
+    return timeline;
+  }
+
   function finishScene(scene, copy = sceneCopy.complete) {
     if (!scene) return;
     clearSceneTimer(scene);
-    scene.classList.remove('is-playing', 'is-paused', 'is-focus-open');
+    clearSceneTimeline(scene);
+    scene.classList.remove('is-playing', 'is-paused', 'is-focus-open', 'is-gsap-playing');
     scene.classList.add('is-complete', 'is-curtain-locked');
     scene.dataset.scenePlayed = '1';
     delete scene.dataset.sceneRemaining;
@@ -508,7 +807,8 @@
     if (activeScene && activeScene !== scene) finishScene(activeScene);
     if (scene.dataset.scenePlayed === '1' && !replay) return;
     clearSceneTimer(scene);
-    scene.classList.remove('is-playing', 'is-paused', 'is-complete', 'is-focus-open', 'is-curtain-locked');
+    clearSceneTimeline(scene);
+    scene.classList.remove('is-playing', 'is-paused', 'is-complete', 'is-focus-open', 'is-curtain-locked', 'is-gsap-playing');
     if (typeof scene._resetModernDialogue === 'function') scene._resetModernDialogue();
     scene.querySelectorAll('[data-scene-focus]').forEach(button => { button.disabled = true; });
     // Force the CSS animations to restart only after an explicit replay.
@@ -518,7 +818,14 @@
     activeScene = scene;
     sceneStatus(scene, sceneCopy.playing);
     const duration = Number(scene.dataset.sceneDuration || 5000);
-    armSceneTimer(scene, duration);
+    let timeline = null;
+    try {
+      timeline = buildSceneTimeline(scene);
+    } catch (_) {
+      clearSceneTimeline(scene);
+    }
+    if (timeline) timeline.play(0);
+    else armSceneTimer(scene, duration);
   }
 
   document.addEventListener('click', event => {
@@ -532,7 +839,10 @@
       const scene = pause.closest('[data-fu-scene]');
       const paused = !scene.classList.contains('is-paused');
       scene.classList.toggle('is-paused', paused);
-      if (paused) {
+      const timeline = sceneTimelines.get(scene);
+      if (timeline) {
+        timeline.paused(paused);
+      } else if (paused) {
         const started = Number(scene.dataset.sceneTimerStarted || performance.now());
         const remaining = Number(scene.dataset.sceneRemaining || scene.dataset.sceneDuration || 5000);
         scene.dataset.sceneRemaining = String(Math.max(0, remaining - (performance.now() - started)));
