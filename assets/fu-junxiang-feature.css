@@ -1571,30 +1571,54 @@ html[lang="ja"] .case-fu__heritage-gallery-item figcaption { font-size: 0.64rem;
   .case-fu__flow-step { min-height: 0; }
   .case-fu__flow-step::after { top: auto; right: 50%; bottom: -12px; transform: translateX(50%) rotate(90deg); }
   .case-fu__flow-step:nth-child(3)::after { display: grid; }
-  .case-fu__stage { min-height: min(82svh, 720px); }
-  .case-fu__puppet { width: 60%; height: 43%; bottom: 11%; }
-  .case-fu__puppet--recorder { left: 0; }
-  .case-fu__puppet--guardian { right: 0; }
+  /* Mobile theatre: keep a dedicated figure lane at both sides.  The former
+     76–82% dialogue cards covered almost the entire narrow stage, so the
+     figures were technically present but visually hidden behind the copy. */
+  .case-fu__stage { min-height: clamp(620px, 88svh, 760px); }
+  .case-fu__puppet { z-index: 16; width: 68%; height: 48%; bottom: 6%; }
+  .case-fu__puppet--recorder { left: -3%; }
+  .case-fu__puppet--guardian { right: -3%; }
   .case-fu__symbol { width: 48%; height: 27%; top: 45%; }
   .case-fu__stage-label { top: 11%; width: 90%; font-size: 0.6rem; }
   .case-fu__stage-core { width: 88%; bottom: 12%; padding: 11px 12px; font-size: 0.88rem; line-height: 1.65; }
   .case-fu__script-heading { top: 16%; width: 90%; font-size: 0.51rem; letter-spacing: 0.04em; }
-  .case-fu__script-line { width: 78%; padding: 9px 10px 10px; }
-  .case-fu__shadow-line--recorder { top: 23%; left: 17%; }
-  .case-fu__shadow-line--guardian { top: 43%; right: 17%; }
-  .case-fu__shadow-line--together { top: 34%; left: 50%; width: 82%; }
+  .case-fu__script-line {
+    width: 64%;
+    padding: 9px 10px 10px;
+    background: linear-gradient(90deg, rgba(7, 22, 31, 0.8), rgba(16, 36, 46, 0.7));
+    backdrop-filter: blur(2px);
+  }
+  /* Put each line opposite its speaker, leaving that speaker unobscured. */
+  .case-fu__shadow-line--recorder { top: 23%; left: auto; right: 2.5%; }
+  .case-fu__shadow-line--guardian { top: 43%; right: auto; left: 2.5%; }
+  .case-fu__shadow-line--together {
+    top: 34%;
+    left: 50%;
+    width: 84%;
+    background: rgba(7, 22, 31, 0.74);
+  }
   .case-fu__script-line b { font-size: 0.55rem; }
   .case-fu__script-line p { font-size: 0.77rem; line-height: 1.58; }
   html[lang="en"] .case-fu__script-line p,
   html[lang="ja"] .case-fu__script-line p { font-size: 0.74rem; line-height: 1.64; }
   .case-fu__modern-label { top: 3%; width: 94%; font-size: 0.51rem; letter-spacing: 0.04em; }
-  .case-fu__modern-person { width: 45%; height: 42%; bottom: 3%; }
-  .case-fu__modern-person--researcher { left: 2%; width: 72%; }
-  .case-fu__modern-person--archivist { right: 2%; height: 46%; }
-  .case-fu__modern-line { width: 76%; padding: 9px 10px; }
-  .case-fu__modern-line--researcher { left: 3%; top: 15%; }
-  .case-fu__modern-line--archivist { right: 3%; top: 37%; }
-  .case-fu__modern-line--note { left: 50%; top: 25%; width: 84%; }
+  .case-fu__modern-person { width: 48%; height: 49%; bottom: 2%; }
+  .case-fu__modern-person--researcher { left: -2%; width: 74%; }
+  .case-fu__modern-person--archivist { right: -1%; height: 54%; }
+  .case-fu__modern-line {
+    width: 65%;
+    padding: 9px 10px;
+    background: rgba(5, 17, 22, 0.78);
+    backdrop-filter: blur(2px);
+  }
+  .case-fu__modern-line--researcher { left: auto; right: 2.5%; top: 15%; }
+  .case-fu__modern-line--archivist { right: auto; left: 2.5%; top: 39%; }
+  .case-fu__modern-line--note {
+    left: 50%;
+    top: 25%;
+    width: 84%;
+    background: rgba(18, 25, 29, 0.86);
+  }
   .case-fu__modern-line p { font-size: 0.76rem; line-height: 1.52; }
   html[lang="en"] .case-fu__modern-line p,
   html[lang="ja"] .case-fu__modern-line p { font-size: 0.73rem; }
@@ -1618,7 +1642,11 @@ html[lang="ja"] .case-fu__heritage-gallery-item figcaption { font-size: 0.64rem;
 
 @media (max-width: 430px) {
   :root { --fu-shell: calc(100% - 32px); }
-  .case-fu__puppet { width: 70%; height: 36%; }
+  .case-fu__stage { min-height: clamp(640px, 90svh, 720px); }
+  .case-fu__puppet { width: 70%; height: 48%; bottom: 6%; }
+  .case-fu__script-line { width: 63%; }
+  .case-fu__shadow-line--together { width: 86%; }
+  .case-fu__modern-line { width: 66%; }
   .case-fu__choice,
   .case-fu__actions { display: grid; }
   .case-fu__button { width: 100%; min-height: 50px; }
