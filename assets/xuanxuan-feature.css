@@ -1051,3 +1051,60 @@ html[lang="ja"] .xx-case-summary p, html[lang="ja"] .xx-record-block p { line-he
   .xx-method::after { opacity: 0.36; transform: rotate(-8deg); }
   .xx-interlude-copy::after { opacity: 0.24; transform: none; }
 }
+
+/* 2026-08-19: three additional narrative poses for each opera puppet. */
+.xx-puppet {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 190ms cubic-bezier(0.55, 0, 0.45, 1);
+}
+
+.xx-puppet.is-pose-switching {
+  clip-path: inset(0 50% 0 50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xx-puppet {
+    clip-path: none;
+    transition: none;
+  }
+}
+
+/* 2026-08-19: GSAP progressive enhancement. CSS keyframes remain as an offline fallback. */
+html.xx-gsap-ready .xx-hero > img,
+html.xx-gsap-ready .xx-hero-copy,
+html.xx-gsap-ready .xx-scene.is-active .xx-interlude-bg,
+html.xx-gsap-ready .xx-scene.is-active .xx-interlude-copy,
+html.xx-gsap-ready .xx-scene.is-active .xx-opening-frame *,
+html.xx-gsap-ready .xx-scene.is-active .xx-opera-stage * {
+  animation: none !important;
+}
+
+html.xx-gsap-ready .reveal,
+html.xx-gsap-ready .xx-art img,
+html.xx-gsap-ready .xx-ending img,
+html.xx-gsap-ready .xx-puppet {
+  transition: none !important;
+}
+
+html.xx-gsap-ready .xx-progress {
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
+}
+
+html.xx-gsap-ready .xx-interlude-bg,
+html.xx-gsap-ready .xx-puppet,
+html.xx-gsap-ready .xx-curtain,
+html.xx-gsap-ready .xx-hero > img {
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+@media (max-width: 780px) {
+  html.xx-gsap-ready .xx-interlude-bg,
+  html.xx-gsap-ready .xx-puppet,
+  html.xx-gsap-ready .xx-hero > img {
+    will-change: auto;
+  }
+}
