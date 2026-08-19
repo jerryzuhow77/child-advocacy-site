@@ -6,6 +6,7 @@
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const saveData = Boolean(navigator.connection && navigator.connection.saveData);
   const shortLandscape = matchMedia('(max-height: 419px) and (orientation: landscape)').matches;
+  const mobileViewport = matchMedia('(max-width: 767px)').matches;
   const scenes = [...document.querySelectorAll('[data-fu-scene]')];
   const sceneTimers = new WeakMap();
   const sceneTimelines = new WeakMap();
@@ -643,7 +644,7 @@
     if (!gsapEngine) return null;
     clearSceneTimeline(scene);
 
-    const mobile = matchMedia('(max-width: 767px)').matches;
+    const mobile = mobileViewport;
     const duration = Math.max(1, Number(scene.dataset.sceneDuration || 5000)) / 1000;
     const shadowStart = cssTimeMs(scene, '--shadow-start', 1900) / 1000;
     const shadowDuration = Math.max(1, cssTimeMs(scene, '--shadow-duration', 8000) / 1000);
@@ -700,7 +701,9 @@
       timeline.to(stageCore, { autoAlpha: 0, y: -5, duration: 0.3, ease: 'power1.in' }, coreStart + Math.max(0.48, coreDuration - 0.3));
     }
 
-    const puppetTravel = mobile ? 34 : 48;
+    /* A short mobile entrance keeps both figures inside the narrow stage from
+       the first visible beat instead of spending most of the reveal clipped. */
+    const puppetTravel = mobile ? 22 : 48;
     if (recorder) {
       timeline.fromTo(recorder,
         { autoAlpha: 0, xPercent: -puppetTravel, rotation: -1.5, scale: 0.985 },
@@ -742,7 +745,7 @@
       );
       timeline.to(modernWorld, { autoAlpha: 0, scale: 1.012, duration: 0.62, ease: 'power2.in' }, modernEnd - 0.62);
     }
-    const modernTravel = mobile ? 112 : 145;
+    const modernTravel = mobile ? 46 : 145;
     if (modernResearcher) {
       timeline.fromTo(modernResearcher,
         { autoAlpha: 0, xPercent: -modernTravel, rotation: -0.8 },
@@ -867,7 +870,7 @@
         if (scene.dataset.sceneManual !== 'true') startScene(scene);
         observer.unobserve(scene);
       });
-    }, { threshold: 0.28 });
+    }, { threshold: mobileViewport ? 0.42 : 0.28 });
     scenes.forEach(scene => observer.observe(scene));
   } else {
     scenes.forEach(scene => finishScene(scene));
