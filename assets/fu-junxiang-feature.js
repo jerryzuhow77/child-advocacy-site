@@ -643,6 +643,10 @@
   function buildSceneTimeline(scene) {
     if (!gsapEngine) return null;
     clearSceneTimeline(scene);
+    // Disable the CSS fallback before GSAP reads computed transforms. Without
+    // this ordering, the fallback entrance offset is captured and GSAP adds a
+    // second xPercent offset, briefly pushing figures outside the stage.
+    scene.classList.add('is-gsap-playing');
 
     const mobile = mobileViewport;
     const duration = Math.max(1, Number(scene.dataset.sceneDuration || 5000)) / 1000;
