@@ -80,6 +80,7 @@
 
   let deferredInstallPrompt = null;
   let launcher = null;
+  let navTriggers = [];
   let modal = null;
   let lastFocusedElement = null;
 
@@ -159,12 +160,13 @@
   }
 
   function updateLauncherCopy() {
-    if (!launcher) return;
     const t = copy();
-    const label = launcher.querySelector('.pwa-install-label');
-    if (label) label.textContent = t.launcher;
-    launcher.setAttribute('aria-label', t.launcherLabel);
-    launcher.title = t.launcherLabel;
+    [launcher, ...navTriggers].filter(Boolean).forEach(trigger => {
+      const label = trigger.querySelector('.pwa-install-label');
+      if (label) label.textContent = t.launcher;
+      trigger.setAttribute('aria-label', t.launcherLabel);
+      trigger.title = t.launcherLabel;
+    });
   }
 
   function createLauncher() {
@@ -176,6 +178,21 @@
     button.addEventListener('click', handleInstallClick);
     document.body.appendChild(button);
     return button;
+  }
+
+  function bindNavTriggers() {
+    navTriggers = [...document.querySelectorAll('[data-pwa-install-trigger]')];
+    navTriggers.forEach(trigger => {
+      if (trigger.dataset.pwaInstallBound === 'true') return;
+      trigger.dataset.pwaInstallBound = 'true';
+      trigger.addEventListener('click', handleInstallClick);
+    });
+  }
+
+  function setInstallTriggersHidden(hidden) {
+    [launcher, ...navTriggers].filter(Boolean).forEach(trigger => {
+      trigger.hidden = hidden;
+    });
   }
 
   function platformInstructions(t) {
@@ -291,8 +308,9 @@
 
   function init() {
     launcher = createLauncher();
+    bindNavTriggers();
     updateLauncherCopy();
-    launcher.hidden = isStandalone();
+    setInstallTriggersHidden(isStandalone());
 
     const langObserver = new MutationObserver(updateLauncherCopy);
     langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
@@ -301,12 +319,12 @@
   window.addEventListener('beforeinstallprompt', event => {
     event.preventDefault();
     deferredInstallPrompt = event;
-    if (launcher && !isStandalone()) launcher.hidden = false;
+    if (!isStandalone()) setInstallTriggersHidden(false);
   });
 
   window.addEventListener('appinstalled', () => {
     deferredInstallPrompt = null;
-    if (launcher) launcher.hidden = true;
+    setInstallTriggersHidden(true);
     showToast(copy().installed);
   });
 
