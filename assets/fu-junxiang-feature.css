@@ -1587,8 +1587,8 @@ html[lang="ja"] .case-fu__heritage-gallery-item figcaption { font-size: 0.64rem;
   .case-fu__puppet { z-index: 22; width: 72%; height: 52%; bottom: 5%; }
   /* Bring both performers into the central safe area. Their full source
      canvases now remain inside the narrow stage instead of hanging off-screen. */
-  .case-fu__puppet--recorder { left: 8%; }
-  .case-fu__puppet--guardian { right: 8%; }
+  .case-fu__puppet--recorder { left: 23%; }
+  .case-fu__puppet--guardian { right: 23%; }
   .case-fu__symbol { width: 48%; height: 27%; top: 45%; }
   .case-fu__stage-label { top: 11%; width: 90%; font-size: 0.6rem; }
   .case-fu__stage-core { width: 88%; bottom: 12%; padding: 11px 12px; font-size: 0.88rem; line-height: 1.65; }
@@ -1614,8 +1614,8 @@ html[lang="ja"] .case-fu__heritage-gallery-item figcaption { font-size: 0.64rem;
   html[lang="ja"] .case-fu__script-line p { font-size: 0.74rem; line-height: 1.64; }
   .case-fu__modern-label { top: 3%; width: 94%; font-size: 0.51rem; letter-spacing: 0.04em; }
   .case-fu__modern-person { z-index: 32; width: 52%; height: 56%; bottom: 2%; }
-  .case-fu__modern-person--researcher { left: 10%; width: 92%; }
-  .case-fu__modern-person--archivist { right: 10%; height: 56%; }
+  .case-fu__modern-person--researcher { left: 20%; width: 92%; }
+  .case-fu__modern-person--archivist { right: 20%; height: 56%; }
   /* The third male pose uses a tall transparent source canvas. Reserve a
      crown gutter so the hairline remains visible on narrow screens. */
   .case-fu__modern-person .case-fu__character-pose--modern-researcher-2 {
@@ -1663,10 +1663,10 @@ html[lang="ja"] .case-fu__heritage-gallery-item figcaption { font-size: 0.64rem;
   :root { --fu-shell: calc(100% - 32px); }
   .case-fu__stage { min-height: clamp(640px, 90svh, 720px); }
   .case-fu__puppet { width: 74%; height: 52%; bottom: 5%; }
-  .case-fu__puppet--recorder { left: 6%; }
-  .case-fu__puppet--guardian { right: 6%; }
-  .case-fu__modern-person--researcher { left: 8%; }
-  .case-fu__modern-person--archivist { right: 8%; }
+  .case-fu__puppet--recorder { left: 21%; }
+  .case-fu__puppet--guardian { right: 21%; }
+  .case-fu__modern-person--researcher { left: 18%; }
+  .case-fu__modern-person--archivist { right: 18%; }
   .case-fu__script-line { width: 58%; }
   .case-fu__shadow-line--together { width: 86%; }
   .case-fu__modern-line { width: 60%; }
