@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-19-protection-wall-v1';
+const VERSION = '2026-08-19-protection-wall-v2';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
