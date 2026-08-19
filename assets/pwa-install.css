@@ -98,6 +98,8 @@
 
 .pwa-nav-install[hidden] { display: none !important; }
 
+.pwa-mobile-header-install { display: none; }
+
 .pwa-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -291,7 +293,21 @@
 }
 
 @media (max-width: 800px) {
-  .pwa-nav-install {
+  header .nav > nav .pwa-nav-install { display: none; }
+
+  .pwa-mobile-header-install {
+    display: inline-flex;
+    flex: 0 0 auto;
+    min-height: 40px;
+    margin-left: auto;
+    padding: 8px 11px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .pwa-mobile-header-install + .mobile-menu-toggle { margin-left: 0; }
+
+  header .nav > nav .pwa-nav-install {
     width: 100%;
     min-height: 44px;
     margin: 5px 0 2px;
@@ -314,6 +330,7 @@
 @media print {
   .pwa-install-launcher,
   .pwa-nav-install,
+  .pwa-mobile-header-install,
   .pwa-modal-backdrop,
   .pwa-install-toast {
     display: none !important;
