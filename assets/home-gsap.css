@@ -1,0 +1,163 @@
+/* Homepage GSAP enhancement layer
+   Kept separate from site.css so the update can be applied without replacing
+   the site's existing layout, navigation, counters, or language styles. */
+
+:root {
+  --home-gsap-navy: #082b4b;
+  --home-gsap-blue: #2f6f92;
+  --home-gsap-coral: #dc806f;
+  --home-gsap-gold: #d9ac58;
+  --home-gsap-ivory: #f8f4ec;
+}
+
+.home-gsap-progress {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 9998;
+  height: 3px;
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--home-gsap-coral), var(--home-gsap-gold) 48%, #81b6c8);
+  box-shadow: 0 0 16px rgba(217, 172, 88, 0.42);
+}
+
+.has-home-gsap .premium-home-hero {
+  isolation: isolate;
+  overflow: clip;
+}
+
+.home-gsap-ambient {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.home-gsap-orb {
+  position: absolute;
+  width: clamp(180px, 25vw, 390px);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  opacity: 0.24;
+  filter: blur(44px);
+  will-change: transform;
+}
+
+.home-gsap-orb.is-coral {
+  top: 4%;
+  left: -8%;
+  background: radial-gradient(circle, rgba(220, 128, 111, 0.86), rgba(220, 128, 111, 0));
+}
+
+.home-gsap-orb.is-gold {
+  right: -6%;
+  bottom: -20%;
+  background: radial-gradient(circle, rgba(217, 172, 88, 0.78), rgba(217, 172, 88, 0));
+}
+
+.home-gsap-orb.is-blue {
+  top: 18%;
+  right: 20%;
+  width: clamp(130px, 18vw, 270px);
+  background: radial-gradient(circle, rgba(129, 182, 200, 0.72), rgba(129, 182, 200, 0));
+}
+
+.has-home-gsap .premium-hero-art,
+.has-home-gsap .premium-art-card,
+.has-home-gsap .home-news-card,
+.has-home-gsap .home-case-reel-card,
+.has-home-gsap .home-progress-card,
+.has-home-gsap .impact-metric-card,
+.has-home-gsap .remember-kaikai-card {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.has-home-gsap .home-gsap-tilt {
+  will-change: transform;
+  transition: box-shadow 240ms ease, border-color 240ms ease;
+}
+
+.has-home-gsap .home-gsap-tilt:hover {
+  box-shadow: 0 24px 52px rgba(8, 43, 75, 0.16);
+}
+
+.has-home-gsap .home-gsap-tilt img {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.home-gsap-reel-sheen {
+  position: absolute;
+  inset: -28% auto -28% -24%;
+  z-index: 4;
+  width: clamp(90px, 14vw, 190px);
+  pointer-events: none;
+  opacity: 0;
+  transform: skewX(-15deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.48), transparent);
+  filter: blur(12px);
+  mix-blend-mode: screen;
+}
+
+.has-home-gsap .home-news-reel,
+.has-home-gsap .home-case-reel,
+.has-home-gsap .home-progress-reel {
+  position: relative;
+}
+
+.has-home-gsap .premium-art-orbit,
+.has-home-gsap .premium-art-glow,
+.has-home-gsap .premium-floating-tag,
+.has-home-gsap .home-social-cases-qcluster,
+.has-home-gsap .remember-kaikai-visual,
+.has-home-gsap .home-advocacy-art,
+.has-home-gsap .footer-light-ad img {
+  will-change: transform;
+}
+
+.has-home-gsap .home-news-hub-mark,
+.has-home-gsap .stream-icon,
+.has-home-gsap .premium-kicker span {
+  transform-origin: 50% 50%;
+}
+
+.has-home-gsap .home-gsap-active {
+  will-change: transform, opacity;
+}
+
+@media (max-width: 760px) {
+  .home-gsap-progress {
+    height: 2px;
+  }
+
+  .home-gsap-orb {
+    filter: blur(34px);
+    opacity: 0.18;
+  }
+
+  .has-home-gsap .home-gsap-tilt:hover {
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-gsap-progress,
+  .home-gsap-ambient,
+  .home-gsap-reel-sheen {
+    display: none !important;
+  }
+
+  .has-home-gsap .home-gsap-active,
+  .has-home-gsap .home-gsap-tilt,
+  .has-home-gsap .premium-art-orbit,
+  .has-home-gsap .premium-floating-tag {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}
