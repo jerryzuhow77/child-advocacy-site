@@ -311,14 +311,19 @@
     const rightCurtain = curtain && one(".tt-stage-curtain-panel--right", curtain);
     const valance = curtain && one(".tt-stage-curtain-valance", curtain);
 
-    gsap.set(stage, { autoAlpha: isMobilePrologue ? 0.68 : 0.18, scale: 1.035, transformOrigin: "50% 48%" });
-    if (screen) gsap.set(screen, { autoAlpha: isMobilePrologue ? 0.72 : 0.38, scale: 1.025 });
+    gsap.set(stage, { autoAlpha: isPrologue ? 1 : 0.18, scale: 1.035, transformOrigin: "50% 48%" });
+    if (screen) gsap.set(screen, { autoAlpha: isPrologue ? 1 : 0.38, scale: 1.025 });
     if (props.length) gsap.set(props, { autoAlpha: 0, y: 22, scale: 0.84 });
     if (woman) gsap.set(woman, { autoAlpha: 0, x: isMobile ? -34 : -82, y: 8, rotation: -2.2 });
     if (scribe) gsap.set(scribe, { autoAlpha: 0, x: isMobile ? 34 : 82, y: 8, rotation: 2.2 });
-    if (isPrologue && dialogue) gsap.set(dialogue, { autoAlpha: 0, y: 10 });
-    if (title) gsap.set(title, { autoAlpha: 0, y: 10 });
-    if (lines.length) gsap.set(lines, { autoAlpha: 0, y: 20 });
+    if (isPrologue) {
+      if (dialogue) gsap.set(dialogue, { autoAlpha: 1, y: 0 });
+      if (title) gsap.set(title, { autoAlpha: 1, y: 0 });
+      if (lines.length) gsap.set(lines, { autoAlpha: 1, y: 0 });
+    } else {
+      if (title) gsap.set(title, { autoAlpha: 0, y: 10 });
+      if (lines.length) gsap.set(lines, { autoAlpha: 0, y: 20 });
+    }
 
     const timeline = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
     timeline.call(() => transition.classList.add("is-visible"), null, 0);
@@ -333,9 +338,6 @@
       if (leftCurtain) timeline.to(leftCurtain, { xPercent: -102, duration: 1.7, ease: "power2.inOut" }, 0.28);
       if (rightCurtain) timeline.to(rightCurtain, { xPercent: 102, duration: 1.7, ease: "power2.inOut" }, 0.28);
       if (actors.length) timeline.to(actors, { autoAlpha: 1, x: 0, y: 0, rotation: 0, duration: 1.05, stagger: 0.12 }, 0.72);
-      if (dialogue) timeline.to(dialogue, { autoAlpha: 1, y: 0, duration: 0.62 }, 1.62);
-      if (title) timeline.to(title, { autoAlpha: 1, y: 0, duration: 0.62 }, 1.7);
-      if (lines.length) timeline.to(lines, { autoAlpha: 1, y: 0, duration: 0.82, stagger: 0.34 }, 1.92);
     } else {
       if (props.length) {
         timeline.to(props, {
