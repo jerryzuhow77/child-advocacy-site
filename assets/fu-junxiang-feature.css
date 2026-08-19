@@ -712,7 +712,9 @@ html[lang="ja"] .case-fu__stage-core { font-family: "Noto Serif JP", "Yu Mincho"
   will-change: opacity, transform;
 }
 .case-fu__puppet .case-fu__character-pose {
-  background-size: auto 100%;
+  /* Fit the complete source canvas in both axes so wide arm/ledger poses keep
+     their head, hands and feet inside the stage. */
+  background-size: contain;
 }
 .case-fu__puppet--recorder .case-fu__character-pose { background-position: left bottom; }
 .case-fu__puppet--guardian .case-fu__character-pose { background-position: right bottom; }
@@ -946,19 +948,16 @@ html[lang="ja"] .case-fu__script-line p { font-family: "Noto Serif JP", "Yu Minc
   height: 66%;
   transform: translateX(140%);
 }
-.case-fu__modern-person .case-fu__character-pose { background-size: auto 100%; }
+.case-fu__modern-person .case-fu__character-pose { background-size: contain; }
 .case-fu__modern-person--researcher .case-fu__character-pose { background-position: left bottom; }
 .case-fu__modern-person--archivist .case-fu__character-pose {
   background-position: right bottom;
-  /* 91% of the 66%-high frame preserves the original standing scale. */
-  background-size: auto 91%;
+  background-size: contain;
 }
 .case-fu__character-pose--modern-researcher-0 { background-image: url("art/fu-xiaodi-modern-researcher-male-20260817.png"); }
 .case-fu__character-pose--modern-researcher-1 { background-image: url("art/fu-xiaodi-modern-researcher-male-crouch-note-20260817.png"); }
 .case-fu__modern-person .case-fu__character-pose--modern-researcher-1 {
-  /* Do not fit the entire wide source canvas into a narrow box: that made the
-     kneeling researcher look miniature beside the archivist. */
-  background-size: auto 75%;
+  background-size: contain;
 }
 .case-fu__character-pose--modern-researcher-2 { background-image: url("art/fu-xiaodi-modern-researcher-male-turn-back-20260817.png"); }
 .case-fu__character-pose--modern-archivist-0 { background-image: url("art/fu-xiaodi-modern-archivist-female-20260817.png"); }
@@ -971,11 +970,11 @@ html[lang="ja"] .case-fu__script-line p { font-family: "Noto Serif JP", "Yu Minc
   top: -8%;
   bottom: -2%;
   background-position: left center;
-  background-size: auto 96%;
+  background-size: contain;
 }
 .case-fu__modern-person .case-fu__character-pose--modern-archivist-1 {
-  background-position: right center;
-  background-size: auto 105%;
+  background-position: right bottom;
+  background-size: contain;
 }
 .case-fu__modern-label {
   position: absolute;
@@ -1616,10 +1615,10 @@ html[lang="ja"] .case-fu__heritage-gallery-item figcaption { font-size: 0.64rem;
   /* The third male pose uses a tall transparent source canvas. Reserve a
      crown gutter so the hairline remains visible on narrow screens. */
   .case-fu__modern-person .case-fu__character-pose--modern-researcher-2 {
-    top: -5%;
+    top: 0;
     bottom: 0;
     background-position: left bottom;
-    background-size: auto 92%;
+    background-size: contain;
   }
   .case-fu__modern-line {
     width: 65%;
