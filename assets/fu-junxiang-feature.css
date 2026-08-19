@@ -661,7 +661,7 @@ html[lang="ja"] .case-fu__transcript-line[data-line-source="elegy"] { font-famil
 }
 .case-fu__stage-core {
   position: absolute;
-  z-index: 12;
+  z-index: 39;
   left: 50%;
   bottom: 13%;
   width: min(82%, 760px);
@@ -695,12 +695,13 @@ html[lang="ja"] .case-fu__stage-core { font-family: "Noto Serif JP", "Yu Mincho"
   will-change: transform, opacity;
 }
 .case-fu__puppet--recorder {
-  left: 10%;
-  transform: translateX(-34%);
+  left: 20%;
+  transform: none;
 }
 .case-fu__puppet--guardian {
-  right: 10%;
-  transform: translateX(34%);
+  right: 20%;
+  width: clamp(210px, 35%, 410px);
+  transform: none;
 }
 
 .case-fu__character-pose {
@@ -800,7 +801,7 @@ html[lang="ja"] .case-fu__curtain-cue { font-family: "Noto Serif JP", "Yu Mincho
 
 .case-fu__shadow-script {
   position: absolute;
-  z-index: 18;
+  z-index: 38;
   inset: 0;
   overflow: hidden;
   opacity: 0;
@@ -939,16 +940,16 @@ html[lang="ja"] .case-fu__script-line p { font-family: "Noto Serif JP", "Yu Minc
   will-change: transform, opacity;
 }
 .case-fu__modern-person--researcher {
-  left: 12%;
+  left: 34%;
   width: clamp(262px, 55%, 300px);
-  transform: translateX(-140%);
+  transform: none;
 }
 .case-fu__modern-person--archivist {
-  right: 12%;
+  right: 34%;
   /* A slightly taller private frame lets the open-file pose match the
      researcher's head scale without clipping hair or boots. */
   height: 64%;
-  transform: translateX(140%);
+  transform: none;
 }
 .case-fu__modern-person .case-fu__character-pose { background-size: contain; }
 .case-fu__modern-person--researcher .case-fu__character-pose { background-position: left bottom; }
@@ -980,7 +981,7 @@ html[lang="ja"] .case-fu__script-line p { font-family: "Noto Serif JP", "Yu Minc
 }
 .case-fu__modern-label {
   position: absolute;
-  z-index: 26;
+  z-index: 42;
   left: 50%;
   top: 4.5%;
   width: min(88%, 900px);
@@ -996,7 +997,7 @@ html[lang="ja"] .case-fu__script-line p { font-family: "Noto Serif JP", "Yu Minc
 }
 .case-fu__modern-script {
   position: absolute;
-  z-index: 28;
+  z-index: 40;
   inset: 0;
 }
 .case-fu__modern-line {
@@ -1270,14 +1271,14 @@ html[lang="ja"] .case-fu__modern-line p { line-height: 1.68; }
 }
 
 @keyframes fu-shadow-recorder-phase {
-  0% { transform: translateX(-48%) rotate(-1.5deg); opacity: 0; }
+  0% { transform: translateX(-8%) rotate(-1.5deg); opacity: 0; }
   7%, 91% { transform: translateX(0) rotate(0.35deg); opacity: 0.96; }
-  100% { transform: translateX(-16%) rotate(-0.5deg); opacity: 0; }
+  100% { transform: translateX(-5%) rotate(-0.5deg); opacity: 0; }
 }
 @keyframes fu-shadow-guardian-phase {
-  0% { transform: translateX(48%) rotate(1.5deg); opacity: 0; }
+  0% { transform: translateX(8%) rotate(1.5deg); opacity: 0; }
   7%, 91% { transform: translateX(0) rotate(-0.35deg); opacity: 0.96; }
-  100% { transform: translateX(16%) rotate(0.5deg); opacity: 0; }
+  100% { transform: translateX(5%) rotate(0.5deg); opacity: 0; }
 }
 @keyframes fu-shadow-symbol-phase {
   0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0; }
@@ -1298,8 +1299,18 @@ html[lang="ja"] .case-fu__modern-line p { line-height: 1.68; }
 @keyframes fu-script-line { 0%, 100% { opacity: 0; transform: translateY(9px); } 11%, 84% { opacity: 1; transform: translateY(0); } }
 @keyframes fu-script-line-centered { 0%, 100% { opacity: 0; transform: translate(-50%, 9px); } 11%, 84% { opacity: 1; transform: translate(-50%, 0); } }
 @keyframes fu-modern-layer-phase { 0% { opacity: 0; transform: scale(1.055); clip-path: inset(0 50%); } 9%, 90% { opacity: 1; transform: scale(1); clip-path: inset(0 0); } 100% { opacity: 0; transform: scale(1.012); clip-path: inset(0 0); } }
-@keyframes fu-modern-researcher-phase { 0% { transform: translateX(-145%); opacity: 0; } 12%, 89% { transform: translateX(0); opacity: 0.92; } 100% { transform: translateX(8%); opacity: 0; } }
-@keyframes fu-modern-archivist-phase { 0% { transform: translateX(145%); opacity: 0; } 12%, 89% { transform: translateX(0); opacity: 0.92; } 100% { transform: translateX(-8%); opacity: 0; } }
+@keyframes fu-modern-researcher-phase { 0% { transform: translateX(-10%); opacity: 0; } 12%, 89% { transform: translateX(0); opacity: 0.92; } 100% { transform: translateX(4%); opacity: 0; } }
+@keyframes fu-modern-archivist-phase { 0% { transform: translateX(10%); opacity: 0; } 12%, 89% { transform: translateX(0); opacity: 0.92; } 100% { transform: translateX(-4%); opacity: 0; } }
+
+@media (min-width: 768px) {
+  /* The prologue uses a narrow two-column stage on desktop. Keep its pair
+     inside that smaller frame while full-width chapter stages use the more
+     central positions above. */
+  .case-fu__opening .case-fu__puppet--recorder { left: 4%; }
+  .case-fu__opening .case-fu__puppet--guardian { right: 4%; }
+  .case-fu__opening .case-fu__modern-person--researcher { left: 14%; }
+  .case-fu__opening .case-fu__modern-person--archivist { right: 14%; }
+}
 @keyframes fu-modern-rain-phase { 0% { transform: translateY(-12%); opacity: 0; } 9%, 91% { opacity: 0.34; } 100% { transform: translateY(12%); opacity: 0; } }
 @keyframes fu-modern-beam-phase { 0%, 100% { opacity: 0; transform: rotate(-8deg); } 14% { opacity: 0.42; } 48% { opacity: 0.18; transform: rotate(4deg); } 82% { opacity: 0.34; transform: rotate(-1deg); } }
 @keyframes fu-focus-cue { 0%, 100% { opacity: 0; transform: translate(-50%, 12px); } 14%, 83% { opacity: 1; transform: translate(-50%, 0); } }
@@ -1538,6 +1549,9 @@ html[lang="ja"] .case-fu__heritage-gallery-item figcaption { font-size: 0.64rem;
   /* Preserve vertical acting room on tablets and narrow desktop windows. */
   .case-fu__stage { min-height: clamp(560px, 72vw, 680px); }
   .case-fu__puppet { width: 34%; height: 66%; bottom: 8%; }
+  .case-fu__puppet--guardian { width: 44%; }
+  .case-fu__puppet--recorder { left: 7%; }
+  .case-fu__puppet--guardian { right: 7%; }
   .case-fu__modern-person { height: 62%; bottom: 3%; }
   .case-fu__modern-person--researcher { width: 60%; }
   .case-fu__modern-person--archivist { height: 62%; }
@@ -1584,11 +1598,13 @@ html[lang="ja"] .case-fu__heritage-gallery-item figcaption { font-size: 0.64rem;
      76–82% dialogue cards covered almost the entire narrow stage, so the
      figures were technically present but visually hidden behind the copy. */
   .case-fu__stage { min-height: clamp(620px, 88svh, 760px); }
-  .case-fu__puppet { z-index: 22; width: 72%; height: 52%; bottom: 5%; }
+  .case-fu__puppet { z-index: 22; width: 56%; height: 40%; bottom: 5%; }
   /* Bring both performers into the central safe area. Their full source
      canvases now remain inside the narrow stage instead of hanging off-screen. */
-  .case-fu__puppet--recorder { left: 23%; }
-  .case-fu__puppet--guardian { right: 23%; }
+  .case-fu__opening .case-fu__puppet--recorder,
+  .case-fu__puppet--recorder { left: 5%; }
+  .case-fu__opening .case-fu__puppet--guardian,
+  .case-fu__puppet--guardian { right: 5%; }
   .case-fu__symbol { width: 48%; height: 27%; top: 45%; }
   .case-fu__stage-label { top: 11%; width: 90%; font-size: 0.6rem; }
   .case-fu__stage-core { width: 88%; bottom: 12%; padding: 11px 12px; font-size: 0.88rem; line-height: 1.65; }
@@ -1614,8 +1630,13 @@ html[lang="ja"] .case-fu__heritage-gallery-item figcaption { font-size: 0.64rem;
   html[lang="ja"] .case-fu__script-line p { font-size: 0.74rem; line-height: 1.64; }
   .case-fu__modern-label { top: 3%; width: 94%; font-size: 0.51rem; letter-spacing: 0.04em; }
   .case-fu__modern-person { z-index: 32; width: 52%; height: 56%; bottom: 2%; }
-  .case-fu__modern-person--researcher { left: 20%; width: 92%; }
-  .case-fu__modern-person--archivist { right: 20%; height: 56%; }
+  .case-fu__modern-person--researcher { left: 2%; width: 92%; }
+  .case-fu__modern-person--researcher .case-fu__character-pose { background-position: 35% bottom; }
+  .case-fu__modern-person--archivist { right: 14%; height: 56%; }
+  .case-fu__modern-person .case-fu__character-pose--modern-researcher-1 {
+    background-position: 15% bottom;
+    background-size: auto 68%;
+  }
   /* The third male pose uses a tall transparent source canvas. Reserve a
      crown gutter so the hairline remains visible on narrow screens. */
   .case-fu__modern-person .case-fu__character-pose--modern-researcher-2 {
@@ -1662,11 +1683,13 @@ html[lang="ja"] .case-fu__heritage-gallery-item figcaption { font-size: 0.64rem;
 @media (max-width: 430px) {
   :root { --fu-shell: calc(100% - 32px); }
   .case-fu__stage { min-height: clamp(640px, 90svh, 720px); }
-  .case-fu__puppet { width: 74%; height: 52%; bottom: 5%; }
-  .case-fu__puppet--recorder { left: 21%; }
-  .case-fu__puppet--guardian { right: 21%; }
-  .case-fu__modern-person--researcher { left: 18%; }
-  .case-fu__modern-person--archivist { right: 18%; }
+  .case-fu__puppet { width: 56%; height: 40%; bottom: 5%; }
+  .case-fu__opening .case-fu__puppet--recorder,
+  .case-fu__puppet--recorder { left: 5%; }
+  .case-fu__opening .case-fu__puppet--guardian,
+  .case-fu__puppet--guardian { right: 5%; }
+  .case-fu__modern-person--researcher { left: 2%; }
+  .case-fu__modern-person--archivist { right: 14%; }
   .case-fu__script-line { width: 58%; }
   .case-fu__shadow-line--together { width: 86%; }
   .case-fu__modern-line { width: 60%; }
