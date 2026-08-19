@@ -867,7 +867,9 @@
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
         const scene = entry.target;
-        if (scene.dataset.sceneManual !== 'true') startScene(scene);
+        // The opening scene must always raise its curtain automatically when
+        // it first enters view. Other explicitly manual scenes remain opt-in.
+        if (scene.dataset.sceneManual !== 'true' || scene.hasAttribute('data-opening-scene')) startScene(scene);
         observer.unobserve(scene);
       });
     }, { threshold: mobileViewport ? 0.42 : 0.28 });
