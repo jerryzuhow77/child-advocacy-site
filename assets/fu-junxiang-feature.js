@@ -703,7 +703,7 @@
 
     /* A short mobile entrance keeps both figures inside the narrow stage from
        the first visible beat instead of spending most of the reveal clipped. */
-    const puppetTravel = mobile ? 22 : 48;
+    const puppetTravel = mobile ? 4 : 8;
     if (recorder) {
       timeline.fromTo(recorder,
         { autoAlpha: 0, xPercent: -puppetTravel, rotation: -1.5, scale: 0.985 },
@@ -745,7 +745,7 @@
       );
       timeline.to(modernWorld, { autoAlpha: 0, scale: 1.012, duration: 0.62, ease: 'power2.in' }, modernEnd - 0.62);
     }
-    const modernTravel = mobile ? 46 : 145;
+    const modernTravel = mobile ? 6 : 10;
     if (modernResearcher) {
       timeline.fromTo(modernResearcher,
         { autoAlpha: 0, xPercent: -modernTravel, rotation: -0.8 },
