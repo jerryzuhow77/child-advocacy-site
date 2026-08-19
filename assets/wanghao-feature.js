@@ -20,9 +20,9 @@
 
   const puppetImages = {
     female: [
-      'wanghao-shadow-keeper-female-pose2-v1.webp',
-      'wanghao-shadow-keeper-female-pose3-v1.webp',
-      'wanghao-shadow-keeper-female-pose4-v1.webp'
+      'wanghao-shadow-keeper-female-pose2-v2.webp',
+      'wanghao-shadow-keeper-female-pose3-v2.webp',
+      'wanghao-shadow-keeper-female-pose4-v2.webp'
     ],
     male: [
       'wanghao-shadow-storyteller-male-pose2-v1.webp',
