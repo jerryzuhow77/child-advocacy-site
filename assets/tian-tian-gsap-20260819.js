@@ -305,16 +305,18 @@
     const scribe = one(".tt-pose-actor--scribe, .tt-shadow-figure--scribe", transition);
     const actors = [woman, scribe].filter(Boolean);
     const isPrologue = transition.classList.contains("tt-transition--prologue");
+    const isMobilePrologue = isPrologue && isMobile;
     const curtain = one(".tt-stage-curtain--opening", transition);
     const leftCurtain = curtain && one(".tt-stage-curtain-panel--left", curtain);
     const rightCurtain = curtain && one(".tt-stage-curtain-panel--right", curtain);
     const valance = curtain && one(".tt-stage-curtain-valance", curtain);
 
-    gsap.set(stage, { autoAlpha: 0.18, scale: 1.035, transformOrigin: "50% 48%" });
-    if (screen) gsap.set(screen, { autoAlpha: 0.38, scale: 1.025 });
+    gsap.set(stage, { autoAlpha: isMobilePrologue ? 0.68 : 0.18, scale: 1.035, transformOrigin: "50% 48%" });
+    if (screen) gsap.set(screen, { autoAlpha: isMobilePrologue ? 0.72 : 0.38, scale: 1.025 });
     if (props.length) gsap.set(props, { autoAlpha: 0, y: 22, scale: 0.84 });
     if (woman) gsap.set(woman, { autoAlpha: 0, x: isMobile ? -34 : -82, y: 8, rotation: -2.2 });
     if (scribe) gsap.set(scribe, { autoAlpha: 0, x: isMobile ? 34 : 82, y: 8, rotation: 2.2 });
+    if (isPrologue && dialogue) gsap.set(dialogue, { autoAlpha: 0, y: 10 });
     if (title) gsap.set(title, { autoAlpha: 0, y: 10 });
     if (lines.length) gsap.set(lines, { autoAlpha: 0, y: 20 });
 
@@ -331,6 +333,7 @@
       if (leftCurtain) timeline.to(leftCurtain, { xPercent: -102, duration: 1.7, ease: "power2.inOut" }, 0.28);
       if (rightCurtain) timeline.to(rightCurtain, { xPercent: 102, duration: 1.7, ease: "power2.inOut" }, 0.28);
       if (actors.length) timeline.to(actors, { autoAlpha: 1, x: 0, y: 0, rotation: 0, duration: 1.05, stagger: 0.12 }, 0.72);
+      if (dialogue) timeline.to(dialogue, { autoAlpha: 1, y: 0, duration: 0.62 }, 1.62);
       if (title) timeline.to(title, { autoAlpha: 1, y: 0, duration: 0.62 }, 1.7);
       if (lines.length) timeline.to(lines, { autoAlpha: 1, y: 0, duration: 0.82, stagger: 0.34 }, 1.92);
     } else {
@@ -360,6 +363,19 @@
     addSceneMotion(timeline, transition);
 
     createOnceTrigger(transition, timeline, isMobile ? "top 90%" : "top 80%");
+
+    // Mobile browsers can restore or jump the page past ScrollTrigger's start
+    // boundary. A native visibility trigger keeps the chapter-zero stage and
+    // its dialogue from remaining in their intentionally dimmed setup state.
+    if (isMobilePrologue && "IntersectionObserver" in window) {
+      const mobileVisibilityTrigger = new IntersectionObserver((entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        playOnce(timeline);
+        mobileVisibilityTrigger.disconnect();
+      }, { rootMargin: "0px 0px 8% 0px", threshold: 0.01 });
+      mobileVisibilityTrigger.observe(transition);
+      cleanups.push(() => mobileVisibilityTrigger.disconnect());
+    }
     return true;
   };
 
