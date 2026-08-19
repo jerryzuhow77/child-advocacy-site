@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-19-home-gsap-v1';
+const VERSION = '2026-08-19-protection-wall-v1';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -13,13 +13,15 @@ const APP_SHELL = [
   './assets/pwa-install.css',
   './assets/pwa-install.js',
   './assets/home-gsap.css',
+  './assets/global-protection-home.css',
   './assets/home-gsap.js',
   './assets/vendor/gsap-3.13.0.min.js',
   './assets/vendor/ScrollTrigger-3.13.0.min.js',
   './assets/icons/app-icon-192.png',
   './assets/icons/app-icon-512.png',
   './assets/icons/app-icon-maskable-512.png',
-  './assets/icons/apple-touch-icon-180.png'
+  './assets/icons/apple-touch-icon-180.png',
+  './assets/art/global-protection-wall-home-banner.svg'
 ];
 
 self.addEventListener('install', event => {
