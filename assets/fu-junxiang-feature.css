@@ -622,7 +622,7 @@ html[lang="ja"] .case-fu__transcript-line[data-line-source="elegy"] { font-famil
 .case-fu__stage {
   position: relative;
   isolation: isolate;
-  min-height: clamp(360px, 52vw, 620px);
+  min-height: clamp(500px, 55vw, 680px);
   overflow: hidden;
   border: 1px solid rgba(231, 201, 143, 0.36);
   background:
@@ -844,14 +844,16 @@ html[lang="ja"] .case-fu__curtain-cue { font-family: "Noto Serif JP", "Yu Mincho
 }
 .case-fu__shadow-line--recorder {
   top: 23%;
-  left: 25%;
-  width: min(69%, 720px);
+  left: auto;
+  right: 4%;
+  width: min(55%, 620px);
   border-left: 4px solid #bd9c5e;
 }
 .case-fu__shadow-line--guardian {
   top: 43%;
-  right: 25%;
-  width: min(69%, 720px);
+  right: auto;
+  left: 4%;
+  width: min(55%, 620px);
   border-right: 4px solid #b88679;
 }
 .case-fu__shadow-line--together {
@@ -1008,8 +1010,8 @@ html[lang="ja"] .case-fu__script-line p { font-family: "Noto Serif JP", "Yu Minc
   opacity: 0;
   transform: translateY(10px);
 }
-.case-fu__modern-line--researcher { left: 4.5%; top: 17%; border-left: 4px solid #94aeb0; }
-.case-fu__modern-line--archivist { right: 4.5%; top: 36%; border-right: 4px solid #c6a76b; }
+.case-fu__modern-line--researcher { left: auto; right: 4.5%; top: 17%; border-left: 4px solid #94aeb0; }
+.case-fu__modern-line--archivist { right: auto; left: 4.5%; top: 36%; border-right: 4px solid #c6a76b; }
 .case-fu__modern-line--note {
   left: 50%;
   top: 27%;
@@ -1532,6 +1534,12 @@ html[lang="ja"] .case-fu__heritage-gallery-item figcaption { font-size: 0.64rem;
   .case-fu__flow { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .case-fu__flow-step:nth-child(3)::after { display: none; }
   .case-fu__title { max-width: 18ch; }
+  /* Preserve vertical acting room on tablets and narrow desktop windows. */
+  .case-fu__stage { min-height: clamp(560px, 72vw, 680px); }
+  .case-fu__puppet { width: 34%; height: 66%; bottom: 8%; }
+  .case-fu__modern-person { height: 58%; bottom: 3%; }
+  .case-fu__modern-person--researcher { width: 60%; }
+  .case-fu__modern-person--archivist { height: 63%; }
 }
 
 @media (max-width: 767px) {
@@ -1602,9 +1610,17 @@ html[lang="ja"] .case-fu__heritage-gallery-item figcaption { font-size: 0.64rem;
   html[lang="en"] .case-fu__script-line p,
   html[lang="ja"] .case-fu__script-line p { font-size: 0.74rem; line-height: 1.64; }
   .case-fu__modern-label { top: 3%; width: 94%; font-size: 0.51rem; letter-spacing: 0.04em; }
-  .case-fu__modern-person { width: 48%; height: 49%; bottom: 2%; }
-  .case-fu__modern-person--researcher { left: -2%; width: 74%; }
-  .case-fu__modern-person--archivist { right: -1%; height: 54%; }
+  .case-fu__modern-person { width: 48%; height: 54%; bottom: 2%; }
+  .case-fu__modern-person--researcher { left: -2%; width: 78%; }
+  .case-fu__modern-person--archivist { right: -1%; height: 58%; }
+  /* The third male pose uses a tall transparent source canvas. Reserve a
+     crown gutter so the hairline remains visible on narrow screens. */
+  .case-fu__modern-person .case-fu__character-pose--modern-researcher-2 {
+    top: -5%;
+    bottom: 0;
+    background-position: left bottom;
+    background-size: auto 92%;
+  }
   .case-fu__modern-line {
     width: 65%;
     padding: 9px 10px;
