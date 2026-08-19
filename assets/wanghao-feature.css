@@ -82,7 +82,7 @@ html[lang="ja"] body.wh-page{font-family:"Noto Serif JP","Yu Mincho","Hiragino M
   margin:0;transform-origin:50% 94%;transform-style:preserve-3d;opacity:0;will-change:transform,opacity;
   filter:drop-shadow(0 19px 12px rgba(0,0,0,.46));pointer-events:none
 }
-.wh-puppet-motion-layer{position:absolute;inset:0;display:block;transform-origin:50% 92%;transform-style:preserve-3d;will-change:transform}
+.wh-puppet-motion-layer{position:absolute;inset:0;display:block;overflow:visible;transform-origin:50% 92%;transform-style:preserve-3d;will-change:transform}
 .wh-puppet-fallback{
   position:absolute;z-index:1;inset:0;display:block;width:100%;height:100%;object-fit:contain;object-position:center bottom;
   opacity:.86;transform-origin:50% 88%;image-rendering:auto;pointer-events:none;transition:opacity .55s ease
@@ -97,8 +97,27 @@ html[lang="ja"] body.wh-page{font-family:"Noto Serif JP","Yu Mincho","Hiragino M
 .wh-puppet.is-male .wh-puppet-art,.wh-puppet-male .wh-puppet-art,.wh-puppet[data-puppet="male"] .wh-puppet-art{background-image:url("images/wanghao-shadow-storyteller-male-v1.png")}
 .wh-puppet .wh-puppet-pose{
   display:block;width:100%;height:100%;object-fit:contain;object-position:center bottom;
-  background-image:none!important;opacity:1;filter:contrast(1.08) saturate(1.05);pointer-events:none
+  z-index:1;background-image:none!important;opacity:0;mix-blend-mode:normal;
+  -webkit-mask-image:none;mask-image:none;filter:contrast(1.1) saturate(1.07) drop-shadow(0 2px 1px rgba(238,220,168,.16));
+  transition:opacity .58s ease;pointer-events:none
 }
+.wh-puppet .wh-puppet-pose.is-active{z-index:3;opacity:1;visibility:visible}
+.wh-puppet .wh-puppet-pose:not(.is-active){z-index:1;opacity:0;animation:none!important}
+.wh-puppet.is-female .wh-puppet-pose.is-active{opacity:1;mix-blend-mode:normal;-webkit-mask-image:none;mask-image:none}
+
+/* GSAP owns stage transforms and opacity when available. CSS animations stay
+   as a complete fallback for blocked scripts and older browsers. */
+html.gsap-ready .wh-hero-media img,
+html.gsap-ready .reveal,
+html.gsap-ready .wh-stage-curtain .wh-curtain-panel,
+html.gsap-ready .wh-puppet-play .wh-puppet,
+html.gsap-ready .wh-puppet-play .wh-puppet-motion-layer,
+html.gsap-ready .wh-puppet-play .wh-puppet-art,
+html.gsap-ready .wh-puppet-play .wh-puppet-dialogue,
+html.gsap-ready .wh-puppet-play .wh-puppet-dialogues,
+html.gsap-ready .wh-puppet-play .wh-stage-stamp,
+html.gsap-ready .wh-puppet-play .wh-cultural-seal{animation:none!important;transition:none!important}
+html.gsap-ready .wh-puppet-play .wh-puppet-pose:not(.is-active){opacity:0}
 .wh-puppet .wh-puppet-rig{z-index:2;display:block;width:100%;height:100%;overflow:visible;background-image:none!important;filter:contrast(1.1) saturate(1.08);shape-rendering:geometricPrecision}
 .wh-puppet-play.is-playing .wh-puppet:has(.wh-puppet-rig[data-native-joints]) .wh-puppet-fallback{opacity:.28;filter:contrast(1.12) saturate(1.06)}
 .wh-puppet-rig image{pointer-events:none}
@@ -332,6 +351,8 @@ html:not(.js) .wh-puppet-replay,.wh-puppet-play.is-static .wh-puppet-replay{disp
   .wh-puppet-play{min-height:0;padding:5.7rem 1rem 13rem}
   .wh-stage-curtain{display:none!important}
   .wh-puppet,.wh-puppet .wh-puppet-motion-layer,.wh-puppet .wh-puppet-art,.wh-puppet .wh-puppet-rig *,.wh-puppet .wh-control-rod{animation:none!important;opacity:1;transform:none}
+  .wh-puppet .wh-puppet-pose:not(.is-active){opacity:0!important}
+  .wh-puppet .wh-puppet-pose.is-active{opacity:1!important}
   .wh-stage-stamp{animation:none!important}
   .wh-puppet-dialogues{position:relative;left:auto;top:auto;width:min(760px,100%);min-height:0;margin:auto;display:grid;gap:.8rem;transform:none;opacity:1!important;pointer-events:auto;transition:none}
   .wh-puppet-dialogue,.wh-puppet-dialogue.is-current,.wh-puppet-dialogue.is-spoken{position:relative;inset:auto;max-height:none;opacity:1;transform:none;pointer-events:auto;transition:none}

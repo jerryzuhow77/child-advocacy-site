@@ -3,6 +3,10 @@
 
   document.documentElement.classList.add('js');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const gsapEngine = !reducedMotion && window.gsap && typeof window.gsap.timeline === 'function'
+    ? window.gsap
+    : null;
+  if (gsapEngine) document.documentElement.classList.add('gsap-ready');
   const reveals = [...document.querySelectorAll('.reveal')];
   let stageSoundEnabled = false;
   let stageAudioContext = null;
@@ -15,24 +19,23 @@
 
   const puppetImages = {
     female: [
-      'wanghao-shadow-keeper-female-v1.png',
       'wanghao-shadow-keeper-female-pose2-v1.webp',
       'wanghao-shadow-keeper-female-pose3-v1.webp',
       'wanghao-shadow-keeper-female-pose4-v1.webp'
     ],
     male: [
-      'wanghao-shadow-storyteller-male-v1.png',
       'wanghao-shadow-storyteller-male-pose2-v1.webp',
       'wanghao-shadow-storyteller-male-pose3-v1.webp',
       'wanghao-shadow-storyteller-male-pose4-v1.webp'
     ]
   };
 
-  function puppetPose(kind, sceneIndex) {
-    const poseIndex = sceneIndex % puppetImages[kind].length;
-    const imageURL = new URL(`images/${puppetImages[kind][poseIndex]}`, featureAssetBaseURL).href;
-    const loading = sceneIndex === 0 ? 'eager' : 'lazy';
-    return `<img class="wh-puppet-art wh-puppet-pose" data-pose="${poseIndex + 1}" src="${imageURL}" alt="" aria-hidden="true" decoding="async" loading="${loading}">`;
+  function puppetPoseSet(kind) {
+    return puppetImages[kind].map((imageName, poseIndex) => {
+      const imageURL = new URL(`images/${imageName}`, featureAssetBaseURL).href;
+      const activeClass = poseIndex === 0 ? ' is-active' : '';
+      return `<img class="wh-puppet-art wh-puppet-pose${activeClass}" data-pose="${poseIndex + 1}" src="${imageURL}" alt="" aria-hidden="true" decoding="async" loading="eager">`;
+    }).join('');
   }
 
   function getStageAudioContext() {
@@ -98,18 +101,51 @@
     stageTone(context, kind === 'female' ? 392 : 294, 0, .34, .009, 'sine');
   }
 
+  function revealNode(node) {
+    node.classList.add('is-visible');
+    if (!gsapEngine) return;
+    gsapEngine.fromTo(node,
+      { autoAlpha: 0, y: 34 },
+      { autoAlpha: 1, y: 0, duration: .92, ease: 'power3.out', clearProps: 'opacity,visibility,transform' }
+    );
+    const children = node.querySelectorAll('.wh-card,.wh-event,.wh-source-list li,.wh-help-grid article');
+    if (children.length) {
+      gsapEngine.fromTo(children,
+        { autoAlpha: 0, y: 16 },
+        { autoAlpha: 1, y: 0, duration: .68, stagger: .065, delay: .12, ease: 'power2.out', clearProps: 'opacity,visibility,transform' }
+      );
+    }
+  }
+
   if ('IntersectionObserver' in window && !reducedMotion) {
     const revealObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-visible');
+        revealNode(entry.target);
         revealObserver.unobserve(entry.target);
       });
     }, { threshold: .14 });
     reveals.forEach(node => revealObserver.observe(node));
   } else {
-    reveals.forEach(node => node.classList.add('is-visible'));
+    reveals.forEach(revealNode);
   }
+
+  let heroGsapTimeline = null;
+  function playGsapHero() {
+    if (!gsapEngine) return;
+    heroGsapTimeline?.kill();
+    const hero = document.querySelector('.wh-hero');
+    const image = hero?.querySelector('.wh-hero-media img');
+    const copy = hero?.querySelectorAll('.wh-hero-copy > *');
+    if (!hero || !image || !copy?.length) return;
+    gsapEngine.killTweensOf([image, ...copy]);
+    gsapEngine.set(image, { scale: 1.075, transformOrigin: '64% 50%' });
+    gsapEngine.set(copy, { autoAlpha: 0, y: 18 });
+    heroGsapTimeline = gsapEngine.timeline({ defaults: { overwrite: 'auto' } })
+      .to(image, { scale: 1, duration: 14, ease: 'power1.out' }, 0)
+      .to(copy, { autoAlpha: 1, y: 0, duration: .82, stagger: .085, ease: 'power3.out' }, .28);
+  }
+  playGsapHero();
 
   if (!reducedMotion) {
     const line = document.createElement('div');
@@ -258,8 +294,8 @@
   function puppetStage(scene, mode, copy) {
     const stage = document.createElement('div');
     const sceneIndex = copy.scenes.indexOf(scene);
-    /* Repeat one original stance and three newly drawn intact paired poses across
-       all eight stages. No limb is ever split, clipped or animated separately. */
+    /* Every stage cycles through the same three intact paired poses. No limb is
+       ever split, clipped or animated separately. */
     const motionSequence = ['raise', 'unfold', 'search', 'guard', 'raise', 'unfold', 'search', 'guard'];
     const stampSequence = ['minnan-03', 'hakka-03', 'waisheng-03', '', '', 'minnan-04', 'hakka-04', 'waisheng-04'];
     const stageStamp = stampSequence[sceneIndex] || '';
@@ -287,8 +323,8 @@
     stage.innerHTML = `
       <div class="wh-stage-curtain" aria-hidden="true"><span class="wh-curtain-panel is-left"></span><span class="wh-curtain-panel is-right"></span></div>
       ${stageStamp ? '<span class="wh-stage-stamp" aria-hidden="true"></span>' : ''}
-      <figure class="wh-puppet is-female" aria-hidden="true"><span class="wh-puppet-motion-layer">${puppetPose('female', sceneIndex)}</span></figure>
-      <figure class="wh-puppet is-male" aria-hidden="true"><span class="wh-puppet-motion-layer">${puppetPose('male', sceneIndex)}</span></figure>
+      <figure class="wh-puppet is-female" aria-hidden="true"><span class="wh-puppet-motion-layer">${puppetPoseSet('female')}</span></figure>
+      <figure class="wh-puppet is-male" aria-hidden="true"><span class="wh-puppet-motion-layer">${puppetPoseSet('male')}</span></figure>
       <div class="wh-puppet-dialogues" aria-live="polite">${dialogueHTML}</div>
       ${sealHTML ? `<div class="wh-cultural-seals" aria-label="${escapeHTML(copy.culture.title)}">${sealHTML}</div>` : ''}
       <details class="wh-puppet-transcript"><summary>${escapeHTML(copy.transcript)}</summary>${transcriptHTML}</details>
@@ -355,6 +391,8 @@
 
   const puppetStages = [...document.querySelectorAll('.wh-puppet-play')];
   const puppetTimers = new WeakMap();
+  const puppetTimelines = new WeakMap();
+  const activePuppetTimelines = new Set();
 
   function clearPuppetTimers(stage) {
     (puppetTimers.get(stage) || []).forEach(window.clearTimeout);
@@ -367,25 +405,185 @@
     puppetTimers.set(stage, timers);
   }
 
+  function setPuppetPose(stage, poseNumber, animate = false) {
+    const normalizedPose = Math.max(1, Math.min(3, Number(poseNumber) || 1));
+    const poseImages = [...stage.querySelectorAll('.wh-puppet-pose')];
+    const outgoing = poseImages.filter(image => image.classList.contains('is-active') && image.dataset.pose !== String(normalizedPose));
+    const incoming = poseImages.filter(image => image.dataset.pose === String(normalizedPose));
+    stage.dataset.activePose = String(normalizedPose);
+    poseImages.forEach(image => {
+      image.classList.toggle('is-active', image.dataset.pose === String(normalizedPose));
+    });
+    if (!gsapEngine || !animate) {
+      gsapEngine?.set(poseImages, { clearProps: 'opacity,visibility,transform' });
+      return;
+    }
+    gsapEngine.killTweensOf(poseImages);
+    if (outgoing.length) {
+      gsapEngine.fromTo(outgoing,
+        { autoAlpha: 1, scale: 1 },
+        { autoAlpha: 0, scale: .985, duration: .48, ease: 'power2.inOut' }
+      );
+    }
+    gsapEngine.fromTo(incoming,
+      { autoAlpha: 0, scale: .985 },
+      { autoAlpha: 1, scale: 1, duration: .62, ease: 'power3.out' }
+    );
+  }
+
+  function clearPuppetTimeline(stage) {
+    const timeline = puppetTimelines.get(stage);
+    if (timeline) {
+      activePuppetTimelines.delete(timeline);
+      timeline.kill();
+    }
+    puppetTimelines.delete(stage);
+    if (!gsapEngine) return;
+    const animated = stage.querySelectorAll(
+      '.wh-curtain-panel,.wh-puppet,.wh-puppet-motion-layer,.wh-puppet-pose,.wh-puppet-dialogue,.wh-puppet-dialogues,.wh-stage-stamp,.wh-cultural-seal'
+    );
+    gsapEngine.killTweensOf(animated);
+    gsapEngine.set(animated, { clearProps: 'opacity,visibility,transform,filter' });
+  }
+
   function resetPuppetStage(stage) {
     clearPuppetTimers(stage);
+    clearPuppetTimeline(stage);
     stage.classList.remove(
-      'is-playing', 'is-closing', 'is-complete',
+      'is-playing', 'is-closing', 'is-complete', 'is-gsap-playing',
       'is-speaking-female', 'is-speaking-male', 'is-speaking-chorus'
     );
     stage.removeAttribute('data-active-speaker');
+    setPuppetPose(stage, 1);
     stage.querySelectorAll('.wh-puppet-dialogue').forEach(dialogue => {
       dialogue.classList.remove('is-current', 'is-spoken');
       dialogue.setAttribute('aria-hidden', 'true');
     });
   }
 
+  function activateGsapDialogue(stage, dialogues, dialogue, index) {
+    const previous = dialogues[index - 1];
+    if (previous) {
+      previous.classList.remove('is-current');
+      previous.classList.add('is-spoken');
+      previous.setAttribute('aria-hidden', 'true');
+      gsapEngine.to(previous, { autoAlpha: 0, y: -10, duration: .42, ease: 'power2.in' });
+    }
+    const requestedSpeaker = (dialogue.dataset.speaker || 'chorus').toLowerCase();
+    const speaker = ({ woman: 'female', man: 'male', together: 'chorus', final: 'chorus' })[requestedSpeaker] || requestedSpeaker;
+    stage.classList.remove('is-speaking-female', 'is-speaking-male', 'is-speaking-chorus');
+    stage.classList.add(`is-speaking-${speaker}`);
+    stage.dataset.activeSpeaker = speaker;
+    setPuppetPose(stage, Math.min(index + 1, 3), true);
+    dialogue.classList.add('is-current');
+    dialogue.setAttribute('aria-hidden', 'false');
+    gsapEngine.fromTo(dialogue,
+      { autoAlpha: 0, y: 18, scale: .985 },
+      { autoAlpha: 1, y: 0, scale: 1, duration: .72, ease: 'power3.out' }
+    );
+    const actors = speaker === 'chorus'
+      ? stage.querySelectorAll('.wh-puppet-motion-layer')
+      : stage.querySelectorAll(`.wh-puppet.is-${speaker} .wh-puppet-motion-layer`);
+    gsapEngine.fromTo(actors,
+      { y: 0, rotation: 0 },
+      { y: -3, rotation: speaker === 'male' ? -.3 : .3, duration: .78, repeat: 1, yoyo: true, ease: 'sine.inOut' }
+    );
+    playStageSound(speaker);
+  }
+
+  function playGsapPuppetStage(stage, force = false) {
+    if (!force && stage.dataset.puppetPlayed === 'true') return;
+    resetPuppetStage(stage);
+    stage.dataset.puppetPlayed = 'true';
+    stage.classList.add('is-playing', 'is-gsap-playing');
+    playStageSound('open');
+
+    const leftCurtain = stage.querySelector('.wh-curtain-panel.is-left');
+    const rightCurtain = stage.querySelector('.wh-curtain-panel.is-right');
+    const female = stage.querySelector('.wh-puppet.is-female');
+    const male = stage.querySelector('.wh-puppet.is-male');
+    const dialogueWrap = stage.querySelector('.wh-puppet-dialogues');
+    const dialogues = [...stage.querySelectorAll('.wh-puppet-dialogue')];
+    const stageStamp = stage.querySelector('.wh-stage-stamp');
+    const culturalSeals = stage.querySelectorAll('.wh-cultural-seal');
+    const openingDelay = Math.max(900, Number(stage.dataset.dialogueDelay) || 1750) / 1000;
+    const defaultHold = Math.max(2600, Number(stage.dataset.dialogueHold) || 4300) / 1000;
+    const isFinale = ['finale', 'ending', 'final'].includes((stage.dataset.puppetMode || '').toLowerCase());
+
+    gsapEngine.set(leftCurtain, { xPercent: 0 });
+    gsapEngine.set(rightCurtain, { xPercent: 0, scaleX: -1 });
+    gsapEngine.set(female, { autoAlpha: 0, xPercent: -66, y: 4, rotation: -1.4 });
+    gsapEngine.set(male, { autoAlpha: 0, xPercent: 66, y: 4, rotation: 1.4 });
+    gsapEngine.set(dialogueWrap, { autoAlpha: 1 });
+    gsapEngine.set(dialogues, { autoAlpha: 0, y: 14, scale: .985 });
+    if (stageStamp) gsapEngine.set(stageStamp, { autoAlpha: 0, scale: .86 });
+    if (culturalSeals.length) gsapEngine.set(culturalSeals, { autoAlpha: 0, y: 8 });
+
+    const timeline = gsapEngine.timeline({
+      paused: true,
+      defaults: { overwrite: 'auto' },
+      onComplete: () => {
+        stage.classList.add('is-complete');
+        stage.classList.remove('is-gsap-playing');
+        activePuppetTimelines.delete(timeline);
+      }
+    });
+    timeline
+      .to(leftCurtain, { xPercent: -91, duration: 1.35, ease: 'power3.inOut' }, 0)
+      .to(rightCurtain, { xPercent: 91, scaleX: -1, duration: 1.35, ease: 'power3.inOut' }, 0)
+      .to(female, { autoAlpha: 1, xPercent: 0, y: 0, rotation: 0, duration: 1.22, ease: 'power3.out' }, .42)
+      .to(male, { autoAlpha: 1, xPercent: 0, y: 0, rotation: 0, duration: 1.28, ease: 'power3.out' }, .54);
+    if (stageStamp) timeline.to(stageStamp, { autoAlpha: .2, scale: 1, duration: 1.05, ease: 'power2.out' }, .4);
+    if (culturalSeals.length) timeline.to(culturalSeals, { autoAlpha: 1, y: 0, duration: .58, stagger: .09, ease: 'power2.out' }, .72);
+
+    let cursor = openingDelay;
+    dialogues.forEach((dialogue, index) => {
+      timeline.call(() => activateGsapDialogue(stage, dialogues, dialogue, index), [], cursor);
+      cursor += Math.max(2.6, Number(dialogue.dataset.hold) / 1000 || defaultHold);
+    });
+    if (dialogues.length === 2) {
+      timeline.call(() => setPuppetPose(stage, 3, true), [], cursor);
+      cursor += 1.8;
+    }
+
+    timeline.call(() => {
+      const last = dialogues.at(-1);
+      last?.classList.add('is-spoken');
+      if (!isFinale) {
+        last?.classList.remove('is-current');
+        last?.setAttribute('aria-hidden', 'true');
+      }
+      stage.classList.add('is-closing');
+      stage.classList.remove('is-speaking-female', 'is-speaking-male');
+      if (isFinale) {
+        stage.classList.add('is-speaking-chorus');
+        stage.dataset.activeSpeaker = 'chorus';
+      }
+      playStageSound('close');
+    }, [], cursor);
+    timeline
+      .to(dialogueWrap, { autoAlpha: 0, duration: .55, ease: 'power2.in' }, cursor + (isFinale ? .72 : 0))
+      .to([female, male], { y: 3, autoAlpha: .32, duration: .82, ease: 'power2.inOut' }, cursor)
+      .to(leftCurtain, { xPercent: 0, duration: 1.45, ease: 'power3.inOut' }, cursor)
+      .to(rightCurtain, { xPercent: 0, scaleX: -1, duration: 1.45, ease: 'power3.inOut' }, cursor)
+      .call(() => stage.classList.add('is-complete'), [], cursor + 1.46);
+
+    puppetTimelines.set(stage, timeline);
+    activePuppetTimelines.add(timeline);
+    timeline.play(0);
+  }
+
   function playPuppetStage(stage, force = false) {
     if (reducedMotion) {
       stage.classList.add('is-static', 'is-complete');
+      setPuppetPose(stage, 1);
       stage.querySelectorAll('.wh-puppet-dialogue').forEach(dialogue => {
         dialogue.setAttribute('aria-hidden', 'false');
       });
+      return;
+    }
+    if (gsapEngine) {
+      playGsapPuppetStage(stage, force);
       return;
     }
     if (!force && stage.dataset.puppetPlayed === 'true') return;
@@ -416,6 +614,7 @@
         stage.classList.remove('is-speaking-female', 'is-speaking-male', 'is-speaking-chorus');
         stage.classList.add(`is-speaking-${speaker}`);
         stage.dataset.activeSpeaker = speaker;
+        setPuppetPose(stage, Math.min(index + 1, 3));
         dialogue.classList.add('is-current');
         dialogue.setAttribute('aria-hidden', 'false');
         playStageSound(speaker);
@@ -425,7 +624,13 @@
     const dialogueLength = dialogues.reduce((total, item) => {
       return total + Math.max(2600, Number(item.dataset.hold) || defaultHold);
     }, openingDelay);
-    const closeDelay = dialogues.length ? dialogueLength : openingDelay + 1800;
+    /* Two-line scenes still show the third complete pair for a clear final
+       tableau. The finale reaches pose three naturally on the chorus. */
+    const thirdPoseHold = dialogues.length === 2 ? 1800 : 0;
+    if (thirdPoseHold) {
+      queuePuppetTimer(stage, () => setPuppetPose(stage, 3), dialogueLength);
+    }
+    const closeDelay = dialogues.length ? dialogueLength + thirdPoseHold : openingDelay + 1800;
 
     queuePuppetTimer(stage, () => {
       const last = dialogues.at(-1);
@@ -469,12 +674,13 @@
   const heroImage = document.querySelector('.wh-hero-media img');
   replay?.addEventListener('click', () => {
     if (!reducedMotion) {
-      [heroImage].forEach(node => {
-        if (!node) return;
-        node.style.animation = 'none';
-        void node.offsetWidth;
-        node.style.removeProperty('animation');
-      });
+      if (gsapEngine) playGsapHero();
+      else [heroImage].forEach(node => {
+          if (!node) return;
+          node.style.animation = 'none';
+          void node.offsetWidth;
+          node.style.removeProperty('animation');
+        });
       const activeCurtain = document.querySelector('.wh-curtain');
       if (activeCurtain) activeCurtain.replaceWith(activeCurtain.cloneNode(true));
     }
@@ -616,6 +822,10 @@
   });
 
   document.addEventListener('visibilitychange', () => {
+    activePuppetTimelines.forEach(timeline => {
+      if (document.hidden) timeline.pause();
+      else timeline.resume();
+    });
     if (document.hidden) {
       if (enabled) pauseScore();
       return;
