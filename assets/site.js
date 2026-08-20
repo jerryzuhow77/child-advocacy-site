@@ -1303,3 +1303,46 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
   });
 })();
 }
+
+
+/* 2026-08-20 — Premium coastal header toolbar motion */
+(function(){
+  const initPremiumHeaderToolbar=()=>{
+    const header=document.querySelector('.art-header');
+    if(!header||header.dataset.premiumToolbarReady==='1') return;
+    header.dataset.premiumToolbarReady='1';
+    const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let compact=false;
+    const syncCompact=()=>{
+      const next=window.scrollY>42;
+      if(next===compact) return;
+      compact=next;
+      header.classList.toggle('is-toolbar-compact',next);
+    };
+    syncCompact();
+    window.addEventListener('scroll',syncCompact,{passive:true});
+    if(reduce||typeof window.gsap==='undefined') return;
+    const gsap=window.gsap;
+    gsap.from(header,{y:-24,autoAlpha:0,duration:.72,ease:'power3.out',clearProps:'transform,opacity,visibility'});
+    const brand=header.querySelector('.brand-lockup');
+    const tools=header.querySelectorAll('.site-qr-trigger,.pwa-mobile-header-install,.mobile-menu-toggle');
+    const links=header.querySelectorAll('nav > a,nav > .social-case-nav,nav > .pwa-nav-install,nav > .language-switcher');
+    if(brand) gsap.from(brand,{scale:.9,rotation:-1.4,duration:.65,delay:.12,ease:'back.out(1.7)',clearProps:'transform'});
+    if(tools.length) gsap.from(tools,{y:-8,autoAlpha:0,duration:.42,delay:.18,stagger:.07,ease:'power2.out',clearProps:'transform,opacity,visibility'});
+    if(links.length) gsap.from(links,{y:-9,autoAlpha:0,duration:.42,delay:.24,stagger:.035,ease:'power2.out',clearProps:'transform,opacity,visibility'});
+    header.querySelectorAll('nav > a,.social-case-nav-toggle,.site-qr-trigger,.mobile-menu-toggle').forEach(item=>{
+      item.addEventListener('pointerenter',()=>gsap.to(item,{y:-2,duration:.18,ease:'power2.out',overwrite:'auto'}));
+      item.addEventListener('pointerleave',()=>gsap.to(item,{y:0,duration:.24,ease:'power2.out',overwrite:'auto'}));
+    });
+    const mobileToggle=header.querySelector('.mobile-menu-toggle');
+    if(mobileToggle) mobileToggle.addEventListener('click',()=>{
+      const panel=header.querySelector('.nav > nav');
+      if(panel&&mobileToggle.getAttribute('aria-expanded')==='true'){
+        gsap.fromTo(panel,{y:-10,autoAlpha:0},{y:0,autoAlpha:1,duration:.32,ease:'power2.out',clearProps:'transform,opacity,visibility'});
+      }
+    });
+  };
+  document.readyState==='loading'
+    ? document.addEventListener('DOMContentLoaded',initPremiumHeaderToolbar,{once:true})
+    : initPremiumHeaderToolbar();
+})();
