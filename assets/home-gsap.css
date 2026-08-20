@@ -442,3 +442,42 @@
   .home-art-footer .home-footer-mobile-bar a{color:#f8fffc!important}
   .home-art-footer .home-footer-mobile-bar b{color:#f8fffc!important;font-weight:850}
 }
+
+
+/* 2026-08-20 — Visible social buttons and synchronized mobile footer */
+.home-art-footer .home-footer-socials a{
+  color:#fff!important;
+  opacity:1!important;
+  border-color:rgba(255,255,255,.72)!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.32)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 7px 16px rgba(0,0,0,.18)!important;
+  font-family:Arial,Helvetica,sans-serif!important;
+  font-size:20px!important;
+  line-height:1!important;
+}
+.home-art-footer .home-footer-socials a:nth-child(1){background:#557b94!important}
+.home-art-footer .home-footer-socials a:nth-child(2){background:#a26f82!important;font-size:23px!important}
+.home-art-footer .home-footer-socials a:nth-child(3){background:#5f817d!important;font-size:18px!important}
+.home-art-footer .home-footer-socials a:hover,
+.home-art-footer .home-footer-socials a:focus-visible{
+  color:#fff!important;
+  filter:brightness(1.12);
+}
+@media(max-width:600px){
+  .home-art-footer .home-footer-brand b,
+  .home-art-footer .home-footer-toolbar h2,
+  .home-art-footer .home-footer-toolbar a,
+  .home-art-footer .home-footer-toolbar button,
+  .home-art-footer .home-footer-bottom,
+  .home-art-footer .home-footer-bottom a{
+    opacity:1!important;
+  }
+  .home-art-footer .home-footer-toolbar h2{color:#ffd7bd!important}
+  .home-art-footer .home-footer-toolbar section>a:not(.home-footer-wall-link){color:#edf6f2!important}
+  .home-art-footer .home-footer-socials{gap:13px!important}
+  .home-art-footer .home-footer-socials a{
+    width:44px!important;
+    height:44px!important;
+    min-width:44px!important;
+  }
+}
