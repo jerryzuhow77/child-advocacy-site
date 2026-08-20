@@ -8360,3 +8360,13 @@ html,body{max-width:100%;overflow-x:hidden}
 @media(max-width:380px){.home-activity-scroll-label strong{font-size:.8rem}.home-activity-scroll-controls button{width:34px;height:34px}}
 @media(prefers-reduced-motion:reduce){.home-activity-scroll-shell::after,.home-activity-scroll-controls button{transition:none}.home-activity-scroll{scroll-behavior:auto}}
 
+/* Desktop activity viewport expansion · 2026-08-20 */
+@media(min-width:1024px){
+  .home-activity-records .container{
+    width:min(1460px,calc(100% - 36px));
+  }
+  .home-activity-scroll{
+    height:clamp(680px,76vh,900px);
+    padding:clamp(20px,2.2vw,30px) clamp(20px,2.6vw,34px) 78px;
+  }
+}
