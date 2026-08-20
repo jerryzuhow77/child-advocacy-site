@@ -212,6 +212,29 @@
     });
   }
 
+  function animateSummerBeach() {
+    var wall = document.querySelector('.home-protection-wall');
+    if (!wall) return;
+    var sun = wall.querySelector('.home-beach-sun');
+    var waves = all('.home-beach-wave', wall);
+    var notes = all('.home-beach-note', wall);
+    var shells = all('.home-beach-shell', wall);
+    if (sun) gsap.to(sun, { scale: 1.1, opacity: .78, duration: 3.6, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+    waves.forEach(function (wave, index) {
+      gsap.to(wave, { xPercent: index ? -3 : 3, y: index ? 4 : -3, duration: 3.4 + index, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+    });
+    notes.forEach(function (note, index) {
+      gsap.to(note, { y: index ? 9 : -10, rotate: index ? 1.5 : -1.5, duration: 2.7 + index * .5, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+    });
+    shells.forEach(function (shell, index) {
+      gsap.to(shell, { rotate: index ? 9 : -8, y: index ? -5 : 4, duration: 2.4 + index * .4, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+    });
+    gsap.fromTo(wall.querySelector('.home-protection-wall-card'), { y: 36, autoAlpha: 0 }, {
+      y: 0, autoAlpha: 1, duration: 1, ease: 'power3.out',
+      scrollTrigger: { trigger: wall, start: 'top 84%', once: true }
+    });
+  }
+
   function animateHearingZone() {
     var zone = document.querySelector('.home-hearing-zone');
     if (!zone) return;
@@ -374,6 +397,7 @@
     revealGroup('.social-preview-grid', ':scope > *', 0);
     addReelSheen();
     animateDecorations();
+    animateSummerBeach();
     animateHearingZone();
     addCardTilt();
     window.setTimeout(function () { ScrollTrigger.refresh(); }, 250);
