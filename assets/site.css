@@ -8136,3 +8136,56 @@ header .special-feature-nav > .special-feature-nav-toggle[aria-expanded="true"] 
 @media(prefers-reduced-motion:reduce){
   .art-header,.art-header *{transition:none!important;animation:none!important}
 }
+
+
+/* 2026-08-20 — Header language contrast and compact App button */
+.art-header .language-switcher a{
+  color:#173f52!important;
+  opacity:1!important;
+  font-weight:950!important;
+  text-shadow:none!important;
+}
+.art-header .language-switcher a:hover,
+.art-header .language-switcher a:focus-visible{
+  color:#0b3042!important;
+  background:#fff8e8!important;
+}
+.art-header .language-switcher a[aria-current="true"],
+.art-header .language-switcher a.is-active{
+  color:#19394a!important;
+  background:#f1d79f!important;
+  box-shadow:inset 0 0 0 1px rgba(158,111,39,.2);
+}
+.art-header nav > .pwa-nav-install{
+  width:auto!important;
+  min-width:0!important;
+  max-width:112px!important;
+  min-height:38px!important;
+  height:38px!important;
+  padding:6px 9px!important;
+  gap:5px!important;
+  font-size:11px!important;
+  line-height:1.1!important;
+  white-space:nowrap!important;
+}
+.art-header nav > .pwa-nav-install svg{
+  width:16px!important;
+  height:16px!important;
+  flex:0 0 16px!important;
+}
+@media(max-width:1100px){
+  .art-header .pwa-mobile-header-install{
+    width:42px!important;
+    min-width:42px!important;
+    max-width:42px!important;
+    height:42px!important;
+    min-height:42px!important;
+    padding:8px!important;
+    border-radius:13px!important;
+  }
+  .art-header .pwa-mobile-header-install svg{
+    width:20px!important;
+    height:20px!important;
+  }
+  .art-header .pwa-mobile-header-install .pwa-install-label{display:none!important}
+}
