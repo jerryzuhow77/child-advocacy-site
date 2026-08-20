@@ -1321,10 +1321,10 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
 (function(){
   const wallUrl='https://global-protection.jerryzuhow77.chatgpt.site/';
   const labels={
-    'zh-Hant':{text:'守護留言牆',aria:'開啟全球守護留言牆'},
-    'zh-Hans':{text:'守护留言墙',aria:'打开全球守护留言墙'},
-    en:{text:'Guardian Wall',aria:'Open the Global Guardian Message Wall'},
-    ja:{text:'守護メッセージ',aria:'グローバル守護メッセージウォールを開く'}
+    'zh-Hant':{text:'全球守護留言牆',aria:'開啟全球守護留言牆'},
+    'zh-Hans':{text:'全球守护留言墙',aria:'打开全球守护留言墙'},
+    en:{text:'Global Guardian Wall',aria:'Open the Global Guardian Message Wall'},
+    ja:{text:'グローバル守護壁',aria:'グローバル守護メッセージウォールを開く'}
   };
   const initGuardianWallToolbarLink=()=>{
     const locale=labels[document.documentElement.lang]||labels['zh-Hant'];
