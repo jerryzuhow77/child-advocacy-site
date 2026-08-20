@@ -1,204 +1,22 @@
-.home-protection-wall {
-  position: relative;
-  padding: clamp(46px, 7vw, 92px) 0;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 8% 18%, rgba(221, 171, 154, .24), transparent 31%),
-    radial-gradient(circle at 92% 82%, rgba(112, 159, 155, .22), transparent 34%),
-    linear-gradient(180deg, #f7f1e7 0%, #ece7de 100%);
-}
-
-.home-protection-wall::before,
-.home-protection-wall::after {
-  position: absolute;
-  width: clamp(130px, 18vw, 260px);
-  aspect-ratio: 1;
-  border: 1px solid rgba(116, 91, 66, .14);
-  border-radius: 50%;
-  content: "";
-  pointer-events: none;
-}
-
-.home-protection-wall::before { top: -16%; left: -7%; }
-.home-protection-wall::after { right: -6%; bottom: -27%; }
-
-.home-protection-wall-card {
-  position: relative;
-  display: block;
-  min-height: clamp(430px, 51vw, 690px);
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, .72);
-  border-radius: clamp(24px, 3vw, 38px);
-  background: #173a49;
-  box-shadow: 0 30px 74px rgba(31, 49, 55, .22), inset 0 1px rgba(255, 255, 255, .5);
-  color: #fff;
-  text-decoration: none;
-  isolation: isolate;
-  transform: translateZ(0);
-}
-
-.home-protection-wall-visual,
-.home-protection-wall-visual img {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.home-protection-wall-visual img {
-  object-fit: cover;
-  object-position: 50% 50%;
-  transition: transform .7s cubic-bezier(.22, 1, .36, 1), filter .5s ease;
-}
-
-.home-protection-wall-card::after {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background:
-    linear-gradient(90deg, rgba(8, 33, 45, .9) 0%, rgba(8, 33, 45, .66) 35%, rgba(8, 33, 45, .12) 70%),
-    linear-gradient(0deg, rgba(7, 27, 39, .76) 0%, transparent 48%);
-  content: "";
-  pointer-events: none;
-}
-
-.home-protection-wall-mark {
-  position: absolute;
-  top: clamp(20px, 3vw, 36px);
-  right: clamp(20px, 3vw, 38px);
-  z-index: 3;
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  padding: 10px 15px;
-  border: 1px solid rgba(255, 255, 255, .5);
-  border-radius: 999px;
-  background: rgba(255, 250, 240, .18);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  color: #fffaf0 !important;
-  font: 800 11px/1.2 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  letter-spacing: .15em;
-}
-
-.home-protection-wall-mark::before {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #e8b37d;
-  box-shadow: 0 0 0 5px rgba(232, 179, 125, .18);
-  content: "";
-}
-
-.home-protection-wall-copy {
-  position: absolute;
-  inset: auto auto clamp(30px, 6vw, 72px) clamp(26px, 6vw, 76px);
-  z-index: 3;
-  width: min(620px, calc(100% - 52px));
-}
-
-.home-protection-wall-eyebrow {
-  display: block;
-  margin-bottom: 13px;
-  color: #ffe8c8 !important;
-  font: 850 12px/1.3 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  letter-spacing: .2em;
-}
-
-.home-protection-wall-copy h2 {
-  margin: 0;
-  color: #fffdf7 !important;
-  font: 900 clamp(34px, 5vw, 66px)/1.08 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  letter-spacing: -.035em;
-  text-shadow: 0 5px 20px rgba(0, 0, 0, .23);
-}
-
-.home-protection-wall-copy p {
-  max-width: 590px;
-  margin: 18px 0 0;
-  color: rgba(255, 253, 248, .97) !important;
-  font: 600 clamp(15px, 1.7vw, 19px)/1.75 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  text-shadow: 0 3px 14px rgba(0, 0, 0, .28);
-}
-
-.home-protection-wall-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 11px;
-  min-height: 48px;
-  margin-top: 24px;
-  padding: 13px 19px;
-  border: 1px solid rgba(255, 255, 255, .48);
-  border-radius: 999px;
-  background: rgba(20, 69, 79, .82);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 11px 28px rgba(3, 23, 33, .28), inset 0 1px rgba(255, 255, 255, .12);
-  color: #fffdf7 !important;
-  font: 850 15px/1.2 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  transition: transform .25s ease, background .25s ease, color .25s ease;
-}
-
-.home-protection-wall-cta span {
-  font-size: 19px;
-  transition: transform .25s ease;
-}
-
-.home-protection-wall-card:hover .home-protection-wall-visual img {
-  transform: scale(1.035);
-  filter: saturate(1.06) contrast(1.02);
-}
-
-.home-protection-wall-card:hover .home-protection-wall-cta {
-  transform: translateY(-2px);
-  background: rgba(30, 91, 101, .96);
-  color: #fff !important;
-}
-
-.home-protection-wall-card:hover .home-protection-wall-cta span { transform: translate(3px, -2px); }
-
-.home-protection-wall-card:focus-visible {
-  outline: 4px solid #d79861;
-  outline-offset: 6px;
-}
-
-@media (max-width: 760px) {
-  .home-protection-wall { padding: 38px 0 46px; }
-
-  .home-protection-wall-card {
-    min-height: min(700px, 132vw);
-    border-radius: 24px;
-  }
-
-  .home-protection-wall-card::after {
-    background:
-      linear-gradient(0deg, rgba(7, 28, 40, .96) 0%, rgba(7, 28, 40, .73) 38%, rgba(7, 28, 40, .08) 76%),
-      linear-gradient(90deg, rgba(7, 28, 40, .28), transparent 65%);
-  }
-
-  .home-protection-wall-visual img { object-position: 58% 50%; }
-
-  .home-protection-wall-mark {
-    top: 18px;
-    right: 18px;
-    max-width: calc(100% - 36px);
-    padding: 9px 12px;
-    font-size: 9px;
-    letter-spacing: .11em;
-  }
-
-  .home-protection-wall-copy {
-    inset: auto 22px 25px;
-    width: auto;
-  }
-
-  .home-protection-wall-copy h2 { font-size: clamp(32px, 10vw, 46px); }
-  .home-protection-wall-copy p { margin-top: 13px; font-size: 15px; line-height: 1.68; }
-  .home-protection-wall-cta { width: 100%; justify-content: center; margin-top: 20px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .home-protection-wall-card,
-  .home-protection-wall-card * { transition: none !important; }
-}
+.home-protection-wall{position:relative;padding:clamp(54px,8vw,104px) 0;overflow:hidden;background:radial-gradient(circle at 10% 8%,rgba(255,188,202,.56),transparent 28rem),radial-gradient(circle at 92% 25%,rgba(166,219,218,.52),transparent 30rem),linear-gradient(180deg,#fff5ee 0%,#f9dfe0 48%,#d9ebe6 100%)}
+.home-protection-wall::before{content:"";position:absolute;inset:auto 0 0;height:92px;background:linear-gradient(176deg,transparent 0 34%,rgba(116,190,195,.34) 35% 52%,rgba(255,255,255,.72) 53% 58%,rgba(245,215,172,.72) 59%);pointer-events:none}
+.home-protection-wall::after{content:"SUMMER · CARE · HOPE";position:absolute;right:-.02em;top:.08em;color:rgba(107,131,134,.055);font:900 clamp(4rem,11vw,10rem)/1 system-ui,sans-serif;letter-spacing:.05em;white-space:nowrap;pointer-events:none}
+.home-protection-wall-card{position:relative;display:block;min-height:clamp(470px,52vw,690px);overflow:hidden;border:5px solid rgba(255,255,255,.72);border-radius:clamp(28px,4vw,46px);background:#8bc9cb;box-shadow:0 32px 78px rgba(97,74,74,.18),inset 0 1px rgba(255,255,255,.7);color:#fff;text-decoration:none;isolation:isolate;transform:translateZ(0)}
+.home-protection-wall-visual,.home-protection-wall-visual img{position:absolute;inset:0;display:block;width:100%;height:100%}.home-protection-wall-visual img{object-fit:cover;object-position:50% 50%;transition:transform .8s cubic-bezier(.22,1,.36,1),filter .5s ease}
+.home-protection-wall-card::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(91,88,105,.72) 0%,rgba(105,102,119,.43) 37%,rgba(255,255,255,.03) 72%),linear-gradient(0deg,rgba(74,112,119,.62),transparent 52%);pointer-events:none}
+.home-protection-wall-mark{position:absolute;top:clamp(20px,3vw,36px);right:clamp(20px,3vw,38px);z-index:5;display:inline-flex;align-items:center;gap:9px;padding:10px 15px;border:2px solid rgba(255,255,255,.68);border-radius:999px;background:rgba(255,244,241,.3);backdrop-filter:blur(12px);color:#fff!important;font:800 11px/1.2 system-ui,sans-serif;letter-spacing:.14em;box-shadow:0 9px 24px rgba(85,71,72,.12)}
+.home-protection-wall-mark::before{width:9px;height:9px;border-radius:50%;background:#ffbdc2;box-shadow:0 0 0 5px rgba(255,235,211,.25);content:""}
+.home-protection-wall-copy{position:absolute;inset:auto auto clamp(34px,6vw,72px) clamp(28px,6vw,76px);z-index:5;width:min(630px,calc(100% - 56px))}
+.home-protection-wall-eyebrow{display:block;margin-bottom:12px;color:#fff3d8!important;font:850 11px/1.4 system-ui,sans-serif;letter-spacing:.16em}
+.home-protection-wall-copy h2{margin:0;color:#fffdf8!important;font:900 clamp(36px,5vw,66px)/1.08 "Noto Serif TC","Songti TC",serif;letter-spacing:-.03em;text-shadow:0 5px 22px rgba(75,70,84,.28)}
+.home-protection-wall-copy p{max-width:600px;margin:18px 0 0;color:rgba(255,253,249,.98)!important;font:650 clamp(15px,1.7vw,19px)/1.75 system-ui,sans-serif;text-shadow:0 3px 15px rgba(70,74,84,.32)}
+.home-protection-wall-cta{display:inline-flex;align-items:center;gap:11px;min-height:49px;margin-top:24px;padding:13px 20px;border:2px solid rgba(255,255,255,.68);border-radius:999px;background:linear-gradient(135deg,rgba(238,142,151,.88),rgba(116,181,188,.84));backdrop-filter:blur(12px);box-shadow:0 12px 30px rgba(74,77,88,.2),inset 0 1px rgba(255,255,255,.28);color:#fff!important;font:850 15px/1.2 system-ui,sans-serif;transition:transform .25s ease,filter .25s ease}
+.home-protection-wall-cta span{font-size:19px;transition:transform .25s ease}
+.home-beach-sun{position:absolute;right:18%;top:11%;z-index:2;width:clamp(72px,10vw,135px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fff8d6 0 38%,#ffd4b8 60%,rgba(248,167,171,.32));box-shadow:0 0 44px rgba(255,226,181,.54);pointer-events:none;mix-blend-mode:screen}
+.home-beach-wave{position:absolute;left:-8%;z-index:3;width:116%;height:34px;border-radius:50%;border-top:6px solid rgba(255,255,255,.65);pointer-events:none}.home-beach-wave.wave-one{bottom:29%}.home-beach-wave.wave-two{bottom:22%;left:-3%;opacity:.55}
+.home-beach-note{position:absolute;z-index:4;max-width:180px;padding:9px 13px;border:2px solid rgba(255,255,255,.7);border-radius:14px;background:rgba(255,247,241,.72);color:#816e75;font:800 11px/1.45 system-ui,sans-serif;box-shadow:0 12px 28px rgba(84,73,75,.13);backdrop-filter:blur(8px);pointer-events:none}.home-beach-note.note-one{right:5%;top:24%;transform:rotate(4deg)}.home-beach-note.note-two{right:14%;bottom:18%;transform:rotate(-3deg);background:rgba(229,249,245,.75)}
+.home-beach-shell{position:absolute;z-index:4;color:#fff0e3;text-shadow:0 5px 15px rgba(115,87,80,.2);pointer-events:none}.home-beach-shell.shell-one{right:5%;bottom:7%;font-size:44px;transform:rotate(-16deg)}.home-beach-shell.shell-two{right:29%;bottom:8%;font-size:28px}
+.home-protection-wall-card:hover .home-protection-wall-visual img{transform:scale(1.035);filter:saturate(1.07) brightness(1.02)}.home-protection-wall-card:hover .home-protection-wall-cta{transform:translateY(-3px);filter:saturate(1.1)}.home-protection-wall-card:hover .home-protection-wall-cta span{transform:translate(3px,-2px)}.home-protection-wall-card:focus-visible{outline:4px solid #ef9da5;outline-offset:6px}
+@media(max-width:760px){.home-protection-wall{padding:42px 0 52px}.home-protection-wall-card{min-height:min(720px,142vw);border-radius:27px}.home-protection-wall-card::after{background:linear-gradient(0deg,rgba(75,91,104,.9) 0%,rgba(88,100,114,.6) 43%,rgba(255,255,255,.02) 78%)}.home-protection-wall-visual img{object-position:64% 50%}.home-protection-wall-copy{inset:auto 22px 27px;width:calc(100% - 44px)}.home-protection-wall-copy h2{font-size:clamp(34px,11vw,50px)}.home-protection-wall-mark{top:16px;right:16px;padding:8px 11px;font-size:9px}.home-beach-note{font-size:9px;max-width:135px}.home-beach-note.note-one{right:5%;top:21%}.home-beach-note.note-two{right:7%;bottom:37%}.home-beach-sun{right:17%;top:10%}.home-beach-wave.wave-one{bottom:37%}.home-beach-wave.wave-two{bottom:31%}}
+@media(max-width:420px){.home-protection-wall-card{min-height:610px}.home-protection-wall-copy p{font-size:14px;line-height:1.65}.home-protection-wall-cta{width:100%;justify-content:center}.home-beach-note.note-two{display:none}}
+@media(prefers-reduced-motion:reduce){.home-protection-wall-visual img,.home-protection-wall-cta,.home-protection-wall-cta span{transition:none!important}.home-beach-sun,.home-beach-wave,.home-beach-note,.home-beach-shell{transform:none!important}}
