@@ -339,7 +339,7 @@
       const fadeIn = compactQuery.matches ? 0.22 : 0.32;
       gsapEngine.timeline({
         onComplete: () => {
-          if (request !== state.request) return;
+          if (destroyed || request !== state.request) return;
           activeLayer.classList.remove('is-active');
           targetLayer.classList.add('is-active');
           gsapEngine.set(activeLayer, { autoAlpha: 0, scale: 1 });
@@ -497,73 +497,193 @@
       return holds.map(value => clamp(2.1, value * scale, 12));
     };
 
-    const actorMotionTarget = actor => actor
-      ? actor.querySelector('[data-actor-motion], .fq-actor__motion') || actor
-      : null;
+    /* The outer actor owns all body movement. Pose layers only crossfade in
+       setActorPose(), keeping their alpha transition independent from GSAP's
+       weight shifts and preventing nested transforms from drifting on replay. */
+    const actorMotionTarget = actor => actor || null;
+
+    const gestureProfiles = [
+      { name: 'measured', shift: 1.35, lift: 4.4, lean: 0.24, breath: 0.006, listenerShift: 0.28, nod: 1.35 },
+      { name: 'open', shift: 2.15, lift: 6.7, lean: 0.43, breath: 0.009, listenerShift: 0.42, nod: 1.8 },
+      { name: 'aching', shift: 1.55, lift: 3.8, lean: 0.34, breath: 0.012, listenerShift: -0.24, nod: 1.15 },
+      { name: 'resolve', shift: 2.45, lift: 7.2, lean: 0.5, breath: 0.007, listenerShift: 0.52, nod: 2.15 },
+      { name: 'hushed', shift: 1.05, lift: 3.1, lean: 0.2, breath: 0.01, listenerShift: 0.18, nod: 0.95 }
+    ];
+
+    const gestureProfile = (state, line, index, speaker) => {
+      const act = Number.parseInt(sceneAct(state), 10) || state.index + 1;
+      const speakerOffset = speaker === 'male' ? 2 : speaker === 'chorus' ? 4 : 0;
+      const deterministicIndex = Math.abs(act * 11 + index * 7 + speakerOffset) % gestureProfiles.length;
+      const profile = { ...gestureProfiles[deterministicIndex] };
+      const gesture = String(line.dataset.gesture || '').toLowerCase();
+      if (gesture === 'plead' || gesture === 'reach') {
+        profile.shift *= 1.14;
+        profile.lift *= 1.12;
+        profile.lean *= 1.15;
+        profile.listenerShift = Math.abs(profile.listenerShift) + 0.12;
+      } else if (gesture === 'refuse' || gesture === 'retreat') {
+        profile.shift *= 0.82;
+        profile.lean *= 0.78;
+        profile.listenerShift = -Math.abs(profile.listenerShift) - 0.18;
+      }
+      if (compactQuery.matches) {
+        profile.shift *= 0.74;
+        profile.lift *= 0.76;
+        profile.lean *= 0.72;
+        profile.listenerShift *= 0.72;
+        profile.nod *= 0.78;
+      }
+      return profile;
+    };
+
+    const inwardDirection = (actor, state) => {
+      if (!actor) return 0;
+      const stageRect = state.stage && state.stage.getBoundingClientRect
+        ? state.stage.getBoundingClientRect()
+        : null;
+      const actorRect = actor.getBoundingClientRect ? actor.getBoundingClientRect() : null;
+      if (stageRect && actorRect && stageRect.width > 0 && actorRect.width > 0) {
+        const stageCenter = stageRect.left + stageRect.width / 2;
+        const actorCenter = actorRect.left + actorRect.width / 2;
+        if (Math.abs(stageCenter - actorCenter) > 1) return actorCenter < stageCenter ? 1 : -1;
+      }
+      const role = normalizeSpeaker(actor.dataset.actor);
+      const reversed = String(sceneAct(state)) === '4';
+      if (role === 'female') return reversed ? -1 : 1;
+      return reversed ? 1 : -1;
+    };
+
+    const addSpeakerGesture = (timeline, target, inward, profile, position, hold, variation) => {
+      if (!target) return;
+      const accent = variation ? -0.08 : 0.08;
+      const shifted = inward * profile.shift;
+      const leaned = inward * (profile.lean + accent);
+      const phraseAt = position + Math.min(0.72, Math.max(0.42, hold * 0.18));
+      const settleAt = position + Math.max(1.22, hold - 0.18);
+      const breathAt = phraseAt + 0.5;
+      const breathDuration = clamp(0.46, (settleAt - breathAt - 0.08) / 2, 0.9);
+      const breathRepeats = Math.max(
+        1,
+        Math.floor((settleAt - breathAt - 0.08) / breathDuration) - 1
+      );
+
+      /* A small intake, a forward phrase accent, then a long breath. The pose
+         swap supplies the hand shape while this wrapper supplies body weight. */
+      timeline.to(target, {
+        xPercent: shifted * 0.72,
+        y: -profile.lift * 0.58,
+        rotation: leaned * 0.7,
+        scaleX: 1.002,
+        scaleY: 1 + profile.breath * 0.62,
+        duration: 0.38,
+        ease: 'power2.out'
+      }, position);
+      timeline.to(target, {
+        xPercent: shifted,
+        y: -profile.lift,
+        rotation: leaned,
+        scaleX: 1.003,
+        scaleY: 1 + profile.breath,
+        duration: 0.48,
+        ease: 'power2.inOut'
+      }, phraseAt);
+      timeline.to(target, {
+        xPercent: shifted * 0.9,
+        y: -profile.lift + (variation ? 0.8 : -0.8),
+        rotation: leaned * 0.86,
+        scaleX: 1,
+        scaleY: 1 + profile.breath * 0.28,
+        duration: breathDuration,
+        ease: 'sine.inOut',
+        repeat: breathRepeats,
+        yoyo: true
+      }, breathAt);
+      timeline.to(target, {
+        xPercent: 0,
+        y: 0,
+        rotation: 0,
+        scaleX: 1,
+        scaleY: 1,
+        duration: 0.54,
+        ease: 'sine.inOut'
+      }, settleAt);
+    };
+
+    const addListenerGesture = (timeline, target, inward, profile, position, hold, variation) => {
+      if (!target) return;
+      const responseShift = inward * profile.listenerShift;
+      const responseLean = inward * (profile.listenerShift < 0 ? -0.13 : 0.16);
+      const nodAt = position + Math.min(0.88, Math.max(0.58, hold * (variation ? 0.29 : 0.23)));
+      const settleAt = position + Math.max(1.28, hold - 0.12);
+
+      timeline.to(target, {
+        xPercent: responseShift,
+        y: variation ? 0.8 : -0.7,
+        rotation: responseLean,
+        scaleX: 1,
+        scaleY: 1.002,
+        duration: 0.46,
+        ease: 'sine.inOut'
+      }, position + 0.1);
+      timeline.to(target, {
+        xPercent: responseShift * 1.08,
+        y: profile.nod,
+        rotation: responseLean * 1.25,
+        duration: 0.24,
+        ease: 'power1.inOut'
+      }, nodAt);
+      timeline.to(target, {
+        xPercent: responseShift,
+        y: variation ? -0.5 : 0,
+        rotation: responseLean * 0.72,
+        duration: 0.34,
+        ease: 'sine.out'
+      }, nodAt + 0.24);
+      timeline.to(target, {
+        xPercent: 0,
+        y: 0,
+        rotation: 0,
+        scaleX: 1,
+        scaleY: 1,
+        duration: 0.58,
+        ease: 'sine.inOut'
+      }, settleAt);
+    };
 
     const addActorGesture = (timeline, state, line, index, position, hold) => {
       const speaker = normalizeSpeaker(line.dataset.speaker);
       const female = actorMotionTarget(state.actors.female);
       const male = actorMotionTarget(state.actors.male);
-      const directionPulse = index % 2 ? -1 : 1;
-      const gesture = (line.dataset.gesture || '').toLowerCase();
-      const intensity = gesture === 'plead' || gesture === 'reach'
-        ? 1.24
-        : gesture === 'refuse' || gesture === 'retreat'
-          ? 0.78
-          : 1;
-      const settleAt = position + Math.min(hold * 0.68, 2.8);
+      const femaleInward = inwardDirection(female, state);
+      const maleInward = inwardDirection(male, state);
+      const profile = gestureProfile(state, line, index, speaker);
+      const variation = (state.index + index) % 2;
 
-      if (speaker === 'female' && female) {
-        timeline.to(female, {
-          xPercent: 2.2 * intensity,
-          y: -7 * intensity,
-          rotation: 0.45 * directionPulse,
-          scale: 1.008,
-          duration: 0.5,
-          ease: 'power2.out'
-        }, position);
-        if (male) {
-          timeline.to(male, {
-            xPercent: -0.8,
-            y: -2,
-            rotation: -0.16,
-            duration: 0.8,
-            ease: 'sine.inOut'
-          }, position + 0.08);
-        }
-      } else if (speaker === 'male' && male) {
-        timeline.to(male, {
-          xPercent: -2.2 * intensity,
-          y: -7 * intensity,
-          rotation: -0.45 * directionPulse,
-          scale: 1.008,
-          duration: 0.5,
-          ease: 'power2.out'
-        }, position);
-        if (female) {
-          timeline.to(female, {
-            xPercent: 0.8,
-            y: -2,
-            rotation: 0.16,
-            duration: 0.8,
-            ease: 'sine.inOut'
-          }, position + 0.08);
-        }
+      if (speaker === 'female') {
+        addSpeakerGesture(timeline, female, femaleInward, profile, position, hold, variation);
+        addListenerGesture(timeline, male, maleInward, profile, position, hold, variation);
+      } else if (speaker === 'male') {
+        addSpeakerGesture(timeline, male, maleInward, profile, position, hold, variation);
+        addListenerGesture(timeline, female, femaleInward, profile, position, hold, variation);
+      } else if (speaker === 'chorus') {
+        addSpeakerGesture(timeline, female, femaleInward, profile, position, hold, variation);
+        addSpeakerGesture(timeline, male, maleInward, profile, position + 0.06, hold, variation ? 0 : 1);
       } else {
-        if (female) timeline.to(female, { xPercent: 0.7, y: -3, rotation: 0.1, duration: 0.8 }, position);
-        if (male) timeline.to(male, { xPercent: -0.7, y: -3, rotation: -0.1, duration: 0.8 }, position);
+        addListenerGesture(timeline, female, femaleInward, profile, position, hold, variation);
+        addListenerGesture(timeline, male, maleInward, profile, position + 0.05, hold, variation ? 0 : 1);
       }
+    };
 
-      [female, male].filter(Boolean).forEach(target => {
-        timeline.to(target, {
-          xPercent: 0,
-          y: 0,
-          rotation: 0,
-          scale: 1,
-          duration: 0.95,
-          ease: 'sine.inOut'
-        }, settleAt);
+    const settleActorMotion = state => {
+      if (!gsapEngine || !state) return;
+      const targets = Object.values(state.actors).map(actorMotionTarget).filter(Boolean);
+      if (!targets.length) return;
+      gsapEngine.set(targets, {
+        xPercent: 0,
+        y: 0,
+        rotation: 0,
+        scaleX: 1,
+        scaleY: 1
       });
     };
 
@@ -607,6 +727,7 @@
       state.scene.classList.remove('is-playing', 'is-paused');
       state.scene.classList.add('is-complete');
       state.scene.classList.toggle('is-skipped', skipped);
+      if (skipped) settleActorMotion(state);
       setProgress(state, 1);
       setStatus(state, format(skipped ? copy.skipped : copy.complete, { act: sceneAct(state) }));
       updateControls(state);
@@ -1496,10 +1617,16 @@
         clearFallbackTimer(state);
         if (state.timeline) state.timeline.kill();
         if (gsapEngine) {
+          const actors = Object.values(state.actors).filter(Boolean);
+          actors.forEach(actor => {
+            const poseState = poseStates.get(actor);
+            if (poseState) poseState.request += 1;
+          });
           gsapEngine.killTweensOf([
             ...state.lines,
-            ...Object.values(state.actors).filter(Boolean),
-            ...Object.values(state.actors).map(actorMotionTarget).filter(Boolean)
+            ...actors,
+            ...Object.values(state.actors).map(actorMotionTarget).filter(Boolean),
+            ...actors.flatMap(actor => [...actor.querySelectorAll('[data-pose-layer]')])
           ]);
         }
       });
@@ -1525,7 +1652,7 @@
     });
 
     window.FujianQiqiFeature = {
-      version: '1.0.0',
+      version: '1.1.0',
       play(target) {
         const state = stateFor(target);
         return state ? playScene(state) : false;
