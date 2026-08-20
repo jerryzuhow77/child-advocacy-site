@@ -219,19 +219,19 @@ function initMobileMenu(){
       navWrap.classList.toggle('menu-open',opening);
       btn.setAttribute('aria-expanded',opening?'true':'false');
       btn.setAttribute('aria-label',opening?'關閉網站選單':'開啟網站選單');
-      document.body.classList.toggle('mobile-menu-active',opening && window.innerWidth<=800);
+      document.body.classList.toggle('mobile-menu-active',opening && window.innerWidth<=1440);
     });
 
     nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
 
     document.addEventListener('click',e=>{
-      if(window.innerWidth<=800 && navWrap.classList.contains('menu-open') && !navWrap.contains(e.target)){
+      if(window.innerWidth<=1440 && navWrap.classList.contains('menu-open') && !navWrap.contains(e.target)){
         closeMenu();
       }
     });
 
     window.addEventListener('resize',()=>{
-      if(window.innerWidth>800) closeMenu();
+      if(window.innerWidth>1440) closeMenu();
     });
   });
 }
