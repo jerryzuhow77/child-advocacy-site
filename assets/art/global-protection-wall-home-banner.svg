@@ -1,113 +1,48 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
-  <title id="title">全球守護留言牆視覺</title>
-  <desc id="desc">柔和紙藝風世界地圖，周圍散布守護便條與愛心</desc>
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#f3e8d8"/>
-      <stop offset=".48" stop-color="#dbe4df"/>
-      <stop offset="1" stop-color="#b8cfca"/>
-    </linearGradient>
-    <radialGradient id="glow" cx="50%" cy="44%" r="58%">
-      <stop offset="0" stop-color="#fffdf7" stop-opacity=".9"/>
-      <stop offset="1" stop-color="#fffdf7" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="map" x1=".1" y1=".1" x2=".9" y2=".9">
-      <stop offset="0" stop-color="#88aaa5"/>
-      <stop offset="1" stop-color="#517d7b"/>
-    </linearGradient>
-    <linearGradient id="ocean" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#f8f1e8"/>
-      <stop offset="1" stop-color="#d4dfda"/>
-    </linearGradient>
-    <filter id="paper" x="-20%" y="-20%" width="140%" height="140%">
-      <feTurbulence baseFrequency=".8" numOctaves="3" seed="8" type="fractalNoise" result="noise"/>
-      <feColorMatrix in="noise" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 .09 0"/>
-      <feBlend in="SourceGraphic" mode="multiply"/>
-    </filter>
-    <filter id="shadow" x="-35%" y="-35%" width="170%" height="180%">
-      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#294c52" flood-opacity=".22"/>
-    </filter>
-    <filter id="softShadow" x="-40%" y="-40%" width="180%" height="190%">
-      <feDropShadow dx="0" dy="9" stdDeviation="8" flood-color="#263f42" flood-opacity=".2"/>
-    </filter>
-    <clipPath id="globeClip"><circle cx="920" cy="434" r="315"/></clipPath>
-  </defs>
-
-  <rect width="1600" height="900" fill="url(#bg)"/>
-  <rect width="1600" height="900" fill="url(#glow)"/>
-  <g opacity=".2" fill="none" stroke="#315c63">
-    <circle cx="920" cy="434" r="382"/>
-    <circle cx="920" cy="434" r="420"/>
-    <path d="M71 136C322 35 558 62 720 163M1273 118c147 71 217 164 264 287M67 751c185 78 356 81 512 24"/>
-  </g>
-
-  <g filter="url(#shadow)">
-    <circle cx="920" cy="434" r="324" fill="#fffaf0" opacity=".82"/>
-    <circle cx="920" cy="434" r="315" fill="url(#ocean)" stroke="#f9f4ea" stroke-width="14"/>
-    <g clip-path="url(#globeClip)" fill="url(#map)" filter="url(#paper)">
-      <path d="M672 257l66-66 76-19 44 29 22 45-32 29-38-10-36 25-28 53-43 18-59-28-14-39 42-37z"/>
-      <path d="M751 386l53-26 63 18 25 40-17 42-30 38-17 74-44 98-30-28 6-78-26-48-27-75 44-55z"/>
-      <path d="M904 246l64-29 89 3 63 31 57 8 90 68 30 65-32 34-66-13-47 30-42-16-27 31-25-25-42-14-25-58-67-31-40-45z"/>
-      <path d="M1067 427l58 24 38 67-17 82-48 70-50-26-14-66-39-57 15-58 57-36z"/>
-      <path d="M1211 615l54-31 72 25 16 45-31 40-79 6-38-35 6-50z"/>
-      <path d="M1266 375l57-16 52 23-11 43-62 11-36-61z"/>
-    </g>
-    <g fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="2">
-      <ellipse cx="920" cy="434" rx="195" ry="315"/>
-      <ellipse cx="920" cy="434" rx="80" ry="315"/>
-      <path d="M614 356h612M605 450h630M632 547h575"/>
-    </g>
-  </g>
-
-  <g fill="none" stroke="#b87368" stroke-linecap="round" stroke-width="3" opacity=".7">
-    <path d="M317 238C518 249 648 307 758 366"/>
-    <path d="M300 645C490 614 662 554 773 494"/>
-    <path d="M1284 201c-68 76-112 137-127 208"/>
-    <path d="M1368 643c-85-39-145-79-210-132"/>
-  </g>
-
-  <g filter="url(#softShadow)">
-    <g transform="translate(105 126) rotate(-5 170 122)">
-      <path d="M21 4h296a19 19 0 0 1 19 19v196a19 19 0 0 1-19 19H21A19 19 0 0 1 2 219V23A19 19 0 0 1 21 4z" fill="#f3c5b6" stroke="#fff3e8" stroke-width="5"/>
-      <circle cx="168" cy="0" r="11" fill="#9f665d"/>
-      <g fill="#9b6059" opacity=".6"><rect x="48" y="73" width="194" height="10" rx="5"/><rect x="48" y="101" width="240" height="10" rx="5"/><rect x="48" y="129" width="219" height="10" rx="5"/><rect x="48" y="157" width="154" height="10" rx="5"/></g>
-      <path d="M273 166c-20-24-62-7-39 25l39 34 39-34c23-32-19-49-39-25z" fill="#b96f68"/>
-    </g>
-
-    <g transform="translate(116 545) rotate(4 166 112)">
-      <path d="M18 4h296a18 18 0 0 1 18 18v180a18 18 0 0 1-18 18H18A18 18 0 0 1 0 202V22A18 18 0 0 1 18 4z" fill="#f1d79f" stroke="#fff7df" stroke-width="5"/>
-      <circle cx="166" cy="2" r="10" fill="#977b4d"/>
-      <g fill="#947848" opacity=".58"><rect x="42" y="66" width="209" height="10" rx="5"/><rect x="42" y="94" width="246" height="10" rx="5"/><rect x="42" y="122" width="184" height="10" rx="5"/><rect x="42" y="150" width="222" height="10" rx="5"/></g>
-      <circle cx="276" cy="170" r="23" fill="#fff4d0"/><path d="M266 170l7 7 14-16" fill="none" stroke="#9c8051" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
-    </g>
-
-    <g transform="translate(1252 103) rotate(5 133 102)">
-      <path d="M17 3h235a17 17 0 0 1 17 17v165a17 17 0 0 1-17 17H17A17 17 0 0 1 0 185V20A17 17 0 0 1 17 3z" fill="#c9d8bd" stroke="#f4faeb" stroke-width="5"/>
-      <circle cx="134" cy="0" r="10" fill="#6b8664"/>
-      <g fill="#627b5c" opacity=".58"><rect x="36" y="58" width="181" height="9" rx="5"/><rect x="36" y="84" width="199" height="9" rx="5"/><rect x="36" y="110" width="161" height="9" rx="5"/><rect x="36" y="136" width="188" height="9" rx="5"/></g>
-      <path d="M219 145c-15-19-46-5-29 19l29 26 29-26c17-24-14-38-29-19z" fill="#789272"/>
-    </g>
-
-    <g transform="translate(1254 554) rotate(-4 137 104)">
-      <path d="M17 3h242a17 17 0 0 1 17 17v170a17 17 0 0 1-17 17H17A17 17 0 0 1 0 190V20A17 17 0 0 1 17 3z" fill="#b9d2d5" stroke="#edf8f8" stroke-width="5"/>
-      <circle cx="137" cy="0" r="10" fill="#60858a"/>
-      <g fill="#557b80" opacity=".58"><rect x="37" y="60" width="170" height="9" rx="5"/><rect x="37" y="86" width="205" height="9" rx="5"/><rect x="37" y="112" width="184" height="9" rx="5"/><rect x="37" y="138" width="137" height="9" rx="5"/></g>
-      <path d="M215 146c-15-19-46-5-29 19l29 26 29-26c17-24-14-38-29-19z" fill="#5f8990"/>
-    </g>
-  </g>
-
-  <g fill="#c2756d" filter="url(#softShadow)">
-    <path d="M547 153c-24-30-72-8-45 30l45 40 45-40c27-38-21-60-45-30z"/>
-    <path d="M1444 417c-19-24-58-6-36 24l36 32 36-32c22-30-17-48-36-24z"/>
-    <path d="M581 700c-17-21-50-6-31 21l31 28 31-28c19-27-14-42-31-21z"/>
-  </g>
-  <g fill="#fff8eb" opacity=".9">
-    <circle cx="547" cy="183" r="5"/><circle cx="1444" cy="441" r="4"/><circle cx="581" cy="720" r="4"/>
-  </g>
-
-  <path d="M779 777c39-59 91-91 141-91s102 32 141 91" fill="none" stroke="#fff8ed" stroke-linecap="round" stroke-width="18" opacity=".72"/>
-  <circle cx="920" cy="651" r="28" fill="#f3c9b1" stroke="#fff5e8" stroke-width="9"/>
-  <path d="M872 784v-30c0-31 21-56 48-56s48 25 48 56v30" fill="#c97970" stroke="#fff5e8" stroke-linejoin="round" stroke-width="9"/>
-
-  <rect width="1600" height="900" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="22"/>
+<title id="title">夏日海邊的全球守護留言牆</title>
+<desc id="desc">粉色夕陽、薄荷藍海浪、奶油沙灘、守護便條、愛心、貝殼與沙堡組成的童趣紙雕海岸</desc>
+<defs>
+ <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f9cad3"/><stop offset=".48" stop-color="#fbded2"/><stop offset="1" stop-color="#d8e8e3"/></linearGradient>
+ <linearGradient id="sea" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a9d9d8"/><stop offset=".52" stop-color="#78bcc4"/><stop offset="1" stop-color="#609cae"/></linearGradient>
+ <linearGradient id="sand" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fae7c3"/><stop offset="1" stop-color="#eecb9f"/></linearGradient>
+ <radialGradient id="sun"><stop stop-color="#fff8d7"/><stop offset=".65" stop-color="#ffd5b8"/><stop offset="1" stop-color="#f2a7a9" stop-opacity=".45"/></radialGradient>
+ <filter id="shadow" x="-40%" y="-40%" width="180%" height="200%"><feDropShadow dx="0" dy="14" stdDeviation="12" flood-color="#6e7b7e" flood-opacity=".2"/></filter>
+ <filter id="paper"><feTurbulence baseFrequency=".7" numOctaves="2" seed="12" type="fractalNoise" result="n"/><feColorMatrix in="n" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 .055 0"/><feBlend in="SourceGraphic" mode="multiply"/></filter>
+</defs>
+<rect width="1600" height="900" fill="url(#sky)"/>
+<circle cx="1225" cy="210" r="145" fill="url(#sun)" opacity=".95"/>
+<g fill="#fff" opacity=".58">
+ <path d="M108 186c26-52 104-53 131-8 39-31 99-5 91 42H74c-9-28 8-50 34-34z"/>
+ <path d="M1020 115c23-41 79-42 103-7 34-25 83-2 75 35H990c-6-24 8-39 30-28z"/>
+</g>
+<path d="M0 380c226-58 403-40 598 5 210 48 410 54 622-8 141-41 256-38 380-7v390H0z" fill="url(#sea)"/>
+<g fill="none" stroke="#f8ffff" stroke-linecap="round" opacity=".68">
+ <path d="M0 454c221-62 425-29 603 14 230 56 441 48 649-13 128-37 239-35 348-9" stroke-width="18"/>
+ <path d="M-20 538c230-50 393-24 576 18 230 53 469 50 678-8 147-40 259-42 386-10" stroke-width="11"/>
+ <path d="M35 620c176-33 356-13 510 24 253 60 478 42 672-9 142-37 261-38 381-13" stroke-width="7"/>
+</g>
+<path d="M0 670c238-47 441-34 635 13 225 55 439 55 618 5 145-40 247-40 347-19v231H0z" fill="url(#sand)" filter="url(#paper)"/>
+<path d="M0 675c211-44 425-31 631 17 220 52 425 54 625 2 128-34 243-40 344-19" fill="none" stroke="#fff8ec" stroke-width="20" opacity=".85"/>
+<g filter="url(#shadow)">
+ <g transform="translate(900 290) rotate(4)">
+  <path d="M22 8h268a22 22 0 0 1 22 22v154a22 22 0 0 1-22 22H22A22 22 0 0 1 0 184V30A22 22 0 0 1 22 8z" fill="#fff5f0" stroke="#fff" stroke-width="7"/>
+  <circle cx="155" cy="8" r="11" fill="#dc8d91"/>
+  <g fill="#d99b9d" opacity=".55"><rect x="43" y="60" width="190" height="9" rx="5"/><rect x="43" y="89" width="222" height="9" rx="5"/><rect x="43" y="118" width="175" height="9" rx="5"/></g>
+  <path d="M252 139c-17-20-51-5-32 22l32 28 32-28c19-27-15-42-32-22z" fill="#ef9ca2"/>
+ </g>
+ <g transform="translate(1210 420) rotate(-5)">
+  <path d="M18 5h236a19 19 0 0 1 19 19v142a19 19 0 0 1-19 19H18A19 19 0 0 1-1 166V24A19 19 0 0 1 18 5z" fill="#eaf8f4" stroke="#fff" stroke-width="7"/>
+  <circle cx="135" cy="5" r="10" fill="#70aeb0"/>
+  <g fill="#74a9a9" opacity=".5"><rect x="36" y="52" width="177" height="8" rx="4"/><rect x="36" y="79" width="202" height="8" rx="4"/><rect x="36" y="106" width="145" height="8" rx="4"/></g>
+ </g>
+</g>
+<g transform="translate(1150 660)" filter="url(#shadow)">
+ <path d="M52 111V42l48-31 48 31v69M16 111V66l36-22M184 111V66l-36-22" fill="#f0c692" stroke="#fff0d6" stroke-width="7" stroke-linejoin="round"/>
+ <path d="M84 111V74h32v37" fill="#d8a775"/><path d="M41 36V11h22v31M137 36V11h22v31" fill="#f0c692"/>
+</g>
+<g fill="none" stroke="#fff6ea" stroke-width="7" stroke-linecap="round">
+ <path d="M1435 735c-34-43-92-7-55 43l55 44 55-44c37-50-21-86-55-43z"/>
+</g>
+<g transform="translate(760 745)" fill="#f3b1ae" opacity=".9"><path d="M0 34c18-35 55-35 72 0-8 18-25 31-36 42C25 65 8 52 0 34z"/><circle cx="36" cy="30" r="6" fill="#fff3e7"/></g>
+<g fill="#fff" opacity=".75"><circle cx="690" cy="318" r="7"/><circle cx="735" cy="273" r="4"/><circle cx="1340" cy="332" r="6"/><circle cx="1475" cy="284" r="4"/></g>
 </svg>
