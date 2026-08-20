@@ -8324,3 +8324,12 @@ html,body{max-width:100%;overflow-x:hidden}
 @media(max-width:900px){.home-activity-feature.is-story-campaign{grid-template-columns:1fr}.home-story-campaign-visual{min-height:620px}.story-date-grid{grid-template-columns:1fr}.story-submit-panel{grid-template-columns:1fr}.story-submit-actions{flex-direction:row;min-width:0}}
 @media(max-width:620px){.home-story-campaign-visual{min-height:510px;border-radius:16px}.home-story-campaign-overlay{left:22px;right:62px;top:76px}.home-story-campaign-overlay strong{font-size:1.62rem}.home-activity-previous{grid-template-columns:1fr;gap:14px}.home-activity-previous-media{min-height:170px}.story-prompt-list,.story-install-grid{grid-template-columns:1fr}.story-submit-actions{flex-direction:column}.story-safety-note{grid-template-columns:1fr}.story-collection-shell{padding-top:24px}.activity-pin-label{left:12px;top:12px}}
 @media(prefers-reduced-motion:reduce){.home-story-campaign-visual>img{transition:none}}
+
+
+/* Detailed rally feature restored · 2026-08-20 */
+.home-activity-record-divider{display:grid;grid-template-columns:auto 1fr auto;gap:12px 18px;align-items:center;margin:clamp(30px,4vw,48px) 0 18px;padding:14px 18px;border-top:1px solid rgba(92,112,108,.22);border-bottom:1px solid rgba(92,112,108,.16);color:#536b6c}
+.home-activity-record-divider span{color:#986353;font-size:.7rem;font-weight:900;letter-spacing:.14em}
+.home-activity-record-divider strong{color:#17394d;font-size:clamp(1.02rem,2vw,1.32rem);line-height:1.35}
+.home-activity-record-divider small{padding:5px 9px;border-radius:999px;background:#e9d7cd;color:#754f43;font-size:.7rem;font-weight:850;white-space:nowrap}
+.home-activity-feature.is-rally-record{margin-top:0;background:linear-gradient(145deg,rgba(255,253,248,.94),rgba(236,240,234,.92));box-shadow:0 22px 58px rgba(43,57,55,.12),inset 0 1px 0 rgba(255,255,255,.86)}
+@media(max-width:700px){.home-activity-record-divider{grid-template-columns:1fr;gap:5px;padding:14px 4px}.home-activity-record-divider small{justify-self:start}.home-activity-feature.is-rally-record{margin-top:0}}
