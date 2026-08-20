@@ -238,7 +238,101 @@
     });
   }
 
+  function initDocumentDisc() {
+    var shell = document.querySelector('[data-document-disc]');
+    if (!shell) return;
+    var orbit = shell.querySelector('.home-document-disc-orbit');
+    var cards = all('.home-document-disc-card', shell);
+    if (!orbit || !cards.length) return;
+
+    var step = 360 / cards.length;
+    var autoTween;
+    var dragging = false;
+    var startX = 0;
+    var startRotation = 0;
+
+    function radius() {
+      if (window.innerWidth <= 430) return 142;
+      if (window.innerWidth <= 760) return 176;
+      return Math.min(shell.clientWidth * 0.34, 285);
+    }
+
+    function keepCardsUpright() {
+      var rotation = Number(gsap.getProperty(orbit, 'rotation')) || 0;
+      cards.forEach(function (card) { gsap.set(card, { rotation: -rotation }); });
+    }
+
+    function layout() {
+      var r = radius();
+      cards.forEach(function (card, index) {
+        var angle = (-90 + index * step) * Math.PI / 180;
+        gsap.set(card, {
+          xPercent: -50,
+          yPercent: -50,
+          x: Math.cos(angle) * r,
+          y: Math.sin(angle) * r
+        });
+      });
+      keepCardsUpright();
+    }
+
+    function rotateBy(delta) {
+      if (reduceMotion) return;
+      if (autoTween) autoTween.pause();
+      gsap.to(orbit, {
+        rotation: function () { return (Number(gsap.getProperty(orbit, 'rotation')) || 0) + delta; },
+        duration: 0.72,
+        ease: 'power2.inOut',
+        onUpdate: keepCardsUpright,
+        onComplete: function () { if (autoTween) autoTween.resume(); }
+      });
+    }
+
+    layout();
+    window.addEventListener('resize', layout, { passive: true });
+
+    if (!reduceMotion) {
+      autoTween = gsap.to(orbit, {
+        rotation: '+=360',
+        duration: 42,
+        repeat: -1,
+        ease: 'none',
+        onUpdate: keepCardsUpright
+      });
+
+      shell.addEventListener('pointerenter', function () { autoTween.pause(); });
+      shell.addEventListener('pointerleave', function () {
+        if (!dragging) autoTween.resume();
+      });
+      shell.addEventListener('pointerdown', function (event) {
+        if (event.target.closest('a,button')) return;
+        dragging = true;
+        startX = event.clientX;
+        startRotation = Number(gsap.getProperty(orbit, 'rotation')) || 0;
+        shell.setPointerCapture(event.pointerId);
+        autoTween.pause();
+      });
+      shell.addEventListener('pointermove', function (event) {
+        if (!dragging) return;
+        gsap.set(orbit, { rotation: startRotation + (event.clientX - startX) * 0.32 });
+        keepCardsUpright();
+      });
+      shell.addEventListener('pointerup', function (event) {
+        dragging = false;
+        if (shell.hasPointerCapture(event.pointerId)) shell.releasePointerCapture(event.pointerId);
+        autoTween.resume();
+      });
+      shell.addEventListener('pointercancel', function () { dragging = false; autoTween.resume(); });
+    }
+
+    var prev = shell.querySelector('[data-disc-prev]');
+    var next = shell.querySelector('[data-disc-next]');
+    if (prev) prev.addEventListener('click', function () { rotateBy(step); });
+    if (next) next.addEventListener('click', function () { rotateBy(-step); });
+  }
+
   function init() {
+    initDocumentDisc();
     if (reduceMotion) return;
     addProgressBar();
     animateHeaderAndHero();
