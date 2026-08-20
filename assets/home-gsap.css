@@ -257,3 +257,50 @@
  .home-hearing-zone-actions .btn{text-align:center}
  .home-hearing-zone-all{width:100%;text-align:center}
 }
+
+
+/* 2026-08-20 — children’s ferris wheel for eleven latest reports */
+.home-latest-flash{position:relative;overflow:hidden;padding:clamp(74px,9vw,118px) 0;background:radial-gradient(circle at 14% 14%,rgba(255,209,216,.56),transparent 25rem),radial-gradient(circle at 88% 20%,rgba(188,220,225,.55),transparent 28rem),linear-gradient(180deg,#fff7ef,#f7e8e5 50%,#e6efeb)}
+.home-latest-flash::before{content:"";position:absolute;inset:auto 0 0;height:90px;background:linear-gradient(175deg,transparent 0 36%,rgba(188,211,196,.44) 37% 68%,rgba(157,190,171,.36) 69%);pointer-events:none}
+.home-flash-head{position:relative;z-index:5}.home-flash-head h2,.home-court-schedule h2{margin:.08em 0 .16em;color:#3f575c;font-family:"Noto Serif TC","Songti TC",serif}
+.home-flash-head .stream-icon{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.65);color:#d38b8d;box-shadow:0 8px 22px rgba(92,70,68,.08)}
+.home-latest-flash .is-ferris-wheel{height:clamp(650px,72vw,790px);margin-top:4px}
+.home-latest-flash .is-ferris-wheel::before{width:min(76vw,640px);background:rgba(255,255,255,.16);border:10px solid rgba(133,181,183,.28);box-shadow:inset 0 0 0 3px rgba(255,255,255,.52),0 24px 70px rgba(90,71,68,.10);backdrop-filter:blur(3px)}
+.home-latest-flash .is-ferris-wheel::after{width:min(22vw,170px);background:radial-gradient(circle,#ffe9b8 0 25%,#efb7ad 26% 56%,rgba(255,255,255,.6) 57%);border:7px solid rgba(255,255,255,.62);box-shadow:0 8px 24px rgba(110,80,70,.14)}
+.home-latest-flash .home-document-disc-card{width:clamp(112px,13vw,150px);min-height:154px;border-radius:24px 24px 34px 34px;border:3px solid rgba(255,255,255,.72);background:linear-gradient(145deg,rgba(255,249,244,.88),rgba(243,217,218,.78));box-shadow:0 13px 30px rgba(91,70,68,.14)}
+.home-latest-flash .home-document-disc-card:nth-child(3n+2){background:linear-gradient(145deg,rgba(250,251,240,.90),rgba(207,228,220,.82))}
+.home-latest-flash .home-document-disc-card:nth-child(3n){background:linear-gradient(145deg,rgba(250,246,255,.90),rgba(218,210,231,.82))}
+.home-latest-flash .home-document-disc-card::before{content:"";position:absolute;left:50%;top:-13px;width:32px;height:17px;border:4px solid rgba(111,154,158,.48);border-bottom:0;border-radius:18px 18px 0 0;transform:translateX(-50%)}
+.home-latest-flash .home-document-disc-card img{height:72px;border-radius:20px 20px 10px 10px;opacity:.88}
+.home-latest-flash .home-document-disc-card>span{padding:7px 8px 10px}.home-latest-flash .home-document-disc-card small{font-size:.58rem}.home-latest-flash .home-document-disc-card strong{font-size:.86rem}.home-latest-flash .home-document-disc-card em{font-size:.62rem}
+.home-latest-flash .home-document-disc-center{width:clamp(118px,14vw,155px);background:rgba(255,247,229,.82);border:4px solid rgba(255,255,255,.76);color:#596e70}
+.home-latest-flash .home-document-disc-center span{font-size:.48rem;color:#c77f80}.home-latest-flash .home-document-disc-center strong{font-size:1.1rem}.home-latest-flash .home-document-disc-center small{font-size:.58rem}
+.home-ferris-spokes{position:absolute;left:50%;top:50%;z-index:1;width:min(76vw,640px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;will-change:transform}
+.home-ferris-spokes i{position:absolute;left:50%;top:50%;width:94%;height:3px;border-radius:4px;background:rgba(126,174,176,.27);transform:translate(-50%,-50%)}
+.home-ferris-spokes i:nth-child(2){transform:translate(-50%,-50%) rotate(45deg)}.home-ferris-spokes i:nth-child(3){transform:translate(-50%,-50%) rotate(90deg)}.home-ferris-spokes i:nth-child(4){transform:translate(-50%,-50%) rotate(135deg)}
+.home-ferris-stand{position:absolute;left:50%;top:53%;z-index:0;width:min(44vw,360px);height:42%;transform:translateX(-50%);pointer-events:none}
+.home-ferris-stand i{position:absolute;left:50%;top:0;width:12px;height:100%;border-radius:8px;background:rgba(102,151,153,.34);transform-origin:50% 0}.home-ferris-stand i:first-child{transform:rotate(25deg)}.home-ferris-stand i:nth-child(2){transform:rotate(-25deg)}
+.home-ferris-stand b{position:absolute;left:50%;bottom:-6px;width:90%;height:16px;border-radius:999px;background:rgba(99,147,148,.36);transform:translateX(-50%)}
+.home-ferris-cloud{position:absolute;z-index:0;width:125px;height:38px;border-radius:999px;background:rgba(255,255,255,.55);filter:drop-shadow(0 7px 13px rgba(95,76,72,.06));pointer-events:none}
+.home-ferris-cloud::before,.home-ferris-cloud::after{content:"";position:absolute;bottom:0;border-radius:50%;background:inherit}.home-ferris-cloud::before{left:18px;width:54px;height:54px}.home-ferris-cloud::after{right:17px;width:43px;height:43px}
+.home-ferris-cloud.cloud-one{left:2%;top:20%}.home-ferris-cloud.cloud-two{right:1%;top:43%;transform:scale(.75)}
+.home-court-schedule{padding:clamp(70px,8vw,105px) 0;background:linear-gradient(180deg,#f4eee8,#f9f4ef)}
+.home-court-schedule .home-news-stream-head{margin-bottom:28px}
+@media(max-width:760px){
+ .home-latest-flash .is-ferris-wheel{height:560px}
+ .home-latest-flash .is-ferris-wheel::before,.home-ferris-spokes{width:390px}
+ .home-latest-flash .is-ferris-wheel::after{width:100px}
+ .home-latest-flash .home-document-disc-card{width:88px;min-height:112px;border-radius:16px 16px 24px 24px}
+ .home-latest-flash .home-document-disc-card::before{top:-10px;width:24px;height:13px;border-width:3px}
+ .home-latest-flash .home-document-disc-card img{height:46px;border-radius:13px 13px 7px 7px}
+ .home-latest-flash .home-document-disc-card>span{padding:5px 5px 7px}.home-latest-flash .home-document-disc-card strong{font-size:.67rem}.home-latest-flash .home-document-disc-card small{font-size:.47rem}.home-latest-flash .home-document-disc-card em{display:none}
+ .home-latest-flash .home-document-disc-center{width:92px}.home-latest-flash .home-document-disc-center strong{font-size:.82rem}.home-latest-flash .home-document-disc-center small{display:none}
+ .home-ferris-stand{width:230px}.home-ferris-cloud{opacity:.7}
+}
+@media(max-width:430px){
+ .home-latest-flash .is-ferris-wheel{height:510px}
+ .home-latest-flash .is-ferris-wheel::before,.home-ferris-spokes{width:330px}
+ .home-latest-flash .home-document-disc-card{width:78px;min-height:100px}
+ .home-latest-flash .home-document-disc-card img{height:39px}
+ .home-latest-flash .home-document-disc-card strong{font-size:.6rem}
+}
