@@ -212,6 +212,20 @@
     });
   }
 
+  function animateSeaArt() {
+    all('.sea-wave-layer').forEach(function (wave, index) {
+      gsap.to(wave, { xPercent: index ? 4 : -4, y: index ? -3 : 4, duration: 4.2 + index, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+    });
+    all('.sea-sailboat').forEach(function (boat) {
+      gsap.to(boat, { x: -18, y: 5, rotate: -2.5, duration: 5.4, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+    });
+    all('.sea-fish').forEach(function (fish, index) {
+      gsap.to(fish, { x: 32 + index * 14, y: index ? -5 : 4, duration: 4.6 + index, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+    });
+    var gulls = document.querySelector('.sea-gulls');
+    if (gulls) gsap.to(gulls, { x: -14, y: -5, duration: 4.8, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+  }
+
   function animateSummerBeach() {
     var wall = document.querySelector('.home-protection-wall');
     if (!wall) return;
@@ -397,6 +411,7 @@
     revealGroup('.social-preview-grid', ':scope > *', 0);
     addReelSheen();
     animateDecorations();
+    animateSeaArt();
     animateSummerBeach();
     animateHearingZone();
     addCardTilt();
