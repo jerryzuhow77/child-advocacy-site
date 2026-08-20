@@ -426,6 +426,21 @@
   }
 }
 
+@media (min-width: 1121px) {
+  .day2-full-record .day2-record-tools,
+  .day2-full-record .day2-transcript {
+    width: min(900px, 100%);
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  .day2-full-record .day2-record-progress {
+    width: min(820px, 100%);
+    margin-left: 0;
+    margin-right: auto;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .day2-juror-wall article,
   .day2-juror-wall article::after,
