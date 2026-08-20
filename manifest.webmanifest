@@ -8,11 +8,18 @@
   "start_url": "/child-advocacy-site/?source=pwa",
   "scope": "/child-advocacy-site/",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
   "orientation": "any",
-  "background_color": "#f4efe4",
-  "theme_color": "#082b4b",
-  "categories": ["education", "news", "social"],
+  "background_color": "#f4eee7",
+  "theme_color": "#f4eee7",
+  "categories": [
+    "education",
+    "news",
+    "social"
+  ],
   "icons": [
     {
       "src": "/child-advocacy-site/assets/icons/app-icon-192.png",
