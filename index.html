@@ -8,7 +8,7 @@
 <link href="./assets/home-view-counter-20260811.css?v=2" rel="stylesheet">
 <link href="./assets/chair-special.css?v=20260815-special-accordion2" rel="stylesheet">
 <link href="./assets/pwa-install.css?v=20260819-3" rel="stylesheet">
-<link href="./assets/home-gsap.css?v=20260820-document-disc-1" rel="stylesheet">
+<link href="./assets/home-gsap.css?v=20260820-hearing-zone-2" rel="stylesheet">
 <link href="./assets/global-protection-home.css?v=20260819-2" rel="stylesheet">
 <link href="./assets/brand/favicon.jpg" rel="icon">
 <link href="./manifest.webmanifest?v=20260819-1" rel="manifest">
@@ -271,19 +271,6 @@
 </a>
 </div>
 </section>
-<section aria-labelledby="hearingNotesTitle" class="home-news-stream home-hearing-notes" id="news-hearing-notes">
-<div class="home-news-stream-head"><div><span class="stream-icon">◫</span><h3 id="hearingNotesTitle">旁聽紀錄</h3><p>已完成庭訊的現場筆記、程序與重要爭點。</p></div><a href="./hearing-records/">查看全部旁聽紀錄 →</a></div>
-<div class="home-news-reel">
-<a class="home-news-card is-hearing-note" href="./hearing-records/tucheng-two-year-old-20260806/">
-<div class="home-news-card-media"><img alt="土城兩歲男童命案旁聽紀錄" src="./poster-hearing.jpg"><span class="is-muted">旁聽筆記</span></div>
-<div class="home-news-card-copy"><small>2026.08.06 · 二審準備程序</small><strong>土城兩歲男童命案｜旁聽筆記</strong><p>「最後陪著他的，只有兩瓶牛奶」——庭訊程序、量刑爭點與現場紀錄。</p></div>
-</a>
-<a class="home-news-card home-news-card-guide" href="./hearing-records/">
-<div class="home-news-guide-icon">⌕</div>
-<div class="home-news-card-copy"><small>COURT HEARING NOTES</small><strong>旁聽紀錄專區</strong><p>依案件與日期整理法院程序及庭訊重點。</p></div>
-</a>
-</div>
-</section>
 <section aria-labelledby="newsFlashTitle" class="home-news-stream home-document-disc-section" id="news-flash">
 <div class="home-news-stream-head"><div><span class="stream-icon">◉</span><h3 id="newsFlashTitle">最新資訊</h3><p>最近更新的案件文件與專題，以半透明圓盤轉動呈現。</p></div><a href="./cases/">查看全部文件 →</a></div>
 <div class="home-document-disc-shell" data-document-disc>
@@ -345,7 +332,37 @@
 </div>
 </section>
 </div>
-</section><section aria-labelledby="homeSocialCasesTitle" class="home-social-cases-section">
+</section><section class="home-hearing-zone" id="news-hearing-notes" aria-labelledby="homeHearingZoneTitle">
+<div class="container">
+<div class="home-hearing-zone-head">
+<div><div class="art-eyebrow dark">COURT HEARING NOTES · PUBLIC RECORD</div><h2 id="homeHearingZoneTitle">旁聽紀錄專區</h2><p>走進法庭，記下程序、證詞與每一個需要被看見的爭點。紀錄不代替判決，而是讓公共討論有可以核對的起點。</p></div>
+<a class="home-hearing-zone-all" href="./hearing-records/">查看全部旁聽紀錄 <span aria-hidden="true">→</span></a>
+</div>
+<div class="home-hearing-zone-feature">
+<a class="home-hearing-zone-poster" href="./hearing-records/tucheng-two-year-old-20260806/" aria-label="閱讀土城兩歲男童命案旁聽筆記">
+<img src="./poster-hearing.jpg" alt="土城兩歲男童命案旁聽紀錄海報" loading="lazy" decoding="async">
+<span>最新旁聽筆記</span>
+</a>
+<div class="home-hearing-zone-copy">
+<div class="home-hearing-zone-meta"><time datetime="2026-08-06">2026.08.06</time><span>二審準備程序</span><span>法院旁聽</span></div>
+<h3>土城兩歲男童命案｜旁聽筆記</h3>
+<p class="home-hearing-zone-lead">最後陪著他的，只有兩瓶牛奶。</p>
+<p>本篇整理當日庭訊程序、檢辯主張與量刑爭點，並清楚區分公開資訊、庭上陳述與尚待法院認定的內容。</p>
+<ul>
+<li><b>程序紀錄</b><span>二審準備程序與庭訊進度</span></li>
+<li><b>爭點整理</b><span>量刑、責任及攻防重點</span></li>
+<li><b>閱讀原則</b><span>尊重司法程序，不以旁聽筆記代替裁判</span></li>
+</ul>
+<div class="home-hearing-zone-actions">
+<a class="btn home-hearing-zone-primary" href="./hearing-records/tucheng-two-year-old-20260806/">閱讀完整旁聽筆記 <span>→</span></a>
+<a href="./cases/tucheng-two-year-old/">查看案件介紹</a>
+</div>
+</div>
+<div class="home-hearing-zone-stamp" aria-hidden="true"><span>COURT</span><strong>旁聽</strong><small>PUBLIC RECORD</small></div>
+</div>
+</div>
+</section>
+<section aria-labelledby="homeSocialCasesTitle" class="home-social-cases-section">
 <div class="container">
 <div class="home-social-cases-banner">
 <div class="home-social-cases-copy">
@@ -579,7 +596,7 @@
 <script src="./assets/home-view-counter-20260811.js?v=5"></script>
 <script src="./assets/vendor/gsap-3.13.0.min.js"></script>
 <script src="./assets/vendor/ScrollTrigger-3.13.0.min.js"></script>
-<script src="./assets/home-gsap.js?v=20260820-document-disc-1"></script>
+<script src="./assets/home-gsap.js?v=20260820-hearing-zone-2"></script>
 <script id="site-qr-script">
 (()=>{const close=d=>{if(typeof d.close==='function')d.close();else d.removeAttribute('open');};document.querySelectorAll('[data-qr-target]').forEach(t=>{const d=document.getElementById(t.dataset.qrTarget);if(!d)return;t.addEventListener('click',()=>{if(typeof d.showModal==='function')d.showModal();else d.setAttribute('open','');});d.querySelector('.site-qr-close')?.addEventListener('click',()=>close(d));d.addEventListener('click',e=>{if(e.target===d)close(d);});});})();
 </script>
