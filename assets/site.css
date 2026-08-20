@@ -7930,3 +7930,43 @@ html[lang="zh-Hans"] .historical-region-children a[data-view-counter-key="histor
   .home-medium-palette .home-news-card,
   .home-medium-palette .home-progress-card{backdrop-filter:none}
 }
+
+
+/* 2026-08-20 — Special Feature navigation: click-only shell, 3 desktop columns */
+@media(min-width:801px){
+  header .special-feature-nav .special-feature-nav-menu{
+    width:min(1080px,94vw)!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:12px!important;
+    align-items:start;
+  }
+  header .special-feature-nav:not(.is-open) > .special-feature-nav-menu{
+    display:none!important;
+  }
+  header .special-feature-nav.is-open > .special-feature-nav-menu{
+    display:grid!important;
+  }
+  header .special-feature-nav .special-feature-case-group{
+    height:auto;
+    align-self:start;
+  }
+}
+@media(max-width:800px){
+  header .special-feature-nav:not(.is-open) > .special-feature-nav-menu{
+    display:none!important;
+  }
+  header .special-feature-nav.is-open > .special-feature-nav-menu{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+  }
+  header .special-feature-nav .special-feature-case-children,
+  header .special-feature-nav .special-feature-prologue-children{
+    display:none!important;
+  }
+  header .special-feature-nav .special-feature-case-group.is-expanded > .special-feature-case-children{
+    display:grid!important;
+  }
+  header .special-feature-nav .special-feature-prologue-group.is-expanded > .special-feature-prologue-children{
+    display:grid!important;
+  }
+}
