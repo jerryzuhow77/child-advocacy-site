@@ -269,6 +269,7 @@
     if (!shell) return;
     var orbit = shell.querySelector('.home-document-disc-orbit');
     var cards = all('.home-document-disc-card', shell);
+    var spokes = shell.querySelector('.home-ferris-spokes');
     if (!orbit || !cards.length) return;
 
     var step = 360 / cards.length;
@@ -278,14 +279,15 @@
     var startRotation = 0;
 
     function radius() {
-      if (window.innerWidth <= 430) return 142;
-      if (window.innerWidth <= 760) return 176;
-      return Math.min(shell.clientWidth * 0.34, 285);
+      if (window.innerWidth <= 430) return 152;
+      if (window.innerWidth <= 760) return 184;
+      return Math.min(shell.clientWidth * 0.35, 300);
     }
 
     function keepCardsUpright() {
       var rotation = Number(gsap.getProperty(orbit, 'rotation')) || 0;
       cards.forEach(function (card) { gsap.set(card, { rotation: -rotation }); });
+      if (spokes) gsap.set(spokes, { rotation: rotation });
     }
 
     function layout() {
