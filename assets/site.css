@@ -8189,3 +8189,39 @@ header .special-feature-nav > .special-feature-nav-toggle[aria-expanded="true"] 
   }
   .art-header .pwa-mobile-header-install .pwa-install-label{display:none!important}
 }
+
+
+/* 2026-08-20 — Cross-browser mobile background lock */
+:root{color-scheme:only light}
+html{
+  min-height:100%;
+  background-color:#f4eee7!important;
+  color-scheme:only light;
+}
+@media(max-width:800px){
+  html,
+  body.art-site,
+  body.home-medium-palette{
+    min-height:100%;
+    background-color:#f4eee7!important;
+    background-image:linear-gradient(180deg,#f4eee7 0%,#f2e8df 48%,#f4eee7 100%)!important;
+    background-repeat:no-repeat!important;
+    background-position:0 0!important;
+    background-size:100% 100%!important;
+    background-attachment:scroll!important;
+    color-scheme:only light;
+  }
+  body.home-medium-palette::before{
+    mix-blend-mode:normal!important;
+    opacity:.10!important;
+  }
+}
+@media(max-width:800px) and (prefers-color-scheme:dark){
+  html,
+  body.art-site,
+  body.home-medium-palette{
+    background-color:#f4eee7!important;
+    background-image:linear-gradient(180deg,#f4eee7 0%,#f2e8df 48%,#f4eee7 100%)!important;
+    color:var(--home-copy,#625f5b)!important;
+  }
+}
