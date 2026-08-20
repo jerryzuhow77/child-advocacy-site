@@ -54,6 +54,13 @@
   margin-top: 8px;
 }
 
+.day2-hero-poster img {
+  width: min(100%, 380px);
+  height: auto;
+  aspect-ratio: 1003 / 1568;
+  object-fit: contain;
+}
+
 .day2-editor-note {
   margin-top: 12px !important;
   padding: 8px 11px;
@@ -349,6 +356,11 @@
 }
 
 @media (max-width: 760px) {
+  .day2-hero-poster img {
+    width: min(68vw, 290px);
+    height: auto;
+  }
+
   .day2-lens-grid,
   .day2-procedure,
   .day2-juror-wall {
