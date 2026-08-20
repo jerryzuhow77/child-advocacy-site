@@ -8448,6 +8448,47 @@ header .nav>nav>a.guardian-wall-nav-link:focus-visible{
   .art-header nav>a.guardian-wall-nav-link{gap:5px!important;padding-inline:6px!important;font-size:12px!important}
 }
 
+/* 1101–1500px: keep the desktop toolbar on one line without clipping its final tools. */
+@media(min-width:1101px) and (max-width:1500px){
+  header .container.nav,
+  .art-header .container.nav{width:min(calc(100% - 24px),1340px)!important;max-width:none!important;gap:7px!important}
+  header .nav>.home-brand-safe{
+    grid-template-columns:40px minmax(0,92px)!important;
+    flex:0 0 143px!important;
+    width:143px!important;
+    min-width:143px!important;
+    max-width:143px!important;
+  }
+  header .nav>.home-brand-safe>img{width:40px!important;height:40px!important;min-width:40px!important}
+  header .nav>.home-brand-safe small{display:none!important}
+  header .site-qr-trigger,
+  .art-header .site-qr-trigger{width:44px!important;min-width:44px!important;flex-basis:44px!important}
+  header .nav>nav,
+  .art-header .nav>nav{flex:1 1 auto!important;min-width:0!important;width:auto!important;gap:1px!important;justify-content:flex-end!important}
+  header .nav>nav>a:not(.guardian-wall-nav-link),
+  .art-header nav>a:not(.guardian-wall-nav-link),
+  header .social-case-nav-toggle,
+  .art-header .social-case-nav-toggle{min-width:0!important;min-height:42px!important;padding:5px 6px!important;gap:2px!important;font-size:11px!important}
+  header .nav>nav>a:not(.guardian-wall-nav-link)::before,
+  .art-header nav>a:not(.guardian-wall-nav-link)::before,
+  header .social-case-nav-toggle::before,
+  .art-header .social-case-nav-toggle::before{display:none!important}
+  header .nav>nav>a.guardian-wall-nav-link,
+  .art-header nav>a.guardian-wall-nav-link{width:40px!important;min-width:40px!important;max-width:40px!important;flex:0 0 40px!important;justify-content:center!important;padding:0!important}
+  .guardian-wall-nav-label{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important}
+  header .nav>nav>.pwa-nav-install,
+  .art-header nav>.pwa-nav-install{width:40px!important;min-width:40px!important;max-width:40px!important;padding:8px!important}
+  header .nav>nav>.pwa-nav-install .pwa-install-label,
+  .art-header nav>.pwa-nav-install .pwa-install-label{display:none!important}
+  header .language-switcher,
+  .art-header .language-switcher{grid-template-columns:repeat(4,27px)!important;width:114px!important;min-width:114px!important;gap:1px!important}
+  header .language-switcher a,
+  .art-header .language-switcher a{min-width:27px!important;padding-inline:3px!important;font-size:12px!important}
+  header .site-search-btn,
+  .art-header .site-search-btn{width:38px!important;min-width:38px!important;padding:0!important}
+  .site-search-label{display:none!important}
+}
+
 @media(max-width:1100px){
   header .nav>nav>a.guardian-wall-nav-link,
   .art-header nav>a.guardian-wall-nav-link{width:100%;justify-content:flex-start!important;gap:11px!important;min-height:48px!important;padding:8px 11px!important;font-size:15px!important;white-space:normal!important}
