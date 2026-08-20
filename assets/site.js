@@ -157,7 +157,9 @@ document.addEventListener('DOMContentLoaded',()=>{
     localStorage.setItem('siteLang',staticPageLang);
     syncLanguageSwitcher(staticPageLang);
   } else {
-    setLang(localStorage.getItem('siteLang')==='zh-Hans'?'zh-Hans':'zh-Hant');
+    const requestedLang=new URLSearchParams(window.location.search).get('lang');
+    const activeLang=requestedLang==='zh-Hans'?'zh-Hans':(localStorage.getItem('siteLang')==='zh-Hans'?'zh-Hans':'zh-Hant');
+    setLang(activeLang);
   }
 
   document.querySelectorAll('.language-switcher a').forEach(a=>a.addEventListener('click',()=>{
