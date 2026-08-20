@@ -547,3 +547,8 @@
     transition: none;
   }
 }
+
+
+/* Stronger multilingual switcher contrast */
+.day2-language-switcher{background:rgba(255,255,255,.96);border-color:rgba(38,62,98,.3);box-shadow:0 4px 14px rgba(20,45,65,.12)}
+.day2-language-switcher a{color:#203b55;font-size:.8rem;font-weight:950}
