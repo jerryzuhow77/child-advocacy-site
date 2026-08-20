@@ -264,6 +264,8 @@
     lastFocusedElement = document.activeElement;
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden', 'false');
+    const dialog = modal.querySelector('.pwa-install-dialog');
+    if (dialog) dialog.scrollTop = 0;
     document.body.classList.add('pwa-modal-open');
     window.requestAnimationFrame(() => modal.querySelector('.pwa-modal-close').focus());
   }
