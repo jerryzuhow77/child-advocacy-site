@@ -7,6 +7,13 @@
   const progress = document.querySelector('.day2-progress i');
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const canAnimate = Boolean(window.gsap && window.ScrollTrigger && !reduceMotion);
+  const locale = document.documentElement.lang === 'ja' ? 'ja' : document.documentElement.lang === 'en' ? 'en' : 'zh-Hant';
+  const messages = {
+    'zh-Hant': { collapseAll: '收合全部', expandAll: '展開全部', collapseAllLabel: '收合全部旁聽紀錄章節', expandAllLabel: '展開全部旁聽紀錄章節', collapse: '收合', expand: '展開', collapseChapter: '收合本章', expandChapter: '展開本章', chapter: n => `第${n}章`, toolsLabel: '完整旁聽紀錄閱讀工具', procedure: '依庭審程序閱讀', procedureNote: '不是依 PDF 分頁；可逐章展開，也可一次查看全文。', jumps: '完整紀錄章節捷徑', progress: '第二日庭審對話閱讀進度', dialogue: '庭審對話' },
+    en: { collapseAll: 'Collapse all', expandAll: 'Expand all', collapseAllLabel: 'Collapse all hearing-record chapters', expandAllLabel: 'Expand all hearing-record chapters', collapse: 'Collapse ', expand: 'Expand ', collapseChapter: 'Collapse chapter', expandChapter: 'Expand chapter', chapter: n => `Chapter ${n}`, toolsLabel: 'Full hearing-record reading tools', procedure: 'Read by hearing procedure', procedureNote: 'Organized by procedure, not PDF pages. Open chapters individually or view the full record.', jumps: 'Full-record chapter shortcuts', progress: 'Day 2 hearing-dialogue progress', dialogue: 'Hearing dialogue' },
+    ja: { collapseAll: 'すべて閉じる', expandAll: 'すべて開く', collapseAllLabel: '傍聴記録の全章を閉じる', expandAllLabel: '傍聴記録の全章を開く', collapse: '閉じる：', expand: '開く：', collapseChapter: 'この章を閉じる', expandChapter: 'この章を開く', chapter: n => `第${n}章`, toolsLabel: '傍聴記録の閲覧ツール', procedure: '審理手続に沿って読む', procedureNote: 'PDFのページ順ではなく手続別に構成。章ごと、または全文を表示できます。', jumps: '全記録の章リンク', progress: '第2日法廷対話の閲覧進捗', dialogue: '法廷対話' }
+  };
+  const t = messages[locale];
 
   const closeMenu = () => {
     toc?.classList.remove('is-open');
@@ -47,8 +54,8 @@
   const updateToggleAll = () => {
     if (!toggleAll) return;
     const allOpen = chapters.every(chapter => !chapter.classList.contains('is-collapsed'));
-    toggleAll.textContent = allOpen ? '收合全部' : '展開全部';
-    toggleAll.setAttribute('aria-label', allOpen ? '收合全部旁聽紀錄章節' : '展開全部旁聽紀錄章節');
+    toggleAll.textContent = allOpen ? t.collapseAll : t.expandAll;
+    toggleAll.setAttribute('aria-label', allOpen ? t.collapseAllLabel : t.expandAllLabel);
   };
 
   const setChapterOpen = (chapter, open, animate = true) => {
@@ -56,11 +63,11 @@
     const button = chapter.querySelector('.day2-chapter-toggle');
     if (!flow || !button) return;
 
-    const title = chapter.querySelector('h3')?.textContent?.trim() || `第${chapter.dataset.chapter}章`;
+    const title = chapter.querySelector('h3')?.textContent?.trim() || t.chapter(chapter.dataset.chapter);
     chapter.classList.toggle('is-collapsed', !open);
     button.setAttribute('aria-expanded', String(open));
-    button.setAttribute('aria-label', `${open ? '收合' : '展開'}${title}`);
-    button.querySelector('span').textContent = open ? '收合本章' : '展開本章';
+    button.setAttribute('aria-label', `${open ? t.collapse : t.expand}${title}`);
+    button.querySelector('span').textContent = open ? t.collapseChapter : t.expandChapter;
 
     if (!canAnimate || !animate) {
       flow.hidden = !open;
@@ -110,27 +117,27 @@
 
     const tools = document.createElement('section');
     tools.className = 'day2-record-tools';
-    tools.setAttribute('aria-label', '完整旁聽紀錄閱讀工具');
+    tools.setAttribute('aria-label', t.toolsLabel);
     tools.innerHTML = `
       <div class="day2-record-tools-head">
         <div class="day2-record-tools-copy">
-          <strong>依庭審程序閱讀</strong>
-          <span>不是依 PDF 分頁；可逐章展開，也可一次查看全文。</span>
+          <strong>${t.procedure}</strong>
+          <span>${t.procedureNote}</span>
         </div>
-        <button class="day2-record-toggle-all" type="button">展開全部</button>
+        <button class="day2-record-toggle-all" type="button">${t.expandAll}</button>
       </div>
-      <nav class="day2-chapter-jumps" aria-label="完整紀錄章節捷徑"></nav>`;
+      <nav class="day2-chapter-jumps" aria-label="${t.jumps}"></nav>`;
     toggleAll = tools.querySelector('.day2-record-toggle-all');
     const jumps = tools.querySelector('.day2-chapter-jumps');
 
     reader = document.createElement('div');
     reader.className = 'day2-record-progress';
     reader.setAttribute('role', 'progressbar');
-    reader.setAttribute('aria-label', '第二日庭審對話閱讀進度');
+    reader.setAttribute('aria-label', t.progress);
     reader.setAttribute('aria-valuemin', '1');
     reader.setAttribute('aria-valuemax', String(chapters.length));
     reader.setAttribute('aria-valuenow', '1');
-    reader.innerHTML = `<strong>庭審對話</strong><span aria-hidden="true"><i></i></span><b>01 / ${String(chapters.length).padStart(2, '0')}</b>`;
+    reader.innerHTML = `<strong>${t.dialogue}</strong><span aria-hidden="true"><i></i></span><b>01 / ${String(chapters.length).padStart(2, '0')}</b>`;
     readerBar = reader.querySelector('i');
     readerCount = reader.querySelector('b');
     transcript.before(tools, reader);
@@ -139,7 +146,7 @@
     chapters.forEach((chapter, index) => {
       const flow = chapter.querySelector('.day2-dialogue-flow');
       const header = chapter.querySelector(':scope > header');
-      const title = chapter.querySelector('h3')?.textContent?.trim() || `第${index + 1}章`;
+      const title = chapter.querySelector('h3')?.textContent?.trim() || t.chapter(index + 1);
       const flowId = `${chapter.id}-content`;
       flow.id = flowId;
 
@@ -147,7 +154,7 @@
       button.className = 'day2-chapter-toggle';
       button.type = 'button';
       button.setAttribute('aria-controls', flowId);
-      button.innerHTML = '<span>展開本章</span><i aria-hidden="true"></i>';
+      button.innerHTML = `<span>${t.expandChapter}</span><i aria-hidden="true"></i>`;
       header.append(button);
       button.addEventListener('click', () => {
         setChapterOpen(chapter, button.getAttribute('aria-expanded') !== 'true');
