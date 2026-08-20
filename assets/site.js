@@ -1023,6 +1023,11 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     if (contentRoute === 'historical-cases/regions/japan/kurihara-mia') {
       return 'historical-kurihara-mia-shared';
     }
+    // The Fujian Qiqi feature and every localized homepage entry use one
+    // stable public count across Traditional Chinese, English and Japanese.
+    if (contentRoute === 'historical-cases/regions/mainland-china/fujian-qiqi') {
+      return 'historical-fujian-qiqi-shared';
+    }
     // The Traditional/Simplified, English and Japanese Tian Tian features,
     // plus every homepage card that links to them, use one public count.
     if (contentRoute === 'historical-cases/regions/mainland-china/tian-tian') {
