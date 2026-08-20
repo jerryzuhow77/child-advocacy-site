@@ -338,6 +338,173 @@ small > [data-note-lang] {
   content: " ↓";
 }
 
+/* Three-witness guide: keep each account separate before the reader enters the transcript. */
+.day3-witness-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.day3-witness-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 405px;
+  padding: 25px 23px;
+  border: 1px solid rgba(36, 69, 101, .16);
+  border-radius: 28px;
+  background: linear-gradient(145deg, rgba(255, 252, 243, .96), rgba(255, 255, 255, .78));
+  box-shadow: 0 18px 42px rgba(55, 64, 72, .1);
+  overflow: hidden;
+}
+
+.day3-witness-card::after {
+  content: "";
+  position: absolute;
+  right: -54px;
+  bottom: -68px;
+  width: 174px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--witness-halo, #d8e3df);
+  opacity: .32;
+}
+
+.day3-witness-card:nth-child(2) {
+  --witness-halo: #ead9b9;
+}
+
+.day3-witness-card:nth-child(3) {
+  --witness-halo: #edc8cd;
+}
+
+.day3-witness-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.day3-witness-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.day3-witness-card-head i {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50% 50% 16px;
+  background: linear-gradient(145deg, #f0d08e, #f8e8c7);
+  color: #76501d;
+  font: 900 .84rem/1 "Noto Serif TC", serif;
+  font-style: normal;
+  box-shadow: 0 8px 22px rgba(210, 157, 66, .2);
+}
+
+.day3-witness-card-head span,
+.day3-witness-tag {
+  display: inline-flex;
+  width: fit-content;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(196, 217, 220, .58);
+  color: #36525d;
+  font-size: .69rem;
+  font-weight: 900;
+  letter-spacing: .04em;
+}
+
+.day3-witness-card h3 {
+  margin: 18px 0 10px;
+  color: var(--indigo);
+  font: 900 clamp(1.15rem, 2vw, 1.4rem)/1.45 "Noto Serif TC", serif;
+}
+
+.day3-witness-card p {
+  margin: 0;
+  color: #4d6069;
+  font-size: .91rem;
+  line-height: 1.78;
+}
+
+.day3-witness-card small {
+  display: block;
+  margin-top: auto;
+  padding-top: 17px;
+  border-top: 1px solid rgba(36, 69, 101, .12);
+  color: #5b686e;
+  font-size: .8rem;
+  line-height: 1.72;
+}
+
+.day3-witness-card small strong {
+  color: #8f4b56;
+}
+
+.day3-witness-card.is-scrutiny {
+  border-color: rgba(143, 63, 75, .38);
+  box-shadow: 0 20px 48px rgba(98, 50, 60, .14);
+}
+
+.day3-witness-card.is-scrutiny .day3-witness-card-head i,
+.day3-witness-tag.is-scrutiny {
+  background: #8f3f4b;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(143, 63, 75, .2);
+}
+
+.day3-witness-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.day3-witness-links .day3-topic-link.is-scrutiny {
+  border-color: rgba(143, 63, 75, .25);
+  background: #8f3f4b;
+  color: #fff !important;
+}
+
+.day3-witness-oath {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  padding: 16px 19px;
+  border: 1px dashed rgba(36, 69, 101, .25);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .6);
+}
+
+.day3-witness-oath b {
+  flex: 0 0 auto;
+  color: var(--indigo);
+}
+
+.day3-witness-oath p {
+  margin: 0;
+  color: #5b686e;
+  font-size: .86rem;
+}
+
+.day3-witness-tag {
+  margin-bottom: 8px;
+}
+
+@media (max-width: 980px) {
+  .day3-witness-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .day3-witness-card:last-child {
+    grid-column: 1 / -1;
+    min-height: 350px;
+  }
+}
+
 /* Wang ○-hong testimony scrutiny: source-to-source comparisons, not credibility findings. */
 .day3-scrutiny-intro {
   display: grid;
@@ -662,6 +829,27 @@ small > [data-note-lang] {
     grid-template-columns: 1fr;
   }
 
+  .day3-witness-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .day3-witness-card,
+  .day3-witness-card:last-child {
+    grid-column: auto;
+    min-height: 0;
+    padding: 22px 18px;
+  }
+
+  .day3-witness-card small {
+    margin-top: 16px;
+  }
+
+  .day3-witness-oath {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
   .day3-scrutiny-intro {
     grid-template-columns: 1fr;
     padding: 18px 16px;
@@ -760,4 +948,3 @@ small > [data-note-lang] {
     transition: none;
   }
 }
-
