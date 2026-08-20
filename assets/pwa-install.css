@@ -336,3 +336,36 @@
     display: none !important;
   }
 }
+
+
+/* 2026-08-20 — Mobile install modal scrolling and footer-bar clearance */
+.pwa-modal-backdrop{z-index:10050!important}
+.pwa-install-dialog{
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain;
+  touch-action:pan-y;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-gutter:stable;
+}
+body.pwa-modal-open .home-footer-mobile-bar{
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+  transform:translateY(120%)!important;
+}
+@media(max-width:640px){
+  .pwa-modal-backdrop{
+    overflow:hidden;
+    padding:8px 8px calc(8px + env(safe-area-inset-bottom))!important;
+  }
+  .pwa-install-dialog{
+    max-height:calc(100dvh - 16px - env(safe-area-inset-bottom))!important;
+    padding-bottom:calc(26px + env(safe-area-inset-bottom))!important;
+    scroll-padding-top:18px;
+    scroll-padding-bottom:28px;
+  }
+  .pwa-modal-confirm{
+    margin-bottom:4px;
+  }
+}
