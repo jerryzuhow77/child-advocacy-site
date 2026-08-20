@@ -1,5 +1,7 @@
 (()=>{
   'use strict';
+  const pageLang=document.documentElement.lang;
+  const recordLabels=pageLang==='ja'?{progress:'第1日・審理手続の閲覧進捗',title:'審理手続'}:pageLang==='en'?{progress:'Day 1 hearing-procedure reading progress',title:'Hearing procedure'}:{progress:'第一日庭審程序閱讀進度',title:'庭審程序'};
   const menu=document.querySelector('.day1-menu');
   const toc=document.querySelector('.day1-toc');
   menu?.addEventListener('click',()=>{const open=!toc.classList.contains('is-open');toc.classList.toggle('is-open',open);menu.setAttribute('aria-expanded',String(open));});
@@ -56,8 +58,8 @@
   if(fullRecord&&chapters.length){
     const reader=document.createElement('div');
     reader.className='day1-record-progress';
-    reader.setAttribute('aria-label','第一日庭審程序閱讀進度');
-    reader.innerHTML='<strong>庭審程序</strong><span><i></i></span><b>01 / '+String(chapters.length).padStart(2,'0')+'</b>';
+    reader.setAttribute('aria-label',recordLabels.progress);
+    reader.innerHTML='<strong>'+recordLabels.title+'</strong><span><i></i></span><b>01 / '+String(chapters.length).padStart(2,'0')+'</b>';
     fullRecord.querySelector('.day1-transcript')?.before(reader);
     const readerBar=reader.querySelector('i');
     const readerCount=reader.querySelector('b');
