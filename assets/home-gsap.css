@@ -304,3 +304,26 @@
  .home-latest-flash .home-document-disc-card img{height:39px}
  .home-latest-flash .home-document-disc-card strong{font-size:.6rem}
 }
+
+
+/* 2026-08-20 — summer seaside amusement-park art pass */
+.home-latest-flash{background:radial-gradient(circle at 13% 10%,rgba(255,188,202,.64),transparent 26rem),radial-gradient(circle at 86% 12%,rgba(255,224,174,.55),transparent 22rem),radial-gradient(circle at 92% 45%,rgba(170,221,220,.6),transparent 30rem),linear-gradient(180deg,#fff4ed 0%,#f9dfe2 40%,#d7ece7 76%,#bee0dd 100%)}
+.home-latest-flash::after{content:"⌁  SUMMER SEASIDE PARK  ⌁";position:absolute;left:50%;bottom:22px;z-index:1;transform:translateX(-50%);color:rgba(74,137,143,.48);font:900 clamp(.68rem,1.5vw,.92rem)/1 system-ui,sans-serif;letter-spacing:.24em;white-space:nowrap}
+.home-latest-flash .is-ferris-wheel::before{background:repeating-conic-gradient(from 0deg,rgba(255,246,224,.92) 0 1.2deg,rgba(239,145,153,.74) 1.4deg 2.7deg,rgba(128,190,192,.66) 3deg 4.2deg,rgba(255,255,255,.22) 4.5deg 8.2deg);border:12px solid rgba(255,255,255,.64);box-shadow:inset 0 0 0 7px rgba(112,174,178,.28),0 0 0 3px rgba(239,153,160,.26),0 30px 72px rgba(91,70,74,.13)}
+.home-latest-flash .is-ferris-wheel::after{background:radial-gradient(circle,#fff8d1 0 20%,#f8c1b8 21% 45%,#8ec9c9 46% 61%,rgba(255,255,255,.85) 62% 69%,#f3aeb2 70%);box-shadow:0 0 0 9px rgba(255,255,255,.35),0 10px 28px rgba(105,73,73,.17)}
+.home-ferris-spokes i{height:5px;background:linear-gradient(90deg,rgba(241,159,164,.46),rgba(255,255,255,.72) 50%,rgba(109,179,183,.48));box-shadow:0 0 7px rgba(255,255,255,.5)}
+.home-latest-flash .home-document-disc-card{border-color:rgba(255,255,255,.9);box-shadow:0 12px 0 rgba(102,165,169,.12),0 18px 34px rgba(91,70,73,.14)}
+.home-latest-flash .home-document-disc-card:nth-child(4n+1){background:linear-gradient(155deg,rgba(255,252,239,.95),rgba(255,193,200,.88))}
+.home-latest-flash .home-document-disc-card:nth-child(4n+2){background:linear-gradient(155deg,rgba(241,255,251,.96),rgba(170,218,214,.88))}
+.home-latest-flash .home-document-disc-card:nth-child(4n+3){background:linear-gradient(155deg,rgba(255,250,235,.96),rgba(250,211,156,.88))}
+.home-latest-flash .home-document-disc-card:nth-child(4n){background:linear-gradient(155deg,rgba(250,246,255,.96),rgba(207,194,226,.88))}
+.home-latest-flash .home-document-disc-card::after{content:"";position:absolute;left:14%;right:14%;bottom:4px;height:5px;border-radius:999px;background:repeating-linear-gradient(90deg,#ef9aa1 0 7px,#fff5dd 7px 14px,#75b8bd 14px 21px)}
+.home-latest-flash .home-document-disc-center::before{content:"海邊遊樂園";position:absolute;left:50%;top:-27px;min-width:116px;padding:5px 10px;border:3px solid rgba(255,255,255,.85);border-radius:999px;background:linear-gradient(90deg,#f4a2aa,#f5c997,#84c2c4);color:#fff;font:900 .65rem/1.2 "Noto Serif TC",serif;letter-spacing:.08em;transform:translateX(-50%);box-shadow:0 7px 16px rgba(90,71,74,.13)}
+.home-ferris-stand i{width:15px;background:repeating-linear-gradient(180deg,rgba(255,255,255,.75) 0 13px,rgba(239,153,160,.58) 13px 26px,rgba(112,181,184,.55) 26px 39px);border:3px solid rgba(255,255,255,.48)}
+.home-ferris-stand b{height:24px;border:5px solid rgba(255,255,255,.62);background:linear-gradient(90deg,#efadb1,#f7d5a5 48%,#8bc8c7);box-shadow:0 10px 0 rgba(95,161,163,.14)}
+.home-ferris-cloud{background:rgba(255,255,255,.7);filter:drop-shadow(0 8px 13px rgba(101,77,79,.08))}
+.home-ferris-cloud.cloud-one::after{box-shadow:50px 18px 0 -13px rgba(255,255,255,.72)}
+.home-ferris-cloud.cloud-two::before{box-shadow:-54px 16px 0 -12px rgba(255,255,255,.66)}
+.home-document-disc-control{border:3px solid rgba(255,255,255,.75);background:linear-gradient(145deg,rgba(255,248,238,.92),rgba(247,202,205,.88));color:#6f9799;box-shadow:0 9px 0 rgba(112,174,177,.17),0 14px 27px rgba(91,71,75,.12)}
+.home-document-disc-help{position:relative;z-index:3;color:#668a8d;font-weight:750}
+@media(max-width:760px){.home-latest-flash::after{bottom:15px;letter-spacing:.12em}.home-latest-flash .home-document-disc-center::before{top:-22px;min-width:86px;font-size:.5rem}.home-ferris-stand i{width:11px}.home-ferris-stand b{height:18px}}
