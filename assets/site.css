@@ -8010,10 +8010,12 @@ header .special-feature-nav > .special-feature-nav-toggle[aria-expanded="true"] 
 .art-header .container.nav{
   width:min(calc(100% - 32px),1210px)!important;
   min-height:82px!important;
+  padding-top:7px!important;
+  padding-bottom:7px!important;
   gap:12px!important;
   transition:min-height .32s ease,padding .32s ease;
 }
-.art-header.is-toolbar-compact .container.nav{min-height:68px!important}
+.art-header.is-toolbar-compact .container.nav{min-height:68px!important;padding-top:3px!important;padding-bottom:3px!important}
 .art-header .brand-lockup{
   position:relative;
   border-radius:18px;
