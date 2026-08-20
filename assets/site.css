@@ -8009,13 +8009,15 @@ header .special-feature-nav > .special-feature-nav-toggle[aria-expanded="true"] 
 }
 .art-header .container.nav{
   width:min(calc(100% - 32px),1210px)!important;
+  box-sizing:border-box!important;
+  height:82px!important;
   min-height:82px!important;
   padding-top:7px!important;
   padding-bottom:7px!important;
   gap:12px!important;
   transition:min-height .32s ease,padding .32s ease;
 }
-.art-header.is-toolbar-compact .container.nav{min-height:68px!important;padding-top:3px!important;padding-bottom:3px!important}
+.art-header.is-toolbar-compact .container.nav{height:68px!important;min-height:68px!important;padding-top:3px!important;padding-bottom:3px!important}
 .art-header .brand-lockup{
   position:relative;
   border-radius:18px;
@@ -8087,7 +8089,7 @@ header .special-feature-nav > .special-feature-nav-toggle[aria-expanded="true"] 
   .art-header nav>a,.art-header .social-case-nav-toggle{min-height:47px!important;padding-left:8px!important;padding-right:8px!important}
 }
 @media(max-width:1100px){
-  .art-header .container.nav{min-height:70px!important}
+  .art-header .container.nav{height:70px!important;min-height:70px!important}
   .art-header .nav>nav{
     overflow-y:auto;
     max-height:calc(100vh - 82px);
