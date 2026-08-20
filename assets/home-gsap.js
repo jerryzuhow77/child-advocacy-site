@@ -212,6 +212,43 @@
     });
   }
 
+  function animateFooterToolbar() {
+    var footer = document.querySelector('.home-art-footer');
+    if (!footer) return;
+    var lead = footer.querySelector('.home-footer-lead');
+    var columns = all('.home-footer-toolbar > section', footer);
+    var bottom = footer.querySelector('.home-footer-bottom');
+    var glow = footer.querySelector('.home-footer-glow');
+    var mobileItems = all('.home-footer-mobile-bar a', footer);
+
+    if (lead) gsap.fromTo(lead, { y: 34, autoAlpha: 0 }, {
+      y: 0, autoAlpha: 1, duration: .9, ease: 'power3.out',
+      scrollTrigger: { trigger: footer, start: 'top 88%', once: true }
+    });
+    if (columns.length) gsap.fromTo(columns, { y: 28, autoAlpha: 0 }, {
+      y: 0, autoAlpha: 1, duration: .68, stagger: .1, ease: 'power2.out',
+      scrollTrigger: { trigger: columns[0], start: 'top 92%', once: true }
+    });
+    if (bottom) gsap.fromTo(bottom, { autoAlpha: 0 }, {
+      autoAlpha: 1, duration: .7,
+      scrollTrigger: { trigger: bottom, start: 'top 96%', once: true }
+    });
+    if (glow) gsap.to(glow, { xPercent: 16, yPercent: 8, scale: 1.12, duration: 7, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+    if (mobileItems.length) gsap.fromTo(mobileItems, { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .46, stagger: .07, delay: .25, ease: 'back.out(1.5)' });
+
+    var light = footer.querySelector('.footer-light-ad');
+    if (light) {
+      var sheen = document.createElement('span');
+      sheen.className = 'home-footer-sheen';
+      sheen.setAttribute('aria-hidden', 'true');
+      light.appendChild(sheen);
+      gsap.fromTo(sheen, { xPercent: -180, autoAlpha: 0 }, {
+        xPercent: 360, autoAlpha: .55, duration: 1.25, ease: 'power2.inOut',
+        scrollTrigger: { trigger: light, start: 'top 90%', once: true }
+      });
+    }
+  }
+
   function animateCraftedZones() {
     all('.home-crafted-zone').forEach(function (zone) {
       var head = zone.querySelector('.home-crafted-head');
@@ -438,6 +475,7 @@
     revealGroup('.social-preview-grid', ':scope > *', 0);
     addReelSheen();
     animateDecorations();
+    animateFooterToolbar();
     animateCraftedZones();
     animateSeaArt();
     animateSummerBeach();
