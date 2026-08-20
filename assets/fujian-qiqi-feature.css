@@ -621,7 +621,7 @@ html.fq-js .fq-act.is-enhanced .fq-actor img[data-pose-layer]:first-child:not(.i
   z-index: 20;
   top: clamp(1rem, 5%, 3rem);
   left: 50%;
-  width: min(calc(100% - 2rem), 760px);
+  width: min(calc(100% - 2rem), clamp(18rem, 38vw, 34rem));
   min-height: 12rem;
   transform: translateX(-50%);
   pointer-events: none;
@@ -1000,7 +1000,12 @@ html:not(.fq-js) [data-fq-line],
 }
 
 .fq-act.is-static .fq-scene-controls,
-.fq-act.is-static [data-scene-controls] {
+.fq-act.is-static [data-scene-controls],
+html:not(.fq-js) .fq-scene-controls,
+html:not(.fq-js) [data-scene-controls],
+html:not(.fq-js) .fq-audio-dock,
+html:not(.fq-js) [data-fq-audio-dock],
+html:not(.fq-js) [data-audio-dock] {
   display: none;
 }
 
@@ -2182,7 +2187,7 @@ html[lang^="ja"] .fq-hero__content h1 { letter-spacing: -.035em; }
 /* Phones: keep full bodies close together and reserve a dedicated dialogue
    lane so neither faces nor hands are covered. */
 @media (max-width: 780px) {
-  :root { --fq-stage-min: clamp(620px, 83svh, 760px); }
+  :root { --fq-stage-min: clamp(760px, 92svh, 860px); }
 
   .fq-shell,
   .fq-reading { width: min(calc(100% - 28px), var(--fq-shell-width)); }
@@ -2261,7 +2266,7 @@ html[lang^="ja"] .fq-hero__content h1 { letter-spacing: -.035em; }
   }
   .fq-actors::before { left: -5%; }
   .fq-actors::after { right: -5%; }
-  .fq-actors .fq-actor { height: 52%; }
+  .fq-actors .fq-actor { height: 44%; }
 
   .fq-evidence-strip,
   .fq-fact-grid,
@@ -2335,9 +2340,9 @@ html[lang^="ja"] .fq-hero__content h1 { letter-spacing: -.035em; }
 
   .fq-scene-controls,
   [data-scene-controls] {
-    right: .55rem;
+    right: max(.55rem, env(safe-area-inset-right));
     bottom: .55rem;
-    left: .55rem;
+    left: max(.55rem, env(safe-area-inset-left));
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: .35rem;
@@ -2395,9 +2400,6 @@ html[lang^="ja"] .fq-hero__content h1 { letter-spacing: -.035em; }
   .fq-hero__meta { gap: .4rem .75rem; }
   .fq-hero__meta > * + *::before { display: none; }
 
-  .fq-scene-controls,
-  [data-scene-controls] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-
   .fq-scene-status,
   [data-scene-status] { grid-column: 1 / -1; }
 
@@ -2406,6 +2408,8 @@ html[lang^="ja"] .fq-hero__content h1 { letter-spacing: -.035em; }
     width: 47vw;
     min-width: 160px;
   }
+
+  .fq-actors .fq-actor { height: 38%; }
 
   .fq-audio-dock__copy { max-width: 190px; }
 
@@ -2422,8 +2426,10 @@ html[lang^="ja"] .fq-hero__content h1 { letter-spacing: -.035em; }
 
 @media (max-height: 520px) and (orientation: landscape) {
   :root { --fq-stage-min: 520px; }
-  .fq-actor, [data-actor] { height: 54%; }
-  .fq-dialogue, [data-fq-dialogue] { min-height: 9.5rem; }
+  .fq-actors .fq-actor { height: 54%; }
+  .fq-stage > .fq-dialogue,
+  .fq-dialogue,
+  [data-fq-dialogue] { width: min(38%, 32rem); min-height: 9.5rem; }
   .fq-line, [data-fq-line] { max-height: 9.2rem; font-size: .88rem; }
 }
 
@@ -2478,8 +2484,11 @@ html[lang^="ja"] .fq-hero__content h1 { letter-spacing: -.035em; }
 
   .fq-stage__backdrop,
   [data-fq-background],
+  .fq-stage__bg,
+  .fq-stage__light,
   .fq-stage__wash,
   .fq-stage__floor,
+  .fq-seals,
   .fq-seal,
   [data-fq-seal] { display: none; }
 

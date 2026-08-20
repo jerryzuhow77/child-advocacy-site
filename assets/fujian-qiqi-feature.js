@@ -141,11 +141,14 @@
     const rootCopy = (name, fallback) => {
       const featureAttribute = 'data-fq-' + name;
       const genericAttribute = 'data-' + name;
-      return root.getAttribute(featureAttribute)
+      const value = root.getAttribute(featureAttribute)
         || root.getAttribute(genericAttribute)
         || body.getAttribute(featureAttribute)
         || body.getAttribute(genericAttribute)
         || fallback;
+      return language === 'zh-hans' && typeof window.cv === 'function'
+        ? window.cv(value)
+        : value;
     };
 
     const copy = {
@@ -1001,9 +1004,11 @@
     };
 
     const cancelRamp = audio => {
-      const frame = rampFrames.get(audio);
-      if (frame) cancelAnimationFrame(frame);
+      const ramp = rampFrames.get(audio);
+      if (!ramp) return;
+      if (ramp.frame) cancelAnimationFrame(ramp.frame);
       rampFrames.delete(audio);
+      if (typeof ramp.resolve === 'function') ramp.resolve();
     };
 
     const rampAudio = (audio, target, duration = 500) => new Promise(resolve => {
@@ -1022,6 +1027,7 @@
       const startTime = performance.now();
       const tick = now => {
         if (destroyed) {
+          rampFrames.delete(audio);
           resolve();
           return;
         }
@@ -1030,22 +1036,24 @@
         audio.volume = startVolume + (endVolume - startVolume) * eased;
         if (progress < 1) {
           const frame = requestAnimationFrame(tick);
-          rampFrames.set(audio, frame);
+          rampFrames.set(audio, { frame, resolve });
         } else {
           rampFrames.delete(audio);
           resolve();
         }
       };
       const frame = requestAnimationFrame(tick);
-      rampFrames.set(audio, frame);
+      rampFrames.set(audio, { frame, resolve });
     });
 
     const stopAllAudio = async (duration = 420) => {
-      audioSwitchToken += 1;
+      const token = ++audioSwitchToken;
       const audios = Object.values(audioMap).filter(Boolean);
       await Promise.all(audios.map(audio => rampAudio(audio, 0, duration)));
+      if (token !== audioSwitchToken) return false;
       audios.forEach(audio => audio.pause());
       currentTrack = null;
+      return true;
     };
 
     const playTrack = async (track, options = {}) => {
@@ -1067,7 +1075,8 @@
       try {
         if (options.restart) next.currentTime = 0;
         if (next.paused) await next.play();
-        if (token !== audioSwitchToken || !audioEnabled) {
+        if (token !== audioSwitchToken) return false;
+        if (!audioEnabled || audioLock || desiredTrack !== key) {
           next.pause();
           return false;
         }
@@ -1085,6 +1094,7 @@
         setAudioStatus(format(copy.audioOn, { track: trackTitle(key) }));
         return true;
       } catch (_error) {
+        if (token !== audioSwitchToken) return false;
         next.pause();
         audioEnabled = false;
         currentTrack = null;
