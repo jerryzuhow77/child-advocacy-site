@@ -212,6 +212,30 @@
     });
   }
 
+  function animateCraftedZones() {
+    all('.home-crafted-zone').forEach(function (zone) {
+      var head = zone.querySelector('.home-crafted-head');
+      var cards = all('.home-crafted-card, .home-historical-card', zone);
+      var layers = all('.home-craft-layer', zone);
+      var seal = zone.querySelector('.home-clay-seal');
+      if (head) gsap.fromTo(head, { y: 34, autoAlpha: 0 }, {
+        y: 0, autoAlpha: 1, duration: .9, ease: 'power3.out',
+        scrollTrigger: { trigger: zone, start: 'top 84%', once: true }
+      });
+      if (cards.length) gsap.fromTo(cards, { y: 44, rotate: -1.2, autoAlpha: 0 }, {
+        y: 0, rotate: 0, autoAlpha: 1, duration: .82, stagger: .1, ease: 'power3.out',
+        scrollTrigger: { trigger: cards[0], start: 'top 88%', once: true }
+      });
+      layers.forEach(function (layer, index) {
+        gsap.to(layer, {
+          yPercent: index ? -9 : 8, rotate: index ? 2 : -2, ease: 'none',
+          scrollTrigger: { trigger: zone, start: 'top bottom', end: 'bottom top', scrub: .9 }
+        });
+      });
+      if (seal) gsap.to(seal, { rotate: zone.classList.contains('home-historical-zone') ? 4 : -4, y: -8, duration: 3.2, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+    });
+  }
+
   function animateSeaArt() {
     all('.sea-wave-layer').forEach(function (wave, index) {
       gsap.to(wave, { xPercent: index ? 4 : -4, y: index ? -3 : 4, duration: 4.2 + index, repeat: -1, yoyo: true, ease: 'sine.inOut' });
@@ -414,6 +438,7 @@
     revealGroup('.social-preview-grid', ':scope > *', 0);
     addReelSheen();
     animateDecorations();
+    animateCraftedZones();
     animateSeaArt();
     animateSummerBeach();
     animateHearingZone();
