@@ -20,3 +20,9 @@
 @media(max-width:760px){.home-protection-wall{padding:42px 0 52px}.home-protection-wall-card{min-height:min(720px,142vw);border-radius:27px}.home-protection-wall-card::after{background:linear-gradient(0deg,rgba(75,91,104,.9) 0%,rgba(88,100,114,.6) 43%,rgba(255,255,255,.02) 78%)}.home-protection-wall-visual img{object-position:64% 50%}.home-protection-wall-copy{inset:auto 22px 27px;width:calc(100% - 44px)}.home-protection-wall-copy h2{font-size:clamp(34px,11vw,50px)}.home-protection-wall-mark{top:16px;right:16px;padding:8px 11px;font-size:9px}.home-beach-note{font-size:9px;max-width:135px}.home-beach-note.note-one{right:5%;top:21%}.home-beach-note.note-two{right:7%;bottom:37%}.home-beach-sun{right:17%;top:10%}.home-beach-wave.wave-one{bottom:37%}.home-beach-wave.wave-two{bottom:31%}}
 @media(max-width:420px){.home-protection-wall-card{min-height:610px}.home-protection-wall-copy p{font-size:14px;line-height:1.65}.home-protection-wall-cta{width:100%;justify-content:center}.home-beach-note.note-two{display:none}}
 @media(prefers-reduced-motion:reduce){.home-protection-wall-visual img,.home-protection-wall-cta,.home-protection-wall-cta span{transition:none!important}.home-beach-sun,.home-beach-wave,.home-beach-note,.home-beach-shell{transform:none!important}}
+
+
+/* Refined sea-art finish */
+.home-protection-wall-card{box-shadow:0 34px 82px rgba(88,72,78,.19),0 0 0 1px rgba(255,255,255,.78),inset 0 1px rgba(255,255,255,.86)}
+.home-protection-wall-card::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(circle at 72% 72%,rgba(255,255,255,.22),transparent 18%),repeating-radial-gradient(ellipse at 73% 63%,transparent 0 24px,rgba(255,255,255,.12) 25px 27px,transparent 28px 45px);mix-blend-mode:screen}
+.home-beach-wave{box-shadow:0 -5px 12px rgba(255,255,255,.14)}.home-beach-shell{filter:drop-shadow(0 8px 10px rgba(94,75,78,.13))}
