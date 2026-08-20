@@ -34,3 +34,6 @@ html[lang="zh-Hans"] .lx-page :where(h1,h2,h3,h4,h5,h6,strong,b){font-weight:700
 html[lang="zh-Hans"] .lx-page :where(.lx-brand,.lx-kicker,.lx-status,.lx-update,.lx-nav-links a,.lx-ledger-label,.lx-section-no,.lx-timeline-item time,.lx-fact small,.lx-copy-button){font-weight:700!important;}
 /* 2026-08-14 — the hero caption now carries the case purpose. */
 .lx-visual-label{max-width:min(92%,34rem);letter-spacing:.035em;font-weight:700;line-height:1.75}
+
+/* Reciprocal Guardian Wall shortcut in the compact multilingual toolbar. */
+.lx-nav-links a.lx-wall-link{color:#fff8ec;background:linear-gradient(135deg,#a95f58,#c98978);border-color:rgba(255,255,255,.5);box-shadow:0 5px 13px rgba(110,64,59,.16)}

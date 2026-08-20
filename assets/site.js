@@ -1317,6 +1317,35 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
 }
 
 
+/* 2026-08-20 — Keep the Guardian Wall reachable from every shared top toolbar. */
+(function(){
+  const wallUrl='https://global-protection.jerryzuhow77.chatgpt.site/';
+  const labels={
+    'zh-Hant':{text:'守護留言牆',aria:'開啟全球守護留言牆'},
+    'zh-Hans':{text:'守护留言墙',aria:'打开全球守护留言墙'},
+    en:{text:'Guardian Wall',aria:'Open the Global Guardian Message Wall'},
+    ja:{text:'守護メッセージ',aria:'グローバル守護メッセージウォールを開く'}
+  };
+  const initGuardianWallToolbarLink=()=>{
+    const locale=labels[document.documentElement.lang]||labels['zh-Hant'];
+    document.querySelectorAll('header .nav > nav').forEach(nav=>{
+      if(nav.querySelector('.guardian-wall-nav-link')) return;
+      const link=document.createElement('a');
+      link.className='guardian-wall-nav-link';
+      link.href=wallUrl;
+      link.target='_blank';
+      link.rel='noopener noreferrer';
+      link.setAttribute('aria-label',locale.aria);
+      link.innerHTML=`<span class="guardian-wall-nav-mark" aria-hidden="true">♡</span><span class="guardian-wall-nav-label">${locale.text}</span>`;
+      const before=nav.querySelector('.pwa-nav-install,.language-switcher');
+      nav.insertBefore(link,before||null);
+    });
+  };
+  document.readyState==='loading'
+    ? document.addEventListener('DOMContentLoaded',initGuardianWallToolbarLink,{once:true})
+    : initGuardianWallToolbarLink();
+})();
+
 /* 2026-08-20 — Premium coastal header toolbar motion */
 (function(){
   const initPremiumHeaderToolbar=()=>{

@@ -227,3 +227,8 @@ a{color:inherit}
   *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
   .reveal,.sh-signal-stack>*{opacity:1;transform:none}
 }
+
+/* Cross-site link stays visible even when the section navigation collapses. */
+.sh-wall-link{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border:1px solid rgba(238,204,156,.42);border-radius:999px;color:#fff7e7;background:rgba(196,112,101,.24);font-size:.76rem;line-height:1;white-space:nowrap}.sh-wall-link span{display:grid;width:24px;height:24px;place-items:center;border-radius:50%;background:#b66f67;font-size:16px}.sh-wall-link b{font-weight:850}.sh-wall-link:hover,.sh-wall-link:focus-visible{border-color:#ecd39f;background:rgba(196,112,101,.4);outline:2px solid rgba(236,211,159,.35);outline-offset:2px}
+@media(max-width:760px){.sh-wall-link{width:34px;height:34px;justify-content:center;padding:0}.sh-wall-link span{width:28px;height:28px}.sh-wall-link b{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
+@media(max-width:520px){.sh-top{flex-wrap:wrap}.sh-brand{min-width:0;overflow:hidden;text-overflow:ellipsis}.sh-lang{order:3;width:100%;justify-content:center}}

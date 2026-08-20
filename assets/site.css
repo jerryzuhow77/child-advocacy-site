@@ -8408,3 +8408,49 @@ html,body{max-width:100%;overflow-x:hidden}
 @media(max-width:620px){.activity-impact-panel{padding:14px;border-radius:20px}.activity-impact-head{gap:10px;margin-bottom:13px}.activity-impact-head h2,.activity-impact-head h3{font-size:1.3rem}.activity-impact-head>p{font-size:.75rem}.activity-impact-controls button{width:35px;height:35px}.activity-impact-card{grid-template-columns:100px minmax(0,1fr) 18px;gap:10px;flex-basis:92%;min-height:156px;padding:9px}.activity-impact-media{min-height:136px}.activity-impact-media i{left:5px;right:5px;bottom:5px;padding:5px 4px;font-size:.54rem}.activity-impact-copy{gap:4px}.activity-impact-copy strong{font-size:.91rem}.activity-impact-copy em{-webkit-line-clamp:3;font-size:.69rem}.activity-impact-copy b span{font-size:.53rem}.activity-impact-arrow{font-size:.95rem}.about-latest-activity-section{padding-bottom:42px}}
 @media(max-width:390px){.activity-impact-card{grid-template-columns:88px minmax(0,1fr);flex-basis:95%}.activity-impact-arrow{display:none}.activity-impact-copy em{-webkit-line-clamp:2}}
 @media(prefers-reduced-motion:reduce){.activity-impact-card,.activity-impact-media img,.activity-impact-controls button{transition:none}.activity-impact-track{scroll-behavior:auto}}
+/* 2026-08-20 — Reciprocal Guardian Wall link in the shared top toolbar. */
+header .nav>nav>a.guardian-wall-nav-link,
+.art-header nav>a.guardian-wall-nav-link{
+  border:1px solid rgba(174,111,101,.24)!important;
+  color:#66483f!important;
+  background:linear-gradient(145deg,rgba(248,226,219,.88),rgba(232,241,235,.9))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 6px 15px rgba(76,57,49,.08)!important;
+  font-weight:900!important;
+  text-decoration:none!important;
+}
+header .nav>nav>a.guardian-wall-nav-link::before,
+.art-header nav>a.guardian-wall-nav-link::before{display:none!important;content:none!important}
+.guardian-wall-nav-mark{
+  width:27px;
+  height:27px;
+  flex:0 0 27px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.72);
+  border-radius:50%;
+  color:#fff8ec;
+  background:linear-gradient(145deg,#c77970,#9f5d58);
+  box-shadow:0 4px 10px rgba(124,70,65,.2);
+  font-size:17px;
+  line-height:1;
+}
+.guardian-wall-nav-label{min-width:0;line-height:1.25;white-space:nowrap}
+header .nav>nav>a.guardian-wall-nav-link:hover,
+header .nav>nav>a.guardian-wall-nav-link:focus-visible{
+  border-color:#bd7f70!important;
+  background:linear-gradient(145deg,#f7ddd4,#e3efe8)!important;
+  outline:2px solid rgba(185,119,105,.28);
+  outline-offset:2px;
+}
+
+@media(min-width:1101px){
+  header .nav>nav>a.guardian-wall-nav-link,
+  .art-header nav>a.guardian-wall-nav-link{gap:5px!important;padding-inline:6px!important;font-size:12px!important}
+}
+
+@media(max-width:1100px){
+  header .nav>nav>a.guardian-wall-nav-link,
+  .art-header nav>a.guardian-wall-nav-link{width:100%;justify-content:flex-start!important;gap:11px!important;min-height:48px!important;padding:8px 11px!important;font-size:15px!important;white-space:normal!important}
+  .guardian-wall-nav-mark{width:31px;height:31px;flex-basis:31px;font-size:19px}
+  .guardian-wall-nav-label{white-space:normal}
+}

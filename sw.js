@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-20-activity-impact-v1';
+const VERSION = '2026-08-20-activity-impact-cross-site-v2';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
