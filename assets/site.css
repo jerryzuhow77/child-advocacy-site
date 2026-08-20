@@ -8510,3 +8510,40 @@ header .nav>nav>a.guardian-wall-nav-link:focus-visible{
   header .nav nav>.pwa-nav-install,header .nav nav>.language-switcher{width:100%!important;max-width:none!important}
   body.mobile-menu-active{overflow:hidden!important}
 }
+/* 2026-08-20 — About page pastel dialogue cards: rename milestone + latest date. */
+.about-page .about-timeline article.highlight>div:last-child{
+  background:linear-gradient(135deg,#f7dfe4 0%,#fff1e5 56%,#f4eee9 100%)!important;
+  border-color:rgba(191,128,139,.42)!important;
+  outline-color:rgba(191,128,139,.28)!important;
+  box-shadow:0 12px 28px rgba(121,79,84,.10)!important;
+}
+.about-page .about-timeline article.highlight h3{
+  background:none!important;
+  color:#5c4048!important;
+  -webkit-text-fill-color:#5c4048!important;
+  text-shadow:none!important;
+}
+.about-page .about-timeline article.highlight p{
+  color:#675b5b!important;
+}
+.about-page .street-action-featured.is-latest{
+  border-color:rgba(191,128,139,.46)!important;
+  background:linear-gradient(135deg,#f8e3e8 0%,#fff2e7 58%,#f3eee9 100%)!important;
+  box-shadow:0 10px 24px rgba(121,79,84,.10)!important;
+}
+.about-page .street-action-featured.is-latest time{
+  border:1px solid rgba(178,111,124,.30)!important;
+  background:linear-gradient(135deg,#f1cfd6,#f8e5d8)!important;
+  color:#65434c!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.70)!important;
+}
+.about-page .street-action-featured.is-latest p,
+.about-page .street-action-featured.is-latest p a{
+  color:#394f58!important;
+}
+@media(max-width:650px){
+  .about-page .about-timeline article.highlight>div:last-child,
+  .about-page .street-action-featured.is-latest{
+    box-shadow:0 8px 20px rgba(121,79,84,.08)!important;
+  }
+}
