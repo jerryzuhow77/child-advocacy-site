@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-20-ferris-bubbles-v1';
+const VERSION = '2026-08-20-activity-impact-v1';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -15,6 +15,7 @@ const APP_SHELL = [
   './assets/home-gsap.css',
   './assets/global-protection-home.css',
   './assets/home-gsap.js',
+  './assets/activity-impact.js',
   './assets/vendor/gsap-3.13.0.min.js',
   './assets/vendor/ScrollTrigger-3.13.0.min.js',
   './assets/icons/app-icon-192.png',

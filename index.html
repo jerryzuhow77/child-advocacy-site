@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport">
 <title>護童行動聯盟｜官方網站・兒少保護・法院旁聽・案件追蹤</title>
-<link href="./assets/site.css?v=20260820-activity-scroll-3" rel="stylesheet">
+<link href="./assets/site.css?v=20260820-activity-impact-1" rel="stylesheet">
 <link href="./assets/home-view-counter-20260811.css?v=2" rel="stylesheet">
 <link href="./assets/chair-special.css?v=20260815-special-accordion2" rel="stylesheet">
 <link href="./assets/pwa-install.css?v=20260820-scroll-4" rel="stylesheet">
@@ -527,7 +527,7 @@
 <div class="art-eyebrow dark">IMPACT IN ACTION</div>
 <h2 id="impactDashboardTitle">行動成果</h2>
 </div>
-<p>截至 2026 年 8 月。每一個數字，都是志工夥伴實際到場、記錄、聲援與陪伴留下的足跡。</p>
+<p>截至 2026 年 8 月 20 日。每一個數字，都是志工夥伴實際到場、記錄、聲援與陪伴留下的足跡。</p>
 </div>
 <div aria-label="護童行動聯盟行動成果統計" class="impact-dashboard-grid">
 <article class="impact-metric-card impact-navy">
@@ -538,10 +538,10 @@
 <h3>法院旁聽、案件聲援</h3>
 <p>持續記錄司法程序與重要庭訊，陪伴案件走過漫長審理。</p>
 </article>
-<article class="impact-metric-card impact-coral">
+<article class="impact-metric-card impact-coral" data-impact-total="public-action">
 <div aria-hidden="true" class="impact-metric-icon">📣</div>
 <div class="impact-metric-number">
-<strong class="impact-counter" data-count="20">20</strong><span>場</span>
+<strong class="impact-counter" data-count="21">21</strong><span>場</span>
 </div>
 <h3>街頭宣傳、抗議及關懷</h3>
 <p>把兒少安全、被害者支持與制度倡議帶進公共空間。</p>
@@ -555,6 +555,25 @@
 <p>讓關注不只停留在文字，也化為具體的陪伴與支持。</p>
 </article>
 </div>
+<section aria-labelledby="latestImpactTitle" class="activity-impact-panel" data-activity-impact-panel>
+<div class="activity-impact-head">
+<div><small>RECENT ACTIVITY · SYNCED</small><h3 id="latestImpactTitle">近期新增的行動</h3></div>
+<p>最新收錄的實體與線上行動，與活動紀錄同步更新。</p>
+<div aria-label="切換近期行動" class="activity-impact-controls"><button aria-label="上一筆近期行動" data-activity-impact-prev type="button">←</button><button aria-label="下一筆近期行動" data-activity-impact-next type="button">→</button></div>
+</div>
+<div aria-label="近期新增行動" class="activity-impact-track" data-activity-impact-track role="list">
+<a class="activity-impact-card is-field" data-activity-impact-card href="./activity-records/20260820-taipei-station-advocacy/" role="listitem">
+<span class="activity-impact-media"><img alt="護童行動聯盟於臺北車站進行9月16日二審開庭宣傳行動" decoding="async" loading="lazy" src="./activity-records/20260820-taipei-station-advocacy/images/hero.webp"><i>第 21 場公共行動</i></span>
+<span class="activity-impact-copy"><time datetime="2026-08-20">2026.08.20 · 臺北車站</time><strong>為 9/16 二審開庭發聲</strong><em>從站前廣場走入車站大廳，讓案件進度與制度責任持續被看見。</em><b><span>現場宣傳</span><span>兒少守護</span></b></span>
+<span aria-hidden="true" class="activity-impact-arrow">↗</span>
+</a>
+<a class="activity-impact-card is-online" data-activity-impact-card href="./activity-records/20260820-kaikai-story-collection/" role="listitem">
+<span class="activity-impact-media"><img alt="讓我們一起寫下剴剴的故事心得募集主視覺" decoding="async" loading="lazy" src="./activity-records/20260820-kaikai-story-collection/images/kaikai-story-collection-hero.webp"><i>線上倡議・進行中</i></span>
+<span class="activity-impact-copy"><time datetime="2026-08-20">2026.08.20 · 線上募集</time><strong>讓我們一起寫下剴剴的故事</strong><em>邀請關注案件與兒童保護的人，留下感受、疑問及改革期待。</em><b><span>心得募集</span><span>公共參與</span></b></span>
+<span aria-hidden="true" class="activity-impact-arrow">↗</span>
+</a>
+</div>
+</section>
 <div class="impact-journey-strip">
 <div aria-hidden="true" class="impact-journey-mark"><span></span><i></i><span></span></div>
 <div class="impact-journey-copy">
@@ -684,6 +703,7 @@
 <script src="./assets/vendor/gsap-3.13.0.min.js"></script>
 <script src="./assets/vendor/ScrollTrigger-3.13.0.min.js"></script>
 <script src="./assets/home-gsap.js?v=20260820-ferris-bubbles-1"></script>
+<script src="./assets/activity-impact.js?v=20260820-1"></script>
 <script id="site-qr-script">
 (()=>{const close=d=>{if(typeof d.close==='function')d.close();else d.removeAttribute('open');};document.querySelectorAll('[data-qr-target]').forEach(t=>{const d=document.getElementById(t.dataset.qrTarget);if(!d)return;t.addEventListener('click',()=>{if(typeof d.showModal==='function')d.showModal();else d.setAttribute('open','');});d.querySelector('.site-qr-close')?.addEventListener('click',()=>close(d));d.addEventListener('click',e=>{if(e.target===d)close(d);});});})();
 </script>

@@ -8370,3 +8370,41 @@ html,body{max-width:100%;overflow-x:hidden}
     padding:clamp(20px,2.2vw,30px) clamp(20px,2.6vw,34px) 78px;
   }
 }
+
+/* Activity records → impact + About sync · 2026-08-20 */
+.activity-impact-panel{position:relative;margin-top:22px;padding:20px;border:1px solid rgba(55,84,88,.18);border-radius:24px;background:linear-gradient(135deg,rgba(255,253,247,.96),rgba(236,242,236,.9));box-shadow:0 16px 38px rgba(43,58,57,.08);isolation:isolate}
+.activity-impact-panel::before{content:"";position:absolute;z-index:-1;inset:0;overflow:hidden;border-radius:inherit;background:radial-gradient(circle at 9% 15%,rgba(202,126,102,.16),transparent 28%),radial-gradient(circle at 91% 82%,rgba(102,151,143,.16),transparent 31%);pointer-events:none}
+.activity-impact-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.8fr) auto;align-items:end;gap:16px;margin-bottom:16px}
+.activity-impact-head small{display:block;color:#9b6656;font-size:.65rem;font-weight:900;letter-spacing:.15em}
+.activity-impact-head h2,.activity-impact-head h3{margin:4px 0 0;color:#17394d;font-family:"Noto Serif TC","Noto Serif CJK TC",serif;font-size:clamp(1.35rem,2.7vw,2rem);line-height:1.25}
+.activity-impact-head>p{margin:0;color:#657375;font-size:.82rem;line-height:1.65}
+.activity-impact-controls{display:flex;gap:7px}
+.activity-impact-controls button{display:grid;width:38px;height:38px;padding:0;place-items:center;border:1px solid rgba(49,82,85,.2);border-radius:50%;background:#fffdf8;color:#31565c;font:900 1rem/1 system-ui;cursor:pointer;box-shadow:0 6px 14px rgba(45,60,58,.08);transition:transform .2s ease,background .2s ease,color .2s ease,opacity .2s ease}
+.activity-impact-controls button:hover,.activity-impact-controls button:focus-visible{transform:translateY(-2px);background:#173f55;color:#fff;outline:none}
+.activity-impact-controls button:disabled{cursor:default;opacity:.34;transform:none}
+.activity-impact-track{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;scrollbar-width:thin;scrollbar-color:#a87363 rgba(255,255,255,.5)}
+.activity-impact-card{position:relative;display:grid;grid-template-columns:132px minmax(0,1fr) 24px;gap:14px;min-width:0;min-height:174px;padding:12px;border:1px solid rgba(69,96,94,.17);border-radius:18px;background:rgba(255,255,255,.82);color:inherit;text-decoration:none;box-shadow:0 10px 24px rgba(40,55,54,.06);transition:transform .24s ease,border-color .24s ease,box-shadow .24s ease}
+.activity-impact-card:hover,.activity-impact-card:focus-visible{transform:translateY(-4px);border-color:rgba(156,96,78,.42);box-shadow:0 18px 34px rgba(40,55,54,.12);outline:none}
+.activity-impact-media{position:relative;display:block;min-height:148px;overflow:hidden;border-radius:13px;background:#e7ddd1}
+.activity-impact-media img{width:100%;height:100%;object-fit:cover;transition:transform .45s ease}
+.activity-impact-card:hover .activity-impact-media img,.activity-impact-card:focus-visible .activity-impact-media img{transform:scale(1.035)}
+.activity-impact-media i{position:absolute;left:8px;right:8px;bottom:8px;padding:6px 8px;border-radius:999px;background:rgba(19,56,74,.88);color:#fff;font-size:.61rem;font-style:normal;font-weight:900;line-height:1.2;text-align:center;backdrop-filter:blur(7px)}
+.activity-impact-card.is-online .activity-impact-media i{background:rgba(142,79,65,.9)}
+.activity-impact-copy{display:flex;min-width:0;flex-direction:column;justify-content:center;gap:6px}
+.activity-impact-copy time{color:#9b6656;font-size:.65rem;font-weight:900;letter-spacing:.04em}
+.activity-impact-copy strong{color:#17394d;font-size:clamp(.98rem,1.7vw,1.18rem);line-height:1.35}
+.activity-impact-copy em{display:-webkit-box;overflow:hidden;color:#657173;font-size:.76rem;font-style:normal;line-height:1.6;-webkit-box-orient:vertical;-webkit-line-clamp:3}
+.activity-impact-copy b{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px}
+.activity-impact-copy b span{padding:4px 7px;border-radius:999px;background:#eaf0eb;color:#4c6b69;font-size:.59rem;font-weight:900}
+.activity-impact-card.is-online .activity-impact-copy b span{background:#f1e4df;color:#825649}
+.activity-impact-arrow{align-self:center;color:#9a6556;font-size:1.1rem;font-weight:900}
+.about-latest-activity-section{padding:0 0 72px;background:#fffaf3}
+.about-latest-activity-section .activity-impact-panel{margin-top:0;background:linear-gradient(135deg,rgba(255,252,247,.97),rgba(241,232,225,.93))}
+.about-page .street-action-featured.is-latest{border-color:rgba(169,100,88,.55)!important;background:linear-gradient(135deg,#f5dfd7,#fffaf3)!important;box-shadow:0 10px 24px rgba(111,78,65,.09)}
+.about-page .street-action-featured.is-latest time{background:#a96458}
+.has-activity-impact-gsap [data-activity-impact-card],.has-activity-impact-gsap [data-about-latest-card]{will-change:transform,opacity}
+@media(min-width:901px){.activity-impact-controls{display:none}}
+@media(max-width:900px){.activity-impact-head{grid-template-columns:minmax(0,1fr) auto;align-items:start}.activity-impact-head>p{grid-column:1/-1;grid-row:2}.activity-impact-controls{grid-column:2;grid-row:1}.activity-impact-track{display:flex;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:2px;padding:2px 2px 9px}.activity-impact-card{flex:0 0 min(620px,88%);scroll-snap-align:start}.about-latest-activity-section{padding-bottom:54px}}
+@media(max-width:620px){.activity-impact-panel{padding:14px;border-radius:20px}.activity-impact-head{gap:10px;margin-bottom:13px}.activity-impact-head h2,.activity-impact-head h3{font-size:1.3rem}.activity-impact-head>p{font-size:.75rem}.activity-impact-controls button{width:35px;height:35px}.activity-impact-card{grid-template-columns:100px minmax(0,1fr) 18px;gap:10px;flex-basis:92%;min-height:156px;padding:9px}.activity-impact-media{min-height:136px}.activity-impact-media i{left:5px;right:5px;bottom:5px;padding:5px 4px;font-size:.54rem}.activity-impact-copy{gap:4px}.activity-impact-copy strong{font-size:.91rem}.activity-impact-copy em{-webkit-line-clamp:3;font-size:.69rem}.activity-impact-copy b span{font-size:.53rem}.activity-impact-arrow{font-size:.95rem}.about-latest-activity-section{padding-bottom:42px}}
+@media(max-width:390px){.activity-impact-card{grid-template-columns:88px minmax(0,1fr);flex-basis:95%}.activity-impact-arrow{display:none}.activity-impact-copy em{-webkit-line-clamp:2}}
+@media(prefers-reduced-motion:reduce){.activity-impact-card,.activity-impact-media img,.activity-impact-controls button{transition:none}.activity-impact-track{scroll-behavior:auto}}
