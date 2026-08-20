@@ -2180,10 +2180,16 @@ html:not(.fq-js) [data-audio-dock] {
 .fq-page-ronghua {
   position: absolute;
   z-index: 1;
+  inset: 0;
   display: block;
-  width: clamp(360px, 45vw, 760px);
+  overflow: hidden;
   opacity: var(--fq-ronghua-opacity, .14);
   pointer-events: none;
+}
+.fq-page-ronghua__art {
+  position: absolute;
+  display: block;
+  width: clamp(360px, 45vw, 760px);
   transform: rotate(var(--fq-ronghua-rotation, 0deg));
   transform-origin: 50% 50%;
 }
@@ -2194,16 +2200,26 @@ html:not(.fq-js) [data-audio-dock] {
   filter: saturate(.84) contrast(.96);
   will-change: transform;
 }
-.fq-page-ronghua--01 { --fq-ronghua-opacity: .11; --fq-ronghua-rotation: -12deg; top: -48%; left: -12%; }
-.fq-page-ronghua--02 { --fq-ronghua-opacity: .12; --fq-ronghua-rotation: 8deg; right: -15%; bottom: -42%; }
-.fq-page-ronghua--03 { --fq-ronghua-opacity: .13; --fq-ronghua-rotation: -8deg; top: 3%; left: -17%; }
-.fq-page-ronghua--04 { --fq-ronghua-opacity: .14; --fq-ronghua-rotation: 11deg; right: -19%; bottom: -28%; }
-.fq-page-ronghua--05 { --fq-ronghua-opacity: .15; --fq-ronghua-rotation: -9deg; top: -4%; left: -19%; }
-.fq-page-ronghua--06 { --fq-ronghua-opacity: .16; --fq-ronghua-rotation: 7deg; right: -17%; bottom: -24%; }
-.fq-page-ronghua--07 { --fq-ronghua-opacity: .17; --fq-ronghua-rotation: -7deg; left: -15%; bottom: -21%; }
-.fq-page-ronghua--08 { --fq-ronghua-opacity: .18; --fq-ronghua-rotation: 10deg; top: -5%; right: -18%; }
-.fq-page-ronghua--09 { --fq-ronghua-opacity: .19; --fq-ronghua-rotation: -10deg; left: -18%; bottom: -32%; }
-.fq-page-ronghua--10 { --fq-ronghua-opacity: .20; --fq-ronghua-rotation: 7deg; right: -22%; bottom: -17%; }
+.fq-page-ronghua--01 { --fq-ronghua-opacity: .11; --fq-ronghua-rotation: -12deg; }
+.fq-page-ronghua--02 { --fq-ronghua-opacity: .12; --fq-ronghua-rotation: 8deg; }
+.fq-page-ronghua--03 { --fq-ronghua-opacity: .13; --fq-ronghua-rotation: -8deg; }
+.fq-page-ronghua--04 { --fq-ronghua-opacity: .14; --fq-ronghua-rotation: 11deg; }
+.fq-page-ronghua--05 { --fq-ronghua-opacity: .15; --fq-ronghua-rotation: -9deg; }
+.fq-page-ronghua--06 { --fq-ronghua-opacity: .16; --fq-ronghua-rotation: 7deg; }
+.fq-page-ronghua--07 { --fq-ronghua-opacity: .17; --fq-ronghua-rotation: -7deg; }
+.fq-page-ronghua--08 { --fq-ronghua-opacity: .18; --fq-ronghua-rotation: 10deg; }
+.fq-page-ronghua--09 { --fq-ronghua-opacity: .19; --fq-ronghua-rotation: -10deg; }
+.fq-page-ronghua--10 { --fq-ronghua-opacity: .20; --fq-ronghua-rotation: 7deg; }
+.fq-page-ronghua--01 .fq-page-ronghua__art { top: -48%; left: -12%; }
+.fq-page-ronghua--02 .fq-page-ronghua__art { right: -15%; bottom: -42%; }
+.fq-page-ronghua--03 .fq-page-ronghua__art { top: 3%; left: -17%; }
+.fq-page-ronghua--04 .fq-page-ronghua__art { right: -19%; bottom: -28%; }
+.fq-page-ronghua--05 .fq-page-ronghua__art { top: -4%; left: -19%; }
+.fq-page-ronghua--06 .fq-page-ronghua__art { right: -17%; bottom: -24%; }
+.fq-page-ronghua--07 .fq-page-ronghua__art { left: -15%; bottom: -21%; }
+.fq-page-ronghua--08 .fq-page-ronghua__art { top: -5%; right: -18%; }
+.fq-page-ronghua--09 .fq-page-ronghua__art { left: -18%; bottom: -32%; }
+.fq-page-ronghua--10 .fq-page-ronghua__art { right: -22%; bottom: -17%; }
 
 /* Official-social finale ------------------------------------------------- */
 .fq-social-finale {
@@ -2619,29 +2635,29 @@ html[lang^="ja"] .fq-hero__content h1 { letter-spacing: -.035em; }
 }
 
 @media (max-width: 780px) {
-  .fq-page-ronghua {
+  .fq-page-ronghua__art {
     width: clamp(330px, 112vw, 540px);
   }
-  .fq-page-ronghua--01,
-  .fq-page-ronghua--03,
-  .fq-page-ronghua--05,
-  .fq-page-ronghua--07,
-  .fq-page-ronghua--09 { left: -72%; right: auto; }
-  .fq-page-ronghua--02,
-  .fq-page-ronghua--04,
-  .fq-page-ronghua--06,
-  .fq-page-ronghua--08,
-  .fq-page-ronghua--10 { right: -72%; left: auto; }
-  .fq-page-ronghua--01 { top: -32%; }
-  .fq-page-ronghua--02 { bottom: -30%; }
-  .fq-page-ronghua--03,
-  .fq-page-ronghua--05,
-  .fq-page-ronghua--08 { top: -8%; }
-  .fq-page-ronghua--04,
-  .fq-page-ronghua--06,
-  .fq-page-ronghua--07,
-  .fq-page-ronghua--09,
-  .fq-page-ronghua--10 { bottom: -17%; }
+  .fq-page-ronghua--01 .fq-page-ronghua__art,
+  .fq-page-ronghua--03 .fq-page-ronghua__art,
+  .fq-page-ronghua--05 .fq-page-ronghua__art,
+  .fq-page-ronghua--07 .fq-page-ronghua__art,
+  .fq-page-ronghua--09 .fq-page-ronghua__art { left: -72%; right: auto; }
+  .fq-page-ronghua--02 .fq-page-ronghua__art,
+  .fq-page-ronghua--04 .fq-page-ronghua__art,
+  .fq-page-ronghua--06 .fq-page-ronghua__art,
+  .fq-page-ronghua--08 .fq-page-ronghua__art,
+  .fq-page-ronghua--10 .fq-page-ronghua__art { right: -72%; left: auto; }
+  .fq-page-ronghua--01 .fq-page-ronghua__art { top: -32%; }
+  .fq-page-ronghua--02 .fq-page-ronghua__art { bottom: -30%; }
+  .fq-page-ronghua--03 .fq-page-ronghua__art,
+  .fq-page-ronghua--05 .fq-page-ronghua__art,
+  .fq-page-ronghua--08 .fq-page-ronghua__art { top: -8%; }
+  .fq-page-ronghua--04 .fq-page-ronghua__art,
+  .fq-page-ronghua--06 .fq-page-ronghua__art,
+  .fq-page-ronghua--07 .fq-page-ronghua__art,
+  .fq-page-ronghua--09 .fq-page-ronghua__art,
+  .fq-page-ronghua--10 .fq-page-ronghua__art { bottom: -17%; }
 
   .fq-social-finale {
     min-height: 0;

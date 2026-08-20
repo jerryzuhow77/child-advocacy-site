@@ -1420,9 +1420,11 @@
         const section = doc.querySelector(placement[0]);
         if (!section || section.querySelector(':scope > .fq-page-ronghua')) return;
         const wrapper = doc.createElement('span');
+        const art = doc.createElement('i');
         const image = doc.createElement('img');
         wrapper.className = 'fq-page-ronghua fq-page-ronghua--' + String(index + 1).padStart(2, '0');
         wrapper.setAttribute('aria-hidden', 'true');
+        art.className = 'fq-page-ronghua__art';
         image.src = new URL('art/' + placement[1], assetBase).href;
         image.alt = '';
         image.width = 1200;
@@ -1430,7 +1432,8 @@
         image.loading = 'lazy';
         image.decoding = 'async';
         image.dataset.fqRonghua = '';
-        wrapper.append(image);
+        art.append(image);
+        wrapper.append(art);
         section.prepend(wrapper);
       });
     };
@@ -1715,7 +1718,7 @@
     });
 
     window.FujianQiqiFeature = {
-      version: '1.3.0',
+      version: '1.3.1',
       play(target) {
         const state = stateFor(target);
         return state ? playScene(state) : false;
