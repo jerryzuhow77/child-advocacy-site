@@ -2157,6 +2157,54 @@ html:not(.fq-js) [data-audio-dock] {
   text-decoration: none;
 }
 
+/* Ten handcrafted ronghua ornaments, distributed through the documentary
+   chapters. Each sits above its section wash and below the reading layer. */
+.fq-boundary,
+.fq-guide,
+.fq-chapter,
+.fq-interlude,
+.fq-help,
+.fq-sources {
+  isolation: isolate;
+  overflow: clip;
+}
+.fq-boundary > :not(.fq-page-ronghua),
+.fq-guide > :not(.fq-page-ronghua),
+.fq-chapter > :not(.fq-page-ronghua),
+.fq-interlude > :not(.fq-page-ronghua),
+.fq-help > :not(.fq-page-ronghua),
+.fq-sources > :not(.fq-page-ronghua) {
+  position: relative;
+  z-index: 2;
+}
+.fq-page-ronghua {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  width: clamp(360px, 45vw, 760px);
+  opacity: var(--fq-ronghua-opacity, .14);
+  pointer-events: none;
+  transform: rotate(var(--fq-ronghua-rotation, 0deg));
+  transform-origin: 50% 50%;
+}
+.fq-page-ronghua img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: saturate(.84) contrast(.96);
+  will-change: transform;
+}
+.fq-page-ronghua--01 { --fq-ronghua-opacity: .11; --fq-ronghua-rotation: -12deg; top: -48%; left: -12%; }
+.fq-page-ronghua--02 { --fq-ronghua-opacity: .12; --fq-ronghua-rotation: 8deg; right: -15%; bottom: -42%; }
+.fq-page-ronghua--03 { --fq-ronghua-opacity: .13; --fq-ronghua-rotation: -8deg; top: 3%; left: -17%; }
+.fq-page-ronghua--04 { --fq-ronghua-opacity: .14; --fq-ronghua-rotation: 11deg; right: -19%; bottom: -28%; }
+.fq-page-ronghua--05 { --fq-ronghua-opacity: .15; --fq-ronghua-rotation: -9deg; top: -4%; left: -19%; }
+.fq-page-ronghua--06 { --fq-ronghua-opacity: .16; --fq-ronghua-rotation: 7deg; right: -17%; bottom: -24%; }
+.fq-page-ronghua--07 { --fq-ronghua-opacity: .17; --fq-ronghua-rotation: -7deg; left: -15%; bottom: -21%; }
+.fq-page-ronghua--08 { --fq-ronghua-opacity: .18; --fq-ronghua-rotation: 10deg; top: -5%; right: -18%; }
+.fq-page-ronghua--09 { --fq-ronghua-opacity: .19; --fq-ronghua-rotation: -10deg; left: -18%; bottom: -32%; }
+.fq-page-ronghua--10 { --fq-ronghua-opacity: .20; --fq-ronghua-rotation: 7deg; right: -22%; bottom: -17%; }
+
 /* Official-social finale ------------------------------------------------- */
 .fq-social-finale {
   position: relative;
@@ -2166,9 +2214,7 @@ html:not(.fq-js) [data-audio-dock] {
   overflow: hidden;
   color: var(--fq-indigo-deep);
   background:
-    radial-gradient(circle at 50% 8%, rgba(255, 249, 240, .94), transparent 31rem),
-    radial-gradient(circle at 8% 84%, rgba(183, 138, 135, .18), transparent 28rem),
-    radial-gradient(circle at 93% 72%, rgba(104, 132, 129, .16), transparent 26rem),
+    radial-gradient(circle at 50% 8%, rgba(255, 249, 240, .9), transparent 31rem),
     linear-gradient(150deg, #eaded7 0%, #efe7da 46%, #d9e2dc 100%);
   border-top: 1px solid rgba(91, 73, 65, .12);
 }
@@ -2182,52 +2228,17 @@ html:not(.fq-js) [data-audio-dock] {
   content: "";
   pointer-events: none;
 }
-.fq-ronghua-field {
+.fq-social-finale::after {
   position: absolute;
-  z-index: -1;
-  inset: -3%;
-  overflow: hidden;
+  z-index: -2;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(243, 236, 226, .54), rgba(243, 236, 226, .18) 42%, rgba(227, 220, 210, .28)),
+    url("fujian-qiqi/ending-panorama-20260820.webp") center / cover no-repeat;
+  content: "";
+  opacity: .34;
   pointer-events: none;
-}
-.fq-ronghua {
-  position: absolute;
-  display: block;
-  width: clamp(430px, 57vw, 920px);
-  opacity: .16;
-  transform-origin: 50% 50%;
-}
-.fq-ronghua img {
-  display: block;
-  width: 100%;
-  height: auto;
-  will-change: transform;
-}
-.fq-ronghua--peony {
-  top: -6%;
-  left: -18%;
-  opacity: .2;
-  transform: rotate(-11deg);
-}
-.fq-ronghua--magnolia {
-  top: 7%;
-  right: -20%;
-  width: clamp(410px, 53vw, 850px);
-  opacity: .13;
-  transform: rotate(13deg);
-}
-.fq-ronghua--blue {
-  bottom: -15%;
-  left: -16%;
-  width: clamp(450px, 59vw, 950px);
-  opacity: .11;
-  transform: rotate(8deg);
-}
-.fq-ronghua--osmanthus {
-  right: -12%;
-  bottom: -13%;
-  width: clamp(420px, 55vw, 880px);
-  opacity: .17;
-  transform: rotate(-9deg);
+  filter: saturate(.76) contrast(.92);
 }
 .fq-social-finale__inner {
   position: relative;
@@ -2608,10 +2619,35 @@ html[lang^="ja"] .fq-hero__content h1 { letter-spacing: -.035em; }
 }
 
 @media (max-width: 780px) {
+  .fq-page-ronghua {
+    width: clamp(330px, 112vw, 540px);
+  }
+  .fq-page-ronghua--01,
+  .fq-page-ronghua--03,
+  .fq-page-ronghua--05,
+  .fq-page-ronghua--07,
+  .fq-page-ronghua--09 { left: -72%; right: auto; }
+  .fq-page-ronghua--02,
+  .fq-page-ronghua--04,
+  .fq-page-ronghua--06,
+  .fq-page-ronghua--08,
+  .fq-page-ronghua--10 { right: -72%; left: auto; }
+  .fq-page-ronghua--01 { top: -32%; }
+  .fq-page-ronghua--02 { bottom: -30%; }
+  .fq-page-ronghua--03,
+  .fq-page-ronghua--05,
+  .fq-page-ronghua--08 { top: -8%; }
+  .fq-page-ronghua--04,
+  .fq-page-ronghua--06,
+  .fq-page-ronghua--07,
+  .fq-page-ronghua--09,
+  .fq-page-ronghua--10 { bottom: -17%; }
+
   .fq-social-finale {
     min-height: 0;
     padding: 4.7rem 0 5.6rem;
   }
+  .fq-social-finale::after { display: none; }
   .fq-social-finale__head { padding: 0 .4rem; margin-bottom: 2.4rem; }
   .fq-social-finale__head small { font-size: .64rem; letter-spacing: .15em; }
   .fq-social-finale__head h2 { font-size: clamp(2rem, 10vw, 3.6rem); }
@@ -2638,21 +2674,6 @@ html[lang^="ja"] .fq-hero__content h1 { letter-spacing: -.035em; }
   .fq-social-card:focus-visible,
   .fq-social-card.is-primary:hover,
   .fq-social-card.is-primary:focus-visible { transform: translateY(-3px); }
-  .fq-ronghua--peony {
-    top: -1rem;
-    left: -72%;
-    width: 165vw;
-    opacity: .15;
-  }
-  .fq-ronghua--blue {
-    right: -76%;
-    bottom: -3rem;
-    left: auto;
-    width: 170vw;
-    opacity: .1;
-  }
-  .fq-ronghua--magnolia,
-  .fq-ronghua--osmanthus { display: none; }
 }
 
 @media (max-width: 480px) {
@@ -2776,7 +2797,8 @@ html[lang^="ja"] .fq-hero__content h1 { letter-spacing: -.035em; }
   .fq-stage__floor,
   .fq-seals,
   .fq-seal,
-  .fq-ronghua-field,
+  .fq-page-ronghua,
+  .fq-social-finale::after,
   [data-fq-seal] { display: none; }
 
   .fq-control,
@@ -2817,7 +2839,8 @@ html[lang^="ja"] .fq-hero__content h1 { letter-spacing: -.035em; }
   .fq-stage__bg,
   .fq-stage__light { display: none !important; }
 
-  .fq-ronghua-field { display: none !important; }
+  .fq-page-ronghua,
+  .fq-social-finale::after { display: none !important; }
 
   .fq-social-finale {
     min-height: 0;

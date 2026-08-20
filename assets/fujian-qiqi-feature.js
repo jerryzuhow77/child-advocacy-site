@@ -3,6 +3,8 @@
 
   document.documentElement.classList.add('fq-js');
 
+  const featureScript = document.currentScript;
+
   const ready = callback => {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', callback, { once: true });
@@ -1398,6 +1400,41 @@
       });
     };
 
+    const initPageRonghua = () => {
+      if (!featureScript || !featureScript.src) return;
+      const assetBase = new URL('./', featureScript.src);
+      const placements = [
+        ['.fq-boundary', 'tian-tian-ronghua-refined-blue-branch-20260818.webp'],
+        ['.fq-guide', 'tian-tian-ronghua-refined-four-evidence-20260818.webp'],
+        ['#waiting', 'tian-tian-ronghua-refined-peony-butterfly-20260818.webp'],
+        ['#signals', 'tian-tian-ronghua-refined-snow-magnolia-20260818.webp'],
+        ['#court-findings', 'tian-tian-ronghua-refined-frost-chrysanthemum-20260818.webp'],
+        ['.fq-interlude', 'tian-tian-ronghua-refined-moon-lotus-20260818.webp'],
+        ['#justice', 'tian-tian-ronghua-refined-osmanthus-crescent-20260818.webp'],
+        ['#protection', 'tian-tian-ronghua-refined-ten-knot-camellia-20260818.webp'],
+        ['.fq-help', 'tian-tian-ronghua-refined-vermilion-phoenix-20260818.webp'],
+        ['#sources', 'qiqi-ronghua-refined-plum-kingfisher-20260820.webp']
+      ];
+
+      placements.forEach((placement, index) => {
+        const section = doc.querySelector(placement[0]);
+        if (!section || section.querySelector(':scope > .fq-page-ronghua')) return;
+        const wrapper = doc.createElement('span');
+        const image = doc.createElement('img');
+        wrapper.className = 'fq-page-ronghua fq-page-ronghua--' + String(index + 1).padStart(2, '0');
+        wrapper.setAttribute('aria-hidden', 'true');
+        image.src = new URL('art/' + placement[1], assetBase).href;
+        image.alt = '';
+        image.width = 1200;
+        image.height = 800;
+        image.loading = 'lazy';
+        image.decoding = 'async';
+        image.dataset.fqRonghua = '';
+        wrapper.append(image);
+        section.prepend(wrapper);
+      });
+    };
+
     const initRonghua = () => {
       if (!gsapEngine || reducedMotion || saveData) return;
       const flowers = [...doc.querySelectorAll('[data-fq-ronghua]')]
@@ -1422,6 +1459,7 @@
       });
     };
 
+    initPageRonghua();
     initReveals();
     initHeroParallax();
     initSeals();
@@ -1677,7 +1715,7 @@
     });
 
     window.FujianQiqiFeature = {
-      version: '1.2.0',
+      version: '1.3.0',
       play(target) {
         const state = stateFor(target);
         return state ? playScene(state) : false;
