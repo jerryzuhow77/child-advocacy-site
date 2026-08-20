@@ -150,7 +150,21 @@
     if (!('serviceWorker' in navigator)) return;
     if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') return;
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register(new URL('sw.js', siteBase).href, { scope: siteBase.pathname })
+      const hadServiceWorkerController = Boolean(navigator.serviceWorker.controller);
+      let reloadingForUpdate = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!hadServiceWorkerController || reloadingForUpdate) return;
+        reloadingForUpdate = true;
+        window.location.reload();
+      });
+      navigator.serviceWorker.register(new URL('sw.js?v=20260820-visitor-submission-v5', siteBase).href, {
+        scope: siteBase.pathname,
+        updateViaCache: 'none'
+      })
+        .then(registration => {
+          if (registration.waiting) registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+          return registration.update();
+        })
         .catch(error => console.warn('[PWA] Service worker registration failed:', error));
     }, { once: true });
   }
