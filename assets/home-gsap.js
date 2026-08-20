@@ -570,6 +570,11 @@
       var items = all(':scope > .home-activity-feature, :scope > .home-activity-record-divider', viewport);
       var moveProgress = reduceMotion ? null : gsap.quickTo(progress, 'scaleX', { duration: 0.2, ease: 'power1.out' });
       var ticking = false;
+      var autoTimeline = null;
+      var restartTimer = 0;
+      var isVisible = false;
+      var isPointerInside = false;
+      var hasFocus = false;
 
       function renderProgress() {
         ticking = false;
@@ -589,7 +594,51 @@
         window.requestAnimationFrame(renderProgress);
       }
 
+      function canAutoPlay() {
+        return isVisible && !isPointerInside && !hasFocus && !reduceMotion;
+      }
+
+      function resumeAuto(delay) {
+        window.clearTimeout(restartTimer);
+        restartTimer = window.setTimeout(function () {
+          if (autoTimeline && canAutoPlay()) autoTimeline.play();
+        }, delay || 0);
+      }
+
+      function pauseAuto(resumeDelay) {
+        if (autoTimeline) autoTimeline.pause();
+        window.clearTimeout(restartTimer);
+        if (resumeDelay) resumeAuto(resumeDelay);
+      }
+
+      function buildAutoTimeline() {
+        if (reduceMotion) return;
+        if (autoTimeline) autoTimeline.kill();
+        var max = Math.max(0, viewport.scrollHeight - viewport.clientHeight);
+        if (max < 40) return;
+        var duration = Math.max(32, Math.min(96, max / 34));
+        autoTimeline = gsap.timeline({
+          paused: true,
+          repeat: -1,
+          onRepeat: scheduleProgress
+        });
+        autoTimeline
+          .to({}, { duration: 2.4 })
+          .to(viewport, {
+            scrollTop: max,
+            duration: duration,
+            ease: 'none',
+            onUpdate: scheduleProgress
+          })
+          .to({}, { duration: 2 })
+          .set(viewport, { scrollTop: 0 })
+          .call(scheduleProgress)
+          .to({}, { duration: 1.4 });
+        if (canAutoPlay()) autoTimeline.play();
+      }
+
       function moveViewport(direction) {
+        pauseAuto(6200);
         viewport.scrollBy({
           top: direction * Math.max(280, viewport.clientHeight * 0.78),
           behavior: reduceMotion ? 'auto' : 'smooth'
@@ -597,13 +646,53 @@
       }
 
       viewport.addEventListener('scroll', scheduleProgress, { passive: true });
-      window.addEventListener('resize', scheduleProgress, { passive: true });
+      window.addEventListener('resize', function () {
+        scheduleProgress();
+        window.clearTimeout(restartTimer);
+        restartTimer = window.setTimeout(buildAutoTimeline, 240);
+      }, { passive: true });
       all('img', viewport).forEach(function (img) {
-        if (!img.complete) img.addEventListener('load', scheduleProgress, { once: true });
+        if (!img.complete) img.addEventListener('load', function () {
+          scheduleProgress();
+          buildAutoTimeline();
+        }, { once: true });
       });
       if (up) up.addEventListener('click', function () { moveViewport(-1); });
       if (down) down.addEventListener('click', function () { moveViewport(1); });
+
+      shell.addEventListener('pointerenter', function () {
+        isPointerInside = true;
+        pauseAuto();
+      });
+      shell.addEventListener('pointerleave', function () {
+        isPointerInside = false;
+        resumeAuto(1200);
+      });
+      shell.addEventListener('focusin', function () {
+        hasFocus = true;
+        pauseAuto();
+      });
+      shell.addEventListener('focusout', function () {
+        hasFocus = false;
+        resumeAuto(1800);
+      });
+      viewport.addEventListener('wheel', function () { pauseAuto(6200); }, { passive: true });
+      viewport.addEventListener('touchstart', function () { pauseAuto(); }, { passive: true });
+      viewport.addEventListener('touchend', function () { resumeAuto(6200); }, { passive: true });
+      viewport.addEventListener('pointerdown', function () { pauseAuto(6200); }, { passive: true });
+
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          isVisible = entries[0] && entries[0].isIntersecting && entries[0].intersectionRatio >= 0.24;
+          if (isVisible) resumeAuto(900);
+          else pauseAuto();
+        }, { threshold: [0, 0.24, 0.6] }).observe(shell);
+      } else {
+        isVisible = true;
+      }
+
       renderProgress();
+      buildAutoTimeline();
 
       if (reduceMotion) return;
 
