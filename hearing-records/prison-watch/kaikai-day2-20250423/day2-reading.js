@@ -251,6 +251,16 @@
     stagger: .07,
     ease: 'power3.out'
   });
+  gsap.from('.day2-remembrance span', {
+    y: 22,
+    rotate: -5,
+    scale: .82,
+    autoAlpha: 0,
+    duration: .72,
+    delay: .28,
+    stagger: .11,
+    ease: 'back.out(1.7)'
+  });
   gsap.from('.day2-hero-poster', { x: 55, rotate: 5, autoAlpha: 0, duration: 1.15, ease: 'power3.out' });
   gsap.to('.day2-hero-paper', {
     yPercent: 12,
