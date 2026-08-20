@@ -212,6 +212,32 @@
     });
   }
 
+  function animateHearingZone() {
+    var zone = document.querySelector('.home-hearing-zone');
+    if (!zone) return;
+    var head = zone.querySelector('.home-hearing-zone-head');
+    var poster = zone.querySelector('.home-hearing-zone-poster');
+    var copy = zone.querySelector('.home-hearing-zone-copy');
+    var stamp = zone.querySelector('.home-hearing-zone-stamp');
+
+    if (head) gsap.fromTo(head, { y: 28, autoAlpha: 0 }, {
+      y: 0, autoAlpha: 1, duration: .85, ease: 'power2.out',
+      scrollTrigger: { trigger: zone, start: 'top 82%', once: true }
+    });
+    if (poster) gsap.fromTo(poster, { x: -46, rotate: -4, autoAlpha: 0 }, {
+      x: 0, rotate: -1.2, autoAlpha: 1, duration: 1, ease: 'power3.out',
+      scrollTrigger: { trigger: poster, start: 'top 86%', once: true }
+    });
+    if (copy) gsap.fromTo(copy.children, { x: 34, autoAlpha: 0 }, {
+      x: 0, autoAlpha: 1, duration: .72, stagger: .08, ease: 'power2.out',
+      scrollTrigger: { trigger: copy, start: 'top 84%', once: true }
+    });
+    if (stamp) gsap.to(stamp, {
+      rotate: 8, y: -10, ease: 'none',
+      scrollTrigger: { trigger: zone, start: 'top bottom', end: 'bottom top', scrub: .8 }
+    });
+  }
+
   function addCardTilt() {
     if (!finePointer) return;
     var cards = all('.home-news-card, .home-case-reel-card, .home-progress-card, .impact-metric-card, .remember-kaikai-card');
@@ -346,6 +372,7 @@
     revealGroup('.social-preview-grid', ':scope > *', 0);
     addReelSheen();
     animateDecorations();
+    animateHearingZone();
     addCardTilt();
     window.setTimeout(function () { ScrollTrigger.refresh(); }, 250);
   }
