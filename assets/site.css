@@ -8225,3 +8225,13 @@ html{
     color:var(--home-copy,#625f5b)!important;
   }
 }
+
+
+/* 2026-08-20 multilingual visibility and viewport containment */
+html,body{max-width:100%;overflow-x:hidden}
+@supports(overflow:clip){html,body{overflow-x:clip}}
+.language-switcher{background:rgba(255,255,255,.94)!important;border-color:rgba(24,50,71,.32)!important;box-shadow:0 4px 14px rgba(20,45,65,.12)}
+.language-switcher a{color:#243f55!important;font-weight:950!important;text-shadow:none!important}
+.language-switcher a:hover,.language-switcher a:focus-visible,.language-switcher a[aria-current="true"]{color:#fff!important}
+.home-case-reel,.home-case-reel-viewport,.home-crafted-grid,.home-crafted-section{max-width:100%;overflow-x:clip}
+@media(max-width:760px){.language-switcher a{min-width:35px;min-height:35px;font-size:.8rem}}
