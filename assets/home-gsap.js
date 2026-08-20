@@ -479,9 +479,119 @@
     if (next) next.addEventListener('click', function () { rotateBy(-step); });
   }
 
+
+  function initActivityRecordScroller() {
+    all('[data-home-activity-shell]').forEach(function (shell) {
+      var viewport = shell.querySelector('[data-home-activity-scroll]');
+      var progress = shell.querySelector('[data-home-activity-progress]');
+      var up = shell.querySelector('[data-home-activity-up]');
+      var down = shell.querySelector('[data-home-activity-down]');
+      if (!viewport || !progress) return;
+
+      var items = all(':scope > .home-activity-feature, :scope > .home-activity-record-divider', viewport);
+      var moveProgress = reduceMotion ? null : gsap.quickTo(progress, 'scaleX', { duration: 0.2, ease: 'power1.out' });
+      var ticking = false;
+
+      function renderProgress() {
+        ticking = false;
+        var max = Math.max(0, viewport.scrollHeight - viewport.clientHeight);
+        var ratio = max ? Math.min(1, Math.max(0, viewport.scrollTop / max)) : 1;
+        if (moveProgress) moveProgress(ratio);
+        else progress.style.transform = 'scaleX(' + ratio + ')';
+        shell.classList.toggle('is-at-start', ratio <= 0.002);
+        shell.classList.toggle('is-at-end', ratio >= 0.998);
+        if (up) up.disabled = ratio <= 0.002;
+        if (down) down.disabled = ratio >= 0.998;
+      }
+
+      function scheduleProgress() {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(renderProgress);
+      }
+
+      function moveViewport(direction) {
+        viewport.scrollBy({
+          top: direction * Math.max(280, viewport.clientHeight * 0.78),
+          behavior: reduceMotion ? 'auto' : 'smooth'
+        });
+      }
+
+      viewport.addEventListener('scroll', scheduleProgress, { passive: true });
+      window.addEventListener('resize', scheduleProgress, { passive: true });
+      all('img', viewport).forEach(function (img) {
+        if (!img.complete) img.addEventListener('load', scheduleProgress, { once: true });
+      });
+      if (up) up.addEventListener('click', function () { moveViewport(-1); });
+      if (down) down.addEventListener('click', function () { moveViewport(1); });
+      renderProgress();
+
+      if (reduceMotion) return;
+
+      markActive(items);
+      ScrollTrigger.create({
+        trigger: shell,
+        start: 'top 88%',
+        once: true,
+        onEnter: function () {
+          var offset = window.innerWidth < 768 ? 10 : 22;
+          gsap.fromTo(shell, { y: offset, autoAlpha: 0.01 }, {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.72,
+            ease: 'power3.out',
+            clearProps: 'transform,opacity,visibility'
+          });
+          items.forEach(function (item, index) {
+            gsap.fromTo(item, {
+              y: offset,
+              autoAlpha: 0,
+              scale: 0.988
+            }, {
+              y: 0,
+              autoAlpha: 1,
+              scale: 1,
+              duration: 0.68,
+              delay: Math.min(index, 1) * 0.04,
+              ease: 'power3.out',
+              clearProps: 'transform,opacity,visibility',
+              scrollTrigger: {
+                trigger: item,
+                scroller: viewport,
+                start: 'top 87%',
+                once: true
+              }
+            });
+          });
+          all('.home-activity-clay-date', viewport).forEach(function (date, index) {
+            gsap.to(date, {
+              y: index % 2 ? -5 : 5,
+              rotate: index % 2 ? 4 : 9,
+              duration: 3.2 + index * 0.35,
+              repeat: -1,
+              yoyo: true,
+              ease: 'sine.inOut'
+            });
+          });
+          if (down) {
+            gsap.to(down, {
+              y: 3,
+              duration: 0.72,
+              repeat: 3,
+              yoyo: true,
+              ease: 'sine.inOut',
+              clearProps: 'transform'
+            });
+          }
+        }
+      });
+    });
+  }
+
   function init() {
     initDocumentDisc();
     initSpecialFeatureScroller();
+    initActivityRecordScroller();
     if (reduceMotion) return;
     addProgressBar();
     animateHeaderAndHero();
