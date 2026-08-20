@@ -3450,16 +3450,25 @@ html[lang] header .nav .special-feature-nav-menu .special-feature-menu-card:focu
 @media(prefers-reduced-motion:reduce){.chapter-one-content,.chapter-one-inner{min-height:auto}.chapter-coming-soon{min-height:0;margin-bottom:28px}}
 
 /* =====================================================================
-   2026-08-13 — Special Features: two-column hover-and-focus navigator
-   Desktop/tablet presents Kaikai Case and Social Observation side by side.
-   Mobile remains an accessible accordion with large tap targets.
+   2026-08-20 — Special Features: contained three-column navigator
+   Kaikai Case, Social Observation and Prison Watch stay inside the
+   Special Features dropdown. Mobile remains an accessible accordion.
    ===================================================================== */
 html[lang] header .nav .special-feature-nav-menu{
-  width:min(920px,94vw);
-  grid-template-columns:repeat(2,minmax(0,1fr));
+  width:min(1080px,96vw);
+  grid-template-columns:repeat(3,minmax(0,1fr));
   align-items:start;
   gap:12px;
   padding:13px;
+}
+
+/* Never expose the feature groups as top-level navigation. */
+html[lang] header .nav .special-feature-nav:not(.is-open) > .special-feature-nav-menu{
+  display:none!important;
+}
+
+html[lang] header .nav .special-feature-nav.is-open > .special-feature-nav-menu{
+  display:grid;
 }
 
 .special-feature-menu-hint{
