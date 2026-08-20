@@ -1398,9 +1398,34 @@
       });
     };
 
+    const initRonghua = () => {
+      if (!gsapEngine || reducedMotion || saveData) return;
+      const flowers = [...doc.querySelectorAll('[data-fq-ronghua]')]
+        .filter((node, index, collection) => collection.indexOf(node) === index)
+        .filter(node => {
+          const wrapper = node.closest('.fq-ronghua');
+          return !wrapper || window.getComputedStyle(wrapper).display !== 'none';
+        });
+      flowers.forEach((flower, index) => {
+        const direction = index % 2 ? -1 : 1;
+        const tween = gsapEngine.to(flower, {
+          xPercent: direction * (compactQuery.matches ? 1.1 : 1.8),
+          yPercent: index % 2 ? 1.8 : -2.2,
+          rotation: direction * (compactQuery.matches ? 0.35 : 0.65),
+          duration: 10 + index * 2.4,
+          ease: 'sine.inOut',
+          repeat: -1,
+          yoyo: true,
+          transformOrigin: '50% 50%'
+        });
+        sealTweens.push(tween);
+      });
+    };
+
     initReveals();
     initHeroParallax();
     initSeals();
+    initRonghua();
 
     /* Scene and track observers ------------------------------------------ */
     if ('IntersectionObserver' in window && scenes.length) {
@@ -1652,7 +1677,7 @@
     });
 
     window.FujianQiqiFeature = {
-      version: '1.1.0',
+      version: '1.2.0',
       play(target) {
         const state = stateFor(target);
         return state ? playScene(state) : false;
