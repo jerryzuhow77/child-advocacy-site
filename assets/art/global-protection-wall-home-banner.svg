@@ -45,4 +45,28 @@
 </g>
 <g transform="translate(760 745)" fill="#f3b1ae" opacity=".9"><path d="M0 34c18-35 55-35 72 0-8 18-25 31-36 42C25 65 8 52 0 34z"/><circle cx="36" cy="30" r="6" fill="#fff3e7"/></g>
 <g fill="#fff" opacity=".75"><circle cx="690" cy="318" r="7"/><circle cx="735" cy="273" r="4"/><circle cx="1340" cy="332" r="6"/><circle cx="1475" cy="284" r="4"/></g>
+
+<g id="sea-art-details" opacity=".88">
+ <g transform="translate(630 388)" filter="url(#shadow)">
+  <path d="M0 72h128L50 0v72" fill="#fff8ef" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M50 0v116" stroke="#806f78" stroke-width="6" stroke-linecap="round"/>
+  <path d="M50 14L4 72h46z" fill="#efabb1"/><path d="M56 25l65 47H56z" fill="#f6d9a7"/>
+  <path d="M-12 74h156l-24 30H16z" fill="#6aaab3" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>
+ </g>
+ <g fill="none" stroke="#7c8793" stroke-width="5" stroke-linecap="round" opacity=".65">
+  <path d="M430 214q20-20 40 0q20-20 40 0"/><path d="M548 175q14-14 28 0q14-14 28 0"/>
+ </g>
+ <g fill="#f8d9c9" stroke="#fff8ee" stroke-width="4">
+  <path d="M370 548c18-15 42-14 58 3-16 16-39 18-58-3zm58 3 24-17v35z"/>
+  <path d="M510 590c15-13 35-12 49 2-14 14-34 16-49-2zm49 2 20-14v29z"/>
+  <path d="M1360 558c17-14 39-13 54 3-15 14-37 16-54-3zm54 3 22-16v32z"/>
+ </g>
+ <g fill="#fff9ef" opacity=".78"><circle cx="338" cy="621" r="10"/><circle cx="316" cy="648" r="6"/><circle cx="1340" cy="617" r="9"/><circle cx="1370" cy="645" r="5"/></g>
+ <g transform="translate(196 712)" filter="url(#shadow)">
+  <path d="M0 54c36-51 92-51 128 0-38 43-92 43-128 0z" fill="#f5b9b7" stroke="#fff0e5" stroke-width="6"/>
+  <path d="M64 19v72M28 34l72 40M100 34L28 74" fill="none" stroke="#fff0e5" stroke-width="4" opacity=".72"/>
+  <circle cx="64" cy="54" r="13" fill="#fff6d8"/>
+ </g>
+ <g transform="translate(450 742)" fill="none" stroke="#fff7ed" stroke-width="7" stroke-linecap="round"><path d="M0 48c22-38 70-38 92 0-20 34-72 34-92 0z"/><path d="M46 12v70"/></g>
+</g>
 </svg>
