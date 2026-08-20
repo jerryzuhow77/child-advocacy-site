@@ -57,6 +57,68 @@
   color: #624f55;
 }
 
+.day2-observation-focus {
+  border-color: rgba(143, 63, 75, .34);
+  background: linear-gradient(135deg, rgba(255, 249, 245, .98), rgba(255, 232, 230, .68));
+  box-shadow: 0 18px 42px rgba(96, 55, 64, .12);
+}
+
+.day2-observation-focus .day2-dialogue-answer {
+  position: relative;
+}
+
+.day2-observation-focus .day2-dialogue-answer::after {
+  content: "重點證詞";
+  position: absolute;
+  right: 12px;
+  top: 10px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #8f3f4b;
+  color: #fff;
+  font-size: .65rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+
+html[lang="en"] .day2-observation-focus .day2-dialogue-answer::after {
+  content: "KEY TESTIMONY";
+}
+
+html[lang="ja"] .day2-observation-focus .day2-dialogue-answer::after {
+  content: "重要証言";
+}
+
+.day2-observation-note {
+  border-left-color: #8f3f4b;
+  background: linear-gradient(145deg, #fff7f3, #f8e6e4);
+}
+
+.day2-observation-note > b {
+  color: #733640;
+  font-size: 1rem;
+}
+
+.day2-observation-note > div p {
+  margin: .65em 0;
+}
+
+[data-note-lang] {
+  display: none;
+}
+
+html[lang="zh-Hant"] [data-note-lang="zh"],
+html[lang="zh-Hans"] [data-note-lang="zh"],
+html[lang="en"] [data-note-lang="en"],
+html[lang="ja"] [data-note-lang="ja"] {
+  display: block;
+}
+
+b > [data-note-lang],
+small > [data-note-lang] {
+  width: 100%;
+}
+
 .day2-toc {
   width: 196px;
 }
@@ -443,6 +505,14 @@
     margin-left: 0;
   }
 
+  .day2-observation-focus .day2-dialogue-answer {
+    padding-top: 44px;
+  }
+
+  .day2-observation-note {
+    padding: 18px 16px;
+  }
+
   .day2-hero-poster img {
     width: min(68vw, 290px);
     height: auto;
@@ -547,8 +617,3 @@
     transition: none;
   }
 }
-
-
-/* Stronger multilingual switcher contrast */
-.day2-language-switcher{background:rgba(255,255,255,.96);border-color:rgba(38,62,98,.3);box-shadow:0 4px 14px rgba(20,45,65,.12)}
-.day2-language-switcher a{color:#203b55;font-size:.8rem;font-weight:950}
