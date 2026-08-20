@@ -6079,6 +6079,8 @@ header .nav .social-case-nav-menu .historical-region-children a{
 .public-view-count-card .public-view-unit::after{content:"瀏覽";margin-left:2px}
 .home-progress-card .public-view-count-card{margin-top:8px}
 .home-case-reel-copy .public-view-count-card{align-self:flex-start}
+.home-activity-kicker .public-view-count-card{margin-top:0;padding:6px 9px;border-color:rgba(122,91,76,.2);background:rgba(255,250,242,.74);color:#665249;text-transform:none;letter-spacing:.03em}
+.home-activity-kicker .public-view-count-card svg{fill:#a66854}
 .social-case-status-row .public-view-count-directory{margin:0 0 0 auto;align-self:center}
 html[lang="zh-Hans"] .public-view-count-card .public-view-unit::after{content:"浏览"}
 html[lang="en"] .public-view-count-card .public-view-unit::after,

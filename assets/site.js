@@ -1247,6 +1247,10 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     if (anchor.classList.contains('home-news-card')) return anchor.querySelector('.home-news-card-copy') || anchor;
     if (anchor.classList.contains('home-case-reel-card')) return anchor.querySelector('.home-case-reel-copy') || anchor;
     if (anchor.classList.contains('home-document-disc-card')) return anchor.querySelector('span') || anchor;
+    if (anchor.classList.contains('home-activity-primary')) {
+      const record = anchor.closest('.home-activity-feature, .home-activity-previous');
+      return record?.querySelector('.home-activity-kicker') || record?.querySelector('.home-activity-story') || anchor;
+    }
     if (anchor.classList.contains('home-crafted-card')) return anchor.querySelector('.home-crafted-copy') || anchor;
     if (anchor.classList.contains('home-historical-card')) return anchor.querySelector('span:last-child') || anchor;
     if (anchor.classList.contains('home-hearing-zone-poster')) return anchor.closest('.home-hearing-zone-feature')?.querySelector('.home-hearing-zone-copy') || anchor;
@@ -1277,6 +1281,7 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
   function initHomepageCardCounters() {
     document.querySelectorAll([
       'a.home-news-card[href]',
+      'a.home-activity-primary[href]',
       'a.home-progress-card[href]',
       'a.home-document-disc-card[href]',
       'a.home-hearing-zone-poster[href]',
