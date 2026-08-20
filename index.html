@@ -8,7 +8,7 @@
 <link href="./assets/home-view-counter-20260811.css?v=2" rel="stylesheet">
 <link href="./assets/chair-special.css?v=20260815-special-accordion2" rel="stylesheet">
 <link href="./assets/pwa-install.css?v=20260819-3" rel="stylesheet">
-<link href="./assets/home-gsap.css?v=20260820-hearing-zone-2" rel="stylesheet">
+<link href="./assets/home-gsap.css?v=20260820-ferris-flash-3" rel="stylesheet">
 <link href="./assets/global-protection-home.css?v=20260819-2" rel="stylesheet">
 <link href="./assets/brand/favicon.jpg" rel="icon">
 <link href="./manifest.webmanifest?v=20260819-1" rel="manifest">
@@ -220,119 +220,40 @@
 </a>
 </div>
 </section>
-<section aria-labelledby="homeNewsHubTitle" class="home-news-hub" id="latest-news">
+<section aria-labelledby="newsFlashTitle" class="home-latest-flash home-document-disc-section" id="news-flash">
 <div class="container">
-<div class="home-news-hub-head">
-<div>
-<div class="art-eyebrow dark">LATEST · COURT · ACTION · ADVOCACY</div>
-<h2 id="homeNewsHubTitle">最新消息</h2>
-<p>把開庭資訊、案件快報、活動紀錄、判決進度與制度倡議整理成橫幅式選單，像選擇影片一樣快速進入專頁。</p>
-</div>
-<div aria-hidden="true" class="home-news-hub-mark"><span>NEWS</span><b>即時追蹤</b></div>
-</div>
-<nav aria-label="最新消息分類" class="home-news-tabs">
-<a class="is-active" href="#news-focus">全部</a>
-<a href="#news-hearing">⚖ 開庭資訊</a>
-<a href="#news-flash">◉ 最新資訊</a>
-<a href="#news-activity">📣 活動資訊</a>
-<a href="#news-progress">📜 判決更新</a>
-<a href="#news-advocacy">🛡 制度倡議</a>
-</nav>
-<article class="home-news-focus" id="news-focus">
-<a aria-label="查看陳尚潔案案件介紹" class="home-news-focus-media" href="./cases/chen-shangjie/">
-<img alt="剴剴案陳尚潔二審開庭資訊海報" decoding="async" loading="lazy" src="./assets/art/chen-shangjie-hearing-20260916.jpg">
-<span class="home-news-focus-badge">⚖ 即將開庭</span>
-</a>
-<div class="home-news-focus-copy">
-<div class="home-news-focus-kicker"><span>最新焦點</span><time datetime="2026-09-16T14:30">2026.09.16・14:30</time></div>
-<h3>剴剴案｜陳尚潔二審即將開庭</h3>
-<p>兒福聯盟社工陳尚潔涉過失致死案進入二審程序。開庭地點為臺北市中正區博愛路127號，第十四法庭。</p>
-<div class="home-news-focus-details">
-<span><small>日期</small><b>9月16日（三）</b></span>
-<span><small>時間</small><b>14:30</b></span>
-<span><small>法庭</small><b>第十四法庭</b></span>
-</div>
-<div class="home-news-focus-actions">
-<a class="btn home-news-primary" href="./cases/chen-shangjie/">查看案件介紹 <span>→</span></a>
-<span>旁聽紀錄待更新</span>
-</div>
-</div>
-</article>
-<section aria-labelledby="newsHearingTitle" class="home-news-stream" id="news-hearing">
-<div class="home-news-stream-head"><div><span class="stream-icon">⚖</span><h3 id="newsHearingTitle">開庭資訊</h3><p>即將到來的庭期與法院程序，一眼掌握。</p></div><a href="./cases/chen-shangjie/">查看案件進度 →</a></div>
-<div class="home-news-reel">
-<a class="home-news-card is-hearing" href="./cases/chen-shangjie/">
-<div class="home-news-card-media"><img alt="陳尚潔二審開庭資訊" src="./assets/art/chen-shangjie-hearing-20260916.jpg"><span>即將開庭</span></div>
-<div class="home-news-card-copy"><small>2026.09.16 · 14:30</small><strong>陳尚潔二審｜第十四法庭</strong><p>臺北市中正區博愛路127號。</p></div>
-</a>
-<a class="home-news-card home-news-card-guide" href="./cases/">
-<div class="home-news-guide-icon">⚖</div>
-<div class="home-news-card-copy"><small>COURT SCHEDULE</small><strong>庭期持續追蹤</strong><p>新的公開開庭資訊將持續整理更新。</p></div>
-</a>
-</div>
-</section>
-<section aria-labelledby="newsFlashTitle" class="home-news-stream home-document-disc-section" id="news-flash">
-<div class="home-news-stream-head"><div><span class="stream-icon">◉</span><h3 id="newsFlashTitle">最新資訊</h3><p>最近更新的案件文件與專題，以半透明圓盤轉動呈現。</p></div><a href="./cases/">查看全部文件 →</a></div>
-<div class="home-document-disc-shell" data-document-disc>
-<div class="home-document-disc-orbit" role="list" aria-label="最近更新文件">
+<div class="home-news-stream-head home-flash-head"><div><div class="art-eyebrow dark">LATEST REPORTS · RECENTLY UPDATED</div><span class="stream-icon">✦</span><h2 id="newsFlashTitle">最新快報</h2><p>近期更新的案件文件、歷史案件與社會觀察，搭乘童趣摩天輪與你相遇。</p></div><a href="./cases/">查看全部文件 →</a></div>
+<div class="home-document-disc-shell is-ferris-wheel" data-document-disc>
+<div class="home-ferris-cloud cloud-one" aria-hidden="true"></div><div class="home-ferris-cloud cloud-two" aria-hidden="true"></div>
+<div class="home-ferris-spokes" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+<div class="home-document-disc-orbit" role="list" aria-label="八份近期更新文件">
 <a class="home-document-disc-card" role="listitem" data-view-counter-key="historical-fu-junxiang-shared" href="./historical-cases/regions/taiwan/fu-junxiang/"><img alt="" src="./assets/art/fu-xiaodi-care-ledger-20260816.svg"><span><small>08.16 · 歷史案件</small><strong>傅小弟案</strong><em>公開歷審與制度脈絡</em></span></a>
 <a class="home-document-disc-card" role="listitem" href="./historical-cases/regions/taiwan/wanghao/"><img alt="" src="./assets/images/wanghao-home-case-guide-v3.webp"><span><small>08.16 · 歷史案件</small><strong>王昊案</strong><em>名字寫進法條之後</em></span></a>
 <a class="home-document-disc-card" role="listitem" href="./cases/xuanxuan/"><img alt="" src="./assets/art/xuanxuan-home-documentary-20260814.webp"><span><small>08.14 · 案件專題</small><strong>萱萱案</strong><em>五次警訊與安全確認</em></span></a>
 <a class="home-document-disc-card" role="listitem" href="./historical-cases/regions/mainland-china/tian-tian/"><img alt="" src="./assets/art/tian-tian-ink-paper-documentary-20260814.webp"><span><small>08.14 · 歷史案件</small><strong>內蒙古田田案</strong><em>她沒有等到春天</em></span></a>
+<a class="home-document-disc-card" role="listitem" href="./historical-cases/regions/japan/kurihara-mia/"><img alt="" src="./assets/art/kurihara-mia-mono-no-aware-hero-20260813.webp"><span><small>08.13 · 歷史案件</small><strong>栗原心愛事件</strong><em>守不住的問卷</em></span></a>
+<a class="home-document-disc-card" role="listitem" href="./cases/lin-xinci/features/missing-four-days/"><img alt="" src="./assets/art/lin-xinci-missing-four-days-universal.png"><span><small>08.13 · 案件專題</small><strong>林心慈案</strong><em>消失的四天</em></span></a>
 <a class="home-document-disc-card" role="listitem" href="./features/social-observation/see-hear-after/"><img alt="" src="./assets/art/see-hear-after-concept-visual.jpg"><span><small>08.13 · 社會觀察</small><strong>看見・聽見之後</strong><em>兒虐辨識與安全行動</em></span></a>
+<a class="home-document-disc-card" role="listitem" href="./court-comics/episode-03/"><img alt="" src="./court-comics/episode-03/images/page-01.jpg"><span><small>08.12 · 法庭漫畫</small><strong>回顧篇 VOL.3</strong><em>主管在法庭上說了什麼</em></span></a>
 </div>
-<div class="home-document-disc-center" aria-hidden="true"><span>RECENT</span><strong>最近更新</strong><small>拖曳或使用按鈕轉動</small></div>
+<div class="home-document-disc-center" aria-hidden="true"><span>CHILDREN'S WHEEL</span><strong>最新快報</strong><small>八份近期更新文件</small></div>
+<div class="home-ferris-stand" aria-hidden="true"><i></i><i></i><b></b></div>
 <button class="home-document-disc-control is-prev" type="button" data-disc-prev aria-label="上一份文件">‹</button>
 <button class="home-document-disc-control is-next" type="button" data-disc-next aria-label="下一份文件">›</button>
 </div>
-<p class="home-document-disc-help">點選圓盤上的文件即可閱讀；滑鼠移入或觸碰操作時會暫停自動轉動。</p>
-</section>
-<section aria-labelledby="newsActivityTitle" class="home-news-stream" id="news-activity">
-<div class="home-news-stream-head"><div><span class="stream-icon">📣</span><h3 id="newsActivityTitle">活動資訊</h3><p>街頭倡議、聲援與公共參與紀錄。</p></div><a href="./activity-records/">查看活動紀錄 →</a></div>
-<div class="home-news-reel home-news-reel-activity">
-<a class="home-news-card is-wide" href="./activity-records/20260801-ketagal-rally/">
-<div class="home-news-card-media"><img alt="反毒駕反酒駕凱道大遊行" src="./poster-rally.jpg"><span class="is-activity">活動紀錄</span></div>
-<div class="home-news-card-copy"><small>2026.08.01 · 凱道</small><strong>反毒駕、反酒駕凱道大遊行</strong><p>被害者家屬支持、兒少保護倡議與公共參與紀錄。</p></div>
-</a>
-<a class="home-news-card home-news-card-guide" href="./activity-records/albums/20260801-ketagal-rally/">
-<div class="home-news-guide-icon">▧</div>
-<div class="home-news-card-copy"><small>PHOTO ALBUM</small><strong>活動相簿</strong><p>以影像保存現場，讓公共倡議留下可查閱的紀錄。</p></div>
-</a>
-<a class="home-news-card home-news-card-guide" href="./activity-records/">
-<div class="home-news-guide-icon">＋</div>
-<div class="home-news-card-copy"><small>NEXT ACTION</small><strong>更多活動持續更新</strong><p>法院聲援、街頭宣導與兒少保護行動將陸續整理。</p></div>
-</a>
+<p class="home-document-disc-help">摩天輪會緩慢轉動；滑鼠移入、觸碰或拖曳時暫停，點選車廂即可閱讀文件。</p>
 </div>
 </section>
-<section aria-labelledby="newsProgressTitle" class="home-news-stream" id="news-progress">
-<div class="home-news-stream-head"><div><span class="stream-icon">📜</span><h3 id="newsProgressTitle">判決與案件進度</h3><p>用狀態卡快速辨識目前司法階段。</p></div><a href="./cases/">案件總覽 →</a></div>
-<div class="home-progress-reel">
-<a class="home-progress-card is-xuanxuan" href="./cases/xuanxuan/"><span class="progress-state is-pending">司法進度追蹤中</span><strong>萱萱案｜她曾被看見，卻沒有被接住</strong><p>五次警訊、兩座城市，以及一場沒有完成的安全確認。</p><small>公開司法資料持續查證・開庭時間待法院公開・起訴不等於有罪</small></a>
-<a class="home-progress-card" href="./cases/kaikai/"><span class="progress-state is-final">三審定讞</span><strong>剴剴案｜生命最後115天</strong><p>劉彩萱無期徒刑；劉若琳18年。</p><small>2026.07.23</small></a>
-<a class="home-progress-card" href="./cases/chen-shangjie/"><span class="progress-state">二審中</span><strong>陳尚潔案｜三次訪視，沒有抵達的救援</strong><p>9/16 二審開庭。</p><small>過失致死一審有罪</small></a>
-<a class="home-progress-card" href="./cases/pan-cai-children/"><span class="progress-state is-pending">一審中</span><strong>潘、蔡兩童案｜在剴剴之前，傷害早已出現</strong><p>臺北地方法院審理中。</p><small>持續追蹤</small></a>
-<a class="home-progress-card" href="./cases/dui-police-killing/"><span class="progress-state">二審中</span><strong>毒駕殺警案｜那一夜，他沒有回家</strong><p>一審判處死刑，尚未確定。</p><small>高院審理中</small></a>
-<a class="home-progress-card" href="./cases/tucheng-two-year-old/"><span class="progress-state">二審中</span><strong>土城兩歲男童命案｜最後陪著他的，只有兩瓶牛奶</strong><p>量刑上訴持續審理。</p><small>旁聽紀錄已上線</small></a>
-<a class="home-progress-card" href="./cases/lin-xinci/features/missing-four-days/"><span class="progress-state is-pending">一審中</span><strong>林心慈案｜消失的四天</strong><p>2026年6月26日檢方提起公訴，目前尚無公開判決。</p><small>起訴不等於有罪・持續追蹤</small></a>
+<section aria-labelledby="newsHearingTitle" class="home-court-schedule" id="news-hearing">
+<div class="container">
+<div class="home-news-stream-head"><div><div class="art-eyebrow dark">COURT SCHEDULE</div><span class="stream-icon">⚖</span><h2 id="newsHearingTitle">開庭資訊</h2><p>即將到來的庭期與法院程序，一眼掌握。</p></div><a href="./cases/chen-shangjie/">查看案件進度 →</a></div>
+<div class="home-news-reel">
+<a class="home-news-card is-hearing" href="./cases/chen-shangjie/"><div class="home-news-card-media"><img alt="陳尚潔二審開庭資訊" src="./assets/art/chen-shangjie-hearing-20260916.jpg"><span>即將開庭</span></div><div class="home-news-card-copy"><small>2026.09.16 · 14:30</small><strong>陳尚潔二審｜第十四法庭</strong><p>臺北市中正區博愛路127號。</p></div></a>
+<a class="home-news-card home-news-card-guide" href="./cases/"><div class="home-news-guide-icon">⚖</div><div class="home-news-card-copy"><small>COURT SCHEDULE</small><strong>庭期持續追蹤</strong><p>新的公開開庭資訊將持續整理更新。</p></div></a>
+</div>
 </div>
 </section>
-<section aria-labelledby="newsAdvocacyTitle" class="home-news-stream home-advocacy-stream" id="news-advocacy">
-<div class="home-news-stream-head"><div><span class="stream-icon">🛡</span><h3 id="newsAdvocacyTitle">制度倡議</h3><p>從個案警訊回到制度設計，讓下一個孩子更早被看見。</p></div><a href="./about/">認識我們的行動 →</a></div>
-<div class="home-advocacy-feature">
-<div class="home-advocacy-grid">
-<a href="./cases/chen-shangjie/"><span>01</span><strong>高風險個案不預約訪視</strong><p>當警訊累積時，訪視必須能看見真實照顧環境。</p></a>
-<a href="./cases/kaikai/"><span>02</span><strong>兒虐警訊強制升級處理</strong><p>瘀青、消瘦、掉牙與精神改變不應被分開看待。</p></a>
-<a href="./cases/kaikai/"><span>03</span><strong>跨系統資訊即時串聯</strong><p>社福、托育、醫療與收出養資訊需要能彼此核對。</p></a>
-<a href="./about/"><span>04</span><strong>讓每一次訪視真正保護孩子</strong><p>從完成紀錄，走向風險辨識、追蹤與即時介入。</p></a>
-</div>
-<figure class="home-advocacy-art">
-<img alt="兩名幼童並坐於深藍紙雕拱門前，仰望星空與遠方曙光" loading="lazy" src="./assets/art/children-dawn-arch-paper-art.png">
-<figcaption><strong>從個案警訊，走向制度改變</strong><span>讓每一道微小的警訊被看見，也讓保護在傷害發生以前抵達。</span></figcaption>
-</figure>
-</div>
-</section>
-</div>
-</section><section class="home-hearing-zone" id="news-hearing-notes" aria-labelledby="homeHearingZoneTitle">
+<section class="home-hearing-zone" id="news-hearing-notes" aria-labelledby="homeHearingZoneTitle">
 <div class="container">
 <div class="home-hearing-zone-head">
 <div><div class="art-eyebrow dark">COURT HEARING NOTES · PUBLIC RECORD</div><h2 id="homeHearingZoneTitle">旁聽紀錄專區</h2><p>走進法庭，記下程序、證詞與每一個需要被看見的爭點。紀錄不代替判決，而是讓公共討論有可以核對的起點。</p></div>
@@ -596,7 +517,7 @@
 <script src="./assets/home-view-counter-20260811.js?v=5"></script>
 <script src="./assets/vendor/gsap-3.13.0.min.js"></script>
 <script src="./assets/vendor/ScrollTrigger-3.13.0.min.js"></script>
-<script src="./assets/home-gsap.js?v=20260820-hearing-zone-2"></script>
+<script src="./assets/home-gsap.js?v=20260820-ferris-flash-3"></script>
 <script id="site-qr-script">
 (()=>{const close=d=>{if(typeof d.close==='function')d.close();else d.removeAttribute('open');};document.querySelectorAll('[data-qr-target]').forEach(t=>{const d=document.getElementById(t.dataset.qrTarget);if(!d)return;t.addEventListener('click',()=>{if(typeof d.showModal==='function')d.showModal();else d.setAttribute('open','');});d.querySelector('.site-qr-close')?.addEventListener('click',()=>close(d));d.addEventListener('click',e=>{if(e.target===d)close(d);});});})();
 </script>
