@@ -338,6 +338,143 @@ small > [data-note-lang] {
   content: " ↓";
 }
 
+/* Wang ○-hong testimony scrutiny: source-to-source comparisons, not credibility findings. */
+.day3-scrutiny-intro {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  margin: 22px 0 26px;
+  padding: 20px 22px;
+  border: 2px solid rgba(143, 63, 75, .34);
+  border-radius: 22px;
+  background: linear-gradient(135deg, #fff8f4, #f7e4e3);
+  box-shadow: 0 16px 38px rgba(98, 50, 60, .11);
+}
+
+.day3-scrutiny-intro::before {
+  content: "!";
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50% 50% 16px;
+  background: #8f3f4b;
+  color: #fff;
+  font: 900 1.2rem/1 "Noto Serif TC", serif;
+  box-shadow: 0 8px 20px rgba(143, 63, 75, .22);
+}
+
+.day3-scrutiny-intro h3 {
+  margin: 0 0 7px;
+  color: #733640;
+  font: 900 clamp(1.2rem, 2.4vw, 1.55rem)/1.4 "Noto Serif TC", serif;
+}
+
+.day3-scrutiny-intro p {
+  margin: 0;
+  color: #5d4a50;
+  line-height: 1.78;
+}
+
+.day3-scrutiny {
+  margin: 0 0 34px;
+}
+
+.day3-scrutiny > header {
+  margin-bottom: 16px;
+}
+
+.day3-scrutiny > header small {
+  color: #8f3f4b;
+  font-weight: 900;
+  letter-spacing: .1em;
+}
+
+.day3-scrutiny > header h3 {
+  margin: 5px 0 0;
+  color: var(--indigo);
+  font: 900 clamp(1.45rem, 3vw, 2rem)/1.42 "Noto Serif TC", serif;
+}
+
+.day3-scrutiny-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.day3-scrutiny-card {
+  position: relative;
+  padding: 22px 20px 20px;
+  border: 1px solid rgba(143, 63, 75, .23);
+  border-top: 5px solid #9c4d59;
+  border-radius: 18px;
+  background: rgba(255, 252, 248, .96);
+  box-shadow: 0 13px 30px rgba(70, 55, 59, .09);
+}
+
+.day3-scrutiny-card > span {
+  display: inline-flex;
+  margin-bottom: 9px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #8f3f4b;
+  color: #fff;
+  font-size: .68rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+
+.day3-scrutiny-card h4 {
+  margin: 0 0 14px;
+  color: #6f313c;
+  font: 900 1.08rem/1.5 "Noto Serif TC", serif;
+}
+
+.day3-source-quote {
+  margin: 9px 0;
+  padding: 11px 12px;
+  border-left: 3px solid #e0b5ba;
+  border-radius: 0 11px 11px 0;
+  background: #fff5f1;
+  color: #4e555b;
+  font-size: .88rem;
+  line-height: 1.68;
+}
+
+.day3-source-quote b {
+  color: #7d3d48;
+}
+
+.day3-scrutiny-status {
+  margin: 13px 0 0;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(143, 63, 75, .28);
+  color: #354a5b;
+  font-size: .88rem;
+  font-weight: 750;
+  line-height: 1.72;
+}
+
+.day3-scrutiny-status strong {
+  color: #8f3f4b;
+}
+
+.day3-key-mark.is-disputed {
+  background: linear-gradient(transparent 18%, #f7b7bd 18%, #f7b7bd 91%, transparent 91%);
+  color: #5f2932;
+}
+
+.day3-dispute-note.is-scrutiny {
+  border-left-width: 6px;
+  border-left-color: #9c4d59;
+  background: linear-gradient(145deg, #fff5f2, #f6dfe0);
+}
+
+.day3-dispute-note.is-scrutiny > b {
+  color: #733640;
+}
+
 .day3-juror-wall article.is-current {
   border-color: rgba(169, 95, 108, .52);
   box-shadow: 0 26px 60px rgba(52, 66, 77, .16);
@@ -520,8 +657,14 @@ small > [data-note-lang] {
 
   .day3-lens-grid,
   .day3-procedure,
-  .day3-juror-wall {
+  .day3-juror-wall,
+  .day3-scrutiny-grid {
     grid-template-columns: 1fr;
+  }
+
+  .day3-scrutiny-intro {
+    grid-template-columns: 1fr;
+    padding: 18px 16px;
   }
 
   .day3-question-path {
@@ -617,5 +760,4 @@ small > [data-note-lang] {
     transition: none;
   }
 }
-
 
