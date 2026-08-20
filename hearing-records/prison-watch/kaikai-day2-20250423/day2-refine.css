@@ -104,14 +104,14 @@ html[lang="ja"] .day2-observation-focus .day2-dialogue-answer::after {
 }
 
 [data-note-lang] {
-  display: none;
+  display: none !important;
 }
 
 html[lang="zh-Hant"] [data-note-lang="zh"],
 html[lang="zh-Hans"] [data-note-lang="zh"],
 html[lang="en"] [data-note-lang="en"],
 html[lang="ja"] [data-note-lang="ja"] {
-  display: block;
+  display: block !important;
 }
 
 b > [data-note-lang],
