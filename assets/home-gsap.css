@@ -223,6 +223,8 @@
 .home-hearing-zone-head p{max-width:730px;margin:0;color:#647173;font-size:1rem}
 .home-hearing-zone-all{flex:0 0 auto;padding:10px 16px;border:1px solid rgba(90,72,66,.20);border-radius:999px;background:rgba(255,250,246,.66);color:#5b6d6f;font-weight:800;backdrop-filter:blur(8px)}
 .home-hearing-zone-feature{position:relative;z-index:2;display:grid;grid-template-columns:minmax(270px,.78fr) minmax(0,1.22fr);gap:clamp(30px,5vw,68px);align-items:center;padding:clamp(22px,4vw,48px);border:1px solid rgba(99,78,71,.15);border-radius:36px;background:rgba(255,250,246,.68);box-shadow:0 28px 70px rgba(73,63,60,.12);backdrop-filter:blur(12px)}
+.home-hearing-zone-feature+.home-hearing-zone-feature{margin-top:34px}
+.home-hearing-zone-feature-prison-watch{background:radial-gradient(circle at 12% 16%,rgba(244,194,199,.24),transparent 34%),radial-gradient(circle at 88% 80%,rgba(217,201,229,.22),transparent 32%),rgba(255,250,246,.76)}
 .home-hearing-zone-poster{position:relative;display:block;overflow:hidden;border-radius:26px;box-shadow:0 24px 50px rgba(62,53,50,.18);transform:rotate(-1.2deg)}
 .home-hearing-zone-poster::after{content:"";position:absolute;inset:0;background:linear-gradient(130deg,transparent 40%,rgba(255,255,255,.28),transparent 65%);transform:translateX(-120%)}
 .home-hearing-zone-poster:hover::after{transform:translateX(120%);transition:transform .9s ease}

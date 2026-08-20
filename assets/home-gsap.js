@@ -253,25 +253,28 @@
     var zone = document.querySelector('.home-hearing-zone');
     if (!zone) return;
     var head = zone.querySelector('.home-hearing-zone-head');
-    var poster = zone.querySelector('.home-hearing-zone-poster');
-    var copy = zone.querySelector('.home-hearing-zone-copy');
-    var stamp = zone.querySelector('.home-hearing-zone-stamp');
+    var features = all('.home-hearing-zone-feature', zone);
 
     if (head) gsap.fromTo(head, { y: 28, autoAlpha: 0 }, {
       y: 0, autoAlpha: 1, duration: .85, ease: 'power2.out',
       scrollTrigger: { trigger: zone, start: 'top 82%', once: true }
     });
-    if (poster) gsap.fromTo(poster, { x: -46, rotate: -4, autoAlpha: 0 }, {
-      x: 0, rotate: -1.2, autoAlpha: 1, duration: 1, ease: 'power3.out',
-      scrollTrigger: { trigger: poster, start: 'top 86%', once: true }
-    });
-    if (copy) gsap.fromTo(copy.children, { x: 34, autoAlpha: 0 }, {
-      x: 0, autoAlpha: 1, duration: .72, stagger: .08, ease: 'power2.out',
-      scrollTrigger: { trigger: copy, start: 'top 84%', once: true }
-    });
-    if (stamp) gsap.to(stamp, {
-      rotate: 8, y: -10, ease: 'none',
-      scrollTrigger: { trigger: zone, start: 'top bottom', end: 'bottom top', scrub: .8 }
+    features.forEach(function (feature, index) {
+      var poster = feature.querySelector('.home-hearing-zone-poster');
+      var copy = feature.querySelector('.home-hearing-zone-copy');
+      var stamp = feature.querySelector('.home-hearing-zone-stamp');
+      if (poster) gsap.fromTo(poster, { x: -46, rotate: -4, autoAlpha: 0 }, {
+        x: 0, rotate: -1.2, autoAlpha: 1, duration: 1, delay: index * .05, ease: 'power3.out',
+        scrollTrigger: { trigger: feature, start: 'top 86%', once: true }
+      });
+      if (copy) gsap.fromTo(copy.children, { x: 34, autoAlpha: 0 }, {
+        x: 0, autoAlpha: 1, duration: .72, stagger: .08, ease: 'power2.out',
+        scrollTrigger: { trigger: feature, start: 'top 84%', once: true }
+      });
+      if (stamp) gsap.to(stamp, {
+        rotate: index % 2 ? -5 : 8, y: -10, ease: 'none',
+        scrollTrigger: { trigger: feature, start: 'top bottom', end: 'bottom top', scrub: .8 }
+      });
     });
   }
 
