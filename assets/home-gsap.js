@@ -384,6 +384,83 @@
     });
   }
 
+  function initFerrisBubbles(shell) {
+    if (!shell || shell.querySelector('.home-ferris-bubbles')) return;
+
+    var layer = document.createElement('div');
+    layer.className = 'home-ferris-bubbles';
+    layer.setAttribute('aria-hidden', 'true');
+
+    var mobile = window.matchMedia('(max-width: 760px)').matches;
+    var count = mobile ? 7 : 12;
+    var lefts = [7, 18, 31, 44, 58, 72, 85, 93, 12, 38, 66, 88];
+    var bottoms = [5, 16, 2, 22, 9, 18, 4, 26, 30, 7, 28, 13];
+    var sizes = [28, 42, 22, 48, 32, 38, 24, 45, 20, 35, 50, 26];
+    var bubbles = [];
+
+    for (var index = 0; index < count; index += 1) {
+      var bubble = document.createElement('span');
+      bubble.className = 'home-ferris-bubble';
+      bubble.style.setProperty('--bubble-left', lefts[index] + '%');
+      bubble.style.setProperty('--bubble-bottom', bottoms[index] + '%');
+      bubble.style.setProperty('--bubble-size', Math.round(sizes[index] * (mobile ? 0.76 : 1)) + 'px');
+      layer.appendChild(bubble);
+      bubbles.push(bubble);
+    }
+
+    shell.insertBefore(layer, shell.firstChild);
+
+    if (reduceMotion) {
+      layer.classList.add('is-static');
+      return;
+    }
+
+    var animations = [];
+    bubbles.forEach(function (bubble, index) {
+      var duration = 6.8 + (index % 5) * 0.72;
+      var distance = Math.max(shell.clientHeight * (0.54 + (index % 4) * 0.08), 330);
+      var drift = (index % 2 ? -1 : 1) * (18 + (index % 4) * 7);
+      var rise = gsap.timeline({
+        paused: true,
+        repeat: -1,
+        repeatDelay: 0.24 + (index % 3) * 0.12,
+        delay: (index % 6) * 0.28
+      });
+
+      gsap.set(bubble, { y: 72 + (index % 3) * 14, scale: 0.52, autoAlpha: 0 });
+      rise
+        .to(bubble, { autoAlpha: 0.78, scale: 1, duration: 0.86, ease: 'sine.out' }, 0)
+        .to(bubble, { y: -distance, rotation: index % 2 ? -16 : 16, duration: duration, ease: 'none' }, 0)
+        .to(bubble, { autoAlpha: 0, scale: 1.14, duration: 1.12, ease: 'sine.in' }, duration - 1.12);
+
+      var sway = gsap.to(bubble, {
+        x: drift,
+        duration: 1.9 + (index % 4) * 0.36,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        paused: true,
+        delay: (index % 6) * 0.28
+      });
+      animations.push(rise, sway);
+    });
+
+    ScrollTrigger.create({
+      trigger: shell,
+      start: 'top 88%',
+      once: true,
+      onEnter: function () {
+        gsap.fromTo(layer, { autoAlpha: 0, scale: 0.96 }, {
+          autoAlpha: 1,
+          scale: 1,
+          duration: 0.9,
+          ease: 'power2.out'
+        });
+        animations.forEach(function (animation) { animation.play(); });
+      }
+    });
+  }
+
   function initDocumentDisc() {
     var shell = document.querySelector('[data-document-disc]');
     if (!shell) return;
@@ -391,6 +468,8 @@
     var cards = all('.home-document-disc-card', shell);
     var spokes = shell.querySelector('.home-ferris-spokes');
     if (!orbit || !cards.length) return;
+
+    initFerrisBubbles(shell);
 
     var step = 360 / cards.length;
     var autoTween;

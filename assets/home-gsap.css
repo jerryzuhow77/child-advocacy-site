@@ -481,3 +481,70 @@
     min-width:44px!important;
   }
 }
+
+
+/* 2026-08-20 — GSAP playful bubbles around the latest-report ferris wheel */
+.home-ferris-bubbles{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  overflow:hidden;
+  border-radius:inherit;
+  pointer-events:none;
+  transform-origin:50% 56%;
+}
+.home-ferris-bubble{
+  --bubble-size:32px;
+  --bubble-left:50%;
+  --bubble-bottom:4%;
+  position:absolute;
+  left:var(--bubble-left);
+  bottom:var(--bubble-bottom);
+  width:var(--bubble-size);
+  aspect-ratio:1;
+  border:2px solid rgba(255,255,255,.82);
+  border-radius:48% 52% 46% 54%;
+  background:
+    radial-gradient(circle at 29% 25%,rgba(255,255,255,.96) 0 8%,rgba(255,255,255,.28) 9% 20%,transparent 21%),
+    linear-gradient(145deg,rgba(255,210,217,.68),rgba(255,246,220,.38) 48%,rgba(126,198,201,.52));
+  box-shadow:
+    inset -6px -8px 12px rgba(113,170,176,.13),
+    inset 5px 5px 10px rgba(255,255,255,.52),
+    0 8px 18px rgba(91,104,108,.11);
+  opacity:0;
+  will-change:transform,opacity;
+}
+.home-ferris-bubble::before{
+  content:"";
+  position:absolute;
+  left:19%;
+  top:17%;
+  width:24%;
+  aspect-ratio:1;
+  border-radius:50%;
+  background:rgba(255,255,255,.86);
+  box-shadow:9px 7px 0 -3px rgba(255,255,255,.48);
+}
+.home-ferris-bubble:nth-child(4n+2){
+  background:
+    radial-gradient(circle at 29% 25%,rgba(255,255,255,.96) 0 8%,rgba(255,255,255,.28) 9% 20%,transparent 21%),
+    linear-gradient(145deg,rgba(197,229,222,.74),rgba(241,250,228,.4) 50%,rgba(248,190,200,.48));
+}
+.home-ferris-bubble:nth-child(4n+3){
+  background:
+    radial-gradient(circle at 29% 25%,rgba(255,255,255,.96) 0 8%,rgba(255,255,255,.28) 9% 20%,transparent 21%),
+    linear-gradient(145deg,rgba(255,230,170,.65),rgba(255,249,225,.42) 52%,rgba(211,192,229,.5));
+}
+.home-ferris-bubble:nth-child(4n){
+  background:
+    radial-gradient(circle at 29% 25%,rgba(255,255,255,.96) 0 8%,rgba(255,255,255,.28) 9% 20%,transparent 21%),
+    linear-gradient(145deg,rgba(218,207,235,.65),rgba(255,246,229,.42) 52%,rgba(139,202,204,.48));
+}
+@media(max-width:760px){
+  .home-ferris-bubbles{inset:2% 0 4%}
+  .home-ferris-bubble{border-width:1.5px;box-shadow:inset -4px -5px 8px rgba(113,170,176,.12),inset 3px 3px 7px rgba(255,255,255,.5),0 5px 12px rgba(91,104,108,.09)}
+}
+@media(prefers-reduced-motion:reduce){
+  .home-ferris-bubbles{opacity:1!important;transform:none!important}
+  .home-ferris-bubble{opacity:.52!important;transform:none!important}
+}

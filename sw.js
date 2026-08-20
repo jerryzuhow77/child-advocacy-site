@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-20-activity-scroll-v2';
+const VERSION = '2026-08-20-ferris-bubbles-v1';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
