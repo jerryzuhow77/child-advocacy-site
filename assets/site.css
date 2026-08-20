@@ -8495,3 +8495,20 @@ header .nav>nav>a.guardian-wall-nav-link:focus-visible{
   .guardian-wall-nav-mark{width:31px;height:31px;flex-basis:31px;font-size:19px}
   .guardian-wall-nav-label{white-space:normal}
 }
+
+
+/* 2026-08-20 — Keep the feature-rich toolbar clear on laptops and tablets. */
+@media(max-width:1440px){
+  .art-header .container.nav,header .container.nav{position:relative!important}
+  .art-header .mobile-menu-toggle,header .mobile-menu-toggle{display:inline-flex!important;margin-left:auto!important}
+  .art-header .nav>nav,header .nav>nav{display:none!important;position:absolute!important;z-index:1200!important;top:calc(100% + 1px)!important;right:0!important;left:auto!important;width:min(440px,calc(100vw - 24px))!important;max-height:calc(100dvh - 88px)!important;overflow-x:hidden!important;overflow-y:auto!important;flex-direction:column!important;align-items:stretch!important;gap:6px!important;padding:14px!important;border:1px solid rgba(105,160,168,.3)!important;border-radius:0 0 20px 20px!important;background:linear-gradient(170deg,#fffdf8,#f4ede2)!important;box-shadow:0 24px 52px rgba(23,63,82,.2)!important;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch}
+  .art-header .nav.menu-open>nav,header .nav.menu-open>nav{display:flex!important}
+  .art-header .nav nav>a,header .nav nav>a,.art-header .social-case-nav-toggle,header .social-case-nav-toggle{display:flex!important;width:100%!important;min-height:48px!important;justify-content:flex-start!important;padding:9px 12px!important;font-size:15px!important;white-space:normal!important;background:rgba(255,255,255,.66)!important;border:1px solid rgba(111,160,165,.16)!important;border-radius:12px!important}
+  .art-header .social-case-nav,header .nav>nav .social-case-nav{display:block!important;width:100%!important}
+  .art-header .social-case-nav-toggle i,header .social-case-nav-toggle i{margin-left:auto!important}
+  .art-header .social-case-nav-menu,header .social-case-nav-menu{position:static!important;width:100%!important;max-width:none!important;transform:none!important;grid-template-columns:1fr!important;margin:5px 0 7px!important;box-shadow:none!important}
+  .art-header .social-case-nav-menu::before,header .social-case-nav-menu::before{display:none!important}
+  .art-header .social-case-menu-column+.social-case-menu-column,header .social-case-menu-column+.social-case-menu-column{border-left:0!important;border-top:1px solid #e5dac8!important}
+  .art-header nav>.pwa-nav-install,.art-header nav>.language-switcher{width:100%!important}
+  body.mobile-menu-active{overflow:hidden!important}
+}
