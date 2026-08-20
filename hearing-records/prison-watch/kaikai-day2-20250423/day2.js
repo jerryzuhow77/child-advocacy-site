@@ -30,8 +30,8 @@
   gsap.to('.day2-closing-door i:last-child',{xPercent:18,ease:'none',scrollTrigger:{trigger:'.day2-closing',start:'top 70%',end:'center 45%',scrub:1}});
 
   const fullRecord=document.querySelector('.day2-full-record');
-  const pdfPages=fullRecord?[...fullRecord.querySelectorAll('.day2-pdf-page')]:[];
-  if(fullRecord&&pdfPages.length){
+  const chapters=fullRecord?[...fullRecord.querySelectorAll('.day2-transcript-chapter')]:[];
+  if(fullRecord&&chapters.length){
     const ambience=document.createElement('div');
     ambience.className='day2-record-ambience';
     ambience.setAttribute('aria-hidden','true');
@@ -40,35 +40,31 @@
 
     const reader=document.createElement('div');
     reader.className='day2-record-progress';
-    reader.setAttribute('aria-label','第二日 PDF 閱讀進度');
-    reader.innerHTML='<strong>完整卷宗</strong><span><i></i></span><b>01 / '+String(pdfPages.length).padStart(2,'0')+'</b>';
-    fullRecord.querySelector('.day2-pdf-pages')?.before(reader);
+    reader.setAttribute('aria-label','第二日庭審對話閱讀進度');
+    reader.innerHTML='<strong>庭審對話</strong><span><i></i></span><b>01 / '+String(chapters.length).padStart(2,'0')+'</b>';
+    fullRecord.querySelector('.day2-transcript')?.before(reader);
     const readerBar=reader.querySelector('i');
     const readerCount=reader.querySelector('b');
 
-    pdfPages.forEach((page,index)=>{
+    chapters.forEach((chapter,index)=>{
       const current=String(index+1).padStart(2,'0');
-      page.dataset.pageLabel=current;
-      page.addEventListener('toggle',()=>{
-        if(page.open) gsap.fromTo(page.querySelector('pre'),{autoAlpha:.35,y:-8},{autoAlpha:1,y:0,duration:.4,ease:'power2.out'});
-        ScrollTrigger.refresh();
-      });
       ScrollTrigger.create({
-        trigger:page,start:'top 52%',end:'bottom 48%',
-        onToggle:self=>page.classList.toggle('is-reading',self.isActive),
-        onEnter:()=>{readerCount.textContent=current+' / '+String(pdfPages.length).padStart(2,'0');gsap.to(readerBar,{scaleX:(index+1)/pdfPages.length,duration:.45,ease:'power2.out'});},
-        onEnterBack:()=>{readerCount.textContent=current+' / '+String(pdfPages.length).padStart(2,'0');gsap.to(readerBar,{scaleX:(index+1)/pdfPages.length,duration:.45,ease:'power2.out'});}
+        trigger:chapter,start:'top 52%',end:'bottom 48%',
+        onToggle:self=>chapter.classList.toggle('is-reading',self.isActive),
+        onEnter:()=>{readerCount.textContent=current+' / '+String(chapters.length).padStart(2,'0');gsap.to(readerBar,{scaleX:(index+1)/chapters.length,duration:.45,ease:'power2.out'});},
+        onEnterBack:()=>{readerCount.textContent=current+' / '+String(chapters.length).padStart(2,'0');gsap.to(readerBar,{scaleX:(index+1)/chapters.length,duration:.45,ease:'power2.out'});}
       });
     });
 
     const motion=gsap.matchMedia();
     motion.add('(min-width: 761px)',()=>{
-      gsap.utils.toArray('.day2-pdf-page').forEach((page,index)=>gsap.fromTo(page,{x:index%2?-34:34,rotate:index%2?-.35:.35},{x:0,rotate:0,duration:.85,ease:'power3.out',scrollTrigger:{trigger:page,start:'top 90%',once:true}}));
+      gsap.utils.toArray('.day2-transcript-chapter').forEach((chapter,index)=>gsap.fromTo(chapter,{x:index%2?-34:34,rotate:index%2?-.25:.25},{x:0,rotate:0,duration:.85,ease:'power3.out',scrollTrigger:{trigger:chapter,start:'top 90%',once:true}}));
+      gsap.utils.toArray('.day2-dialogue-pair').forEach((pair,index)=>gsap.fromTo(pair,{y:18,autoAlpha:.72},{y:0,autoAlpha:1,duration:.48,delay:(index%4)*.025,ease:'power2.out',scrollTrigger:{trigger:pair,start:'top 94%',once:true}}));
       gsap.to('.day2-pdf-figure img',{scale:1.06,yPercent:5,ease:'none',scrollTrigger:{trigger:'.day2-pdf-figure',start:'top 85%',end:'bottom 20%',scrub:1}});
       gsap.to('.day2-record-ambience i:nth-child(1)',{y:180,rotate:26,ease:'none',scrollTrigger:{trigger:fullRecord,start:'top bottom',end:'bottom top',scrub:1.4}});
       gsap.to('.day2-record-ambience i:nth-child(2)',{y:-150,rotate:-18,ease:'none',scrollTrigger:{trigger:fullRecord,start:'top bottom',end:'bottom top',scrub:1.6}});
       gsap.to('.day2-record-ambience i:nth-child(3)',{y:-110,scale:1.2,ease:'none',scrollTrigger:{trigger:fullRecord,start:'top bottom',end:'bottom top',scrub:1.8}});
     });
-    motion.add('(max-width: 760px)',()=>gsap.utils.toArray('.day2-pdf-page').forEach(page=>gsap.fromTo(page,{y:22,autoAlpha:.7},{y:0,autoAlpha:1,duration:.55,ease:'power2.out',scrollTrigger:{trigger:page,start:'top 92%',once:true}})));
+    motion.add('(max-width: 760px)',()=>gsap.utils.toArray('.day2-transcript-chapter').forEach(chapter=>gsap.fromTo(chapter,{y:22,autoAlpha:.7},{y:0,autoAlpha:1,duration:.55,ease:'power2.out',scrollTrigger:{trigger:chapter,start:'top 92%',once:true}})));
   }
 })();

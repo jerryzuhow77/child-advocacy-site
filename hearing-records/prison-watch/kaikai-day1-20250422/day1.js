@@ -26,4 +26,26 @@
   gsap.utils.toArray('.day1-issues article').forEach((card,i)=>gsap.from(card,{x:i%2?-36:36,autoAlpha:0,duration:.7,scrollTrigger:{trigger:card,start:'top 87%',once:true}}));
   gsap.to('.day1-closing-door i:first-child',{xPercent:-18,ease:'none',scrollTrigger:{trigger:'.day1-closing',start:'top 70%',end:'center 45%',scrub:1}});
   gsap.to('.day1-closing-door i:last-child',{xPercent:18,ease:'none',scrollTrigger:{trigger:'.day1-closing',start:'top 70%',end:'center 45%',scrub:1}});
+
+  const fullRecord=document.querySelector('.day1-full-record');
+  const chapters=fullRecord?[...fullRecord.querySelectorAll('.day1-transcript-chapter')]:[];
+  if(fullRecord&&chapters.length){
+    const reader=document.createElement('div');
+    reader.className='day1-record-progress';
+    reader.setAttribute('aria-label','第一日庭審程序閱讀進度');
+    reader.innerHTML='<strong>庭審程序</strong><span><i></i></span><b>01 / '+String(chapters.length).padStart(2,'0')+'</b>';
+    fullRecord.querySelector('.day1-transcript')?.before(reader);
+    const readerBar=reader.querySelector('i');
+    const readerCount=reader.querySelector('b');
+    chapters.forEach((chapter,index)=>{
+      const current=String(index+1).padStart(2,'0');
+      ScrollTrigger.create({trigger:chapter,start:'top 52%',end:'bottom 48%',onToggle:self=>chapter.classList.toggle('is-reading',self.isActive),onEnter:()=>{readerCount.textContent=current+' / '+String(chapters.length).padStart(2,'0');gsap.to(readerBar,{scaleX:(index+1)/chapters.length,duration:.4});},onEnterBack:()=>{readerCount.textContent=current+' / '+String(chapters.length).padStart(2,'0');gsap.to(readerBar,{scaleX:(index+1)/chapters.length,duration:.4});}});
+    });
+    const motion=gsap.matchMedia();
+    motion.add('(min-width: 761px)',()=>{
+      gsap.utils.toArray('.day1-transcript-chapter').forEach((chapter,index)=>gsap.fromTo(chapter,{x:index%2?-30:30,rotate:index%2?-.2:.2},{x:0,rotate:0,duration:.78,ease:'power3.out',scrollTrigger:{trigger:chapter,start:'top 90%',once:true}}));
+      gsap.to('.day1-pdf-figure img',{scale:1.05,yPercent:4,ease:'none',scrollTrigger:{trigger:'.day1-pdf-figure',start:'top 85%',end:'bottom 20%',scrub:1}});
+    });
+    motion.add('(max-width: 760px)',()=>gsap.utils.toArray('.day1-transcript-chapter').forEach(chapter=>gsap.fromTo(chapter,{y:20,autoAlpha:.72},{y:0,autoAlpha:1,duration:.52,ease:'power2.out',scrollTrigger:{trigger:chapter,start:'top 92%',once:true}})));
+  }
 })();
