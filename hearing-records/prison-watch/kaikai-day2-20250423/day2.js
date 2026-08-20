@@ -55,6 +55,8 @@
         onEnterBack:()=>{readerCount.textContent=current+' / '+String(chapters.length).padStart(2,'0');gsap.to(readerBar,{scaleX:(index+1)/chapters.length,duration:.45,ease:'power2.out'});}
       });
     });
+    gsap.utils.toArray('.day2-dispute-note').forEach(note=>gsap.fromTo(note,{x:-16,autoAlpha:0},{x:0,autoAlpha:1,duration:.62,ease:'power2.out',scrollTrigger:{trigger:note,start:'top 90%',once:true}}));
+    gsap.utils.toArray('.day2-key-mark').forEach(mark=>gsap.fromTo(mark,{backgroundSize:'0% 100%'},{backgroundSize:'100% 100%',duration:.7,ease:'power1.out',scrollTrigger:{trigger:mark,start:'top 92%',once:true}}));
 
     const motion=gsap.matchMedia();
     motion.add('(min-width: 761px)',()=>{

@@ -41,6 +41,8 @@
       const current=String(index+1).padStart(2,'0');
       ScrollTrigger.create({trigger:chapter,start:'top 52%',end:'bottom 48%',onToggle:self=>chapter.classList.toggle('is-reading',self.isActive),onEnter:()=>{readerCount.textContent=current+' / '+String(chapters.length).padStart(2,'0');gsap.to(readerBar,{scaleX:(index+1)/chapters.length,duration:.4});},onEnterBack:()=>{readerCount.textContent=current+' / '+String(chapters.length).padStart(2,'0');gsap.to(readerBar,{scaleX:(index+1)/chapters.length,duration:.4});}});
     });
+    gsap.utils.toArray('.day1-dispute-note').forEach(note=>gsap.fromTo(note,{x:-16,autoAlpha:0},{x:0,autoAlpha:1,duration:.62,ease:'power2.out',scrollTrigger:{trigger:note,start:'top 90%',once:true}}));
+    gsap.utils.toArray('.day1-key-mark').forEach(mark=>gsap.fromTo(mark,{backgroundSize:'0% 100%'},{backgroundSize:'100% 100%',duration:.7,ease:'power1.out',scrollTrigger:{trigger:mark,start:'top 92%',once:true}}));
     const motion=gsap.matchMedia();
     motion.add('(min-width: 761px)',()=>{
       gsap.utils.toArray('.day1-transcript-chapter').forEach((chapter,index)=>gsap.fromTo(chapter,{x:index%2?-30:30,rotate:index%2?-.2:.2},{x:0,rotate:0,duration:.78,ease:'power3.out',scrollTrigger:{trigger:chapter,start:'top 90%',once:true}}));
