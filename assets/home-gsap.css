@@ -420,3 +420,24 @@
 
 .home-footer-sheen{position:absolute;inset:-30% auto -30% -22%;z-index:5;width:22%;pointer-events:none;opacity:0;transform:skewX(-17deg);background:linear-gradient(90deg,transparent,rgba(255,247,221,.42),transparent);filter:blur(9px);mix-blend-mode:screen}
 @media(prefers-reduced-motion:reduce){.home-footer-sheen{display:none!important}}
+
+
+/* 2026-08-20 — Footer text contrast accessibility pass */
+.home-art-footer .home-footer-brand small{color:#f2d5c3!important}
+.home-art-footer .home-footer-brand em{color:#d8ebe7!important}
+.home-art-footer .home-footer-toolbar h2{color:#ffd7bd!important}
+.home-art-footer .home-footer-toolbar section>a:not(.home-footer-wall-link){
+  color:#e4efec!important;
+  font-weight:650;
+}
+.home-art-footer .home-footer-wall-link b{color:#fffaf2!important}
+.home-art-footer .home-footer-wall-link small{color:#e1efeb!important}
+.home-art-footer .home-footer-install{color:#fffaf2!important}
+.home-art-footer .home-footer-bottom{color:#cfdfdc!important}
+.home-art-footer .home-footer-bottom a{color:#fff0df!important}
+.home-art-footer .footer-light-copy span{color:#dcebe7!important}
+.home-art-footer .footer-light-copy b{color:#ffd9be!important}
+@media(max-width:600px){
+  .home-art-footer .home-footer-mobile-bar a{color:#f8fffc!important}
+  .home-art-footer .home-footer-mobile-bar b{color:#f8fffc!important;font-weight:850}
+}
