@@ -327,3 +327,21 @@
 .home-document-disc-control{border:3px solid rgba(255,255,255,.75);background:linear-gradient(145deg,rgba(255,248,238,.92),rgba(247,202,205,.88));color:#6f9799;box-shadow:0 9px 0 rgba(112,174,177,.17),0 14px 27px rgba(91,71,75,.12)}
 .home-document-disc-help{position:relative;z-index:3;color:#668a8d;font-weight:750}
 @media(max-width:760px){.home-latest-flash::after{bottom:15px;letter-spacing:.12em}.home-latest-flash .home-document-disc-center::before{top:-22px;min-width:86px;font-size:.5rem}.home-ferris-stand i{width:11px}.home-ferris-stand b{height:18px}}
+
+
+/* 2026-08-20 — refined marine art layers */
+.home-sea-art{position:absolute;inset:0;z-index:0;overflow:hidden;border-radius:inherit;pointer-events:none}
+.sea-horizon{position:absolute;left:0;right:0;bottom:13%;height:31%;background:linear-gradient(180deg,rgba(123,192,197,.10),rgba(83,166,177,.32));border-top:1px solid rgba(255,255,255,.72)}
+.sea-wave-layer{position:absolute;left:-8%;width:116%;border-radius:50%;border-top-style:solid;filter:drop-shadow(0 -3px 7px rgba(255,255,255,.28));will-change:transform}
+.sea-wave-far{bottom:21%;height:54px;border-top-width:9px;border-color:rgba(255,255,255,.64);background:rgba(118,194,197,.12)}
+.sea-wave-near{bottom:8%;height:76px;border-top-width:14px;border-color:rgba(255,250,239,.80);background:linear-gradient(180deg,rgba(104,186,193,.28),rgba(79,155,168,.34))}
+.sea-sailboat{position:absolute;right:11%;bottom:25%;width:82px;height:92px;filter:drop-shadow(0 10px 12px rgba(71,94,101,.12));will-change:transform}
+.sea-sailboat::before{content:"";position:absolute;left:38px;top:0;width:4px;height:69px;border-radius:4px;background:#877a83}
+.sea-sailboat i,.sea-sailboat b{position:absolute;top:7px;border-style:solid}.sea-sailboat i{left:0;border-width:30px 36px 30px 0;border-color:transparent #f0aab1 transparent transparent}.sea-sailboat b{left:45px;border-width:23px 0 23px 29px;border-color:transparent transparent transparent #f5d39f}
+.sea-sailboat::after{content:"";position:absolute;left:5px;bottom:10px;width:76px;height:18px;border:4px solid rgba(255,255,255,.75);border-radius:4px 4px 24px 24px;background:#6eaeb7}
+.sea-gulls{position:absolute;right:18%;top:13%;color:rgba(102,115,126,.58);font:800 25px/1 serif;letter-spacing:.2em;transform:rotate(-4deg)}
+.sea-fish{position:absolute;color:rgba(255,245,232,.78);font-size:24px;text-shadow:0 4px 10px rgba(62,121,131,.16);will-change:transform}.sea-fish.fish-one{left:8%;bottom:15%}.sea-fish.fish-two{left:18%;bottom:23%;font-size:17px;opacity:.75}
+.sea-pearls{position:absolute;left:5%;bottom:5%;color:rgba(255,250,240,.82);font:800 17px/1 serif;letter-spacing:.3em}
+.home-latest-flash .home-document-disc-shell{isolation:isolate}.home-latest-flash .home-ferris-stand,.home-latest-flash .home-ferris-spokes{z-index:1}.home-latest-flash .home-document-disc-orbit{z-index:3}.home-latest-flash .home-document-disc-center{z-index:4}
+@media(max-width:760px){.sea-sailboat{right:4%;bottom:21%;transform:scale(.72)}.sea-gulls{right:8%;font-size:18px}.sea-wave-near{height:58px}.sea-fish{font-size:17px}.sea-pearls{display:none}}
+@media(prefers-reduced-motion:reduce){.sea-wave-layer,.sea-sailboat,.sea-fish{transform:none!important}}
