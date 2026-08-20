@@ -26,3 +26,14 @@ html[lang="en"] .day1-section-head h2,html[lang="ja"] .day1-section-head h2{over
 @media(max-width:1120px){.day1-topbar{gap:10px}.day1-language-switcher{margin-left:auto}.day1-menu{margin-left:0}}
 @media(max-width:760px){.day1-topbar{gap:7px}.day1-brand span{display:none}.day1-language-switcher{margin-left:auto}.day1-language-switcher a{min-width:30px;min-height:32px;padding-inline:6px;font-size:.78rem}.day1-menu{min-height:38px;margin-left:0;padding:8px 11px}html[lang="en"] .day1-hero h1,html[lang="ja"] .day1-hero h1{font-size:clamp(2.25rem,10.5vw,3.5rem);line-height:1.12}html[lang="en"] .day1-section-head h2,html[lang="ja"] .day1-section-head h2{font-size:clamp(1.75rem,8vw,2.5rem)}}
 @media(max-width:390px){.day1-topbar{padding-inline:9px}.day1-language-switcher{gap:2px;padding:2px}.day1-language-switcher a{min-width:27px;min-height:30px;padding-inline:4px}.day1-menu{font-size:.76rem}}
+
+
+/* Day 1 remembrance title — synchronized across four languages */
+.day1-remembrance{display:flex;align-items:center;gap:clamp(8px,1.2vw,16px);margin:14px 0 18px;color:#7f2636;font-family:"Noto Serif TC","Songti TC",serif;font-size:clamp(1.7rem,3.4vw,3.2rem);font-weight:950;letter-spacing:.12em;line-height:1}
+.day1-remembrance span{display:inline-grid;place-items:center;min-width:1.32em;min-height:1.32em;padding:.08em;border:1px solid rgba(127,38,54,.28);background:rgba(255,250,246,.72);box-shadow:0 7px 20px rgba(75,35,43,.1)}
+.day1-remembrance.is-en{gap:7px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(.74rem,1.2vw,1.02rem);letter-spacing:.06em}
+.day1-remembrance.is-en span{min-width:auto;min-height:2.35em;padding:.4em .62em}
+.day1-remembrance.is-ja{font-family:"Noto Serif JP","Yu Mincho",serif;font-size:clamp(1.35rem,2.5vw,2.45rem);letter-spacing:.06em}
+.day1-remembrance.is-ja span:last-child{min-width:3.3em}
+.day1-language-switcher a{color:#203b55!important;font-size:.8rem!important}
+@media(max-width:760px){.day1-remembrance{justify-content:center;gap:7px;margin:12px 0 16px;font-size:clamp(1.4rem,8vw,2rem)}.day1-remembrance.is-en{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));font-size:.7rem}.day1-remembrance.is-ja{font-size:1.2rem}.day1-language-switcher{background:#fff;box-shadow:0 4px 13px rgba(20,45,65,.14)}}
