@@ -670,10 +670,22 @@ function initSocialCaseDropdowns(){
     if(timer) window.clearTimeout(timer);
     closeTimers.delete(group);
   };
+  const resetSpecialFeatureState=group=>{
+    if(!group.classList.contains('special-feature-nav')) return;
+    group.querySelectorAll('.special-feature-case-group').forEach(item=>{
+      item.classList.remove('is-expanded','is-feature-click-pinned');
+      item.querySelector(':scope > .special-feature-case-toggle')?.setAttribute('aria-expanded','false');
+    });
+    group.querySelectorAll('.special-feature-prologue-group').forEach(item=>{
+      item.classList.remove('is-expanded');
+      item.querySelector(':scope > .special-feature-menu-prologue')?.setAttribute('aria-expanded','false');
+    });
+  };
   const close=(group,force=false)=>{
     cancelClose(group);
     if(!force&&group.classList.contains('is-click-pinned')) return;
     group.classList.remove('is-open','is-click-pinned');
+    resetSpecialFeatureState(group);
     const btn=group.querySelector('.social-case-nav-toggle');
     if(btn) btn.setAttribute('aria-expanded','false');
   };
@@ -693,7 +705,8 @@ function initSocialCaseDropdowns(){
     });
     group.addEventListener('mouseenter',()=>{
       cancelClose(group);
-      if(window.innerWidth>800&&!group.classList.contains('is-open')) open(group,false);
+      const clickOnly=group.classList.contains('special-feature-nav');
+      if(window.innerWidth>800&&!clickOnly&&!group.classList.contains('is-open')) open(group,false);
     });
     group.addEventListener('mouseleave',()=>{
       if(window.innerWidth>800){
