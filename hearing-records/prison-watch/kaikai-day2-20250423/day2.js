@@ -22,10 +22,34 @@
   gsap.from('.day2-hero-copy>*',{y:30,autoAlpha:0,duration:.9,stagger:.08,ease:'power3.out'});
   gsap.from('.day2-hero-poster',{x:55,rotate:5,autoAlpha:0,duration:1.2,ease:'power3.out'});
   gsap.to('.day2-hero-paper',{yPercent:12,ease:'none',scrollTrigger:{trigger:'.day2-hero',start:'top top',end:'bottom top',scrub:1}});
-  gsap.utils.toArray('.day2-reveal').forEach((el,i)=>gsap.fromTo(el,{y:42,autoAlpha:0},{y:0,autoAlpha:1,duration:.78,delay:(i%3)*.035,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 86%',once:true}}));
+  gsap.utils.toArray('.day2-reveal').filter(el=>!el.closest('.day2-juror-wall')).forEach((el,i)=>gsap.fromTo(el,{y:42,autoAlpha:0},{y:0,autoAlpha:1,duration:.78,delay:(i%3)*.035,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 86%',once:true}}));
   gsap.utils.toArray('.day2-issues article').forEach((card,i)=>gsap.from(card,{x:i%2?-36:36,autoAlpha:0,duration:.7,scrollTrigger:{trigger:card,start:'top 87%',once:true}}));
   gsap.utils.toArray('.day2-lens-grid article').forEach((card,i)=>gsap.from(card,{y:28,scale:.96,autoAlpha:0,duration:.65,delay:i*.06,ease:'power2.out',scrollTrigger:{trigger:card,start:'top 88%',once:true}}));
-  gsap.utils.toArray('.day2-juror-wall article').forEach((card,i)=>gsap.fromTo(card,{autoAlpha:.2,boxShadow:'0 0 0 rgba(213,173,91,0)'},{autoAlpha:1,boxShadow:'0 0 40px rgba(213,173,91,.25)',duration:.8,delay:(i%4)*.08,ease:'sine.out',scrollTrigger:{trigger:card,start:'top 88%',once:true}}));
+
+  const jurorCards=gsap.utils.toArray('.day2-juror-wall article');
+  const jurorPath=document.querySelector('.day2-question-path');
+  const jurorPathBar=jurorPath?.querySelector('i');
+  const jurorPathCount=jurorPath?.querySelector('b');
+  const activateJurorTopic=index=>{
+    const columns=matchMedia('(max-width: 760px)').matches?1:2;
+    const first=Math.floor(index/columns)*columns;
+    const last=Math.min(first+columns-1,jurorCards.length-1);
+    jurorCards.forEach((card,cardIndex)=>{
+      card.classList.toggle('is-current',cardIndex>=first&&cardIndex<=last);
+    });
+    if(jurorPathCount){
+      const range=first===last?String(first+1).padStart(2,'0'):String(first+1).padStart(2,'0')+'–'+String(last+1).padStart(2,'0');
+      jurorPathCount.textContent=range+' / '+String(jurorCards.length).padStart(2,'0');
+    }
+    if(jurorPathBar)gsap.to(jurorPathBar,{scaleX:(last+1)/jurorCards.length,duration:.45,ease:'power2.out',overwrite:true});
+  };
+  jurorCards.forEach((card,index)=>{
+    const parts=card.querySelectorAll('b,h3,p,small');
+    const entrance=gsap.timeline({scrollTrigger:{trigger:card,start:'top 88%',once:true}});
+    entrance.fromTo(card,{y:40,rotateY:index%2?-4:4,autoAlpha:0},{y:0,rotateY:0,autoAlpha:1,duration:.74,ease:'power3.out'})
+      .from(parts,{y:14,autoAlpha:0,duration:.46,stagger:.07,ease:'power2.out'},'-=.5');
+    ScrollTrigger.create({trigger:card,start:'top 58%',end:'bottom 42%',onEnter:()=>activateJurorTopic(index),onEnterBack:()=>activateJurorTopic(index)});
+  });
   gsap.to('.day2-closing-door i:first-child',{xPercent:-18,ease:'none',scrollTrigger:{trigger:'.day2-closing',start:'top 70%',end:'center 45%',scrub:1}});
   gsap.to('.day2-closing-door i:last-child',{xPercent:18,ease:'none',scrollTrigger:{trigger:'.day2-closing',start:'top 70%',end:'center 45%',scrub:1}});
 

@@ -22,8 +22,32 @@
   gsap.from('.day1-hero-copy>*',{y:30,autoAlpha:0,duration:.9,stagger:.08,ease:'power3.out'});
   gsap.from('.day1-hero-poster',{x:55,rotate:5,autoAlpha:0,duration:1.2,ease:'power3.out'});
   gsap.to('.day1-hero-paper',{yPercent:12,ease:'none',scrollTrigger:{trigger:'.day1-hero',start:'top top',end:'bottom top',scrub:1}});
-  gsap.utils.toArray('.day1-reveal').forEach((el,i)=>gsap.fromTo(el,{y:42,autoAlpha:0},{y:0,autoAlpha:1,duration:.78,delay:(i%3)*.035,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 86%',once:true}}));
-  gsap.utils.toArray('.day1-issues article').forEach((card,i)=>gsap.from(card,{x:i%2?-36:36,autoAlpha:0,duration:.7,scrollTrigger:{trigger:card,start:'top 87%',once:true}}));
+  gsap.utils.toArray('.day1-reveal').filter(el=>!el.closest('.day1-issues')).forEach((el,i)=>gsap.fromTo(el,{y:42,autoAlpha:0},{y:0,autoAlpha:1,duration:.78,delay:(i%3)*.035,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 86%',once:true}}));
+
+  const issueCards=gsap.utils.toArray('.day1-issues article');
+  const issuePath=document.querySelector('.day1-question-path');
+  const issuePathBar=issuePath?.querySelector('i');
+  const issuePathCount=issuePath?.querySelector('b');
+  const activateIssue=index=>{
+    const columns=matchMedia('(max-width: 760px)').matches?1:2;
+    const first=Math.floor(index/columns)*columns;
+    const last=Math.min(first+columns-1,issueCards.length-1);
+    issueCards.forEach((card,cardIndex)=>{
+      card.classList.toggle('is-current',cardIndex>=first&&cardIndex<=last);
+    });
+    if(issuePathCount){
+      const range=first===last?String(first+1).padStart(2,'0'):String(first+1).padStart(2,'0')+'–'+String(last+1).padStart(2,'0');
+      issuePathCount.textContent=range+' / '+String(issueCards.length).padStart(2,'0');
+    }
+    if(issuePathBar)gsap.to(issuePathBar,{scaleX:(last+1)/issueCards.length,duration:.45,ease:'power2.out',overwrite:true});
+  };
+  issueCards.forEach((card,index)=>{
+    const parts=card.querySelectorAll('b,h3,p,small');
+    const entrance=gsap.timeline({scrollTrigger:{trigger:card,start:'top 88%',once:true}});
+    entrance.fromTo(card,{y:38,rotateX:5,autoAlpha:0},{y:0,rotateX:0,autoAlpha:1,duration:.72,ease:'power3.out'})
+      .from(parts,{y:14,autoAlpha:0,duration:.46,stagger:.07,ease:'power2.out'},'-=.48');
+    ScrollTrigger.create({trigger:card,start:'top 58%',end:'bottom 42%',onEnter:()=>activateIssue(index),onEnterBack:()=>activateIssue(index)});
+  });
   gsap.to('.day1-closing-door i:first-child',{xPercent:-18,ease:'none',scrollTrigger:{trigger:'.day1-closing',start:'top 70%',end:'center 45%',scrub:1}});
   gsap.to('.day1-closing-door i:last-child',{xPercent:18,ease:'none',scrollTrigger:{trigger:'.day1-closing',start:'top 70%',end:'center 45%',scrub:1}});
 
