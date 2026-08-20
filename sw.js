@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-20-visitor-submission-v5';
+const VERSION = '2026-08-20-visitor-prompt-8h-v6';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;

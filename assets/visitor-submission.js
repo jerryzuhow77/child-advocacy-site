@@ -1,7 +1,14 @@
 (function () {
   'use strict';
 
-  var sessionKey = 'child-advocacy-visitor-prompt-seen-v1';
+  var promptLastShownKey = 'child-advocacy-visitor-prompt-last-shown-v3';
+  var promptIntervalMs = 8 * 60 * 60 * 1000;
+
+  function wasPromptShownRecently(rawLastShownAt, now) {
+    var lastShownAt = Number(rawLastShownAt);
+    var elapsed = now - lastShownAt;
+    return lastShownAt > 0 && elapsed >= 0 && elapsed < promptIntervalMs;
+  }
 
   function initVisitorSubmission() {
     var launch = document.querySelector('[data-visitor-launch]');
@@ -38,12 +45,14 @@
     var primary = dialog.querySelector('.visitor-submit-dialog-primary');
     var directToForm = window.location.hash === '#guest-message';
     var forcePrompt = new URLSearchParams(window.location.search).get('showVisitorPrompt') === '1';
-    var alreadySeen = false;
+    var shownWithinInterval = false;
     var closing = false;
     var previousOverflow = '';
 
-    try { alreadySeen = window.sessionStorage.getItem(sessionKey) === '1'; } catch (error) { /* Keep the reminder available without storage. */ }
-    if ((directToForm || alreadySeen) && !forcePrompt) return;
+    try {
+      shownWithinInterval = wasPromptShownRecently(window.localStorage.getItem(promptLastShownKey), Date.now());
+    } catch (error) { /* Keep the reminder available without storage. */ }
+    if ((directToForm || shownWithinInterval) && !forcePrompt) return;
 
     function finishClose() {
       if (typeof dialog.close === 'function' && dialog.open) dialog.close();
@@ -76,7 +85,9 @@
     });
 
     window.setTimeout(function () {
-      try { window.sessionStorage.setItem(sessionKey, '1'); } catch (error) { /* The reminder still opens without storage. */ }
+      if (!forcePrompt) {
+        try { window.localStorage.setItem(promptLastShownKey, String(Date.now())); } catch (error) { /* The reminder still opens without storage. */ }
+      }
       previousOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
       if (typeof dialog.showModal === 'function') dialog.showModal();
