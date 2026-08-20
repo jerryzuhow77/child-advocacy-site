@@ -573,7 +573,6 @@
       var autoTimeline = null;
       var restartTimer = 0;
       var isVisible = false;
-      var isPointerInside = false;
       var hasFocus = false;
 
       function renderProgress() {
@@ -595,7 +594,7 @@
       }
 
       function canAutoPlay() {
-        return isVisible && !isPointerInside && !hasFocus && !reduceMotion;
+        return isVisible && !hasFocus && !reduceMotion;
       }
 
       function resumeAuto(delay) {
@@ -616,14 +615,14 @@
         if (autoTimeline) autoTimeline.kill();
         var max = Math.max(0, viewport.scrollHeight - viewport.clientHeight);
         if (max < 40) return;
-        var duration = Math.max(32, Math.min(96, max / 34));
+        var duration = Math.max(18, Math.min(58, max / 72));
         autoTimeline = gsap.timeline({
           paused: true,
           repeat: -1,
           onRepeat: scheduleProgress
         });
         autoTimeline
-          .to({}, { duration: 2.4 })
+          .to({}, { duration: 0.8 })
           .to(viewport, {
             scrollTop: max,
             duration: duration,
@@ -660,14 +659,6 @@
       if (up) up.addEventListener('click', function () { moveViewport(-1); });
       if (down) down.addEventListener('click', function () { moveViewport(1); });
 
-      shell.addEventListener('pointerenter', function () {
-        isPointerInside = true;
-        pauseAuto();
-      });
-      shell.addEventListener('pointerleave', function () {
-        isPointerInside = false;
-        resumeAuto(1200);
-      });
       shell.addEventListener('focusin', function () {
         hasFocus = true;
         pauseAuto();
@@ -683,10 +674,10 @@
 
       if ('IntersectionObserver' in window) {
         new IntersectionObserver(function (entries) {
-          isVisible = entries[0] && entries[0].isIntersecting && entries[0].intersectionRatio >= 0.24;
-          if (isVisible) resumeAuto(900);
+          isVisible = entries[0] && entries[0].isIntersecting && entries[0].intersectionRatio >= 0.08;
+          if (isVisible) resumeAuto(250);
           else pauseAuto();
-        }, { threshold: [0, 0.24, 0.6] }).observe(shell);
+        }, { threshold: [0, 0.08, 0.35] }).observe(shell);
       } else {
         isVisible = true;
       }
