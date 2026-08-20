@@ -1239,6 +1239,11 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
   function cardTargetFor(anchor) {
     if (anchor.classList.contains('home-news-card')) return anchor.querySelector('.home-news-card-copy') || anchor;
     if (anchor.classList.contains('home-case-reel-card')) return anchor.querySelector('.home-case-reel-copy') || anchor;
+    if (anchor.classList.contains('home-document-disc-card')) return anchor.querySelector('span') || anchor;
+    if (anchor.classList.contains('home-crafted-card')) return anchor.querySelector('.home-crafted-copy') || anchor;
+    if (anchor.classList.contains('home-historical-card')) return anchor.querySelector('span:last-child') || anchor;
+    if (anchor.classList.contains('home-hearing-zone-poster')) return anchor.closest('.home-hearing-zone-feature')?.querySelector('.home-hearing-zone-copy') || anchor;
+    if (anchor.classList.contains('remember-kaikai-visual')) return anchor.closest('.remember-kaikai-card')?.querySelector('.remember-kaikai-copy') || anchor;
     if (anchor.classList.contains('home-progress-card')) return anchor;
     if (anchor.closest('.historical-region-children')) return anchor.querySelector('span') || anchor;
     return anchor;
@@ -1263,7 +1268,17 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
   }
 
   function initHomepageCardCounters() {
-    document.querySelectorAll('a.home-news-card[href], a.home-progress-card[href], a.home-case-reel-card[href], .historical-region-children a[data-view-counter-key][href]').forEach(addReadOnlyBadge);
+    document.querySelectorAll([
+      'a.home-news-card[href]',
+      'a.home-progress-card[href]',
+      'a.home-document-disc-card[href]',
+      'a.home-hearing-zone-poster[href]',
+      'a.home-crafted-card[href]',
+      'a.home-case-reel-card[href]',
+      'a.home-historical-card[href]',
+      'a.remember-kaikai-visual[href]',
+      '.historical-region-children a[data-view-counter-key][href]'
+    ].join(',')).forEach(addReadOnlyBadge);
   }
 
   function initCaseDirectoryCounters() {

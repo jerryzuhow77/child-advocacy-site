@@ -273,6 +273,25 @@
     });
   }
 
+  function initSpecialFeatureScroller() {
+    var reel = document.querySelector('.home-special-grid');
+    if (!reel) return;
+    var step = function () {
+      var card = reel.querySelector('.home-crafted-card');
+      return card ? card.getBoundingClientRect().width + 24 : Math.min(390, reel.clientWidth * .84);
+    };
+    var move = function (direction) {
+      reel.scrollBy({ left: direction * step(), behavior: reduceMotion ? 'auto' : 'smooth' });
+    };
+    document.querySelector('[data-special-prev]')?.addEventListener('click', function () { move(-1); });
+    document.querySelector('[data-special-next]')?.addEventListener('click', function () { move(1); });
+    reel.addEventListener('wheel', function (event) {
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX) || reel.scrollWidth <= reel.clientWidth) return;
+      event.preventDefault();
+      reel.scrollLeft += event.deltaY;
+    }, { passive: false });
+  }
+
   function animateSeaArt() {
     all('.sea-wave-layer').forEach(function (wave, index) {
       gsap.to(wave, { xPercent: index ? 4 : -4, y: index ? -3 : 4, duration: 4.2 + index, repeat: -1, yoyo: true, ease: 'sine.inOut' });
@@ -462,6 +481,7 @@
 
   function init() {
     initDocumentDisc();
+    initSpecialFeatureScroller();
     if (reduceMotion) return;
     addProgressBar();
     animateHeaderAndHero();
