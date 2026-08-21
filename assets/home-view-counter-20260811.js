@@ -201,3 +201,17 @@
     initializeAll();
   }
 })();
+
+/* Load the Qiqi feature's four-language classical quotation layer only on
+ * that case page. This remains harmless when the notes are later rendered
+ * statically, because the feature script checks every data-fq-classic-key. */
+(() => {
+  'use strict';
+  if (!/\/historical-cases\/regions\/mainland-china\/fujian-qiqi\/?$/.test(location.pathname)) return;
+  if (document.querySelector('script[data-qiqi-classical-loader]')) return;
+  const script = document.createElement('script');
+  script.src = new URL('./qiqi-classical-notes.js?v=20260821-1', document.currentScript.src).href;
+  script.async = false;
+  script.dataset.qiqiClassicalLoader = '';
+  document.head.appendChild(script);
+})();
