@@ -1,0 +1,9 @@
+/* 2026-08-21 dialogue visibility hotfix: never allow theatre copy to disappear. */
+.fq-act .fq-dialogue,.fq-act [data-fq-dialogue]{z-index:40!important;pointer-events:none}
+.fq-act .fq-line,.fq-act [data-fq-line]{opacity:1;visibility:visible}
+html.fq-js .fq-act.is-enhanced .fq-line,html.fq-js .fq-act.is-enhanced [data-fq-line]{opacity:0;visibility:hidden}
+html.fq-js .fq-act.is-enhanced .fq-line.is-current,html.fq-js .fq-act.is-enhanced [data-fq-line].is-current{opacity:1!important;visibility:visible!important;z-index:42!important}
+html:not(.fq-gsap-ready) .fq-act .fq-line:first-child,html:not(.fq-gsap-ready) .fq-act [data-fq-line]:first-child{opacity:1!important;visibility:visible!important;z-index:42!important}
+.fq-act.is-complete .fq-line:last-child,.fq-act.is-skipped .fq-line:last-child{opacity:1!important;visibility:visible!important;z-index:42!important}
+@media(max-width:780px){.fq-act .fq-dialogue,.fq-act [data-fq-dialogue]{top:auto!important;bottom:5.5rem!important;left:50%!important;width:min(calc(100% - 1.5rem),34rem)!important;min-height:11rem!important;z-index:60!important}.fq-act .fq-line,.fq-act [data-fq-line]{font-size:1rem!important;line-height:1.65!important;padding:1rem 1.05rem!important;background:rgba(25,36,40,.9)!important;backdrop-filter:blur(8px)!important}.fq-act .fq-actors{z-index:12!important}}
+@media(prefers-reduced-motion:reduce){html.fq-js .fq-act .fq-line:first-child,html.fq-js .fq-act [data-fq-line]:first-child{opacity:1!important;visibility:visible!important;z-index:42!important}}
