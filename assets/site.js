@@ -1317,33 +1317,53 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
 }
 
 
-/* 2026-08-20 — Keep the Guardian Wall reachable from every shared top toolbar. */
+/* 2026-08-21 — Keep the official site and Guardian Wall mutually reachable. */
 (function(){
   const wallUrl='https://global-protection.jerryzuhow77.chatgpt.site/';
   const labels={
-    'zh-Hant':{text:'全球守護留言牆',aria:'開啟全球守護留言牆'},
-    'zh-Hans':{text:'全球守护留言墙',aria:'打开全球守护留言墙'},
-    en:{text:'Global Guardian Wall',aria:'Open the Global Guardian Message Wall'},
-    ja:{text:'グローバル守護壁',aria:'グローバル守護メッセージウォールを開く'}
+    'zh-Hant':{query:'',title:'全球守護留言牆',aria:'開啟全球守護留言牆專區',group:'全球守護留言牆專區',home:'留言牆首頁',homeHint:'護童行動聯盟官方互動子站',bulletin:'官網同步快報',bulletinHint:'查看兩站同步的最新內容',guest:'訪客留言投稿',guestHint:'免登入，經人工審核後公開',member:'一般會員投稿',memberHint:'登入後投稿並追蹤審核'},
+    'zh-Hans':{query:'zh-Hans',title:'全球守护留言墙',aria:'打开全球守护留言墙专区',group:'全球守护留言墙专区',home:'留言墙首页',homeHint:'护童行动联盟官方互动子站',bulletin:'官网同步快报',bulletinHint:'查看两站同步的最新内容',guest:'访客留言投稿',guestHint:'无需登录，经人工审核后公开',member:'一般会员投稿',memberHint:'登录后投稿并跟踪审核'},
+    en:{query:'en',title:'Global Guardian Wall',aria:'Open the Global Guardian Message Wall section',group:'Global Guardian Message Wall',home:'Wall home',homeHint:'Official interactive subsite of the Alliance',bulletin:'Synced bulletins',bulletinHint:'Latest content shared across both sites',guest:'Visitor message',guestHint:'No sign-in; published after human review',member:'Member submission',memberHint:'Sign in to post and track moderation'},
+    ja:{query:'ja',title:'グローバル守護壁',aria:'グローバル守護メッセージウォールのメニューを開く',group:'グローバル守護メッセージウォール',home:'守護壁ホーム',homeHint:'児童保護行動連盟の公式交流サブサイト',bulletin:'同期された最新速報',bulletinHint:'両サイト共通の最新コンテンツ',guest:'訪問者メッセージ',guestHint:'ログイン不要・人による審査後に公開',member:'一般会員投稿',memberHint:'ログイン後に投稿と審査状況を確認'}
   };
-  const initGuardianWallToolbarLink=()=>{
+  const hrefFor=(locale,hash='')=>`${wallUrl}${locale.query?`?lang=${locale.query}`:''}${hash}`;
+  const submitFor=locale=>`${wallUrl}submit${locale.query?`?lang=${locale.query}`:''}`;
+  const createMenu=locale=>{
+    const menu=document.createElement('details');
+    menu.className='guardian-action-nav';
+    menu.innerHTML=`<summary aria-label="${locale.aria}" aria-expanded="false"><span class="guardian-action-nav-heart" aria-hidden="true">♡</span><span>${locale.title}</span><i aria-hidden="true">⌄</i></summary><div class="guardian-action-nav-menu" role="group" aria-label="${locale.group}"><a class="guardian-action-menu-link is-wall-home" href="${hrefFor(locale)}"><span class="guardian-wall-nav-mark" aria-hidden="true">護</span><span><b>${locale.home}</b><small>${locale.homeHint}</small></span></a><a class="guardian-action-menu-link" href="${hrefFor(locale,'#bulletins')}"><span class="guardian-wall-nav-mark" aria-hidden="true">報</span><span><b>${locale.bulletin}</b><small>${locale.bulletinHint}</small></span></a><a class="guardian-action-menu-link guest-message-nav-link" href="${hrefFor(locale,'#guest-message')}"><span class="guardian-wall-nav-mark" aria-hidden="true">♡</span><span><b>${locale.guest}</b><small>${locale.guestHint}</small></span></a><a class="guardian-action-menu-link" href="${submitFor(locale)}"><span class="guardian-wall-nav-mark" aria-hidden="true">✎</span><span><b>${locale.member}</b><small>${locale.memberHint}</small></span></a></div>`;
+    return menu;
+  };
+  const initGuardianActionMenu=menu=>{
+    if(menu.dataset.guardianMenuReady==='1') return;
+    menu.dataset.guardianMenuReady='1';
+    const summary=menu.querySelector(':scope > summary');
+    const sync=()=>summary?.setAttribute('aria-expanded',String(menu.open));
+    menu.addEventListener('toggle',()=>{
+      sync();
+      if(menu.open) document.querySelectorAll('.guardian-action-nav[open]').forEach(other=>{if(other!==menu)other.open=false;});
+    });
+    document.addEventListener('click',event=>{if(menu.open&&!menu.contains(event.target))menu.open=false;});
+    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&menu.open){menu.open=false;summary?.focus();}});
+    menu.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{menu.open=false;}));
+    sync();
+  };
+  const initGuardianWallToolbar=()=>{
     const locale=labels[document.documentElement.lang]||labels['zh-Hant'];
     document.querySelectorAll('header .nav > nav').forEach(nav=>{
-      if(nav.querySelector('.guardian-wall-nav-link')) return;
-      const link=document.createElement('a');
-      link.className='guardian-wall-nav-link';
-      link.href=wallUrl;
-      link.target='_blank';
-      link.rel='noopener noreferrer';
-      link.setAttribute('aria-label',locale.aria);
-      link.innerHTML=`<span class="guardian-wall-nav-mark" aria-hidden="true">♡</span><span class="guardian-wall-nav-label">${locale.text}</span>`;
-      const before=nav.querySelector('.pwa-nav-install,.language-switcher');
-      nav.insertBefore(link,before||null);
+      let menu=nav.querySelector('.guardian-action-nav');
+      if(!menu){
+        nav.querySelector('.guardian-wall-nav-link')?.remove();
+        menu=createMenu(locale);
+        const before=nav.querySelector('.pwa-nav-install,.language-switcher');
+        nav.insertBefore(menu,before||null);
+      }
+      initGuardianActionMenu(menu);
     });
   };
   document.readyState==='loading'
-    ? document.addEventListener('DOMContentLoaded',initGuardianWallToolbarLink,{once:true})
-    : initGuardianWallToolbarLink();
+    ? document.addEventListener('DOMContentLoaded',initGuardianWallToolbar,{once:true})
+    : initGuardianWallToolbar();
 })();
 
 /* 2026-08-20 — Premium coastal header toolbar motion */
