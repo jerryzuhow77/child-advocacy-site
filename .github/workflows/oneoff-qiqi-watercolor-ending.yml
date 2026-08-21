@@ -1,0 +1,642 @@
+name: Publish Qiqi watercolor panorama ending
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-qiqi-watercolor-ending.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: child-advocacy-site-sitemap
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reassemble the uploaded watercolor panorama
+        run: |
+          mkdir -p assets/fujian-qiqi
+          cat .tmp/qiqi-ending-panorama/part-*.b64 \
+            | tr -d '\r\n[:space:]' \
+            | base64 --decode \
+            > assets/fujian-qiqi/ending-panorama-watercolor-20260821.webp
+
+          python3 - <<'PY'
+          from pathlib import Path
+          image = Path('assets/fujian-qiqi/ending-panorama-watercolor-20260821.webp')
+          data = image.read_bytes()
+          assert len(data) == 68980, f'unexpected image size: {len(data)}'
+          assert data[:4] == b'RIFF' and data[8:12] == b'WEBP', 'not a WebP image'
+          assert data[12:16] == b'VP8 ', 'unexpected WebP encoding'
+          # VP8 key-frame dimensions: 0x9d 0x01 0x2a, then two little-endian 14-bit values.
+          marker = data.find(b'\x9d\x01\x2a', 16, 64)
+          assert marker >= 0, 'VP8 frame header not found'
+          width = int.from_bytes(data[marker + 3:marker + 5], 'little') & 0x3fff
+          height = int.from_bytes(data[marker + 5:marker + 7], 'little') & 0x3fff
+          assert (width, height) == (1280, 720), (width, height)
+          print(f'Validated watercolor panorama: {width}x{height}, {len(data)} bytes')
+          PY
+
+      - name: Integrate the panorama and enhanced GSAP ending
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          css_path = Path('assets/fujian-qiqi-feature.css')
+          js_path = Path('assets/fujian-qiqi-feature.js')
+          new_asset = 'fujian-qiqi/ending-panorama-watercolor-20260821.webp'
+          old_asset = 'fujian-qiqi/ending-panorama-20260820.webp'
+
+          css = css_path.read_text(encoding='utf-8')
+          css = css.replace(old_asset, new_asset)
+          css_marker = '/* === Watercolor panorama ending showcase · 2026-08-21 === */'
+          css_patch = r'''
+          /* === Watercolor panorama ending showcase · 2026-08-21 === */
+          body.fq-page .fq-ending {
+            --fq-ending-paper: #f4f0e8;
+            --fq-ending-ink: #29383b;
+            --fq-ending-copy: #4a5657;
+            min-height: clamp(760px, 92svh, 980px);
+            display: flex;
+            align-items: center;
+            padding: clamp(6rem, 12vw, 10rem) 0;
+            overflow: hidden;
+            color: var(--fq-ending-ink);
+            background:
+              linear-gradient(90deg, rgba(247, 243, 235, .92), rgba(247, 243, 235, .16) 54%, transparent 72%),
+              url("fujian-qiqi/ending-panorama-watercolor-20260821.webp") center / cover no-repeat,
+              var(--fq-ending-paper);
+            isolation: isolate;
+          }
+
+          body.fq-page .fq-ending.has-watercolor-panorama {
+            background: var(--fq-ending-paper);
+          }
+
+          body.fq-page .fq-ending__panorama {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image: url("fujian-qiqi/ending-panorama-watercolor-20260821.webp");
+            background-repeat: no-repeat;
+            transform: none;
+            transform-origin: 50% 50%;
+          }
+
+          body.fq-page .fq-ending__panorama--detail {
+            z-index: 1;
+            inset: -2%;
+            opacity: 0;
+            background-color: var(--fq-ending-paper);
+            background-position: 61% center;
+            background-size: cover;
+          }
+
+          body.fq-page .fq-ending__panorama--full {
+            z-index: 2;
+            opacity: 1;
+            background-color: var(--fq-ending-paper);
+            background-position: center;
+            background-size: contain;
+          }
+
+          body.fq-page .fq-ending__lantern-glow {
+            position: absolute;
+            z-index: 4;
+            inset: -3%;
+            opacity: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 91% 73%, rgba(255, 192, 91, .52) 0, rgba(255, 198, 108, .22) 2.5%, transparent 7%);
+            filter: blur(5px);
+            mix-blend-mode: screen;
+            transform-origin: 91% 73%;
+          }
+
+          body.fq-page .fq-ending::before {
+            position: absolute;
+            z-index: 3;
+            inset: 0;
+            pointer-events: none;
+            content: "";
+            opacity: 1;
+            background:
+              linear-gradient(90deg, rgba(247, 243, 235, .97) 0%, rgba(247, 243, 235, .9) 31%, rgba(247, 243, 235, .52) 47%, transparent 65%),
+              linear-gradient(180deg, rgba(255, 255, 255, .08), transparent 62%, rgba(59, 68, 68, .1));
+            filter: none;
+            transition: opacity .9s ease;
+          }
+
+          body.fq-page .fq-ending.has-watercolor-panorama.is-watercolor-intro::before {
+            opacity: .04;
+          }
+
+          body.fq-page .fq-ending.has-watercolor-panorama.is-watercolor-copy::before,
+          body.fq-page .fq-ending.has-watercolor-panorama.is-watercolor-static::before {
+            opacity: 1;
+          }
+
+          body.fq-page .fq-ending::after {
+            position: absolute;
+            z-index: 3;
+            inset: auto 0 0;
+            height: 28%;
+            pointer-events: none;
+            content: "";
+            opacity: .38;
+            background: linear-gradient(180deg, transparent, rgba(50, 59, 60, .18));
+            filter: none;
+          }
+
+          body.fq-page .fq-ending .fq-shell {
+            position: relative;
+            z-index: 6;
+            width: min(calc(100% - 48px), 1500px);
+            max-width: 1500px;
+            margin-inline: auto;
+            padding: 0;
+            text-align: left;
+          }
+
+          body.fq-page .fq-ending .fq-shell > * {
+            max-width: 650px;
+          }
+
+          body.fq-page .fq-ending small {
+            display: block;
+            color: #865b55;
+            letter-spacing: .16em;
+            text-shadow: 0 1px 10px rgba(255, 255, 255, .9);
+          }
+
+          body.fq-page .fq-ending h2 {
+            margin: .55rem 0 0;
+            color: var(--fq-ending-ink);
+            font-size: clamp(3.4rem, 7vw, 7.4rem);
+            line-height: .98;
+            letter-spacing: -.035em;
+            text-shadow: 0 2px 18px rgba(255, 255, 255, .92);
+          }
+
+          body.fq-page .fq-ending p {
+            max-width: 52ch;
+            margin: 1.5rem 0 0;
+            color: var(--fq-ending-copy);
+            font-size: clamp(1rem, 1.45vw, 1.18rem);
+            font-weight: 570;
+            line-height: 1.95;
+            text-shadow: 0 1px 13px rgba(255, 255, 255, .96);
+          }
+
+          body.fq-page .fq-ending__seal {
+            margin: 2rem 0 1.7rem;
+            border-color: rgba(151, 74, 67, .7);
+            color: #99534d;
+            background: rgba(255, 249, 242, .48);
+            box-shadow: 0 8px 24px rgba(91, 67, 60, .08);
+            text-shadow: none;
+          }
+
+          body.fq-page .fq-ending__actions {
+            justify-content: flex-start;
+            max-width: 720px;
+          }
+
+          body.fq-page .fq-ending__actions a {
+            border-color: rgba(52, 72, 73, .22);
+            color: #304749;
+            background: rgba(255, 252, 247, .7);
+            box-shadow: 0 7px 22px rgba(55, 62, 61, .07);
+            backdrop-filter: blur(7px) saturate(.86);
+          }
+
+          body.fq-page .fq-ending__actions a:hover,
+          body.fq-page .fq-ending__actions a:focus-visible {
+            color: #fffaf4;
+            background: #496765;
+            border-color: #496765;
+          }
+
+          body.fq-page .fq-ending.is-watercolor-animating .fq-ending__panorama,
+          body.fq-page .fq-ending.is-watercolor-animating .fq-ending__lantern-glow {
+            will-change: transform, opacity;
+          }
+
+          body.fq-page .fq-ending.is-watercolor-complete .fq-ending__panorama,
+          body.fq-page .fq-ending.is-watercolor-complete .fq-ending__lantern-glow {
+            will-change: auto;
+          }
+
+          @media screen and (max-width: 780px) {
+            body.fq-page .fq-ending {
+              min-height: max(820px, 100dvh);
+              align-items: flex-end;
+              padding: 23rem 0 calc(4.5rem + env(safe-area-inset-bottom));
+              background-position: center top;
+            }
+
+            body.fq-page .fq-ending__panorama--full {
+              top: clamp(4.6rem, 10dvh, 6.2rem);
+              right: .5rem;
+              bottom: auto;
+              left: .5rem;
+              width: calc(100% - 1rem);
+              aspect-ratio: 16 / 9;
+              border: 1px solid rgba(94, 84, 75, .14);
+              border-radius: 18px;
+              background-position: center;
+              background-size: cover;
+              box-shadow: 0 18px 46px rgba(77, 67, 60, .13), inset 0 0 0 1px rgba(255, 255, 255, .52);
+            }
+
+            body.fq-page .fq-ending__panorama--detail {
+              inset: -4%;
+              background-position: 68% center;
+              background-size: cover;
+            }
+
+            body.fq-page .fq-ending__lantern-glow {
+              background: radial-gradient(circle at 78% 74%, rgba(255, 187, 82, .5) 0, rgba(255, 197, 108, .2) 3%, transparent 9%);
+              transform-origin: 78% 74%;
+            }
+
+            body.fq-page .fq-ending::before {
+              background:
+                linear-gradient(180deg, transparent 0 42%, rgba(247, 243, 235, .65) 57%, rgba(247, 243, 235, .96) 70%, rgba(247, 243, 235, .99) 100%),
+                linear-gradient(90deg, rgba(247, 243, 235, .28), transparent 55%);
+            }
+
+            body.fq-page .fq-ending::after {
+              height: 20%;
+              opacity: .18;
+            }
+
+            body.fq-page .fq-ending .fq-shell {
+              width: min(calc(100% - 28px), 1500px);
+            }
+
+            body.fq-page .fq-ending h2 {
+              max-width: 8.5ch;
+              color: #27383b;
+              font-size: clamp(3rem, 15vw, 5rem);
+              text-shadow: 0 2px 16px rgba(255, 255, 255, .95);
+            }
+
+            body.fq-page .fq-ending p {
+              color: #465456;
+              font-size: .98rem;
+              line-height: 1.85;
+            }
+
+            body.fq-page .fq-ending__actions {
+              display: grid;
+              grid-template-columns: repeat(2, minmax(0, 1fr));
+              width: 100%;
+              max-width: 32rem;
+            }
+
+            body.fq-page .fq-ending__actions a {
+              display: grid;
+              min-height: 2.8rem;
+              place-items: center;
+              text-align: center;
+            }
+          }
+
+          @media screen and (max-width: 380px) {
+            body.fq-page .fq-ending {
+              padding-top: 20rem;
+            }
+
+            body.fq-page .fq-ending__actions {
+              grid-template-columns: 1fr;
+            }
+          }
+
+          @media screen and (max-width: 780px) and (max-height: 560px) and (orientation: landscape) {
+            body.fq-page .fq-ending {
+              min-height: 560px;
+              align-items: center;
+              padding: 6rem 0 3.8rem;
+            }
+
+            body.fq-page .fq-ending__panorama--full {
+              top: 4.2rem;
+              right: auto;
+              left: 1rem;
+              width: min(52vw, 34rem);
+            }
+
+            body.fq-page .fq-ending .fq-shell {
+              padding-left: 48vw;
+            }
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            body.fq-page .fq-ending__panorama,
+            body.fq-page .fq-ending__lantern-glow {
+              animation: none;
+              transition: none;
+              transform: none !important;
+            }
+          }
+
+          @media (forced-colors: active) {
+            body.fq-page .fq-ending__panorama,
+            body.fq-page .fq-ending__lantern-glow {
+              display: none;
+            }
+          }
+          '''
+
+          if css_marker not in css:
+              css = css.rstrip() + '\n\n' + css_patch.strip() + '\n'
+          css_path.write_text(css, encoding='utf-8', newline='\n')
+
+          js = js_path.read_text(encoding='utf-8')
+          old_start = '/* Mobile theatre and ending visibility repair · 2026-08-21 */'
+          next_marker = '/* Third-act contrast and motion refinement · 2026-08-21 */'
+          new_marker = '/* Watercolor panorama ending showcase · 2026-08-21 */'
+          js_patch = r'''
+          /* Watercolor panorama ending showcase · 2026-08-21 */
+          (() => {
+            'use strict';
+
+            const ready = callback => {
+              if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', callback, { once: true });
+              } else {
+                callback();
+              }
+            };
+
+            ready(() => {
+              const html = document.documentElement;
+              const ending = document.querySelector('.fq-ending');
+              if (!ending || ending.dataset.fqWatercolorEnding === 'true') return;
+              ending.dataset.fqWatercolorEnding = 'true';
+
+              const makeLayer = className => {
+                const layer = document.createElement('div');
+                layer.className = className;
+                layer.setAttribute('aria-hidden', 'true');
+                return layer;
+              };
+
+              const detail = makeLayer('fq-ending__panorama fq-ending__panorama--detail');
+              const full = makeLayer('fq-ending__panorama fq-ending__panorama--full');
+              const glow = makeLayer('fq-ending__lantern-glow');
+              ending.prepend(detail, full, glow);
+              ending.classList.add('has-watercolor-panorama', 'is-watercolor-intro', 'is-visible');
+
+              const compact = matchMedia('(max-width: 780px)').matches;
+              const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+              const saveData = Boolean(navigator.connection && navigator.connection.saveData);
+              let motionMode = html.dataset.fqMotion || 'full';
+              if (!['full', 'lite', 'off'].includes(motionMode)) {
+                try { motionMode = localStorage.getItem('fq-motion-mode') || 'full'; } catch (_error) {}
+              }
+              const lite = motionMode === 'lite';
+              const off = motionMode === 'off';
+              const gsap = window.gsap && typeof window.gsap.timeline === 'function' ? window.gsap : null;
+
+              const shell = ending.querySelector('.fq-shell');
+              const pieces = shell
+                ? [
+                    shell.querySelector(':scope > small'),
+                    shell.querySelector(':scope > h2'),
+                    shell.querySelector(':scope > p'),
+                    shell.querySelector('.fq-ending__seal'),
+                    shell.querySelector('.fq-ending__actions')
+                  ].filter(Boolean)
+                : [];
+
+              let played = false;
+              let inView = false;
+              let timeline = null;
+              let glowTween = null;
+              let observer = null;
+
+              const showStatic = () => {
+                ending.classList.remove('is-watercolor-intro', 'is-watercolor-animating');
+                ending.classList.add('is-watercolor-copy', 'is-watercolor-static', 'is-watercolor-complete');
+                if (gsap) {
+                  gsap.set(full, { autoAlpha: 1, scale: 1, xPercent: 0, yPercent: 0 });
+                  gsap.set(detail, { autoAlpha: 0, scale: 1, xPercent: 0, yPercent: 0 });
+                  gsap.set(glow, { autoAlpha: 0, scale: 1 });
+                  gsap.set(pieces, { autoAlpha: 1, x: 0, y: 0, filter: 'none' });
+                }
+              };
+
+              if (!gsap || reduced || off || saveData) {
+                showStatic();
+              } else {
+                const hold = lite ? 1.25 : 2.4;
+                const crossAt = Math.max(.7, hold - .25);
+                const detailDuration = lite ? 1.15 : 7.6;
+                const copyAt = lite ? hold + .35 : hold + .72;
+
+                gsap.set(full, { autoAlpha: 1, scale: 1, xPercent: 0, yPercent: 0 });
+                gsap.set(detail, {
+                  autoAlpha: 0,
+                  scale: compact ? 1.13 : 1.09,
+                  xPercent: compact ? 1.8 : .7,
+                  yPercent: compact ? -.8 : 0
+                });
+                gsap.set(glow, { autoAlpha: 0, scale: .92 });
+                gsap.set(pieces, { autoAlpha: 0, y: compact ? 22 : 28, filter: 'blur(3px)' });
+
+                glowTween = gsap.to(glow, {
+                  autoAlpha: .76,
+                  scale: 1.08,
+                  duration: 2.6,
+                  ease: 'sine.inOut',
+                  repeat: -1,
+                  yoyo: true,
+                  paused: true
+                });
+
+                timeline = gsap.timeline({
+                  paused: true,
+                  defaults: { ease: 'power2.out' },
+                  onStart: () => ending.classList.add('is-watercolor-animating'),
+                  onComplete: () => {
+                    ending.classList.remove('is-watercolor-animating');
+                    ending.classList.add('is-watercolor-complete');
+                    gsap.set(full, { autoAlpha: 0 });
+                    gsap.set(detail, { autoAlpha: 1, scale: 1, xPercent: 0, yPercent: 0 });
+                    gsap.set(pieces, { clearProps: 'opacity,visibility,transform,filter' });
+                    if (inView && !lite) glowTween.play();
+                  }
+                });
+
+                timeline.to(full, {
+                  scale: compact ? 1.018 : 1.012,
+                  duration: hold,
+                  ease: 'sine.inOut'
+                }, 0);
+
+                timeline.to(full, {
+                  autoAlpha: 0,
+                  scale: compact ? 1.045 : 1.03,
+                  duration: lite ? .78 : 1.35,
+                  ease: 'power2.inOut'
+                }, crossAt);
+
+                timeline.to(detail, {
+                  autoAlpha: 1,
+                  scale: 1,
+                  xPercent: 0,
+                  yPercent: 0,
+                  duration: detailDuration,
+                  ease: lite ? 'power2.out' : 'power1.out'
+                }, crossAt);
+
+                timeline.call(() => {
+                  ending.classList.remove('is-watercolor-intro');
+                  ending.classList.add('is-watercolor-copy');
+                  if (!lite && inView) glowTween.play(0);
+                }, null, crossAt + .45);
+
+                timeline.to(pieces, {
+                  autoAlpha: 1,
+                  y: 0,
+                  filter: 'blur(0px)',
+                  duration: lite ? .58 : .88,
+                  stagger: lite ? .1 : .19,
+                  ease: 'power2.out'
+                }, copyAt);
+
+                const seal = shell && shell.querySelector('.fq-ending__seal');
+                if (seal) {
+                  timeline.fromTo(seal, {
+                    scale: .78,
+                    rotation: -15
+                  }, {
+                    scale: 1,
+                    rotation: -5,
+                    duration: .92,
+                    ease: 'back.out(1.7)'
+                  }, copyAt + .55);
+                }
+              }
+
+              const playOrResume = () => {
+                if (!timeline) return;
+                if (!played) {
+                  played = true;
+                  timeline.play(0);
+                } else if (timeline.progress() < 1) {
+                  timeline.resume();
+                } else if (!lite && glowTween) {
+                  glowTween.resume();
+                }
+              };
+
+              const pauseMotion = () => {
+                if (timeline && timeline.progress() < 1) timeline.pause();
+                if (glowTween) glowTween.pause();
+              };
+
+              if (timeline && 'IntersectionObserver' in window) {
+                observer = new IntersectionObserver(entries => {
+                  entries.forEach(entry => {
+                    inView = entry.isIntersecting && entry.intersectionRatio >= .08;
+                    html.classList.toggle('fq-ending-focus', inView);
+                    if (inView) playOrResume(); else pauseMotion();
+                  });
+                }, { threshold: [0, .08, .2, .45], rootMargin: '3% 0px -5% 0px' });
+                observer.observe(ending);
+              } else if (timeline) {
+                inView = true;
+                html.classList.add('fq-ending-focus');
+                playOrResume();
+              }
+
+              const onVisibility = () => {
+                if (document.hidden) {
+                  pauseMotion();
+                } else if (inView) {
+                  playOrResume();
+                }
+              };
+              document.addEventListener('visibilitychange', onVisibility);
+
+              window.FujianQiqiEnding = {
+                replay() {
+                  if (!timeline) {
+                    showStatic();
+                    return false;
+                  }
+                  played = true;
+                  ending.classList.remove('is-watercolor-copy', 'is-watercolor-complete', 'is-watercolor-static');
+                  ending.classList.add('is-watercolor-intro');
+                  glowTween.pause(0);
+                  timeline.restart(true);
+                  return true;
+                }
+              };
+
+              window.addEventListener('pagehide', () => {
+                if (observer) observer.disconnect();
+                if (timeline) timeline.kill();
+                if (glowTween) glowTween.kill();
+                document.removeEventListener('visibilitychange', onVisibility);
+                html.classList.remove('fq-ending-focus');
+              }, { once: true });
+            });
+          })();
+          '''
+
+          if new_marker not in js:
+              start = js.find(old_start)
+              end = js.find(next_marker, start + 1) if start >= 0 else -1
+              if start >= 0 and end > start:
+                  js = js[:start] + js_patch.strip() + '\n\n' + js[end:]
+              else:
+                  js = js.rstrip() + '\n\n' + js_patch.strip() + '\n'
+
+          js = js.replace("version: '1.3.2'", "version: '1.3.3'")
+          js_path.write_text(js, encoding='utf-8', newline='\n')
+          PY
+
+      - name: Refresh all four language cache versions
+        env:
+          QIQI_VERSION_SHA: ${{ github.sha }}
+        run: python3 scripts/sync_fujian_qiqi_feature.py
+
+      - name: Validate the final integration
+        run: |
+          node --check assets/fujian-qiqi-feature.js
+          python3 -m py_compile scripts/sync_fujian_qiqi_feature.py
+          grep -q 'Watercolor panorama ending showcase' assets/fujian-qiqi-feature.css
+          grep -q 'Watercolor panorama ending showcase' assets/fujian-qiqi-feature.js
+          grep -q 'ending-panorama-watercolor-20260821.webp' assets/fujian-qiqi-feature.css
+          test -s assets/fujian-qiqi/ending-panorama-watercolor-20260821.webp
+          git diff --check
+
+      - name: Commit the image and ending design, then remove staging files
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm -r -- .tmp/qiqi-ending-panorama
+          git rm -- .github/workflows/oneoff-qiqi-watercolor-ending.yml
+          git add -- \
+            assets/fujian-qiqi/ending-panorama-watercolor-20260821.webp \
+            assets/fujian-qiqi-feature.css \
+            assets/fujian-qiqi-feature.js \
+            historical-cases/regions/mainland-china/fujian-qiqi/index.html \
+            zh-hans/historical-cases/regions/mainland-china/fujian-qiqi/index.html \
+            en/historical-cases/regions/mainland-china/fujian-qiqi/index.html \
+            ja/historical-cases/regions/mainland-china/fujian-qiqi/index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Showcase uploaded watercolor panorama in Qiqi ending'
+          git pull --rebase origin main
+          git push
