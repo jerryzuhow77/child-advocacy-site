@@ -22,9 +22,14 @@
       .filter((scene, index, collection) => collection.indexOf(scene) === index);
     const reducedMotionQuery = matchMedia('(prefers-reduced-motion: reduce)');
     const compactQuery = matchMedia('(max-width: 780px)');
-    const reducedMotion = reducedMotionQuery.matches;
+    let motionMode = 'full';
+    try { motionMode = localStorage.getItem('fq-motion-mode') || 'full'; } catch (_error) {}
+    if (!['full', 'lite', 'off'].includes(motionMode)) motionMode = 'full';
+    if (reducedMotionQuery.matches) motionMode = 'off';
+    const reducedMotion = motionMode === 'off';
+    const liteMotion = motionMode === 'lite';
     const saveData = Boolean(navigator.connection && navigator.connection.saveData);
-    const gsapEngine = !reducedMotion && window.gsap && typeof window.gsap.timeline === 'function'
+    const gsapEngine = motionMode !== 'off' && window.gsap && typeof window.gsap.timeline === 'function'
       ? window.gsap
       : null;
     const ScrollTrigger = gsapEngine && window.ScrollTrigger
@@ -46,6 +51,7 @@
     const animationTimers = new Set();
     const visibilityPausedScenes = new Set();
 
+    html.dataset.fqMotion = motionMode;
     if (reducedMotion) html.classList.add('fq-reduced-motion');
     if (saveData) html.classList.add('fq-save-data');
 
@@ -182,6 +188,22 @@
       (result, entry) => result.split('{' + entry[0] + '}').join(String(entry[1])),
       template
     );
+
+    const motionButtons = [...doc.querySelectorAll('[data-fq-motion]')];
+    const paintMotionButtons = () => motionButtons.forEach(button => {
+      const active = button.dataset.fqMotion === motionMode;
+      button.setAttribute('aria-pressed', String(active));
+      button.dataset.active = active ? 'true' : 'false';
+    });
+    const chooseMotionMode = mode => {
+      if (!['full', 'lite', 'off'].includes(mode) || mode === motionMode) return;
+      try { localStorage.setItem('fq-motion-mode', mode); } catch (_error) {}
+      window.location.reload();
+    };
+    paintMotionButtons();
+    doc.querySelectorAll('.fq-evidence-legend').forEach(details => {
+      if (compactQuery.matches && 'open' in details) details.open = false;
+    });
 
     const clamp = (minimum, value, maximum) => Math.min(maximum, Math.max(minimum, value));
 
@@ -730,6 +752,8 @@
       state.scene.classList.add('is-complete');
       state.scene.classList.toggle('is-skipped', skipped);
       if (skipped) settleActorMotion(state);
+      const finalLine = state.lines[state.lines.length - 1];
+      if (finalLine) activateLine(state, finalLine, state.lines.length - 1);
       setProgress(state, 1);
       setStatus(state, format(skipped ? copy.skipped : copy.complete, { act: sceneAct(state) }));
       updateControls(state);
@@ -758,7 +782,7 @@
       });
 
       let cursor = 0;
-      if (state.curtainLeft || state.curtainRight) {
+      if (!liteMotion && (state.curtainLeft || state.curtainRight)) {
         if (state.curtainLeft) {
           timeline.fromTo(state.curtainLeft, { xPercent: 0 }, {
             xPercent: -102,
@@ -776,7 +800,7 @@
         cursor = 0.82;
       }
 
-      if (state.backdrop) {
+      if (state.backdrop && !liteMotion) {
         timeline.fromTo(state.backdrop, {
           scale: 1.055,
           yPercent: 0
@@ -822,7 +846,7 @@
           duration: 0.43,
           ease: 'power2.out'
         }, entrance + 0.06);
-        addActorGesture(timeline, state, line, index, entrance + 0.08, hold);
+        if (!liteMotion) addActorGesture(timeline, state, line, index, entrance + 0.08, hold);
         timeline.to(line, {
           autoAlpha: 0,
           y: -9,
@@ -1357,7 +1381,7 @@
     };
 
     const initHeroParallax = () => {
-      if (!gsapEngine || !ScrollTrigger || reducedMotion || saveData) return;
+      if (!gsapEngine || !ScrollTrigger || reducedMotion || liteMotion || saveData) return;
       const hero = doc.querySelector('[data-fq-hero], .fq-hero');
       if (!hero) return;
       const layers = [...hero.querySelectorAll('[data-fq-hero-layer], [data-fq-hero-media] img, .fq-hero__media img, .fq-hero__image img')]
@@ -1379,8 +1403,33 @@
       });
     };
 
+    const stageParallaxCleanups = [];
+    const initStageParallax = () => {
+      if (!gsapEngine || reducedMotion || liteMotion || saveData || compactQuery.matches) return;
+      scenes.forEach(scene => {
+        const stage = scene.querySelector('.fq-stage');
+        const light = scene.querySelector('.fq-stage__light');
+        const seals = scene.querySelector('.fq-seals--scene');
+        if (!stage || (!light && !seals)) return;
+        const onMove = event => {
+          const rect = stage.getBoundingClientRect();
+          const x = ((event.clientX - rect.left) / Math.max(1, rect.width) - .5);
+          const y = ((event.clientY - rect.top) / Math.max(1, rect.height) - .5);
+          if (light) gsapEngine.to(light, { x: x * 8, y: y * 5, duration: .8, ease: 'power2.out', overwrite: 'auto' });
+          if (seals) gsapEngine.to(seals, { x: x * -5, y: y * -3, duration: 1, ease: 'power2.out', overwrite: 'auto' });
+        };
+        const onLeave = () => {
+          if (light) gsapEngine.to(light, { x: 0, y: 0, duration: 1.1, overwrite: 'auto' });
+          if (seals) gsapEngine.to(seals, { x: 0, y: 0, duration: 1.1, overwrite: 'auto' });
+        };
+        stage.addEventListener('pointermove', onMove, { passive: true });
+        stage.addEventListener('pointerleave', onLeave, { passive: true });
+        stageParallaxCleanups.push(() => { stage.removeEventListener('pointermove', onMove); stage.removeEventListener('pointerleave', onLeave); });
+      });
+    };
+
     const initSeals = () => {
-      if (!gsapEngine || reducedMotion || saveData) return;
+      if (!gsapEngine || reducedMotion || liteMotion || saveData) return;
       let seals = [...doc.querySelectorAll('[data-fq-seal], .fq-seal, .fq-seals > span')]
         .filter((node, index, collection) => collection.indexOf(node) === index);
       if (compactQuery.matches) seals = seals.slice(0, 2);
@@ -1394,8 +1443,11 @@
           duration,
           ease: 'none',
           repeat: -1,
-          transformOrigin: '50% 50%'
+          transformOrigin: '50% 50%',
+          paused: true
         });
+        tween._fqSection = seal.closest('section') || seal;
+        tween._fqVisible = false;
         sealTweens.push(tween);
       });
     };
@@ -1405,14 +1457,10 @@
       const assetBase = new URL('./', featureScript.src);
       const placements = [
         ['.fq-boundary', 'tian-tian-ronghua-refined-blue-branch-20260818.webp'],
-        ['.fq-guide', 'tian-tian-ronghua-refined-four-evidence-20260818.webp'],
         ['#waiting', 'tian-tian-ronghua-refined-peony-butterfly-20260818.webp'],
         ['#signals', 'tian-tian-ronghua-refined-snow-magnolia-20260818.webp'],
         ['#court-findings', 'tian-tian-ronghua-refined-frost-chrysanthemum-20260818.webp'],
-        ['.fq-interlude', 'tian-tian-ronghua-refined-moon-lotus-20260818.webp'],
-        ['#justice', 'tian-tian-ronghua-refined-osmanthus-crescent-20260818.webp'],
         ['#protection', 'tian-tian-ronghua-refined-ten-knot-camellia-20260818.webp'],
-        ['.fq-help', 'tian-tian-ronghua-refined-vermilion-phoenix-20260818.webp'],
         ['#sources', 'qiqi-ronghua-refined-plum-kingfisher-20260820.webp']
       ];
 
@@ -1439,7 +1487,7 @@
     };
 
     const initRonghua = () => {
-      if (!gsapEngine || reducedMotion || saveData) return;
+      if (!gsapEngine || reducedMotion || liteMotion || saveData) return;
       const flowers = [...doc.querySelectorAll('[data-fq-ronghua]')]
         .filter((node, index, collection) => collection.indexOf(node) === index)
         .filter(node => {
@@ -1456,17 +1504,40 @@
           ease: 'sine.inOut',
           repeat: -1,
           yoyo: true,
-          transformOrigin: '50% 50%'
+          transformOrigin: '50% 50%',
+          paused: true
         });
+        tween._fqSection = flower.closest('section') || flower;
+        tween._fqVisible = false;
         sealTweens.push(tween);
       });
+    };
+
+    const initDecorVisibility = () => {
+      if (!sealTweens.length || !('IntersectionObserver' in window)) {
+        sealTweens.forEach(tween => { tween._fqVisible = true; tween.play(); });
+        return;
+      }
+      const sections = [...new Set(sealTweens.map(tween => tween._fqSection).filter(Boolean))];
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          sealTweens.filter(tween => tween._fqSection === entry.target).forEach(tween => {
+            tween._fqVisible = entry.isIntersecting;
+            if (entry.isIntersecting && !document.hidden) tween.play(); else tween.pause();
+          });
+        });
+      }, { rootMargin: '20% 0px', threshold: 0.01 });
+      sections.forEach(section => observer.observe(section));
+      observers.push(observer);
     };
 
     initPageRonghua();
     initReveals();
     initHeroParallax();
+    initStageParallax();
     initSeals();
     initRonghua();
+    initDecorVisibility();
 
     /* Scene and track observers ------------------------------------------ */
     if ('IntersectionObserver' in window && scenes.length) {
@@ -1487,6 +1558,10 @@
           ratios.set(entry.target, entry.isIntersecting ? entry.intersectionRatio : 0);
           const state = sceneStates.get(entry.target);
           if (!state || reducedMotion) return;
+          if (!entry.isIntersecting && state.playing) {
+            pauseScene(state, { automatic: true });
+            return;
+          }
           if (entry.isIntersecting
             && entry.intersectionRatio >= (compactQuery.matches ? 0.36 : 0.44)
             && (!state.started || state.autoPaused)
@@ -1542,6 +1617,9 @@
     };
 
     const onClick = event => {
+      const motionButton = event.target.closest('[data-fq-motion]');
+      if (motionButton) { chooseMotionMode(motionButton.dataset.fqMotion); return; }
+
       const audioButton = event.target.closest('[data-fq-audio-toggle], [data-audio-toggle]');
       if (audioButton) {
         if (audioEnabled) disableAudio();
@@ -1640,7 +1718,7 @@
     };
 
     const resumeFromVisibility = () => {
-      sealTweens.forEach(tween => tween.resume());
+      sealTweens.forEach(tween => { if (tween._fqVisible) tween.resume(); });
       visibilityPausedScenes.forEach(state => {
         if (state.completed || state.userPaused) return;
         playScene(state, { auto: true });
@@ -1679,6 +1757,7 @@
         if (trigger && typeof trigger.kill === 'function') trigger.kill();
       });
       sealTweens.forEach(tween => tween.kill());
+      stageParallaxCleanups.forEach(cleanup => cleanup());
       sceneStates.forEach(state => {
         clearFallbackTimer(state);
         if (state.timeline) state.timeline.kill();

@@ -2157,69 +2157,18 @@ html:not(.fq-js) [data-audio-dock] {
   text-decoration: none;
 }
 
-/* Ten handcrafted ronghua ornaments, distributed through the documentary
-   chapters. Each sits above its section wash and below the reading layer. */
-.fq-boundary,
-.fq-guide,
-.fq-chapter,
-.fq-interlude,
-.fq-help,
-.fq-sources {
-  isolation: isolate;
-  overflow: clip;
-}
-.fq-boundary > :not(.fq-page-ronghua),
-.fq-guide > :not(.fq-page-ronghua),
-.fq-chapter > :not(.fq-page-ronghua),
-.fq-interlude > :not(.fq-page-ronghua),
-.fq-help > :not(.fq-page-ronghua),
-.fq-sources > :not(.fq-page-ronghua) {
-  position: relative;
-  z-index: 2;
-}
-.fq-page-ronghua {
-  position: absolute;
-  z-index: 1;
-  inset: 0;
-  display: block;
-  overflow: hidden;
-  opacity: var(--fq-ronghua-opacity, .14);
-  pointer-events: none;
-}
-.fq-page-ronghua__art {
-  position: absolute;
-  display: block;
-  width: clamp(360px, 45vw, 760px);
-  transform: rotate(var(--fq-ronghua-rotation, 0deg));
-  transform-origin: 50% 50%;
-}
-.fq-page-ronghua img {
-  display: block;
-  width: 100%;
-  height: auto;
-  filter: saturate(.84) contrast(.96);
-  will-change: transform;
-}
-.fq-page-ronghua--01 { --fq-ronghua-opacity: .11; --fq-ronghua-rotation: -12deg; }
-.fq-page-ronghua--02 { --fq-ronghua-opacity: .12; --fq-ronghua-rotation: 8deg; }
-.fq-page-ronghua--03 { --fq-ronghua-opacity: .13; --fq-ronghua-rotation: -8deg; }
-.fq-page-ronghua--04 { --fq-ronghua-opacity: .14; --fq-ronghua-rotation: 11deg; }
-.fq-page-ronghua--05 { --fq-ronghua-opacity: .15; --fq-ronghua-rotation: -9deg; }
-.fq-page-ronghua--06 { --fq-ronghua-opacity: .16; --fq-ronghua-rotation: 7deg; }
-.fq-page-ronghua--07 { --fq-ronghua-opacity: .17; --fq-ronghua-rotation: -7deg; }
-.fq-page-ronghua--08 { --fq-ronghua-opacity: .18; --fq-ronghua-rotation: 10deg; }
-.fq-page-ronghua--09 { --fq-ronghua-opacity: .19; --fq-ronghua-rotation: -10deg; }
-.fq-page-ronghua--10 { --fq-ronghua-opacity: .20; --fq-ronghua-rotation: 7deg; }
-.fq-page-ronghua--01 .fq-page-ronghua__art { top: -48%; left: -12%; }
-.fq-page-ronghua--02 .fq-page-ronghua__art { right: -15%; bottom: -42%; }
-.fq-page-ronghua--03 .fq-page-ronghua__art { top: 3%; left: -17%; }
-.fq-page-ronghua--04 .fq-page-ronghua__art { right: -19%; bottom: -28%; }
-.fq-page-ronghua--05 .fq-page-ronghua__art { top: -4%; left: -19%; }
-.fq-page-ronghua--06 .fq-page-ronghua__art { right: -17%; bottom: -24%; }
-.fq-page-ronghua--07 .fq-page-ronghua__art { left: -15%; bottom: -21%; }
-.fq-page-ronghua--08 .fq-page-ronghua__art { top: -5%; right: -18%; }
-.fq-page-ronghua--09 .fq-page-ronghua__art { left: -18%; bottom: -32%; }
-.fq-page-ronghua--10 .fq-page-ronghua__art { right: -22%; bottom: -17%; }
+/* Six curated ronghua ornaments, placed as editorial accents rather than wallpaper. */
+.fq-boundary,.fq-guide,.fq-chapter,.fq-interlude,.fq-help,.fq-sources{isolation:isolate;overflow:clip}
+.fq-boundary>:not(.fq-page-ronghua),.fq-guide>:not(.fq-page-ronghua),.fq-chapter>:not(.fq-page-ronghua),.fq-interlude>:not(.fq-page-ronghua),.fq-help>:not(.fq-page-ronghua),.fq-sources>:not(.fq-page-ronghua){position:relative;z-index:2}
+.fq-page-ronghua{position:absolute;z-index:1;inset:0;display:block;overflow:hidden;opacity:var(--fq-ronghua-opacity,.1);pointer-events:none}
+.fq-page-ronghua__art{position:absolute;display:block;width:clamp(330px,42vw,700px);transform:rotate(var(--fq-ronghua-rotation,0deg));transform-origin:50% 50%}
+.fq-page-ronghua img{display:block;width:100%;height:auto;filter:saturate(.8) contrast(.95);will-change:auto}
+.fq-page-ronghua--01{--fq-ronghua-opacity:.07;--fq-ronghua-rotation:-11deg}.fq-page-ronghua--01 .fq-page-ronghua__art{top:-42%;left:-13%}
+.fq-page-ronghua--02{--fq-ronghua-opacity:.12;--fq-ronghua-rotation:-7deg}.fq-page-ronghua--02 .fq-page-ronghua__art{top:2%;left:-17%}
+.fq-page-ronghua--03{--fq-ronghua-opacity:.1;--fq-ronghua-rotation:10deg}.fq-page-ronghua--03 .fq-page-ronghua__art{right:-18%;bottom:-24%}
+.fq-page-ronghua--04{--fq-ronghua-opacity:.06;--fq-ronghua-rotation:-8deg}.fq-page-ronghua--04 .fq-page-ronghua__art{top:-2%;left:-18%}
+.fq-page-ronghua--05{--fq-ronghua-opacity:.09;--fq-ronghua-rotation:9deg}.fq-page-ronghua--05 .fq-page-ronghua__art{right:-18%;bottom:-20%}
+.fq-page-ronghua--06{--fq-ronghua-opacity:.07;--fq-ronghua-rotation:-8deg}.fq-page-ronghua--06 .fq-page-ronghua__art{left:-17%;bottom:-28%}
 
 /* Official-social finale ------------------------------------------------- */
 .fq-social-finale {
@@ -2787,6 +2736,69 @@ html[lang^="ja"] .fq-hero__content h1 { letter-spacing: -.035em; }
 
   .fq-curtain { display: none; }
 }
+
+
+/* === Fujian Qiqi stabilization and editorial refinement · 2026-08-21 === */
+:root{--fq-stage-min:clamp(620px,86svh,880px)}
+.fq-act.is-playing .fq-actor,.fq-act.is-playing .fq-stage__light{will-change:transform,opacity}
+.fq-act:not(.is-playing) .fq-actor,.fq-act:not(.is-playing) .fq-stage__light{will-change:auto}
+
+/* Motion-mode control */
+.fq-audio-dock,[data-audio-dock]{flex-wrap:wrap;border-radius:22px;padding:.58rem .7rem}
+.fq-motion-control{display:inline-flex;align-items:center;gap:.22rem;margin-left:.2rem;padding:.2rem;border:1px solid rgba(247,226,201,.2);border-radius:999px;background:rgba(255,255,255,.045)}
+.fq-motion-control>span{padding:0 .42rem;color:rgba(255,244,232,.72);font-size:.66rem;font-weight:800;letter-spacing:.06em}
+.fq-motion-control button{min-height:2rem;padding:.35rem .55rem;border:0;border-radius:999px;color:#ead9c6;background:transparent;font-size:.68rem;font-weight:800;cursor:pointer}
+.fq-motion-control button[aria-pressed="true"]{color:#2c3334;background:#efd8ba}
+html[data-fq-motion="lite"] .fq-seals--scene,html[data-fq-motion="off"] .fq-seals--scene{opacity:.45}
+html[data-fq-motion="off"] .fq-curtain,html[data-fq-motion="off"] .fq-scene-controls{display:none}
+
+/* Three-minute brief and source legend */
+.fq-quick-summary{position:relative;padding:clamp(4.2rem,8vw,7rem) 0;background:linear-gradient(150deg,#f7efe8,#eee4dc)}
+.fq-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.8rem;margin-top:2rem}
+.fq-summary-grid article{padding:1.15rem;border:1px solid rgba(84,65,59,.13);border-top:4px solid var(--fq-tea);border-radius:16px;background:rgba(255,252,248,.74);box-shadow:0 16px 42px rgba(55,45,42,.055)}
+.fq-summary-grid article[data-kind="court"]{border-top-color:var(--fq-indigo)}.fq-summary-grid article[data-kind="account"]{border-top-color:var(--fq-lotus)}.fq-summary-grid article[data-kind="gap"]{border-top-color:var(--fq-gold)}.fq-summary-grid article[data-kind="question"]{border-top-color:var(--fq-tea)}
+.fq-summary-grid small{color:var(--fq-cinnabar-deep);font-size:.65rem;font-weight:800;letter-spacing:.09em}.fq-summary-grid strong{display:block;margin-top:.45rem;color:var(--fq-indigo-deep);font-family:"Noto Serif TC",serif;font-size:1.12rem;line-height:1.45}.fq-summary-grid p{margin:.55rem 0 0;color:var(--fq-ink-soft);font-size:.82rem;line-height:1.7}
+.fq-evidence-legend{position:sticky;z-index:82;top:76px;width:min(calc(100% - 32px),980px);margin:-1px auto 0;border:1px solid rgba(80,63,58,.12);border-radius:0 0 16px 16px;background:rgba(248,241,235,.92);box-shadow:0 12px 28px rgba(45,38,36,.08);backdrop-filter:blur(14px) saturate(.9)}
+.fq-evidence-legend summary{display:none}.fq-evidence-legend>div{display:flex;justify-content:center;gap:.55rem 1.4rem;padding:.7rem 1rem}.fq-evidence-legend span{display:inline-flex;align-items:center;gap:.45rem;color:var(--fq-ink-soft);font-size:.72rem;font-weight:750}.fq-evidence-legend span::before{width:.58rem;height:.58rem;border-radius:50%;background:var(--fq-tea);content:""}.fq-evidence-legend span[data-kind="court"]::before{background:var(--fq-indigo)}.fq-evidence-legend span[data-kind="account"]::before{background:var(--fq-lotus)}
+
+/* Five distinct stage compositions */
+.fq-act[data-act="1"] .fq-actors{--fq-female-left:4%;--fq-male-right:4%;--fq-female-width:clamp(330px,36vw,525px);--fq-male-width:clamp(330px,36vw,525px)}
+.fq-act[data-act="2"] .fq-actors{--fq-female-left:8%;--fq-male-right:8%;--fq-female-width:clamp(340px,37vw,535px);--fq-male-width:clamp(340px,37vw,535px)}
+.fq-act[data-act="3"] .fq-actors{--fq-female-left:1%;--fq-male-right:1%;--fq-female-width:clamp(345px,38vw,545px);--fq-male-width:clamp(345px,38vw,545px)}
+.fq-act[data-act="4"] .fq-actors{--fq-female-left:auto;--fq-female-right:5%;--fq-male-left:5%;--fq-male-right:auto;--fq-female-width:clamp(330px,35vw,510px);--fq-male-width:clamp(330px,35vw,510px)}
+.fq-act[data-act="5"] .fq-actors{--fq-female-left:9%;--fq-male-right:9%;--fq-female-width:clamp(350px,38vw,550px);--fq-male-width:clamp(350px,38vw,550px)}
+.fq-stage>.fq-dialogue{z-index:40}
+html:not(.fq-gsap-ready) .fq-act.is-enhanced .fq-line:first-child{opacity:1;visibility:visible;z-index:2}
+.fq-act.is-complete .fq-line:last-child,.fq-act.is-skipped .fq-line:last-child{opacity:1;visibility:visible;z-index:2}
+
+/* Cinematic ending: typography is printed directly on the panorama. */
+body.fq-page .fq-ending{min-height:min(88vh,900px);display:flex;align-items:center;padding:clamp(6rem,12vw,10rem) 0;text-align:left;background-color:#26343a;background-image:url("fujian-qiqi/ending-panorama-20260820.webp");background-position:center 54%;background-repeat:no-repeat;background-size:cover}
+body.fq-page .fq-ending::before{position:absolute;z-index:0;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(14,21,24,.76) 0%,rgba(17,24,27,.5) 34%,rgba(17,24,27,.12) 63%,rgba(15,22,25,.2) 100%),linear-gradient(180deg,rgba(15,22,25,.2),transparent 30%,rgba(12,19,22,.4));content:""}
+body.fq-page .fq-ending::after{position:absolute;z-index:0;top:10%;bottom:10%;left:0;width:min(58vw,880px);pointer-events:none;background:radial-gradient(ellipse at 22% 50%,rgba(17,24,27,.5),rgba(17,24,27,.2) 48%,transparent 72%);content:"";filter:blur(12px)}
+body.fq-page .fq-ending .fq-shell{position:relative;z-index:1;width:min(calc(100% - 48px),1500px);max-width:1500px;margin-inline:auto;padding:0;text-align:left}
+body.fq-page .fq-ending .fq-shell>*{max-width:650px}body.fq-page .fq-ending small{display:block;color:#ead0aa;letter-spacing:.16em;text-shadow:0 2px 14px rgba(5,10,12,.7)}body.fq-page .fq-ending h2{margin:.55rem 0 0;color:#fff7ec;font-size:clamp(3.4rem,7vw,7.4rem);line-height:.98;letter-spacing:-.035em;text-shadow:0 5px 30px rgba(5,10,12,.68)}body.fq-page .fq-ending p{max-width:52ch;margin:1.5rem 0 0;color:rgba(255,249,240,.92);font-size:clamp(1rem,1.45vw,1.18rem);line-height:1.95;text-shadow:0 2px 16px rgba(5,10,12,.76)}body.fq-page .fq-ending__seal{margin:2rem 0 1.7rem;border-color:rgba(221,128,113,.72);color:#efb1a7;background:rgba(96,31,28,.1);box-shadow:0 5px 24px rgba(8,12,14,.2);text-shadow:0 2px 10px rgba(8,12,14,.45)}body.fq-page .fq-ending__actions{justify-content:flex-start;max-width:720px}body.fq-page .fq-ending__actions a{border-color:rgba(255,235,208,.25);color:#f4d9b7;background:rgba(18,27,30,.22);backdrop-filter:blur(3px)}
+.fq-ending-breath{height:clamp(100px,12vw,160px);background:linear-gradient(180deg,#202c31,#e8ddd5 90%)}
+
+/* Quieter postscript and compact social links */
+.fq-social-finale{min-height:0;padding:clamp(4.5rem,8vw,7rem) 0;background:linear-gradient(150deg,#eee5de,#e5e9e3)}.fq-social-finale::after{display:none}.fq-social-finale__head{max-width:760px;margin:0 auto 2rem}.fq-social-finale__links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem;max-width:900px;margin:0 auto 1.3rem}.fq-social-finale__links a{display:block;padding:1rem 1.1rem;border:1px solid rgba(78,64,59,.13);border-radius:14px;color:var(--fq-indigo-deep);background:rgba(255,252,248,.62);text-decoration:none}.fq-social-finale__links b{display:block;font-family:Georgia,serif;font-size:1rem}.fq-social-finale__links span{display:block;margin-top:.35rem;color:var(--fq-ink-soft);font-size:.74rem}.fq-social-finale__cta{margin-top:.4rem}
+
+@media(max-width:960px){.fq-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:780px){
+  :root{--fq-stage-min:clamp(680px,100svh,880px)}
+  .fq-audio-dock,[data-audio-dock]{align-items:center;max-width:calc(100vw - 18px);border-radius:18px}.fq-motion-control{order:3;width:100%;justify-content:center;margin:0}.fq-motion-control>span{margin-right:auto}
+  .fq-summary-grid{grid-template-columns:1fr}.fq-evidence-legend{position:static;width:min(calc(100% - 24px),980px);margin:0 auto 1rem;border-radius:14px}.fq-evidence-legend summary{display:block;padding:.75rem 1rem;color:var(--fq-cinnabar-deep);font-size:.78rem;font-weight:800;cursor:pointer}.fq-evidence-legend>div{display:grid;justify-content:start;padding:.2rem 1rem 1rem}
+  .fq-stage,[data-fq-stage]{min-height:clamp(680px,100svh,880px);padding-bottom:calc(env(safe-area-inset-bottom) + 6.2rem)}
+  .fq-stage>.fq-dialogue,.fq-dialogue,[data-fq-dialogue]{top:auto;bottom:calc(env(safe-area-inset-bottom) + 6.45rem);left:50%;width:min(calc(100% - 1.35rem),34rem);min-height:0;transform:translateX(-50%)}
+  .fq-line,[data-fq-line]{max-height:min(34svh,14.5rem);padding:1rem 1.05rem;overflow:auto;background:rgba(25,36,40,.9);font-size:clamp(.94rem,4vw,1.08rem);line-height:1.66;backdrop-filter:blur(8px);-webkit-overflow-scrolling:touch}
+  .fq-actors{--fq-female-left:-9vw!important;--fq-female-right:auto!important;--fq-male-left:auto!important;--fq-male-right:-9vw!important;--fq-female-width:clamp(180px,48vw,350px)!important;--fq-male-width:clamp(180px,48vw,350px)!important;--fq-female-bottom:calc(env(safe-area-inset-bottom) + 8.1rem)!important;--fq-male-bottom:calc(env(safe-area-inset-bottom) + 8.1rem)!important}
+  .fq-actors .fq-actor{height:min(48%,520px)}
+  .fq-scene-controls,[data-scene-controls]{bottom:calc(env(safe-area-inset-bottom) + .55rem)}
+  .fq-page-ronghua__art{width:clamp(300px,104vw,500px)}.fq-page-ronghua--01 .fq-page-ronghua__art,.fq-page-ronghua--02 .fq-page-ronghua__art,.fq-page-ronghua--04 .fq-page-ronghua__art,.fq-page-ronghua--06 .fq-page-ronghua__art{left:-70%;right:auto}.fq-page-ronghua--03 .fq-page-ronghua__art,.fq-page-ronghua--05 .fq-page-ronghua__art{right:-70%;left:auto}
+  body.fq-page .fq-ending{min-height:760px;align-items:flex-end;padding:12rem 0 4.5rem;background-position:58% center}body.fq-page .fq-ending::before{background:linear-gradient(180deg,rgba(12,19,22,.08) 0%,rgba(13,20,23,.18) 30%,rgba(13,20,23,.74) 62%,rgba(10,17,20,.88) 100%)}body.fq-page .fq-ending::after{top:auto;right:0;bottom:0;width:100%;height:58%;background:linear-gradient(180deg,transparent,rgba(12,19,22,.52) 35%,rgba(12,19,22,.78));filter:none}body.fq-page .fq-ending .fq-shell{width:min(calc(100% - 30px),1500px)}body.fq-page .fq-ending h2{max-width:8ch;font-size:clamp(3rem,15vw,5rem)}body.fq-page .fq-ending p{font-size:.98rem;line-height:1.85}body.fq-page .fq-ending__seal{width:5.2rem;height:5.2rem;margin:1.5rem 0}
+  .fq-ending-breath{height:90px}.fq-social-finale__links{grid-template-columns:1fr}.fq-social-finale__head{padding:0 .4rem}
+}
+@media(max-width:480px){.fq-actors{--fq-female-left:-12vw!important;--fq-male-right:-12vw!important;--fq-female-width:clamp(165px,51vw,280px)!important;--fq-male-width:clamp(165px,51vw,280px)!important}.fq-line,[data-fq-line]{max-height:min(32svh,13rem)}}
+@media(max-height:560px) and (orientation:landscape){:root{--fq-stage-min:540px}.fq-stage,[data-fq-stage]{min-height:540px}.fq-stage>.fq-dialogue,.fq-dialogue,[data-fq-dialogue]{right:1rem;bottom:4.8rem;left:auto;width:min(43vw,21rem);transform:none}.fq-actors{--fq-female-bottom:4.8rem!important;--fq-male-bottom:4.8rem!important}.fq-line,[data-fq-line]{max-height:10rem}}
 
 @media (forced-colors: active) {
   .fq-stage,
