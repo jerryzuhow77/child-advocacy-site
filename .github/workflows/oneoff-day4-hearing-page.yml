@@ -1,0 +1,225 @@
+name: One-off publish Day 4 hearing page
+
+on:
+  push:
+    paths:
+      - ".github/workflows/oneoff-day4-hearing-page.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Rebuild and install Day 4 page bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          work=/tmp/day4-hearing
+          rm -rf "$work"
+          mkdir -p "$work"
+          cat .github/day4-payload/part*.b64 | base64 --decode > "$work/day4-payload.tar.xz"
+          printf '%s  %s\n' '24b4a50ba1c6965e1b2a5b18462550772f5d0dbaac755c535ee1410cc17b6156' "$work/day4-payload.tar.xz" | sha256sum --check --strict
+          tar -xJf "$work/day4-payload.tar.xz" -C "$work"
+
+          zh_dir=hearing-records/prison-watch/kaikai-day4-20250428
+          en_dir=en/hearing-records/prison-watch/kaikai-day4-20250428
+          ja_dir=ja/hearing-records/prison-watch/kaikai-day4-20250428
+          src_zh_dir=source/hearing-records/prison-watch/kaikai-day4-20250428
+          src_en_dir=source/en/hearing-records/prison-watch/kaikai-day4-20250428
+          src_ja_dir=source/ja/hearing-records/prison-watch/kaikai-day4-20250428
+
+          mkdir -p "$zh_dir" "$en_dir" "$ja_dir" "$src_zh_dir" "$src_en_dir" "$src_ja_dir"
+          mkdir -p assets/art assets/source source/assets/art source/assets/source
+          mkdir -p data en/data ja/data source/data source/en/data source/ja/data
+
+          install -m 0644 "$work/zh.html" "$zh_dir/index.html"
+          install -m 0644 "$work/en.html" "$en_dir/index.html"
+          install -m 0644 "$work/ja.html" "$ja_dir/index.html"
+          install -m 0644 "$work/day4.css" "$zh_dir/day4.css"
+
+          install -m 0644 "$work/source_zh.html" "$src_zh_dir/index.html"
+          install -m 0644 "$work/source_en.html" "$src_en_dir/index.html"
+          install -m 0644 "$work/source_ja.html" "$src_ja_dir/index.html"
+          install -m 0644 "$work/day4.css" "$src_zh_dir/day4.css"
+
+          install -m 0644 "$work/prison-watch-day4-hearing-poster-20260821.svg" assets/art/prison-watch-day4-hearing-poster-20260821.svg
+          install -m 0644 "$work/prison-watch-day4-hearing-poster-20260821.svg" source/assets/art/prison-watch-day4-hearing-poster-20260821.svg
+          install -m 0644 "$work/prison-watch-day4-schedule-20250428.svg" assets/source/prison-watch-day4-schedule-20250428.svg
+          install -m 0644 "$work/prison-watch-day4-schedule-20250428.svg" source/assets/source/prison-watch-day4-schedule-20250428.svg
+
+          install -m 0644 "$work/hearing-records-zh.json" data/hearing-records.json
+          install -m 0644 "$work/hearing-records-en.json" en/data/hearing-records.json
+          install -m 0644 "$work/hearing-records-ja.json" ja/data/hearing-records.json
+          install -m 0644 "$work/hearing-records-zh.json" source/data/hearing-records.json
+          install -m 0644 "$work/hearing-records-en.json" source/en/data/hearing-records.json
+          install -m 0644 "$work/hearing-records-ja.json" source/ja/data/hearing-records.json
+
+          test -s "$zh_dir/index.html"
+          test -s "$en_dir/index.html"
+          test -s "$ja_dir/index.html"
+          grep -q '第四次審判期日' "$zh_dir/index.html"
+          grep -q 'Fourth Trial Hearing' "$en_dir/index.html"
+          grep -q '第4回公判期日' "$ja_dir/index.html"
+          python -m json.tool data/hearing-records.json >/dev/null
+          python -m json.tool en/data/hearing-records.json >/dev/null
+          python -m json.tool ja/data/hearing-records.json >/dev/null
+
+      - name: Generate social preview image
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk >/dev/null
+          python -m pip install --quiet cairosvg pillow
+          python - <<'PY'
+          from io import BytesIO
+          from pathlib import Path
+          import cairosvg
+          from PIL import Image
+
+          svg = Path('assets/art/prison-watch-day4-hearing-poster-20260821.svg')
+          out = Path('assets/art/prison-watch-day4-hearing-poster-20260821.webp')
+          png = cairosvg.svg2png(bytestring=svg.read_bytes(), output_width=972, output_height=1619)
+          image = Image.open(BytesIO(png)).convert('RGB')
+          image.save(out, 'WEBP', quality=90, method=6)
+          Path('source/assets/art').mkdir(parents=True, exist_ok=True)
+          Path('source/assets/art/prison-watch-day4-hearing-poster-20260821.webp').write_bytes(out.read_bytes())
+          assert out.stat().st_size > 20_000
+          PY
+
+      - name: Add Day 4 to navigation, discovery and search
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json
+
+          day4_url = 'hearing-records/prison-watch/kaikai-day4-20250428/'
+
+          nav_block = '''<div class="special-feature-prologue-group">
+          <button class="special-feature-menu-prologue" type="button" aria-expanded="false" aria-controls="specialFeaturePrisonWatchDay4Zh"><span><small>DAY 4</small><strong>第四日</strong><span>2025年4月28日・兩位證人與法官追問</span></span><b aria-hidden="true">›</b></button>
+          <div class="special-feature-prologue-children" id="specialFeaturePrisonWatchDay4Zh">
+          <a class="special-feature-prologue-link" href="./hearing-records/prison-watch/kaikai-day4-20250428/"><small>FOURTH TRIAL DATE · FEATURE</small><strong>第四次審判期日</strong><span>監所關注小組原始紀錄・護童行動聯盟重製專頁</span><b aria-hidden="true">→</b></a>
+          </div></div>
+          '''
+          nav_marker = '<div class="special-feature-prologue-group">\n<button class="special-feature-menu-prologue" type="button" aria-expanded="false" aria-controls="specialFeaturePrisonWatchDay3Zh">'
+
+          orbit_block = '<a class="home-document-disc-card" role="listitem" href="./hearing-records/prison-watch/kaikai-day4-20250428/"><img alt="第四日第四次審判期日重製編輯筆記主視覺" src="./assets/art/prison-watch-day4-hearing-poster-20260821.svg"><span><small>08.21 · 旁聽紀錄</small><strong>第四次審判期日</strong><em>兩位證人、三處動線與傷勢通報</em></span></a>\n'
+          orbit_marker = '<a class="home-document-disc-card" role="listitem" href="./hearing-records/prison-watch/kaikai-day3-20250425/">'
+
+          special_block = '<a class="home-crafted-card is-authorized-record" role="listitem" href="./hearing-records/prison-watch/kaikai-day4-20250428/"><span class="home-crafted-art"><img src="./assets/art/prison-watch-day4-hearing-poster-20260821.svg" alt="第四日第四次審判期日重製編輯筆記主視覺" loading="lazy"><i aria-hidden="true">08.21 · 最新上傳</i></span><span class="home-crafted-copy"><small>2026.08.21 · 監所關注小組 × 庭審紀錄</small><strong>第四日｜第四次審判期日</strong><em>兩位證人、三處托育動線、綑綁與澡盆、冷靜區與罰站、傷勢通報，由護童行動聯盟重製為完整編輯筆記。</em><b>閱讀重製專頁 →</b></span></a>\n'
+          special_marker = '<a class="home-crafted-card is-authorized-record" role="listitem" href="./hearing-records/prison-watch/kaikai-day3-20250425/">'
+
+          def insert_once(text, marker, block, key, label):
+              if key in text:
+                  return text
+              if marker not in text:
+                  print(f'warning: {label} marker not found')
+                  return text
+              return text.replace(marker, block + marker, 1)
+
+          for path in (Path('index.html'), Path('source/index.html')):
+              if not path.exists():
+                  continue
+              text = path.read_text(encoding='utf-8')
+              text = insert_once(text, nav_marker, nav_block, 'specialFeaturePrisonWatchDay4Zh', f'{path}: nav')
+              text = insert_once(text, orbit_marker, orbit_block, 'kaikai-day4-20250428/\"><img alt=\"第四日', f'{path}: orbit')
+              text = insert_once(text, special_marker, special_block, '第四日｜第四次審判期日', f'{path}: special card')
+              text = text.replace('十份近期更新內容，依上傳日期由新到舊排列', '十一份近期更新內容，依上傳日期由新到舊排列')
+              path.write_text(text, encoding='utf-8')
+
+          search_path = Path('data/search-index.json')
+          if search_path.exists():
+              data = json.loads(search_path.read_text(encoding='utf-8'))
+              items = data.setdefault('items', [])
+              if not any(item.get('url') == day4_url for item in items):
+                  items.insert(0, {
+                      'title': '剴剴案｜第四日・第四次審判期日',
+                      'category': '旁聽紀錄・剴剴案',
+                      'url': day4_url,
+                      'date': '2026-08-21',
+                      'summary': '2025年4月28日第四次審判期日重製編輯筆記：劉若琳與劉彩萱作證，法庭檢驗三處托育動線、綑綁與澡盆、冷靜區與罰站、傷勢通報、照片與對話紀錄。',
+                      'keywords': '剴剴案 第四日 第四次審判期日 劉若琳 劉彩萱 國民法官 監所關注小組 Prison Watch Day 4 Fourth Trial Hearing 第4日 第4回公判期日 三處托育動線 綑綁 澡盆 冷靜區 罰站 傷勢通報 照片 對話紀錄',
+                      'text': '剴剴案第四日，2025年4月28日第四次審判期日。上午劉若琳作證，下午劉彩萱作證。重製編輯筆記整理甲乙丙三處照顧動線、綑綁與澡盆、冷靜區與罰站、口罩、傷勢通報、照片、音檔及對話紀錄，並區分證人陳述、庭上提問與法院最終認定。'
+                  })
+              data['updated'] = '2026-08-21'
+              data['count'] = len(items)
+              search_path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+              source_search = Path('source/data/search-index.json')
+              source_search.parent.mkdir(parents=True, exist_ok=True)
+              source_search.write_text(search_path.read_text(encoding='utf-8'), encoding='utf-8')
+
+          sitemap = Path('sitemap.xml')
+          if sitemap.exists():
+              text = sitemap.read_text(encoding='utf-8')
+              urls = [
+                  'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day4-20250428/',
+                  'https://jerryzuhow77.github.io/child-advocacy-site/en/hearing-records/prison-watch/kaikai-day4-20250428/',
+                  'https://jerryzuhow77.github.io/child-advocacy-site/ja/hearing-records/prison-watch/kaikai-day4-20250428/'
+              ]
+              additions = []
+              for url in urls:
+                  if url not in text:
+                      additions.append(f'  <url>\n    <loc>{url}</loc>\n    <lastmod>2026-08-21</lastmod>\n  </url>\n')
+              if additions:
+                  text = text.replace('</urlset>', ''.join(additions) + '</urlset>')
+                  sitemap.write_text(text, encoding='utf-8')
+
+          assert Path('hearing-records/prison-watch/kaikai-day4-20250428/index.html').exists()
+          assert Path('assets/art/prison-watch-day4-hearing-poster-20260821.webp').exists()
+          PY
+
+      - name: Validate local links and publish
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import json
+
+          class IdParser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.ids=[]
+              def handle_starttag(self, tag, attrs):
+                  for key, value in attrs:
+                      if key == 'id' and value:
+                          self.ids.append(value)
+
+          files = [
+              Path('hearing-records/prison-watch/kaikai-day4-20250428/index.html'),
+              Path('en/hearing-records/prison-watch/kaikai-day4-20250428/index.html'),
+              Path('ja/hearing-records/prison-watch/kaikai-day4-20250428/index.html')
+          ]
+          for path in files:
+              parser = IdParser()
+              parser.feed(path.read_text(encoding='utf-8'))
+              duplicates = {x for x in parser.ids if parser.ids.count(x) > 1}
+              if duplicates:
+                  raise SystemExit(f'duplicate IDs in {path}: {sorted(duplicates)}')
+              if len([x for x in parser.ids if x.startswith('day3-chapter-')]) != 8:
+                  raise SystemExit(f'unexpected transcript chapter count in {path}')
+
+          json.loads(Path('data/search-index.json').read_text(encoding='utf-8'))
+          PY
+
+          rm -rf .github/day4-payload
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then
+            echo 'No changes to publish.'
+            exit 0
+          fi
+          git commit -m 'Publish Day 4 fourth trial hearing record'
+          git push
