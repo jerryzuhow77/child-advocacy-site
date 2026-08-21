@@ -1,0 +1,350 @@
+name: Repair Qiqi mobile dialogue and control stack
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-qiqi-mobile-control-stack.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: child-advocacy-site-sitemap
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Add measured mobile control-stack layout
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          css_path = Path('assets/fujian-qiqi-feature.css')
+          js_path = Path('assets/fujian-qiqi-feature.js')
+
+          css_marker = '/* === Mobile dialogue/control stack repair · 2026-08-21 === */'
+          css_patch = r'''
+          /* === Mobile dialogue/control stack repair · 2026-08-21 === */
+          @media screen and (max-width: 780px) and (orientation: portrait) {
+            .fq-stage,
+            [data-fq-stage] {
+              --fq-mobile-control-height: 3.9rem;
+              --fq-mobile-status-height: 1.75rem;
+              --fq-mobile-stack-gap: .8rem;
+              padding-bottom: calc(
+                env(safe-area-inset-bottom)
+                + var(--fq-mobile-control-height)
+                + var(--fq-mobile-status-height)
+                + 1.7rem
+              );
+            }
+
+            /* One compact control row; status becomes a separate badge above it. */
+            .fq-scene-controls,
+            [data-scene-controls] {
+              z-index: 76;
+              right: max(.58rem, env(safe-area-inset-right));
+              bottom: calc(env(safe-area-inset-bottom) + .62rem);
+              left: max(.58rem, env(safe-area-inset-left));
+              display: grid;
+              grid-template-columns: repeat(3, minmax(0, 1fr));
+              gap: .34rem;
+              min-height: 0;
+              padding: .4rem;
+              overflow: visible;
+              border-radius: 17px;
+              background: rgba(21, 31, 34, .88);
+              box-shadow: 0 12px 32px rgba(7, 13, 16, .3);
+              backdrop-filter: blur(14px) saturate(.86);
+            }
+
+            .fq-scene-controls button,
+            [data-scene-controls] button {
+              min-width: 0;
+              min-height: 2.7rem;
+              padding: .45rem .22rem;
+              white-space: nowrap;
+              font-size: clamp(.66rem, 3vw, .76rem);
+            }
+
+            .fq-scene-status,
+            [data-scene-status] {
+              position: absolute;
+              top: calc(-1 * var(--fq-mobile-status-height) - .42rem);
+              left: 50%;
+              display: block;
+              width: max-content;
+              max-width: calc(100% - 1rem);
+              min-width: 0;
+              margin: 0;
+              padding: .32rem .75rem;
+              overflow: hidden;
+              border: 1px solid rgba(244, 226, 204, .24);
+              border-radius: 999px;
+              color: #f4e7d8;
+              background: rgba(18, 28, 31, .9);
+              box-shadow: 0 8px 24px rgba(7, 12, 15, .24);
+              font-size: .7rem;
+              line-height: 1.2;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              transform: translateX(-50%);
+              backdrop-filter: blur(12px);
+            }
+
+            /* The dialogue bottom is calculated from the real control height. */
+            .fq-stage > .fq-dialogue,
+            .fq-dialogue,
+            [data-fq-dialogue] {
+              z-index: 72;
+              top: auto;
+              bottom: calc(
+                env(safe-area-inset-bottom)
+                + var(--fq-mobile-control-height)
+                + var(--fq-mobile-status-height)
+                + var(--fq-mobile-stack-gap)
+                + .62rem
+              );
+              width: min(calc(100% - 1.15rem), 34rem);
+              pointer-events: auto;
+            }
+
+            .fq-line,
+            [data-fq-line] {
+              max-height: min(29dvh, 12.75rem);
+              padding: .9rem 1rem;
+              overflow: auto;
+              overscroll-behavior: contain;
+              pointer-events: auto;
+              touch-action: pan-y;
+              -webkit-overflow-scrolling: touch;
+            }
+
+            body.fq-page .fq-act .fq-actors {
+              --fq-female-bottom: calc(
+                env(safe-area-inset-bottom)
+                + var(--fq-mobile-control-height)
+                + 1.25rem
+              );
+              --fq-male-bottom: calc(
+                env(safe-area-inset-bottom)
+                + var(--fq-mobile-control-height)
+                + 1.25rem
+              );
+            }
+
+            /* The global audio/motion pill gets out of the way while a play is visible. */
+            html.fq-theatre-focus .fq-audio-dock,
+            html.fq-theatre-focus [data-fq-audio-dock],
+            html.fq-theatre-focus [data-audio-dock] {
+              opacity: 0;
+              transform: translateY(calc(100% + 1.6rem));
+              pointer-events: none;
+            }
+          }
+
+          @media screen and (max-width: 380px) and (orientation: portrait) {
+            .fq-scene-controls button,
+            [data-scene-controls] button {
+              min-height: 2.55rem;
+              padding-inline: .12rem;
+              font-size: .64rem;
+              letter-spacing: 0;
+            }
+
+            .fq-stage > .fq-dialogue,
+            .fq-dialogue,
+            [data-fq-dialogue] {
+              width: calc(100% - .9rem);
+            }
+
+            .fq-line,
+            [data-fq-line] {
+              max-height: min(27dvh, 11.5rem);
+              font-size: .94rem;
+            }
+          }
+
+          @media screen and (max-width: 780px) and (orientation: portrait) and (max-height: 690px) {
+            .fq-stage,
+            [data-fq-stage] {
+              min-height: 720px;
+            }
+
+            .fq-line,
+            [data-fq-line] {
+              max-height: min(25dvh, 10.5rem);
+              line-height: 1.58;
+            }
+          }
+          '''
+
+          js_marker = '/* Mobile dialogue/control stack measurement · 2026-08-21 */'
+          js_patch = r'''
+
+          /* Mobile dialogue/control stack measurement · 2026-08-21 */
+          (() => {
+            'use strict';
+
+            const ready = callback => {
+              if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', callback, { once: true });
+              } else {
+                callback();
+              }
+            };
+
+            ready(() => {
+              const html = document.documentElement;
+              const media = matchMedia('(max-width: 780px) and (orientation: portrait)');
+              const scenes = [...document.querySelectorAll('.fq-act[data-fq-scene], [data-fq-scene]')]
+                .filter((scene, index, list) => list.indexOf(scene) === index);
+              if (!scenes.length) return;
+
+              const ratios = new Map();
+              let resizeFrame = 0;
+
+              const syncScene = scene => {
+                if (!media.matches) return;
+                const stage = scene.querySelector('.fq-stage, [data-fq-stage]');
+                const controls = scene.querySelector('.fq-scene-controls, [data-scene-controls]');
+                if (!stage || !controls) return;
+                const rect = controls.getBoundingClientRect();
+                if (rect.height > 0) {
+                  stage.style.setProperty('--fq-mobile-control-height', `${Math.ceil(rect.height)}px`);
+                }
+              };
+
+              const syncAll = () => {
+                resizeFrame = 0;
+                scenes.forEach(syncScene);
+              };
+
+              const scheduleSync = () => {
+                if (resizeFrame) cancelAnimationFrame(resizeFrame);
+                resizeFrame = requestAnimationFrame(syncAll);
+              };
+
+              const paintFocus = () => {
+                const visible = media.matches && [...ratios.values()].some(ratio => ratio >= .08);
+                html.classList.toggle('fq-theatre-focus', visible);
+              };
+
+              const intersectionObserver = 'IntersectionObserver' in window
+                ? new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                      ratios.set(entry.target, entry.isIntersecting ? entry.intersectionRatio : 0);
+                      if (entry.isIntersecting) syncScene(entry.target);
+                    });
+                    paintFocus();
+                  }, { threshold: [0, .08, .18, .35], rootMargin: '-4% 0px -8% 0px' })
+                : null;
+
+              if (intersectionObserver) {
+                scenes.forEach(scene => intersectionObserver.observe(scene));
+              } else {
+                ratios.set(scenes[0], 1);
+                paintFocus();
+              }
+
+              const resizeObserver = 'ResizeObserver' in window
+                ? new ResizeObserver(entries => {
+                    entries.forEach(entry => {
+                      const scene = entry.target.closest('.fq-act[data-fq-scene], [data-fq-scene]');
+                      if (scene) syncScene(scene);
+                    });
+                  })
+                : null;
+
+              scenes.forEach(scene => {
+                const controls = scene.querySelector('.fq-scene-controls, [data-scene-controls]');
+                if (controls && resizeObserver) resizeObserver.observe(controls);
+              });
+
+              const onViewportChange = () => {
+                if (!media.matches) {
+                  html.classList.remove('fq-theatre-focus');
+                  scenes.forEach(scene => {
+                    const stage = scene.querySelector('.fq-stage, [data-fq-stage]');
+                    if (stage) stage.style.removeProperty('--fq-mobile-control-height');
+                  });
+                } else {
+                  scheduleSync();
+                  paintFocus();
+                }
+              };
+
+              if (typeof media.addEventListener === 'function') {
+                media.addEventListener('change', onViewportChange);
+              } else if (typeof media.addListener === 'function') {
+                media.addListener(onViewportChange);
+              }
+              window.addEventListener('resize', scheduleSync, { passive: true });
+              window.addEventListener('orientationchange', scheduleSync, { passive: true });
+              window.addEventListener('pageshow', scheduleSync);
+              scheduleSync();
+
+              window.addEventListener('pagehide', () => {
+                if (resizeFrame) cancelAnimationFrame(resizeFrame);
+                if (intersectionObserver) intersectionObserver.disconnect();
+                if (resizeObserver) resizeObserver.disconnect();
+                html.classList.remove('fq-theatre-focus');
+                window.removeEventListener('resize', scheduleSync);
+                window.removeEventListener('orientationchange', scheduleSync);
+                window.removeEventListener('pageshow', scheduleSync);
+                if (typeof media.removeEventListener === 'function') {
+                  media.removeEventListener('change', onViewportChange);
+                } else if (typeof media.removeListener === 'function') {
+                  media.removeListener(onViewportChange);
+                }
+              }, { once: true });
+            });
+          })();
+          '''
+
+          css = css_path.read_text(encoding='utf-8')
+          if css_marker not in css:
+              css_path.write_text(css.rstrip() + '\n\n' + css_patch.strip() + '\n', encoding='utf-8')
+
+          js = js_path.read_text(encoding='utf-8')
+          if js_marker not in js:
+              js_path.write_text(js.rstrip() + '\n\n' + js_patch.strip() + '\n', encoding='utf-8')
+          PY
+
+      - name: Refresh multilingual cache versions
+        env:
+          QIQI_VERSION_SHA: ${{ github.sha }}
+        run: python3 scripts/sync_fujian_qiqi_feature.py
+
+      - name: Validate the repair
+        run: |
+          node --check assets/fujian-qiqi-feature.js
+          python3 -m py_compile scripts/sync_fujian_qiqi_feature.py
+          grep -q 'Mobile dialogue/control stack repair' assets/fujian-qiqi-feature.css
+          grep -q 'Mobile dialogue/control stack measurement' assets/fujian-qiqi-feature.js
+          grep -q -- '--fq-mobile-control-height' assets/fujian-qiqi-feature.css
+          git diff --check
+
+      - name: Commit repaired assets and remove this one-off workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm -- .github/workflows/oneoff-qiqi-mobile-control-stack.yml
+          git add -- \
+            assets/fujian-qiqi-feature.css \
+            assets/fujian-qiqi-feature.js \
+            historical-cases/regions/mainland-china/fujian-qiqi/index.html \
+            zh-hans/historical-cases/regions/mainland-china/fujian-qiqi/index.html \
+            en/historical-cases/regions/mainland-china/fujian-qiqi/index.html \
+            ja/historical-cases/regions/mainland-china/fujian-qiqi/index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Separate Qiqi mobile dialogue from theatre controls'
+          git pull --rebase origin main
+          git push
