@@ -1,4 +1,5 @@
 name: Publish complete Day 4 PDF testimony
+# retry: 2026-08-21T06:22Z
 
 on:
   push:
@@ -33,8 +34,6 @@ jobs:
 
           install -D -m 0644 "$work/extracted/assets/day4-verbatim-source.txt" assets/day4-verbatim-source.txt
           install -D -m 0644 "$work/extracted/hearing-records/prison-watch/kaikai-day4-20250428/day4-verbatim.js" hearing-records/prison-watch/kaikai-day4-20250428/day4-verbatim.js
-
-          # Keep the maintained source mirror synchronized when those folders exist.
           install -D -m 0644 "$work/extracted/assets/day4-verbatim-source.txt" source/assets/day4-verbatim-source.txt
           install -D -m 0644 "$work/extracted/hearing-records/prison-watch/kaikai-day4-20250428/day4-verbatim.js" source/hearing-records/prison-watch/kaikai-day4-20250428/day4-verbatim.js
 
