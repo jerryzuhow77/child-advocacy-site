@@ -4158,21 +4158,21 @@ html.fq-theatre-focus [data-audio-dock] {
 .fq-guide__links small { font-size: .82rem; line-height: 1.55; }
 .fq-social-finale__links span { font-size: .84rem; line-height: 1.55; }
 
-/* The supplied Minnan cultural seals become a quiet, enlarged paper
-   watermark. The centre is masked more heavily so long-form copy remains
-   dominant, while the outer field retains the hand-printed detail. */
+/* The supplied Minnan cultural seals become a clearly legible, enlarged
+   paper watermark. Copy panels still provide the primary reading surface,
+   while the open page field keeps the hand-printed detail visible. */
 body.fq-page::after {
-  opacity: .092;
+  opacity: .16;
   background-image:
-    linear-gradient(90deg, rgba(255, 255, 255, .22), transparent 18%, transparent 82%, rgba(113, 91, 81, .08)),
+    linear-gradient(90deg, rgba(255, 255, 255, .12), transparent 24%, transparent 76%, rgba(113, 91, 81, .04)),
     url("fujian-qiqi/fujian-minnan-cultural-seals-background-20260821.webp");
   background-position: center, center top;
   background-repeat: no-repeat, repeat-y;
   background-size: 100% 100%, clamp(920px, 105vw, 1600px) auto;
-  filter: saturate(.74) contrast(.92);
+  filter: saturate(.84) contrast(1.02);
   mix-blend-mode: multiply;
-  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, .38) 0 40%, rgba(0, 0, 0, .72) 70%, #000 100%);
-  mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, .38) 0 40%, rgba(0, 0, 0, .72) 70%, #000 100%);
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, .66) 0 38%, rgba(0, 0, 0, .84) 68%, #000 100%);
+  mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, .66) 0 38%, rgba(0, 0, 0, .84) 68%, #000 100%);
 }
 
 @media screen and (max-width: 780px) {
@@ -4192,31 +4192,30 @@ body.fq-page::after {
       linear-gradient(90deg, rgba(25, 30, 31, .68), rgba(25, 30, 31, .14) 84%);
   }
 
-  /* Transparent-edge measurement matters more than raw canvas size here:
-     standing poses average about 443px (female) and 481px (male) of painted
-     height. A 1.255 width ratio keeps their visible bodies aligned on phones. */
+  /* The paired canvases have different transparent margins. These widths and
+     role-specific stage heights intentionally render the man about 16–18%
+     taller on compact screens, while preserving natural kneeling poses. */
   body.fq-page .fq-act .fq-actors {
-    --fq-female-width: clamp(148px, 42vw, 315px);
-    --fq-male-width: clamp(186px, 52.7vw, 395px);
+    --fq-female-width: clamp(140px, 40vw, 300px);
+    --fq-male-width: clamp(203px, 58vw, 435px);
   }
 
   body.fq-page .fq-act:not([data-act="4"]) .fq-actors {
     --fq-female-left: -4vw;
     --fq-female-right: auto;
     --fq-male-left: auto;
-    --fq-male-right: -4.5vw;
+    --fq-male-right: -7vw;
   }
 
   body.fq-page .fq-act[data-act="4"] .fq-actors {
     --fq-female-left: auto;
     --fq-female-right: -4vw;
-    --fq-male-left: -4.5vw;
+    --fq-male-left: -7vw;
     --fq-male-right: auto;
   }
 
-  .fq-actors .fq-actor {
-    height: min(48%, 520px);
-  }
+  .fq-actors .fq-actor[data-actor="female"] { height: min(47%, 500px); }
+  .fq-actors .fq-actor[data-actor="male"] { height: min(52%, 560px); }
 
   .fq-page-ronghua__art {
     width: clamp(270px, 84vw, 470px);
@@ -4230,7 +4229,7 @@ body.fq-page::after {
   .fq-page-ronghua--06 .fq-page-ronghua__art { left: -26vw; bottom: -13%; right: auto; }
 
   body.fq-page::after {
-    opacity: .105;
+    opacity: .21;
     background-position: center, center 7svh;
     background-size: 100% 100%, clamp(760px, 190vw, 1060px) auto;
   }
@@ -4254,8 +4253,8 @@ body.fq-page::after {
 
 @media screen and (max-width: 480px) {
   body.fq-page .fq-act .fq-actors {
-    --fq-female-width: clamp(136px, 42vw, 205px);
-    --fq-male-width: clamp(171px, 52.7vw, 257px);
+    --fq-female-width: clamp(128px, 40vw, 194px);
+    --fq-male-width: clamp(186px, 58vw, 281px);
   }
 
   html[lang^="en"] .fq-guide__links,
