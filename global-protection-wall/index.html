@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>全球守護留言牆｜護童行動聯盟官方互動子頁</title>
+  <meta name="description" content="在護童行動聯盟官網內瀏覽全球守護留言牆、最新快報與留言投稿入口。">
+  <meta name="theme-color" content="#fff8ef">
+  <link rel="canonical" href="https://jerryzuhow77.github.io/child-advocacy-site/global-protection-wall/">
+  <link rel="icon" href="../assets/brand/primary-logo-03-thumb.jpg">
+  <link rel="stylesheet" href="../assets/global-protection-wall-portal.css?v=20260821-1">
+</head>
+<body>
+  <a class="portal-skip" href="#guardianWallFrame" data-i18n="skip">跳至留言牆內容</a>
+  <header class="portal-header">
+    <a class="portal-brand" data-official-home-link href="../" aria-label="護童行動聯盟官方網站">
+      <img src="../assets/brand/primary-logo-03-thumb.jpg" width="46" height="46" alt="">
+      <span><strong data-i18n="alliance">護童行動聯盟</strong><small>CHILD PROTECTION ACTION ALLIANCE</small></span>
+    </a>
+    <div class="portal-identity">
+      <span data-i18n="officialBadge">官網互動子頁</span>
+      <strong data-i18n="title">全球守護留言牆</strong>
+    </div>
+    <nav class="portal-nav" aria-label="全球守護留言牆快速入口">
+      <a data-official-home-link href="../" data-i18n="officialHome">官網首頁</a>
+      <button type="button" data-wall-section="home" data-i18n="wallHome">留言牆首頁</button>
+      <button type="button" data-wall-section="bulletins" data-i18n="bulletins">最新快報</button>
+      <button type="button" data-wall-section="guest-message" data-i18n="guest">訪客留言</button>
+      <button type="button" data-wall-section="member-submit" data-i18n="member">會員投稿</button>
+    </nav>
+    <div class="portal-tools">
+      <label>
+        <span class="sr-only">Language</span>
+        <select id="portalLanguage" aria-label="Language">
+          <option value="zh-Hant">繁中</option>
+          <option value="zh-Hans">简中</option>
+          <option value="en">EN</option>
+          <option value="ja">日本語</option>
+        </select>
+      </label>
+      <a class="portal-external" data-open-wall href="https://global-protection.jerryzuhow77.chatgpt.site/" target="_blank" rel="noopener noreferrer"><span data-i18n="openSeparate">獨立開啟</span><b aria-hidden="true">↗</b></a>
+    </div>
+  </header>
+
+  <main class="portal-main">
+    <section class="portal-status" aria-label="連動狀態">
+      <span class="portal-live-dot" aria-hidden="true"></span>
+      <p><strong data-i18n="connected">官網子頁連動中</strong><span data-i18n="connectedHint">留言牆完整內容會留在此官網網址內顯示</span></p>
+      <small data-i18n="fallbackHint">若登入或投稿被瀏覽器限制，可使用右上方「獨立開啟」。</small>
+    </section>
+    <section class="portal-frame-shell" aria-label="全球守護留言牆">
+      <div class="portal-loader" id="portalLoader" role="status" aria-live="polite">
+        <span aria-hidden="true">♡</span>
+        <strong data-i18n="loading">正在連接全球守護留言牆…</strong>
+      </div>
+      <iframe
+        id="guardianWallFrame"
+        title="全球守護留言牆"
+        src="https://global-protection.jerryzuhow77.chatgpt.site/"
+        loading="eager"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allow="clipboard-write; fullscreen; web-share"
+      ></iframe>
+    </section>
+    <noscript><p class="portal-noscript">請啟用 JavaScript，或直接前往 <a href="https://global-protection.jerryzuhow77.chatgpt.site/">全球守護留言牆</a>。</p></noscript>
+  </main>
+
+  <script src="../assets/global-protection-wall-portal.js?v=20260821-1"></script>
+</body>
+</html>
