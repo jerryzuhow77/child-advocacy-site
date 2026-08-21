@@ -19,113 +19,50 @@
   box-shadow:0 9px 24px rgba(11,35,51,.18),inset 0 1px 0 rgba(255,255,255,.09);
   font-variant-numeric:tabular-nums;
 }
-.home-view-counter::after{
-  content:"";
-  position:absolute;
-  z-index:-1;
-  inset:-90% -38%;
-  background:linear-gradient(105deg,transparent 42%,rgba(234,211,159,.2) 49%,transparent 56%);
-  transform:translateX(-34%);
-  animation:homeViewCounterGleam 7s ease-in-out infinite;
-  pointer-events:none;
-}
-.home-view-counter-icon{
-  display:grid;
-  place-items:center;
-  width:34px;
-  height:34px;
-  flex:0 0 34px;
-  border:1px solid rgba(229,199,142,.42);
-  border-radius:50%;
-  background:rgba(229,199,142,.09);
-}
-.home-view-counter-icon svg{width:19px;height:19px;fill:#e5c78e}
-.home-view-counter-copy{display:grid;gap:4px;min-width:0}
-.home-view-counter-label{
-  color:#c7d1d2;
-  font-size:10px;
-  line-height:1;
-  font-weight:700;
-  letter-spacing:.1em;
-}
-.home-view-counter-value{display:flex;align-items:baseline;gap:6px;line-height:1}
-.home-view-counter-value strong{
-  color:#e5c78e;
-  background:linear-gradient(100deg,#b9965f 0%,#f4deb0 42%,#c39a58 72%,#ead39f 100%);
-  -webkit-background-clip:text;
-  background-clip:text;
-  -webkit-text-fill-color:transparent;
-  font-size:22px;
-  font-weight:900;
-  letter-spacing:.025em;
-  text-shadow:0 4px 18px rgba(229,199,142,.12);
-}
-.home-view-counter-value span{color:#d7dfdf;font-size:11px;font-weight:700}
-.home-view-counter.is-unavailable::after{display:none}
-.home-view-counter.is-unavailable .home-view-counter-value strong{
-  color:#aebbbc;
-  background:none;
-  -webkit-text-fill-color:currentColor;
-}
-@keyframes homeViewCounterGleam{
-  0%,68%{transform:translateX(-34%)}
-  86%,100%{transform:translateX(34%)}
-}
-@media (prefers-reduced-motion:reduce){.home-view-counter::after{animation:none}}
-@media (max-width:560px){
-  .home-view-counter{margin-top:15px;padding:9px 13px 9px 10px;gap:9px;border-radius:12px}
-  .home-view-counter-icon{width:31px;height:31px;flex-basis:31px}
-  .home-view-counter-value strong{font-size:20px}
-}
+.home-view-counter::after{content:"";position:absolute;z-index:-1;inset:-90% -38%;background:linear-gradient(105deg,transparent 42%,rgba(234,211,159,.2) 49%,transparent 56%);transform:translateX(-34%);animation:homeViewCounterGleam 7s ease-in-out infinite;pointer-events:none}
+.home-view-counter-icon{display:grid;place-items:center;width:34px;height:34px;flex:0 0 34px;border:1px solid rgba(229,199,142,.42);border-radius:50%;background:rgba(229,199,142,.09)}
+.home-view-counter-icon svg{width:19px;height:19px;fill:#e5c78e}.home-view-counter-copy{display:grid;gap:4px;min-width:0}.home-view-counter-label{color:#c7d1d2;font-size:10px;line-height:1;font-weight:700;letter-spacing:.1em}.home-view-counter-value{display:flex;align-items:baseline;gap:6px;line-height:1}.home-view-counter-value strong{color:#e5c78e;background:linear-gradient(100deg,#b9965f 0%,#f4deb0 42%,#c39a58 72%,#ead39f 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-size:22px;font-weight:900;letter-spacing:.025em;text-shadow:0 4px 18px rgba(229,199,142,.12)}.home-view-counter-value span{color:#d7dfdf;font-size:11px;font-weight:700}.home-view-counter.is-unavailable::after{display:none}.home-view-counter.is-unavailable .home-view-counter-value strong{color:#aebbbc;background:none;-webkit-text-fill-color:currentColor}@keyframes homeViewCounterGleam{0%,68%{transform:translateX(-34%)}86%,100%{transform:translateX(34%)}}@media (prefers-reduced-motion:reduce){.home-view-counter::after{animation:none}}@media (max-width:560px){.home-view-counter{margin-top:15px;padding:9px 13px 9px 10px;gap:9px;border-radius:12px}.home-view-counter-icon{width:31px;height:31px;flex-basis:31px}.home-view-counter-value strong{font-size:20px}}
 
-/* Fujian Qiqi epilogue: use the existing panorama as a semi-transparent visual
-   backdrop while preserving strong contrast on desktop and mobile. */
+/* Fujian Putian Qiqi epilogue — cinematic panorama with typography printed on the image. */
 body.fq-page .fq-ending{
+  min-height:min(88vh,900px);
+  display:flex;
+  align-items:center;
+  padding:clamp(6rem,12vw,10rem) 0;
   background-color:#26343a;
-  background-image:
-    linear-gradient(180deg,rgba(22,30,33,.58),rgba(24,32,35,.72)),
-    radial-gradient(circle at 50% 18%,rgba(196,150,138,.16),transparent 29rem),
-    url("fujian-qiqi/ending-panorama-20260820.webp");
-  background-position:center,center,center 54%;
+  background-image:url("fujian-qiqi/ending-panorama-20260820.webp");
+  background-position:center 54%;
   background-repeat:no-repeat;
   background-size:cover;
 }
+body.fq-page .fq-ending::before{
+  content:"";position:absolute;z-index:0;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(14,21,24,.74) 0%,rgba(17,24,27,.5) 34%,rgba(17,24,27,.12) 63%,rgba(15,22,25,.2) 100%),linear-gradient(180deg,rgba(15,22,25,.2),transparent 30%,rgba(12,19,22,.38));
+}
 body.fq-page .fq-ending::after{
-  content:"";
-  position:absolute;
-  z-index:0;
-  inset:0;
-  pointer-events:none;
-  background:linear-gradient(90deg,rgba(15,22,25,.26),rgba(15,22,25,.06) 50%,rgba(15,22,25,.26));
+  content:"";position:absolute;z-index:0;left:0;top:10%;bottom:10%;width:min(58vw,880px);pointer-events:none;
+  background:radial-gradient(ellipse at 22% 50%,rgba(17,24,27,.5),rgba(17,24,27,.2) 48%,transparent 72%);filter:blur(12px);
 }
 body.fq-page .fq-ending .fq-shell{
-  position:relative;
-  z-index:1;
-  max-width:820px;
-  padding:clamp(1.5rem,4vw,2.6rem);
-  border:1px solid rgba(255,242,225,.16);
-  border-radius:clamp(22px,4vw,34px);
-  background:rgba(28,37,40,.5);
-  box-shadow:0 24px 70px rgba(10,18,21,.2);
-  backdrop-filter:blur(10px) saturate(.86);
+  position:relative;z-index:1;width:min(calc(100% - 48px),1500px);max-width:1500px;margin-inline:auto;padding:0;background:none;border:0;border-radius:0;box-shadow:none;backdrop-filter:none;text-align:left;
 }
-body.fq-page .fq-ending h2{
-  text-shadow:0 4px 24px rgba(7,13,16,.55);
+body.fq-page .fq-ending .fq-shell>*{max-width:650px}
+body.fq-page .fq-ending small{display:block;color:#ead0aa;letter-spacing:.16em;text-shadow:0 2px 14px rgba(5,10,12,.7)}
+body.fq-page .fq-ending h2{margin:.55rem 0 0;color:#fff7ec;font-size:clamp(3.4rem,7vw,7.4rem);line-height:.98;letter-spacing:-.035em;text-shadow:0 5px 30px rgba(5,10,12,.68)}
+body.fq-page .fq-ending p{max-width:52ch;margin:1.5rem 0 0;color:rgba(255,249,240,.92);font-size:clamp(1rem,1.45vw,1.18rem);line-height:1.95;text-shadow:0 2px 16px rgba(5,10,12,.76)}
+body.fq-page .fq-ending__seal{margin:2rem 0 1.7rem;border-color:rgba(221,128,113,.72);color:#efb1a7;background:rgba(96,31,28,.1);box-shadow:0 5px 24px rgba(8,12,14,.2);text-shadow:0 2px 10px rgba(8,12,14,.45)}
+body.fq-page .fq-ending__actions{justify-content:flex-start;max-width:720px;gap:.5rem}
+body.fq-page .fq-ending__actions a{border-color:rgba(255,235,208,.25);color:#f4d9b7;background:rgba(18,27,30,.22);backdrop-filter:blur(3px);text-shadow:0 1px 8px rgba(4,9,11,.6)}
+body.fq-page .fq-ending__actions a:hover{background:rgba(18,27,30,.48);border-color:rgba(255,235,208,.48)}
+@media (max-width:760px){
+  body.fq-page .fq-ending{min-height:760px;align-items:flex-end;padding:12rem 0 4.5rem;background-position:58% center}
+  body.fq-page .fq-ending::before{background:linear-gradient(180deg,rgba(12,19,22,.08) 0%,rgba(13,20,23,.18) 30%,rgba(13,20,23,.74) 62%,rgba(10,17,20,.88) 100%)}
+  body.fq-page .fq-ending::after{top:auto;right:0;bottom:0;width:100%;height:58%;background:linear-gradient(180deg,transparent,rgba(12,19,22,.52) 35%,rgba(12,19,22,.78));filter:none}
+  body.fq-page .fq-ending .fq-shell{width:min(calc(100% - 30px),1500px);padding:0;text-align:left}
+  body.fq-page .fq-ending h2{font-size:clamp(3rem,15vw,5rem);max-width:8ch}
+  body.fq-page .fq-ending p{font-size:.98rem;line-height:1.85}
+  body.fq-page .fq-ending__seal{width:5.2rem;height:5.2rem;margin:1.5rem 0}
+  body.fq-page .fq-ending__actions{gap:.4rem}
+  body.fq-page .fq-ending__actions a{padding:.58rem .72rem;background:rgba(13,21,24,.38)}
 }
-body.fq-page .fq-ending p{
-  color:rgba(255,248,239,.88);
-  text-shadow:0 2px 14px rgba(8,14,17,.45);
-}
-@media (max-width:640px){
-  body.fq-page .fq-ending{
-    padding:clamp(4.8rem,18vw,7rem) 0;
-    background-position:center,center,58% center;
-  }
-  body.fq-page .fq-ending .fq-shell{
-    width:min(calc(100% - 28px),820px);
-    padding:1.4rem 1rem 1.6rem;
-    background:rgba(25,34,37,.64);
-    backdrop-filter:blur(8px) saturate(.82);
-  }
-  body.fq-page .fq-ending p{color:rgba(255,250,243,.94)}
-}
+@media (prefers-reduced-motion:reduce){body.fq-page .fq-ending{background-attachment:scroll}}
