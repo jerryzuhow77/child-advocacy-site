@@ -1,0 +1,483 @@
+name: Robust homepage optimization publisher
+
+on:
+  push:
+    paths:
+      - '.github/workflows/oneoff-homepage-optimization-robust-20260821.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: homepage-optimization-20260821-robust
+  cancel-in-progress: false
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Start from newest main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git checkout -B homepage-optimization-robust origin/main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install image tooling
+        run: python -m pip install --disable-pip-version-check pillow
+
+      - name: Apply robust homepage optimization
+        shell: bash
+        run: |
+          cat > /tmp/optimize_homepage_robust.py <<'PY'
+          from __future__ import annotations
+
+          from pathlib import Path
+          import re
+          import traceback
+
+          from PIL import Image, ImageOps
+
+          ROOT = Path('.')
+          DIAGNOSTIC = ROOT / '.github/homepage-optimization-diagnostic.txt'
+
+          CSS = r'''
+          /* 2026-08-21 — homepage hierarchy, participation and motion controls */
+          .home-priority-updates{padding:22px 0 14px;background:linear-gradient(180deg,#f7eee8,#f4eee8)}
+          .home-priority-shell{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:stretch}
+          .home-priority-heading,.home-priority-card{border:1px solid rgba(111,73,60,.15);border-radius:22px;background:rgba(255,255,255,.78);box-shadow:0 12px 30px rgba(78,54,45,.07)}
+          .home-priority-heading{display:grid;align-content:center;padding:20px 22px}.home-priority-heading small{color:#9a6354;font-weight:900;letter-spacing:.1em}.home-priority-heading h2{margin:.2rem 0 0;color:#4f3c34;font-size:clamp(1.35rem,2.5vw,1.9rem)}
+          .home-priority-card{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:16px 18px;color:#443832;text-decoration:none;transition:transform .2s ease,box-shadow .2s ease}
+          .home-priority-card:hover,.home-priority-card:focus-visible{transform:translateY(-2px);box-shadow:0 17px 36px rgba(78,54,45,.12);outline:3px solid rgba(165,83,72,.2);outline-offset:2px}
+          .home-priority-date{display:grid;place-items:center;min-width:62px;min-height:62px;border-radius:18px;background:#f3ded4;color:#814d42;font-weight:950;line-height:1.05;text-align:center}.home-priority-date small{font-size:.66rem}.home-priority-date b{font-size:1.45rem}
+          .home-priority-card strong{display:block;color:#4d3a32;font-size:1rem;line-height:1.4}.home-priority-card em{display:block;margin-top:4px;color:#76655d;font-size:.78rem;font-style:normal;line-height:1.45}.home-priority-arrow{font-size:1.2rem;color:#995c4e}
+          .home-guard-actions{padding:22px 0 28px;background:linear-gradient(180deg,#f7eee8,#eee6df)}
+          .home-guard-actions-head{display:flex;align-items:end;justify-content:space-between;gap:22px;margin-bottom:15px}.home-guard-actions-head small{color:#9a6354;font-weight:900;letter-spacing:.1em}.home-guard-actions-head h2{margin:.15rem 0;color:#4f3c34;font-size:clamp(1.55rem,3vw,2.25rem)}.home-guard-actions-head p{max-width:680px;margin:0;color:#74645c}
+          .home-guard-actions-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.home-guard-action-card{display:grid;grid-template-columns:54px 1fr auto;gap:14px;align-items:center;min-height:118px;padding:20px;border:1px solid rgba(111,73,60,.16);border-radius:24px;background:rgba(255,255,255,.82);color:#4a3932;text-decoration:none;box-shadow:0 14px 34px rgba(78,54,45,.08);transition:transform .2s ease,box-shadow .2s ease}.home-guard-action-card:hover,.home-guard-action-card:focus-visible{transform:translateY(-3px);box-shadow:0 20px 42px rgba(78,54,45,.14);outline:3px solid rgba(165,83,72,.2);outline-offset:2px}.home-guard-action-card.is-guest{background:linear-gradient(135deg,#fff7f2,#f8e0d5)}
+          .home-guard-action-icon{display:grid;place-items:center;width:54px;height:54px;border-radius:50%;background:#f0d9cf;color:#985649;font-size:1.45rem;font-weight:900}.home-guard-action-card strong{display:block;font-size:1.08rem}.home-guard-action-card em{display:block;margin-top:5px;color:#76665e;font-size:.82rem;font-style:normal;line-height:1.5}.home-guard-action-card b{color:#95584b;font-size:1.1rem}
+          .home-guard-safety{margin-top:12px;border:1px solid rgba(111,73,60,.13);border-radius:18px;background:rgba(255,255,255,.66);overflow:hidden}.home-guard-safety summary{padding:13px 17px;color:#654b40;font-weight:850;cursor:pointer}.home-guard-safety p{margin:0;padding:0 17px 16px;color:#75655e;font-size:.85rem;line-height:1.65}
+          .home-document-disc-access{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:14px 0 2px}.home-document-disc-access button,.home-document-disc-status{min-height:44px;border:1px solid rgba(117,94,86,.2);border-radius:999px;background:rgba(255,250,246,.9);color:#526769;font:inherit;font-size:.82rem;font-weight:850;box-shadow:0 7px 18px rgba(64,56,53,.07)}.home-document-disc-access button{padding:9px 16px;cursor:pointer}.home-document-disc-access button:hover,.home-document-disc-access button:focus-visible{background:#fff;outline:3px solid rgba(156,105,93,.25);outline-offset:2px}.home-document-disc-access button[aria-pressed="true"]{background:#6d5650;color:#fff}.home-document-disc-status{display:inline-flex;align-items:center;padding:8px 15px}
+          .home-document-disc-shell.is-list-view{height:auto!important;min-height:0!important;padding:14px 0 4px;touch-action:auto}.home-document-disc-shell.is-list-view::before,.home-document-disc-shell.is-list-view::after,.home-document-disc-shell.is-list-view .home-document-disc-center,.home-document-disc-shell.is-list-view .home-ferris-stand,.home-document-disc-shell.is-list-view .home-ferris-spokes,.home-document-disc-shell.is-list-view .home-sea-art,.home-document-disc-shell.is-list-view .home-ferris-cloud,.home-document-disc-shell.is-list-view .home-ferris-bubbles,.home-document-disc-shell.is-list-view .home-document-disc-control{display:none!important}.home-document-disc-shell.is-list-view .home-document-disc-orbit{position:relative!important;inset:auto!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;transform:none!important}.home-document-disc-shell.is-list-view .home-document-disc-card{position:relative!important;left:auto!important;top:auto!important;width:auto!important;min-height:0!important;transform:none!important;border-radius:22px}.home-document-disc-shell.is-list-view .home-document-disc-card img{height:150px}.home-document-disc-shell.is-list-view .home-document-disc-card em{display:block}
+          .home-protection-wall>.container{display:grid;gap:18px}
+          #guest-message-home{scroll-margin-top:100px}#news-flash{scroll-margin-top:100px}
+          @media(max-width:900px){.home-priority-shell{grid-template-columns:1fr 1fr}.home-priority-heading{grid-column:1/-1}.home-guard-actions-head{display:block}.home-guard-actions-head p{margin-top:5px}}
+          @media(max-width:760px){.home-priority-shell,.home-guard-actions-grid{grid-template-columns:1fr}.home-priority-card{grid-template-columns:56px 1fr auto}.home-document-disc-shell.is-list-view .home-document-disc-orbit{grid-template-columns:1fr}.home-document-disc-shell.is-list-view .home-document-disc-card{display:grid;grid-template-columns:116px 1fr}.home-document-disc-shell.is-list-view .home-document-disc-card img{height:100%;min-height:118px}.home-document-disc-shell.is-list-view .home-document-disc-card>span{text-align:left;align-content:center}.home-guard-action-card{grid-template-columns:48px 1fr auto;padding:17px}.home-guard-action-icon{width:48px;height:48px}}
+          @media(prefers-reduced-motion:reduce){.home-document-disc-shell{height:auto!important;min-height:0!important;padding:14px 0 4px;touch-action:auto}.home-document-disc-shell::before,.home-document-disc-shell::after,.home-document-disc-shell .home-document-disc-center,.home-document-disc-shell .home-ferris-stand,.home-document-disc-shell .home-ferris-spokes,.home-document-disc-shell .home-sea-art,.home-document-disc-shell .home-ferris-cloud,.home-document-disc-shell .home-ferris-bubbles,.home-document-disc-shell .home-document-disc-control{display:none!important}.home-document-disc-shell .home-document-disc-orbit{position:relative!important;inset:auto!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;transform:none!important}.home-document-disc-shell .home-document-disc-card{position:relative!important;left:auto!important;top:auto!important;width:auto!important;min-height:0!important;transform:none!important;border-radius:20px;transition:none!important}.home-document-disc-shell .home-document-disc-card img{height:130px}.home-document-disc-access [data-disc-pause]{display:none}}
+          @media(max-width:620px) and (prefers-reduced-motion:reduce){.home-document-disc-shell .home-document-disc-orbit{grid-template-columns:1fr}}
+          '''.strip() + '\n'
+
+          JS = r'''
+          (() => {
+            'use strict';
+            const init = () => {
+              const shell = document.querySelector('[data-document-disc]');
+              if (!shell || shell.dataset.accessControlsReady === 'true') return;
+              const orbit = shell.querySelector('.home-document-disc-orbit');
+              const cards = Array.from(shell.querySelectorAll('.home-document-disc-card'));
+              const pauseButton = document.querySelector('[data-disc-pause]');
+              const listButton = document.querySelector('[data-disc-list]');
+              const status = document.querySelector('[data-disc-status]');
+              const previous = shell.querySelector('[data-disc-prev]');
+              const next = shell.querySelector('[data-disc-next]');
+              const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+              const gsap = window.gsap;
+              let userPaused = false;
+              let listMode = false;
+              let listIndex = 0;
+              let pausedTweens = [];
+              shell.dataset.accessControlsReady = 'true';
+              if (!shell.hasAttribute('tabindex')) shell.tabIndex = 0;
+
+              const allTweens = () => gsap && orbit ? gsap.getTweensOf(orbit) : [];
+              const pauseTweens = () => {
+                pausedTweens = allTweens();
+                pausedTweens.forEach(tween => tween.pause());
+              };
+              const resumeTweens = () => {
+                if (userPaused || listMode || document.hidden || reduceMotion) return;
+                pausedTweens.concat(allTweens()).forEach(tween => tween.resume());
+                pausedTweens = [];
+              };
+              const setPause = value => {
+                userPaused = value;
+                if (userPaused) pauseTweens(); else resumeTweens();
+                if (pauseButton) {
+                  pauseButton.setAttribute('aria-pressed', String(userPaused));
+                  pauseButton.textContent = userPaused ? '繼續動畫' : '暫停動畫';
+                }
+              };
+              const updateStatus = () => {
+                if (!status || !cards.length) return;
+                let active = listIndex;
+                if (!listMode && gsap && orbit) {
+                  const rotation = Number(gsap.getProperty(orbit, 'rotation')) || 0;
+                  const step = 360 / cards.length;
+                  active = ((Math.round(-rotation / step) % cards.length) + cards.length) % cards.length;
+                }
+                cards.forEach((card, index) => {
+                  if (index === active) card.setAttribute('aria-current', 'true');
+                  else card.removeAttribute('aria-current');
+                });
+                status.textContent = listMode ? `列表顯示，共 ${cards.length} 份` : `第 ${active + 1} / ${cards.length} 份`;
+              };
+              const setListMode = value => {
+                listMode = value;
+                shell.classList.toggle('is-list-view', listMode);
+                if (listButton) {
+                  listButton.setAttribute('aria-pressed', String(listMode));
+                  listButton.textContent = listMode ? '摩天輪模式' : '列表模式';
+                }
+                if (listMode) pauseTweens(); else {
+                  window.dispatchEvent(new Event('resize'));
+                  resumeTweens();
+                }
+                updateStatus();
+              };
+              const moveList = direction => {
+                if (!cards.length) return;
+                listIndex = (listIndex + direction + cards.length) % cards.length;
+                cards[listIndex].scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest', inline: 'nearest' });
+                cards[listIndex].focus({ preventScroll: true });
+                updateStatus();
+              };
+
+              pauseButton?.addEventListener('click', () => setPause(!userPaused));
+              listButton?.addEventListener('click', () => setListMode(!listMode));
+              previous?.addEventListener('click', () => { if (listMode || reduceMotion) moveList(-1); });
+              next?.addEventListener('click', () => { if (listMode || reduceMotion) moveList(1); });
+              shell.addEventListener('keydown', event => {
+                if (event.key === 'ArrowLeft') { event.preventDefault(); listMode || reduceMotion ? moveList(-1) : previous?.click(); }
+                if (event.key === 'ArrowRight') { event.preventDefault(); listMode || reduceMotion ? moveList(1) : next?.click(); }
+                if (event.key === ' ' && !reduceMotion) { event.preventDefault(); setPause(!userPaused); }
+                if (event.key.toLowerCase() === 'l') { event.preventDefault(); setListMode(!listMode); }
+              });
+              shell.addEventListener('focusin', pauseTweens);
+              shell.addEventListener('focusout', resumeTweens);
+              shell.addEventListener('pointerleave', () => { if (userPaused || listMode) pauseTweens(); });
+              document.addEventListener('visibilitychange', () => document.hidden ? pauseTweens() : resumeTweens());
+
+              if (reduceMotion) {
+                userPaused = true;
+                setListMode(true);
+                if (pauseButton) { pauseButton.textContent = '動畫已停用'; pauseButton.disabled = true; }
+              }
+              updateStatus();
+              const timer = window.setInterval(() => {
+                if (userPaused || listMode) pauseTweens();
+                updateStatus();
+              }, 500);
+              window.addEventListener('pagehide', () => window.clearInterval(timer), { once: true });
+            };
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
+            else init();
+          })();
+          '''.strip() + '\n'
+
+          PRIORITY = '''<section class="home-priority-updates" aria-labelledby="homePriorityTitle"><div class="container home-priority-shell"><header class="home-priority-heading"><small>IMPORTANT DATES · 近期重要提醒</small><h2 id="homePriorityTitle">下一個需要被記住的日期</h2></header><a class="home-priority-card" href="./cases/chen-shangjie/"><span class="home-priority-date"><small>SEP</small><b>16</b></span><span><strong>陳尚潔案二審開庭</strong><em>2026 年 9 月 16 日 14:30・臺灣高等法院第十四法庭</em></span><span class="home-priority-arrow" aria-hidden="true">→</span></a><a class="home-priority-card" href="./activity-records/20260820-kaikai-story-collection/"><span class="home-priority-date"><small>SEP</small><b>20</b></span><span><strong>「寫下剴剴的故事」募集截止</strong><em>留下感受、疑問與對兒童保護制度的改變期待</em></span><span class="home-priority-arrow" aria-hidden="true">→</span></a></div></section>'''
+
+          GUARD = '''<section class="home-guard-actions" id="home-guard-actions" aria-labelledby="homeGuardActionsTitle"><div class="container"><header class="home-guard-actions-head"><div><small>TAKE ACTION · 一起守護</small><h2 id="homeGuardActionsTitle">用適合你的方式，留下一份守護</h2></div><p>訪客可免登入留下簡短留言；一般會員則可建立完整文章、保存草稿並追蹤審核進度。</p></header><div class="home-guard-actions-grid"><a class="home-guard-action-card is-guest" href="#guest-message-home"><span class="home-guard-action-icon" aria-hidden="true">♡</span><span><strong>訪客留言投稿</strong><em>免登入，約 30 秒即可留下祝福、關心或倡議。</em></span><b aria-hidden="true">↓</b></a><a class="home-guard-action-card" href="https://global-protection.jerryzuhow77.chatgpt.site/submit" target="_blank" rel="noopener noreferrer"><span class="home-guard-action-icon" aria-hidden="true">✎</span><span><strong>一般會員投稿</strong><em>建立守護文章、附加照片，並在會員中心追蹤審核。</em></span><b aria-hidden="true">↗</b></a></div><details class="home-guard-safety"><summary>投稿前的安全提醒</summary><p>請移除兒少、證人或第三人的姓名、學校、地址、聯絡方式與未公開案情。所有公開內容均先經人工審核。</p></details></div></section>'''
+
+          ACCESS = '''<div class="home-document-disc-access" aria-label="最新快報顯示控制"><button type="button" data-disc-pause aria-pressed="false">暫停動畫</button><span class="home-document-disc-status" data-disc-status aria-live="polite">讀取中</span><button type="button" data-disc-list aria-pressed="false">列表模式</button></div>'''
+
+          def read(path: str) -> str:
+              return (ROOT / path).read_text(encoding='utf-8')
+
+          def write(path: str, content: str) -> None:
+              target = ROOT / path
+              target.parent.mkdir(parents=True, exist_ok=True)
+              target.write_text(content, encoding='utf-8')
+
+          def find_element(text: str, marker: str, tag: str) -> tuple[int, int]:
+              marker_pos = text.find(marker)
+              if marker_pos < 0:
+                  raise ValueError(f'Marker not found for <{tag}>: {marker}')
+              start = text.rfind(f'<{tag}', 0, marker_pos + 1)
+              if start < 0:
+                  raise ValueError(f'Opening <{tag}> not found for marker: {marker}')
+              tokens = re.compile(fr'<{tag}\b[^>]*>|</{tag}\s*>', re.I)
+              depth = 0
+              for match in tokens.finditer(text, start):
+                  token = match.group(0)
+                  if token.lower().startswith(f'</{tag}'):
+                      depth -= 1
+                  elif not token.rstrip().endswith('/>'):
+                      depth += 1
+                  if depth == 0:
+                      return start, match.end()
+              raise ValueError(f'Unbalanced <{tag}> for marker: {marker}')
+
+          def remove_element(text: str, marker: str, tag: str, required: bool = True) -> tuple[str, str]:
+              if marker not in text:
+                  if required:
+                      raise ValueError(f'Required marker missing: {marker}')
+                  return text, ''
+              start, end = find_element(text, marker, tag)
+              return text[:start] + text[end:], text[start:end]
+
+          def add_asset_link(html: str, prefix: str) -> str:
+              css_href = f'{prefix}assets/home-optimization-20260821.css?v=1'
+              js_src = f'{prefix}assets/home-controls-20260821.js?v=1'
+              if css_href not in html:
+                  html = html.replace('</head>', f'<link href="{css_href}" rel="stylesheet">\n</head>', 1)
+              if js_src not in html:
+                  html = html.replace('</body>', f'<script src="{js_src}"></script>\n</body>', 1)
+              return html
+
+          def add_image_loading(block: str) -> str:
+              def patch(match: re.Match[str]) -> str:
+                  tag = match.group(0)
+                  if ' loading=' not in tag:
+                      tag = tag[:-1] + ' loading="lazy">'
+                  if ' decoding=' not in tag:
+                      tag = tag[:-1] + ' decoding="async">'
+                  return tag
+              return re.sub(r'<img\b[^>]*>', patch, block)
+
+          def set_meta(html: str, attr: str, key: str, content: str) -> str:
+              pattern = re.compile(fr'<meta(?=[^>]*\b{re.escape(attr)}="{re.escape(key)}")[^>]*>', re.I)
+              match = pattern.search(html)
+              if not match:
+                  raise ValueError(f'Meta tag missing: {attr}={key}')
+              tag = match.group(0)
+              if re.search(r'\bcontent="[^"]*"', tag, re.I):
+                  tag = re.sub(r'\bcontent="[^"]*"', f'content="{content}"', tag, count=1, flags=re.I)
+              else:
+                  tag = tag[:-1] + f' content="{content}">'
+              return html[:match.start()] + tag + html[match.end():]
+
+          def optimize_image(source: str, destination: str) -> None:
+              src = ROOT / source
+              dst = ROOT / destination
+              if not src.exists():
+                  raise FileNotFoundError(source)
+              dst.parent.mkdir(parents=True, exist_ok=True)
+              with Image.open(src) as opened:
+                  image = ImageOps.exif_transpose(opened)
+                  if image.mode in ('RGBA', 'LA'):
+                      background = Image.new('RGB', image.size, 'white')
+                      alpha = image.getchannel('A')
+                      background.paste(image.convert('RGB'), mask=alpha)
+                      image = background
+                  else:
+                      image = image.convert('RGB')
+                  image.thumbnail((1500, 1500), Image.Resampling.LANCZOS)
+                  image.save(dst, 'WEBP', quality=82, method=6)
+              if dst.stat().st_size >= src.stat().st_size:
+                  raise ValueError(f'Optimized image is not smaller: {destination}')
+              if dst.stat().st_size < 10_000:
+                  raise ValueError(f'Optimized image is unexpectedly small: {destination}')
+
+          def patch_homepage() -> None:
+              html = read('index.html')
+              html = add_asset_link(html, './')
+
+              for marker in ('class="home-priority-updates"', 'class="home-guard-actions"'):
+                  html, _ = remove_element(html, marker, 'section', required=False)
+
+              html, _ = remove_element(html, 'class="home-member-submission"', 'aside', required=False)
+              html, guest = remove_element(html, 'class="home-guest-message-section"', 'section')
+              html, latest = remove_element(html, 'class="home-latest-flash', 'section')
+              html, wall = remove_element(html, 'class="home-protection-wall"', 'section')
+
+              for href in (
+                  './hearing-records/prison-watch/kaikai-day1-20250422/',
+                  './hearing-records/prison-watch/kaikai-day2-20250423/',
+              ):
+                  latest, _ = remove_element(latest, f'href="{href}"', 'a', required=False)
+
+              latest = latest.replace('./activity-records/20260801-ketagal-rally/images/rally-01.png', './assets/art/rally-20260801-ai-poster.jpg')
+              latest = add_image_loading(latest)
+              count = len(re.findall(r'<a class="home-document-disc-card(?:\s|\")', latest))
+              if count < 7:
+                  raise ValueError(f'Unexpected latest-card count after deduplication: {count}')
+              latest = re.sub(r'aria-label="[^"]*近期更新內容，依上傳日期由新到舊排列"', f'aria-label="{count} 份近期更新內容，依上傳日期由新到舊排列"', latest, count=1)
+              latest = re.sub(r'<small>最近更新[^<]*內容</small>', f'<small>最近更新 {count} 份內容</small>', latest, count=1)
+              shell_start, shell_end = find_element(latest, 'data-document-disc', 'div')
+              opening_end = latest.find('>', shell_start) + 1
+              opening = latest[shell_start:opening_end]
+              if 'tabindex=' not in opening:
+                  opening = opening[:-1] + ' tabindex="0" aria-label="最新快報摩天輪，可用左右方向鍵切換">'
+                  latest = latest[:shell_start] + opening + latest[opening_end:]
+                  shell_end += len(opening) - (opening_end - shell_start)
+              if 'data-disc-pause' not in latest:
+                  latest = latest[:shell_end] + '\n' + ACCESS + latest[shell_end:]
+
+              hero_start, hero_end = find_element(html, 'class="art-hero premium-home-hero"', 'section')
+              insertion = '\n' + PRIORITY + '\n' + latest + '\n' + GUARD + '\n' + guest + '\n' + wall + '\n'
+              html = html[:hero_end] + insertion + html[hero_end:]
+
+              replacements = {
+                  './assets/art/chen-shangjie-case-poster.png': './assets/art/chen-shangjie-case-poster-home.webp',
+                  './assets/art/dui-police-killing-poster.png': './assets/art/dui-police-killing-poster-home.webp',
+                  './assets/art/lin-xinci-missing-four-days-universal.png': './assets/art/lin-xinci-missing-four-days-home.webp',
+              }
+              for old, new in replacements.items():
+                  html = html.replace(old, new)
+              html = add_image_loading(html)
+
+              positions = [
+                  html.index('class="art-hero premium-home-hero"'),
+                  html.index('class="home-priority-updates"'),
+                  html.index('class="home-latest-flash'),
+                  html.index('class="home-guard-actions"'),
+                  html.index('class="home-guest-message-section"'),
+                  html.index('class="home-protection-wall"'),
+              ]
+              if positions != sorted(positions):
+                  raise ValueError(f'Homepage section order is incorrect: {positions}')
+              latest_check_start, latest_check_end = find_element(html, 'class="home-latest-flash', 'section')
+              latest_check = html[latest_check_start:latest_check_end]
+              if 'kaikai-day1-20250422' in latest_check or 'kaikai-day2-20250423' in latest_check:
+                  raise ValueError('Duplicate Day 1 or Day 2 card remains in latest updates')
+              if 'kaikai-day4-20250428' not in latest_check or 'data-disc-pause' not in latest_check:
+                  raise ValueError('Latest updates lost Day 4 or accessibility controls')
+              for old in replacements:
+                  if old in html:
+                      raise ValueError(f'Heavy homepage image reference remains: {old}')
+              write('index.html', html)
+
+          def patch_localized_homepages() -> None:
+              english = read('en/index.html')
+              english = add_asset_link(english, '../')
+              english = re.sub(r'<title>.*?</title>', '<title>Child Protection Action Alliance | Official Website, Court Observation & Case Tracking</title>', english, count=1, flags=re.S)
+              english = set_meta(english, 'name', 'description', 'Official website of the Child Protection Action Alliance. Read court observation records, case tracking, child-protection features, public actions and ways to participate.')
+              english = set_meta(english, 'name', 'keywords', 'Child Protection Action Alliance, Kaikai case, child protection, court observation, hearing records, case tracking')
+              english = set_meta(english, 'property', 'og:title', 'Child Protection Action Alliance | Official Website')
+              english = set_meta(english, 'property', 'og:description', 'Court observation records, case tracking, public advocacy and child-protection action from Taiwan.')
+              english = set_meta(english, 'property', 'og:url', 'https://jerryzuhow77.github.io/child-advocacy-site/en/')
+              english = set_meta(english, 'property', 'og:locale', 'en_US')
+              english = set_meta(english, 'name', 'twitter:title', 'Child Protection Action Alliance | Official Website')
+              english = set_meta(english, 'name', 'twitter:description', 'Court observation records, case tracking, public advocacy and child-protection action from Taiwan.')
+              english = re.sub(r'<link href="https://jerryzuhow77.github.io/child-advocacy-site/" rel="canonical">', '<link href="https://jerryzuhow77.github.io/child-advocacy-site/en/" rel="canonical">', english, count=1)
+              english = re.sub(r'court audits?', 'court observation', english, flags=re.I)
+              english = english.replace('divorce case', 'Kaikai case')
+              if 'hreflang="en"' not in english:
+                  alternates = '''<link rel="alternate" hreflang="zh-Hant" href="https://jerryzuhow77.github.io/child-advocacy-site/">\n<link rel="alternate" hreflang="zh-Hans" href="https://jerryzuhow77.github.io/child-advocacy-site/">\n<link rel="alternate" hreflang="en" href="https://jerryzuhow77.github.io/child-advocacy-site/en/">\n<link rel="alternate" hreflang="ja" href="https://jerryzuhow77.github.io/child-advocacy-site/ja/">\n<link rel="alternate" hreflang="x-default" href="https://jerryzuhow77.github.io/child-advocacy-site/">\n'''
+                  english = english.replace('</head>', alternates + '</head>', 1)
+              if 'rel="canonical"' not in english or '/child-advocacy-site/en/' not in english or 'en_US' not in english:
+                  raise ValueError('English SEO validation failed')
+              write('en/index.html', english)
+
+              japanese = add_asset_link(read('ja/index.html'), '../')
+              write('ja/index.html', japanese)
+
+          def patch_sitemap() -> None:
+              sitemap = read('sitemap.xml')
+              base = 'https://jerryzuhow77.github.io/child-advocacy-site/'
+              paths = []
+              for day, date in ((1, '20250422'), (2, '20250423'), (3, '20250425'), (4, '20250428')):
+                  suffix = f'hearing-records/prison-watch/kaikai-day{day}-{date}/'
+                  paths.extend((suffix, 'en/' + suffix, 'ja/' + suffix))
+              additions = []
+              for path in paths:
+                  loc = base + path
+                  if loc not in sitemap:
+                      additions.append(f'  <url><loc>{loc}</loc><lastmod>2026-08-21</lastmod></url>')
+              if additions:
+                  sitemap = sitemap.replace('</urlset>', '\n'.join(additions) + '\n</urlset>', 1)
+              sitemap = re.sub(r'(<loc>https://jerryzuhow77.github.io/child-advocacy-site/</loc>\s*<lastmod>)[^<]+', r'\g<1>2026-08-21', sitemap, count=1)
+              for path in paths:
+                  if base + path not in sitemap:
+                      raise ValueError(f'Sitemap entry missing: {path}')
+              write('sitemap.xml', sitemap)
+
+          def patch_service_worker() -> None:
+              sw = read('sw.js')
+              sw = re.sub(r"const VERSION = '[^']+';", "const VERSION = '2026-08-21-homepage-optimization-2';", sw, count=1)
+              for asset in ('./assets/home-optimization-20260821.css', './assets/home-controls-20260821.js'):
+                  if asset not in sw:
+                      sw = sw.replace("  './assets/home-gsap.css',", "  './assets/home-gsap.css',\n  '" + asset + "',", 1)
+              if 'homepage-optimization-2' not in sw:
+                  raise ValueError('Service-worker version update failed')
+              write('sw.js', sw)
+
+          def main() -> None:
+              DIAGNOSTIC.unlink(missing_ok=True)
+              write('assets/home-optimization-20260821.css', CSS)
+              write('assets/home-controls-20260821.js', JS)
+              optimize_image('assets/art/chen-shangjie-case-poster.png', 'assets/art/chen-shangjie-case-poster-home.webp')
+              optimize_image('assets/art/dui-police-killing-poster.png', 'assets/art/dui-police-killing-poster-home.webp')
+              optimize_image('assets/art/lin-xinci-missing-four-days-universal.png', 'assets/art/lin-xinci-missing-four-days-home.webp')
+              patch_homepage()
+              patch_localized_homepages()
+              patch_sitemap()
+              patch_service_worker()
+              required = (
+                  'assets/home-optimization-20260821.css',
+                  'assets/home-controls-20260821.js',
+                  'assets/art/chen-shangjie-case-poster-home.webp',
+                  'assets/art/dui-police-killing-poster-home.webp',
+                  'assets/art/lin-xinci-missing-four-days-home.webp',
+              )
+              for path in required:
+                  if not (ROOT / path).is_file() or (ROOT / path).stat().st_size == 0:
+                      raise ValueError(f'Required output missing: {path}')
+              print('Homepage optimization validation passed.')
+
+          try:
+              main()
+          except Exception:
+              DIAGNOSTIC.parent.mkdir(parents=True, exist_ok=True)
+              DIAGNOSTIC.write_text(traceback.format_exc(), encoding='utf-8')
+              raise
+          PY
+          python /tmp/optimize_homepage_robust.py
+
+      - name: Commit validated homepage optimization
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f -- \
+            .github/workflows/oneoff-homepage-optimization-20260821.yml \
+            .github/workflows/oneoff-homepage-optimization-retry-20260821.yml \
+            .github/workflows/oneoff-homepage-optimization-direct-20260821.yml \
+            .github/workflows/oneoff-homepage-optimization-robust-20260821.yml \
+            .github/homepage-optimization-diagnostic.txt
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- \
+            index.html \
+            en/index.html \
+            ja/index.html \
+            assets/home-optimization-20260821.css \
+            assets/home-controls-20260821.js \
+            assets/art/chen-shangjie-case-poster-home.webp \
+            assets/art/dui-police-killing-poster-home.webp \
+            assets/art/lin-xinci-missing-four-days-home.webp \
+            sitemap.xml \
+            sw.js \
+            .github/workflows/oneoff-homepage-optimization-20260821.yml \
+            .github/workflows/oneoff-homepage-optimization-retry-20260821.yml \
+            .github/workflows/oneoff-homepage-optimization-direct-20260821.yml \
+            .github/workflows/oneoff-homepage-optimization-robust-20260821.yml \
+            .github/homepage-optimization-diagnostic.txt
+          git diff --cached --check
+          git diff --cached --quiet && exit 0
+          git commit -m 'Optimize homepage hierarchy performance and accessibility'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+
+      - name: Publish failure diagnostic
+        if: failure()
+        shell: bash
+        run: |
+          set +e
+          test -s .github/homepage-optimization-diagnostic.txt || printf 'Workflow failed before the Python diagnostic was created.\n' > .github/homepage-optimization-diagnostic.txt
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/homepage-optimization-diagnostic.txt
+          git commit -m 'Record homepage optimization diagnostic'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
