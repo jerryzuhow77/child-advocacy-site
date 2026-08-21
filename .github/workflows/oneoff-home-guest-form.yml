@@ -1,0 +1,47 @@
+name: Add homepage guest submission form
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/oneoff-home-guest-form.yml']
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch homepage guest area and toolbar
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html'); s=p.read_text(encoding='utf-8')
+          # Toolbar: add a clearly visible guest submission link beside member submission.
+          marker='<a class="guardian-wall-nav-link" href="https://global-protection.jerryzuhow77.chatgpt.site/submit"'
+          guest='<a class="guardian-wall-nav-link guest-message-nav-link" href="#guest-message-home" aria-label="前往首頁訪客留言投稿表單"><span class="guardian-wall-nav-mark" aria-hidden="true">♡</span><span class="guardian-wall-nav-label">訪客留言投稿</span></a>\n'
+          if 'guest-message-nav-link' not in s and marker in s: s=s.replace(marker,guest+marker,1)
+          # Replace the simple launch banner with an expandable native details section containing the guest form.
+          start=s.find('<section class="home-visitor-launch"')
+          end=s.find('</section>',start)
+          if start!=-1 and end!=-1:
+            end+=len('</section>')
+            block='''<section class="home-guest-message-section" id="guest-message-home" aria-labelledby="homeGuestMessageTitle"><div class="container"><details class="home-guest-message-details"><summary><span><small>VISITOR MESSAGE · 免登入即可投稿</small><strong id="homeGuestMessageTitle">以訪客身分留下守護留言</strong><em>展開留言表單 ↓</em></span></summary><div class="home-guest-message-panel"><p>不需登入即可留言。送出前請移除兒少、證人或第三人的可識別資料；內容經人工審核後公開。</p><form class="home-guest-message-form" action="https://global-protection.jerryzuhow77.chatgpt.site/#guest-message" method="get" target="_blank"><div class="home-guest-grid"><label>顯示名稱<input name="name" type="text" maxlength="40" placeholder="暱稱或想顯示的名字"></label><label>國家／地區<input name="region" type="text" maxlength="60" placeholder="例如：台灣・桃園"></label></div><label>守護留言<textarea name="message" rows="6" maxlength="1200" required placeholder="寫下一句祝福、關心、倡議，或你想留下的話……"></textarea></label><label class="home-guest-photo">照片（選填）<input type="file" accept="image/*" multiple disabled><small>照片上傳需在守護留言牆完成，以保留審核與上傳安全機制。</small></label><div class="home-guest-actions"><button type="submit">前往守護牆完成投稿 ↗</button><a href="https://global-protection.jerryzuhow77.chatgpt.site/#guest-message" target="_blank" rel="noopener noreferrer">直接開啟完整訪客表單</a></div><small class="home-guest-safety">送出即表示你了解：留言將先經人工審核，請勿公開敏感個資或未公開案情。</small></form></div></details></div></section>'''
+            s=s[:start]+block+s[end:]
+          # Add stylesheet.
+          css='<link href="./assets/home-guest-message.css?v=20260821-1" rel="stylesheet">\n'
+          if 'home-guest-message.css' not in s: s=s.replace('</head>',css+'</head>',1)
+          p.write_text(s,encoding='utf-8')
+          PY
+          cat > assets/home-guest-message.css <<'CSS'
+          .home-guest-message-section{padding:18px 0 26px;background:linear-gradient(180deg,#f7eee8,#f3e8df)}
+          .home-guest-message-details{border:1px solid rgba(119,77,62,.18);border-radius:24px;background:rgba(255,255,255,.78);overflow:hidden;box-shadow:0 14px 38px rgba(87,58,48,.08)}
+          .home-guest-message-details summary{cursor:pointer;list-style:none;padding:22px 26px;color:#49382f}.home-guest-message-details summary::-webkit-details-marker{display:none}.home-guest-message-details summary span{display:grid;grid-template-columns:1fr auto;gap:5px 18px;align-items:center}.home-guest-message-details summary small{grid-column:1/-1;color:#9b6555;font-weight:800;letter-spacing:.08em}.home-guest-message-details summary strong{font-size:clamp(1.35rem,3vw,2rem)}.home-guest-message-details summary em{font-style:normal;font-weight:800;color:#8a594b}.home-guest-message-details[open] summary em{font-size:0}.home-guest-message-details[open] summary em:after{content:'收合表單 ↑';font-size:.9rem}.home-guest-message-panel{padding:0 26px 26px;border-top:1px solid rgba(119,77,62,.12)}.home-guest-message-panel>p{max-width:760px;color:#66564d}.home-guest-message-form{display:grid;gap:16px;margin-top:18px}.home-guest-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.home-guest-message-form label{display:grid;gap:7px;font-weight:800;color:#4e4038}.home-guest-message-form input[type=text],.home-guest-message-form textarea{width:100%;box-sizing:border-box;border:1px solid rgba(105,75,62,.22);border-radius:14px;padding:13px 14px;background:#fffdfb;color:#342b27;font:inherit}.home-guest-message-form textarea{resize:vertical;min-height:150px}.home-guest-photo{padding:13px 14px;border-radius:14px;background:#f7f0eb}.home-guest-photo small,.home-guest-safety{font-weight:500;color:#78675e}.home-guest-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.home-guest-actions button,.home-guest-actions a{border:0;border-radius:999px;padding:12px 18px;font:inherit;font-weight:900;text-decoration:none;cursor:pointer}.home-guest-actions button{background:#7c4d41;color:#fff}.home-guest-actions a{background:#efe2da;color:#68463c}.guest-message-nav-link{background:linear-gradient(135deg,#fff1e8,#f1cfc2)!important;color:#603f35!important;border-color:rgba(121,70,55,.25)!important}.guest-message-nav-link .guardian-wall-nav-mark{color:#a55348}
+          @media(max-width:760px){.home-guest-message-section{padding:12px 0 20px}.home-guest-message-details{border-radius:18px}.home-guest-message-details summary{padding:18px}.home-guest-message-details summary span{grid-template-columns:1fr}.home-guest-message-details summary em{justify-self:start}.home-guest-message-panel{padding:0 18px 20px}.home-guest-grid{grid-template-columns:1fr}.home-guest-actions{align-items:stretch}.home-guest-actions button,.home-guest-actions a{text-align:center;width:100%;box-sizing:border-box}}
+          CSS
+      - name: Commit changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html assets/home-guest-message.css
+          git diff --cached --quiet && exit 0
+          git commit -m 'Add expandable guest submission form to homepage'
+          git push
