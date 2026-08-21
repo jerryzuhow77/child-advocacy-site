@@ -329,6 +329,19 @@
       if (poseStates.has(actor)) return poseStates.get(actor);
       const layers = [...actor.querySelectorAll('img[data-pose-layer]')];
       const selected = Math.max(0, layers.findIndex(layer => layer.classList.contains('is-active')));
+      let visual = actor.querySelector(':scope > .fq-actor__visual');
+      if (!visual && layers.length) {
+        visual = doc.createElement('span');
+        visual.className = 'fq-actor__visual';
+        visual.setAttribute('aria-hidden', 'true');
+        actor.insertBefore(visual, layers[0]);
+        layers.forEach(layer => visual.append(layer));
+      }
+      const selectedSource = layers[selected]?.currentSrc || layers[selected]?.src || '';
+      const inferredPose = layers[selected]?.dataset.pose
+        || selectedSource.match(/-pose-(\d+)/i)?.[1]
+        || '1';
+      if (!actor.dataset.activePose) actor.dataset.activePose = inferredPose;
       layers.forEach((layer, index) => {
         layer.alt = '';
         layer.setAttribute('aria-hidden', 'true');
@@ -340,7 +353,7 @@
       const state = {
         layers,
         activeIndex: selected,
-        pose: actor.dataset.activePose || '',
+        pose: actor.dataset.activePose || inferredPose,
         request: 0
       };
       poseStates.set(actor, state);
@@ -382,7 +395,9 @@
       }
 
       gsapEngine.killTweensOf([activeLayer, targetLayer]);
-      gsapEngine.set(targetLayer, { autoAlpha: 0, scale: 1.006 });
+      /* Pose geometry is normalised by the visual wrapper in CSS. Keep the
+         image swap alpha-only so GSAP never overwrites that correction. */
+      gsapEngine.set(targetLayer, { autoAlpha: 0 });
       targetLayer.classList.add('is-active');
       const fadeOut = compactQuery.matches ? 0.14 : 0.18;
       const fadeIn = compactQuery.matches ? 0.28 : 0.32;
@@ -391,13 +406,13 @@
           if (destroyed || request !== state.request) return;
           activeLayer.classList.remove('is-active');
           targetLayer.classList.add('is-active');
-          gsapEngine.set(activeLayer, { autoAlpha: 0, scale: 1 });
-          gsapEngine.set(targetLayer, { autoAlpha: 1, scale: 1 });
+          gsapEngine.set(activeLayer, { autoAlpha: 0 });
+          gsapEngine.set(targetLayer, { autoAlpha: 1 });
           state.activeIndex = targetIndex;
         }
       })
         .to(activeLayer, { autoAlpha: 0, duration: fadeOut, ease: 'power1.out' }, 0)
-        .to(targetLayer, { autoAlpha: 1, scale: 1, duration: fadeIn, ease: 'power2.out' }, 0.05);
+        .to(targetLayer, { autoAlpha: 1, duration: fadeIn, ease: 'power2.out' }, 0.05);
       return true;
     };
 
@@ -1111,6 +1126,9 @@
 
       scene.classList.add('is-enhanced');
       scene.dataset.fqReady = 'true';
+      if (sceneAct(state) === '2' && state.transcript && 'open' in state.transcript) {
+        state.transcript.open = true;
+      }
       lines.forEach((line, lineIndex) => {
         if (!line.id) line.id = 'fq-act-' + sceneAct(state) + '-line-' + (lineIndex + 1);
         line.setAttribute('aria-hidden', 'true');
@@ -1378,7 +1396,17 @@
       try {
         hashTarget = location.hash ? doc.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
       } catch (_error) {}
-      const immediateReveals = new Set(reveals.filter(node => hashTarget && (node === hashTarget || node.contains(hashTarget))));
+      /* Full narrative sections must fail open. Several mobile in-app
+         browsers can miss a ScrollTrigger/IntersectionObserver hand-off after
+         a fast swipe or hash jump, which previously left an entire chapter
+         transparent. Smaller decorative reveals may still animate. */
+      const resilientReveals = reveals.filter(node => node.matches(
+        '.fq-boundary, .fq-quick-summary, .fq-guide, .fq-chapter, .fq-interlude, .fq-help, .fq-sources'
+      ));
+      const immediateReveals = new Set([
+        ...resilientReveals,
+        ...reveals.filter(node => hashTarget && (node === hashTarget || node.contains(hashTarget)))
+      ]);
       immediateReveals.forEach(node => node.classList.add('is-visible'));
       const animatedReveals = reveals.filter(node => !immediateReveals.has(node));
       if (reducedMotion) {
@@ -1540,16 +1568,16 @@
       const placements = [
         ['.fq-boundary', 'cultural-seal-01-gulangyu.webp', 'top-left'],
         ['#quick-summary', 'cultural-seal-02-quanzhou-nanyin.webp', 'bottom-right'],
-        ['.fq-guide', 'cultural-seal-03-zhangzhou-new-year-print.webp', 'bottom-left'],
+        ['.fq-guide', 'cultural-seal-03-zhangzhou-new-year-print.webp', 'middle-left'],
         ['#waiting', 'cultural-seal-04-dehua-porcelain.webp', 'top-right'],
-        ['#signals', 'cultural-seal-05-anxi-tieguanyin.webp', 'bottom-left'],
+        ['#signals', 'cultural-seal-05-anxi-tieguanyin.webp', 'middle-left'],
         ['#court-findings', 'cultural-seal-06-huian-stone-carving.webp', 'top-right'],
-        ['.fq-interlude', 'cultural-seal-07-fujian-tulou.webp', 'top-left'],
+        ['.fq-interlude', 'cultural-seal-07-fujian-tulou.webp', 'middle-left'],
         ['#justice', 'cultural-seal-08-quanzhou-zanhua.webp', 'bottom-right'],
         ['#protection', 'cultural-seal-09-putian-wood-carving.webp', 'top-left'],
-        ['.fq-help', 'cultural-seal-10-xiamen-lacquer-thread.webp', 'top-right'],
+        ['.fq-help', 'cultural-seal-10-xiamen-lacquer-thread.webp', 'middle-right'],
         ['#sources', 'cultural-seal-11-fuzhou-lacquerware.webp', 'bottom-left'],
-        ['.fq-social-finale', 'cultural-seal-12-maritime-silk-road.webp', 'bottom-right']
+        ['.fq-social-finale', 'cultural-seal-12-maritime-silk-road.webp', 'top-right']
       ];
 
       placements.forEach((placement, index) => {
@@ -1566,7 +1594,8 @@
         image.alt = '';
         image.width = 384;
         image.height = 348;
-        image.loading = 'lazy';
+        image.loading = index < 6 ? 'eager' : 'lazy';
+        if (index < 6) image.fetchPriority = 'high';
         image.decoding = 'async';
         wrapper.append(image);
         section.prepend(wrapper);
@@ -1903,7 +1932,7 @@
     });
 
     window.FujianQiqiFeature = {
-      version: '1.3.6',
+      version: '1.3.7',
       play(target) {
         const state = stateFor(target);
         return state ? playScene(state) : false;
@@ -2281,8 +2310,8 @@
     if (titleParts.length) {
       intro.fromTo(
         titleParts,
-        { autoAlpha: 0, y: -10, filter: 'blur(3px)' },
-        { autoAlpha: 1, y: 0, filter: 'blur(0px)', duration: .72, stagger: .12 },
+        { y: -10, filter: 'blur(3px)' },
+        { y: 0, filter: 'blur(0px)', duration: .72, stagger: .12, immediateRender: false },
         0
       );
     }

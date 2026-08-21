@@ -3204,7 +3204,7 @@ body.fq-page .fq-ending .fq-shell>*{max-width:650px}body.fq-page .fq-ending smal
   padding: .68rem clamp(.8rem, 2vw, 1.25rem) .78rem;
   border: 1px solid rgba(65, 47, 63, .28);
   border-radius: 17px;
-  color: #2c2630;
+  color: #17131a;
   background: linear-gradient(135deg, rgba(250, 246, 239, .95), rgba(231, 222, 227, .93));
   box-shadow: 0 16px 42px rgba(9, 14, 18, .23), inset 0 1px 0 rgba(255, 255, 255, .72);
   text-shadow: none;
@@ -3212,52 +3212,52 @@ body.fq-page .fq-ending .fq-shell>*{max-width:650px}body.fq-page .fq-ending smal
 }
 
 .fq-act[data-act="3"] .fq-stage > .fq-act__title small {
-  color: #684b61;
+  color: #4f3549;
   text-shadow: none;
 }
 
 .fq-act[data-act="3"] .fq-stage > .fq-act__title h2 {
-  color: #2b2530;
+  color: #17131a;
   text-shadow: none;
 }
 
 .fq-act[data-act="3"] .fq-stage > .fq-act__title p {
-  color: #454047;
-  font-weight: 650;
+  color: #2c282e;
+  font-weight: 720;
   text-shadow: none;
 }
 
 .fq-act[data-act="3"] .fq-line,
 .fq-act[data-act="3"] [data-fq-line] {
   border-color: rgba(70, 52, 67, .34);
-  color: #252128;
-  background: rgba(249, 245, 239, .96);
+  color: #171419;
+  background: rgba(249, 245, 239, .985);
   box-shadow: 0 20px 54px rgba(13, 17, 22, .28), inset 0 1px 0 rgba(255, 255, 255, .74);
-  font-weight: 560;
+  font-weight: 650;
   text-shadow: none;
   backdrop-filter: blur(12px) saturate(.8);
 }
 
 .fq-act[data-act="3"] .fq-line[data-speaker="female"] {
   border-color: rgba(114, 59, 80, .42);
-  color: #33252d;
-  background: rgba(247, 236, 239, .97);
+  color: #24171f;
+  background: rgba(247, 236, 239, .985);
 }
 
 .fq-act[data-act="3"] .fq-line[data-speaker="male"] {
   border-color: rgba(55, 91, 99, .4);
-  color: #203035;
-  background: rgba(237, 243, 242, .97);
+  color: #142529;
+  background: rgba(237, 243, 242, .985);
 }
 
 .fq-act[data-act="3"] .fq-line > b {
-  color: #5f3f55;
+  color: #452d3f;
   font-weight: 850;
   text-shadow: none;
 }
 
 .fq-act[data-act="3"] .fq-line[data-speaker="male"] > b {
-  color: #31545c;
+  color: #203f46;
 }
 
 .fq-act[data-act="3"] .fq-line > span {
@@ -3271,17 +3271,18 @@ body.fq-page .fq-ending .fq-shell>*{max-width:650px}body.fq-page .fq-ending smal
 
 .fq-act[data-act="3"] .fq-transcript {
   border-color: rgba(76, 55, 71, .24);
-  color: #2b252d;
-  background: rgba(251, 247, 242, .96);
+  color: #1d1820;
+  background: rgba(251, 247, 242, .985);
   box-shadow: 0 18px 48px rgba(56, 42, 54, .1);
 }
 
 .fq-act[data-act="3"] .fq-transcript summary {
-  color: #5f3f55;
+  color: #452d3f;
 }
 
 .fq-act[data-act="3"] .fq-transcript p {
-  color: #373038;
+  color: #241e25;
+  font-weight: 600;
   border-left-color: rgba(101, 73, 95, .4);
 }
 
@@ -4101,8 +4102,67 @@ html.fq-theatre-focus [data-audio-dock] {
 
 .fq-act.is-speaking-female .fq-actor[data-actor="male"],
 .fq-act.is-speaking-male .fq-actor[data-actor="female"] {
-  opacity: .78;
-  filter: saturate(.78) brightness(.86);
+  opacity: .9;
+  filter: saturate(.9) brightness(.94);
+}
+
+/* The transparent margins vary dramatically between the twelve source
+   images. Normalise the painted silhouette per pose on an inner wrapper, so
+   stage movement can continue on the outer actor without changing its size. */
+.fq-actor__visual {
+  --fq-pose-normalize: 1;
+  --fq-role-normalize: 1;
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform: scale(var(--fq-pose-normalize));
+  transform-origin: 50% 100%;
+  scale: var(--fq-role-normalize);
+  transition: transform .32s ease, scale .32s ease;
+}
+
+.fq-actor[data-actor="female"] > .fq-actor__visual { transform-origin: 46% 100%; }
+.fq-actor[data-actor="male"] > .fq-actor__visual {
+  --fq-role-normalize: 1.24;
+  transform-origin: 54% 100%;
+}
+
+.fq-actor[data-actor="female"][data-active-pose="1"] > .fq-actor__visual { --fq-pose-normalize: 1; }
+.fq-actor[data-actor="female"][data-active-pose="2"] > .fq-actor__visual { --fq-pose-normalize: 1; }
+.fq-actor[data-actor="female"][data-active-pose="3"] > .fq-actor__visual { --fq-pose-normalize: 1.002; }
+.fq-actor[data-actor="female"][data-active-pose="4"] > .fq-actor__visual { --fq-pose-normalize: 1.251; }
+.fq-actor[data-actor="female"][data-active-pose="5"] > .fq-actor__visual { --fq-pose-normalize: .941; }
+.fq-actor[data-actor="female"][data-active-pose="6"] > .fq-actor__visual { --fq-pose-normalize: .952; }
+
+.fq-actor[data-actor="male"][data-active-pose="1"] > .fq-actor__visual { --fq-pose-normalize: 1; }
+.fq-actor[data-actor="male"][data-active-pose="2"] > .fq-actor__visual { --fq-pose-normalize: 1.002; }
+.fq-actor[data-actor="male"][data-active-pose="3"] > .fq-actor__visual { --fq-pose-normalize: .994; }
+.fq-actor[data-actor="male"][data-active-pose="4"] > .fq-actor__visual { --fq-pose-normalize: 1.186; }
+.fq-actor[data-actor="male"][data-active-pose="5"] > .fq-actor__visual { --fq-pose-normalize: 1.013; }
+.fq-actor[data-actor="male"][data-active-pose="6"] > .fq-actor__visual { --fq-pose-normalize: 1.234; }
+
+/* Act II keeps a readable first line even if autoplay or an observer hand-off
+   is delayed. Scene setup also opens its complete transcript. */
+html.fq-js .fq-act[data-act="2"].is-enhanced:not(.is-playing):not(.is-paused):not(.is-complete):not(.is-skipped) .fq-line:first-child {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto;
+}
+
+/* The alternating chapter selector has equal specificity in the original
+   sheet; qualify the ink chapter so light copy never lands on a light panel. */
+body.fq-page .fq-chapter.fq-chapter--ink {
+  color: #e8e8e2;
+  background:
+    radial-gradient(circle at 85% 10%, rgba(161, 91, 83, .18), transparent 28rem),
+    linear-gradient(145deg, #2d3a40, #26333a 58%, #222e34);
+}
+
+/* Paint containment caused direct hash jumps to Acts II/III to show a blank
+   stage until the next scroll repaint in some mobile WebKit/Chromium shells. */
+body.fq-page .fq-stage,
+body.fq-page [data-fq-stage] {
+  contain: none;
 }
 
 /* Ronghua is treated as silk-fibre relief: detailed at the edge, quiet under copy. */
@@ -4183,18 +4243,21 @@ body.fq-page::after {
 }
 
 .fq-cultural-corner-seal {
-  --fq-cultural-seal-opacity: .43;
+  --fq-cultural-seal-opacity: .6;
   --fq-cultural-seal-rotation: 0deg;
   --fq-cultural-seal-scale: 1;
+  --fq-cultural-seal-inset-x: clamp(26px, 3.4vw, 58px);
+  --fq-cultural-seal-inset-y: clamp(30px, 4vw, 58px);
+  --fq-cultural-seal-translate-y: 0;
   position: absolute;
   z-index: 1;
   display: block;
-  width: clamp(245px, 25vw, 390px);
+  width: clamp(240px, 24vw, 370px);
   opacity: var(--fq-cultural-seal-opacity);
-  filter: saturate(.96) contrast(1.12) drop-shadow(0 14px 24px rgba(86, 58, 45, .08));
+  filter: saturate(1.02) contrast(1.16) drop-shadow(0 14px 24px rgba(86, 58, 45, .14));
   mix-blend-mode: multiply;
   pointer-events: none;
-  transform: rotate(var(--fq-cultural-seal-rotation)) scale(var(--fq-cultural-seal-scale));
+  transform: translateY(var(--fq-cultural-seal-translate-y)) rotate(var(--fq-cultural-seal-rotation)) scale(var(--fq-cultural-seal-scale));
   transform-origin: center;
 }
 
@@ -4209,23 +4272,53 @@ body.fq-page .fq-cultural-seal-host > .fq-cultural-corner-seal {
   height: auto;
 }
 
-.fq-cultural-corner-seal--top-left { top: var(--fq-cultural-seal-y, -8%); left: var(--fq-cultural-seal-x, -3%); }
-.fq-cultural-corner-seal--top-right { top: var(--fq-cultural-seal-y, -8%); right: var(--fq-cultural-seal-x, -3%); }
-.fq-cultural-corner-seal--bottom-left { bottom: var(--fq-cultural-seal-y, -8%); left: var(--fq-cultural-seal-x, -3%); }
-.fq-cultural-corner-seal--bottom-right { right: var(--fq-cultural-seal-x, -3%); bottom: var(--fq-cultural-seal-y, -8%); }
+.fq-cultural-corner-seal--top-left {
+  top: clamp(76px, 7vw, 104px);
+  left: var(--fq-cultural-seal-inset-x);
+}
+.fq-cultural-corner-seal--top-right {
+  top: clamp(76px, 7vw, 104px);
+  right: var(--fq-cultural-seal-inset-x);
+}
+.fq-cultural-corner-seal--middle-left {
+  top: 50%;
+  left: var(--fq-cultural-seal-inset-x);
+  --fq-cultural-seal-translate-y: -50%;
+}
+.fq-cultural-corner-seal--middle-right {
+  top: 50%;
+  right: var(--fq-cultural-seal-inset-x);
+  --fq-cultural-seal-translate-y: -50%;
+}
+.fq-cultural-corner-seal--bottom-left {
+  bottom: var(--fq-cultural-seal-inset-y);
+  left: var(--fq-cultural-seal-inset-x);
+}
+.fq-cultural-corner-seal--bottom-right {
+  right: var(--fq-cultural-seal-inset-x);
+  bottom: var(--fq-cultural-seal-inset-y);
+}
 
-.fq-cultural-corner-seal--01 { --fq-cultural-seal-x: -4%; --fq-cultural-seal-y: -13%; --fq-cultural-seal-rotation: -7deg; --fq-cultural-seal-scale: 1.06; }
-.fq-cultural-corner-seal--02 { --fq-cultural-seal-x: -2%; --fq-cultural-seal-y: -16%; --fq-cultural-seal-rotation: 7deg; }
-.fq-cultural-corner-seal--03 { --fq-cultural-seal-x: -5%; --fq-cultural-seal-y: -20%; --fq-cultural-seal-rotation: -5deg; --fq-cultural-seal-scale: .95; }
-.fq-cultural-corner-seal--04 { --fq-cultural-seal-x: -3%; --fq-cultural-seal-y: -10%; --fq-cultural-seal-rotation: 8deg; --fq-cultural-seal-opacity: .48; }
-.fq-cultural-corner-seal--05 { --fq-cultural-seal-x: -4%; --fq-cultural-seal-y: -13%; --fq-cultural-seal-rotation: -8deg; }
-.fq-cultural-corner-seal--06 { --fq-cultural-seal-x: -3%; --fq-cultural-seal-y: -10%; --fq-cultural-seal-rotation: 6deg; --fq-cultural-seal-opacity: .46; }
-.fq-cultural-corner-seal--07 { --fq-cultural-seal-x: -4%; --fq-cultural-seal-y: -22%; --fq-cultural-seal-rotation: -6deg; --fq-cultural-seal-scale: .96; }
-.fq-cultural-corner-seal--08 { --fq-cultural-seal-x: -3%; --fq-cultural-seal-y: -14%; --fq-cultural-seal-rotation: 7deg; }
-.fq-cultural-corner-seal--09 { --fq-cultural-seal-x: -5%; --fq-cultural-seal-y: -12%; --fq-cultural-seal-rotation: -7deg; }
-.fq-cultural-corner-seal--10 { --fq-cultural-seal-x: -4%; --fq-cultural-seal-y: -16%; --fq-cultural-seal-rotation: 8deg; --fq-cultural-seal-opacity: .46; }
-.fq-cultural-corner-seal--11 { --fq-cultural-seal-x: -3%; --fq-cultural-seal-y: -13%; --fq-cultural-seal-rotation: -6deg; }
-.fq-cultural-corner-seal--12 { --fq-cultural-seal-x: -4%; --fq-cultural-seal-y: -18%; --fq-cultural-seal-rotation: 6deg; }
+.fq-cultural-corner-seal--01 { --fq-cultural-seal-inset-x: clamp(22px, 2.8vw, 46px); --fq-cultural-seal-rotation: -7deg; --fq-cultural-seal-scale: 1.04; }
+.fq-cultural-corner-seal--02 { --fq-cultural-seal-inset-x: clamp(34px, 4vw, 68px); --fq-cultural-seal-inset-y: clamp(28px, 3.4vw, 48px); --fq-cultural-seal-rotation: 7deg; --fq-cultural-seal-scale: .97; }
+.fq-cultural-corner-seal--03 { --fq-cultural-seal-inset-x: clamp(24px, 3.1vw, 52px); --fq-cultural-seal-rotation: -5deg; --fq-cultural-seal-scale: .96; }
+.fq-cultural-corner-seal--04 { --fq-cultural-seal-inset-x: clamp(36px, 4.2vw, 72px); --fq-cultural-seal-rotation: 8deg; --fq-cultural-seal-opacity: .64; }
+.fq-cultural-corner-seal--05 { --fq-cultural-seal-inset-x: clamp(26px, 3.5vw, 58px); --fq-cultural-seal-rotation: -8deg; --fq-cultural-seal-scale: 1.02; }
+.fq-cultural-corner-seal--06 { --fq-cultural-seal-inset-x: clamp(38px, 4.4vw, 74px); --fq-cultural-seal-rotation: 6deg; --fq-cultural-seal-opacity: .66; }
+.fq-cultural-corner-seal--07 { --fq-cultural-seal-inset-x: clamp(30px, 3.8vw, 64px); --fq-cultural-seal-rotation: -6deg; --fq-cultural-seal-scale: .97; }
+.fq-cultural-corner-seal--08 { --fq-cultural-seal-inset-x: clamp(34px, 4vw, 68px); --fq-cultural-seal-rotation: 7deg; }
+.fq-cultural-corner-seal--09 { --fq-cultural-seal-inset-x: clamp(24px, 3.1vw, 52px); --fq-cultural-seal-rotation: -7deg; --fq-cultural-seal-scale: 1.03; }
+.fq-cultural-corner-seal--10 { --fq-cultural-seal-inset-x: clamp(36px, 4.3vw, 72px); --fq-cultural-seal-rotation: 8deg; --fq-cultural-seal-opacity: .66; }
+.fq-cultural-corner-seal--11 { --fq-cultural-seal-inset-x: clamp(28px, 3.6vw, 60px); --fq-cultural-seal-rotation: -6deg; }
+.fq-cultural-corner-seal--12 { --fq-cultural-seal-inset-x: clamp(38px, 4.5vw, 76px); --fq-cultural-seal-rotation: 6deg; --fq-cultural-seal-opacity: .65; }
+
+/* Dark chapters need the original cut-out colour rather than multiply, which
+   can make the individual stamp disappear into the background. */
+.fq-cultural-corner-seal--06,
+.fq-cultural-corner-seal--10,
+.fq-cultural-corner-seal--12 {
+  mix-blend-mode: normal;
+}
 
 @keyframes fq-cultural-seal-drift {
   0%, 100% { translate: 0 0; }
@@ -4254,41 +4347,59 @@ html[data-fq-motion="full"] .fq-cultural-corner-seal {
       linear-gradient(90deg, rgba(25, 30, 31, .68), rgba(25, 30, 31, .14) 84%);
   }
 
-  /* Canvas proportions differ by role. A 2.5:1 wrapper-width ratio renders
-     the painted male figure at approximately twice the female figure's
-     visible height, including their transparent source margins. */
+  /* The source canvases differ by role. Keep the requested 2.5:1 wrapper
+     ratio, then correct each pose below so the visible silhouettes remain
+     close to a stable 2:1 male/female height relationship. */
   body.fq-page .fq-act .fq-actors {
     --fq-female-width: clamp(110px, 30vw, 225px);
     --fq-male-width: clamp(275px, 75vw, 563px);
   }
 
   body.fq-page .fq-act:not([data-act="4"]) .fq-actors {
-    --fq-female-left: -5vw;
+    --fq-female-left: -3vw;
     --fq-female-right: auto;
     --fq-male-left: auto;
-    --fq-male-right: -18vw;
+    --fq-male-right: -2vw;
   }
 
   body.fq-page .fq-act[data-act="4"] .fq-actors {
     --fq-female-left: auto;
-    --fq-female-right: -5vw;
-    --fq-male-left: -18vw;
+    --fq-female-right: -3vw;
+    --fq-male-left: -2vw;
     --fq-male-right: auto;
   }
 
-  .fq-actors .fq-actor[data-actor="female"] { height: min(35%, 400px); }
-  .fq-actors .fq-actor[data-actor="male"] { height: min(70%, 700px); }
+  .fq-actors .fq-actor[data-actor="female"] {
+    height: auto;
+    aspect-ratio: 298 / 482;
+  }
+
+  .fq-actors .fq-actor[data-actor="male"] {
+    height: auto;
+    aspect-ratio: 405 / 493;
+  }
+
+  .fq-actor[data-actor="male"] > .fq-actor__visual {
+    --fq-role-normalize: 1;
+  }
 
   .fq-cultural-corner-seal {
-    --fq-cultural-seal-opacity: .48;
-    width: clamp(180px, 58vw, 285px);
+    --fq-cultural-seal-opacity: .66;
+    --fq-cultural-seal-inset-x: clamp(16px, 5vw, 26px);
+    --fq-cultural-seal-inset-y: clamp(18px, 5.5vw, 30px);
+    width: clamp(190px, 59vw, 285px);
   }
 
   .fq-cultural-corner-seal--top-left,
-  .fq-cultural-corner-seal--bottom-left { left: -14vw; }
+  .fq-cultural-corner-seal--middle-left,
+  .fq-cultural-corner-seal--bottom-left { left: var(--fq-cultural-seal-inset-x); }
 
   .fq-cultural-corner-seal--top-right,
-  .fq-cultural-corner-seal--bottom-right { right: -14vw; }
+  .fq-cultural-corner-seal--middle-right,
+  .fq-cultural-corner-seal--bottom-right { right: var(--fq-cultural-seal-inset-x); }
+
+  .fq-cultural-corner-seal--top-left,
+  .fq-cultural-corner-seal--top-right { top: clamp(72px, 19vw, 92px); }
 
   .fq-page-ronghua__art {
     width: clamp(270px, 84vw, 470px);
@@ -4338,6 +4449,7 @@ html[data-fq-motion="full"] .fq-cultural-corner-seal {
 @media (prefers-reduced-motion: reduce) {
   .fq-actor,
   [data-actor],
+  .fq-actor__visual,
   .fq-actor img[data-pose-layer],
   .fq-page-ronghua__art,
   .fq-page-ronghua img,
