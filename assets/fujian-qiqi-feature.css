@@ -4347,12 +4347,18 @@ html[data-fq-motion="full"] .fq-cultural-corner-seal {
       linear-gradient(90deg, rgba(25, 30, 31, .68), rgba(25, 30, 31, .14) 84%);
   }
 
-  /* The two source canvases use different proportions. Equal actor boxes plus
-     the role and per-pose corrections above keep the painted silhouettes near
-     a stable 1:1 relationship on phones and tablets. */
+  /* The two source canvases use different proportions. Per-pose correction
+     keeps them balanced, while the male box is only modestly wider so he reads
+     as slightly larger rather than dominating the mobile stage. */
   body.fq-page .fq-act .fq-actors {
     --fq-female-width: clamp(160px, 46vw, 330px);
-    --fq-male-width: clamp(160px, 46vw, 330px);
+    --fq-male-width: clamp(168px, 50vw, 355px);
+  }
+
+  html[lang^="zh"] .fq-hero__title-line {
+    display: block;
+    width: max-content;
+    white-space: nowrap;
   }
 
   body.fq-page .fq-act:not([data-act="4"]) .fq-actors {
@@ -4428,7 +4434,7 @@ html[data-fq-motion="full"] .fq-cultural-corner-seal {
 @media screen and (max-width: 480px) {
   body.fq-page .fq-act .fq-actors {
     --fq-female-width: clamp(148px, 46vw, 220px);
-    --fq-male-width: clamp(148px, 46vw, 220px);
+    --fq-male-width: clamp(154px, 50vw, 236px);
   }
 
   html[lang^="en"] .fq-guide__links,
