@@ -33,6 +33,11 @@ jobs:
             | base64 -d | gzip -d > /tmp/refactor_qiqi.py
           python /tmp/refactor_qiqi.py
           node --check assets/fujian-qiqi-feature.js
+          sed -i 's/[[:space:]]\+$//' \
+            historical-cases/regions/mainland-china/fujian-qiqi/index.html \
+            en/historical-cases/regions/mainland-china/fujian-qiqi/index.html \
+            ja/historical-cases/regions/mainland-china/fujian-qiqi/index.html \
+            zh-hans/historical-cases/regions/mainland-china/fujian-qiqi/index.html
           rm -f \
             .github/scripts/refactor_qiqi.part1 \
             .github/scripts/refactor_qiqi.part2 \
