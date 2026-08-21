@@ -453,7 +453,7 @@
     const clearLines = state => {
       state.activeLine = null;
       state.lines.forEach(line => {
-        line.classList.remove('is-current', 'is-spoken');
+        line.classList.remove('is-current', 'is-spoken', 'is-ready-preview');
         line.setAttribute('aria-hidden', 'true');
       });
       if (gsapEngine) {
@@ -473,7 +473,7 @@
         state.stage.classList.add('is-speaking-' + speaker);
         state.stage.dataset.activeSpeaker = speaker;
       }
-      line.classList.remove('is-spoken');
+      line.classList.remove('is-spoken', 'is-ready-preview');
       line.classList.add('is-current');
       line.setAttribute('aria-hidden', 'false');
       state.activeLine = line;
@@ -724,6 +724,19 @@
       setProgress(state, 0);
       setStatus(state, format(copy.ready, { act: sceneAct(state) }));
 
+      /* Keep one real line readable before autoplay begins. This is especially
+         important for the final act, whose tall section may not immediately
+         cross a mobile IntersectionObserver threshold. */
+      const readyLine = !reducedMotion && state.lines.length ? state.lines[0] : null;
+      if (readyLine) {
+        readyLine.classList.remove('is-spoken');
+        readyLine.classList.add('is-current', 'is-ready-preview');
+        readyLine.setAttribute('aria-hidden', 'false');
+        state.activeLine = readyLine;
+        state.activeLineIndex = 0;
+        if (gsapEngine) gsapEngine.set(readyLine, { autoAlpha: 1, y: 0, scale: 1 });
+      }
+
       if (!gsapEngine) return;
       const actors = Object.values(state.actors).filter(Boolean);
       const motionTargets = actors.map(actorMotionTarget).filter(Boolean);
@@ -834,17 +847,19 @@
       state.lines.forEach((line, index) => {
         const hold = holds[index];
         const entrance = cursor;
+        const readyPreview = index === 0 && line.classList.contains('is-ready-preview');
         timeline.call(() => activateLine(state, line, index), null, entrance);
         timeline.fromTo(line, {
-          autoAlpha: 0,
-          y: 14,
-          scale: 0.992
+          autoAlpha: readyPreview ? 1 : 0,
+          y: readyPreview ? 0 : 14,
+          scale: readyPreview ? 1 : 0.992
         }, {
           autoAlpha: 1,
           y: 0,
           scale: 1,
           duration: 0.43,
-          ease: 'power2.out'
+          ease: 'power2.out',
+          immediateRender: false
         }, entrance + 0.06);
         if (!liteMotion) addActorGesture(timeline, state, line, index, entrance + 0.08, hold);
         timeline.to(line, {
@@ -1563,7 +1578,9 @@
             return;
           }
           if (entry.isIntersecting
-            && entry.intersectionRatio >= (compactQuery.matches ? 0.36 : 0.44)
+            && entry.intersectionRatio >= (compactQuery.matches
+              ? (sceneAct(state) === '5' ? 0.18 : 0.24)
+              : 0.44)
             && (!state.started || state.autoPaused)
             && !state.userInteracted
             && !state.manual) {
@@ -1584,7 +1601,7 @@
           visibleScene = null;
         }
       }, {
-        threshold: [0, 0.14, 0.36, 0.44, 0.62],
+        threshold: [0, 0.08, 0.14, 0.18, 0.24, 0.36, 0.44, 0.62],
         rootMargin: '-10% 0px -18% 0px'
       });
       scenes.forEach(scene => sceneObserver.observe(scene));
@@ -1797,7 +1814,7 @@
     });
 
     window.FujianQiqiFeature = {
-      version: '1.3.3',
+      version: '1.3.4',
       play(target) {
         const state = stateFor(target);
         return state ? playScene(state) : false;
@@ -2400,6 +2417,87 @@
       } else if (typeof media.removeListener === 'function') {
         media.removeListener(onViewportChange);
       }
+    }, { once: true });
+  });
+})();
+
+/* External mobile theatre controls · 2026-08-21 */
+(() => {
+  'use strict';
+
+  const ready = callback => {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', callback, { once: true });
+    } else {
+      callback();
+    }
+  };
+
+  ready(() => {
+    const media = matchMedia('(max-width: 780px)');
+    const language = (document.documentElement.lang || 'zh-Hant').toLowerCase();
+    const groupLabel = language.startsWith('en')
+      ? 'Act animation controls'
+      : language.startsWith('ja')
+        ? '幕のアニメーション操作'
+        : language === 'zh-hans'
+          ? '本折动画控制'
+          : '本折動畫控制';
+
+    const records = [...document.querySelectorAll('.fq-act[data-fq-scene], [data-fq-scene]')]
+      .filter((scene, index, list) => list.indexOf(scene) === index)
+      .map(scene => {
+        const stage = scene.querySelector('.fq-stage, [data-fq-stage]');
+        const controls = scene.querySelector('.fq-scene-controls, [data-scene-controls]');
+        if (!stage || !controls || !controls.parentNode) return null;
+        const marker = document.createComment('fq-scene-controls-home');
+        controls.parentNode.insertBefore(marker, controls);
+        controls.setAttribute('role', 'group');
+        if (!controls.getAttribute('aria-label')) controls.setAttribute('aria-label', groupLabel);
+        return { scene, stage, controls, marker };
+      })
+      .filter(Boolean);
+
+    if (!records.length) return;
+
+    const placeControls = () => {
+      records.forEach(({ scene, stage, controls, marker }) => {
+        if (media.matches) {
+          if (!controls.classList.contains('fq-scene-controls--external')) {
+            stage.insertAdjacentElement('afterend', controls);
+            controls.classList.add('fq-scene-controls--external');
+            scene.classList.add('has-external-controls');
+          }
+        } else {
+          if (controls.classList.contains('fq-scene-controls--external') && marker.parentNode) {
+            marker.parentNode.insertBefore(controls, marker.nextSibling);
+          }
+          controls.classList.remove('fq-scene-controls--external');
+          scene.classList.remove('has-external-controls');
+        }
+      });
+      if (window.FujianQiqiFeature && typeof window.FujianQiqiFeature.refresh === 'function') {
+        window.FujianQiqiFeature.refresh();
+      }
+    };
+
+    const schedulePlacement = () => requestAnimationFrame(placeControls);
+    if (typeof media.addEventListener === 'function') media.addEventListener('change', schedulePlacement);
+    else if (typeof media.addListener === 'function') media.addListener(schedulePlacement);
+    window.addEventListener('orientationchange', schedulePlacement, { passive: true });
+    window.addEventListener('pageshow', schedulePlacement);
+    schedulePlacement();
+
+    window.addEventListener('pagehide', () => {
+      records.forEach(({ scene, controls, marker }) => {
+        if (marker.parentNode) marker.parentNode.insertBefore(controls, marker.nextSibling);
+        controls.classList.remove('fq-scene-controls--external');
+        scene.classList.remove('has-external-controls');
+      });
+      if (typeof media.removeEventListener === 'function') media.removeEventListener('change', schedulePlacement);
+      else if (typeof media.removeListener === 'function') media.removeListener(schedulePlacement);
+      window.removeEventListener('orientationchange', schedulePlacement);
+      window.removeEventListener('pageshow', schedulePlacement);
     }, { once: true });
   });
 })();
