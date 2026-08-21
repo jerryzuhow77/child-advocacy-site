@@ -12,7 +12,7 @@
     document.head.append(script);
   });
 
-  const sharedReader = new URL('./day3-reading-core-20260821.js?v=20260821-shared-loader-verbatim-2', base).href;
+  const sharedReader = new URL('./day3-reading-core-20260821.js?v=20260821-shared-loader-full-record-3', base).href;
   if (isDay4) {
     load(sharedReader).catch(error => console.error('Shared Day 4 reader failed to load', error));
     return;
