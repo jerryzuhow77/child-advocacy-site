@@ -1,0 +1,1 @@
+No WebP-capable image converter was available on the runner.
