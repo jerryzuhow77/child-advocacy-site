@@ -1,0 +1,91 @@
+name: Publish Qiqi classical notes now
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-qiqi-classical-notes-now.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qiqi-classical-notes-publish-20260821
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fix validator and generate all four language pages
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('scripts/add_qiqi_classical_notes.py')
+          text = path.read_text(encoding='utf-8')
+          old = 'if document.count("data-fq-classic") != len(ALL_KEYS):'
+          new = 'if document.count("data-fq-classic data-fq-classic-key=") != len(ALL_KEYS):'
+          if old in text:
+              text = text.replace(old, new, 1)
+              path.write_text(text, encoding='utf-8')
+          elif new not in text:
+              raise SystemExit('Classical-note validator was not found')
+          PY
+          python3 scripts/add_qiqi_classical_notes.py
+
+      - name: Refresh dates and cache tokens
+        env:
+          QIQI_VERSION_SHA: ${{ github.sha }}
+        run: python3 scripts/sync_fujian_qiqi_feature.py
+
+      - name: Validate forty-four quotation cards
+        run: |
+          python3 -m py_compile scripts/add_qiqi_classical_notes.py scripts/sync_fujian_qiqi_feature.py
+          python3 - <<'PY'
+          from pathlib import Path
+          pages = [
+              Path('historical-cases/regions/mainland-china/fujian-qiqi/index.html'),
+              Path('zh-hans/historical-cases/regions/mainland-china/fujian-qiqi/index.html'),
+              Path('en/historical-cases/regions/mainland-china/fujian-qiqi/index.html'),
+              Path('ja/historical-cases/regions/mainland-china/fujian-qiqi/index.html'),
+          ]
+          keys = ('act-1','waiting','act-2','signals','act-3','court-findings','act-4','justice','act-5','protection','sources')
+          for page in pages:
+              text = page.read_text(encoding='utf-8')
+              assert text.count('data-fq-classic data-fq-classic-key=') == 11, page
+              for key in keys:
+                  assert text.count(f'data-fq-classic-key="{key}"') == 1, (page, key)
+              assert text.count('<html') == 1 and text.count('</html>') == 1, page
+              assert 'fujian-qiqi-feature.css?v=' in text, page
+              assert 'fujian-qiqi-feature.js?v=' in text, page
+          css = Path('assets/fujian-qiqi-feature.css').read_text(encoding='utf-8')
+          assert 'Classical inscriptions and gentle modern readings' in css
+          assert '.fq-classic-note' in css
+          print('Validated eleven notes per language and forty-four notes total.')
+          PY
+          git diff --check
+
+      - name: Commit published feature and clean one-off files
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm -f --ignore-unmatch -- \
+            .github/workflows/oneoff-qiqi-classical-notes.yml \
+            .github/workflows/oneoff-qiqi-classical-notes-fix.yml \
+            .github/workflows/oneoff-qiqi-classical-notes-now.yml \
+            scripts/add_qiqi_classical_notes.py
+          git add -- \
+            assets/fujian-qiqi-feature.css \
+            historical-cases/regions/mainland-china/fujian-qiqi/index.html \
+            zh-hans/historical-cases/regions/mainland-china/fujian-qiqi/index.html \
+            en/historical-cases/regions/mainland-china/fujian-qiqi/index.html \
+            ja/historical-cases/regions/mainland-china/fujian-qiqi/index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Add classical quotations and gentle modern readings to Qiqi feature'
+          git pull --rebase origin main
+          git push
