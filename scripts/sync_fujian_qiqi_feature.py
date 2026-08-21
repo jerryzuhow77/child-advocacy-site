@@ -34,6 +34,10 @@ OBSOLETE_REFERENCES = (
     "fujian-qiqi-gsap-refine.js",
     "fujian-qiqi-ronghua.css",
 )
+ENGLISH_MONTHS = (
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+)
 
 
 def short_sha() -> str:
@@ -50,24 +54,34 @@ def short_sha() -> str:
         return "local"
 
 
-def update_first_meta_date(html: str, display_date: str) -> str:
-    pattern = re.compile(r'<div class="fq-meta">.*?</div>', re.DOTALL)
-    match = pattern.search(html)
-    if not match:
-        raise ValueError("Missing .fq-meta block")
-    block = match.group(0)
-    updated, count = re.subn(
-        r"\d{4}[./-]\d{2}[./-]\d{2}",
-        display_date,
-        block,
+def visible_date_label(path: Path, now: datetime) -> str:
+    dotted = now.strftime("%Y.%m.%d")
+    path_string = path.as_posix()
+    if path_string.startswith("zh-hans/"):
+        return f"资料更新 {dotted}"
+    if path_string.startswith("en/"):
+        return f"Updated {now.day} {ENGLISH_MONTHS[now.month - 1]} {now.year}"
+    if path_string.startswith("ja/"):
+        return f"資料更新 {dotted}"
+    return f"資料更新 {dotted}"
+
+
+def update_first_meta_date(html: str, label: str) -> str:
+    pattern = re.compile(
+        r'(<div class="fq-meta">\s*<span>)(.*?)(</span>)',
+        re.DOTALL,
+    )
+    updated, count = pattern.subn(
+        lambda match: f"{match.group(1)}{label}{match.group(3)}",
+        html,
         count=1,
     )
     if count != 1:
-        raise ValueError("Could not update the visible feature date")
-    return html[: match.start()] + updated + html[match.end() :]
+        raise ValueError("Missing the first .fq-meta date span")
+    return updated
 
 
-def update_page(path: Path, iso_date: str, display_date: str, version: str) -> bool:
+def update_page(path: Path, now: datetime, iso_date: str, version: str) -> bool:
     absolute = ROOT / path
     if not absolute.exists():
         raise FileNotFoundError(f"Missing language page: {path}")
@@ -84,7 +98,8 @@ def update_page(path: Path, iso_date: str, display_date: str, version: str) -> b
     if modified_count != 1:
         raise ValueError(f"Missing JSON-LD dateModified in {path}")
 
-    html = update_first_meta_date(html, display_date)
+    label = visible_date_label(path, now)
+    html = update_first_meta_date(html, label)
 
     for asset in CACHE_BUSTED_ASSETS:
         pattern = re.compile(rf"({re.escape(asset)}\?v=)[^\"'\s>]+")
@@ -98,6 +113,8 @@ def update_page(path: Path, iso_date: str, display_date: str, version: str) -> b
         raise ValueError(f"Obsolete Qiqi hotfix reference remains in {path}")
     if f'"dateModified":"{iso_date}"' not in html:
         raise ValueError(f"dateModified validation failed for {path}")
+    if label not in html:
+        raise ValueError(f"Visible update date validation failed for {path}")
     if f"fujian-qiqi-feature.css?v={version}" not in html:
         raise ValueError(f"CSS cache token validation failed for {path}")
     if f"fujian-qiqi-feature.js?v={version}" not in html:
@@ -113,12 +130,11 @@ def update_page(path: Path, iso_date: str, display_date: str, version: str) -> b
 def main() -> int:
     now = datetime.now(ZoneInfo("Asia/Taipei"))
     iso_date = now.strftime("%Y-%m-%d")
-    display_date = now.strftime("%Y.%m.%d")
     version = f"{now:%Y%m%d}-{short_sha()}"
 
     changed: list[str] = []
     for path in PAGE_PATHS:
-        if update_page(path, iso_date, display_date, version):
+        if update_page(path, now, iso_date, version):
             changed.append(path.as_posix())
 
     if changed:
