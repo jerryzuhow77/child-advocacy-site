@@ -2199,7 +2199,7 @@ html:not(.fq-js) [data-audio-dock] {
   inset: 0;
   background:
     linear-gradient(90deg, rgba(243, 236, 226, .54), rgba(243, 236, 226, .18) 42%, rgba(227, 220, 210, .28)),
-    url("fujian-qiqi/ending-panorama-20260820.webp") center / cover no-repeat;
+    url("fujian-qiqi/ending-panorama-watercolor-20260821.webp") center / cover no-repeat;
   content: "";
   opacity: .34;
   pointer-events: none;
@@ -2772,7 +2772,7 @@ html:not(.fq-gsap-ready) .fq-act.is-enhanced .fq-line:first-child{opacity:1;visi
 .fq-act.is-complete .fq-line:last-child,.fq-act.is-skipped .fq-line:last-child{opacity:1;visibility:visible;z-index:2}
 
 /* Cinematic ending: typography is printed directly on the panorama. */
-body.fq-page .fq-ending{min-height:min(88vh,900px);display:flex;align-items:center;padding:clamp(6rem,12vw,10rem) 0;text-align:left;background-color:#26343a;background-image:url("fujian-qiqi/ending-panorama-20260820.webp");background-position:center 54%;background-repeat:no-repeat;background-size:cover}
+body.fq-page .fq-ending{min-height:min(88vh,900px);display:flex;align-items:center;padding:clamp(6rem,12vw,10rem) 0;text-align:left;background-color:#26343a;background-image:url("fujian-qiqi/ending-panorama-watercolor-20260821.webp");background-position:center 54%;background-repeat:no-repeat;background-size:cover}
 body.fq-page .fq-ending::before{position:absolute;z-index:0;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(14,21,24,.76) 0%,rgba(17,24,27,.5) 34%,rgba(17,24,27,.12) 63%,rgba(15,22,25,.2) 100%),linear-gradient(180deg,rgba(15,22,25,.2),transparent 30%,rgba(12,19,22,.4));content:""}
 body.fq-page .fq-ending::after{position:absolute;z-index:0;top:10%;bottom:10%;left:0;width:min(58vw,880px);pointer-events:none;background:radial-gradient(ellipse at 22% 50%,rgba(17,24,27,.5),rgba(17,24,27,.2) 48%,transparent 72%);content:"";filter:blur(12px)}
 body.fq-page .fq-ending .fq-shell{position:relative;z-index:1;width:min(calc(100% - 48px),1500px);max-width:1500px;margin-inline:auto;padding:0;text-align:left}
@@ -2956,7 +2956,7 @@ body.fq-page .fq-ending .fq-shell>*{max-width:650px}body.fq-page .fq-ending smal
     z-index: 0;
     inset: -4%;
     pointer-events: none;
-    background-image: url("fujian-qiqi/ending-panorama-20260820.webp");
+    background-image: url("fujian-qiqi/ending-panorama-watercolor-20260821.webp");
     background-position: center 54%;
     background-repeat: no-repeat;
     background-size: cover;
@@ -3580,5 +3580,301 @@ html[data-fq-motion="off"] .fq-act3-mark {
   [data-fq-line] {
     max-height: min(25dvh, 10.5rem);
     line-height: 1.58;
+  }
+}
+
+/* === Watercolor panorama ending showcase · 2026-08-21 === */
+body.fq-page .fq-ending {
+  --fq-ending-paper: #f4f0e8;
+  --fq-ending-ink: #29383b;
+  --fq-ending-copy: #4a5657;
+  min-height: clamp(760px, 92svh, 980px);
+  display: flex;
+  align-items: center;
+  padding: clamp(6rem, 12vw, 10rem) 0;
+  overflow: hidden;
+  color: var(--fq-ending-ink);
+  background:
+    linear-gradient(90deg, rgba(247, 243, 235, .92), rgba(247, 243, 235, .16) 54%, transparent 72%),
+    url("fujian-qiqi/ending-panorama-watercolor-20260821.webp") center / cover no-repeat,
+    var(--fq-ending-paper);
+  isolation: isolate;
+}
+
+body.fq-page .fq-ending.has-watercolor-panorama {
+  background: var(--fq-ending-paper);
+}
+
+body.fq-page .fq-ending__panorama {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("fujian-qiqi/ending-panorama-watercolor-20260821.webp");
+  background-repeat: no-repeat;
+  transform: none;
+  transform-origin: 50% 50%;
+}
+
+body.fq-page .fq-ending__panorama--detail {
+  z-index: 1;
+  inset: -2%;
+  opacity: 0;
+  background-color: var(--fq-ending-paper);
+  background-position: 61% center;
+  background-size: cover;
+}
+
+body.fq-page .fq-ending__panorama--full {
+  z-index: 2;
+  opacity: 1;
+  background-color: var(--fq-ending-paper);
+  background-position: center;
+  background-size: contain;
+}
+
+body.fq-page .fq-ending__lantern-glow {
+  position: absolute;
+  z-index: 4;
+  inset: -3%;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 91% 73%, rgba(255, 192, 91, .52) 0, rgba(255, 198, 108, .22) 2.5%, transparent 7%);
+  filter: blur(5px);
+  mix-blend-mode: screen;
+  transform-origin: 91% 73%;
+}
+
+body.fq-page .fq-ending::before {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  opacity: 1;
+  background:
+    linear-gradient(90deg, rgba(247, 243, 235, .97) 0%, rgba(247, 243, 235, .9) 31%, rgba(247, 243, 235, .52) 47%, transparent 65%),
+    linear-gradient(180deg, rgba(255, 255, 255, .08), transparent 62%, rgba(59, 68, 68, .1));
+  filter: none;
+  transition: opacity .9s ease;
+}
+
+body.fq-page .fq-ending.has-watercolor-panorama.is-watercolor-intro::before {
+  opacity: .04;
+}
+
+body.fq-page .fq-ending.has-watercolor-panorama.is-watercolor-copy::before,
+body.fq-page .fq-ending.has-watercolor-panorama.is-watercolor-static::before {
+  opacity: 1;
+}
+
+body.fq-page .fq-ending::after {
+  position: absolute;
+  z-index: 3;
+  inset: auto 0 0;
+  height: 28%;
+  pointer-events: none;
+  content: "";
+  opacity: .38;
+  background: linear-gradient(180deg, transparent, rgba(50, 59, 60, .18));
+  filter: none;
+}
+
+body.fq-page .fq-ending .fq-shell {
+  position: relative;
+  z-index: 6;
+  width: min(calc(100% - 48px), 1500px);
+  max-width: 1500px;
+  margin-inline: auto;
+  padding: 0;
+  text-align: left;
+}
+
+body.fq-page .fq-ending .fq-shell > * {
+  max-width: 650px;
+}
+
+body.fq-page .fq-ending small {
+  display: block;
+  color: #865b55;
+  letter-spacing: .16em;
+  text-shadow: 0 1px 10px rgba(255, 255, 255, .9);
+}
+
+body.fq-page .fq-ending h2 {
+  margin: .55rem 0 0;
+  color: var(--fq-ending-ink);
+  font-size: clamp(3.4rem, 7vw, 7.4rem);
+  line-height: .98;
+  letter-spacing: -.035em;
+  text-shadow: 0 2px 18px rgba(255, 255, 255, .92);
+}
+
+body.fq-page .fq-ending p {
+  max-width: 52ch;
+  margin: 1.5rem 0 0;
+  color: var(--fq-ending-copy);
+  font-size: clamp(1rem, 1.45vw, 1.18rem);
+  font-weight: 570;
+  line-height: 1.95;
+  text-shadow: 0 1px 13px rgba(255, 255, 255, .96);
+}
+
+body.fq-page .fq-ending__seal {
+  margin: 2rem 0 1.7rem;
+  border-color: rgba(151, 74, 67, .7);
+  color: #99534d;
+  background: rgba(255, 249, 242, .48);
+  box-shadow: 0 8px 24px rgba(91, 67, 60, .08);
+  text-shadow: none;
+}
+
+body.fq-page .fq-ending__actions {
+  justify-content: flex-start;
+  max-width: 720px;
+}
+
+body.fq-page .fq-ending__actions a {
+  border-color: rgba(52, 72, 73, .22);
+  color: #304749;
+  background: rgba(255, 252, 247, .7);
+  box-shadow: 0 7px 22px rgba(55, 62, 61, .07);
+  backdrop-filter: blur(7px) saturate(.86);
+}
+
+body.fq-page .fq-ending__actions a:hover,
+body.fq-page .fq-ending__actions a:focus-visible {
+  color: #fffaf4;
+  background: #496765;
+  border-color: #496765;
+}
+
+body.fq-page .fq-ending.is-watercolor-animating .fq-ending__panorama,
+body.fq-page .fq-ending.is-watercolor-animating .fq-ending__lantern-glow {
+  will-change: transform, opacity;
+}
+
+body.fq-page .fq-ending.is-watercolor-complete .fq-ending__panorama,
+body.fq-page .fq-ending.is-watercolor-complete .fq-ending__lantern-glow {
+  will-change: auto;
+}
+
+@media screen and (max-width: 780px) {
+  body.fq-page .fq-ending {
+    min-height: max(820px, 100dvh);
+    align-items: flex-end;
+    padding: 23rem 0 calc(4.5rem + env(safe-area-inset-bottom));
+    background-position: center top;
+  }
+
+  body.fq-page .fq-ending__panorama--full {
+    top: clamp(4.6rem, 10dvh, 6.2rem);
+    right: .5rem;
+    bottom: auto;
+    left: .5rem;
+    width: calc(100% - 1rem);
+    aspect-ratio: 16 / 9;
+    border: 1px solid rgba(94, 84, 75, .14);
+    border-radius: 18px;
+    background-position: center;
+    background-size: cover;
+    box-shadow: 0 18px 46px rgba(77, 67, 60, .13), inset 0 0 0 1px rgba(255, 255, 255, .52);
+  }
+
+  body.fq-page .fq-ending__panorama--detail {
+    inset: -4%;
+    background-position: 68% center;
+    background-size: cover;
+  }
+
+  body.fq-page .fq-ending__lantern-glow {
+    background: radial-gradient(circle at 78% 74%, rgba(255, 187, 82, .5) 0, rgba(255, 197, 108, .2) 3%, transparent 9%);
+    transform-origin: 78% 74%;
+  }
+
+  body.fq-page .fq-ending::before {
+    background:
+      linear-gradient(180deg, transparent 0 42%, rgba(247, 243, 235, .65) 57%, rgba(247, 243, 235, .96) 70%, rgba(247, 243, 235, .99) 100%),
+      linear-gradient(90deg, rgba(247, 243, 235, .28), transparent 55%);
+  }
+
+  body.fq-page .fq-ending::after {
+    height: 20%;
+    opacity: .18;
+  }
+
+  body.fq-page .fq-ending .fq-shell {
+    width: min(calc(100% - 28px), 1500px);
+  }
+
+  body.fq-page .fq-ending h2 {
+    max-width: 8.5ch;
+    color: #27383b;
+    font-size: clamp(3rem, 15vw, 5rem);
+    text-shadow: 0 2px 16px rgba(255, 255, 255, .95);
+  }
+
+  body.fq-page .fq-ending p {
+    color: #465456;
+    font-size: .98rem;
+    line-height: 1.85;
+  }
+
+  body.fq-page .fq-ending__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    max-width: 32rem;
+  }
+
+  body.fq-page .fq-ending__actions a {
+    display: grid;
+    min-height: 2.8rem;
+    place-items: center;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  body.fq-page .fq-ending {
+    padding-top: 20rem;
+  }
+
+  body.fq-page .fq-ending__actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 780px) and (max-height: 560px) and (orientation: landscape) {
+  body.fq-page .fq-ending {
+    min-height: 560px;
+    align-items: center;
+    padding: 6rem 0 3.8rem;
+  }
+
+  body.fq-page .fq-ending__panorama--full {
+    top: 4.2rem;
+    right: auto;
+    left: 1rem;
+    width: min(52vw, 34rem);
+  }
+
+  body.fq-page .fq-ending .fq-shell {
+    padding-left: 48vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.fq-page .fq-ending__panorama,
+  body.fq-page .fq-ending__lantern-glow {
+    animation: none;
+    transition: none;
+    transform: none !important;
+  }
+}
+
+@media (forced-colors: active) {
+  body.fq-page .fq-ending__panorama,
+  body.fq-page .fq-ending__lantern-glow {
+    display: none;
   }
 }

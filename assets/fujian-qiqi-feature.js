@@ -1797,7 +1797,7 @@
     });
 
     window.FujianQiqiFeature = {
-      version: '1.3.2',
+      version: '1.3.3',
       play(target) {
         const state = stateFor(target);
         return state ? playScene(state) : false;
@@ -1843,7 +1843,7 @@
   });
 })();
 
-/* Mobile theatre and ending visibility repair · 2026-08-21 */
+/* Watercolor panorama ending showcase · 2026-08-21 */
 (() => {
   'use strict';
 
@@ -1858,109 +1858,215 @@
   ready(() => {
     const html = document.documentElement;
     const ending = document.querySelector('.fq-ending');
-    if (!ending || ending.dataset.fqEndingRepairReady === 'true') return;
-    ending.dataset.fqEndingRepairReady = 'true';
+    if (!ending || ending.dataset.fqWatercolorEnding === 'true') return;
+    ending.dataset.fqWatercolorEnding = 'true';
 
-    let panorama = ending.querySelector('.fq-ending__panorama');
-    if (!panorama) {
-      panorama = document.createElement('div');
-      panorama.className = 'fq-ending__panorama';
-      panorama.setAttribute('aria-hidden', 'true');
-      ending.prepend(panorama);
-    }
+    const makeLayer = className => {
+      const layer = document.createElement('div');
+      layer.className = className;
+      layer.setAttribute('aria-hidden', 'true');
+      return layer;
+    };
 
-    ending.classList.add('has-ending-panorama', 'is-visible');
+    const detail = makeLayer('fq-ending__panorama fq-ending__panorama--detail');
+    const full = makeLayer('fq-ending__panorama fq-ending__panorama--full');
+    const glow = makeLayer('fq-ending__lantern-glow');
+    ending.prepend(detail, full, glow);
+    ending.classList.add('has-watercolor-panorama', 'is-watercolor-intro', 'is-visible');
 
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const motionOff = html.dataset.fqMotion === 'off';
     const compact = matchMedia('(max-width: 780px)').matches;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const saveData = Boolean(navigator.connection && navigator.connection.saveData);
+    let motionMode = html.dataset.fqMotion || 'full';
+    if (!['full', 'lite', 'off'].includes(motionMode)) {
+      try { motionMode = localStorage.getItem('fq-motion-mode') || 'full'; } catch (_error) {}
+    }
+    const lite = motionMode === 'lite';
+    const off = motionMode === 'off';
     const gsap = window.gsap && typeof window.gsap.timeline === 'function' ? window.gsap : null;
+
+    const shell = ending.querySelector('.fq-shell');
+    const pieces = shell
+      ? [
+          shell.querySelector(':scope > small'),
+          shell.querySelector(':scope > h2'),
+          shell.querySelector(':scope > p'),
+          shell.querySelector('.fq-ending__seal'),
+          shell.querySelector('.fq-ending__actions')
+        ].filter(Boolean)
+      : [];
+
     let played = false;
+    let inView = false;
+    let timeline = null;
+    let glowTween = null;
+    let observer = null;
 
     const showStatic = () => {
-      ending.classList.remove('is-ending-animating');
-      ending.classList.add('is-ending-visible');
+      ending.classList.remove('is-watercolor-intro', 'is-watercolor-animating');
+      ending.classList.add('is-watercolor-copy', 'is-watercolor-static', 'is-watercolor-complete');
       if (gsap) {
-        gsap.set(panorama, { clearProps: 'transform,opacity' });
-        gsap.set(ending.querySelectorAll('.fq-shell > *'), { clearProps: 'opacity,visibility,transform' });
+        gsap.set(full, { autoAlpha: 1, scale: 1, xPercent: 0, yPercent: 0 });
+        gsap.set(detail, { autoAlpha: 0, scale: 1, xPercent: 0, yPercent: 0 });
+        gsap.set(glow, { autoAlpha: 0, scale: 1 });
+        gsap.set(pieces, { autoAlpha: 1, x: 0, y: 0, filter: 'none' });
       }
     };
 
-    const playEnding = () => {
-      if (played) return;
-      played = true;
+    if (!gsap || reduced || off || saveData) {
+      showStatic();
+    } else {
+      const hold = lite ? 1.25 : 2.4;
+      const crossAt = Math.max(.7, hold - .25);
+      const detailDuration = lite ? 1.15 : 7.6;
+      const copyAt = lite ? hold + .35 : hold + .72;
 
-      if (!gsap || reduced || motionOff) {
-        showStatic();
-        return;
-      }
+      gsap.set(full, { autoAlpha: 1, scale: 1, xPercent: 0, yPercent: 0 });
+      gsap.set(detail, {
+        autoAlpha: 0,
+        scale: compact ? 1.13 : 1.09,
+        xPercent: compact ? 1.8 : .7,
+        yPercent: compact ? -.8 : 0
+      });
+      gsap.set(glow, { autoAlpha: 0, scale: .92 });
+      gsap.set(pieces, { autoAlpha: 0, y: compact ? 22 : 28, filter: 'blur(3px)' });
 
-      const kicker = ending.querySelector('.fq-shell > small');
-      const title = ending.querySelector('.fq-shell > h2');
-      const copy = ending.querySelector('.fq-shell > p');
-      const seal = ending.querySelector('.fq-ending__seal');
-      const actions = ending.querySelector('.fq-ending__actions');
-      const pieces = [kicker, title, copy, seal, actions].filter(Boolean);
-
-      ending.classList.add('is-ending-animating');
-      const timeline = gsap.timeline({
-        defaults: { ease: 'power2.out' },
-        onComplete: showStatic
+      glowTween = gsap.to(glow, {
+        autoAlpha: .76,
+        scale: 1.08,
+        duration: 2.6,
+        ease: 'sine.inOut',
+        repeat: -1,
+        yoyo: true,
+        paused: true
       });
 
-      timeline.fromTo(
-        panorama,
-        {
-          scale: compact ? 1.13 : 1.08,
-          xPercent: compact ? 1.8 : .6,
-          yPercent: compact ? -1 : 0,
-          autoAlpha: .86
-        },
-        {
-          scale: 1,
-          xPercent: 0,
-          yPercent: 0,
-          autoAlpha: 1,
-          duration: compact ? 6.4 : 7.2,
-          ease: 'power1.out'
-        },
-        0
-      );
+      timeline = gsap.timeline({
+        paused: true,
+        defaults: { ease: 'power2.out' },
+        onStart: () => ending.classList.add('is-watercolor-animating'),
+        onComplete: () => {
+          ending.classList.remove('is-watercolor-animating');
+          ending.classList.add('is-watercolor-complete');
+          gsap.set(full, { autoAlpha: 0 });
+          gsap.set(detail, { autoAlpha: 1, scale: 1, xPercent: 0, yPercent: 0 });
+          gsap.set(pieces, { clearProps: 'opacity,visibility,transform,filter' });
+          if (inView && !lite) glowTween.play();
+        }
+      });
 
-      timeline.fromTo(
-        pieces,
-        { autoAlpha: 0, y: compact ? 20 : 26 },
-        { autoAlpha: 1, y: 0, duration: .85, stagger: .18 },
-        .28
-      );
+      timeline.to(full, {
+        scale: compact ? 1.018 : 1.012,
+        duration: hold,
+        ease: 'sine.inOut'
+      }, 0);
 
+      timeline.to(full, {
+        autoAlpha: 0,
+        scale: compact ? 1.045 : 1.03,
+        duration: lite ? .78 : 1.35,
+        ease: 'power2.inOut'
+      }, crossAt);
+
+      timeline.to(detail, {
+        autoAlpha: 1,
+        scale: 1,
+        xPercent: 0,
+        yPercent: 0,
+        duration: detailDuration,
+        ease: lite ? 'power2.out' : 'power1.out'
+      }, crossAt);
+
+      timeline.call(() => {
+        ending.classList.remove('is-watercolor-intro');
+        ending.classList.add('is-watercolor-copy');
+        if (!lite && inView) glowTween.play(0);
+      }, null, crossAt + .45);
+
+      timeline.to(pieces, {
+        autoAlpha: 1,
+        y: 0,
+        filter: 'blur(0px)',
+        duration: lite ? .58 : .88,
+        stagger: lite ? .1 : .19,
+        ease: 'power2.out'
+      }, copyAt);
+
+      const seal = shell && shell.querySelector('.fq-ending__seal');
       if (seal) {
-        timeline.fromTo(
-          seal,
-          { scale: .78, rotation: -15 },
-          { scale: 1, rotation: -5, duration: .9, ease: 'back.out(1.7)' },
-          .96
-        );
+        timeline.fromTo(seal, {
+          scale: .78,
+          rotation: -15
+        }, {
+          scale: 1,
+          rotation: -5,
+          duration: .92,
+          ease: 'back.out(1.7)'
+        }, copyAt + .55);
+      }
+    }
+
+    const playOrResume = () => {
+      if (!timeline) return;
+      if (!played) {
+        played = true;
+        timeline.play(0);
+      } else if (timeline.progress() < 1) {
+        timeline.resume();
+      } else if (!lite && glowTween) {
+        glowTween.resume();
       }
     };
 
-    const focusObserver = 'IntersectionObserver' in window
-      ? new IntersectionObserver(entries => {
-          entries.forEach(entry => {
-            html.classList.toggle('fq-ending-focus', entry.isIntersecting && entry.intersectionRatio > .12);
-            if (entry.isIntersecting) playEnding();
-          });
-        }, { threshold: [0, .12, .35], rootMargin: '0px 0px -6% 0px' })
-      : null;
+    const pauseMotion = () => {
+      if (timeline && timeline.progress() < 1) timeline.pause();
+      if (glowTween) glowTween.pause();
+    };
 
-    if (focusObserver) {
-      focusObserver.observe(ending);
-    } else {
-      playEnding();
+    if (timeline && 'IntersectionObserver' in window) {
+      observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          inView = entry.isIntersecting && entry.intersectionRatio >= .08;
+          html.classList.toggle('fq-ending-focus', inView);
+          if (inView) playOrResume(); else pauseMotion();
+        });
+      }, { threshold: [0, .08, .2, .45], rootMargin: '3% 0px -5% 0px' });
+      observer.observe(ending);
+    } else if (timeline) {
+      inView = true;
+      html.classList.add('fq-ending-focus');
+      playOrResume();
     }
 
+    const onVisibility = () => {
+      if (document.hidden) {
+        pauseMotion();
+      } else if (inView) {
+        playOrResume();
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+
+    window.FujianQiqiEnding = {
+      replay() {
+        if (!timeline) {
+          showStatic();
+          return false;
+        }
+        played = true;
+        ending.classList.remove('is-watercolor-copy', 'is-watercolor-complete', 'is-watercolor-static');
+        ending.classList.add('is-watercolor-intro');
+        glowTween.pause(0);
+        timeline.restart(true);
+        return true;
+      }
+    };
+
     window.addEventListener('pagehide', () => {
-      if (focusObserver) focusObserver.disconnect();
+      if (observer) observer.disconnect();
+      if (timeline) timeline.kill();
+      if (glowTween) glowTween.kill();
+      document.removeEventListener('visibilitychange', onVisibility);
       html.classList.remove('fq-ending-focus');
     }, { once: true });
   });
