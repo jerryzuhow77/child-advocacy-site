@@ -4347,25 +4347,25 @@ html[data-fq-motion="full"] .fq-cultural-corner-seal {
       linear-gradient(90deg, rgba(25, 30, 31, .68), rgba(25, 30, 31, .14) 84%);
   }
 
-  /* The source canvases differ by role. Keep the requested 2.5:1 wrapper
-     ratio, then correct each pose below so the visible silhouettes remain
-     close to a stable 2:1 male/female height relationship. */
+  /* The two source canvases use different proportions. Equal actor boxes plus
+     the role and per-pose corrections above keep the painted silhouettes near
+     a stable 1:1 relationship on phones and tablets. */
   body.fq-page .fq-act .fq-actors {
-    --fq-female-width: clamp(110px, 30vw, 225px);
-    --fq-male-width: clamp(275px, 75vw, 563px);
+    --fq-female-width: clamp(160px, 46vw, 330px);
+    --fq-male-width: clamp(160px, 46vw, 330px);
   }
 
   body.fq-page .fq-act:not([data-act="4"]) .fq-actors {
-    --fq-female-left: -3vw;
+    --fq-female-left: -1vw;
     --fq-female-right: auto;
     --fq-male-left: auto;
-    --fq-male-right: -2vw;
+    --fq-male-right: 1vw;
   }
 
   body.fq-page .fq-act[data-act="4"] .fq-actors {
     --fq-female-left: auto;
-    --fq-female-right: -3vw;
-    --fq-male-left: -2vw;
+    --fq-female-right: -1vw;
+    --fq-male-left: 1vw;
     --fq-male-right: auto;
   }
 
@@ -4377,10 +4377,6 @@ html[data-fq-motion="full"] .fq-cultural-corner-seal {
   .fq-actors .fq-actor[data-actor="male"] {
     height: auto;
     aspect-ratio: 405 / 493;
-  }
-
-  .fq-actor[data-actor="male"] > .fq-actor__visual {
-    --fq-role-normalize: 1;
   }
 
   .fq-cultural-corner-seal {
@@ -4431,8 +4427,8 @@ html[data-fq-motion="full"] .fq-cultural-corner-seal {
 
 @media screen and (max-width: 480px) {
   body.fq-page .fq-act .fq-actors {
-    --fq-female-width: clamp(96px, 30vw, 146px);
-    --fq-male-width: clamp(240px, 75vw, 365px);
+    --fq-female-width: clamp(148px, 46vw, 220px);
+    --fq-male-width: clamp(148px, 46vw, 220px);
   }
 
   html[lang^="en"] .fq-guide__links,
