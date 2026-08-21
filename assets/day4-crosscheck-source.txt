@@ -1,0 +1,188 @@
+name: Add Day 4 testimony cross-check
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-day4-testimony-crosscheck.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Patch Day 4 pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          git pull --rebase origin main
+          python - <<'PY'
+          from pathlib import Path
+
+          marker = '<section class="day3-section day3-soft" id="jurors">'
+
+          zh = r'''<section class="day3-section day4-contradictions" id="contradictions" aria-labelledby="day4ContradictionsTitle">
+<div class="day3-section-head day3-reveal"><small>05A · TESTIMONY CROSS-CHECK</small><h2 id="day4ContradictionsTitle">劉彩萱 × 劉若琳｜八組證詞矛盾與待核處</h2><p>以下把同一問題的兩種當庭說法並列。此處所稱「矛盾／不一致」是編輯上的交叉核對，<strong>不等於法院已認定任何一方虛偽</strong>；差異也可能來自記憶、提問範圍、時間點或用語不同。</p></div>
+<div class="day4-contrast-summary day3-reveal" aria-label="證詞對照摘要"><article><strong>4</strong><span>直接不一致</span><small>頻率、罰站知情、澡盆交代、綑綁知情</small></article><article><strong>3</strong><span>程度／範圍不同</span><small>停留時間、共同照顧、制止程度</small></article><article><strong>1</strong><span>紀錄必須核對</span><small>傷勢通報與避免被發現</small></article></div>
+<div class="day4-contrast-legend day3-reveal"><span class="is-direct">直接不一致</span><span class="is-scope">程度或範圍不同</span><span class="is-record">須以紀錄核對</span></div>
+<div class="day4-contrast-grid">
+<article class="day4-contrast-card is-direct day3-reveal"><header><span>01</span><div><small>直接不一致 · 原始紀錄 P.2／P.6–8</small><h3>A童到丙地的頻率與時段</h3></div></header><div class="day4-contrast-sides"><section data-person="劉若琳"><p>稱只是「偶爾」帶到丙地；早上較少，通常下午，有時晚上，也無法確認是否每週兩三天。</p></section><i aria-hidden="true">≠</i><section data-person="劉彩萱"><p>稱11點後就會去丙地，A童「幾乎每天」跟著去；反詰時又說早上一定去，下午、晚上偶爾。</p></section></div><footer><b>待核重點</b><p>應以照片時間、訊息、托育紀錄與訪視紀錄重建每日動線。</p><div class="day4-contrast-links"><a href="#day3-chapter-02">劉若琳證詞</a><a href="#day3-chapter-05">劉彩萱證詞</a></div></footer></article>
+<article class="day4-contrast-card is-scope day3-reveal"><header><span>02</span><div><small>程度不同 · 原始紀錄 P.5／P.7</small><h3>劉若琳到甲地共餐與停留多久</h3></div></header><div class="day4-contrast-sides"><section data-person="劉若琳"><p>稱中午、晚上都會到甲地，通常各待1至1個多小時；下去吃飯時大多數能看見A童。</p></section><i aria-hidden="true">↔</i><section data-person="劉彩萱"><p>稱劉若琳大多在她之後到甲地，只吃午餐、停留幾十分鐘，其他時間僅偶爾下午前往。</p></section></div><footer><b>待核重點</b><p>兩人可能描述不同日期或平均狀況，仍須比對用餐、照片與通訊時間。</p></footer></article>
+<article class="day4-contrast-card is-direct day3-reveal"><header><span>03</span><div><small>直接不一致 · 原始紀錄 P.3–5／P.7、P.9</small><h3>劉若琳是否知道「冷靜區／罰站」</h3></div></header><div class="day4-contrast-sides"><section data-person="劉若琳"><p>稱看過A童站著或裸體，但不知道是否被罰站；對「手揹揹」也沒有印象。</p></section><i aria-hidden="true">≠</i><section data-person="劉彩萱"><p>稱劉若琳曾問為何站在那裡、聽完回「喔」，也曾勸她不要讓孩子一個人站著。</p></section></div><footer><b>待核重點</b><p>要分清「看見站立」「知道是管教」「曾出言阻止」三個不同層次。</p><div class="day4-contrast-links"><a href="#day3-chapter-03">反詰問</a><a href="#day3-chapter-06">冷靜區／罰站</a></div></footer></article>
+<article class="day4-contrast-card is-direct day3-reveal"><header><span>04</span><div><small>直接不一致 · 原始紀錄 P.3、P.5／P.7</small><h3>澡盆事件前，有沒有明確交代代顧</h3></div></header><div class="day4-contrast-sides"><section data-person="劉若琳"><p>稱A童被放在丙地澡盆時，劉彩萱「沒有說要做什麼」；澡盆翻倒後，她才跑去解開手腳並抱到客廳。</p></section><i aria-hidden="true">≠</i><section data-person="劉彩萱"><p>稱自己已交代劉若琳照顧，才離開去曬衣服；之後沒有按原定時間接回，隔天早上才接。</p></section></div><footer><b>待核重點</b><p>誰負責監看、交代內容、離開多久，是判讀事件責任與知情程度的核心。</p><div class="day4-contrast-links"><a href="#day3-chapter-03">劉若琳版本</a><a href="#day3-chapter-05">劉彩萱版本</a></div></footer></article>
+<article class="day4-contrast-card is-direct day3-reveal"><header><span>05</span><div><small>直接不一致＋單一證詞前後不一 · 原始紀錄 P.4–5／P.7、P.9</small><h3>劉若琳何時知道A童被綑綁</h3></div></header><div class="day4-contrast-sides"><section data-person="劉若琳"><p>稱在澡盆翻倒時親眼看見手腳被綁，並親手解開；另稱在甲地也看過A童手腳被綁住。</p></section><i aria-hidden="true">≠</i><section data-person="劉彩萱"><p>先承認11月2日在丙地綑綁時劉若琳在場，後又回答劉若琳是「傳照片才知道」綁小孩。</p></section></div><footer><b>待核重點</b><p>這不只是一組兩人矛盾，也涉及劉彩萱同日證詞本身的前後差異。</p><div class="day4-contrast-links"><a href="#day3-chapter-04">解開綑綁</a><a href="#day3-chapter-06">照片與知情</a></div></footer></article>
+<article class="day4-contrast-card is-scope day3-reveal"><header><span>06</span><div><small>範圍不一致 · 原始紀錄 P.2、P.5／P.7–8</small><h3>兩人究竟是「各自照顧」還是實際互相代顧</h3></div></header><div class="day4-contrast-sides"><section data-person="劉若琳"><p>承認劉彩萱外出時會把A童交給她，代顧約半小時至1小時；社工訪視時也曾同時照顧三名幼兒。</p></section><i aria-hidden="true">↔</i><section data-person="劉彩萱"><p>強調不是聯合收托、各自照顧；但又承認外出或無法照顧時會請劉若琳幫忙，並修正先前「完全不會幫忙」為偶爾幫忙。</p></section></div><footer><b>待核重點</b><p>法律或行政上的「非聯合收托」，不必然等於日常生活中從未共同看顧。</p></footer></article>
+<article class="day4-contrast-card is-record day3-reveal"><header><span>07</span><div><small>紀錄衝突 · 原始紀錄 P.2／P.10</small><h3>傷勢已通報，還是曾刻意避免被社工看見</h3></div></header><div class="day4-contrast-sides"><section data-person="劉若琳"><p>稱跌倒、手部傷勢都提醒過；每次追問是否告知社工，劉彩萱都回答「有」。</p></section><i aria-hidden="true">≠</i><section data-person="劉彩萱"><p>承認劉若琳曾提醒受傷要通報，卻又稱社工來訪時讓A童睡覺，是怕脖子上的傷被發現；另稱後期有通報頭部撞傷。</p></section></div><footer><b>待核重點</b><p>不同傷勢可能有不同處理，必須逐案比對社工訪視、通報、照片與醫療紀錄，不能只以「有說」概括。</p><div class="day4-contrast-links"><a href="#day3-chapter-02">口頭提醒</a><a href="#day3-chapter-07">社工訪視</a></div></footer></article>
+<article class="day4-contrast-card is-scope day3-reveal"><header><span>08</span><div><small>需要釐清 · 原始紀錄 P.4–5／P.8、P.10</small><h3>劉若琳是否曾制止打罵或高聲管教</h3></div></header><div class="day4-contrast-sides"><section data-person="劉若琳"><p>被問是否看過劉彩萱打、罵A童時，多回答沒有印象，只提到看過一次用手「拍」的動作。</p></section><i aria-hidden="true">↔</i><section data-person="劉彩萱"><p>稱劉若琳曾叫她不要打小孩、不要那麼大聲，也曾對讓A童獨自站立提出勸阻。</p></section></div><footer><b>待核重點</b><p>「是否親眼看見具體行為」與「是否曾口頭勸阻」不是完全相同的問題，應核對場景、日期與對話紀錄。</p></footer></article>
+</div>
+<aside class="day4-contrast-caution day3-reveal"><b>閱讀提醒｜矛盾不等於已證明說謊</b><p>法庭仍須綜合照片、影音、完整訊息、訪視與醫療紀錄，以及提問上下文，判斷記憶錯誤、觀察範圍差異或陳述可信性。本區只負責把需要進一步核對的接口清楚標出。</p></aside>
+</section>'''
+
+          en = r'''<section class="day3-section day4-contradictions" id="contradictions" aria-labelledby="day4ContradictionsTitle">
+<div class="day3-section-head day3-reveal"><small>05A · TESTIMONY CROSS-CHECK</small><h2 id="day4ContradictionsTitle">Liu Tsai-hsuan × Liu Ruo-lin | Eight conflicts and verification points</h2><p>The same issues are placed side by side below. “Conflict” is an editorial cross-check, <strong>not a judicial finding that either witness lied</strong>. Differences may also arise from memory, question scope, timing or wording.</p></div>
+<div class="day4-contrast-summary day3-reveal"><article><strong>4</strong><span>Direct conflicts</span><small>visit frequency, standing, basin handover, restraint knowledge</small></article><article><strong>3</strong><span>Different scope</span><small>time present, shared care, intervention</small></article><article><strong>1</strong><span>Records required</span><small>injury reporting and concealment</small></article></div>
+<div class="day4-contrast-legend day3-reveal"><span class="is-direct">Direct conflict</span><span class="is-scope">Different degree or scope</span><span class="is-record">Check against records</span></div>
+<div class="day4-contrast-grid">
+<article class="day4-contrast-card is-direct day3-reveal"><header><span>01</span><div><small>Direct conflict · Source pp. 2, 6–8</small><h3>How often and when the child went to Liu Ruo-lin’s home</h3></div></header><div class="day4-contrast-sides"><section data-person="Liu Ruo-lin"><p>She described the visits as occasional, less often in the morning and usually in the afternoon, sometimes at night; she could not say they occurred two or three days a week.</p></section><i>≠</i><section data-person="Liu Tsai-hsuan"><p>She said they went after 11 a.m., that the child went almost every day, and later said morning visits were certain while afternoon and evening visits were occasional.</p></section></div><footer><b>Verify with</b><p>Photo timestamps, messages, childcare records and social-worker visits.</p></footer></article>
+<article class="day4-contrast-card is-scope day3-reveal"><header><span>02</span><div><small>Different degree · Source pp. 5, 7</small><h3>How long Liu Ruo-lin stayed at the main childcare location</h3></div></header><div class="day4-contrast-sides"><section data-person="Liu Ruo-lin"><p>She said she went for both lunch and dinner, stayed one to more than one hour each time, and usually saw the child.</p></section><i>↔</i><section data-person="Liu Tsai-hsuan"><p>She said Liu Ruo-lin usually arrived after her, ate lunch for only tens of minutes, and otherwise came only occasionally in the afternoon.</p></section></div><footer><b>Verify with</b><p>The accounts may concern different days or averages; meal, photo and communication times are needed.</p></footer></article>
+<article class="day4-contrast-card is-direct day3-reveal"><header><span>03</span><div><small>Direct conflict · Source pp. 3–5, 7, 9</small><h3>Whether Liu Ruo-lin knew about the calm-down / standing practice</h3></div></header><div class="day4-contrast-sides"><section data-person="Liu Ruo-lin"><p>She said she saw the child standing or unclothed but did not know whether it was punishment, and had no memory of “hands behind the back.”</p></section><i>≠</i><section data-person="Liu Tsai-hsuan"><p>She said Liu Ruo-lin asked why the child was standing, responded “oh,” and at another point advised her not to leave the child standing alone.</p></section></div><footer><b>Verification point</b><p>Seeing the posture, understanding it as discipline, and objecting to it are three separate questions.</p></footer></article>
+<article class="day4-contrast-card is-direct day3-reveal"><header><span>04</span><div><small>Direct conflict · Source pp. 3, 5, 7</small><h3>Whether supervision was expressly handed over before the basin incident</h3></div></header><div class="day4-contrast-sides"><section data-person="Liu Ruo-lin"><p>She said no purpose was explained when the child was placed in the basin; after it overturned, she ran over, untied the child and moved him to the living room.</p></section><i>≠</i><section data-person="Liu Tsai-hsuan"><p>She said she expressly asked Liu Ruo-lin to watch the child before leaving to hang laundry, then did not collect him as planned and returned the next morning.</p></section></div><footer><b>Verification point</b><p>Who was responsible for supervision, what was said, and how long the absence lasted are central.</p></footer></article>
+<article class="day4-contrast-card is-direct day3-reveal"><header><span>05</span><div><small>Direct conflict plus internal inconsistency · Source pp. 4–5, 7, 9</small><h3>When Liu Ruo-lin learned that the child was restrained</h3></div></header><div class="day4-contrast-sides"><section data-person="Liu Ruo-lin"><p>She said she directly saw the child’s hands and feet tied after the basin overturned and personally untied them; she also described seeing restraint at the main location.</p></section><i>≠</i><section data-person="Liu Tsai-hsuan"><p>She first acknowledged that Liu Ruo-lin was present during the 2 November restraint, but later said Liu Ruo-lin learned of restraint only from photographs.</p></section></div><footer><b>Verification point</b><p>This is both a conflict between witnesses and a change within Liu Tsai-hsuan’s own testimony.</p></footer></article>
+<article class="day4-contrast-card is-scope day3-reveal"><header><span>06</span><div><small>Different scope · Source pp. 2, 5, 7–8</small><h3>Separate care or actual handover and shared supervision</h3></div></header><div class="day4-contrast-sides"><section data-person="Liu Ruo-lin"><p>She admitted that the child was entrusted to her for errands, usually for thirty minutes to an hour, and that she once watched three children during a social-worker visit.</p></section><i>↔</i><section data-person="Liu Tsai-hsuan"><p>She stressed that this was not joint care, but admitted asking Liu Ruo-lin to help when unavailable and revised an earlier “never helps” account to occasional assistance.</p></section></div><footer><b>Verification point</b><p>Not being formally registered as joint care does not necessarily mean there was no shared supervision in daily life.</p></footer></article>
+<article class="day4-contrast-card is-record day3-reveal"><header><span>07</span><div><small>Record conflict · Source pp. 2, 10</small><h3>Reported injuries or an effort to keep an injury from the social worker</h3></div></header><div class="day4-contrast-sides"><section data-person="Liu Ruo-lin"><p>She said she repeatedly reminded Liu Tsai-hsuan to report falls and hand injuries, and was always told that reporting had occurred.</p></section><i>≠</i><section data-person="Liu Tsai-hsuan"><p>She admitted being reminded, but said the child was put to sleep during a visit because she feared the neck injury would be seen; she separately said a later head injury was reported.</p></section></div><footer><b>Verification point</b><p>Different injuries may have been handled differently. Each incident must be checked against visit, report, photo and medical records.</p></footer></article>
+<article class="day4-contrast-card is-scope day3-reveal"><header><span>08</span><div><small>Requires clarification · Source pp. 4–5, 8, 10</small><h3>Whether Liu Ruo-lin intervened in hitting, shouting or standing</h3></div></header><div class="day4-contrast-sides"><section data-person="Liu Ruo-lin"><p>When asked whether she saw hitting or verbal abuse, she mostly said she had no impression and recalled only a single patting motion.</p></section><i>↔</i><section data-person="Liu Tsai-hsuan"><p>She said Liu Ruo-lin had told her not to hit the child, not to shout so loudly, and not to leave the child standing alone.</p></section></div><footer><b>Verification point</b><p>Witnessing a specific act and giving a general warning are not identical questions; dates, scenes and messages matter.</p></footer></article>
+</div><aside class="day4-contrast-caution day3-reveal"><b>Reading caution | A conflict does not itself prove lying</b><p>The court must still assess photographs, audio, complete message threads, social-work and medical records, and the context of each question. This section identifies interfaces requiring further verification; it does not decide credibility.</p></aside>
+</section>'''
+
+          ja = r'''<section class="day3-section day4-contradictions" id="contradictions" aria-labelledby="day4ContradictionsTitle">
+<div class="day3-section-head day3-reveal"><small>05A · TESTIMONY CROSS-CHECK</small><h2 id="day4ContradictionsTitle">劉彩萱 × 劉若琳｜供述の食い違いと確認点8項</h2><p>同じ論点について二人の法廷供述を並べます。ここでいう「食い違い」は編集上の照合であり、<strong>どちらかが虚偽供述をしたとの裁判所の認定ではありません</strong>。記憶、質問範囲、時点、表現の違いによる可能性もあります。</p></div>
+<div class="day4-contrast-summary day3-reveal"><article><strong>4</strong><span>直接の食い違い</span><small>訪問頻度、立たせの認識、洗面器の引継ぎ、拘束の認識</small></article><article><strong>3</strong><span>程度・範囲の差</span><small>滞在時間、共同見守り、制止の程度</small></article><article><strong>1</strong><span>記録照合が必要</span><small>けがの通報と発見回避</small></article></div>
+<div class="day4-contrast-legend day3-reveal"><span class="is-direct">直接の食い違い</span><span class="is-scope">程度・範囲の差</span><span class="is-record">記録で確認</span></div>
+<div class="day4-contrast-grid">
+<article class="day4-contrast-card is-direct day3-reveal"><header><span>01</span><div><small>直接の食い違い · 原記録2、6–8頁</small><h3>A児が劉若琳宅へ行った頻度と時間帯</h3></div></header><div class="day4-contrast-sides"><section data-person="劉若琳"><p>「たまに」で、朝は少なく、通常は午後、ときに夜だったと述べ、週2、3日かどうかも明言できなかった。</p></section><i>≠</i><section data-person="劉彩萱"><p>11時以降に行き、A児は「ほぼ毎日」同行したと述べ、反対尋問では朝は必ず、午後・夜は時々と説明した。</p></section></div><footer><b>確認資料</b><p>写真時刻、メッセージ、保育記録、訪問記録による日々の動線確認。</p></footer></article>
+<article class="day4-contrast-card is-scope day3-reveal"><header><span>02</span><div><small>程度の差 · 原記録5、7頁</small><h3>主な保育場所での劉若琳の滞在時間</h3></div></header><div class="day4-contrast-sides"><section data-person="劉若琳"><p>昼食と夕食の双方で行き、それぞれ1時間から1時間超滞在し、多くの場合A児を見たと述べた。</p></section><i>↔</i><section data-person="劉彩萱"><p>劉若琳は多くの場合あとから来て、昼食を数十分とるだけで、午後は時々来る程度と述べた。</p></section></div><footer><b>確認点</b><p>異なる日または平均像を述べた可能性があり、食事・写真・通信時刻との照合が必要。</p></footer></article>
+<article class="day4-contrast-card is-direct day3-reveal"><header><span>03</span><div><small>直接の食い違い · 原記録3–5、7、9頁</small><h3>劉若琳はクールダウン／立たせを知っていたか</h3></div></header><div class="day4-contrast-sides"><section data-person="劉若琳"><p>A児が立っていたり裸だったりするのを見たが、罰として立たされていたかは分からず、「手を後ろ」の記憶もないと述べた。</p></section><i>≠</i><section data-person="劉彩萱"><p>劉若琳が立っている理由を尋ね「そう」と答え、別の場面では一人で立たせないよう忠告したと述べた。</p></section></div><footer><b>確認点</b><p>姿勢を見たこと、しつけと理解したこと、制止したことは別々に検討する必要がある。</p></footer></article>
+<article class="day4-contrast-card is-direct day3-reveal"><header><span>04</span><div><small>直接の食い違い · 原記録3、5、7頁</small><h3>洗面器の出来事前に見守りを明確に引き継いだか</h3></div></header><div class="day4-contrast-sides"><section data-person="劉若琳"><p>A児が洗面器に入れられた際、目的は説明されず、転倒後に駆け寄って拘束をほどき、居間へ移したと述べた。</p></section><i>≠</i><section data-person="劉彩萱"><p>洗濯物を干しに行く前に劉若琳へ見守りを頼み、予定どおり迎えず翌朝に迎えたと述べた。</p></section></div><footer><b>確認点</b><p>監督責任者、伝達内容、不在時間が中心的な照合事項。</p></footer></article>
+<article class="day4-contrast-card is-direct day3-reveal"><header><span>05</span><div><small>直接の食い違い＋供述内の変化 · 原記録4–5、7、9頁</small><h3>劉若琳が拘束を知った時期</h3></div></header><div class="day4-contrast-sides"><section data-person="劉若琳"><p>洗面器転倒時に手足の拘束を直接見て自らほどき、主な保育場所でも拘束を見たと述べた。</p></section><i>≠</i><section data-person="劉彩萱"><p>11月2日の拘束時に劉若琳がいたと認めた後、拘束を知ったのは写真を送った時だとも述べた。</p></section></div><footer><b>確認点</b><p>二人の供述の対立に加え、劉彩萱自身の同日供述にも前後差がある。</p></footer></article>
+<article class="day4-contrast-card is-scope day3-reveal"><header><span>06</span><div><small>範囲の差 · 原記録2、5、7–8頁</small><h3>別々の保育か、実際には引継ぎ・共同見守りがあったか</h3></div></header><div class="day4-contrast-sides"><section data-person="劉若琳"><p>外出時にA児を30分から1時間預かり、ソーシャルワーカー訪問時には3人を同時に見たことも認めた。</p></section><i>↔</i><section data-person="劉彩萱"><p>共同保育ではないと強調しながら、不在時に助けを求めたことを認め、以前の「全く手伝わない」を「時々手伝う」に修正した。</p></section></div><footer><b>確認点</b><p>制度上の非共同保育は、日常生活で一切共同見守りがなかったことを当然には意味しない。</p></footer></article>
+<article class="day4-contrast-card is-record day3-reveal"><header><span>07</span><div><small>記録との衝突 · 原記録2、10頁</small><h3>けがを通報したのか、ソーシャルワーカーに見られないようにしたのか</h3></div></header><div class="day4-contrast-sides"><section data-person="劉若琳"><p>転倒や手のけがを通報するよう繰り返し促し、その都度「伝えた」と回答されたと述べた。</p></section><i>≠</i><section data-person="劉彩萱"><p>注意を受けたことを認めつつ、訪問時に首の傷を見られるのが怖くA児を寝かせたと述べ、別に後期の頭部傷は通報したとした。</p></section></div><footer><b>確認点</b><p>けがごとに対応が異なる可能性があり、訪問・通報・写真・医療記録を個別に照合する必要がある。</p></footer></article>
+<article class="day4-contrast-card is-scope day3-reveal"><header><span>08</span><div><small>要確認 · 原記録4–5、8、10頁</small><h3>劉若琳は殴打・大声・立たせを制止したか</h3></div></header><div class="day4-contrast-sides"><section data-person="劉若琳"><p>殴打や暴言を見たかとの質問には主に「印象がない」と答え、一度の「軽くたたく」動作だけを挙げた。</p></section><i>↔</i><section data-person="劉彩萱"><p>劉若琳から子どもを殴らないこと、大声を出さないこと、一人で立たせないことを注意されたと述べた。</p></section></div><footer><b>確認点</b><p>具体的行為を目撃したことと一般的に注意したことは同一ではなく、日時・場面・通信記録が必要。</p></footer></article>
+</div><aside class="day4-contrast-caution day3-reveal"><b>注意｜食い違いだけで虚偽は証明されない</b><p>裁判所は写真、音声、完全なメッセージ、訪問・医療記録、質問の文脈を総合評価する必要があります。本節は追加確認が必要な接点を示すもので、信用性を決定するものではありません。</p></aside>
+</section>'''
+
+          configs = [
+              (Path('hearing-records/prison-watch/kaikai-day4-20250428/index.html'), zh,
+               '<a href="#examination">交互詰問</a><a href="#jurors">法官問了什麼</a>',
+               '<a href="#examination">交互詰問</a><a href="#contradictions">證詞矛盾</a><a href="#jurors">法官問了什麼</a>',
+               '<a href="#examination">05 交互詰問</a><a href="#jurors">06 法官問了什麼</a>',
+               '<a href="#examination">05 交互詰問</a><a href="#contradictions">05A 證詞對照</a><a href="#jurors">06 法官問了什麼</a>'),
+              (Path('source/hearing-records/prison-watch/kaikai-day4-20250428/index.html'), zh,
+               '<a href="#examination">交互詰問</a><a href="#jurors">法官問了什麼</a>',
+               '<a href="#examination">交互詰問</a><a href="#contradictions">證詞矛盾</a><a href="#jurors">法官問了什麼</a>',
+               '<a href="#examination">05 交互詰問</a><a href="#jurors">06 法官問了什麼</a>',
+               '<a href="#examination">05 交互詰問</a><a href="#contradictions">05A 證詞對照</a><a href="#jurors">06 法官問了什麼</a>'),
+              (Path('en/hearing-records/prison-watch/kaikai-day4-20250428/index.html'), en,
+               '<a href="#examination">Examination</a><a href="#jurors">Judges’ questions</a>',
+               '<a href="#examination">Examination</a><a href="#contradictions">Testimony conflicts</a><a href="#jurors">Judges’ questions</a>',
+               '<a href="#examination">05 Examination</a><a href="#jurors">06 Judges’ questions</a>',
+               '<a href="#examination">05 Examination</a><a href="#contradictions">05A Cross-check</a><a href="#jurors">06 Judges’ questions</a>'),
+              (Path('source/en/hearing-records/prison-watch/kaikai-day4-20250428/index.html'), en,
+               '<a href="#examination">Examination</a><a href="#jurors">Judges’ questions</a>',
+               '<a href="#examination">Examination</a><a href="#contradictions">Testimony conflicts</a><a href="#jurors">Judges’ questions</a>',
+               '<a href="#examination">05 Examination</a><a href="#jurors">06 Judges’ questions</a>',
+               '<a href="#examination">05 Examination</a><a href="#contradictions">05A Cross-check</a><a href="#jurors">06 Judges’ questions</a>'),
+              (Path('ja/hearing-records/prison-watch/kaikai-day4-20250428/index.html'), ja,
+               '<a href="#examination">反対尋問</a><a href="#jurors">裁判官の質問</a>',
+               '<a href="#examination">反対尋問</a><a href="#contradictions">供述の食い違い</a><a href="#jurors">裁判官の質問</a>',
+               '<a href="#examination">05 尋問</a><a href="#jurors">06 裁判官の質問</a>',
+               '<a href="#examination">05 尋問</a><a href="#contradictions">05A 供述照合</a><a href="#jurors">06 裁判官の質問</a>'),
+              (Path('source/ja/hearing-records/prison-watch/kaikai-day4-20250428/index.html'), ja,
+               '<a href="#examination">反対尋問</a><a href="#jurors">裁判官の質問</a>',
+               '<a href="#examination">反対尋問</a><a href="#contradictions">供述の食い違い</a><a href="#jurors">裁判官の質問</a>',
+               '<a href="#examination">05 尋問</a><a href="#jurors">06 裁判官の質問</a>',
+               '<a href="#examination">05 尋問</a><a href="#contradictions">05A 供述照合</a><a href="#jurors">06 裁判官の質問</a>'),
+          ]
+
+          for path, block, nav_old, nav_new, toc_old, toc_new in configs:
+              text = path.read_text(encoding='utf-8')
+              if 'id="contradictions"' not in text:
+                  if marker not in text:
+                      raise SystemExit(f'missing insertion marker: {path}')
+                  text = text.replace(marker, block + '\n' + marker, 1)
+              if '#contradictions' not in text.split('</header>', 1)[0]:
+                  if nav_old not in text:
+                      raise SystemExit(f'missing nav marker: {path}')
+                  text = text.replace(nav_old, nav_new, 1)
+              if '05A' not in text.split('</aside>', 1)[0]:
+                  if toc_old not in text:
+                      raise SystemExit(f'missing toc marker: {path}')
+                  text = text.replace(toc_old, toc_new, 1)
+              text = text.replace('day4.css?v=20260821-day4-1', 'day4.css?v=20260821-day4-2')
+              path.write_text(text, encoding='utf-8')
+
+          css = r'''
+
+/* Day 4 testimony cross-check */
+.day4-contradictions{position:relative;overflow:hidden;background:linear-gradient(155deg,#f7f0e8 0%,#eef3f3 52%,#f5ebe5 100%)}
+.day4-contradictions:before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 8% 12%,rgba(159,78,63,.1),transparent 26%),radial-gradient(circle at 90% 22%,rgba(57,92,108,.1),transparent 30%);pointer-events:none}
+.day4-contradictions>*{position:relative;z-index:1}
+.day4-contrast-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;max-width:1080px;margin:30px auto 18px}
+.day4-contrast-summary article{padding:20px;border:1px solid rgba(16,43,58,.12);border-radius:20px;background:rgba(255,255,255,.84);box-shadow:0 12px 34px rgba(16,43,58,.08);text-align:center}
+.day4-contrast-summary strong{display:block;color:#8d4237;font-size:clamp(2rem,4vw,3.2rem);line-height:1}
+.day4-contrast-summary span{display:block;margin-top:8px;color:#173847;font-size:1rem;font-weight:900}
+.day4-contrast-summary small{display:block;margin-top:7px;color:#657983;line-height:1.55}
+.day4-contrast-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:0 auto 24px}
+.day4-contrast-legend span{display:inline-flex;align-items:center;gap:7px;padding:.48rem .76rem;border-radius:999px;background:#fff;color:#385667;font-size:.75rem;font-weight:900;box-shadow:0 6px 18px rgba(16,43,58,.07)}
+.day4-contrast-legend span:before{content:'';width:9px;height:9px;border-radius:50%;background:#9f4e3f}.day4-contrast-legend .is-scope:before{background:#b98b45}.day4-contrast-legend .is-record:before{background:#3d7185}
+.day4-contrast-grid{display:grid;gap:22px;max-width:1160px;margin:0 auto}
+.day4-contrast-card{--contrast-accent:#9f4e3f;position:relative;padding:clamp(20px,3vw,30px);border:1px solid rgba(16,43,58,.13);border-left:7px solid var(--contrast-accent);border-radius:24px;background:rgba(255,255,255,.93);box-shadow:0 17px 45px rgba(16,43,58,.09)}
+.day4-contrast-card.is-scope{--contrast-accent:#b98b45}.day4-contrast-card.is-record{--contrast-accent:#3d7185}
+.day4-contrast-card>header{display:flex;gap:15px;align-items:flex-start;margin-bottom:18px}
+.day4-contrast-card>header>span{display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;border-radius:14px;background:var(--contrast-accent);color:#fff;font-size:.9rem;font-weight:900;box-shadow:0 8px 20px color-mix(in srgb,var(--contrast-accent) 28%,transparent)}
+.day4-contrast-card header small{display:block;color:var(--contrast-accent);font-size:.72rem;font-weight:900;letter-spacing:.04em}
+.day4-contrast-card h3{margin:.32rem 0 0;color:#102b3a;font-size:clamp(1.16rem,2vw,1.48rem);line-height:1.35}
+.day4-contrast-sides{display:grid;grid-template-columns:minmax(0,1fr) 44px minmax(0,1fr);gap:14px;align-items:stretch}
+.day4-contrast-sides section{position:relative;padding:48px 20px 20px;border:1px solid rgba(16,43,58,.11);border-radius:18px;background:linear-gradient(145deg,#fff,#f6f7f5)}
+.day4-contrast-sides section:before{content:attr(data-person);position:absolute;top:14px;left:16px;padding:.3rem .62rem;border-radius:999px;background:#e6edef;color:#24495a;font-size:.72rem;font-weight:900}
+.day4-contrast-sides section:last-child:before{background:#f2e2dc;color:#843f35}
+.day4-contrast-sides p{margin:0;color:#445e69;line-height:1.78}
+.day4-contrast-sides>i{display:grid;place-items:center;color:var(--contrast-accent);font-style:normal;font-size:1.7rem;font-weight:900}
+.day4-contrast-card>footer{margin-top:17px;padding:15px 17px;border-radius:15px;background:color-mix(in srgb,var(--contrast-accent) 7%,#fff);border:1px solid color-mix(in srgb,var(--contrast-accent) 18%,transparent)}
+.day4-contrast-card>footer>b{display:block;color:var(--contrast-accent);font-size:.8rem;letter-spacing:.05em}
+.day4-contrast-card>footer>p{margin:.35rem 0 0;color:#526b76;line-height:1.68}
+.day4-contrast-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px}.day4-contrast-links a{display:inline-flex;padding:.4rem .68rem;border-radius:999px;background:#fff;color:#24495a;font-size:.74rem;font-weight:800;text-decoration:none;box-shadow:0 4px 13px rgba(16,43,58,.08)}.day4-contrast-links a:hover,.day4-contrast-links a:focus-visible{transform:translateY(-1px);outline:2px solid rgba(159,78,63,.25);outline-offset:2px}
+.day4-contrast-caution{max-width:1000px;margin:28px auto 0;padding:20px 22px;border:1px solid rgba(159,78,63,.18);border-radius:20px;background:rgba(255,249,244,.9);box-shadow:0 10px 30px rgba(83,43,37,.07)}
+.day4-contrast-caution b{color:#843f35}.day4-contrast-caution p{margin:.5rem 0 0;color:#596d76;line-height:1.75}
+@media(max-width:780px){.day4-contrast-summary{grid-template-columns:1fr}.day4-contrast-sides{grid-template-columns:1fr}.day4-contrast-sides>i{height:28px;transform:rotate(90deg)}.day4-contrast-card{padding:18px 15px;border-left-width:5px;border-radius:20px}.day4-contrast-card>header>span{flex-basis:40px;width:40px;height:40px}.day4-contrast-sides section{padding:46px 16px 17px}.day4-contrast-legend{justify-content:flex-start}}
+@media(prefers-reduced-motion:reduce){.day4-contrast-links a{transition:none}}
+'''
+          for path in [Path('hearing-records/prison-watch/kaikai-day4-20250428/day4.css'), Path('source/hearing-records/prison-watch/kaikai-day4-20250428/day4.css')]:
+              text = path.read_text(encoding='utf-8')
+              if 'Day 4 testimony cross-check' not in text:
+                  text += css
+              path.write_text(text, encoding='utf-8')
+
+          for path, *_ in configs:
+              text = path.read_text(encoding='utf-8')
+              assert text.count('id="contradictions"') == 1, path
+              assert '05A' in text, path
+              assert 'day4.css?v=20260821-day4-2' in text, path
+          PY
+
+      - name: Commit and push
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add hearing-records/prison-watch/kaikai-day4-20250428 source/hearing-records/prison-watch/kaikai-day4-20250428 en/hearing-records/prison-watch/kaikai-day4-20250428 source/en/hearing-records/prison-watch/kaikai-day4-20250428 ja/hearing-records/prison-watch/kaikai-day4-20250428 source/ja/hearing-records/prison-watch/kaikai-day4-20250428
+          git diff --cached --quiet && exit 0
+          git commit -m 'Highlight Day 4 testimony contradictions'
+          git pull --rebase origin main
+          git push
