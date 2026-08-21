@@ -11,7 +11,10 @@ from xml.etree import ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 BASE_URL = "https://jerryzuhow77.github.io/child-advocacy-site/"
 EXCLUDED_PARTS = {
-    ".git", ".github", "node_modules", "source", "child-advocacy-site-main",
+    ".git", ".github", "node_modules", "source",
+    # Old repository snapshots kept inside the working tree must never become
+    # duplicate public URLs in the generated sitemap.
+    "child-advocacy-site", "child-advocacy-site-main",
     "draft", "drafts", "test", "tests", "admin", "scripts",
 }
 NOINDEX_RE = re.compile(
@@ -61,15 +64,20 @@ def main() -> None:
     namespace = "http://www.sitemaps.org/schemas/sitemap/0.9"
     ET.register_namespace("", namespace)
     urlset = ET.Element(f"{{{namespace}}}urlset")
+    seen_urls: set[str] = set()
     for page in pages:
+        location = url_for(page)
+        if location in seen_urls:
+            continue
+        seen_urls.add(location)
         url = ET.SubElement(urlset, f"{{{namespace}}}url")
-        ET.SubElement(url, f"{{{namespace}}}loc").text = url_for(page)
+        ET.SubElement(url, f"{{{namespace}}}loc").text = location
         ET.SubElement(url, f"{{{namespace}}}lastmod").text = last_modified(page)
     tree = ET.ElementTree(urlset)
     ET.indent(tree, space="  ")
     output = ROOT / "sitemap.xml"
     tree.write(output, encoding="utf-8", xml_declaration=True)
-    print(f"Wrote {output.relative_to(ROOT)} with {len(pages)} public URLs")
+    print(f"Wrote {output.relative_to(ROOT)} with {len(seen_urls)} public URLs")
 
 
 if __name__ == "__main__":
