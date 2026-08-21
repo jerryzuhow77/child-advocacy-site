@@ -1,0 +1,334 @@
+#!/usr/bin/env python3
+"""Normalize Fujian Qiqi mobile actor proportions and soften phone motion."""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+CSS_PATH = ROOT / "assets/fujian-qiqi-feature.css"
+JS_PATH = ROOT / "assets/fujian-qiqi-feature.js"
+CSS_MARKER = "/* === Mobile actor proportion and motion refinement · 2026-08-21 === */"
+JS_MARKER = "/* Mobile actor proportion and ambient motion · 2026-08-21 */"
+
+
+def replace_once(text: str, old: str, new: str, label: str) -> str:
+    count = text.count(old)
+    if count != 1:
+        raise RuntimeError(f"{label}: expected one match, found {count}")
+    return text.replace(old, new, 1)
+
+
+def patch_js(js: str) -> str:
+    if JS_MARKER in js:
+        return js
+
+    js = replace_once(
+        js,
+        """      if (compactQuery.matches) {
+        profile.shift *= 0.74;
+        profile.lift *= 0.76;
+        profile.lean *= 0.72;
+        profile.listenerShift *= 0.72;
+        profile.nod *= 0.78;
+      }
+""",
+        """      if (compactQuery.matches) {
+        /* Larger, normalized phone figures need quieter weight shifts. */
+        profile.shift *= 0.62;
+        profile.lift *= 0.68;
+        profile.lean *= 0.6;
+        profile.listenerShift *= 0.62;
+        profile.nod *= 0.72;
+      }
+""",
+        "compact gesture profile",
+    )
+
+    js = replace_once(
+        js,
+        """      actors.forEach(actor => {
+        const isFemale = actor.dataset.actor === 'female';
+        timeline.fromTo(actor, {
+          autoAlpha: 1,
+          xPercent: isFemale ? -2.5 : 2.5,
+          y: 9,
+          rotation: isFemale ? -0.35 : 0.35
+        }, {
+          autoAlpha: 1,
+          xPercent: 0,
+          y: 0,
+          rotation: 0,
+          duration: 1.08,
+          ease: 'power2.out',
+          immediateRender: false
+        }, Math.max(0.18, cursor - 0.28));
+      });
+""",
+        """      actors.forEach(actor => {
+        const isFemale = actor.dataset.actor === 'female';
+        const mobileEntrance = compactQuery.matches;
+        timeline.fromTo(actor, {
+          autoAlpha: 1,
+          xPercent: isFemale
+            ? (mobileEntrance ? -1.45 : -2.5)
+            : (mobileEntrance ? 1.45 : 2.5),
+          y: mobileEntrance ? 5 : 9,
+          rotation: isFemale
+            ? (mobileEntrance ? -0.18 : -0.35)
+            : (mobileEntrance ? 0.18 : 0.35)
+        }, {
+          autoAlpha: 1,
+          xPercent: 0,
+          y: 0,
+          rotation: 0,
+          duration: mobileEntrance ? 0.88 : 1.08,
+          ease: 'power2.out',
+          immediateRender: false
+        }, Math.max(0.18, cursor - 0.28));
+      });
+""",
+        "mobile actor entrance",
+    )
+
+    if "version: '1.3.5'," in js:
+        js = js.replace("version: '1.3.5',", "version: '1.3.6',", 1)
+    elif "version: '1.3.6'," not in js:
+        raise RuntimeError("feature version marker is not 1.3.5 or 1.3.6")
+
+    patch = r'''
+/* Mobile actor proportion and ambient motion · 2026-08-21 */
+(() => {
+  'use strict';
+
+  const ready = callback => {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', callback, { once: true });
+    } else {
+      callback();
+    }
+  };
+
+  ready(() => {
+    const html = document.documentElement;
+    const media = matchMedia('(max-width: 780px)');
+    const actors = [...document.querySelectorAll('.fq-actor[data-actor]')];
+    if (!actors.length) return;
+
+    actors.forEach(actor => {
+      if (actor.querySelector(':scope > .fq-actor__proportion')) return;
+      const layers = [...actor.children].filter(node => node.matches && node.matches('img[data-pose-layer]'));
+      if (!layers.length) return;
+      const proportion = document.createElement('span');
+      const breath = document.createElement('span');
+      proportion.className = 'fq-actor__proportion';
+      breath.className = 'fq-actor__breath';
+      proportion.setAttribute('aria-hidden', 'true');
+      breath.setAttribute('aria-hidden', 'true');
+      layers.forEach(layer => breath.appendChild(layer));
+      proportion.appendChild(breath);
+      actor.appendChild(proportion);
+    });
+
+    const gsap = window.gsap && typeof window.gsap.to === 'function' ? window.gsap : null;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const saveData = Boolean(navigator.connection && navigator.connection.saveData);
+    const motionMode = html.dataset.fqMotion || 'full';
+    const fullMotion = motionMode === 'full' && !reduced && !saveData && Boolean(gsap);
+    const scenes = [...document.querySelectorAll('.fq-act[data-fq-scene], [data-fq-scene]')]
+      .filter((scene, index, list) => list.indexOf(scene) === index);
+    const sceneTweens = new Map();
+    const inView = new Map();
+
+    if (fullMotion) {
+      scenes.forEach((scene, sceneIndex) => {
+        const figures = [...scene.querySelectorAll('.fq-actor__breath')];
+        const tweens = figures.map((figure, figureIndex) => gsap.to(figure, {
+          y: figureIndex % 2 ? -0.75 : -1.15,
+          scaleY: figureIndex % 2 ? 1.0045 : 1.006,
+          duration: 3.6 + sceneIndex * 0.18 + figureIndex * 0.34,
+          ease: 'sine.inOut',
+          repeat: -1,
+          yoyo: true,
+          paused: true,
+          transformOrigin: '50% 100%'
+        }));
+        sceneTweens.set(scene, tweens);
+      });
+    }
+
+    const syncScene = scene => {
+      const tweens = sceneTweens.get(scene) || [];
+      const shouldPlay = fullMotion && media.matches && inView.get(scene) && !document.hidden;
+      tweens.forEach(tween => {
+        if (shouldPlay) tween.play();
+        else tween.pause();
+      });
+      if (!shouldPlay && gsap) {
+        gsap.set(scene.querySelectorAll('.fq-actor__breath'), { y: 0, scaleY: 1 });
+      }
+    };
+
+    const syncAll = () => scenes.forEach(syncScene);
+    const observer = 'IntersectionObserver' in window
+      ? new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            inView.set(entry.target, entry.isIntersecting && entry.intersectionRatio >= .05);
+            syncScene(entry.target);
+          });
+        }, { threshold: [0, .05, .16, .35], rootMargin: '12% 0px' })
+      : null;
+
+    scenes.forEach(scene => {
+      inView.set(scene, !observer);
+      if (observer) observer.observe(scene);
+    });
+
+    const onChange = () => syncAll();
+    if (typeof media.addEventListener === 'function') media.addEventListener('change', onChange);
+    else if (typeof media.addListener === 'function') media.addListener(onChange);
+    document.addEventListener('visibilitychange', onChange);
+    window.addEventListener('pageshow', onChange);
+    syncAll();
+
+    window.addEventListener('pagehide', () => {
+      if (observer) observer.disconnect();
+      sceneTweens.forEach(tweens => tweens.forEach(tween => tween.kill()));
+      if (typeof media.removeEventListener === 'function') media.removeEventListener('change', onChange);
+      else if (typeof media.removeListener === 'function') media.removeListener(onChange);
+      document.removeEventListener('visibilitychange', onChange);
+      window.removeEventListener('pageshow', onChange);
+    }, { once: true });
+  });
+})();
+'''
+    return js.rstrip() + "\n\n" + patch.strip() + "\n"
+
+
+def patch_css(css: str) -> str:
+    if CSS_MARKER in css:
+        return css
+
+    patch = r'''
+/* === Mobile actor proportion and motion refinement · 2026-08-21 === */
+.fq-actor__proportion,
+.fq-actor__breath {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 100%;
+}
+
+.fq-actor__proportion {
+  transform: scale(var(--fq-actor-proportion, 1));
+}
+
+.fq-actor__breath {
+  backface-visibility: hidden;
+}
+
+@media screen and (max-width: 780px) {
+  .fq-act.has-external-controls .fq-actors {
+    --fq-female-width: clamp(178px, 49vw, 330px);
+    --fq-male-width: clamp(178px, 49vw, 330px);
+    --fq-female-left: -4vw;
+    --fq-female-right: auto;
+    --fq-male-left: auto;
+    --fq-male-right: -4vw;
+  }
+
+  .fq-act.has-external-controls .fq-actors .fq-actor {
+    height: min(52%, 560px);
+    overflow: visible;
+  }
+
+  .fq-act.has-external-controls .fq-actor[data-actor="female"] {
+    --fq-actor-proportion: .94;
+  }
+
+  .fq-act.has-external-controls .fq-actor[data-actor="male"] {
+    --fq-actor-proportion: 1.13;
+  }
+
+  .fq-act[data-act="1"].has-external-controls .fq-actors {
+    --fq-female-left: -5vw;
+    --fq-male-right: -5vw;
+  }
+
+  .fq-act[data-act="2"].has-external-controls .fq-actors {
+    --fq-female-left: -3vw;
+    --fq-male-right: -3vw;
+  }
+
+  .fq-act[data-act="3"].has-external-controls .fq-actors {
+    --fq-female-left: -6vw;
+    --fq-male-right: -6vw;
+  }
+
+  .fq-act[data-act="4"].has-external-controls .fq-actors {
+    --fq-female-left: auto;
+    --fq-female-right: -4vw;
+    --fq-male-left: -4vw;
+    --fq-male-right: auto;
+  }
+
+  .fq-act[data-act="5"].has-external-controls .fq-actors {
+    --fq-female-left: -1vw;
+    --fq-male-right: -1vw;
+  }
+
+  .fq-act.is-playing .fq-actor__breath { will-change: transform; }
+  .fq-act:not(.is-playing) .fq-actor__breath { will-change: auto; }
+}
+
+@media screen and (max-width: 380px) and (orientation: portrait) {
+  .fq-act.has-external-controls .fq-actors {
+    --fq-female-width: clamp(162px, 50vw, 230px);
+    --fq-male-width: clamp(162px, 50vw, 230px);
+  }
+
+  .fq-act.has-external-controls .fq-actor[data-actor="female"] {
+    --fq-actor-proportion: .93;
+  }
+
+  .fq-act.has-external-controls .fq-actor[data-actor="male"] {
+    --fq-actor-proportion: 1.1;
+  }
+}
+
+@media screen and (max-width: 780px) and (max-height: 560px) and (orientation: landscape) {
+  .fq-act.has-external-controls .fq-actors {
+    --fq-female-width: clamp(190px, 33vw, 300px);
+    --fq-male-width: clamp(190px, 33vw, 300px);
+  }
+
+  .fq-act.has-external-controls .fq-actors .fq-actor {
+    height: min(58%, 350px);
+  }
+
+  .fq-act.has-external-controls .fq-actor[data-actor="female"] {
+    --fq-actor-proportion: .96;
+  }
+
+  .fq-act.has-external-controls .fq-actor[data-actor="male"] {
+    --fq-actor-proportion: 1.08;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fq-actor__breath { transform: none !important; }
+}
+'''
+    return css.rstrip() + "\n\n" + patch.strip() + "\n"
+
+
+def main() -> int:
+    CSS_PATH.write_text(patch_css(CSS_PATH.read_text(encoding="utf-8")), encoding="utf-8")
+    JS_PATH.write_text(patch_js(JS_PATH.read_text(encoding="utf-8")), encoding="utf-8")
+    print("Patched mobile actor proportions and motion.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
