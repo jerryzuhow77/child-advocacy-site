@@ -13,12 +13,22 @@
   });
   const core = new URL('./day3-reading-core.js?v=20260821-1', base).href;
   const crosscheck = new URL('../kaikai-day4-20250428/day4-crosscheck.js?v=20260821-1', base).href;
+  const tensionData = new URL('../../../assets/witness-tensions-day3-data-20260821.js?v=20260821-1', base).href;
+  const tensionUi = new URL('../../../assets/witness-testimony-tensions-20260821.js?v=20260821-2', base).href;
   const prepare = isDay4
     ? load(crosscheck).then(() => window.day4CrosscheckReady)
     : Promise.resolve();
   prepare.catch(error => console.error('Day 4 cross-check failed to load', error)).finally(() => {
-    load(core).then(() => {
-      if (!isDay4) return;
+    load(core).then(async () => {
+      if (!isDay4) {
+        try {
+          await load(tensionData);
+          await load(tensionUi);
+        } catch (error) {
+          console.error('Witness cross-check module failed to load', error);
+        }
+        return;
+      }
       const reader = document.querySelector('.day3-record-progress');
       if (reader) reader.setAttribute('aria-label', document.documentElement.lang === 'ja' ? '第4日法廷対話の閲覧進捗' : document.documentElement.lang === 'en' ? 'Day 4 hearing-dialogue progress' : '第四日庭審對話閱讀進度');
       document.querySelectorAll('.day3-record-tools-copy span').forEach(element => {
