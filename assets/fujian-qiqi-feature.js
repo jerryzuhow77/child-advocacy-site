@@ -1814,7 +1814,7 @@
     });
 
     window.FujianQiqiFeature = {
-      version: '1.3.4',
+      version: '1.3.5',
       play(target) {
         const state = stateFor(target);
         return state ? playScene(state) : false;
@@ -1891,6 +1891,11 @@
     ending.prepend(detail, full, glow);
     ending.classList.add('has-watercolor-panorama', 'is-watercolor-intro', 'is-visible');
 
+    /* Ending visibility isolation repair · 2026-08-21 */
+    ending.style.opacity = '1';
+    ending.style.visibility = 'visible';
+    ending.style.transform = 'none';
+
     const compact = matchMedia('(max-width: 780px)').matches;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const saveData = Boolean(navigator.connection && navigator.connection.saveData);
@@ -1898,7 +1903,8 @@
     if (!['full', 'lite', 'off'].includes(motionMode)) {
       try { motionMode = localStorage.getItem('fq-motion-mode') || 'full'; } catch (_error) {}
     }
-    const lite = motionMode === 'lite';
+    /* Data Saver keeps a shorter sequence instead of deleting the animation. */
+    const lite = motionMode === 'lite' || saveData;
     const off = motionMode === 'off';
     const gsap = window.gsap && typeof window.gsap.timeline === 'function' ? window.gsap : null;
 
@@ -1930,7 +1936,7 @@
       }
     };
 
-    if (!gsap || reduced || off || saveData) {
+    if (!gsap || reduced || off) {
       showStatic();
     } else {
       const hold = lite ? 1.25 : 2.4;
@@ -2043,12 +2049,20 @@
     if (timeline && 'IntersectionObserver' in window) {
       observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
-          inView = entry.isIntersecting && entry.intersectionRatio >= .08;
+          inView = entry.isIntersecting && entry.intersectionRatio >= .01;
           html.classList.toggle('fq-ending-focus', inView);
           if (inView) playOrResume(); else pauseMotion();
         });
-      }, { threshold: [0, .08, .2, .45], rootMargin: '3% 0px -5% 0px' });
+      }, { threshold: [0, .01, .08, .2, .45], rootMargin: '18% 0px -2% 0px' });
       observer.observe(ending);
+      requestAnimationFrame(() => {
+        const rect = ending.getBoundingClientRect();
+        if (rect.bottom > 0 && rect.top < innerHeight * 1.18) {
+          inView = true;
+          html.classList.add('fq-ending-focus');
+          playOrResume();
+        }
+      });
     } else if (timeline) {
       inView = true;
       html.classList.add('fq-ending-focus');

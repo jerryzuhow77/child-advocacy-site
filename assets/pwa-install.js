@@ -157,7 +157,7 @@
         reloadingForUpdate = true;
         window.location.reload();
       });
-      navigator.serviceWorker.register(new URL('sw.js?v=20260820-visitor-prompt-8h-v6', siteBase).href, {
+      navigator.serviceWorker.register(new URL('sw.js?v=20260821-qiqi-ending-region-v1', siteBase).href, {
         scope: siteBase.pathname,
         updateViaCache: 'none'
       })

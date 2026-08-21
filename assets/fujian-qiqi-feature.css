@@ -4036,3 +4036,29 @@ html.fq-js .fq-act.is-enhanced [data-fq-line].is-ready-preview {
     transform: translateX(-50%);
   }
 }
+
+/* === Qiqi ending visibility isolation · 2026-08-21 === */
+/* The epilogue owns its GSAP reveal. It must never inherit the generic
+   data-fq-reveal opacity/translate state, especially in mobile in-app browsers. */
+html.fq-motion-ready body.fq-page .fq-ending[data-fq-ending],
+body.fq-page .fq-ending.has-watercolor-panorama {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+
+body.fq-page .fq-ending[data-fq-ending] {
+  content-visibility: auto;
+  contain-intrinsic-size: 900px;
+}
+
+body.fq-page .fq-ending[data-fq-ending].is-watercolor-animating {
+  content-visibility: visible;
+}
+
+@media screen and (max-width: 780px) {
+  body.fq-page .fq-ending[data-fq-ending] {
+    content-visibility: visible;
+    contain-intrinsic-size: auto;
+  }
+}
