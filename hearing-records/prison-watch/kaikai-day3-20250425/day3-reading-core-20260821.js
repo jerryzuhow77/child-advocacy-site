@@ -13,10 +13,16 @@
   });
   const core = new URL('./day3-reading-core.js?v=20260821-1', base).href;
   const crosscheck = new URL('../kaikai-day4-20250428/day4-crosscheck.js?v=20260821-location-owner-final-4', base).href;
+  const locationNote = new URL('../kaikai-day4-20250428/day4-location-note.js?v=20260821-site-a-father-1', base).href;
   const verbatim = new URL('../kaikai-day4-20250428/day4-verbatim.js?v=20260821-dialogue-art-1', base).href;
+  const crosscheckReady = isDay4
+    ? load(crosscheck).then(() => window.day4CrosscheckReady)
+    : Promise.resolve();
   const prepare = isDay4
     ? Promise.all([
-        load(crosscheck).then(() => window.day4CrosscheckReady),
+        crosscheckReady
+          .then(() => load(locationNote))
+          .then(() => window.day4LocationNoteReady),
         load(verbatim).then(() => window.day4VerbatimReady)
       ])
     : Promise.resolve();
