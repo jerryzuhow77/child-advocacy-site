@@ -1,0 +1,12 @@
+/* Fujian Putian Qiqi — subtle velvet-flower (ronghua) background ornaments. */
+body.fq-page{background-image:radial-gradient(circle at 12% 18%,rgba(190,128,132,.055),transparent 20rem),radial-gradient(circle at 88% 42%,rgba(121,151,148,.05),transparent 22rem),linear-gradient(180deg,#f6efe8,#f3ebe4)}
+body.fq-page main{position:relative;isolation:isolate}
+body.fq-page .fq-chapter{position:relative;isolation:isolate}
+body.fq-page .fq-chapter::before,body.fq-page .fq-chapter::after{content:"";position:absolute;z-index:-1;pointer-events:none;width:clamp(150px,22vw,330px);aspect-ratio:1;opacity:.105;filter:saturate(.72);background-repeat:no-repeat;background-position:center;background-size:contain}
+body.fq-page .fq-chapter:nth-of-type(4n+1)::before{left:-4vw;top:8%;background-image:url("fujian-qiqi/ronghua-peony.svg");transform:rotate(-13deg)}
+body.fq-page .fq-chapter:nth-of-type(4n+2)::after{right:-5vw;top:22%;background-image:url("fujian-qiqi/ronghua-camellia.svg");transform:rotate(14deg) scale(.92)}
+body.fq-page .fq-chapter:nth-of-type(4n+3)::before{left:2vw;bottom:5%;background-image:url("fujian-qiqi/ronghua-camellia.svg");transform:rotate(-20deg) scale(.78);opacity:.085}
+body.fq-page .fq-chapter:nth-of-type(4n)::after{right:1vw;bottom:4%;background-image:url("fujian-qiqi/ronghua-peony.svg");transform:rotate(18deg) scale(.8);opacity:.09}
+body.fq-page .fq-chapter--ink::before,body.fq-page .fq-chapter--ink::after{mix-blend-mode:screen;opacity:.07}
+@media(max-width:700px){body.fq-page .fq-chapter::before,body.fq-page .fq-chapter::after{width:clamp(120px,42vw,190px);opacity:.075}body.fq-page .fq-chapter:nth-of-type(4n+1)::before{left:-18vw}body.fq-page .fq-chapter:nth-of-type(4n+2)::after{right:-18vw}}
+@media(prefers-reduced-motion:reduce){body.fq-page .fq-chapter::before,body.fq-page .fq-chapter::after{filter:none}}
