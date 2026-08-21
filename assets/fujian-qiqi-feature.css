@@ -3428,3 +3428,157 @@ html[data-fq-motion="off"] .fq-act3-mark {
     background: Canvas;
   }
 }
+
+/* === Mobile dialogue/control stack repair · 2026-08-21 === */
+@media screen and (max-width: 780px) and (orientation: portrait) {
+  .fq-stage,
+  [data-fq-stage] {
+    --fq-mobile-control-height: 3.9rem;
+    --fq-mobile-status-height: 1.75rem;
+    --fq-mobile-stack-gap: .8rem;
+    padding-bottom: calc(
+      env(safe-area-inset-bottom)
+      + var(--fq-mobile-control-height)
+      + var(--fq-mobile-status-height)
+      + 1.7rem
+    );
+  }
+
+  /* One compact control row; status becomes a separate badge above it. */
+  .fq-scene-controls,
+  [data-scene-controls] {
+    z-index: 76;
+    right: max(.58rem, env(safe-area-inset-right));
+    bottom: calc(env(safe-area-inset-bottom) + .62rem);
+    left: max(.58rem, env(safe-area-inset-left));
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .34rem;
+    min-height: 0;
+    padding: .4rem;
+    overflow: visible;
+    border-radius: 17px;
+    background: rgba(21, 31, 34, .88);
+    box-shadow: 0 12px 32px rgba(7, 13, 16, .3);
+    backdrop-filter: blur(14px) saturate(.86);
+  }
+
+  .fq-scene-controls button,
+  [data-scene-controls] button {
+    min-width: 0;
+    min-height: 2.7rem;
+    padding: .45rem .22rem;
+    white-space: nowrap;
+    font-size: clamp(.66rem, 3vw, .76rem);
+  }
+
+  .fq-scene-status,
+  [data-scene-status] {
+    position: absolute;
+    top: calc(-1 * var(--fq-mobile-status-height) - .42rem);
+    left: 50%;
+    display: block;
+    width: max-content;
+    max-width: calc(100% - 1rem);
+    min-width: 0;
+    margin: 0;
+    padding: .32rem .75rem;
+    overflow: hidden;
+    border: 1px solid rgba(244, 226, 204, .24);
+    border-radius: 999px;
+    color: #f4e7d8;
+    background: rgba(18, 28, 31, .9);
+    box-shadow: 0 8px 24px rgba(7, 12, 15, .24);
+    font-size: .7rem;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transform: translateX(-50%);
+    backdrop-filter: blur(12px);
+  }
+
+  /* The dialogue bottom is calculated from the real control height. */
+  .fq-stage > .fq-dialogue,
+  .fq-dialogue,
+  [data-fq-dialogue] {
+    z-index: 72;
+    top: auto;
+    bottom: calc(
+      env(safe-area-inset-bottom)
+      + var(--fq-mobile-control-height)
+      + var(--fq-mobile-status-height)
+      + var(--fq-mobile-stack-gap)
+      + .62rem
+    );
+    width: min(calc(100% - 1.15rem), 34rem);
+    pointer-events: auto;
+  }
+
+  .fq-line,
+  [data-fq-line] {
+    max-height: min(29dvh, 12.75rem);
+    padding: .9rem 1rem;
+    overflow: auto;
+    overscroll-behavior: contain;
+    pointer-events: auto;
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body.fq-page .fq-act .fq-actors {
+    --fq-female-bottom: calc(
+      env(safe-area-inset-bottom)
+      + var(--fq-mobile-control-height)
+      + 1.25rem
+    );
+    --fq-male-bottom: calc(
+      env(safe-area-inset-bottom)
+      + var(--fq-mobile-control-height)
+      + 1.25rem
+    );
+  }
+
+  /* The global audio/motion pill gets out of the way while a play is visible. */
+  html.fq-theatre-focus .fq-audio-dock,
+  html.fq-theatre-focus [data-fq-audio-dock],
+  html.fq-theatre-focus [data-audio-dock] {
+    opacity: 0;
+    transform: translateY(calc(100% + 1.6rem));
+    pointer-events: none;
+  }
+}
+
+@media screen and (max-width: 380px) and (orientation: portrait) {
+  .fq-scene-controls button,
+  [data-scene-controls] button {
+    min-height: 2.55rem;
+    padding-inline: .12rem;
+    font-size: .64rem;
+    letter-spacing: 0;
+  }
+
+  .fq-stage > .fq-dialogue,
+  .fq-dialogue,
+  [data-fq-dialogue] {
+    width: calc(100% - .9rem);
+  }
+
+  .fq-line,
+  [data-fq-line] {
+    max-height: min(27dvh, 11.5rem);
+    font-size: .94rem;
+  }
+}
+
+@media screen and (max-width: 780px) and (orientation: portrait) and (max-height: 690px) {
+  .fq-stage,
+  [data-fq-stage] {
+    min-height: 720px;
+  }
+
+  .fq-line,
+  [data-fq-line] {
+    max-height: min(25dvh, 10.5rem);
+    line-height: 1.58;
+  }
+}

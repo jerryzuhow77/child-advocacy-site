@@ -2178,3 +2178,122 @@
     }, { once: true });
   });
 })();
+
+/* Mobile dialogue/control stack measurement · 2026-08-21 */
+(() => {
+  'use strict';
+
+  const ready = callback => {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', callback, { once: true });
+    } else {
+      callback();
+    }
+  };
+
+  ready(() => {
+    const html = document.documentElement;
+    const media = matchMedia('(max-width: 780px) and (orientation: portrait)');
+    const scenes = [...document.querySelectorAll('.fq-act[data-fq-scene], [data-fq-scene]')]
+      .filter((scene, index, list) => list.indexOf(scene) === index);
+    if (!scenes.length) return;
+
+    const ratios = new Map();
+    let resizeFrame = 0;
+
+    const syncScene = scene => {
+      if (!media.matches) return;
+      const stage = scene.querySelector('.fq-stage, [data-fq-stage]');
+      const controls = scene.querySelector('.fq-scene-controls, [data-scene-controls]');
+      if (!stage || !controls) return;
+      const rect = controls.getBoundingClientRect();
+      if (rect.height > 0) {
+        stage.style.setProperty('--fq-mobile-control-height', `${Math.ceil(rect.height)}px`);
+      }
+    };
+
+    const syncAll = () => {
+      resizeFrame = 0;
+      scenes.forEach(syncScene);
+    };
+
+    const scheduleSync = () => {
+      if (resizeFrame) cancelAnimationFrame(resizeFrame);
+      resizeFrame = requestAnimationFrame(syncAll);
+    };
+
+    const paintFocus = () => {
+      const visible = media.matches && [...ratios.values()].some(ratio => ratio >= .08);
+      html.classList.toggle('fq-theatre-focus', visible);
+    };
+
+    const intersectionObserver = 'IntersectionObserver' in window
+      ? new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            ratios.set(entry.target, entry.isIntersecting ? entry.intersectionRatio : 0);
+            if (entry.isIntersecting) syncScene(entry.target);
+          });
+          paintFocus();
+        }, { threshold: [0, .08, .18, .35], rootMargin: '-4% 0px -8% 0px' })
+      : null;
+
+    if (intersectionObserver) {
+      scenes.forEach(scene => intersectionObserver.observe(scene));
+    } else {
+      ratios.set(scenes[0], 1);
+      paintFocus();
+    }
+
+    const resizeObserver = 'ResizeObserver' in window
+      ? new ResizeObserver(entries => {
+          entries.forEach(entry => {
+            const scene = entry.target.closest('.fq-act[data-fq-scene], [data-fq-scene]');
+            if (scene) syncScene(scene);
+          });
+        })
+      : null;
+
+    scenes.forEach(scene => {
+      const controls = scene.querySelector('.fq-scene-controls, [data-scene-controls]');
+      if (controls && resizeObserver) resizeObserver.observe(controls);
+    });
+
+    const onViewportChange = () => {
+      if (!media.matches) {
+        html.classList.remove('fq-theatre-focus');
+        scenes.forEach(scene => {
+          const stage = scene.querySelector('.fq-stage, [data-fq-stage]');
+          if (stage) stage.style.removeProperty('--fq-mobile-control-height');
+        });
+      } else {
+        scheduleSync();
+        paintFocus();
+      }
+    };
+
+    if (typeof media.addEventListener === 'function') {
+      media.addEventListener('change', onViewportChange);
+    } else if (typeof media.addListener === 'function') {
+      media.addListener(onViewportChange);
+    }
+    window.addEventListener('resize', scheduleSync, { passive: true });
+    window.addEventListener('orientationchange', scheduleSync, { passive: true });
+    window.addEventListener('pageshow', scheduleSync);
+    scheduleSync();
+
+    window.addEventListener('pagehide', () => {
+      if (resizeFrame) cancelAnimationFrame(resizeFrame);
+      if (intersectionObserver) intersectionObserver.disconnect();
+      if (resizeObserver) resizeObserver.disconnect();
+      html.classList.remove('fq-theatre-focus');
+      window.removeEventListener('resize', scheduleSync);
+      window.removeEventListener('orientationchange', scheduleSync);
+      window.removeEventListener('pageshow', scheduleSync);
+      if (typeof media.removeEventListener === 'function') {
+        media.removeEventListener('change', onViewportChange);
+      } else if (typeof media.removeListener === 'function') {
+        media.removeListener(onViewportChange);
+      }
+    }, { once: true });
+  });
+})();
