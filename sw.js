@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-21-qiqi-notes-day4-location-key-v1';
+const VERSION = '2026-08-21-qiqi-mobile-actor-proportion-v1';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -19,6 +19,7 @@ const APP_SHELL = [
   './assets/home-gsap.js',
   './assets/activity-impact.js',
   './assets/home-view-counter-20260811.js',
+  './assets/home-view-counter-20260811.css',
   './assets/qiqi-classical-notes.js',
   './assets/vendor/gsap-3.13.0.min.js',
   './assets/vendor/ScrollTrigger-3.13.0.min.js',
