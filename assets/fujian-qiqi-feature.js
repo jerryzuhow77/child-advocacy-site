@@ -1842,3 +1842,126 @@
     };
   });
 })();
+
+/* Mobile theatre and ending visibility repair · 2026-08-21 */
+(() => {
+  'use strict';
+
+  const ready = callback => {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', callback, { once: true });
+    } else {
+      callback();
+    }
+  };
+
+  ready(() => {
+    const html = document.documentElement;
+    const ending = document.querySelector('.fq-ending');
+    if (!ending || ending.dataset.fqEndingRepairReady === 'true') return;
+    ending.dataset.fqEndingRepairReady = 'true';
+
+    let panorama = ending.querySelector('.fq-ending__panorama');
+    if (!panorama) {
+      panorama = document.createElement('div');
+      panorama.className = 'fq-ending__panorama';
+      panorama.setAttribute('aria-hidden', 'true');
+      ending.prepend(panorama);
+    }
+
+    ending.classList.add('has-ending-panorama', 'is-visible');
+
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const motionOff = html.dataset.fqMotion === 'off';
+    const compact = matchMedia('(max-width: 780px)').matches;
+    const gsap = window.gsap && typeof window.gsap.timeline === 'function' ? window.gsap : null;
+    let played = false;
+
+    const showStatic = () => {
+      ending.classList.remove('is-ending-animating');
+      ending.classList.add('is-ending-visible');
+      if (gsap) {
+        gsap.set(panorama, { clearProps: 'transform,opacity' });
+        gsap.set(ending.querySelectorAll('.fq-shell > *'), { clearProps: 'opacity,visibility,transform' });
+      }
+    };
+
+    const playEnding = () => {
+      if (played) return;
+      played = true;
+
+      if (!gsap || reduced || motionOff) {
+        showStatic();
+        return;
+      }
+
+      const kicker = ending.querySelector('.fq-shell > small');
+      const title = ending.querySelector('.fq-shell > h2');
+      const copy = ending.querySelector('.fq-shell > p');
+      const seal = ending.querySelector('.fq-ending__seal');
+      const actions = ending.querySelector('.fq-ending__actions');
+      const pieces = [kicker, title, copy, seal, actions].filter(Boolean);
+
+      ending.classList.add('is-ending-animating');
+      const timeline = gsap.timeline({
+        defaults: { ease: 'power2.out' },
+        onComplete: showStatic
+      });
+
+      timeline.fromTo(
+        panorama,
+        {
+          scale: compact ? 1.13 : 1.08,
+          xPercent: compact ? 1.8 : .6,
+          yPercent: compact ? -1 : 0,
+          autoAlpha: .86
+        },
+        {
+          scale: 1,
+          xPercent: 0,
+          yPercent: 0,
+          autoAlpha: 1,
+          duration: compact ? 6.4 : 7.2,
+          ease: 'power1.out'
+        },
+        0
+      );
+
+      timeline.fromTo(
+        pieces,
+        { autoAlpha: 0, y: compact ? 20 : 26 },
+        { autoAlpha: 1, y: 0, duration: .85, stagger: .18 },
+        .28
+      );
+
+      if (seal) {
+        timeline.fromTo(
+          seal,
+          { scale: .78, rotation: -15 },
+          { scale: 1, rotation: -5, duration: .9, ease: 'back.out(1.7)' },
+          .96
+        );
+      }
+    };
+
+    const focusObserver = 'IntersectionObserver' in window
+      ? new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            html.classList.toggle('fq-ending-focus', entry.isIntersecting && entry.intersectionRatio > .12);
+            if (entry.isIntersecting) playEnding();
+          });
+        }, { threshold: [0, .12, .35], rootMargin: '0px 0px -6% 0px' })
+      : null;
+
+    if (focusObserver) {
+      focusObserver.observe(ending);
+    } else {
+      playEnding();
+    }
+
+    window.addEventListener('pagehide', () => {
+      if (focusObserver) focusObserver.disconnect();
+      html.classList.remove('fq-ending-focus');
+    }, { once: true });
+  });
+})();

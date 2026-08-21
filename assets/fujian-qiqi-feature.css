@@ -2939,3 +2939,249 @@ body.fq-page .fq-ending .fq-shell>*{max-width:650px}body.fq-page .fq-ending smal
     transform: none !important;
   }
 }
+
+/* === Mobile theatre and ending visibility repair · 2026-08-21 === */
+@media screen {
+  body.fq-page .fq-ending {
+    isolation: isolate;
+  }
+
+  body.fq-page .fq-ending.has-ending-panorama {
+    background-image: none;
+    background-color: #26343a;
+  }
+
+  body.fq-page .fq-ending__panorama {
+    position: absolute;
+    z-index: 0;
+    inset: -4%;
+    pointer-events: none;
+    background-image: url("fujian-qiqi/ending-panorama-20260820.webp");
+    background-position: center 54%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transform: scale(1.07);
+    transform-origin: 50% 50%;
+  }
+
+  body.fq-page .fq-ending.has-ending-panorama::before,
+  body.fq-page .fq-ending.has-ending-panorama::after {
+    z-index: 1;
+  }
+
+  body.fq-page .fq-ending.has-ending-panorama .fq-shell {
+    z-index: 2;
+  }
+
+  body.fq-page .fq-ending.is-ending-animating .fq-ending__panorama {
+    will-change: transform, opacity;
+  }
+
+  body.fq-page .fq-ending.is-ending-visible .fq-ending__panorama {
+    will-change: auto;
+  }
+}
+
+@media screen and (max-width: 780px) {
+  :root {
+    --fq-mobile-audio-dock-space: 4.15rem;
+    --fq-mobile-scene-controls-space: 9.9rem;
+  }
+
+  /* Never leave the epilogue hidden if a mobile reveal observer is late. */
+  html.fq-motion-ready body.fq-page .fq-ending[data-fq-reveal]:not(.is-visible) {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Keep the global audio controls compact so they do not cover the play controls. */
+  .fq-audio-dock,
+  [data-fq-audio-dock],
+  [data-audio-dock] {
+    right: max(8px, env(safe-area-inset-right));
+    bottom: calc(8px + env(safe-area-inset-bottom));
+    left: auto;
+    display: flex;
+    width: auto;
+    max-width: calc(100vw - 16px);
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: .3rem;
+    padding: .34rem .42rem;
+    border-radius: 999px;
+    transition: opacity .28s ease, transform .28s ease;
+  }
+
+  [data-audio-state] {
+    display: none;
+  }
+
+  .fq-motion-control {
+    order: initial;
+    width: auto;
+    flex: 0 1 auto;
+    justify-content: flex-start;
+    margin: 0;
+    padding: .12rem;
+  }
+
+  .fq-motion-control > span {
+    display: none;
+  }
+
+  .fq-motion-control button {
+    min-height: 2.05rem;
+    padding: .32rem .48rem;
+    font-size: .64rem;
+  }
+
+  [data-audio-dock] [data-audio-toggle],
+  [data-fq-audio-toggle] {
+    min-width: 2.25rem;
+    min-height: 2.25rem;
+    padding: .36rem .52rem;
+  }
+
+  /* Reserve separate vertical lanes for dialogue, scene controls and audio. */
+  .fq-stage,
+  [data-fq-stage] {
+    min-height: clamp(760px, 104dvh, 940px);
+    padding-bottom: calc(env(safe-area-inset-bottom) + 10.8rem);
+  }
+
+  .fq-stage > .fq-dialogue,
+  .fq-dialogue,
+  [data-fq-dialogue] {
+    z-index: 66;
+    top: auto;
+    bottom: calc(env(safe-area-inset-bottom) + var(--fq-mobile-scene-controls-space));
+    left: 50%;
+    width: min(calc(100% - 1.25rem), 34rem);
+    min-height: 0;
+    transform: translateX(-50%);
+    pointer-events: auto;
+    touch-action: pan-y;
+  }
+
+  .fq-line,
+  [data-fq-line] {
+    max-height: min(31dvh, 14rem);
+    overflow: auto;
+    overscroll-behavior: contain;
+    pointer-events: auto;
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .fq-scene-controls,
+  [data-scene-controls] {
+    z-index: 72;
+    bottom: calc(env(safe-area-inset-bottom) + var(--fq-mobile-audio-dock-space));
+  }
+
+  body.fq-page .fq-act .fq-actors {
+    --fq-female-bottom: calc(env(safe-area-inset-bottom) + 8.8rem);
+    --fq-male-bottom: calc(env(safe-area-inset-bottom) + 8.8rem);
+  }
+
+  /* Give the panorama its own real animated layer on phones. */
+  body.fq-page .fq-ending {
+    min-height: max(760px, 100dvh);
+    padding: clamp(12rem, 31dvh, 18rem) 0 calc(4.5rem + env(safe-area-inset-bottom));
+  }
+
+  body.fq-page .fq-ending__panorama {
+    inset: -6%;
+    background-position: 62% center;
+    transform: scale(1.12) translate3d(1.5%, -1%, 0);
+  }
+
+  body.fq-page .fq-ending .fq-shell {
+    width: min(calc(100% - 28px), 1500px);
+  }
+
+  body.fq-page .fq-ending__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    max-width: 32rem;
+  }
+
+  body.fq-page .fq-ending__actions a {
+    display: grid;
+    min-height: 2.8rem;
+    place-items: center;
+    text-align: center;
+  }
+
+  /* The floating toolbar leaves the screen while the epilogue is in view. */
+  html.fq-ending-focus .fq-audio-dock,
+  html.fq-ending-focus [data-fq-audio-dock],
+  html.fq-ending-focus [data-audio-dock] {
+    opacity: 0;
+    transform: translateY(calc(100% + 1.5rem));
+    pointer-events: none;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  [data-audio-dock] [data-audio-toggle] > b,
+  [data-fq-audio-toggle] > b {
+    display: none;
+  }
+
+  .fq-motion-control button {
+    padding-inline: .4rem;
+    font-size: .61rem;
+  }
+
+  body.fq-page .fq-ending__actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 780px) and (max-height: 560px) and (orientation: landscape) {
+  :root {
+    --fq-mobile-audio-dock-space: 3.75rem;
+  }
+
+  .fq-stage,
+  [data-fq-stage] {
+    min-height: 560px;
+    padding-bottom: 8.8rem;
+  }
+
+  .fq-stage > .fq-dialogue,
+  .fq-dialogue,
+  [data-fq-dialogue] {
+    right: .75rem;
+    bottom: calc(env(safe-area-inset-bottom) + 4.2rem);
+    left: auto;
+    width: min(45vw, 22rem);
+    transform: none;
+  }
+
+  .fq-scene-controls,
+  [data-scene-controls] {
+    right: auto;
+    width: min(48vw, 24rem);
+  }
+
+  body.fq-page .fq-ending {
+    min-height: 560px;
+    padding: 7rem 0 3.6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.fq-page .fq-ending__panorama {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+@media (forced-colors: active) {
+  body.fq-page .fq-ending__panorama {
+    display: none;
+  }
+}
