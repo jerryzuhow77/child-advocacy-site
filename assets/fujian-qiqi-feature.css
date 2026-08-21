@@ -4158,6 +4158,23 @@ html.fq-theatre-focus [data-audio-dock] {
 .fq-guide__links small { font-size: .82rem; line-height: 1.55; }
 .fq-social-finale__links span { font-size: .84rem; line-height: 1.55; }
 
+/* The supplied Minnan cultural seals become a quiet, enlarged paper
+   watermark. The centre is masked more heavily so long-form copy remains
+   dominant, while the outer field retains the hand-printed detail. */
+body.fq-page::after {
+  opacity: .092;
+  background-image:
+    linear-gradient(90deg, rgba(255, 255, 255, .22), transparent 18%, transparent 82%, rgba(113, 91, 81, .08)),
+    url("fujian-qiqi/fujian-minnan-cultural-seals-background-20260821.webp");
+  background-position: center, center top;
+  background-repeat: no-repeat, repeat-y;
+  background-size: 100% 100%, clamp(920px, 105vw, 1600px) auto;
+  filter: saturate(.74) contrast(.92);
+  mix-blend-mode: multiply;
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, .38) 0 40%, rgba(0, 0, 0, .72) 70%, #000 100%);
+  mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, .38) 0 40%, rgba(0, 0, 0, .72) 70%, #000 100%);
+}
+
 @media screen and (max-width: 780px) {
   .fq-hero,
   [data-fq-hero] {
@@ -4175,24 +4192,25 @@ html.fq-theatre-focus [data-audio-dock] {
       linear-gradient(90deg, rgba(25, 30, 31, .68), rgba(25, 30, 31, .14) 84%);
   }
 
-  /* Source images are 298:482 and 405:493. The paired widths below render
-     both adults at the same visual height instead of making the woman ~33% taller. */
+  /* Transparent-edge measurement matters more than raw canvas size here:
+     standing poses average about 443px (female) and 481px (male) of painted
+     height. A 1.255 width ratio keeps their visible bodies aligned on phones. */
   body.fq-page .fq-act .fq-actors {
     --fq-female-width: clamp(148px, 42vw, 315px);
-    --fq-male-width: clamp(196px, 55.8vw, 418px);
+    --fq-male-width: clamp(186px, 52.7vw, 395px);
   }
 
   body.fq-page .fq-act:not([data-act="4"]) .fq-actors {
     --fq-female-left: -4vw;
     --fq-female-right: auto;
     --fq-male-left: auto;
-    --fq-male-right: -6vw;
+    --fq-male-right: -4.5vw;
   }
 
   body.fq-page .fq-act[data-act="4"] .fq-actors {
     --fq-female-left: auto;
     --fq-female-right: -4vw;
-    --fq-male-left: -6vw;
+    --fq-male-left: -4.5vw;
     --fq-male-right: auto;
   }
 
@@ -4210,6 +4228,12 @@ html.fq-theatre-focus [data-audio-dock] {
   .fq-page-ronghua--04 .fq-page-ronghua__art { top: 3%; left: -29vw; right: auto; }
   .fq-page-ronghua--05 .fq-page-ronghua__art { right: -27vw; bottom: -8%; left: auto; }
   .fq-page-ronghua--06 .fq-page-ronghua__art { left: -26vw; bottom: -13%; right: auto; }
+
+  body.fq-page::after {
+    opacity: .105;
+    background-position: center, center 7svh;
+    background-size: 100% 100%, clamp(760px, 190vw, 1060px) auto;
+  }
 
   .fq-language a,
   .fq-motion-control button,
@@ -4231,7 +4255,7 @@ html.fq-theatre-focus [data-audio-dock] {
 @media screen and (max-width: 480px) {
   body.fq-page .fq-act .fq-actors {
     --fq-female-width: clamp(136px, 42vw, 205px);
-    --fq-male-width: clamp(181px, 55.8vw, 272px);
+    --fq-male-width: clamp(171px, 52.7vw, 257px);
   }
 
   html[lang^="en"] .fq-guide__links,
