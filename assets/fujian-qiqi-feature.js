@@ -17,6 +17,26 @@
     const doc = document;
     const html = doc.documentElement;
     const body = doc.body;
+    const canonicalHref = doc.querySelector('link[rel="canonical"]')?.href || location.href;
+    let canonicalPath = location.pathname.toLowerCase();
+    try { canonicalPath = new URL(canonicalHref, location.href).pathname.toLowerCase(); } catch (_error) {}
+    const staticLanguage = canonicalPath.includes('/zh-hans/')
+      ? 'zh-Hans'
+      : canonicalPath.includes('/en/')
+        ? 'en'
+        : canonicalPath.includes('/ja/')
+          ? 'ja'
+          : 'zh-Hant';
+    /* The shared Traditional/Simplified converter normally follows a stored
+       site preference. This feature has four canonical static pages, so the
+       URL's language must win when someone arrives through a direct link. */
+    html.lang = staticLanguage;
+    try { localStorage.setItem('siteLang', staticLanguage); } catch (_error) {}
+    doc.querySelectorAll('.fq-language a, .language-switcher a').forEach(anchor => {
+      const isCurrent = anchor.getAttribute('href') === './';
+      if (isCurrent) anchor.setAttribute('aria-current', 'true');
+      else anchor.removeAttribute('aria-current');
+    });
     const root = doc.querySelector('[data-fq-page]') || body;
     const scenes = [...doc.querySelectorAll('.fq-act[data-fq-scene], [data-fq-scene]')]
       .filter((scene, index, collection) => collection.indexOf(scene) === index);
@@ -1843,7 +1863,7 @@
     });
 
     window.FujianQiqiFeature = {
-      version: '1.3.5',
+      version: '1.3.6',
       play(target) {
         const state = stateFor(target);
         return state ? playScene(state) : false;
