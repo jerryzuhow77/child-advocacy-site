@@ -1,0 +1,42 @@
+{
+  "site_name": "全球守護留言牆",
+  "site_url": "https://global-protection.jerryzuhow77.chatgpt.site/",
+  "project_id": "appgprj_6a81f66ab7148191b10fc07c159948aa",
+  "requested_at": "2026-08-21",
+  "owner_authorization": "apply, validate, and publish after all regression checks pass",
+  "source_requirement": "latest current ChatGPT Sites project source",
+  "package_type": "merge-only frontend handoff",
+  "production_data_must_remain_unchanged": true,
+  "expected_changed_areas": [
+    "current homepage component UX logic",
+    "current global stylesheet homepage optimization layer"
+  ],
+  "protected_areas": [
+    ".openai/hosting.json",
+    "D1 bindings and data",
+    "database schema and migrations",
+    "authentication and OAuth callbacks",
+    "submission, photo, moderation, notification and counter APIs",
+    "PWA manifest and service worker",
+    "environment variables and secrets"
+  ],
+  "automation_checked_at": "2026-08-21T12:20:00+08:00",
+  "production_deployed": false,
+  "production_unchanged": true,
+  "automation_result": "handoff_ready_but_sites_publish_surface_not_available_in_this_chat",
+  "verified_constraints": {
+    "standalone_sites_cli_available": false,
+    "sites_connector_available_in_current_chat": false,
+    "authenticated_sites_web_session_available_to_web_tool": false,
+    "github_backup_repo_write_access_for_connected_account": false
+  },
+  "durable_handoff": {
+    "chatgpt_library_folder": "/Sites/Global-Protection",
+    "package": "/Sites/Global-Protection/Global-Protection_Sites_Auto-Handoff_20260821.zip",
+    "request": "/Sites/Global-Protection/SITE_UPDATE_REQUEST_20260821.md",
+    "github_repository": "jerryzuhow77/child-advocacy-site",
+    "github_branch": "handoff/global-protection-home-ux-20260821",
+    "github_commit": "6fa3bd7b7212a7111b39ab04110a99776741811b"
+  },
+  "remaining_required_surface": "Open the existing Site in ChatGPT web or desktop so the Site reference and publish control are attached; then run the prepared request."
+}
