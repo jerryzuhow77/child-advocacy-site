@@ -1,0 +1,144 @@
+name: Correct Day 4 Site B residence attribution
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-day4-location-owner-correction.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: day4-location-owner-correction
+  cancel-in-progress: false
+
+jobs:
+  correct:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Correct Site B attribution and refresh caches
+        shell: bash
+        run: |
+          set -euo pipefail
+          git pull --rebase origin main
+
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path('.')
+          crosscheck = root / 'hearing-records/prison-watch/kaikai-day4-20250428/day4-crosscheck.js'
+          text = crosscheck.read_text(encoding='utf-8')
+
+          replacements = [
+              ('疑為劉若琳居所', '疑為劉彩萱居所'),
+              ('可能是劉若琳居所', '可能是劉彩萱居所'),
+              ('這與同份第四日紀錄將丙地（4號3樓）稱為劉若琳住處的文字不一致，待正式筆錄、判決或圖面確認。',
+               '這與第四日原始紀錄所述「劉彩萱晚間與A童在乙地睡覺」相互呼應；完整門牌與居所性質仍待正式筆錄、判決或圖面確認。'),
+              ('甲、丙依2025年4月28日原始紀錄；乙加入二審旁聽補充。乙、丙與劉若琳居所的對應目前有衝突，現階段並列兩種來源，不直接定論。',
+               '甲、丙依2025年4月28日原始紀錄；乙加入二審旁聽補充。乙地疑為劉彩萱居所，完整門牌與居所性質仍待正式資料確認。'),
+              ('「甲地、乙地、丙地」是庭審使用的地點代稱。不同庭審階段的空間描述目前出現不一致；本頁並列第四日原始紀錄與二審旁聽補充，未經正式筆錄確認的部分會明確標示。',
+               '「甲地、乙地、丙地」是庭審使用的地點代稱。本頁並列第四日原始紀錄與二審旁聽補充；二審補充提供較具體的相鄰棟位置，未經正式筆錄確認的部分會明確標示。'),
+              ('由於第四日紀錄同時將丙地（4號3樓）稱為劉若琳住處，兩種標示目前有衝突，待正式資料確認。',
+               '此補充與第四日紀錄所述乙地為夜間睡覺處相互呼應；完整門牌與居所性質仍待正式資料確認。'),
+              ('閱讀界線｜甲、丙依第四日原始紀錄；乙含二審旁聽補充。乙、丙與劉若琳居所的對應仍待正式筆錄、判決或圖面確認。',
+               '閱讀界線｜甲、丙依第四日原始紀錄；乙含二審旁聽補充。乙地疑為劉彩萱居所；完整門牌與居所性質仍待正式筆錄、判決或圖面確認。'),
+              ('possibly Liu Ruo-lin’s residence', 'possibly Liu Tsai-hsuan’s residence'),
+              ('may be Liu Ruo-lin’s residence', 'may be Liu Tsai-hsuan’s residence'),
+              ('This conflicts with the Day 4 wording that identifies Site C (No. 4, 3F) as her residence, so formal minutes, judgment materials or a site plan are still needed.',
+               'This is consistent with the Day 4 record describing Site B as the overnight sleeping location; the complete address and residential status still require confirmation in formal minutes, judgment materials or a site plan.'),
+              ('The current mapping of Liu Ruo-lin’s residence between Sites B and C conflicts, so both sources are shown without a final conclusion.',
+               'Site B is noted as possibly Liu Tsai-hsuan’s residence, while Site C follows the Day 4 record as Liu Ruo-lin’s residence; Site B’s complete address and residential status remain unconfirmed.'),
+              ('The spatial descriptions are not fully consistent across stages, so this page presents both the Day 4 source record and the appeal-hearing observation, with unconfirmed details clearly marked.',
+               'This page presents both the Day 4 source record and the more specific appeal-hearing observation, with unconfirmed details clearly marked.'),
+              ('Because Site C is also identified as her residence in the Day 4 record, the mapping remains unresolved pending formal materials.',
+               'This complements the Day 4 description of Site B as the overnight sleeping location; its complete address and residential status remain subject to formal confirmation.'),
+              ('The B/C residence mapping remains subject to confirmation in formal minutes, judgment materials or a site plan.',
+               'Site B is noted as possibly Liu Tsai-hsuan’s residence; its complete address and residential status remain subject to confirmation in formal minutes, judgment materials or a site plan.'),
+              ('劉若琳の住居の可能性', '劉彩萱の住居の可能性'),
+              ('劉若琳の住居である可能性', '劉彩萱の住居である可能性'),
+              ('ただし同じ第4日記録は丙地（4号3階）を劉若琳の住居としており、表示が一致しないため、正式な調書・判決資料・配置図での確認が必要である。',
+               'これは第4日記録が乙地を夜間の就寝場所としていることとも整合するが、完全な住所と住居としての位置付けは正式な調書・判決資料・配置図での確認が必要である。'),
+              ('乙地と丙地のどちらが劉若琳の住居に対応するかは現在不一致があり、結論を確定しない。',
+               '乙地は劉彩萱の住居の可能性、丙地は第4日原記録に基づき劉若琳の住居として表示し、乙地の完全な住所と住居としての位置付けは未確認とする。'),
+              ('審理段階によって空間説明に不一致があるため、第4日の原記録と控訴審傍聴での補足を併記し、未確認部分を明示する。',
+               '第4日の原記録と、より具体的な控訴審傍聴での補足を併記し、未確認部分を明示する。')
+          ]
+
+          changed = 0
+          for old, new in replacements:
+              if old in text:
+                  text = text.replace(old, new)
+                  changed += 1
+
+          if changed < 12:
+              raise SystemExit(f'Only {changed} location corrections applied; expected at least 12')
+
+          forbidden = [
+              '疑為劉若琳居所',
+              '可能是劉若琳居所',
+              'possibly Liu Ruo-lin’s residence',
+              'may be Liu Ruo-lin’s residence',
+              '劉若琳の住居の可能性',
+              '劉若琳の住居である可能性'
+          ]
+          remains = [value for value in forbidden if value in text]
+          if remains:
+              raise SystemExit(f'Incorrect Site B attribution remains: {remains}')
+
+          required = [
+              '疑為劉彩萱居所',
+              'possibly Liu Tsai-hsuan’s residence',
+              '劉彩萱の住居の可能性',
+              '4號3樓・劉若琳住處'
+          ]
+          missing = [value for value in required if value not in text]
+          if missing:
+              raise SystemExit(f'Required corrected wording missing: {missing}')
+
+          crosscheck.write_text(text, encoding='utf-8')
+
+          def bump(path: Path, pattern: str, replacement: str) -> None:
+              if not path.exists():
+                  return
+              value = path.read_text(encoding='utf-8')
+              value, count = re.subn(pattern, replacement, value, count=1)
+              if count != 1:
+                  raise SystemExit(f'Cache-bust anchor missing in {path}')
+              path.write_text(value, encoding='utf-8')
+
+          bump(
+              root / 'hearing-records/prison-watch/kaikai-day3-20250425/day3-reading-core-20260821.js',
+              r"day4-crosscheck\.js\?v=[^']+",
+              'day4-crosscheck.js?v=20260821-location-owner-corrected-3'
+          )
+          bump(
+              root / 'hearing-records/prison-watch/kaikai-day3-20250425/day3-reading.js',
+              r"day3-reading-core-20260821\.js\?v=[^']+",
+              'day3-reading-core-20260821.js?v=20260821-shared-location-owner-corrected-3'
+          )
+          bump(
+              root / 'sw.js',
+              r"const VERSION = '[^']+';",
+              "const VERSION = '2026-08-21-day4-location-owner-corrected-v3';"
+          )
+          PY
+
+          node --check hearing-records/prison-watch/kaikai-day4-20250428/day4-crosscheck.js
+          node --check hearing-records/prison-watch/kaikai-day3-20250425/day3-reading-core-20260821.js
+          node --check hearing-records/prison-watch/kaikai-day3-20250425/day3-reading.js
+          node --check sw.js
+
+          rm -f .github/workflows/oneoff-day4-location-owner-correction.yml
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Correct Site B as possible Liu Tsai-hsuan residence'
+          git pull --rebase origin main
+          git push origin main
