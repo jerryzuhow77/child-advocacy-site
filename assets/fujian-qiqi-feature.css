@@ -4198,6 +4198,11 @@ body.fq-page::after {
   transform-origin: center;
 }
 
+body.fq-page .fq-cultural-seal-host > .fq-cultural-corner-seal {
+  position: absolute;
+  z-index: 1;
+}
+
 .fq-cultural-corner-seal img {
   display: block;
   width: 100%;
