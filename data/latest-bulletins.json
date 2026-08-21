@@ -1,0 +1,224 @@
+{
+  "version": 1,
+  "generatedAt": "2026-08-21T12:00:00+08:00",
+  "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
+  "items": [
+    {
+      "id": "kaikai-day4-20250428",
+      "publishedAt": "2026-08-21",
+      "tag": "COURT RECORD",
+      "badge": {
+        "zh-Hant": "旁聽紀錄",
+        "zh-Hans": "旁听记录",
+        "en": "Court record",
+        "ja": "傍聴記録"
+      },
+      "title": {
+        "zh-Hant": "第四次審判期日",
+        "zh-Hans": "第四次审判期日",
+        "en": "Fourth Trial Date",
+        "ja": "第4回公判期日"
+      },
+      "summary": {
+        "zh-Hant": "兩位證人、三處動線與傷勢通報。",
+        "zh-Hans": "两位证人、三处动线与伤势通报。",
+        "en": "Two witnesses, three movement routes, and injury reporting.",
+        "ja": "2人の証人、3つの動線、傷害の通報を記録。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day4-20250428/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day4-20250428/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/hearing-records/prison-watch/kaikai-day4-20250428/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/hearing-records/prison-watch/kaikai-day4-20250428/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day4-hearing-poster-clay-20260821-v2.webp",
+      "imageAlt": {
+        "zh-Hant": "第四次審判期日重製編輯筆記主視覺",
+        "zh-Hans": "第四次审判期日重制编辑笔记主视觉",
+        "en": "Cover artwork for the reconstructed notes from the fourth trial date",
+        "ja": "第4回公判期日の再構成編集記録のメインビジュアル"
+      }
+    },
+    {
+      "id": "kaikai-story-collection-20260820",
+      "publishedAt": "2026-08-20",
+      "tag": "PUBLIC ACTION",
+      "badge": {
+        "zh-Hant": "置頂活動",
+        "zh-Hans": "置顶活动",
+        "en": "Featured activity",
+        "ja": "注目の活動"
+      },
+      "title": {
+        "zh-Hant": "讓我們一起寫下剴剴的故事",
+        "zh-Hans": "让我们一起写下剀剀的故事",
+        "en": "Let Us Write Kai-Kai's Story Together",
+        "ja": "一緒にカイカイの物語を書き残そう"
+      },
+      "summary": {
+        "zh-Hant": "留下你的感受、疑問與對改變的期待。",
+        "zh-Hans": "留下你的感受、疑问与对改变的期待。",
+        "en": "Share your feelings, questions, and hopes for change.",
+        "ja": "感じたこと、疑問、変化への願いをお寄せください。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260820-kaikai-story-collection/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260820-kaikai-story-collection/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/activity-records/20260820-kaikai-story-collection/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/activity-records/20260820-kaikai-story-collection/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260820-kaikai-story-collection/images/kaikai-story-collection-hero.webp",
+      "imageAlt": {
+        "zh-Hant": "一起寫下剴剴故事的心得募集主視覺",
+        "zh-Hans": "一起写下剀剀故事的心得征集主视觉",
+        "en": "Campaign artwork inviting the public to write Kai-Kai's story",
+        "ja": "カイカイの物語を共に書き残す投稿企画のビジュアル"
+      },
+      "className": "is-story-collection"
+    },
+    {
+      "id": "ketagalan-rally-20260801",
+      "publishedAt": "2026-08-20",
+      "tag": "ACTIVITY RECORD",
+      "badge": {
+        "zh-Hant": "活動紀錄",
+        "zh-Hans": "活动记录",
+        "en": "Activity record",
+        "ja": "活動記録"
+      },
+      "title": {
+        "zh-Hant": "反毒駕、反酒駕．凱道大遊行",
+        "zh-Hans": "反毒驾、反酒驾．凯道大游行",
+        "en": "Ketagalan Boulevard Rally Against Drugged and Drunk Driving",
+        "ja": "薬物・飲酒運転に反対するケタガラン大通り集会"
+      },
+      "summary": {
+        "zh-Hant": "被害者家屬支持與兒少保護倡議。",
+        "zh-Hans": "受害者家属支持与儿童保护倡议。",
+        "en": "Support for victims' families and advocacy for child protection.",
+        "ja": "被害者家族への支援と子どもの保護を訴える活動。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260801-ketagal-rally/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260801-ketagal-rally/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/activity-records/20260801-ketagal-rally/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/activity-records/20260801-ketagal-rally/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/rally-20260801-ai-poster.jpg",
+      "imageAlt": {
+        "zh-Hant": "反毒駕、反酒駕凱道大遊行現場紀錄",
+        "zh-Hans": "反毒驾、反酒驾凯道大游行现场记录",
+        "en": "Record of the rally against drugged and drunk driving",
+        "ja": "薬物・飲酒運転に反対する集会の記録"
+      }
+    },
+    {
+      "id": "fu-junxiang-case",
+      "publishedAt": "2026-08-16",
+      "tag": "HISTORICAL CASE",
+      "badge": {
+        "zh-Hant": "歷史案件",
+        "zh-Hans": "历史案件",
+        "en": "Historical case",
+        "ja": "過去の事件"
+      },
+      "title": {
+        "zh-Hant": "傅小弟案",
+        "zh-Hans": "傅小弟案",
+        "en": "The Fu Jun-Xiang Case",
+        "ja": "傅君翔事件"
+      },
+      "summary": {
+        "zh-Hant": "公開歷審資料與制度脈絡。",
+        "zh-Hans": "公开历审资料与制度脉络。",
+        "en": "Public court records and the surrounding institutional context.",
+        "ja": "公開された裁判記録と制度的背景を整理。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/historical-cases/regions/taiwan/fu-junxiang/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/historical-cases/regions/taiwan/fu-junxiang/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/historical-cases/regions/taiwan/fu-junxiang/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/historical-cases/regions/taiwan/fu-junxiang/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/fu-xiaodi-care-ledger-20260816.svg",
+      "imageAlt": {
+        "zh-Hant": "傅小弟案照護紀錄主視覺",
+        "zh-Hans": "傅小弟案照护记录主视觉",
+        "en": "Care-record artwork for the Fu Jun-Xiang case",
+        "ja": "傅君翔事件のケア記録を表すビジュアル"
+      }
+    },
+    {
+      "id": "wanghao-case",
+      "publishedAt": "2026-08-16",
+      "tag": "HISTORICAL CASE",
+      "badge": {
+        "zh-Hant": "歷史案件",
+        "zh-Hans": "历史案件",
+        "en": "Historical case",
+        "ja": "過去の事件"
+      },
+      "title": {
+        "zh-Hant": "王昊案",
+        "zh-Hans": "王昊案",
+        "en": "The Wang Hao Case",
+        "ja": "王昊事件"
+      },
+      "summary": {
+        "zh-Hant": "名字寫進法條之後，守護仍不能停在紙上。",
+        "zh-Hans": "名字写进法条之后，守护仍不能停在纸上。",
+        "en": "Even after a name enters the law, protection cannot stop on paper.",
+        "ja": "名前が法文に刻まれた後も、保護を紙の上で止めない。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/historical-cases/regions/taiwan/wanghao/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/historical-cases/regions/taiwan/wanghao/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/historical-cases/regions/taiwan/wanghao/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/historical-cases/regions/taiwan/wanghao/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/images/wanghao-home-case-guide-v3.webp",
+      "imageAlt": {
+        "zh-Hant": "王昊案歷史案件專題導讀",
+        "zh-Hans": "王昊案历史案件专题导读",
+        "en": "Guide artwork for the historical Wang Hao case",
+        "ja": "王昊事件の特集ガイド"
+      }
+    },
+    {
+      "id": "xuanxuan-case",
+      "publishedAt": "2026-08-14",
+      "tag": "CASE FEATURE",
+      "badge": {
+        "zh-Hant": "案件專題",
+        "zh-Hans": "案件专题",
+        "en": "Case feature",
+        "ja": "事件特集"
+      },
+      "title": {
+        "zh-Hant": "萱萱案",
+        "zh-Hans": "萱萱案",
+        "en": "The Xuan-Xuan Case",
+        "ja": "シュエンシュエン事件"
+      },
+      "summary": {
+        "zh-Hant": "五次警訊與安全確認。",
+        "zh-Hans": "五次警讯与安全确认。",
+        "en": "Five warning signs and the failures of safety checks.",
+        "ja": "5回の警告サインと安全確認を検証。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/cases/xuanxuan/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/cases/xuanxuan/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/cases/xuanxuan/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/cases/xuanxuan/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/xuanxuan-home-documentary-20260814.webp",
+      "imageAlt": {
+        "zh-Hant": "萱萱案紀錄片風格主視覺",
+        "zh-Hans": "萱萱案纪录片风格主视觉",
+        "en": "Documentary-style artwork for the Xuan-Xuan case",
+        "ja": "シュエンシュエン事件のドキュメンタリー風ビジュアル"
+      }
+    }
+  ]
+}
