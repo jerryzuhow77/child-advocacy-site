@@ -12,7 +12,7 @@
     document.head.append(script);
   });
 
-  const sharedReader = new URL('./day3-reading-core-20260821.js?v=20260821-shared-dialogue-art-1', base).href;
+  const sharedReader = new URL('./day3-reading-core-20260821.js?v=20260821-shared-soft-note-1', base).href;
   if (isDay4) {
     load(sharedReader).catch(error => console.error('Shared Day 4 reader failed to load', error));
     return;
