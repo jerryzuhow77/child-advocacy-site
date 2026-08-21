@@ -1,0 +1,446 @@
+name: Repair Qiqi mobile ending and theatre dialogue
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-qiqi-mobile-ending-dialogue.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: child-advocacy-site-sitemap
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Patch the consolidated feature CSS and JavaScript
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          css_path = Path('assets/fujian-qiqi-feature.css')
+          js_path = Path('assets/fujian-qiqi-feature.js')
+
+          css_marker = '/* === Mobile theatre and ending visibility repair · 2026-08-21 === */'
+          css_patch = r'''
+          /* === Mobile theatre and ending visibility repair · 2026-08-21 === */
+          @media screen {
+            body.fq-page .fq-ending {
+              isolation: isolate;
+            }
+
+            body.fq-page .fq-ending.has-ending-panorama {
+              background-image: none;
+              background-color: #26343a;
+            }
+
+            body.fq-page .fq-ending__panorama {
+              position: absolute;
+              z-index: 0;
+              inset: -4%;
+              pointer-events: none;
+              background-image: url("fujian-qiqi/ending-panorama-20260820.webp");
+              background-position: center 54%;
+              background-repeat: no-repeat;
+              background-size: cover;
+              transform: scale(1.07);
+              transform-origin: 50% 50%;
+            }
+
+            body.fq-page .fq-ending.has-ending-panorama::before,
+            body.fq-page .fq-ending.has-ending-panorama::after {
+              z-index: 1;
+            }
+
+            body.fq-page .fq-ending.has-ending-panorama .fq-shell {
+              z-index: 2;
+            }
+
+            body.fq-page .fq-ending.is-ending-animating .fq-ending__panorama {
+              will-change: transform, opacity;
+            }
+
+            body.fq-page .fq-ending.is-ending-visible .fq-ending__panorama {
+              will-change: auto;
+            }
+          }
+
+          @media screen and (max-width: 780px) {
+            :root {
+              --fq-mobile-audio-dock-space: 4.15rem;
+              --fq-mobile-scene-controls-space: 9.9rem;
+            }
+
+            /* Never leave the epilogue hidden if a mobile reveal observer is late. */
+            html.fq-motion-ready body.fq-page .fq-ending[data-fq-reveal]:not(.is-visible) {
+              opacity: 1;
+              transform: none;
+            }
+
+            /* Keep the global audio controls compact so they do not cover the play controls. */
+            .fq-audio-dock,
+            [data-fq-audio-dock],
+            [data-audio-dock] {
+              right: max(8px, env(safe-area-inset-right));
+              bottom: calc(8px + env(safe-area-inset-bottom));
+              left: auto;
+              display: flex;
+              width: auto;
+              max-width: calc(100vw - 16px);
+              flex-wrap: nowrap;
+              align-items: center;
+              gap: .3rem;
+              padding: .34rem .42rem;
+              border-radius: 999px;
+              transition: opacity .28s ease, transform .28s ease;
+            }
+
+            [data-audio-state] {
+              display: none;
+            }
+
+            .fq-motion-control {
+              order: initial;
+              width: auto;
+              flex: 0 1 auto;
+              justify-content: flex-start;
+              margin: 0;
+              padding: .12rem;
+            }
+
+            .fq-motion-control > span {
+              display: none;
+            }
+
+            .fq-motion-control button {
+              min-height: 2.05rem;
+              padding: .32rem .48rem;
+              font-size: .64rem;
+            }
+
+            [data-audio-dock] [data-audio-toggle],
+            [data-fq-audio-toggle] {
+              min-width: 2.25rem;
+              min-height: 2.25rem;
+              padding: .36rem .52rem;
+            }
+
+            /* Reserve separate vertical lanes for dialogue, scene controls and audio. */
+            .fq-stage,
+            [data-fq-stage] {
+              min-height: clamp(760px, 104dvh, 940px);
+              padding-bottom: calc(env(safe-area-inset-bottom) + 10.8rem);
+            }
+
+            .fq-stage > .fq-dialogue,
+            .fq-dialogue,
+            [data-fq-dialogue] {
+              z-index: 66;
+              top: auto;
+              bottom: calc(env(safe-area-inset-bottom) + var(--fq-mobile-scene-controls-space));
+              left: 50%;
+              width: min(calc(100% - 1.25rem), 34rem);
+              min-height: 0;
+              transform: translateX(-50%);
+              pointer-events: auto;
+              touch-action: pan-y;
+            }
+
+            .fq-line,
+            [data-fq-line] {
+              max-height: min(31dvh, 14rem);
+              overflow: auto;
+              overscroll-behavior: contain;
+              pointer-events: auto;
+              touch-action: pan-y;
+              -webkit-overflow-scrolling: touch;
+            }
+
+            .fq-scene-controls,
+            [data-scene-controls] {
+              z-index: 72;
+              bottom: calc(env(safe-area-inset-bottom) + var(--fq-mobile-audio-dock-space));
+            }
+
+            body.fq-page .fq-act .fq-actors {
+              --fq-female-bottom: calc(env(safe-area-inset-bottom) + 8.8rem);
+              --fq-male-bottom: calc(env(safe-area-inset-bottom) + 8.8rem);
+            }
+
+            /* Give the panorama its own real animated layer on phones. */
+            body.fq-page .fq-ending {
+              min-height: max(760px, 100dvh);
+              padding: clamp(12rem, 31dvh, 18rem) 0 calc(4.5rem + env(safe-area-inset-bottom));
+            }
+
+            body.fq-page .fq-ending__panorama {
+              inset: -6%;
+              background-position: 62% center;
+              transform: scale(1.12) translate3d(1.5%, -1%, 0);
+            }
+
+            body.fq-page .fq-ending .fq-shell {
+              width: min(calc(100% - 28px), 1500px);
+            }
+
+            body.fq-page .fq-ending__actions {
+              display: grid;
+              grid-template-columns: repeat(2, minmax(0, 1fr));
+              width: 100%;
+              max-width: 32rem;
+            }
+
+            body.fq-page .fq-ending__actions a {
+              display: grid;
+              min-height: 2.8rem;
+              place-items: center;
+              text-align: center;
+            }
+
+            /* The floating toolbar leaves the screen while the epilogue is in view. */
+            html.fq-ending-focus .fq-audio-dock,
+            html.fq-ending-focus [data-fq-audio-dock],
+            html.fq-ending-focus [data-audio-dock] {
+              opacity: 0;
+              transform: translateY(calc(100% + 1.5rem));
+              pointer-events: none;
+            }
+          }
+
+          @media screen and (max-width: 380px) {
+            [data-audio-dock] [data-audio-toggle] > b,
+            [data-fq-audio-toggle] > b {
+              display: none;
+            }
+
+            .fq-motion-control button {
+              padding-inline: .4rem;
+              font-size: .61rem;
+            }
+
+            body.fq-page .fq-ending__actions {
+              grid-template-columns: 1fr;
+            }
+          }
+
+          @media screen and (max-width: 780px) and (max-height: 560px) and (orientation: landscape) {
+            :root {
+              --fq-mobile-audio-dock-space: 3.75rem;
+            }
+
+            .fq-stage,
+            [data-fq-stage] {
+              min-height: 560px;
+              padding-bottom: 8.8rem;
+            }
+
+            .fq-stage > .fq-dialogue,
+            .fq-dialogue,
+            [data-fq-dialogue] {
+              right: .75rem;
+              bottom: calc(env(safe-area-inset-bottom) + 4.2rem);
+              left: auto;
+              width: min(45vw, 22rem);
+              transform: none;
+            }
+
+            .fq-scene-controls,
+            [data-scene-controls] {
+              right: auto;
+              width: min(48vw, 24rem);
+            }
+
+            body.fq-page .fq-ending {
+              min-height: 560px;
+              padding: 7rem 0 3.6rem;
+            }
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            body.fq-page .fq-ending__panorama {
+              transform: none !important;
+              transition: none !important;
+            }
+          }
+
+          @media (forced-colors: active) {
+            body.fq-page .fq-ending__panorama {
+              display: none;
+            }
+          }
+          '''
+
+          js_marker = '/* Mobile theatre and ending visibility repair · 2026-08-21 */'
+          js_patch = r'''
+          
+          /* Mobile theatre and ending visibility repair · 2026-08-21 */
+          (() => {
+            'use strict';
+
+            const ready = callback => {
+              if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', callback, { once: true });
+              } else {
+                callback();
+              }
+            };
+
+            ready(() => {
+              const html = document.documentElement;
+              const ending = document.querySelector('.fq-ending');
+              if (!ending || ending.dataset.fqEndingRepairReady === 'true') return;
+              ending.dataset.fqEndingRepairReady = 'true';
+
+              let panorama = ending.querySelector('.fq-ending__panorama');
+              if (!panorama) {
+                panorama = document.createElement('div');
+                panorama.className = 'fq-ending__panorama';
+                panorama.setAttribute('aria-hidden', 'true');
+                ending.prepend(panorama);
+              }
+
+              ending.classList.add('has-ending-panorama', 'is-visible');
+
+              const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+              const motionOff = html.dataset.fqMotion === 'off';
+              const compact = matchMedia('(max-width: 780px)').matches;
+              const gsap = window.gsap && typeof window.gsap.timeline === 'function' ? window.gsap : null;
+              let played = false;
+
+              const showStatic = () => {
+                ending.classList.remove('is-ending-animating');
+                ending.classList.add('is-ending-visible');
+                if (gsap) {
+                  gsap.set(panorama, { clearProps: 'transform,opacity' });
+                  gsap.set(ending.querySelectorAll('.fq-shell > *'), { clearProps: 'opacity,visibility,transform' });
+                }
+              };
+
+              const playEnding = () => {
+                if (played) return;
+                played = true;
+
+                if (!gsap || reduced || motionOff) {
+                  showStatic();
+                  return;
+                }
+
+                const kicker = ending.querySelector('.fq-shell > small');
+                const title = ending.querySelector('.fq-shell > h2');
+                const copy = ending.querySelector('.fq-shell > p');
+                const seal = ending.querySelector('.fq-ending__seal');
+                const actions = ending.querySelector('.fq-ending__actions');
+                const pieces = [kicker, title, copy, seal, actions].filter(Boolean);
+
+                ending.classList.add('is-ending-animating');
+                const timeline = gsap.timeline({
+                  defaults: { ease: 'power2.out' },
+                  onComplete: showStatic
+                });
+
+                timeline.fromTo(
+                  panorama,
+                  {
+                    scale: compact ? 1.13 : 1.08,
+                    xPercent: compact ? 1.8 : .6,
+                    yPercent: compact ? -1 : 0,
+                    autoAlpha: .86
+                  },
+                  {
+                    scale: 1,
+                    xPercent: 0,
+                    yPercent: 0,
+                    autoAlpha: 1,
+                    duration: compact ? 6.4 : 7.2,
+                    ease: 'power1.out'
+                  },
+                  0
+                );
+
+                timeline.fromTo(
+                  pieces,
+                  { autoAlpha: 0, y: compact ? 20 : 26 },
+                  { autoAlpha: 1, y: 0, duration: .85, stagger: .18 },
+                  .28
+                );
+
+                if (seal) {
+                  timeline.fromTo(
+                    seal,
+                    { scale: .78, rotation: -15 },
+                    { scale: 1, rotation: -5, duration: .9, ease: 'back.out(1.7)' },
+                    .96
+                  );
+                }
+              };
+
+              const focusObserver = 'IntersectionObserver' in window
+                ? new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                      html.classList.toggle('fq-ending-focus', entry.isIntersecting && entry.intersectionRatio > .12);
+                      if (entry.isIntersecting) playEnding();
+                    });
+                  }, { threshold: [0, .12, .35], rootMargin: '0px 0px -6% 0px' })
+                : null;
+
+              if (focusObserver) {
+                focusObserver.observe(ending);
+              } else {
+                playEnding();
+              }
+
+              window.addEventListener('pagehide', () => {
+                if (focusObserver) focusObserver.disconnect();
+                html.classList.remove('fq-ending-focus');
+              }, { once: true });
+            });
+          })();
+          '''
+
+          css = css_path.read_text(encoding='utf-8')
+          if css_marker not in css:
+              css_path.write_text(css.rstrip() + '\n\n' + css_patch.strip() + '\n', encoding='utf-8')
+
+          js = js_path.read_text(encoding='utf-8')
+          if js_marker not in js:
+              js_path.write_text(js.rstrip() + '\n\n' + js_patch.strip() + '\n', encoding='utf-8')
+          PY
+
+      - name: Refresh four-language cache versions
+        env:
+          QIQI_VERSION_SHA: ${{ github.sha }}
+        run: python3 scripts/sync_fujian_qiqi_feature.py
+
+      - name: Validate patched assets
+        run: |
+          node --check assets/fujian-qiqi-feature.js
+          python3 -m py_compile scripts/sync_fujian_qiqi_feature.py
+          grep -q 'Mobile theatre and ending visibility repair' assets/fujian-qiqi-feature.css
+          grep -q 'Mobile theatre and ending visibility repair' assets/fujian-qiqi-feature.js
+          grep -q 'fq-ending__panorama' assets/fujian-qiqi-feature.css
+          git diff --check
+
+      - name: Commit the repair and remove this one-off workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm -- .github/workflows/oneoff-qiqi-mobile-ending-dialogue.yml
+          git add -- \
+            assets/fujian-qiqi-feature.css \
+            assets/fujian-qiqi-feature.js \
+            historical-cases/regions/mainland-china/fujian-qiqi/index.html \
+            zh-hans/historical-cases/regions/mainland-china/fujian-qiqi/index.html \
+            en/historical-cases/regions/mainland-china/fujian-qiqi/index.html \
+            ja/historical-cases/regions/mainland-china/fujian-qiqi/index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Fix Qiqi mobile epilogue animation and dialogue overlap'
+          git pull --rebase origin main
+          git push
