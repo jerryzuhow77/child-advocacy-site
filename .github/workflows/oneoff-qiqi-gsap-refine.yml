@@ -1,0 +1,31 @@
+name: Enable Qiqi GSAP stage refinement
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/oneoff-qiqi-gsap-refine.yml']
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          python - <<'PY'
+          from pathlib import Path
+          for f in ['historical-cases/regions/mainland-china/fujian-qiqi/index.html','en/historical-cases/regions/mainland-china/fujian-qiqi/index.html','ja/historical-cases/regions/mainland-china/fujian-qiqi/index.html']:
+            p=Path(f)
+            if not p.exists():continue
+            s=p.read_text(encoding='utf-8')
+            css='  <link rel="stylesheet" href="../../../../assets/fujian-qiqi-gsap-refine.css?v=20260821-1">\n'
+            js='  <script src="../../../../assets/fujian-qiqi-gsap-refine.js?v=20260821-1" defer></script>\n'
+            if 'fujian-qiqi-gsap-refine.css' not in s:s=s.replace('</head>',css+'</head>',1)
+            if 'fujian-qiqi-gsap-refine.js' not in s:s=s.replace('</body>',js+'</body>',1)
+            p.write_text(s,encoding='utf-8')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add historical-cases/regions/mainland-china/fujian-qiqi/index.html en/historical-cases/regions/mainland-china/fujian-qiqi/index.html ja/historical-cases/regions/mainland-china/fujian-qiqi/index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Enable refined GSAP staging for Qiqi five-act theatre'
+          git push
