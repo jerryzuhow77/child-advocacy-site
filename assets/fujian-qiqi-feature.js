@@ -22,8 +22,11 @@
       .filter((scene, index, collection) => collection.indexOf(scene) === index);
     const reducedMotionQuery = matchMedia('(prefers-reduced-motion: reduce)');
     const compactQuery = matchMedia('(max-width: 780px)');
-    let motionMode = 'full';
-    try { motionMode = localStorage.getItem('fq-motion-mode') || 'full'; } catch (_error) {}
+    let motionMode = compactQuery.matches ? 'lite' : 'full';
+    try {
+      const savedMotionMode = localStorage.getItem('fq-motion-mode');
+      if (savedMotionMode) motionMode = savedMotionMode;
+    } catch (_error) {}
     if (!['full', 'lite', 'off'].includes(motionMode)) motionMode = 'full';
     if (reducedMotionQuery.matches) motionMode = 'off';
     const reducedMotion = motionMode === 'off';
@@ -310,6 +313,8 @@
         layer.alt = '';
         layer.setAttribute('aria-hidden', 'true');
         layer.decoding = 'async';
+        layer.loading = actor.closest('[data-act="1"]') ? 'eager' : 'lazy';
+        if (!actor.closest('[data-act="1"]')) layer.fetchPriority = 'low';
         layer.classList.toggle('is-active', index === selected);
       });
       const state = {
@@ -359,8 +364,8 @@
       gsapEngine.killTweensOf([activeLayer, targetLayer]);
       gsapEngine.set(targetLayer, { autoAlpha: 0, scale: 1.006 });
       targetLayer.classList.add('is-active');
-      const fadeOut = compactQuery.matches ? 0.1 : 0.16;
-      const fadeIn = compactQuery.matches ? 0.22 : 0.32;
+      const fadeOut = compactQuery.matches ? 0.14 : 0.18;
+      const fadeIn = compactQuery.matches ? 0.28 : 0.32;
       gsapEngine.timeline({
         onComplete: () => {
           if (destroyed || request !== state.request) return;
@@ -1349,6 +1354,13 @@
       const reveals = [...doc.querySelectorAll('[data-fq-reveal], .fq-reveal')]
         .filter((node, index, collection) => collection.indexOf(node) === index);
       if (!reveals.length) return;
+      let hashTarget = null;
+      try {
+        hashTarget = location.hash ? doc.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
+      } catch (_error) {}
+      const immediateReveals = new Set(reveals.filter(node => hashTarget && (node === hashTarget || node.contains(hashTarget))));
+      immediateReveals.forEach(node => node.classList.add('is-visible'));
+      const animatedReveals = reveals.filter(node => !immediateReveals.has(node));
       if (reducedMotion) {
         reveals.forEach(node => node.classList.add('is-visible'));
         return;
@@ -1356,8 +1368,9 @@
 
       html.classList.add('fq-motion-ready');
       if (gsapEngine && ScrollTrigger) {
-        gsapEngine.set(reveals, { autoAlpha: 0, y: compactQuery.matches ? 15 : 24 });
-        reveals.forEach(node => {
+        gsapEngine.set(animatedReveals, { autoAlpha: 0, y: compactQuery.matches ? 12 : 20 });
+        immediateReveals.forEach(node => gsapEngine.set(node, { autoAlpha: 1, y: 0 }));
+        animatedReveals.forEach(node => {
           const trigger = ScrollTrigger.create({
             trigger: node,
             start: 'top 88%',
@@ -1367,7 +1380,7 @@
               gsapEngine.to(node, {
                 autoAlpha: 1,
                 y: 0,
-                duration: compactQuery.matches ? 0.58 : 0.82,
+                duration: compactQuery.matches ? 0.42 : 0.68,
                 ease: 'power2.out',
                 overwrite: 'auto',
                 onComplete: () => gsapEngine.set(node, { clearProps: 'opacity,visibility,transform' })
@@ -1388,7 +1401,7 @@
             observer.unobserve(entry.target);
           });
         }, { threshold: 0.08, rootMargin: '0px 0px -7% 0px' });
-        reveals.forEach(node => observer.observe(node));
+        animatedReveals.forEach(node => observer.observe(node));
         observers.push(observer);
       } else {
         reveals.forEach(node => node.classList.add('is-visible'));
@@ -1512,10 +1525,10 @@
       flowers.forEach((flower, index) => {
         const direction = index % 2 ? -1 : 1;
         const tween = gsapEngine.to(flower, {
-          xPercent: direction * (compactQuery.matches ? 1.1 : 1.8),
-          yPercent: index % 2 ? 1.8 : -2.2,
-          rotation: direction * (compactQuery.matches ? 0.35 : 0.65),
-          duration: 10 + index * 2.4,
+          x: direction * (2 + index % 3),
+          y: index % 2 ? 3 : -2,
+          rotation: direction * (compactQuery.matches ? 0.28 : 0.52),
+          duration: 14.5 + index * 0.7,
           ease: 'sine.inOut',
           repeat: -1,
           yoyo: true,
@@ -1524,6 +1537,7 @@
         });
         tween._fqSection = flower.closest('section') || flower;
         tween._fqVisible = false;
+        tween._fqKind = 'ronghua';
         sealTweens.push(tween);
       });
     };
@@ -1538,10 +1552,25 @@
         entries.forEach(entry => {
           sealTweens.filter(tween => tween._fqSection === entry.target).forEach(tween => {
             tween._fqVisible = entry.isIntersecting;
-            if (entry.isIntersecting && !document.hidden) tween.play(); else tween.pause();
           });
         });
-      }, { rootMargin: '20% 0px', threshold: 0.01 });
+        const visibleFlowers = sealTweens
+          .filter(tween => tween._fqKind === 'ronghua' && tween._fqVisible)
+          .sort((a, b) => {
+            const aRect = a._fqSection.getBoundingClientRect();
+            const bRect = b._fqSection.getBoundingClientRect();
+            const viewportCenter = innerHeight / 2;
+            return Math.abs((aRect.top + aRect.bottom) / 2 - viewportCenter)
+              - Math.abs((bRect.top + bRect.bottom) / 2 - viewportCenter);
+          });
+        const activeFlower = visibleFlowers[0] || null;
+        sealTweens.forEach(tween => {
+          const shouldPlay = tween._fqVisible
+            && !document.hidden
+            && (tween._fqKind !== 'ronghua' || tween === activeFlower);
+          if (shouldPlay) tween.play(); else tween.pause();
+        });
+      }, { rootMargin: '8% 0px -12% 0px', threshold: [0, 0.08, 0.2] });
       sections.forEach(section => observer.observe(section));
       observers.push(observer);
     };
@@ -2360,7 +2389,7 @@
     };
 
     const paintFocus = () => {
-      const visible = media.matches && [...ratios.values()].some(ratio => ratio >= .08);
+      const visible = [...ratios.values()].some(ratio => ratio >= .08);
       html.classList.toggle('fq-theatre-focus', visible);
     };
 
@@ -2397,11 +2426,11 @@
 
     const onViewportChange = () => {
       if (!media.matches) {
-        html.classList.remove('fq-theatre-focus');
         scenes.forEach(scene => {
           const stage = scene.querySelector('.fq-stage, [data-fq-stage]');
           if (stage) stage.style.removeProperty('--fq-mobile-control-height');
         });
+        paintFocus();
       } else {
         scheduleSync();
         paintFocus();

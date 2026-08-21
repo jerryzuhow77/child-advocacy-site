@@ -4062,3 +4062,196 @@ body.fq-page .fq-ending[data-fq-ending].is-watercolor-animating {
     contain-intrinsic-size: auto;
   }
 }
+
+/* === Editorial art, motion and responsive polish · 2026-08-21 === */
+/* Keep the floating soundtrack panel clear of both desktop and mobile stages. */
+.fq-audio-dock,
+[data-fq-audio-dock],
+[data-audio-dock] {
+  transition: opacity .28s ease, transform .28s var(--fq-ease), box-shadow .28s ease;
+}
+
+html.fq-theatre-focus .fq-audio-dock,
+html.fq-theatre-focus [data-fq-audio-dock],
+html.fq-theatre-focus [data-audio-dock] {
+  opacity: 0;
+  transform: translateY(calc(100% + 1.6rem));
+  pointer-events: none;
+}
+
+/* Pose changes remain a crossfade; speaking is shown with light and tone, not scale. */
+.fq-actor,
+[data-actor] {
+  transition: opacity .3s ease, filter .3s ease;
+}
+
+.fq-actor img[data-pose-layer] {
+  transition: opacity .28s ease, visibility 0s linear .28s;
+}
+
+.fq-actor img[data-pose-layer].is-active {
+  transition-delay: 0s;
+}
+
+.fq-act.is-speaking-female .fq-actor[data-actor="female"],
+.fq-act.is-speaking-male .fq-actor[data-actor="male"] {
+  opacity: 1;
+  filter: saturate(1.04) brightness(1.035) drop-shadow(0 12px 22px rgba(232, 196, 166, .12));
+}
+
+.fq-act.is-speaking-female .fq-actor[data-actor="male"],
+.fq-act.is-speaking-male .fq-actor[data-actor="female"] {
+  opacity: .78;
+  filter: saturate(.78) brightness(.86);
+}
+
+/* Ronghua is treated as silk-fibre relief: detailed at the edge, quiet under copy. */
+.fq-page-ronghua {
+  opacity: var(--fq-ronghua-opacity, .11);
+  contain: paint;
+}
+
+.fq-page-ronghua__art {
+  width: clamp(310px, 39vw, 640px);
+}
+
+.fq-page-ronghua img {
+  filter: saturate(.92) contrast(1.06) drop-shadow(0 12px 20px rgba(72, 54, 49, .12));
+  mix-blend-mode: multiply;
+}
+
+.fq-page-ronghua--01,
+.fq-page-ronghua--02,
+.fq-page-ronghua--04,
+.fq-page-ronghua--06 {
+  -webkit-mask-image: linear-gradient(90deg, #000 0 48%, rgba(0, 0, 0, .78) 62%, transparent 84%);
+  mask-image: linear-gradient(90deg, #000 0 48%, rgba(0, 0, 0, .78) 62%, transparent 84%);
+}
+
+.fq-page-ronghua--03,
+.fq-page-ronghua--05 {
+  -webkit-mask-image: linear-gradient(270deg, #000 0 48%, rgba(0, 0, 0, .78) 62%, transparent 84%);
+  mask-image: linear-gradient(270deg, #000 0 48%, rgba(0, 0, 0, .78) 62%, transparent 84%);
+}
+
+.fq-page-ronghua--01 { --fq-ronghua-opacity: .045; --fq-ronghua-rotation: -8deg; }
+.fq-page-ronghua--02 { --fq-ronghua-opacity: .145; --fq-ronghua-rotation: -5deg; }
+.fq-page-ronghua--03 { --fq-ronghua-opacity: .13; --fq-ronghua-rotation: 7deg; }
+.fq-page-ronghua--04 { --fq-ronghua-opacity: .12; --fq-ronghua-rotation: -6deg; }
+.fq-page-ronghua--05 { --fq-ronghua-opacity: .135; --fq-ronghua-rotation: 6deg; }
+.fq-page-ronghua--06 { --fq-ronghua-opacity: .11; --fq-ronghua-rotation: -6deg; }
+
+.fq-page-ronghua--01 .fq-page-ronghua__art { top: -25%; left: -8%; }
+.fq-page-ronghua--02 .fq-page-ronghua__art { top: 4%; left: -10%; }
+.fq-page-ronghua--03 .fq-page-ronghua__art { right: -10%; bottom: -14%; }
+.fq-page-ronghua--04 .fq-page-ronghua__art { top: 2%; left: -9%; }
+.fq-page-ronghua--05 .fq-page-ronghua__art { right: -9%; bottom: -12%; }
+.fq-page-ronghua--06 .fq-page-ronghua__art { left: -8%; bottom: -18%; }
+
+.fq-page-ronghua--04 img {
+  filter: saturate(.72) contrast(1.08) brightness(1.12) drop-shadow(0 12px 22px rgba(225, 211, 220, .1));
+  mix-blend-mode: screen;
+}
+
+/* Small supporting copy must remain comfortably readable. */
+.fq-summary-grid p { font-size: .94rem; line-height: 1.72; }
+.fq-guide__links small { font-size: .82rem; line-height: 1.55; }
+.fq-social-finale__links span { font-size: .84rem; line-height: 1.55; }
+
+@media screen and (max-width: 780px) {
+  .fq-hero,
+  [data-fq-hero] {
+    min-height: max(760px, 92svh);
+  }
+
+  .fq-hero__image img {
+    height: 106%;
+    object-position: 54% 48%;
+  }
+
+  .fq-hero__wash {
+    background:
+      linear-gradient(180deg, rgba(20, 28, 32, .32), rgba(24, 32, 35, .16) 24%, rgba(26, 31, 32, .64) 68%, rgba(27, 30, 31, .96)),
+      linear-gradient(90deg, rgba(25, 30, 31, .68), rgba(25, 30, 31, .14) 84%);
+  }
+
+  /* Source images are 298:482 and 405:493. The paired widths below render
+     both adults at the same visual height instead of making the woman ~33% taller. */
+  body.fq-page .fq-act .fq-actors {
+    --fq-female-width: clamp(148px, 42vw, 315px);
+    --fq-male-width: clamp(196px, 55.8vw, 418px);
+  }
+
+  body.fq-page .fq-act:not([data-act="4"]) .fq-actors {
+    --fq-female-left: -4vw;
+    --fq-female-right: auto;
+    --fq-male-left: auto;
+    --fq-male-right: -6vw;
+  }
+
+  body.fq-page .fq-act[data-act="4"] .fq-actors {
+    --fq-female-left: auto;
+    --fq-female-right: -4vw;
+    --fq-male-left: -6vw;
+    --fq-male-right: auto;
+  }
+
+  .fq-actors .fq-actor {
+    height: min(48%, 520px);
+  }
+
+  .fq-page-ronghua__art {
+    width: clamp(270px, 84vw, 470px);
+  }
+
+  .fq-page-ronghua--01 .fq-page-ronghua__art { top: -18%; left: -24vw; right: auto; }
+  .fq-page-ronghua--02 .fq-page-ronghua__art { top: 5%; left: -28vw; right: auto; }
+  .fq-page-ronghua--03 .fq-page-ronghua__art { top: 5%; right: -28vw; bottom: auto; left: auto; }
+  .fq-page-ronghua--04 .fq-page-ronghua__art { top: 3%; left: -29vw; right: auto; }
+  .fq-page-ronghua--05 .fq-page-ronghua__art { right: -27vw; bottom: -8%; left: auto; }
+  .fq-page-ronghua--06 .fq-page-ronghua__art { left: -26vw; bottom: -13%; right: auto; }
+
+  .fq-language a,
+  .fq-motion-control button,
+  [data-audio-dock] [data-audio-toggle],
+  [data-fq-audio-toggle] {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .fq-motion-control button {
+    padding: .42rem .56rem;
+  }
+
+  .fq-social-finale__head small {
+    font-size: .75rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  body.fq-page .fq-act .fq-actors {
+    --fq-female-width: clamp(136px, 42vw, 205px);
+    --fq-male-width: clamp(181px, 55.8vw, 272px);
+  }
+
+  html[lang^="en"] .fq-guide__links,
+  html[lang^="ja"] .fq-guide__links {
+    grid-template-columns: 1fr;
+  }
+
+  html[lang^="en"] .fq-guide__links a,
+  html[lang^="ja"] .fq-guide__links a {
+    min-height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fq-actor,
+  [data-actor],
+  .fq-actor img[data-pose-layer],
+  .fq-page-ronghua__art,
+  .fq-page-ronghua img {
+    transition: none !important;
+    animation: none !important;
+  }
+}
