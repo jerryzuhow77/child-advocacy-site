@@ -46,7 +46,19 @@
 
     const style = document.createElement('style');
     style.id = 'day4-contrast-style';
-    style.textContent = extract('css');
+    style.textContent = `${extract('css')}
+
+/* 2026-08-21: visibly soften the verification-note strip. This override lives here
+   because the cross-check stylesheet is injected after day4.css. */
+body.day4-page .day4-contrast-card > footer {
+  background: linear-gradient(90deg, rgba(255,255,255,.98), rgba(250,248,245,.82)) !important;
+  border-color: rgba(16,43,58,.065) !important;
+  box-shadow: none !important;
+}
+body.day4-page .day4-contrast-card > footer > b {
+  color: #7a6b64 !important;
+}
+`;
     document.head.append(style);
 
     const template = document.createElement('template');
