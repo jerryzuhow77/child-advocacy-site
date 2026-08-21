@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-21-day4-location-owner-final-v4';
+const VERSION = '2026-08-21-day4-site-a-father-v1';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -33,6 +33,7 @@ const APP_SHELL = [
   './assets/day4-verbatim-source-1.b64',
   './hearing-records/prison-watch/kaikai-day4-20250428/day4-verbatim.js',
   './hearing-records/prison-watch/kaikai-day4-20250428/day4-crosscheck.js',
+  './hearing-records/prison-watch/kaikai-day4-20250428/day4-location-note.js',
   './hearing-records/prison-watch/kaikai-day3-20250425/day3-reading-core-20260821.js'
 ];
 
