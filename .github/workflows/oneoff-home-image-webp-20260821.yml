@@ -1,0 +1,119 @@
+name: Convert heavy homepage images to WebP
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-home-image-webp-20260821.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: child-advocacy-site-content-write
+  cancel-in-progress: false
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Convert homepage artwork and publish
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+
+          converter=''
+          if command -v cwebp >/dev/null 2>&1; then
+            converter='cwebp'
+          elif command -v magick >/dev/null 2>&1; then
+            converter='magick'
+          elif command -v convert >/dev/null 2>&1; then
+            converter='convert'
+          else
+            printf 'No WebP-capable image converter was available on the runner.\n' > .github/home-image-webp-diagnostic.txt
+            exit 1
+          fi
+          echo "Using image converter: $converter"
+
+          convert_image() {
+            local source="$1"
+            local target="$2"
+            mkdir -p "$(dirname "$target")"
+            case "$converter" in
+              cwebp)
+                cwebp -quiet -mt -q 82 -resize 1600 0 "$source" -o "$target"
+                ;;
+              magick)
+                magick "$source" -auto-orient -resize '1600x1600>' -strip -quality 82 "$target"
+                ;;
+              convert)
+                convert "$source" -auto-orient -resize '1600x1600>' -strip -quality 82 "$target"
+                ;;
+            esac
+            test -s "$target"
+            local original_size optimized_size
+            original_size=$(stat -c%s "$source")
+            optimized_size=$(stat -c%s "$target")
+            echo "$source: $original_size -> $optimized_size bytes"
+            if [ "$optimized_size" -ge "$original_size" ]; then
+              echo "Optimized file is not smaller: $target" >&2
+              exit 1
+            fi
+          }
+
+          convert_image assets/art/chen-shangjie-case-poster.png assets/art/chen-shangjie-case-poster-home.webp
+          convert_image assets/art/dui-police-killing-poster.png assets/art/dui-police-killing-poster-home.webp
+          convert_image assets/art/lin-xinci-missing-four-days-universal.png assets/art/lin-xinci-missing-four-days-home.webp
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+          replacements = {
+              './assets/art/chen-shangjie-case-poster.png': './assets/art/chen-shangjie-case-poster-home.webp',
+              './assets/art/dui-police-killing-poster.png': './assets/art/dui-police-killing-poster-home.webp',
+              './assets/art/lin-xinci-missing-four-days-universal.png': './assets/art/lin-xinci-missing-four-days-home.webp',
+          }
+          for old, new in replacements.items():
+              text = text.replace(old, new)
+          for old in replacements:
+              if old in text:
+                  raise SystemExit(f'Heavy homepage reference remains: {old}')
+          for new in replacements.values():
+              if new not in text:
+                  raise SystemExit(f'Optimized homepage reference missing: {new}')
+          path.write_text(text, encoding='utf-8')
+          PY
+
+          rm -f .github/workflows/oneoff-home-image-webp-20260821.yml
+          rm -f .github/home-image-webp-diagnostic.txt
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --check
+          git commit -m 'Serve optimized WebP artwork on the homepage'
+          git pull --rebase origin main
+          git push
+
+      - name: Publish converter diagnostic
+        if: failure()
+        shell: bash
+        run: |
+          set +e
+          test -s .github/home-image-webp-diagnostic.txt || printf 'The homepage image conversion workflow failed. Review the Actions job log for the failed command.\n' > .github/home-image-webp-diagnostic.txt
+          git fetch origin main
+          git reset --hard origin/main
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/home-image-webp-diagnostic.txt
+          git diff --cached --quiet && exit 0
+          git commit -m 'Record homepage WebP conversion diagnostic'
+          git pull --rebase origin main
+          git push
