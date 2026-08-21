@@ -1797,7 +1797,7 @@
     });
 
     window.FujianQiqiFeature = {
-      version: '1.3.1',
+      version: '1.3.2',
       play(target) {
         const state = stateFor(target);
         return state ? playScene(state) : false;
@@ -1962,6 +1962,219 @@
     window.addEventListener('pagehide', () => {
       if (focusObserver) focusObserver.disconnect();
       html.classList.remove('fq-ending-focus');
+    }, { once: true });
+  });
+})();
+
+/* Third-act contrast and motion refinement · 2026-08-21 */
+(() => {
+  'use strict';
+
+  const ready = callback => {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', callback, { once: true });
+    } else {
+      callback();
+    }
+  };
+
+  ready(() => {
+    const scene = document.querySelector('.fq-act[data-act="3"]');
+    const stage = scene && scene.querySelector('.fq-stage');
+    if (!scene || !stage || scene.dataset.fqAct3Refined === 'true') return;
+    scene.dataset.fqAct3Refined = 'true';
+
+    const html = document.documentElement;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const saveData = Boolean(navigator.connection && navigator.connection.saveData);
+    const motionMode = html.dataset.fqMotion || 'full';
+    const lite = motionMode === 'lite';
+    const off = motionMode === 'off';
+    const gsap = window.gsap && typeof window.gsap.timeline === 'function' ? window.gsap : null;
+
+    const sweep = document.createElement('div');
+    sweep.className = 'fq-act3-moon-sweep';
+    sweep.setAttribute('aria-hidden', 'true');
+
+    const marksLayer = document.createElement('div');
+    marksLayer.className = 'fq-act3-marks';
+    marksLayer.setAttribute('aria-hidden', 'true');
+
+    const xPositions = [7, 13, 20, 28, 36, 44, 52, 61, 69, 77, 85, 91, 17, 33, 48, 65, 82];
+    const yPositions = [22, 42, 17, 54, 29, 66, 38, 18, 58, 31, 70, 46, 77, 12, 74, 9, 79];
+    const heights = [54, 34, 44, 61, 38, 48, 57, 32, 52, 41, 63, 36, 46, 58, 35, 49, 40];
+    const rotations = [-8, 6, -4, 9, -7, 5, -10, 4, -5, 8, -3, 7, -9, 3, -6, 10, -2];
+
+    const marks = xPositions.map((x, index) => {
+      const mark = document.createElement('i');
+      mark.className = 'fq-act3-mark';
+      mark.style.setProperty('--fq-mark-x', `${x}%`);
+      mark.style.setProperty('--fq-mark-y', `${yPositions[index]}%`);
+      mark.style.setProperty('--fq-mark-height', `${heights[index]}px`);
+      mark.style.setProperty('--fq-mark-rotation', `${rotations[index]}deg`);
+      marksLayer.append(mark);
+      return mark;
+    });
+
+    const title = stage.querySelector('.fq-act__title');
+    const anchor = stage.querySelector('.fq-stage__light') || title || stage.firstChild;
+    stage.insertBefore(sweep, anchor);
+    stage.insertBefore(marksLayer, anchor);
+    scene.classList.add('fq-act3-refined');
+
+    const titleParts = title ? [...title.querySelectorAll('small, h2, p')] : [];
+    const lines = [...stage.querySelectorAll('.fq-dialogue .fq-line')];
+
+    const revealStatic = () => {
+      scene.classList.add('fq-act3-ready');
+      marks.forEach(mark => mark.classList.add('is-drawn'));
+    };
+
+    if (!gsap || reduced || off || saveData) {
+      revealStatic();
+      return;
+    }
+
+    gsap.set(marks, {
+      autoAlpha: 0,
+      scaleY: 0,
+      transformOrigin: '50% 100%'
+    });
+
+    const intro = gsap.timeline({
+      paused: true,
+      defaults: { ease: 'power2.out' },
+      onStart: () => scene.classList.add('fq-act3-animating'),
+      onComplete: () => {
+        scene.classList.remove('fq-act3-animating');
+        scene.classList.add('fq-act3-ready');
+        gsap.set(titleParts, { clearProps: 'opacity,visibility,transform,filter' });
+      }
+    });
+
+    if (titleParts.length) {
+      intro.fromTo(
+        titleParts,
+        { autoAlpha: 0, y: -10, filter: 'blur(3px)' },
+        { autoAlpha: 1, y: 0, filter: 'blur(0px)', duration: .72, stagger: .12 },
+        0
+      );
+    }
+
+    intro.to(
+      marks,
+      {
+        autoAlpha: index => .24 + (index % 4) * .045,
+        scaleY: 1,
+        duration: lite ? .42 : .68,
+        stagger: lite ? .025 : .055,
+        ease: 'power3.out'
+      },
+      .18
+    );
+
+    const ambient = gsap.timeline({ paused: true, repeat: -1, yoyo: true });
+    ambient.fromTo(
+      sweep,
+      { xPercent: -4, yPercent: -1, scale: 1.01, autoAlpha: .34 },
+      { xPercent: 4, yPercent: 1, scale: 1.05, autoAlpha: .62, duration: 8.5, ease: 'sine.inOut' }
+    );
+    ambient.to(marksLayer, { autoAlpha: .78, duration: 4.8, ease: 'sine.inOut' }, 0);
+
+    let currentLine = null;
+    const emphasizeLine = line => {
+      if (!line || line === currentLine) return;
+      currentLine = line;
+      const label = line.querySelector('b');
+      const copy = line.querySelector('span');
+      const index = Math.max(0, lines.indexOf(line));
+      const start = index * 4;
+      const activeMarks = marks.filter((_, markIndex) => markIndex >= start && markIndex < start + 5);
+      const passiveMarks = marks.filter(mark => !activeMarks.includes(mark));
+
+      if (label) {
+        gsap.fromTo(
+          label,
+          { autoAlpha: 0, x: -10 },
+          { autoAlpha: 1, x: 0, duration: .48, ease: 'power2.out', clearProps: 'opacity,visibility,transform' }
+        );
+      }
+      if (copy) {
+        gsap.fromTo(
+          copy,
+          { autoAlpha: .28, y: 8, filter: 'blur(2px)' },
+          { autoAlpha: 1, y: 0, filter: 'blur(0px)', duration: .68, ease: 'power2.out', clearProps: 'opacity,visibility,transform,filter' }
+        );
+      }
+      gsap.to(activeMarks, { autoAlpha: .62, duration: .45, stagger: .025, overwrite: 'auto' });
+      gsap.to(passiveMarks, { autoAlpha: .2, duration: .58, overwrite: 'auto' });
+      gsap.fromTo(
+        line,
+        { boxShadow: '0 14px 34px rgba(20, 15, 23, .18)' },
+        { boxShadow: '0 24px 62px rgba(20, 15, 23, .34)', duration: .75, ease: 'power2.out' }
+      );
+    };
+
+    lines.forEach(line => {
+      if (line.classList.contains('is-current')) emphasizeLine(line);
+    });
+
+    const lineObserver = new MutationObserver(records => {
+      records.forEach(record => {
+        const line = record.target;
+        if (line.classList.contains('is-current')) emphasizeLine(line);
+      });
+    });
+    lines.forEach(line => lineObserver.observe(line, { attributes: true, attributeFilter: ['class'] }));
+
+    let introPlayed = false;
+    const playVisuals = () => {
+      if (!introPlayed) {
+        introPlayed = true;
+        intro.play(0);
+      }
+      if (!lite && !document.hidden) ambient.play();
+    };
+    const pauseVisuals = () => ambient.pause();
+
+    const visibilityObserver = 'IntersectionObserver' in window
+      ? new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && entry.intersectionRatio >= .12) playVisuals();
+            else pauseVisuals();
+          });
+        }, { threshold: [0, .12, .35], rootMargin: '12% 0px' })
+      : null;
+
+    if (visibilityObserver) visibilityObserver.observe(scene);
+    else playVisuals();
+
+    const replayButton = scene.querySelector('[data-scene-replay]');
+    const onReplay = () => {
+      introPlayed = true;
+      intro.restart(true);
+      if (!lite) ambient.restart(true);
+    };
+    if (replayButton) replayButton.addEventListener('click', onReplay);
+
+    const onVisibility = () => {
+      if (document.hidden) {
+        pauseVisuals();
+        return;
+      }
+      const rect = scene.getBoundingClientRect();
+      if (rect.bottom > 0 && rect.top < innerHeight) playVisuals();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+
+    window.addEventListener('pagehide', () => {
+      if (visibilityObserver) visibilityObserver.disconnect();
+      lineObserver.disconnect();
+      intro.kill();
+      ambient.kill();
+      gsap.killTweensOf([...marks, marksLayer, sweep, ...titleParts, ...lines]);
+      if (replayButton) replayButton.removeEventListener('click', onReplay);
+      document.removeEventListener('visibilitychange', onVisibility);
     }, { once: true });
   });
 })();
