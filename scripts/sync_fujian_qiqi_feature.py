@@ -3,7 +3,8 @@
 
 The script updates only deployment metadata and cache-busting tokens. It does
 not rewrite editorial copy. It is designed for GitHub Actions but can also be
-run locally from the repository root.
+run locally from the repository root. All four public language variants are
+updated together so their deployment metadata cannot drift apart.
 """
 
 from __future__ import annotations
