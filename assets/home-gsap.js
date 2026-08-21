@@ -473,6 +473,7 @@
 
     var step = 360 / cards.length;
     var autoTween;
+    var motionPaused = reduceMotion;
     var dragging = false;
     var startX = 0;
     var startRotation = 0;
@@ -511,14 +512,39 @@
         duration: 0.72,
         ease: 'power2.inOut',
         onUpdate: keepCardsUpright,
-        onComplete: function () { if (autoTween) autoTween.resume(); }
+        onComplete: function () { if (autoTween && !motionPaused) autoTween.resume(); }
       });
     }
+
+    var motionControl = document.createElement(reduceMotion ? 'p' : 'button');
+    motionControl.className = 'home-disc-motion-control';
+    if (reduceMotion) {
+      motionControl.textContent = '已依系統設定改為靜態列表；所有內容仍可直接閱讀';
+      motionControl.setAttribute('role', 'status');
+    } else {
+      motionControl.type = 'button';
+      motionControl.textContent = '暫停自動輪播';
+      motionControl.setAttribute('aria-pressed', 'false');
+      motionControl.addEventListener('click', function () {
+        motionPaused = !motionPaused;
+        motionControl.setAttribute('aria-pressed', String(motionPaused));
+        motionControl.textContent = motionPaused ? '繼續自動輪播' : '暫停自動輪播';
+        if (motionPaused) autoTween?.pause();
+        else autoTween?.resume();
+      });
+    }
+    shell.appendChild(motionControl);
+    if (!shell.hasAttribute('tabindex')) shell.tabIndex = 0;
+    shell.addEventListener('keydown', function (event) {
+      if (event.key === 'ArrowLeft') { event.preventDefault(); rotateBy(step); }
+      if (event.key === 'ArrowRight') { event.preventDefault(); rotateBy(-step); }
+    });
 
     layout();
     window.addEventListener('resize', layout, { passive: true });
 
     if (!reduceMotion) {
+      motionPaused = false;
       autoTween = gsap.to(orbit, {
         rotation: '+=360',
         duration: 42,
@@ -529,7 +555,7 @@
 
       shell.addEventListener('pointerenter', function () { autoTween.pause(); });
       shell.addEventListener('pointerleave', function () {
-        if (!dragging) autoTween.resume();
+        if (!dragging && !motionPaused) autoTween.resume();
       });
       shell.addEventListener('pointerdown', function (event) {
         if (event.target.closest('a,button')) return;
@@ -547,9 +573,9 @@
       shell.addEventListener('pointerup', function (event) {
         dragging = false;
         if (shell.hasPointerCapture(event.pointerId)) shell.releasePointerCapture(event.pointerId);
-        autoTween.resume();
+        if (!motionPaused) autoTween.resume();
       });
-      shell.addEventListener('pointercancel', function () { dragging = false; autoTween.resume(); });
+      shell.addEventListener('pointercancel', function () { dragging = false; if (!motionPaused) autoTween.resume(); });
     }
 
     var prev = shell.querySelector('[data-disc-prev]');
