@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-21-home-first-round-2';
+const VERSION = '2026-08-21-day4-clay-v2';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -24,7 +24,8 @@ const APP_SHELL = [
   './assets/icons/app-icon-512.png',
   './assets/icons/app-icon-maskable-512.png',
   './assets/icons/apple-touch-icon-180.png',
-  './assets/art/global-protection-wall-home-banner.svg'
+  './assets/art/global-protection-wall-home-banner.svg',
+  './assets/art/prison-watch-day4-hearing-poster-clay-20260821-v2.webp'
 ];
 
 self.addEventListener('install', event => {
