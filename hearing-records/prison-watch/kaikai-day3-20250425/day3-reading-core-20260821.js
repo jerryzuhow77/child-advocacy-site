@@ -12,7 +12,7 @@
     document.head.append(script);
   });
   const core = new URL('./day3-reading-core.js?v=20260821-1', base).href;
-  const crosscheck = new URL('../kaikai-day4-20250428/day4-crosscheck.js?v=20260821-location-key-1', base).href;
+  const crosscheck = new URL('../kaikai-day4-20250428/day4-crosscheck.js?v=20260821-location-reconcile-2', base).href;
   const verbatim = new URL('../kaikai-day4-20250428/day4-verbatim.js?v=20260821-dialogue-art-1', base).href;
   const prepare = isDay4
     ? Promise.all([

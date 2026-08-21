@@ -48,67 +48,67 @@
       zh: {
         routeAria: '劉彩萱證詞中的三處日常動線',
         route: [
-          { code: '乙地', exact: '另一棟的夜間睡覺處', title: '夜間睡眠', text: '劉彩萱稱晚間與A童在此睡覺；部分夜間照片與乙地罰站情節也涉及此處。這份紀錄未明載完整門牌與樓層。' },
+          { code: '乙地', exact: '另一棟夜間睡覺處｜二審旁聽：左側相鄰棟3樓，疑為劉若琳居所', title: '夜間／二審補充', text: '第四日原始紀錄稱劉彩萱晚間與A童在乙地睡覺；二審旁聽時另聽到乙地疑為左側相鄰棟3樓、可能是劉若琳居所。這與同份第四日紀錄將丙地（4號3樓）稱為劉若琳住處的文字不一致，待正式筆錄、判決或圖面確認。' },
           { code: '丙地', exact: '4號3樓・劉若琳住處', title: '上午與往返', text: '也是劉若琳的居家托育空間。A童前往頻率是兩人證詞爭點；澡盆事件與部分照片涉及此處。' },
           { code: '甲地', exact: '4號1樓・白天主要托育處', title: '午餐與日間照顧', text: '劉彩萱稱白天主要在此托育；準備餐點、用餐、冷靜區／罰站與地下室入口等情節涉及此處。' }
         ],
-        routeNote: '依2025年4月28日庭審問答整理；用途與動線屬證人陳述，不等於法院認定每天均固定如此。',
+        routeNote: '甲、丙依2025年4月28日原始紀錄；乙加入二審旁聽補充。乙、丙與劉若琳居所的對應目前有衝突，現階段並列兩種來源，不直接定論。',
         kicker: 'LOCATION KEY',
         title: '甲、乙、丙地分別是哪裡？',
-        intro: '「甲地、乙地、丙地」是庭審紀錄使用的地點代稱，不是證據編號。本頁只寫入原始紀錄已公開的樓層與用途，不補寫紀錄未載明的完整地址。',
+        intro: '「甲地、乙地、丙地」是庭審使用的地點代稱。不同庭審階段的空間描述目前出現不一致；本頁並列第四日原始紀錄與二審旁聽補充，未經正式筆錄確認的部分會明確標示。',
         cards: [
           { cls: 'is-a', code: '甲地', exact: '4號1樓', text: '劉彩萱稱白天主要在此托育。準備餐點、用餐、冷靜區／罰站、地下室入口與家庭共餐等情節涉及此處。' },
-          { cls: 'is-b', code: '乙地', exact: '另一棟的夜間睡覺處', text: '劉彩萱稱晚間與A童在此睡覺；部分夜間照片與乙地罰站情節涉及此處。這份紀錄沒有明載完整門牌與樓層。' },
+          { cls: 'is-b', code: '乙地', exact: '二審旁聽補充｜左側相鄰棟3樓・疑為劉若琳居所', text: '第四日原始紀錄把乙地描述為另一棟的夜間睡覺處；二審旁聽時另聽到乙地應位於左側相鄰棟3樓，可能是劉若琳居所。由於第四日紀錄同時將丙地（4號3樓）稱為劉若琳住處，兩種標示目前有衝突，待正式資料確認。' },
           { cls: 'is-c', code: '丙地', exact: '4號3樓・劉若琳住處', text: '也是劉若琳的居家托育空間。A童前往此處的頻率是本日證詞爭點；澡盆事件與部分照片涉及此處。' }
         ],
-        source: '閱讀界線｜地點用途與往返動線均依證人陳述整理；除明載的「4號1樓」「4號3樓」外，不推定未公開的完整地址。',
+        source: '閱讀界線｜甲、丙依第四日原始紀錄；乙含二審旁聽補充。乙、丙與劉若琳居所的對應仍待正式筆錄、判決或圖面確認。',
         reminderAria: '地點代稱快速對照',
         reminderTitle: '地點代稱',
-        reminder: ['甲：4號1樓', '乙：另一棟夜間睡覺處', '丙：4號3樓・劉若琳住處'],
+        reminder: ['甲：4號1樓', '乙：左側相鄰棟3樓・疑為劉若琳居所（二審旁聽）', '丙：4號3樓・劉若琳住處（第四日原始紀錄）'],
         reminderLink: '查看完整說明 ↑'
       },
       en: {
         routeAria: 'Three location labels in Liu Tsai-hsuan’s testimony',
         route: [
-          { code: 'Site B', exact: 'Separate building · overnight sleeping location', title: 'Night', text: 'Liu Tsai-hsuan said she and the child slept here at night. Some night photographs and standing episodes also involved this site. The source record does not state its full address or floor.' },
+          { code: 'Site B', exact: 'Separate overnight site | appeal-hearing note: left adjacent building, 3F; possibly Liu Ruo-lin’s residence', title: 'Night / appeal-hearing note', text: 'The Day 4 source record describes Site B as the separate building used for overnight sleeping. At the appeal hearing, it was additionally heard that Site B may be on the third floor of the adjacent building to the left and may be Liu Ruo-lin’s residence. This conflicts with the Day 4 wording that identifies Site C (No. 4, 3F) as her residence, so formal minutes, judgment materials or a site plan are still needed.' },
           { code: 'Site C', exact: 'No. 4, 3F · Liu Ruo-lin’s residence', title: 'Morning / movement', text: 'It was also Liu Ruo-lin’s home childcare setting. How often the child went there is disputed in the testimony; the basin incident and some photographs involved this site.' },
           { code: 'Site A', exact: 'No. 4, 1F · main daytime care location', title: 'Lunch / daytime', text: 'Liu Tsai-hsuan described this as the principal daytime childcare site. Meals, the calm-down/standing area and the basement entrance involved this location.' }
         ],
-        routeNote: 'Compiled from the 28 April 2025 hearing questions and answers. Uses and movement are witness accounts, not findings that every day followed a fixed route.',
+        routeNote: 'Sites A and C follow the 28 April 2025 source record; Site B also includes an appeal-hearing observation. The current mapping of Liu Ruo-lin’s residence between Sites B and C conflicts, so both sources are shown without a final conclusion.',
         kicker: 'LOCATION KEY',
         title: 'What do Sites A, B and C mean?',
-        intro: 'They are location labels used in the hearing record, not exhibit numbers. This page shows only the floor and use disclosed in the source record and does not supply an unstated full address.',
+        intro: 'These are location labels used at the hearings. The spatial descriptions are not fully consistent across stages, so this page presents both the Day 4 source record and the appeal-hearing observation, with unconfirmed details clearly marked.',
         cards: [
           { cls: 'is-a', code: 'Site A', exact: 'No. 4, 1F', text: 'Liu Tsai-hsuan described it as the main daytime childcare site. Meals, the calm-down/standing area, basement entrance and family dining involved this location.' },
-          { cls: 'is-b', code: 'Site B', exact: 'Separate overnight sleeping location', text: 'Liu Tsai-hsuan said she and the child slept here at night. Some night photographs and standing episodes involved this site. The record does not state its full address or floor.' },
+          { cls: 'is-b', code: 'Site B', exact: 'Appeal-hearing note | left adjacent building, 3F; possibly Liu Ruo-lin’s residence', text: 'The Day 4 source record describes Site B as a separate overnight sleeping location. An appeal-hearing observation places it on the third floor of the adjacent building to the left and possibly at Liu Ruo-lin’s residence. Because Site C is also identified as her residence in the Day 4 record, the mapping remains unresolved pending formal materials.' },
           { cls: 'is-c', code: 'Site C', exact: 'No. 4, 3F · Liu Ruo-lin’s residence', text: 'It was also her home childcare setting. The frequency of the child’s visits is a testimony issue; the basin incident and some photographs involved this site.' }
         ],
-        source: 'Reading limit | Uses and movement are summarized from witness testimony. Apart from “No. 4, 1F” and “No. 4, 3F,” no unpublished address is inferred.',
+        source: 'Reading limit | Sites A and C follow the Day 4 source record; Site B includes an appeal-hearing observation. The B/C residence mapping remains subject to confirmation in formal minutes, judgment materials or a site plan.',
         reminderAria: 'Location-label quick reference',
         reminderTitle: 'Location labels',
-        reminder: ['A: No. 4, 1F', 'B: separate overnight location', 'C: No. 4, 3F · Liu Ruo-lin’s residence'],
+        reminder: ['A: No. 4, 1F', 'B: left adjacent building, 3F · possibly Liu Ruo-lin’s residence (appeal-hearing note)', 'C: No. 4, 3F · Liu Ruo-lin’s residence (Day 4 source record)'],
         reminderLink: 'Full explanation ↑'
       },
       ja: {
         routeAria: '劉彩萱の供述における三つの場所',
         route: [
-          { code: '乙地', exact: '別棟の夜間就寝場所', title: '夜間', text: '劉彩萱は、夜にA児とここで就寝したと供述した。夜間の写真や乙地で立たせた場面の一部もこの場所に関係する。原記録には完全な住所と階数の記載がない。' },
+          { code: '乙地', exact: '別棟の夜間就寝場所｜控訴審傍聴補足：左隣の棟3階、劉若琳の住居の可能性', title: '夜間／控訴審補足', text: '第4日の原記録では乙地を別棟の夜間就寝場所としている。控訴審の傍聴では、乙地が左隣の棟の3階で、劉若琳の住居である可能性も聞かれた。ただし同じ第4日記録は丙地（4号3階）を劉若琳の住居としており、表示が一致しないため、正式な調書・判決資料・配置図での確認が必要である。' },
           { code: '丙地', exact: '4号3階・劉若琳の住居', title: '午前・移動', text: '劉若琳の居宅保育スペースでもある。A児が訪れた頻度は二人の供述の争点で、洗面器の出来事と一部の写真がこの場所に関係する。' },
           { code: '甲地', exact: '4号1階・日中の主な保育場所', title: '昼食・日中', text: '劉彩萱は日中の主な保育場所と供述した。食事の準備、食事、クールダウン／立たせ、地下室入口などがこの場所に関係する。' }
         ],
-        routeNote: '2025年4月28日の法廷での質問と回答から整理。用途と動線は証人の供述であり、毎日固定されていたとの裁判所認定ではない。',
+        routeNote: '甲地・丙地は2025年4月28日の原記録に基づき、乙地には控訴審傍聴での補足も併記する。乙地と丙地のどちらが劉若琳の住居に対応するかは現在不一致があり、結論を確定しない。',
         kicker: 'LOCATION KEY',
         title: '甲・乙・丙地とは？',
-        intro: '甲地・乙地・丙地は法廷記録で使われた場所の呼称であり、証拠番号ではない。本頁は原記録に明示された階数と用途だけを掲載し、記載のない完全な住所を補わない。',
+        intro: '甲地・乙地・丙地は法廷で使われた場所の呼称である。審理段階によって空間説明に不一致があるため、第4日の原記録と控訴審傍聴での補足を併記し、未確認部分を明示する。',
         cards: [
           { cls: 'is-a', code: '甲地', exact: '4号1階', text: '劉彩萱は日中の主な保育場所と供述した。食事の準備、食事、クールダウン／立たせ、地下室入口、家族との食事などが関係する。' },
-          { cls: 'is-b', code: '乙地', exact: '別棟の夜間就寝場所', text: '劉彩萱は夜にA児とここで就寝したと供述した。夜間の写真や乙地での立たせも一部関係する。原記録には完全な住所と階数の記載がない。' },
+          { cls: 'is-b', code: '乙地', exact: '控訴審傍聴補足｜左隣の棟3階・劉若琳の住居の可能性', text: '第4日の原記録では乙地を別棟の夜間就寝場所としている。控訴審傍聴では左隣の棟3階で、劉若琳の住居である可能性が聞かれた。一方、第4日記録は丙地（4号3階）も劉若琳の住居としており、正式資料による確認が必要である。' },
           { cls: 'is-c', code: '丙地', exact: '4号3階・劉若琳の住居', text: '劉若琳の居宅保育スペースでもある。A児が訪れた頻度は本日の供述の争点で、洗面器の出来事と一部の写真が関係する。' }
         ],
-        source: '読み方の限界｜用途と動線は証人供述から整理した。「4号1階」「4号3階」以外の非公開住所は推定しない。',
+        source: '読み方の限界｜甲地・丙地は第4日の原記録、乙地は控訴審傍聴補足を含む。乙地・丙地と劉若琳の住居との対応は、正式調書・判決資料・配置図での確認を要する。',
         reminderAria: '場所呼称の早見表',
         reminderTitle: '場所呼称',
-        reminder: ['甲：4号1階', '乙：別棟の夜間就寝場所', '丙：4号3階・劉若琳の住居'],
+        reminder: ['甲：4号1階', '乙：左隣の棟3階・劉若琳の住居の可能性（控訴審傍聴）', '丙：4号3階・劉若琳の住居（第4日原記録）'],
         reminderLink: '詳しい説明 ↑'
       }
     }[locale];
