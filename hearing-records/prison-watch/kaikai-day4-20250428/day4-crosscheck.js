@@ -29,6 +29,21 @@
       ja: { nav: '供述の食い違い', toc: '05A 供述照合' }
     }[locale];
 
+    const restraintCaution = {
+      zh: {
+        meta: '高度待核 · 須先確認是否為同一綑綁事件',
+        text: '先確認「傳照片才知道」是否指另一場次的綑綁；只有在問題同指11月2日事件時，才構成明顯前後不一。'
+      },
+      en: {
+        meta: 'High-priority check · Confirm that both answers concern the same restraint incident',
+        text: 'First determine whether “learned from photographs” referred to a different restraint episode. A clear internal conflict arises only if both answers concern 2 November.'
+      },
+      ja: {
+        meta: '重点確認 · 同一の拘束事件を指すか確認が必要',
+        text: '「写真を送って初めて知った」が別の拘束場面を指すかを先に確認する必要があります。双方が11月2日の出来事を指す場合に限り、明確な前後不一致となります。'
+      }
+    }[locale];
+
     const style = document.createElement('style');
     style.id = 'day4-contrast-style';
     style.textContent = extract('css');
@@ -39,6 +54,15 @@
     const section = template.content.firstElementChild;
     const jurors = document.getElementById('jurors');
     if (!section || !jurors) throw new Error('Cross-check insertion point not found');
+
+    const restraintCard = section.querySelectorAll('.day4-contrast-card')[4];
+    if (restraintCard) {
+      const meta = restraintCard.querySelector('header small');
+      const note = restraintCard.querySelector('footer p');
+      if (meta) meta.textContent = restraintCaution.meta;
+      if (note) note.textContent = restraintCaution.text;
+    }
+
     jurors.before(section);
 
     const topTarget = document.querySelector('.day3-topbar nav a[href="#jurors"]');
