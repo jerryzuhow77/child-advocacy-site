@@ -1,0 +1,27 @@
+name: Remove Qiqi ending punctuation
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/oneoff-qiqi-ending-punctuation.yml']
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          python - <<'PY'
+          from pathlib import Path
+          for f in ['historical-cases/regions/mainland-china/fujian-qiqi/index.html','source/historical-cases/regions/mainland-china/fujian-qiqi/index.html']:
+            p=Path(f)
+            if p.exists():
+              s=p.read_text(encoding='utf-8').replace('她不該一直等。</h2>','她不該一直等</h2>')
+              p.write_text(s,encoding='utf-8')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add historical-cases/regions/mainland-china/fujian-qiqi/index.html source/historical-cases/regions/mainland-china/fujian-qiqi/index.html 2>/dev/null || true
+          git diff --cached --quiet && exit 0
+          git commit -m 'Remove punctuation from Qiqi ending title'
+          git push
