@@ -29,3 +29,28 @@
 @media(max-width:860px){.day4-route{grid-template-columns:1fr;gap:10px}.day4-route>i{transform:rotate(90deg);text-align:center}.day4-route article{min-height:auto}.day4-witness-grid{grid-template-columns:1fr!important}.day4-page .day3-hero-poster:before{left:8px;top:18px}}
 @media(max-width:560px){.day4-route{margin-inline:-4px;padding:14px;border-radius:20px}.day4-route article{padding:18px 17px}.day4-page .day3-hero-poster:before{font-size:.55rem;letter-spacing:.08em}.day4-schedule-figure{padding:10px!important;border-radius:18px!important}}
 @media(prefers-reduced-motion:reduce){.day4-route article{transform:none!important;opacity:1!important}}
+
+/* 2026-08-21 clay/papercraft Day 4 impression art v2 */
+.day4-page .day3-hero-poster {
+  align-self: center;
+  width: min(100%, 760px);
+}
+.day4-page .day3-hero-poster::before {
+  display: none;
+}
+.day4-page .day3-hero-poster img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  border-radius: 24px;
+}
+@media (max-width: 860px) {
+  .day4-page .day3-hero-poster {
+    width: 100%;
+  }
+  .day4-page .day3-hero-poster img {
+    aspect-ratio: 3 / 2;
+  }
+}

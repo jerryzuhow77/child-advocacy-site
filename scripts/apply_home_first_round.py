@@ -46,7 +46,7 @@ GUARD_HTML = '''<section class="home-guard-actions" id="home-guard-actions" aria
 
 DAY4_FEATURE_HTML = '''<div class="home-hearing-zone-feature home-hearing-zone-feature-prison-watch home-hearing-zone-feature-day4">
 <a class="home-hearing-zone-poster" href="./hearing-records/prison-watch/kaikai-day4-20250428/" aria-label="閱讀護童行動聯盟重製的2025年4月28日第四次審判期日編輯筆記">
-<img src="./assets/art/prison-watch-day4-hearing-poster-20260821.svg" alt="第四日第四次審判期日重製編輯筆記主視覺" loading="lazy" decoding="async">
+<img src="./assets/art/prison-watch-day4-hearing-poster-clay-20260821-v2.webp" alt="第四日第四次審判期日重製編輯筆記主視覺" loading="lazy" decoding="async">
 <span>最新重製編輯筆記</span>
 </a>
 <div class="home-hearing-zone-copy">
