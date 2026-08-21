@@ -12,11 +12,15 @@
     document.head.append(script);
   });
   const core = new URL('./day3-reading-core.js?v=20260821-1', base).href;
-  const crosscheck = new URL('../kaikai-day4-20250428/day4-crosscheck.js?v=20260821-1', base).href;
+  const crosscheck = new URL('../kaikai-day4-20250428/day4-crosscheck.js?v=20260821-2', base).href;
+  const verbatim = new URL('../kaikai-day4-20250428/day4-verbatim.js?v=20260821-verbatim-2', base).href;
   const prepare = isDay4
-    ? load(crosscheck).then(() => window.day4CrosscheckReady)
+    ? Promise.all([
+        load(crosscheck).then(() => window.day4CrosscheckReady),
+        load(verbatim).then(() => window.day4VerbatimReady)
+      ])
     : Promise.resolve();
-  prepare.catch(error => console.error('Day 4 cross-check failed to load', error)).finally(() => {
+  prepare.catch(error => console.error('Day 4 enhancement failed to load', error)).finally(() => {
     load(core).then(() => {
       if (!isDay4) return;
       const reader = document.querySelector('.day3-record-progress');
