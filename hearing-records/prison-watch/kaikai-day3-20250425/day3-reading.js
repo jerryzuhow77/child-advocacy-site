@@ -173,7 +173,7 @@
     });
   };
 
-  if (!isDay4) {
+  if (!isDay4 && (locale === 'zh-Hant' || locale === 'zh-Hans')) {
     injectStyles();
     renderSection();
     flagInlineComparisons();
