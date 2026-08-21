@@ -1,0 +1,112 @@
+name: Finalize Fujian Qiqi refactor branch
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/finalize-qiqi-refactor-branch.yml']
+permissions:
+  contents: write
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: refactor/fujian-qiqi-stabilization-20260821
+      - name: Merge current main and apply final QA corrections
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git fetch origin main refactor/fujian-qiqi-stabilization-20260821
+          git merge --no-edit origin/main
+          python - <<'PY'
+          from pathlib import Path
+          from urllib.parse import urlsplit
+          import re
+
+          pages = {
+            Path('historical-cases/regions/mainland-china/fujian-qiqi/index.html'): 'https://jerryzuhow77.github.io/child-advocacy-site/historical-cases/regions/mainland-china/fujian-qiqi/',
+            Path('zh-hans/historical-cases/regions/mainland-china/fujian-qiqi/index.html'): 'https://jerryzuhow77.github.io/child-advocacy-site/zh-hans/historical-cases/regions/mainland-china/fujian-qiqi/',
+            Path('en/historical-cases/regions/mainland-china/fujian-qiqi/index.html'): 'https://jerryzuhow77.github.io/child-advocacy-site/en/historical-cases/regions/mainland-china/fujian-qiqi/',
+            Path('ja/historical-cases/regions/mainland-china/fujian-qiqi/index.html'): 'https://jerryzuhow77.github.io/child-advocacy-site/ja/historical-cases/regions/mainland-china/fujian-qiqi/',
+          }
+          for path, url in pages.items():
+            s = path.read_text(encoding='utf-8')
+            if 'property="og:url"' not in s:
+              marker = '  <meta property="og:type" content="article">\n'
+              s = s.replace(marker, marker + f'  <meta property="og:url" content="{url}">\n  <meta property="og:site_name" content="Child Protection Action Alliance">\n', 1)
+            path.write_text(s.rstrip() + '\n', encoding='utf-8')
+
+          zh = Path('zh-hans/historical-cases/regions/mainland-china/fujian-qiqi/index.html')
+          s = zh.read_text(encoding='utf-8')
+          s = s.replace('<a href="./" title="zh-Hant" aria-current="true">繁</a>', '<a href="../../../../../historical-cases/regions/mainland-china/fujian-qiqi/" title="zh-Hant">繁</a>', 1)
+          replacements = {
+            '公开报导':'公开报道','报导中':'报道中','纪录':'记录','沿著':'沿着','写著':'写着',
+            '守著':'守着','带著':'带着','跟著':'跟着','藏著':'藏着','照著':'照着'
+          }
+          for old, new in replacements.items(): s = s.replace(old, new)
+          zh.write_text(s.rstrip() + '\n', encoding='utf-8')
+
+          css = Path('assets/fujian-qiqi-feature.css')
+          c = css.read_text(encoding='utf-8')
+          c = c.replace('.fq-actors{--fq-female-left:-9vw!important;--fq-female-right:auto!important;--fq-male-left:auto!important;--fq-male-right:-9vw!important;--fq-female-width:clamp(180px,48vw,350px)!important;--fq-male-width:clamp(180px,48vw,350px)!important;--fq-female-bottom:calc(env(safe-area-inset-bottom) + 8.1rem)!important;--fq-male-bottom:calc(env(safe-area-inset-bottom) + 8.1rem)!important}', 'body.fq-page .fq-act .fq-actors{--fq-female-left:-9vw;--fq-female-right:auto;--fq-male-left:auto;--fq-male-right:-9vw;--fq-female-width:clamp(180px,48vw,350px);--fq-male-width:clamp(180px,48vw,350px);--fq-female-bottom:calc(env(safe-area-inset-bottom) + 8.1rem);--fq-male-bottom:calc(env(safe-area-inset-bottom) + 8.1rem)}')
+          c = c.replace('@media(max-width:480px){.fq-actors{--fq-female-left:-12vw!important;--fq-male-right:-12vw!important;--fq-female-width:clamp(165px,51vw,280px)!important;--fq-male-width:clamp(165px,51vw,280px)!important}', '@media(max-width:480px){body.fq-page .fq-act .fq-actors{--fq-female-left:-12vw;--fq-male-right:-12vw;--fq-female-width:clamp(165px,51vw,280px);--fq-male-width:clamp(165px,51vw,280px)}')
+          c = c.replace('.fq-actors{--fq-female-bottom:4.8rem!important;--fq-male-bottom:4.8rem!important}', 'body.fq-page .fq-act .fq-actors{--fq-female-bottom:4.8rem;--fq-male-bottom:4.8rem}')
+          css.write_text(c.rstrip() + '\n', encoding='utf-8')
+
+          failures = []
+          for path in pages:
+            text = path.read_text(encoding='utf-8')
+            ids = re.findall(r'\bid="([^"]+)"', text)
+            dupes = sorted({value for value in ids if ids.count(value) > 1})
+            if dupes: failures.append(f'{path}: duplicate ids {dupes}')
+            for attr, value in re.findall(r'\b(src|href)="([^"]+)"', text):
+              if not value or value.startswith(('#','http:','https:','mailto:','tel:','data:','javascript:')): continue
+              local = urlsplit(value).path
+              if not local: continue
+              target = (path.parent / local).resolve()
+              if not target.exists(): failures.append(f'{path}: missing {attr} {value}')
+          ztext = zh.read_text(encoding='utf-8')
+          if ztext.count('aria-current="true"') != 1: failures.append('zh-hans language current state')
+          if '../../../../../historical-cases/regions/mainland-china/fujian-qiqi/' not in ztext: failures.append('zh-hans traditional link')
+          required = ['fq-quick-summary','fq-evidence-legend','data-fq-motion="lite"','fq-ending-breath']
+          ttext = pages.keys().__iter__().__next__().read_text(encoding='utf-8')
+          for token in required:
+            if token not in ttext: failures.append(f'missing feature {token}')
+          forbidden = ['fujian-qiqi-dialogue-hotfix.css','fujian-qiqi-gsap-refine.js','fujian-qiqi-ronghua.css']
+          for token in forbidden:
+            if any(token in p.read_text(encoding='utf-8') for p in pages): failures.append(f'obsolete reference {token}')
+          if '她不該一直等。</h2>' in ttext: failures.append('ending punctuation')
+          if '--fq-female-left:-9vw!important' in c: failures.append('mobile actor important override')
+          if c.count('{') != c.count('}'): failures.append('CSS brace balance')
+          if failures: raise SystemExit('\n'.join(failures))
+          print('Final multilingual, link, responsive and CSS QA passed')
+          PY
+          node --check assets/fujian-qiqi-feature.js
+          python -m pip install --disable-pip-version-check pillow
+          python - <<'PY'
+          from PIL import Image
+          image = Image.open('assets/fujian-qiqi/og-share-20260821.jpg')
+          assert image.size == (1200, 630), image.size
+          print('Share image validated:', image.size)
+          PY
+          rm -f .github/workflows/finalize-qiqi-pr.yml .github/workflows/finalize-qiqi-refactor-branch.yml
+          git add -- \
+            historical-cases/regions/mainland-china/fujian-qiqi/index.html \
+            zh-hans/historical-cases/regions/mainland-china/fujian-qiqi/index.html \
+            en/historical-cases/regions/mainland-china/fujian-qiqi/index.html \
+            ja/historical-cases/regions/mainland-china/fujian-qiqi/index.html \
+            assets/fujian-qiqi-feature.css \
+            .github/workflows/finalize-qiqi-pr.yml \
+            .github/workflows/finalize-qiqi-refactor-branch.yml
+          git diff --cached --check
+          if ! git diff --cached --quiet; then
+            git commit -m 'Finalize Fujian Qiqi multilingual and responsive QA'
+          fi
+          git push origin HEAD:refactor/fujian-qiqi-stabilization-20260821
+      - name: Remove temporary workflow from main
+        run: |
+          git checkout -B main origin/main
+          git rm .github/workflows/finalize-qiqi-refactor-branch.yml
+          git commit -m 'Remove temporary Fujian Qiqi finalizer'
+          git push origin main
