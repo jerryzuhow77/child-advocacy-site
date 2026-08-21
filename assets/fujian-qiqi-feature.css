@@ -4158,21 +4158,78 @@ html.fq-theatre-focus [data-audio-dock] {
 .fq-guide__links small { font-size: .82rem; line-height: 1.55; }
 .fq-social-finale__links span { font-size: .84rem; line-height: 1.55; }
 
-/* The supplied Minnan cultural seals become a clearly legible, enlarged
-   paper watermark. Copy panels still provide the primary reading surface,
-   while the open page field keeps the hand-printed detail visible. */
+/* Cultural seals are isolated as large corner marks instead of repeating the
+   supplied collage across the whole page. Text and interactive content stay
+   above the marks, while feathered transparent edges keep them print-like. */
 body.fq-page::after {
-  opacity: .16;
-  background-image:
-    linear-gradient(90deg, rgba(255, 255, 255, .12), transparent 24%, transparent 76%, rgba(113, 91, 81, .04)),
-    url("fujian-qiqi/fujian-minnan-cultural-seals-background-20260821.webp");
-  background-position: center, center top;
-  background-repeat: no-repeat, repeat-y;
-  background-size: 100% 100%, clamp(920px, 105vw, 1600px) auto;
-  filter: saturate(.84) contrast(1.02);
+  opacity: 1;
+  background: linear-gradient(90deg, rgba(255, 255, 255, .2), transparent 17%, transparent 83%, rgba(113, 91, 81, .06));
+  filter: none;
+  mix-blend-mode: normal;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.fq-cultural-seal-host {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  overflow: clip;
+}
+
+.fq-cultural-seal-host > :not(.fq-cultural-corner-seal):not(.fq-page-ronghua) {
+  position: relative;
+  z-index: 2;
+}
+
+.fq-cultural-corner-seal {
+  --fq-cultural-seal-opacity: .43;
+  --fq-cultural-seal-rotation: 0deg;
+  --fq-cultural-seal-scale: 1;
+  position: absolute;
+  z-index: 1;
+  display: block;
+  width: clamp(245px, 25vw, 390px);
+  opacity: var(--fq-cultural-seal-opacity);
+  filter: saturate(.96) contrast(1.12) drop-shadow(0 14px 24px rgba(86, 58, 45, .08));
   mix-blend-mode: multiply;
-  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, .66) 0 38%, rgba(0, 0, 0, .84) 68%, #000 100%);
-  mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, .66) 0 38%, rgba(0, 0, 0, .84) 68%, #000 100%);
+  pointer-events: none;
+  transform: rotate(var(--fq-cultural-seal-rotation)) scale(var(--fq-cultural-seal-scale));
+  transform-origin: center;
+}
+
+.fq-cultural-corner-seal img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.fq-cultural-corner-seal--top-left { top: var(--fq-cultural-seal-y, -8%); left: var(--fq-cultural-seal-x, -3%); }
+.fq-cultural-corner-seal--top-right { top: var(--fq-cultural-seal-y, -8%); right: var(--fq-cultural-seal-x, -3%); }
+.fq-cultural-corner-seal--bottom-left { bottom: var(--fq-cultural-seal-y, -8%); left: var(--fq-cultural-seal-x, -3%); }
+.fq-cultural-corner-seal--bottom-right { right: var(--fq-cultural-seal-x, -3%); bottom: var(--fq-cultural-seal-y, -8%); }
+
+.fq-cultural-corner-seal--01 { --fq-cultural-seal-x: -4%; --fq-cultural-seal-y: -13%; --fq-cultural-seal-rotation: -7deg; --fq-cultural-seal-scale: 1.06; }
+.fq-cultural-corner-seal--02 { --fq-cultural-seal-x: -2%; --fq-cultural-seal-y: -16%; --fq-cultural-seal-rotation: 7deg; }
+.fq-cultural-corner-seal--03 { --fq-cultural-seal-x: -5%; --fq-cultural-seal-y: -20%; --fq-cultural-seal-rotation: -5deg; --fq-cultural-seal-scale: .95; }
+.fq-cultural-corner-seal--04 { --fq-cultural-seal-x: -3%; --fq-cultural-seal-y: -10%; --fq-cultural-seal-rotation: 8deg; --fq-cultural-seal-opacity: .48; }
+.fq-cultural-corner-seal--05 { --fq-cultural-seal-x: -4%; --fq-cultural-seal-y: -13%; --fq-cultural-seal-rotation: -8deg; }
+.fq-cultural-corner-seal--06 { --fq-cultural-seal-x: -3%; --fq-cultural-seal-y: -10%; --fq-cultural-seal-rotation: 6deg; --fq-cultural-seal-opacity: .46; }
+.fq-cultural-corner-seal--07 { --fq-cultural-seal-x: -4%; --fq-cultural-seal-y: -22%; --fq-cultural-seal-rotation: -6deg; --fq-cultural-seal-scale: .96; }
+.fq-cultural-corner-seal--08 { --fq-cultural-seal-x: -3%; --fq-cultural-seal-y: -14%; --fq-cultural-seal-rotation: 7deg; }
+.fq-cultural-corner-seal--09 { --fq-cultural-seal-x: -5%; --fq-cultural-seal-y: -12%; --fq-cultural-seal-rotation: -7deg; }
+.fq-cultural-corner-seal--10 { --fq-cultural-seal-x: -4%; --fq-cultural-seal-y: -16%; --fq-cultural-seal-rotation: 8deg; --fq-cultural-seal-opacity: .46; }
+.fq-cultural-corner-seal--11 { --fq-cultural-seal-x: -3%; --fq-cultural-seal-y: -13%; --fq-cultural-seal-rotation: -6deg; }
+.fq-cultural-corner-seal--12 { --fq-cultural-seal-x: -4%; --fq-cultural-seal-y: -18%; --fq-cultural-seal-rotation: 6deg; }
+
+@keyframes fq-cultural-seal-drift {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -7px; }
+}
+
+html[data-fq-motion="full"] .fq-cultural-corner-seal {
+  animation: fq-cultural-seal-drift 15s ease-in-out infinite;
+  animation-delay: var(--fq-cultural-seal-delay, 0s);
 }
 
 @media screen and (max-width: 780px) {
@@ -4192,30 +4249,41 @@ body.fq-page::after {
       linear-gradient(90deg, rgba(25, 30, 31, .68), rgba(25, 30, 31, .14) 84%);
   }
 
-  /* The paired canvases have different transparent margins. These widths and
-     role-specific stage heights intentionally render the man about 16–18%
-     taller on compact screens, while preserving natural kneeling poses. */
+  /* Canvas proportions differ by role. A 2.5:1 wrapper-width ratio renders
+     the painted male figure at approximately twice the female figure's
+     visible height, including their transparent source margins. */
   body.fq-page .fq-act .fq-actors {
-    --fq-female-width: clamp(140px, 40vw, 300px);
-    --fq-male-width: clamp(203px, 58vw, 435px);
+    --fq-female-width: clamp(110px, 30vw, 225px);
+    --fq-male-width: clamp(275px, 75vw, 563px);
   }
 
   body.fq-page .fq-act:not([data-act="4"]) .fq-actors {
-    --fq-female-left: -4vw;
+    --fq-female-left: -5vw;
     --fq-female-right: auto;
     --fq-male-left: auto;
-    --fq-male-right: -7vw;
+    --fq-male-right: -18vw;
   }
 
   body.fq-page .fq-act[data-act="4"] .fq-actors {
     --fq-female-left: auto;
-    --fq-female-right: -4vw;
-    --fq-male-left: -7vw;
+    --fq-female-right: -5vw;
+    --fq-male-left: -18vw;
     --fq-male-right: auto;
   }
 
-  .fq-actors .fq-actor[data-actor="female"] { height: min(47%, 500px); }
-  .fq-actors .fq-actor[data-actor="male"] { height: min(52%, 560px); }
+  .fq-actors .fq-actor[data-actor="female"] { height: min(35%, 400px); }
+  .fq-actors .fq-actor[data-actor="male"] { height: min(70%, 700px); }
+
+  .fq-cultural-corner-seal {
+    --fq-cultural-seal-opacity: .48;
+    width: clamp(180px, 58vw, 285px);
+  }
+
+  .fq-cultural-corner-seal--top-left,
+  .fq-cultural-corner-seal--bottom-left { left: -14vw; }
+
+  .fq-cultural-corner-seal--top-right,
+  .fq-cultural-corner-seal--bottom-right { right: -14vw; }
 
   .fq-page-ronghua__art {
     width: clamp(270px, 84vw, 470px);
@@ -4227,12 +4295,6 @@ body.fq-page::after {
   .fq-page-ronghua--04 .fq-page-ronghua__art { top: 3%; left: -29vw; right: auto; }
   .fq-page-ronghua--05 .fq-page-ronghua__art { right: -27vw; bottom: -8%; left: auto; }
   .fq-page-ronghua--06 .fq-page-ronghua__art { left: -26vw; bottom: -13%; right: auto; }
-
-  body.fq-page::after {
-    opacity: .21;
-    background-position: center, center 7svh;
-    background-size: 100% 100%, clamp(760px, 190vw, 1060px) auto;
-  }
 
   .fq-language a,
   .fq-motion-control button,
@@ -4253,8 +4315,8 @@ body.fq-page::after {
 
 @media screen and (max-width: 480px) {
   body.fq-page .fq-act .fq-actors {
-    --fq-female-width: clamp(128px, 40vw, 194px);
-    --fq-male-width: clamp(186px, 58vw, 281px);
+    --fq-female-width: clamp(96px, 30vw, 146px);
+    --fq-male-width: clamp(240px, 75vw, 365px);
   }
 
   html[lang^="en"] .fq-guide__links,
@@ -4273,7 +4335,8 @@ body.fq-page::after {
   [data-actor],
   .fq-actor img[data-pose-layer],
   .fq-page-ronghua__art,
-  .fq-page-ronghua img {
+  .fq-page-ronghua img,
+  .fq-cultural-corner-seal {
     transition: none !important;
     animation: none !important;
   }

@@ -1534,6 +1534,45 @@
       });
     };
 
+    const initCulturalSeals = () => {
+      if (!featureScript || !featureScript.src) return;
+      const assetBase = new URL('./', featureScript.src);
+      const placements = [
+        ['.fq-boundary', 'cultural-seal-01-gulangyu.webp', 'top-left'],
+        ['#quick-summary', 'cultural-seal-02-quanzhou-nanyin.webp', 'bottom-right'],
+        ['.fq-guide', 'cultural-seal-03-zhangzhou-new-year-print.webp', 'bottom-left'],
+        ['#waiting', 'cultural-seal-04-dehua-porcelain.webp', 'top-right'],
+        ['#signals', 'cultural-seal-05-anxi-tieguanyin.webp', 'bottom-left'],
+        ['#court-findings', 'cultural-seal-06-huian-stone-carving.webp', 'top-right'],
+        ['.fq-interlude', 'cultural-seal-07-fujian-tulou.webp', 'top-left'],
+        ['#justice', 'cultural-seal-08-quanzhou-zanhua.webp', 'bottom-right'],
+        ['#protection', 'cultural-seal-09-putian-wood-carving.webp', 'top-left'],
+        ['.fq-help', 'cultural-seal-10-xiamen-lacquer-thread.webp', 'top-right'],
+        ['#sources', 'cultural-seal-11-fuzhou-lacquerware.webp', 'bottom-left'],
+        ['.fq-social-finale', 'cultural-seal-12-maritime-silk-road.webp', 'bottom-right']
+      ];
+
+      placements.forEach((placement, index) => {
+        const section = doc.querySelector(placement[0]);
+        if (!section || section.querySelector(':scope > .fq-cultural-corner-seal')) return;
+        const wrapper = doc.createElement('span');
+        const image = doc.createElement('img');
+        section.classList.add('fq-cultural-seal-host');
+        wrapper.className = 'fq-cultural-corner-seal fq-cultural-corner-seal--'
+          + String(index + 1).padStart(2, '0') + ' fq-cultural-corner-seal--' + placement[2];
+        wrapper.style.setProperty('--fq-cultural-seal-delay', String(index * -1.1) + 's');
+        wrapper.setAttribute('aria-hidden', 'true');
+        image.src = new URL('fujian-qiqi/' + placement[1] + '?v=20260821-1', assetBase).href;
+        image.alt = '';
+        image.width = 384;
+        image.height = 348;
+        image.loading = 'lazy';
+        image.decoding = 'async';
+        wrapper.append(image);
+        section.prepend(wrapper);
+      });
+    };
+
     const initRonghua = () => {
       if (!gsapEngine || reducedMotion || liteMotion || saveData) return;
       const flowers = [...doc.querySelectorAll('[data-fq-ronghua]')]
@@ -1596,6 +1635,7 @@
     };
 
     initPageRonghua();
+    initCulturalSeals();
     initReveals();
     initHeroParallax();
     initStageParallax();
