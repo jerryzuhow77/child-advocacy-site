@@ -1,0 +1,31 @@
+name: One-off Fujian Putian name update
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/oneoff-fujian-putian-name.yml']
+permissions:
+  contents: write
+jobs:
+  rename:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update homepage historical-case name
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace('福建琪琪案｜村口一直等不到的媽媽', '福建莆田琪琪案｜村口一直等不到的媽媽')
+          s = s.replace('<strong>福建琪琪案</strong>', '<strong>福建莆田琪琪案</strong>')
+          s = s.replace('alt="福建琪琪案專題導覽圖', 'alt="福建莆田琪琪案專題導覽圖')
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit homepage update
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Rename Fujian Qiqi homepage links to Fujian Putian Qiqi'
+          git push
