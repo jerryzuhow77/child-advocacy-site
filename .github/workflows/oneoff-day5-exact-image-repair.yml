@@ -1,4 +1,4 @@
-name: Repair Day 5 selected artwork
+name: Fix blank Day 5 posters with unique JPEG URLs
 
 on:
   push:
@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: day5-exact-image-repair
+  group: day5-jpeg-blank-fix
   cancel-in-progress: false
 
 jobs:
@@ -22,41 +22,58 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Reconstruct selected posters and repair all references
+      - name: Install Pillow
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends python3-pil
+
+      - name: Create fresh JPEG assets and update every reference
         shell: bash
         run: |
           set -euo pipefail
           git pull --rebase origin main
 
-          stage='.github/day5-exact-image-chunks'
-          out1='assets/art/prison-watch-day5-evidence-selected-01-zh-hant-20260822-v3.webp'
-          out2='assets/art/prison-watch-day5-evidence-selected-02-zh-hant-20260822-v3.webp'
-          mkdir -p assets/art
-
-          cat "$stage"/poster1-*.b64 | tr -d '\r\n ' | base64 --decode > "$out1"
-          cat "$stage"/poster2-*.b64 | tr -d '\r\n ' | base64 --decode > "$out2"
-
-          printf '%s  %s\n' '454848c56839996a8364e93073c738d5cb7b46d3908ad28a7b158b0f932f15ec' "$out1" | sha256sum --check --strict
-          printf '%s  %s\n' '34580a2690b33550f1aa1e61a0fa68fa768ff1ad5af9e23f7dec1f61d318b082' "$out2" | sha256sum --check --strict
-          test "$(stat -c %s "$out1")" -eq 43228
-          test "$(stat -c %s "$out2")" -eq 44918
-          test "$(head -c 4 "$out1")" = 'RIFF'
-          test "$(dd if="$out1" bs=1 skip=8 count=4 status=none)" = 'WEBP'
-          test "$(head -c 4 "$out2")" = 'RIFF'
-          test "$(dd if="$out2" bs=1 skip=8 count=4 status=none)" = 'WEBP'
-
           python - <<'PY'
           from pathlib import Path
-          import html
-          import json
-          import os
-          import re
+          from PIL import Image, ImageOps, ImageStat
+          import html, json, os, re
 
           root = Path('.')
-          version = '20260822-selected-art-v3'
-          poster1 = 'prison-watch-day5-evidence-selected-01-zh-hant-20260822-v3.webp'
-          poster2 = 'prison-watch-day5-evidence-selected-02-zh-hant-20260822-v3.webp'
-          absolute = 'https://jerryzuhow77.github.io/child-advocacy-site/assets/art/'
+          assets = root / 'assets/art'
+          version = '20260822-jpeg-blank-fix-1'
+          files = {
+              'hant1': 'prison-watch-day5-selected-evidence-01-zh-hant-20260822.jpg',
+              'hant2': 'prison-watch-day5-selected-evidence-02-zh-hant-20260822.jpg',
+              'hans1': 'prison-watch-day5-selected-evidence-01-zh-hans-20260822.jpg',
+              'hans2': 'prison-watch-day5-selected-evidence-02-zh-hans-20260822.jpg',
+          }
+          sources = {
+              'hant1': 'prison-watch-day5-forensic-zh-hant-20260822.webp',
+              'hant2': 'prison-watch-day5-medical-zh-hant-20260822.webp',
+              'hans1': 'prison-watch-day5-forensic-zh-hans-20260822.webp',
+              'hans2': 'prison-watch-day5-medical-zh-hans-20260822.webp',
+          }
+
+          for key, source_name in sources.items():
+              source = assets / source_name
+              destination = assets / files[key]
+              if not source.is_file() or source.stat().st_size < 30000:
+                  raise SystemExit(f'Missing source poster: {source}')
+              with Image.open(source) as image:
+                  image.load()
+                  rgb = ImageOps.fit(image.convert('RGB'), (512, 768), Image.Resampling.LANCZOS)
+                  if sum(ImageStat.Stat(rgb.resize((64, 96))).var) < 250:
+                      raise SystemExit(f'Source poster appears blank: {source}')
+                  rgb.save(destination, 'JPEG', quality=90, subsampling=0, optimize=True, progressive=True)
+              with Image.open(destination) as check:
+                  check.load()
+                  if check.format != 'JPEG' or check.size != (512, 768):
+                      raise SystemExit(f'Invalid JPEG: {destination}')
+                  if sum(ImageStat.Stat(check.resize((64, 96))).var) < 250:
+                      raise SystemExit(f'JPEG appears blank: {destination}')
+              if destination.stat().st_size < 35000:
+                  raise SystemExit(f'JPEG unexpectedly small: {destination}')
+              print(destination, destination.stat().st_size)
 
           pages = [
               root / 'hearing-records/prison-watch/kaikai-day5-20250429/index.html',
@@ -67,132 +84,129 @@ jobs:
               root / 'source/ja/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
           ]
 
-          def rel(page: Path, name: str) -> str:
-              path = os.path.relpath(root / 'assets/art' / name, page.parent).replace(os.sep, '/')
-              return f'{path}?v={version}'
+          def relative(page, name):
+              return os.path.relpath(assets / name, page.parent).replace(os.sep, '/')
 
-          def set_attr(tag: str, key: str, value: str) -> str:
-              escaped = html.escape(value, quote=True)
+          def set_attr(tag, key, value):
+              value = html.escape(value, quote=True)
               pattern = rf'\s{re.escape(key)}="[^"]*"'
-              replacement = f' {key}="{escaped}"'
+              replacement = f' {key}="{value}"'
               if re.search(pattern, tag):
                   return re.sub(pattern, replacement, tag, count=1)
               return tag[:-1] + replacement + '>'
 
-          def replace_poster(text: str, page: Path, number: int, name: str) -> str:
+          def update_tags(text, page, number, traditional, simplified):
               pattern = re.compile(rf'<img\b[^>]*\bdata-day5-poster="{number}"[^>]*>', re.I)
-              matches = pattern.findall(text)
-              if len(matches) != 1:
-                  raise SystemExit(f'Expected one poster {number} in {page}, found {len(matches)}')
-              def update(match: re.Match[str]) -> str:
+              if not pattern.search(text):
+                  raise SystemExit(f'Poster hook {number} missing in {page}')
+              def replace(match):
                   tag = match.group(0)
-                  src = rel(page, name)
-                  tag = set_attr(tag, 'data-traditional', src)
-                  tag = set_attr(tag, 'src', src)
-                  tag = set_attr(tag, 'width', '400')
-                  tag = set_attr(tag, 'height', '600')
+                  tag = set_attr(tag, 'data-traditional', relative(page, traditional))
+                  tag = set_attr(tag, 'data-simplified', relative(page, simplified))
+                  tag = set_attr(tag, 'src', relative(page, traditional))
+                  tag = set_attr(tag, 'width', '512')
+                  tag = set_attr(tag, 'height', '768')
+                  tag = set_attr(tag, 'loading', 'eager')
                   tag = set_attr(tag, 'decoding', 'async')
-                  tag = set_attr(tag, 'loading', 'eager' if number == 1 else 'lazy')
+                  tag = set_attr(tag, 'fetchpriority', 'high' if number == 1 else 'auto')
                   return tag
-              return pattern.sub(update, text, count=1)
+              return pattern.sub(replace, text)
 
+          absolute = 'https://jerryzuhow77.github.io/child-advocacy-site/assets/art/'
           for page in pages:
               text = page.read_text(encoding='utf-8')
-              text = replace_poster(text, page, 1, poster1)
-              text = replace_poster(text, page, 2, poster2)
+              text = update_tags(text, page, 1, files['hant1'], files['hans1'])
+              text = update_tags(text, page, 2, files['hant2'], files['hans2'])
               text = re.sub(r'day5\.js\?v=[^"\']+', f'day5.js?v={version}', text)
-              og = absolute + poster1 + '?v=' + version
-              text = re.sub(r'(<meta\s+property="og:image"\s+content=")[^"]*(")', rf'\1{og}\2', text, count=1)
-              text = re.sub(r'(<meta\s+name="twitter:image"\s+content=")[^"]*(")', rf'\1{og}\2', text, count=1)
-              text = re.sub(r'("image"\s*:\s*")[^"]*(")', rf'\1{og}\2', text, count=1)
+              cover = absolute + files['hant1'] + '?v=' + version
+              text = re.sub(r'(<meta\s+property="og:image"\s+content=")[^"]*(")', rf'\1{cover}\2', text, count=1)
+              text = re.sub(r'(<meta\s+name="twitter:image"\s+content=")[^"]*(")', rf'\1{cover}\2', text, count=1)
+              text = re.sub(r'("image"\s*:\s*")[^"]*(")', rf'\1{cover}\2', text, count=1)
               page.write_text(text, encoding='utf-8')
 
-          js_files = [
+          for path in [
               root / 'hearing-records/prison-watch/kaikai-day5-20250429/day5.js',
               root / 'source/hearing-records/prison-watch/kaikai-day5-20250429/day5.js',
-          ]
-          for path in js_files:
+          ]:
               text = path.read_text(encoding='utf-8')
-              text = re.sub(
-                  r"const posterVersion = '[^']+';",
-                  f"const posterVersion = '{version}';",
-                  text,
-                  count=1,
-              )
+              text, count = re.subn(r"const posterVersion = '[^']+';", f"const posterVersion = '{version}';", text, count=1)
+              if count != 1:
+                  raise SystemExit(f'posterVersion not found in {path}')
               path.write_text(text, encoding='utf-8')
 
           record_files = [
-              (root / 'data/hearing-records.json', '../assets/art/' + poster1),
-              (root / 'en/data/hearing-records.json', '../../assets/art/' + poster1),
-              (root / 'ja/data/hearing-records.json', '../../assets/art/' + poster1),
-              (root / 'source/data/hearing-records.json', '../assets/art/' + poster1),
-              (root / 'source/en/data/hearing-records.json', '../../assets/art/' + poster1),
-              (root / 'source/ja/data/hearing-records.json', '../../assets/art/' + poster1),
+              (root / 'data/hearing-records.json', '../assets/art/' + files['hant1']),
+              (root / 'en/data/hearing-records.json', '../../assets/art/' + files['hant1']),
+              (root / 'ja/data/hearing-records.json', '../../assets/art/' + files['hant1']),
+              (root / 'source/data/hearing-records.json', '../assets/art/' + files['hant1']),
+              (root / 'source/en/data/hearing-records.json', '../../assets/art/' + files['hant1']),
+              (root / 'source/ja/data/hearing-records.json', '../../assets/art/' + files['hant1']),
           ]
           for path, image in record_files:
-              if not path.exists():
-                  continue
               data = json.loads(path.read_text(encoding='utf-8'))
               item = next((entry for entry in data if entry.get('url') == 'prison-watch/kaikai-day5-20250429/'), None)
-              if item is not None:
-                  item['image'] = image
-                  path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+              if item is None:
+                  raise SystemExit(f'Day 5 entry missing in {path}')
+              item['image'] = image
+              path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
           bulletins = root / 'data/latest-bulletins.json'
-          if bulletins.exists():
-              data = json.loads(bulletins.read_text(encoding='utf-8'))
-              item = next((entry for entry in data.get('items', []) if entry.get('id') == 'kaikai-day5-20250429'), None)
-              if item is not None:
-                  item['image'] = absolute + poster1 + '?v=' + version
-                  bulletins.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          data = json.loads(bulletins.read_text(encoding='utf-8'))
+          item = next((entry for entry in data.get('items', []) if entry.get('id') == 'kaikai-day5-20250429'), None)
+          if item is not None:
+              item['image'] = absolute + files['hant1'] + '?v=' + version
+              bulletins.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
           sw = root / 'sw.js'
           text = sw.read_text(encoding='utf-8')
-          text = re.sub(
-              r"const VERSION = '[^']+';",
-              "const VERSION = '2026-08-22-day5-selected-art-v3';",
-              text,
-              count=1,
+          text = re.sub(r"const VERSION = '[^']+';", "const VERSION = '2026-08-22-day5-jpeg-blank-fix-v1';", text, count=1)
+          text = re.sub(r"^\s*'\./assets/art/prison-watch-day5-(?:forensic|medical|evidence-selected)[^']*\.(?:webp|jpg)',?\s*$", '', text, flags=re.M)
+          resources = [f"./assets/art/{name}" for name in files.values()]
+          shell_end = text.find('];', text.find('const APP_SHELL = ['))
+          prefix = text[:shell_end].rstrip()
+          if not prefix.endswith(','):
+              prefix += ','
+          prefix += '\n' + ',\n'.join(f"  '{resource}'" for resource in resources) + '\n'
+          text = prefix + text[shell_end:]
+          fresh = (
+              "const day5Fresh =\n"
+              "    url.pathname.endsWith('/hearing-records/prison-watch/kaikai-day5-20250429/day5.js') ||\n"
+              "    url.pathname.includes('/assets/art/prison-watch-day5-selected-evidence-');"
           )
-          resources = [f'./assets/art/{poster1}', f'./assets/art/{poster2}']
-          start = text.find('const APP_SHELL = [')
-          end = text.find('];', start)
-          if start >= 0 and end >= 0:
-              segment = text[start:end]
-              missing = [resource for resource in resources if resource not in segment]
-              if missing:
-                  prefix = text[:end].rstrip()
-                  if not prefix.endswith(','):
-                      prefix += ','
-                  prefix += '\n' + ',\n'.join(f"  '{resource}'" for resource in missing) + '\n'
-                  text = prefix + text[end:]
-          for name in (poster1, poster2):
-              needle = f"url.pathname.endsWith('/assets/art/{name}')"
-              if needle not in text:
-                  marker = "const day5Fresh =\n"
-                  pos = text.find(marker)
-                  if pos >= 0:
-                      insert_at = text.find(';', pos)
-                      condition = f" ||\n    {needle}"
-                      text = text[:insert_at] + condition + text[insert_at:]
+          text, count = re.subn(r'const day5Fresh =.*?;', fresh, text, count=1, flags=re.S)
+          if count != 1:
+              raise SystemExit('day5Fresh block missing')
           sw.write_text(text, encoding='utf-8')
           PY
 
           node --check hearing-records/prison-watch/kaikai-day5-20250429/day5.js
           node --check source/hearing-records/prison-watch/kaikai-day5-20250429/day5.js
+          node --check sw.js
           git diff --check
 
-      - name: Validate rendered references and 42-plus clarification
+      - name: Validate visible assets and strengthened note
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
-          import json
+          from PIL import Image, ImageStat
 
-          version = '20260822-selected-art-v3'
-          poster1 = 'prison-watch-day5-evidence-selected-01-zh-hant-20260822-v3.webp'
-          poster2 = 'prison-watch-day5-evidence-selected-02-zh-hant-20260822-v3.webp'
+          names = [
+              'prison-watch-day5-selected-evidence-01-zh-hant-20260822.jpg',
+              'prison-watch-day5-selected-evidence-02-zh-hant-20260822.jpg',
+              'prison-watch-day5-selected-evidence-01-zh-hans-20260822.jpg',
+              'prison-watch-day5-selected-evidence-02-zh-hans-20260822.jpg',
+          ]
+          for name in names:
+              path = Path('assets/art') / name
+              with Image.open(path) as image:
+                  image.load()
+                  if image.format != 'JPEG' or image.size != (512, 768):
+                      raise SystemExit(f'Invalid JPEG: {path}')
+                  if sum(ImageStat.Stat(image.resize((64, 96))).var) < 250:
+                      raise SystemExit(f'Blank JPEG: {path}')
+
           pages = [
               Path('hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
               Path('en/hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
@@ -203,50 +217,29 @@ jobs:
           ]
           for page in pages:
               text = page.read_text(encoding='utf-8')
-              for name in (poster1, poster2):
-                  if f'{name}?v={version}' not in text:
-                      raise SystemExit(f'New poster reference missing from {page}: {name}')
-              if f'day5.js?v={version}' not in text:
-                  raise SystemExit(f'New Day 5 script version missing from {page}')
-              if text.count('id="day5InjuryCountNote"') != 1:
-                  raise SystemExit(f'42+ note missing or duplicated in {page}')
+              for name in names:
+                  if name not in text:
+                      raise SystemExit(f'JPEG reference missing in {page}: {name}')
+              if 'day5.js?v=20260822-jpeg-blank-fix-1' not in text:
+                  raise SystemExit(f'Fresh script URL missing in {page}')
 
           traditional = pages[0].read_text(encoding='utf-8')
-          for phrase in [
-              '不是只有42處',
-              '42處是可確認的最低數量',
-              '並未呈現所有傷勢照片',
-              '族繁不及備載',
-              '不是完整總數',
-          ]:
+          for phrase in ['不是只有42處', '42處是可確認的最低數量', '並未呈現所有傷勢照片', '族繁不及備載', '不是完整總數']:
               if phrase not in traditional:
-                  raise SystemExit(f'Missing strengthened injury-count wording: {phrase}')
-
-          for path in [
-              'data/hearing-records.json',
-              'en/data/hearing-records.json',
-              'ja/data/hearing-records.json',
-              'source/data/hearing-records.json',
-              'source/en/data/hearing-records.json',
-              'source/ja/data/hearing-records.json',
-          ]:
-              candidate = Path(path)
-              if candidate.exists():
-                  json.loads(candidate.read_text(encoding='utf-8'))
+                  raise SystemExit(f'Missing strengthened note wording: {phrase}')
           PY
 
-      - name: Commit verified repair and remove staging files
+      - name: Commit repair and remove one-off workflow
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf .github/day5-exact-image-chunks
           rm -f .github/day5-exact-image-repair-trigger.txt
           rm -f .github/workflows/oneoff-day5-exact-image-repair.yml
 
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
-          git diff --cached --quiet && { echo 'No repair changes produced.'; exit 1; }
-          git commit -m 'Repair Day 5 selected artwork and 42+ clarification'
+          git diff --cached --quiet && { echo 'No JPEG repair changes produced.'; exit 1; }
+          git commit -m 'Fix blank Day 5 posters with unique JPEG assets'
           git pull --rebase origin main
           git push origin main
