@@ -63,3 +63,16 @@
   color:#405b65!important;
   box-shadow:0 5px 16px rgba(18,56,68,.045)!important;
 }
+/* Day 5 source section: crab-green palette */
+.day5-page .day3-source{
+  background:linear-gradient(135deg,#aebfbd 0%,#c7d5d3 55%,#dde6e4 100%)!important;
+  color:#294750!important;
+}
+.day5-page .day3-source small,
+.day5-page .day3-source h2,
+.day5-page .day3-source p{color:#294750!important;}
+.day5-page .day3-source a{
+  border-color:rgba(41,71,80,.2)!important;
+  background:rgba(255,255,255,.56)!important;
+  color:#234954!important;
+}
