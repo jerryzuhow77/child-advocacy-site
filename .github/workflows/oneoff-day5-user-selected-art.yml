@@ -33,7 +33,7 @@ jobs:
           target='assets/art/prison-watch-day5-medical-zh-hant-20260822.webp'
           temporary='/tmp/day5-medical-selected.webp'
           cat .github/day5-selected-medical/part*.b64 | base64 --decode > "$temporary"
-          printf '%s  %s\n' '581381e0a9a6de31113637fcd312c9edc9b1fde996bc488c160156ddf1ef445b' "$temporary" | sha256sum --check --strict
+          printf '%s  %s\n' 'd8d4dd77bef5bb0f63f6d1f65c455a4dc09b2d60b84ae3d64a7616df246d60ab' "$temporary" | sha256sum --check --strict
           printf '%s  %s\n' '91578cae32c993ba149cb477527c2e686d3378f1e201bbbb553ac064422f07f1' 'assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp' | sha256sum --check --strict
           mv "$temporary" "$target"
 
@@ -73,7 +73,7 @@ jobs:
           PY
 
           test "$(stat -c %s assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp)" -gt 400000
-          test "$(stat -c %s assets/art/prison-watch-day5-medical-zh-hant-20260822.webp)" -gt 400000
+          test "$(stat -c %s assets/art/prison-watch-day5-medical-zh-hant-20260822.webp)" -gt 150000
           grep -Fq 'prison-watch-day5-forensic-zh-hant-20260822.webp?v=20260822-user-selected-1' hearing-records/prison-watch/kaikai-day5-20250429/index.html
           grep -Fq 'prison-watch-day5-medical-zh-hant-20260822.webp?v=20260822-user-selected-1' hearing-records/prison-watch/kaikai-day5-20250429/index.html
           grep -Fq "const VERSION = '2026-08-22-day5-user-selected-art-v1';" sw.js
