@@ -2,11 +2,11 @@ name: Publish Day 5 medical testimony record
 
 on:
   workflow_dispatch:
-  push:
+  pull_request:
     branches:
       - main
     paths:
-      - '.github/workflows/oneoff-publish-day5.yml'
+      - '.github/day5-publish-trigger.txt'
 
 permissions:
   contents: write
@@ -17,32 +17,39 @@ concurrency:
 
 jobs:
   publish:
-    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Trigger Day 5 official-site publication'
+    if: github.event_name == 'workflow_dispatch' || github.head_ref == 'trigger-day5-publication'
     runs-on: ubuntu-latest
     steps:
       - name: Check out current production branch
         uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
 
-      - name: Install and validate Day 5 page
+      - name: Rebuild, install and validate Day 5 page
         shell: bash
         run: |
           set -euo pipefail
           git pull --rebase origin main
 
-          archive='.github/day5-deploy-package.tar.xz'
           work='/tmp/day5-deploy'
+          archive="$work/day5-package.tar.xz"
           rm -rf "$work"
           mkdir -p "$work"
 
-          printf '%s  %s\n' '1032d5eb8e0ecb291115750f8e6b76868341fd4558e0c2bad4557e4bb0e9ad2c' "$archive" | sha256sum --check --strict
+          # Rebuild the exact staged XZ archive. Lexical order is part00..part05,
+          # then part06-00..part06-02.
+          cat .github/day5-payload/part*.b64 | tr -d '\r\n ' | base64 --decode > "$archive"
+          xz --test "$archive"
           tar -xJf "$archive" -C "$work"
-          package="$work/day5_deploy_package"
-          test -f "$package/install_day5.py"
-          (cd "$package" && sha256sum --check --strict SHA256SUMS)
 
-          # Preserve current live indexes; the installer merges Day 5 into them below.
+          installer="$(find "$work" -maxdepth 4 -type f -name install_day5.py -print -quit)"
+          test -n "$installer"
+          package="$(dirname "$installer")"
+          test -d "$package/payload"
+
+          # Keep the current official indexes. The installer merges Day 5 into
+          # them after copying the new page and assets.
           rm -f \
             "$package/payload/data/hearing-records.json" \
             "$package/payload/en/data/hearing-records.json" \
@@ -51,7 +58,7 @@ jobs:
             "$package/payload/source/en/data/hearing-records.json" \
             "$package/payload/source/ja/data/hearing-records.json"
 
-          python "$package/install_day5.py"
+          python "$installer"
           node --check hearing-records/prison-watch/kaikai-day5-20250429/day5.js
 
           python - <<'PY'
@@ -138,6 +145,7 @@ jobs:
           set -euo pipefail
           rm -rf .github/day5-payload
           rm -f .github/day5-deploy-package.tar.xz
+          rm -f .github/day5-publish-trigger.txt
           rm -f .github/workflows/oneoff-publish-day5.yml
           rm -f .github/workflows/oneoff-publish-day5-medical.yml
 
