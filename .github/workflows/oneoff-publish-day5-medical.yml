@@ -1,6 +1,7 @@
 name: One-off publish Day 5 medical testimony page
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
