@@ -1,53 +1,54 @@
-name: Repair Day 5 selected poster assets
+name: Repair blank Day 5 selected posters
 
 on:
   pull_request:
     branches: [main]
     paths:
-      - '.github/day5-poster-repair-trigger.txt'
+      - '.github/day5-poster-repair10-trigger.txt'
+      - '.github/day5-poster-repair10/**'
 
 permissions:
   contents: write
 
 concurrency:
-  group: oneoff-day5-poster-repair
+  group: oneoff-day5-poster-repair10
   cancel-in-progress: false
 
 jobs:
   repair:
-    if: github.head_ref == 'trigger-day5-poster-repair-20260822'
+    if: github.head_ref == 'repair-day5-blank-posters-20260822'
     runs-on: ubuntu-latest
     steps:
-      - name: Check out current production branch
+      - name: Check out repair branch
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
 
       - name: Reconstruct and verify both selected posters
         shell: bash
         run: |
           set -euo pipefail
-          git pull --rebase origin main
+          test -f .github/day5-poster-repair10-trigger.txt || { echo 'Repair already applied.'; exit 0; }
 
-          work='/tmp/day5-poster-repair'
+          work='/tmp/day5-poster-repair10'
           rm -rf "$work"
           mkdir -p "$work"
 
-          cat .github/day5-poster-repair/forensic-*.b64 | tr -d '\r\n ' | base64 --decode > "$work/forensic.webp"
-          cat .github/day5-poster-repair/medical-*.b64 | tr -d '\r\n ' | base64 --decode > "$work/medical.webp"
+          cat .github/day5-poster-repair10/forensic-*.b64 | tr -d '\r\n ' | base64 --decode > "$work/forensic.webp"
+          cat .github/day5-poster-repair10/medical-*.b64 | tr -d '\r\n ' | base64 --decode > "$work/medical.webp"
 
-          printf '%s  %s\n' '8528f5bd6cce8792c28ef17076cefc99e263749bd8c586e60f5c8f2cc87b38f9' "$work/forensic.webp" | sha256sum --check --strict
-          printf '%s  %s\n' 'd8d4dd77bef5bb0f63f6d1f65c455a4dc09b2d60b84ae3d64a7616df246d60ab' "$work/medical.webp" | sha256sum --check --strict
+          printf '%s  %s\n' 'c4b478119d380b401c1287a9adf2ea99adbcf11abefb19ba848f34ed7ce175d9' "$work/forensic.webp" | sha256sum --check --strict
+          printf '%s  %s\n' '1266367242aa535b14376f9e3dc81b100fd9cf0152936241531e5132059d2eda' "$work/medical.webp" | sha256sum --check --strict
 
           python -m pip install --disable-pip-version-check --quiet pillow
           python - <<'PY'
-          from PIL import Image
+          from PIL import Image, ImageStat
           from pathlib import Path
 
           expected = {
-              Path('/tmp/day5-poster-repair/forensic.webp'): (768, 1152),
-              Path('/tmp/day5-poster-repair/medical.webp'): (768, 1152),
+              Path('/tmp/day5-poster-repair10/forensic.webp'): (768, 1152),
+              Path('/tmp/day5-poster-repair10/medical.webp'): (768, 1152),
           }
           for path, size in expected.items():
               with Image.open(path) as image:
@@ -56,26 +57,29 @@ jobs:
                   image.load()
                   if image.format != 'WEBP' or image.size != size:
                       raise SystemExit(f'Invalid poster {path}: {image.format}, {image.size}')
-                  if image.getbbox() is None:
-                      raise SystemExit(f'Blank poster image: {path}')
-                  extrema = image.convert('RGB').getextrema()
-                  if all(low == high for low, high in extrema):
-                      raise SystemExit(f'Flat-colour poster image: {path}')
-              print(f'Validated {path.name}: {path.stat().st_size} bytes, {size[0]}x{size[1]}')
+                  rgb = image.convert('RGB')
+                  if rgb.getbbox() is None:
+                      raise SystemExit(f'Blank poster: {path}')
+                  variance = sum(ImageStat.Stat(rgb.resize((96, 144))).var)
+                  if variance < 100:
+                      raise SystemExit(f'Poster lacks visual detail: {path}; variance={variance}')
+                  print(f'{path.name}: {path.stat().st_size} bytes; variance={variance:.2f}')
           PY
 
           install -m 0644 "$work/forensic.webp" assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp
           install -m 0644 "$work/medical.webp" assets/art/prison-watch-day5-medical-zh-hant-20260822.webp
 
-      - name: Refresh cache keys and reinforce the 42-plus clarification
+      - name: Refresh cache keys and strengthen the 42-plus note
         shell: bash
         run: |
           set -euo pipefail
+          test -f .github/day5-poster-repair10-trigger.txt || exit 0
+
           python - <<'PY'
           from pathlib import Path
           import re
 
-          version = '20260822-poster-repair-2'
+          version = '20260822-poster-repair-3'
           pages = [
               Path('hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
               Path('en/hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
@@ -84,7 +88,7 @@ jobs:
               Path('source/en/hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
               Path('source/ja/hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
           ]
-          asset_names = [
+          assets = [
               'prison-watch-day5-forensic-zh-hant-20260822.webp',
               'prison-watch-day5-forensic-zh-hans-20260822.webp',
               'prison-watch-day5-medical-zh-hant-20260822.webp',
@@ -111,19 +115,19 @@ jobs:
           for page in pages:
               text = page.read_text(encoding='utf-8')
               text = re.sub(r'day5\.js\?v=[^"\']+', f'day5.js?v={version}', text)
-              for name in asset_names:
-                  text = re.sub(re.escape(name) + r'(?:\?v=[^"\']+)?', f'{name}?v={version}', text)
+              for asset in assets:
+                  text = re.sub(re.escape(asset) + r'(?:\?v=[^"\']+)?', f'{asset}?v={version}', text)
 
               key = 'en' if '/en/' in page.as_posix() else 'ja' if '/ja/' in page.as_posix() else 'zh'
               title, body, source = notes[key]
-              replacement = (
+              note = (
                   '<aside id="day5InjuryCountNote" class="day5-injury-count-note" '
                   f'aria-label="{title}"><strong>{title}</strong><p>{body}</p>'
                   f'<a href="#record-08">{source}</a></aside>'
               )
               pattern = re.compile(r'<aside id="day5InjuryCountNote"\b.*?</aside>', re.S)
               if pattern.search(text):
-                  text = pattern.sub(replacement, text, count=1)
+                  text = pattern.sub(note, text, count=1)
               else:
                   marker = '<article class="day5-compare-card is-agree"><header><span>04</span>'
                   start = text.find(marker)
@@ -133,8 +137,7 @@ jobs:
                   if end < 0:
                       raise SystemExit(f'Comparison card 04 not closed in {page}')
                   end += len('</article>')
-                  text = text[:end] + replacement + text[end:]
-
+                  text = text[:end] + note + text[end:]
               if key == 'zh':
                   text = text.replace(
                       '<strong>至少42處</strong><small>部分癒合後已看不到</small>',
@@ -147,39 +150,29 @@ jobs:
               Path('source/hearing-records/prison-watch/kaikai-day5-20250429/day5.js'),
           ]:
               text = script.read_text(encoding='utf-8')
-              text = re.sub(
-                  r"const posterVersion = '[^']+';",
-                  f"const posterVersion = '{version}';",
-                  text,
-                  count=1,
-              )
+              text = re.sub(r"const posterVersion = '[^']+';", f"const posterVersion = '{version}';", text, count=1)
               script.write_text(text, encoding='utf-8')
 
           sw = Path('sw.js')
           text = sw.read_text(encoding='utf-8')
-          text = re.sub(
-              r"const VERSION = '[^']+';",
-              "const VERSION = '2026-08-22-day5-poster-repair-v2';",
-              text,
-              count=1,
-          )
+          text = re.sub(r"const VERSION = '[^']+';", "const VERSION = '2026-08-22-day5-poster-repair-v3';", text, count=1)
           sw.write_text(text, encoding='utf-8')
           PY
 
-      - name: Validate repaired production output
+      - name: Validate repaired branch
         shell: bash
         run: |
           set -euo pipefail
+          test -f .github/day5-poster-repair10-trigger.txt || exit 0
+
           node --check hearing-records/prison-watch/kaikai-day5-20250429/day5.js
           node --check source/hearing-records/prison-watch/kaikai-day5-20250429/day5.js
-
-          printf '%s  %s\n' '8528f5bd6cce8792c28ef17076cefc99e263749bd8c586e60f5c8f2cc87b38f9' 'assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp' | sha256sum --check --strict
-          printf '%s  %s\n' 'd8d4dd77bef5bb0f63f6d1f65c455a4dc09b2d60b84ae3d64a7616df246d60ab' 'assets/art/prison-watch-day5-medical-zh-hant-20260822.webp' | sha256sum --check --strict
+          printf '%s  %s\n' 'c4b478119d380b401c1287a9adf2ea99adbcf11abefb19ba848f34ed7ce175d9' assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp | sha256sum --check --strict
+          printf '%s  %s\n' '1266367242aa535b14376f9e3dc81b100fd9cf0152936241531e5132059d2eda' assets/art/prison-watch-day5-medical-zh-hant-20260822.webp | sha256sum --check --strict
 
           python - <<'PY'
           from pathlib import Path
-
-          version = '20260822-poster-repair-2'
+          version = '20260822-poster-repair-3'
           pages = [
               Path('hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
               Path('en/hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
@@ -193,30 +186,30 @@ jobs:
               if text.count('id="day5InjuryCountNote"') != 1:
                   raise SystemExit(f'42-plus note missing or duplicated in {page}')
               if f'day5.js?v={version}' not in text:
-                  raise SystemExit(f'Fresh script key missing in {page}')
-              if f'prison-watch-day5-forensic-zh-hant-20260822.webp?v={version}' not in text:
-                  raise SystemExit(f'Fresh first-poster key missing in {page}')
-              if f'prison-watch-day5-medical-zh-hant-20260822.webp?v={version}' not in text:
-                  raise SystemExit(f'Fresh second-poster key missing in {page}')
+                  raise SystemExit(f'Fresh Day 5 script key missing in {page}')
+              for name in [
+                  'prison-watch-day5-forensic-zh-hant-20260822.webp',
+                  'prison-watch-day5-medical-zh-hant-20260822.webp',
+              ]:
+                  if f'{name}?v={version}' not in text:
+                      raise SystemExit(f'Fresh poster key missing in {page}: {name}')
           zh = pages[0].read_text(encoding='utf-8')
-          for phrase in [
-              '不是只有42處',
-              '42處是可確認的最低數量',
-              '並未呈現所有傷勢照片',
-              '族繁不及備載',
-          ]:
+          for phrase in ['不是只有42處', '42處是可確認的最低數量', '並未呈現所有傷勢照片', '族繁不及備載']:
               if phrase not in zh:
                   raise SystemExit(f'Missing strengthened note phrase: {phrase}')
           PY
-          grep -Fq "const VERSION = '2026-08-22-day5-poster-repair-v2';" sw.js
           git diff --check
 
-      - name: Commit repaired images and remove one-off staging
+      - name: Commit repaired files to the pull-request branch
         shell: bash
         run: |
           set -euo pipefail
+          test -f .github/day5-poster-repair10-trigger.txt || exit 0
+
+          rm -rf .github/day5-poster-repair10
           rm -rf .github/day5-poster-repair
           rm -rf .github/day5-selected-medical
+          rm -f .github/day5-poster-repair10-trigger.txt
           rm -f .github/day5-poster-repair-trigger.txt
           rm -f .github/day5-selected-art-trigger.txt
           rm -f .github/workflows/oneoff-day5-user-selected-art.yml
@@ -226,6 +219,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
           git diff --cached --quiet && { echo 'No repair changes produced.'; exit 1; }
-          git commit -m 'Repair Day 5 selected posters and strengthen 42-plus note'
-          git pull --rebase origin main
-          git push origin main
+          git commit -m 'Repair Day 5 selected posters and strengthen 42-plus note [skip ci]'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
