@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-22-day5-dedicated-posters-v1';
+const VERSION = '2026-08-22-day5-user-selected-art-v2';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -38,7 +38,8 @@ const APP_SHELL = [
   './assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp',
   './assets/art/prison-watch-day5-forensic-zh-hans-20260822.webp',
   './assets/art/prison-watch-day5-medical-zh-hant-20260822.webp',
-  './assets/art/prison-watch-day5-medical-zh-hans-20260822.webp'
+  './assets/art/prison-watch-day5-medical-zh-hans-20260822.webp',
+  './hearing-records/prison-watch/kaikai-day5-20250429/day5.js'
 ];
 
 self.addEventListener('install', event => {
@@ -97,6 +98,23 @@ async function networkFirstNavigation(request) {
   }
 }
 
+async function networkFirstStatic(request) {
+  const runtime = await caches.open(RUNTIME_CACHE);
+  try {
+    const response = await fetch(request, { cache: 'no-cache' });
+    if (cacheable(response)) {
+      await runtime.put(request, response.clone());
+      await trimRuntimeCache();
+    }
+    return response;
+  } catch (_) {
+    const exact = await runtime.match(request);
+    if (exact) return exact;
+    const shell = await caches.open(SHELL_CACHE);
+    return shell.match(request) || Response.error();
+  }
+}
+
 async function staleWhileRevalidate(request) {
   const cache = await caches.open(RUNTIME_CACHE);
   const cached = await cache.match(request);
@@ -123,6 +141,16 @@ self.addEventListener('fetch', event => {
 
   if (request.mode === 'navigate') {
     event.respondWith(networkFirstNavigation(request));
+    return;
+  }
+
+  const day5Fresh =
+    url.pathname.endsWith('/hearing-records/prison-watch/kaikai-day5-20250429/day5.js') ||
+    url.pathname.endsWith('/assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp') ||
+    url.pathname.endsWith('/assets/art/prison-watch-day5-medical-zh-hant-20260822.webp');
+
+  if (day5Fresh) {
+    event.respondWith(networkFirstStatic(request));
     return;
   }
 
