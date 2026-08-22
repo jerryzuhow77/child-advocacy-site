@@ -1,8 +1,10 @@
 name: Publish Day 5 medical testimony record
 
 on:
+  workflow_dispatch:
   push:
-    branches: [main]
+    branches:
+      - main
     paths:
       - '.github/workflows/oneoff-publish-day5.yml'
 
@@ -15,7 +17,7 @@ concurrency:
 
 jobs:
   publish:
-    if: github.event.head_commit.message == 'Trigger Day 5 official-site publication'
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Trigger Day 5 official-site publication'
     runs-on: ubuntu-latest
     steps:
       - name: Check out current production branch
@@ -23,220 +25,49 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Rebuild and inspect staged Day 5 package
+      - name: Install and validate Day 5 page
         shell: bash
         run: |
           set -euo pipefail
-          work=/tmp/day5-official-publish
+          git pull --rebase origin main
+
+          archive='.github/day5-deploy-package.tar.xz'
+          work='/tmp/day5-deploy'
           rm -rf "$work"
-          mkdir -p "$work/extracted"
+          mkdir -p "$work"
 
-          chunks=(
-            .github/day5-payload/part00.b64
-            .github/day5-payload/part01.b64
-            .github/day5-payload/part02.b64
-            .github/day5-payload/part03.b64
-            .github/day5-payload/part04.b64
-            .github/day5-payload/part05.b64
-            .github/day5-payload/part06-00.b64
-            .github/day5-payload/part06-01.b64
-            .github/day5-payload/part06-02.b64
-          )
-          for file in "${chunks[@]}"; do
-            test -s "$file" || { echo "Missing payload chunk: $file" >&2; exit 1; }
-          done
-          cat "${chunks[@]}" | tr -d '\r\n' > "$work/payload.b64"
-          base64 --decode "$work/payload.b64" > "$work/payload.tar.xz"
-          xz --test "$work/payload.tar.xz"
-          tar -tJf "$work/payload.tar.xz" > "$work/archive-list.txt"
-          tar -xJf "$work/payload.tar.xz" -C "$work/extracted"
+          printf '%s  %s\n' '1032d5eb8e0ecb291115750f8e6b76868341fd4558e0c2bad4557e4bb0e9ad2c' "$archive" | sha256sum --check --strict
+          tar -xJf "$archive" -C "$work"
+          package="$work/day5_deploy_package"
+          test -f "$package/install_day5.py"
+          (cd "$package" && sha256sum --check --strict SHA256SUMS)
 
-          installer=$(find "$work/extracted" -type f -name install_day5.py -print -quit)
-          test -n "$installer" || { echo 'install_day5.py not found in staged package' >&2; cat "$work/archive-list.txt"; exit 1; }
-          package_root=$(dirname "$installer")
-          test -d "$package_root/payload" || { echo 'Package payload directory not found' >&2; exit 1; }
-
-          # Keep publication merge-only: never replace live indexes with packaged snapshots.
+          # Preserve current live indexes; the installer merges Day 5 into them below.
           rm -f \
-            "$package_root/payload/data/hearing-records.json" \
-            "$package_root/payload/en/data/hearing-records.json" \
-            "$package_root/payload/ja/data/hearing-records.json" \
-            "$package_root/payload/source/data/hearing-records.json" \
-            "$package_root/payload/source/en/data/hearing-records.json" \
-            "$package_root/payload/source/ja/data/hearing-records.json"
+            "$package/payload/data/hearing-records.json" \
+            "$package/payload/en/data/hearing-records.json" \
+            "$package/payload/ja/data/hearing-records.json" \
+            "$package/payload/source/data/hearing-records.json" \
+            "$package/payload/source/en/data/hearing-records.json" \
+            "$package/payload/source/ja/data/hearing-records.json"
 
-          python "$installer"
+          python "$package/install_day5.py"
+          node --check hearing-records/prison-watch/kaikai-day5-20250429/day5.js
 
-      - name: Merge Day 5 into homepage feeds and discovery data
-        shell: bash
-        run: |
-          set -euo pipefail
           python - <<'PY'
-          from __future__ import annotations
-
-          import json
-          import re
           from html.parser import HTMLParser
           from pathlib import Path
+          import json
 
           root = Path('.')
-          day5_url = 'prison-watch/kaikai-day5-20250429/'
-          public_path = 'hearing-records/prison-watch/kaikai-day5-20250429/'
-          canonical = 'https://jerryzuhow77.github.io/child-advocacy-site/'
-
-          entries = {
-              'zh': {
-                  'date': '2025-04-29',
-                  'title': '剴剴案｜第五日・第五次審判期日',
-                  'court': '臺北地方法院｜國民法官審理',
-                  'summary': '許倬憲法醫師、呂立醫師作證；完整呈現法醫死因研判、兒少保護醫療鑑定、PMCT、營養不良、傷勢與兩位醫師證詞對照。',
-                  'image': '../assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp',
-                  'url': day5_url,
-                  'caseUrl': '../cases/kaikai/'
-              },
-              'en': {
-                  'date': '2025-04-29',
-                  'title': 'KaiKai Case | Day 5 · Fifth Trial Hearing',
-                  'court': 'Taipei District Court | Citizen Judges',
-                  'summary': 'Forensic physician Hsu Cho-hsien and child-protection physician Lu Li testified. The full hearing record is preserved with a comparison of methods, death-cause framing, imaging evidence, injury assessment and professional limits.',
-                  'image': '../../assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp',
-                  'url': day5_url,
-                  'caseUrl': '../cases/kaikai/'
-              },
-              'ja': {
-                  'date': '2025-04-29',
-                  'title': '剴剴事件｜第5日・第5回公判期日',
-                  'court': '台北地方裁判所｜国民法官審理',
-                  'summary': '許倬憲法医師と呂立医師が証言。法医死因鑑定、児童保護医療、PMCT、栄養不良、傷害、両医師の証言照合と完全な傍聴記録を掲載。',
-                  'image': '../../assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp',
-                  'url': day5_url,
-                  'caseUrl': '../cases/kaikai/'
-              }
-          }
-
-          def update_records(path: Path, entry: dict) -> None:
-              if not path.exists():
-                  return
-              data = json.loads(path.read_text(encoding='utf-8'))
-              existing = next((item for item in data if item.get('url') == day5_url), None)
-              if existing is not None:
-                  existing.update(entry)
-              else:
-                  insert_at = len(data)
-                  for i, item in enumerate(data):
-                      if item.get('url') == 'prison-watch/kaikai-day4-20250428/':
-                          insert_at = i + 1
-                          break
-                  data.insert(insert_at, entry)
-              path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-
-          for path, lang in [
-              (root / 'data/hearing-records.json', 'zh'),
-              (root / 'en/data/hearing-records.json', 'en'),
-              (root / 'ja/data/hearing-records.json', 'ja'),
-              (root / 'source/data/hearing-records.json', 'zh'),
-              (root / 'source/en/data/hearing-records.json', 'en'),
-              (root / 'source/ja/data/hearing-records.json', 'ja'),
-          ]:
-              update_records(path, entries[lang])
-
-          latest = root / 'data/latest-bulletins.json'
-          if latest.exists():
-              data = json.loads(latest.read_text(encoding='utf-8'))
-              item = {
-                  'id': 'kaikai-day5-20250429',
-                  'publishedAt': '2026-08-22',
-                  'tag': 'COURT RECORD',
-                  'badge': {'zh-Hant': '旁聽紀錄', 'zh-Hans': '旁听记录', 'en': 'Court record', 'ja': '傍聴記録'},
-                  'title': {'zh-Hant': '第五次審判期日', 'zh-Hans': '第五次审判期日', 'en': 'Fifth Trial Hearing', 'ja': '第5回公判期日'},
-                  'summary': {
-                      'zh-Hant': '兩位醫師、死亡機轉、傷勢鑑定與完整庭審問答。',
-                      'zh-Hans': '两位医师、死亡机制、伤势鉴定与完整庭审问答。',
-                      'en': 'Two medical experts, death mechanism, injury assessment and the complete hearing record.',
-                      'ja': '2人の医師、死亡機序、傷害鑑定、完全な法廷記録。'
-                  },
-                  'url': {
-                      'zh-Hant': canonical + public_path,
-                      'zh-Hans': canonical + public_path + '?lang=zh-Hans',
-                      'en': canonical + 'en/' + public_path,
-                      'ja': canonical + 'ja/' + public_path
-                  },
-                  'image': canonical + 'assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp',
-                  'imageAlt': {
-                      'zh-Hant': '第五次審判期日醫學證據重製編輯筆記主視覺',
-                      'zh-Hans': '第五次审判期日医学证据重制编辑笔记主视觉',
-                      'en': 'Medical-evidence cover artwork for the fifth trial hearing',
-                      'ja': '第5回公判期日の医学証拠を扱う再構成記録のメインビジュアル'
-                  }
-              }
-              items = data.setdefault('items', [])
-              items[:] = [x for x in items if x.get('id') != item['id']]
-              items.insert(0, item)
-              data['generatedAt'] = '2026-08-22T13:30:00+08:00'
-              latest.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-
-          def update_search(path: Path) -> None:
-              if not path.exists():
-                  return
-              data = json.loads(path.read_text(encoding='utf-8'))
-              item = {
-                  'title': '剴剴案｜第五日・第五次審判期日',
-                  'category': '旁聽紀錄・剴剴案',
-                  'url': public_path,
-                  'date': '2026-08-22',
-                  'summary': '2025年4月29日第五次審判期日：許倬憲法醫師與呂立醫師作證，完整呈現死因研判、傷勢鑑定、PMCT、營養不良、鑑定界線及兩位醫師證詞對照。',
-                  'keywords': '剴剴案 第五日 第五次審判期日 許倬憲 呂立 法醫 兒少保護醫療 低血容性休克 PMCT 營養不良 42處傷勢 醫學鑑定 證詞對照 完整旁聽紀錄',
-                  'text': '剴剴案第五日，2025年4月29日第五次審判期日。上午許倬憲法醫師說明法醫鑑定、死亡機轉與死因，下午呂立醫師說明兒少保護醫療、傷勢、PMCT、營養不良與照顧脈絡。專頁並列共同核心、表述差異、互補視角與共同界線，完整保留庭上問答。'
-              }
-              items = data.setdefault('items', [])
-              existing = next((x for x in items if x.get('url') == public_path), None)
-              if existing is not None:
-                  existing.update(item)
-              else:
-                  items.insert(0, item)
-              data['updated'] = '2026-08-22'
-              data['count'] = len(items)
-              path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-
-          update_search(root / 'data/search-index.json')
-          update_search(root / 'source/data/search-index.json')
-
-          sitemap = root / 'sitemap.xml'
-          if sitemap.exists():
-              text = sitemap.read_text(encoding='utf-8')
-              urls = [canonical + public_path, canonical + 'en/' + public_path, canonical + 'ja/' + public_path]
-              additions = []
-              for url in urls:
-                  if url not in text:
-                      additions.append(f'  <url>\n    <loc>{url}</loc>\n    <lastmod>2026-08-22</lastmod>\n  </url>\n')
-              if additions:
-                  sitemap.write_text(text.replace('</urlset>', ''.join(additions) + '</urlset>'), encoding='utf-8')
-
-          sw = root / 'sw.js'
-          if sw.exists():
-              text = sw.read_text(encoding='utf-8')
-              text = re.sub(r"const VERSION = '[^']+';", "const VERSION = '2026-08-22-day5-medical-v2';", text, count=1)
-              resources = [
-                  './hearing-records/prison-watch/kaikai-day5-20250429/',
-                  './hearing-records/prison-watch/kaikai-day5-20250429/day5.css',
-                  './hearing-records/prison-watch/kaikai-day5-20250429/day5.js',
-                  './assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp',
-                  './assets/art/prison-watch-day5-forensic-zh-hans-20260822.webp',
-                  './assets/art/prison-watch-day5-medical-zh-hant-20260822.webp',
-                  './assets/art/prison-watch-day5-medical-zh-hans-20260822.webp'
-              ]
-              start = text.find('const APP_SHELL = [')
-              end = text.find('];', start)
-              if start >= 0 and end >= 0:
-                  segment = text[start:end]
-                  missing = [r for r in resources if r not in segment]
-                  if missing:
-                      before = text[:end].rstrip()
-                      if not before.endswith(','):
-                          before += ','
-                      before += '\n' + ',\n'.join(f"  '{r}'" for r in missing) + '\n'
-                      text = before + text[end:]
-              sw.write_text(text, encoding='utf-8')
+          pages = [
+              root / 'hearing-records/prison-watch/kaikai-day5-20250429/index.html',
+              root / 'en/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
+              root / 'ja/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
+              root / 'source/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
+              root / 'source/en/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
+              root / 'source/ja/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
+          ]
 
           class IdParser(HTMLParser):
               def __init__(self):
@@ -247,59 +78,68 @@ jobs:
                       if key == 'id' and value:
                           self.ids.append(value)
 
-          pages = [
-              root / public_path / 'index.html',
-              root / 'en' / public_path / 'index.html',
-              root / 'ja' / public_path / 'index.html'
-          ]
           for page in pages:
-              if not page.exists():
-                  raise SystemExit(f'Missing published page: {page}')
-              html = page.read_text(encoding='utf-8')
-              parser = IdParser(); parser.feed(html)
-              duplicates = sorted({x for x in parser.ids if parser.ids.count(x) > 1})
+              if not page.is_file() or page.stat().st_size < 10_000:
+                  raise SystemExit(f'missing or undersized page: {page}')
+              text = page.read_text(encoding='utf-8')
+              parser = IdParser()
+              parser.feed(text)
+              duplicates = sorted({value for value in parser.ids if parser.ids.count(value) > 1})
               if duplicates:
-                  raise SystemExit(f'Duplicate IDs in {page}: {duplicates}')
+                  raise SystemExit(f'duplicate IDs in {page}: {duplicates}')
+              if 'id="comparison"' not in text:
+                  raise SystemExit(f'missing comparison anchor in {page}')
+              if text.count('day5-compare-card') < 7:
+                  raise SystemExit(f'not enough doctor-comparison cards in {page}')
+              if text.count('day5-record-chapter') != 11:
+                  raise SystemExit(f'unexpected complete-record chapter count in {page}')
 
           zh = pages[0].read_text(encoding='utf-8')
-          required = {
-              'comparison heading': '兩位醫師證詞對照專區',
-              'full record': '完整旁聽紀錄',
-              'forensic expert': '許倬憲法醫師',
-              'clinical expert': '呂立醫師',
-              'hidden injury principle': '外傷不一定會從皮膚外觀呈現',
-              '42 injuries': '至少有42處確定的傷勢',
-              'final time': '17:28 退庭'
-          }
-          for label, phrase in required.items():
+          for phrase in [
+              '兩位醫師證詞對照專區',
+              '完整旁聽紀錄',
+              '許倬憲法醫師',
+              '呂立醫師',
+              '外傷不一定會從皮膚外觀呈現',
+              '至少有42處確定的傷勢',
+              '17:28 退庭',
+          ]:
               if phrase not in zh:
-                  raise SystemExit(f'Missing {label}: {phrase}')
-          if zh.count('day5-compare-card') < 7:
-              raise SystemExit('Fewer than seven medical-comparison cards')
-          if zh.count('day5-record-chapter') != 11:
-              raise SystemExit('Complete record does not contain eleven chapters')
+                  raise SystemExit(f'missing required source phrase: {phrase}')
 
           for path in [
-              root / 'data/hearing-records.json', root / 'en/data/hearing-records.json',
-              root / 'ja/data/hearing-records.json', root / 'data/latest-bulletins.json',
-              root / 'data/search-index.json'
+              root / 'data/hearing-records.json',
+              root / 'en/data/hearing-records.json',
+              root / 'ja/data/hearing-records.json',
+              root / 'data/search-index.json',
           ]:
-              if path.exists():
-                  json.loads(path.read_text(encoding='utf-8'))
-          PY
+              json.loads(path.read_text(encoding='utf-8'))
 
-          node --check hearing-records/prison-watch/kaikai-day5-20250429/day5.js
-          test -s assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp
-          test -s assets/art/prison-watch-day5-medical-zh-hant-20260822.webp
-          test -s assets/art/prison-watch-day5-forensic-zh-hans-20260822.webp
-          test -s assets/art/prison-watch-day5-medical-zh-hans-20260822.webp
+          required_assets = [
+              'assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp',
+              'assets/art/prison-watch-day5-forensic-zh-hans-20260822.webp',
+              'assets/art/prison-watch-day5-medical-zh-hant-20260822.webp',
+              'assets/art/prison-watch-day5-medical-zh-hans-20260822.webp',
+          ]
+          for item in required_assets:
+              path = root / item
+              if not path.is_file() or path.stat().st_size < 15_000:
+                  raise SystemExit(f'missing Day 5 art asset: {path}')
+
+          sitemap = (root / 'sitemap.xml').read_text(encoding='utf-8')
+          canonical = 'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day5-20250429/'
+          if canonical not in sitemap:
+              raise SystemExit('Day 5 canonical URL missing from sitemap')
+          PY
 
       - name: Commit validated production update
         shell: bash
         run: |
           set -euo pipefail
           rm -rf .github/day5-payload
+          rm -f .github/day5-deploy-package.tar.xz
           rm -f .github/workflows/oneoff-publish-day5.yml
+          rm -f .github/workflows/oneoff-publish-day5-medical.yml
 
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
