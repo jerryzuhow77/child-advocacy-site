@@ -1,0 +1,189 @@
+name: Publish Day 5 medical testimony record v2
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/day5-publish-trigger-v2.txt'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-day5-medical-record-v2
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.event_name == 'workflow_dispatch' || github.head_ref == 'trigger-day5-publication'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out current production branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Rebuild and install staged package
+        shell: bash
+        run: |
+          set -euo pipefail
+          git pull --rebase origin main
+          work='/tmp/day5-deploy-v2'
+          rm -rf "$work"
+          mkdir -p "$work"
+
+          python - <<'PY'
+          from pathlib import Path
+          import base64, lzma, string
+
+          parts = sorted(Path('.github/day5-payload').glob('part*.b64'))
+          if not parts:
+              raise SystemExit('No Day 5 payload chunks found')
+
+          alphabet = set(string.ascii_letters + string.digits + '+/=')
+          segments = []
+          for path in parts:
+              raw = path.read_text(encoding='utf-8', errors='ignore')
+              clean = ''.join(ch for ch in raw if ch in alphabet)
+              if not clean:
+                  raise SystemExit(f'Empty base64 payload: {path}')
+              segments.append(clean)
+
+          def decode(text: str) -> bytes:
+              text += '=' * ((4 - len(text) % 4) % 4)
+              return base64.b64decode(text, validate=False)
+
+          candidates = []
+          try:
+              candidates.append(('per-file', b''.join(decode(part) for part in segments)))
+          except Exception as exc:
+              print('per-file decode skipped:', exc)
+          try:
+              candidates.append(('joined', decode(''.join(segments))))
+          except Exception as exc:
+              print('joined decode skipped:', exc)
+          try:
+              candidates.append(('joined-no-inner-padding', decode(''.join(part.rstrip('=') for part in segments))))
+          except Exception as exc:
+              print('joined-no-inner-padding decode skipped:', exc)
+
+          archive = None
+          for label, data in candidates:
+              try:
+                  expanded = lzma.decompress(data)
+                  if b'install_day5.py' not in expanded:
+                      raise ValueError('installer marker not found')
+                  archive = data
+                  print(f'Accepted {label} reconstruction: {len(data)} compressed bytes')
+                  break
+              except Exception as exc:
+                  print(f'Rejected {label}: {exc}')
+          if archive is None:
+              raise SystemExit('Unable to reconstruct a valid Day 5 XZ archive')
+
+          Path('/tmp/day5-deploy-v2/day5-package.tar.xz').write_bytes(archive)
+          PY
+
+          tar -xJf "$work/day5-package.tar.xz" -C "$work"
+          installer="$(find "$work" -maxdepth 5 -type f -name install_day5.py -print -quit)"
+          test -n "$installer"
+          package="$(dirname "$installer")"
+          test -d "$package/payload"
+
+          # Preserve current official indexes; the installer merges Day 5.
+          rm -f \
+            "$package/payload/data/hearing-records.json" \
+            "$package/payload/en/data/hearing-records.json" \
+            "$package/payload/ja/data/hearing-records.json" \
+            "$package/payload/source/data/hearing-records.json" \
+            "$package/payload/source/en/data/hearing-records.json" \
+            "$package/payload/source/ja/data/hearing-records.json"
+
+          python "$installer"
+          node --check hearing-records/prison-watch/kaikai-day5-20250429/day5.js
+
+      - name: Validate page, source text and indexes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import json
+
+          root = Path('.')
+          pages = [
+              root / 'hearing-records/prison-watch/kaikai-day5-20250429/index.html',
+              root / 'en/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
+              root / 'ja/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
+              root / 'source/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
+              root / 'source/en/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
+              root / 'source/ja/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
+          ]
+
+          class IDs(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.values=[]
+              def handle_starttag(self, tag, attrs):
+                  self.values.extend(v for k,v in attrs if k == 'id' and v)
+
+          for page in pages:
+              text = page.read_text(encoding='utf-8')
+              if len(text) < 10000 or 'id="comparison"' not in text:
+                  raise SystemExit(f'invalid page: {page}')
+              if text.count('day5-compare-card') < 7:
+                  raise SystemExit(f'missing comparison cards: {page}')
+              if text.count('day5-record-chapter') != 11:
+                  raise SystemExit(f'incomplete record chapters: {page}')
+              parser = IDs(); parser.feed(text)
+              duplicates = {x for x in parser.values if parser.values.count(x) > 1}
+              if duplicates:
+                  raise SystemExit(f'duplicate IDs in {page}: {sorted(duplicates)}')
+
+          zh = pages[0].read_text(encoding='utf-8')
+          required = [
+              '兩位醫師證詞對照專區','完整旁聽紀錄','許倬憲法醫師','呂立醫師',
+              '外傷不一定會從皮膚外觀呈現','至少有42處確定的傷勢','17:28 退庭'
+          ]
+          missing = [phrase for phrase in required if phrase not in zh]
+          if missing:
+              raise SystemExit(f'missing source text: {missing}')
+
+          for item in ['data/hearing-records.json','en/data/hearing-records.json','ja/data/hearing-records.json','data/search-index.json']:
+              json.loads((root / item).read_text(encoding='utf-8'))
+
+          for item in [
+              'assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp',
+              'assets/art/prison-watch-day5-forensic-zh-hans-20260822.webp',
+              'assets/art/prison-watch-day5-medical-zh-hant-20260822.webp',
+              'assets/art/prison-watch-day5-medical-zh-hans-20260822.webp',
+          ]:
+              path = root / item
+              if not path.is_file() or path.stat().st_size < 15000:
+                  raise SystemExit(f'missing art: {item}')
+
+          canonical = 'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day5-20250429/'
+          if canonical not in (root / 'sitemap.xml').read_text(encoding='utf-8'):
+              raise SystemExit('sitemap entry missing')
+          PY
+
+      - name: Commit validated production update
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .github/day5-payload
+          rm -f .github/day5-deploy-package.tar.xz
+          rm -f .github/day5-publish-trigger.txt .github/day5-publish-trigger-v2.txt
+          rm -f .github/workflows/oneoff-publish-day5.yml
+          rm -f .github/workflows/oneoff-publish-day5-medical.yml
+          rm -f .github/workflows/oneoff-publish-day5-v2.yml
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet && { echo 'No publication changes.'; exit 1; }
+          git commit -m 'Publish Day 5 medical testimony comparison and full record'
+          git pull --rebase origin main
+          git push origin main
