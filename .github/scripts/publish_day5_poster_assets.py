@@ -41,8 +41,8 @@ def set_attr(tag: str, name: str, value: str) -> str:
 def update_img(text: str, page: Path, number: int, traditional: str, simplified: str, alt: str) -> str:
     pattern = re.compile(rf'<img\b[^>]*\bdata-day5-poster="{number}"[^>]*>', re.I)
     matches = pattern.findall(text)
-    if len(matches) != 1:
-        raise SystemExit(f'Expected one poster {number} in {page}, found {len(matches)}')
+    if not matches:
+        raise SystemExit(f'Poster {number} missing from {page}')
 
     def replacement(match: re.Match[str]) -> str:
         tag = match.group(0)
@@ -56,7 +56,7 @@ def update_img(text: str, page: Path, number: int, traditional: str, simplified:
         tag = set_attr(tag, 'loading', 'eager' if number == 1 else 'lazy')
         return tag
 
-    return pattern.sub(replacement, text, count=1)
+    return pattern.sub(replacement, text)
 
 
 for page in PAGES:
