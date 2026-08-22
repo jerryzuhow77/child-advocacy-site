@@ -76,3 +76,66 @@
   background:rgba(255,255,255,.56)!important;
   color:#234954!important;
 }
+/* Day 5 Chinese traditional pastel palette */
+.day5-page{
+  --day5-navy:#42636b;
+  --day5-rust:#b97868;
+  --day5-gold:#c5a46d;
+  --day5-sage:#819d96;
+  --day5-paper:#f8f1e8;
+  --day5-mist:#e8f0ef;
+  background:linear-gradient(180deg,#faf3ea 0%,#edf4f3 34%,#f6edf1 68%,#faf4eb 100%);
+  color:#294a52;
+}
+.day5-page .day3-topbar{background:rgba(66,99,107,.94);}
+.day5-hero{
+  background:
+    radial-gradient(circle at 13% 15%,rgba(230,184,168,.38),transparent 29%),
+    radial-gradient(circle at 88% 13%,rgba(200,183,215,.3),transparent 27%),
+    radial-gradient(circle at 75% 84%,rgba(184,201,199,.3),transparent 30%),
+    linear-gradient(135deg,#faf1e8 0%,#eaf2f1 58%,#f5e8ed 100%);
+}
+.day5-page .day3-remembrance span{background:linear-gradient(145deg,#b97868,#d39a8b);}
+.day5-poster-stack figure,
+.day5-expert-grid article,
+.day5-note-grid article,
+.day5-evidence-grid article,
+.day5-comparison article{
+  border-color:rgba(66,99,107,.13);
+  background:rgba(255,252,248,.88);
+  box-shadow:0 16px 42px rgba(66,99,107,.075);
+}
+.day5-reading-note{background:linear-gradient(145deg,#f8eee8,#edf4f2 52%,#f3ebf3);}
+.day5-page .day3-soft{background:linear-gradient(145deg,rgba(234,242,241,.9),rgba(249,238,232,.9));}
+.day5-mechanism article{background:#fffaf5;border-color:rgba(66,99,107,.12);}
+.day5-branch{background:rgba(250,240,222,.86);border-left-color:#c5a46d;}
+.day5-doctor-comparison{
+  background:linear-gradient(155deg,#faf0e8 0%,#edf4f2 48%,#f4eaf1 100%);
+}
+.day5-doctor-comparison:before{
+  background:
+    radial-gradient(circle at 8% 10%,rgba(230,184,168,.2),transparent 27%),
+    radial-gradient(circle at 91% 18%,rgba(184,201,199,.22),transparent 31%),
+    radial-gradient(circle at 82% 88%,rgba(200,183,215,.18),transparent 26%);
+}
+.day5-compare-summary article{background:rgba(255,252,248,.88);}
+.day5-compare-card{background:rgba(255,252,248,.94);}
+.day5-compare-card.is-difference{background:linear-gradient(145deg,#fffaf7,#f6e8e4);}
+.day5-compare-sides section{background:linear-gradient(145deg,#fffdf9,#f1f5f3);}
+.day5-page .day5-doctor-comparison .day5-compare-card>footer{
+  background:rgba(184,201,199,.68)!important;
+  background-color:rgba(184,201,199,.68)!important;
+}
+.day5-mark.is-conclusion{background:#edc9bf;}
+.day5-mark.is-concept{background:#f2dfb5;}
+.day5-mark.is-limit{background:#dcecef;}
+.day5-mark.is-evidence{background:#dceade;}
+.day5-mark.is-comparison{background:#e8dced;}
+.day5-editor-note.is-limit{background:#e7f1f3;}
+.day5-editor-note.is-comparison{background:#eee6f1;}
+.day5-editor-note.is-count{background:#f9e9df;}
+.day5-editor-note.is-term{background:#f8edcf;}
+.day5-editor-note.is-source{background:#f2eee8;}
+.day5-page .day3-source{
+  background:linear-gradient(135deg,#aebfbd 0%,#cbd8d6 55%,#e1e9e7 100%)!important;
+}
