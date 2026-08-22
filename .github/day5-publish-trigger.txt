@@ -1,2 +1,3 @@
 Publish the validated Day 5 medical testimony page and complete hearing record.
-Triggered: 2026-08-22T13:50:00+08:00
+Triggered: 2026-08-22T14:18:00+08:00
+Attempt: decode each staged binary chunk independently.
