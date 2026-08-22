@@ -55,3 +55,11 @@
   .day5-compare-filter{flex:0 0 auto}
   .day5-compare-card.is-difference>header:after{display:none}
 }
+/* Force clearly light comparison takeaway boxes across shared footer styles */
+.day5-page .day5-doctor-comparison .day5-compare-card>footer{
+  background:#fff!important;
+  background-color:#fff!important;
+  background-image:none!important;
+  color:#405b65!important;
+  box-shadow:0 5px 16px rgba(18,56,68,.045)!important;
+}
