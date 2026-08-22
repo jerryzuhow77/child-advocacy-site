@@ -128,7 +128,7 @@ jobs:
                   f'aria-label="{title}"><strong>{title}</strong><p>{note_body}</p>'
                   f'<a href="#record-08">{source}</a></aside>'
               )
-              text = re.sub(r'<aside id="day5InjuryCountNote"\b.*?</aside>', '', text, flags=re.S)
+              text = re.sub(r'<aside id="day5InjuryCountNote"[^>]*>.*?</aside>', '', text, flags=re.S)
               marker = '<article class="day5-compare-card is-agree"><header><span>04</span>'
               start = text.find(marker)
               end = text.find('</article>', start)
