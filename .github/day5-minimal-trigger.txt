@@ -1,3 +1,4 @@
 Publish the verified Day 5 medical testimony comparison and complete hearing record.
-Requested: 2026-08-22T14:45:00+08:00
+Requested: 2026-08-22T14:56:00+08:00
 Payload: .github/day5-minpayload/part00.b64 ... part06.b64
+Archive SHA-256: 6923d74a9798c46071f60d6bad6baaa2c78301c2507a4c3eb29052b99471aeef
