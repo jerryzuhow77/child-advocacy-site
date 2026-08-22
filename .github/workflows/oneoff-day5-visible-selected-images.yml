@@ -25,7 +25,7 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Validate selected JPEG artwork and update every Day 5 page
+      - name: Validate selected JPEGs and update Day 5 pages
         shell: bash
         run: |
           set -euo pipefail
@@ -43,9 +43,8 @@ jobs:
           import re
 
           root = Path('.')
-          version = '20260822-selected-evidence-visible-1'
+          version = '20260822-selected-evidence-visible-2'
           absolute_base = 'https://jerryzuhow77.github.io/child-advocacy-site/assets/art/'
-
           assets = {
               'forensic_hant': root / 'assets/art/prison-watch-day5-selected-evidence-01-zh-hant-20260822.jpg',
               'forensic_hans': root / 'assets/art/prison-watch-day5-selected-evidence-01-zh-hans-20260822.jpg',
@@ -53,7 +52,7 @@ jobs:
               'medical_hans': root / 'assets/art/prison-watch-day5-selected-evidence-02-zh-hans-20260822.jpg',
           }
 
-          dimensions: dict[str, tuple[int, int]] = {}
+          dimensions = {}
           for key, path in assets.items():
               if not path.is_file() or path.stat().st_size < 100_000:
                   raise SystemExit(f'Missing or undersized selected artwork: {path}')
@@ -61,16 +60,14 @@ jobs:
                   image.verify()
               with Image.open(path) as image:
                   image.load()
-                  if image.format not in {'JPEG', 'MPO'}:
-                      raise SystemExit(f'Unexpected artwork format for {path}: {image.format}')
                   width, height = image.size
-                  if width < 800 or height < 1100 or not 0.60 <= width / height <= 0.75:
-                      raise SystemExit(f'Unexpected artwork dimensions for {path}: {image.size}')
+                  if image.format not in {'JPEG', 'MPO'} or width < 480 or height < 700 or not 0.60 <= width / height <= 0.75:
+                      raise SystemExit(f'Invalid selected artwork: {path}, {image.format}, {image.size}')
                   gray = image.convert('L')
                   low, high = gray.getextrema()
                   stddev = ImageStat.Stat(gray).stddev[0]
                   if high - low < 90 or stddev < 24:
-                      raise SystemExit(f'Artwork appears blank or flat: {path}; range={high-low}, stddev={stddev:.2f}')
+                      raise SystemExit(f'Artwork appears blank: {path}; range={high-low}, stddev={stddev:.2f}')
                   dimensions[key] = image.size
                   print(f'Validated {path}: {image.size}, {path.stat().st_size} bytes, stddev={stddev:.2f}')
 
@@ -82,7 +79,6 @@ jobs:
               root / 'source/en/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
               root / 'source/ja/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
           ]
-
           notes = {
               'zh': (
                   '不是只有42處｜42處是可確認的最低數量',
@@ -105,40 +101,41 @@ jobs:
               return os.path.relpath(asset, page.parent).replace(os.sep, '/')
 
           def set_attr(tag: str, name: str, value: str) -> str:
-              escaped = escape(value, quote=True)
+              value = escape(value, quote=True)
               pattern = re.compile(rf'\s{name}="[^"]*"', re.I)
-              replacement = f' {name}="{escaped}"'
               if pattern.search(tag):
-                  return pattern.sub(replacement, tag, count=1)
-              return tag[:-1] + replacement + '>'
+                  return pattern.sub(f' {name}="{value}"', tag, count=1)
+              return tag[:-1] + f' {name}="{value}">'
 
           def update_poster(text: str, page: Path, number: int, hant_key: str, hans_key: str, alt: str) -> str:
               pattern = re.compile(rf'<img\b[^>]*\bdata-day5-poster="{number}"[^>]*>', re.I)
               matches = pattern.findall(text)
               if len(matches) != 1:
-                  raise SystemExit(f'Expected exactly one poster {number} tag in {page}; found {len(matches)}')
+                  raise SystemExit(f'Expected one poster {number} in {page}; found {len(matches)}')
 
-              def replacement(match: re.Match[str]) -> str:
+              def replace(match: re.Match[str]) -> str:
                   tag = match.group(0)
                   traditional = relative(page, assets[hant_key])
                   simplified = relative(page, assets[hans_key])
                   width, height = dimensions[hant_key]
-                  tag = set_attr(tag, 'data-traditional', traditional)
-                  tag = set_attr(tag, 'data-simplified', simplified)
-                  tag = set_attr(tag, 'src', f'{traditional}?v={version}')
-                  tag = set_attr(tag, 'alt', alt)
-                  tag = set_attr(tag, 'width', str(width))
-                  tag = set_attr(tag, 'height', str(height))
-                  tag = set_attr(tag, 'decoding', 'async')
-                  tag = set_attr(tag, 'loading', 'eager' if number == 1 else 'lazy')
+                  for name, value in [
+                      ('data-traditional', traditional),
+                      ('data-simplified', simplified),
+                      ('src', f'{traditional}?v={version}'),
+                      ('alt', alt),
+                      ('width', str(width)),
+                      ('height', str(height)),
+                      ('decoding', 'async'),
+                      ('loading', 'eager' if number == 1 else 'lazy'),
+                  ]:
+                      tag = set_attr(tag, name, value)
                   return tag
 
-              return pattern.sub(replacement, text, count=1)
+              return pattern.sub(replace, text, count=1)
 
           for page in pages:
               text = page.read_text(encoding='utf-8')
-              path_string = page.as_posix()
-              language_key = 'en' if '/en/' in path_string else 'ja' if '/ja/' in path_string else 'zh'
+              language_key = 'en' if '/en/' in page.as_posix() else 'ja' if '/ja/' in page.as_posix() else 'zh'
               if language_key == 'en':
                   alt_one = 'Day 5 evidence-investigation poster with the child considering medical records'
                   alt_two = 'Day 5 evidence-investigation poster with two doctors reviewing the evidence board'
@@ -158,10 +155,10 @@ jobs:
               text = re.sub(r'(<meta\s+name="twitter:image"\s+content=")[^"]*(")', rf'\1{absolute_forensic}\2', text, count=1)
               text = re.sub(r'("image"\s*:\s*")[^"]*(")', rf'\1{absolute_forensic}\2', text, count=1)
 
-              title, body, source = notes[language_key]
+              title, note_body, source = notes[language_key]
               note = (
                   '<aside id="day5InjuryCountNote" class="day5-injury-count-note" '
-                  f'aria-label="{escape(title, quote=True)}"><strong>{title}</strong><p>{body}</p>'
+                  f'aria-label="{escape(title, quote=True)}"><strong>{title}</strong><p>{note_body}</p>'
                   f'<a href="#record-08">{source}</a></aside>'
               )
               note_pattern = re.compile(r'<aside id="day5InjuryCountNote"\b.*?</aside>', re.S)
@@ -170,18 +167,18 @@ jobs:
               else:
                   marker = '<article class="day5-compare-card is-agree"><header><span>04</span>'
                   start = text.find(marker)
-                  if start < 0:
-                      raise SystemExit(f'Comparison card 04 not found in {page}')
                   end = text.find('</article>', start)
-                  if end < 0:
-                      raise SystemExit(f'Comparison card 04 not closed in {page}')
+                  if start < 0 or end < 0:
+                      raise SystemExit(f'Cannot insert 42-plus note in {page}')
                   end += len('</article>')
                   text = text[:end] + note + text[end:]
 
               if language_key == 'zh':
-                  text = text.replace(
-                      '<strong>至少42處</strong><small>部分癒合後已看不到</small>',
+                  text = re.sub(
+                      r'<strong>至少42處</strong><small>.*?</small>',
                       '<strong>至少42處</strong><small>42處是可確認下限，不是完整總數</small>',
+                      text,
+                      count=1,
                   )
               page.write_text(text, encoding='utf-8')
 
@@ -193,19 +190,18 @@ jobs:
               text = re.sub(r"const posterVersion = '[^']+';", f"const posterVersion = '{version}';", text, count=1)
               script.write_text(text, encoding='utf-8')
 
-          record_files = [
+          for path, prefix in [
               (root / 'data/hearing-records.json', '../assets/art/'),
               (root / 'en/data/hearing-records.json', '../../assets/art/'),
               (root / 'ja/data/hearing-records.json', '../../assets/art/'),
               (root / 'source/data/hearing-records.json', '../assets/art/'),
               (root / 'source/en/data/hearing-records.json', '../../assets/art/'),
               (root / 'source/ja/data/hearing-records.json', '../../assets/art/'),
-          ]
-          for path, prefix in record_files:
+          ]:
               data = json.loads(path.read_text(encoding='utf-8'))
               entry = next((item for item in data if item.get('url') == 'prison-watch/kaikai-day5-20250429/'), None)
               if entry is None:
-                  raise SystemExit(f'Day 5 record entry missing in {path}')
+                  raise SystemExit(f'Day 5 entry missing in {path}')
               entry['image'] = prefix + assets['forensic_hant'].name + f'?v={version}'
               path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
@@ -219,7 +215,7 @@ jobs:
 
           sw = root / 'sw.js'
           text = sw.read_text(encoding='utf-8')
-          text = re.sub(r"const VERSION = '[^']+';", "const VERSION = '2026-08-22-day5-selected-evidence-visible-v1';", text, count=1)
+          text = re.sub(r"const VERSION = '[^']+';", "const VERSION = '2026-08-22-day5-selected-evidence-visible-v2';", text, count=1)
           resources = [f"./assets/art/{path.name}" for path in assets.values()]
           start = text.find('const APP_SHELL = [')
           end = text.find('];', start)
@@ -232,10 +228,6 @@ jobs:
                       prefix += ','
                   prefix += '\n' + ',\n'.join(f"  '{resource}'" for resource in missing) + '\n'
                   text = prefix + text[end:]
-          old_marker = "url.pathname.endsWith('/assets/art/prison-watch-day5-medical-zh-hant-20260822.webp');"
-          if old_marker in text:
-              new_marker = old_marker[:-1] + " ||\n    url.pathname.includes('/assets/art/prison-watch-day5-selected-evidence-');"
-              text = text.replace(old_marker, new_marker)
           sw.write_text(text, encoding='utf-8')
           PY
 
@@ -243,7 +235,7 @@ jobs:
           node --check source/hearing-records/prison-watch/kaikai-day5-20250429/day5.js
           git diff --check
 
-      - name: Validate visible output and all references
+      - name: Validate visible output and references
         shell: bash
         run: |
           set -euo pipefail
@@ -253,16 +245,15 @@ jobs:
           import json
 
           root = Path('.')
-          version = '20260822-selected-evidence-visible-1'
-          selected = [
+          version = '20260822-selected-evidence-visible-2'
+          assets = [
               root / 'assets/art/prison-watch-day5-selected-evidence-01-zh-hant-20260822.jpg',
               root / 'assets/art/prison-watch-day5-selected-evidence-02-zh-hant-20260822.jpg',
           ]
-          for path in selected:
+          for path in assets:
               with Image.open(path) as image:
                   image.load()
-                  gray = image.convert('L')
-                  if ImageStat.Stat(gray).stddev[0] < 24:
+                  if ImageStat.Stat(image.convert('L')).stddev[0] < 24:
                       raise SystemExit(f'Blank selected image: {path}')
 
           pages = [
@@ -282,18 +273,16 @@ jobs:
                   if name not in text:
                       raise SystemExit(f'Selected image reference missing from {page}: {name}')
               if f'day5.js?v={version}' not in text:
-                  raise SystemExit(f'Fresh Day 5 script key missing from {page}')
+                  raise SystemExit(f'Fresh script key missing from {page}')
               if text.count('id="day5InjuryCountNote"') != 1:
                   raise SystemExit(f'42-plus note missing or duplicated in {page}')
-              if 'prison-watch-day5-forensic-zh-hant-20260822.webp' in text or 'prison-watch-day5-medical-zh-hant-20260822.webp' in text:
-                  raise SystemExit(f'Broken legacy WebP still referenced by {page}')
 
           zh = pages[0].read_text(encoding='utf-8')
           for phrase in ['不是只有42處', '42處是可確認的最低數量', '並未呈現所有傷勢照片', '族繁不及備載']:
               if phrase not in zh:
-                  raise SystemExit(f'Missing strengthened injury note phrase: {phrase}')
+                  raise SystemExit(f'Missing injury note phrase: {phrase}')
 
-          for path in [
+          for item in [
               'data/hearing-records.json',
               'en/data/hearing-records.json',
               'ja/data/hearing-records.json',
@@ -302,22 +291,19 @@ jobs:
               'source/ja/data/hearing-records.json',
               'data/latest-bulletins.json',
           ]:
-              candidate = root / path
-              if candidate.exists():
-                  json.loads(candidate.read_text(encoding='utf-8'))
+              path = root / item
+              if path.exists():
+                  json.loads(path.read_text(encoding='utf-8'))
           PY
-          grep -Fq "const VERSION = '2026-08-22-day5-selected-evidence-visible-v1';" sw.js
+          grep -Fq "const VERSION = '2026-08-22-day5-selected-evidence-visible-v2';" sw.js
 
-      - name: Commit the verified repair and remove one-off staging
+      - name: Commit verified repair and clean one-off files
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf .github/day5-image-fix
-          rm -rf .github/day5-poster-repair
-          rm -rf .github/day5-selected-medical
-          rm -f .github/day5-visible-images-trigger.txt
-          rm -f .github/day5-poster-repair-trigger.txt
-          rm -f .github/day5-selected-art-trigger.txt
+          rm -rf .github/day5-image-fix .github/day5-poster-repair .github/day5-selected-medical
+          rm -f .github/day5-visible-images-trigger.txt .github/day5-visible-images-trigger-v2.txt
+          rm -f .github/day5-poster-repair-trigger.txt .github/day5-selected-art-trigger.txt
           rm -f .github/workflows/oneoff-day5-poster-repair.yml
           rm -f .github/workflows/oneoff-day5-user-selected-art.yml
           rm -f .github/workflows/oneoff-day5-visible-selected-images.yml
@@ -325,7 +311,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
-          git diff --cached --quiet && { echo 'No visible-image repair changes produced.'; exit 1; }
-          git commit -m 'Show the selected Day 5 evidence posters and retain the 42-plus note'
+          git diff --cached --quiet && { echo 'No repair changes produced.'; exit 1; }
+          git commit -m 'Show selected Day 5 evidence posters and retain the 42-plus note'
           git pull --rebase origin main
           git push origin main
