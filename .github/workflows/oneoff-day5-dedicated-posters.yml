@@ -25,19 +25,19 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Install SVG and WebP renderers
+      - name: Install renderers
         shell: bash
         run: |
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends librsvg2-bin webp fonts-noto-cjk
 
-      - name: Generate four language-aware poster assets
+      - name: Generate and publish four dedicated poster assets
         shell: bash
         run: |
           set -euo pipefail
           git pull --rebase origin main
-          python -m py_compile .github/scripts/generate_day5_poster_assets.py
+          python -m py_compile .github/scripts/generate_day5_poster_assets.py .github/scripts/publish_day5_poster_assets.py
           python .github/scripts/generate_day5_poster_assets.py
 
           mkdir -p assets/art
@@ -47,7 +47,7 @@ jobs:
             local png="/tmp/$(basename "${output%.webp}").png"
             rsvg-convert --width 1024 --height 1536 --keep-aspect-ratio "$svg" --output "$png"
             cwebp -quiet -q 88 -m 6 "$png" -o "$output"
-            test -s "$output"
+            test "$(stat -c %s "$output")" -gt 50000
           }
 
           render /tmp/day5-poster-svg/day5-forensic-hant.svg assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp
@@ -55,186 +55,8 @@ jobs:
           render /tmp/day5-poster-svg/day5-medical-hant.svg assets/art/prison-watch-day5-medical-zh-hant-20260822.webp
           render /tmp/day5-poster-svg/day5-medical-hans.svg assets/art/prison-watch-day5-medical-zh-hans-20260822.webp
 
-          for image in assets/art/prison-watch-day5-*-20260822.webp; do
-            dimensions="$(webpinfo -summary "$image" | awk '/Canvas size/ {print $3"x"$5; exit}')"
-            test "$dimensions" = '1024x1536' || { echo "Unexpected dimensions for $image: $dimensions" >&2; exit 1; }
-            test "$(stat -c %s "$image")" -gt 50000 || { echo "Undersized asset: $image" >&2; exit 1; }
-          done
-
-      - name: Replace temporary Day 4 artwork throughout the Day 5 publication
-        shell: bash
-        run: |
-          set -euo pipefail
-          python - <<'PY'
-          from __future__ import annotations
-
-          import html
-          import json
-          import os
-          import re
-          from pathlib import Path
-
-          root = Path('.')
-          asset_dir = root / 'assets/art'
-          asset_names = {
-              'forensic_hant': 'prison-watch-day5-forensic-zh-hant-20260822.webp',
-              'forensic_hans': 'prison-watch-day5-forensic-zh-hans-20260822.webp',
-              'medical_hant': 'prison-watch-day5-medical-zh-hant-20260822.webp',
-              'medical_hans': 'prison-watch-day5-medical-zh-hans-20260822.webp',
-          }
-          absolute = 'https://jerryzuhow77.github.io/child-advocacy-site/assets/art/'
-
-          pages = [
-              root / 'hearing-records/prison-watch/kaikai-day5-20250429/index.html',
-              root / 'en/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
-              root / 'ja/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
-              root / 'source/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
-              root / 'source/en/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
-              root / 'source/ja/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
-          ]
-
-          def relative(page: Path, asset_name: str) -> str:
-              return os.path.relpath(asset_dir / asset_name, page.parent).replace(os.sep, '/')
-
-          def set_attr(tag: str, name: str, value: str) -> str:
-              escaped = html.escape(value, quote=True)
-              pattern = rf'\s{name}="[^"]*"'
-              replacement = f' {name}="{escaped}"'
-              if re.search(pattern, tag):
-                  return re.sub(pattern, replacement, tag, count=1)
-              return tag[:-1] + replacement + '>'
-
-          def update_img(text: str, page: Path, number: int, traditional: str, simplified: str, alt: str) -> str:
-              pattern = re.compile(rf'<img\b[^>]*\bdata-day5-poster="{number}"[^>]*>', re.I)
-              matches = pattern.findall(text)
-              if len(matches) != 1:
-                  raise SystemExit(f'Expected one poster {number} in {page}, found {len(matches)}')
-
-              def replacement(match: re.Match[str]) -> str:
-                  tag = match.group(0)
-                  tag = set_attr(tag, 'data-traditional', relative(page, traditional))
-                  tag = set_attr(tag, 'data-simplified', relative(page, simplified))
-                  tag = set_attr(tag, 'src', relative(page, traditional))
-                  tag = set_attr(tag, 'alt', alt)
-                  tag = set_attr(tag, 'width', '1024')
-                  tag = set_attr(tag, 'height', '1536')
-                  tag = set_attr(tag, 'decoding', 'async')
-                  tag = set_attr(tag, 'loading', 'eager' if number == 1 else 'lazy')
-                  return tag
-
-              return pattern.sub(replacement, text, count=1)
-
-          for page in pages:
-              text = page.read_text(encoding='utf-8')
-              is_hans = False
-              if '/en/' in page.as_posix():
-                  alt_one = 'Day 5 forensic cause-of-death and medical-evidence poster'
-                  alt_two = 'Day 5 child-protection medical assessment and care-neglect poster'
-              elif '/ja/' in page.as_posix():
-                  alt_one = '第5回公判期日・法医死因鑑定と医学証拠のポスター'
-                  alt_two = '第5回公判期日・児童保護医療鑑定と養育ネグレクトのポスター'
-              else:
-                  alt_one = '第五日法醫研判與死亡機轉專屬主視覺'
-                  alt_two = '第五日兒少保護醫療鑑定與照顧疏忽專屬主視覺'
-
-              text = update_img(text, page, 1, asset_names['forensic_hant'], asset_names['forensic_hans'], alt_one)
-              text = update_img(text, page, 2, asset_names['medical_hant'], asset_names['medical_hans'], alt_two)
-
-              og_url = absolute + asset_names['forensic_hant']
-              text = re.sub(r'(<meta\s+property="og:image"\s+content=")[^"]*(")', rf'\1{og_url}\2', text, count=1)
-              text = re.sub(r'(<meta\s+name="twitter:image"\s+content=")[^"]*(")', rf'\1{og_url}\2', text, count=1)
-              text = re.sub(r'("image"\s*:\s*")[^"]*(")', rf'\1{og_url}\2', text, count=1)
-              page.write_text(text, encoding='utf-8')
-
-          record_files = [
-              (root / 'data/hearing-records.json', '../assets/art/' + asset_names['forensic_hant']),
-              (root / 'en/data/hearing-records.json', '../../assets/art/' + asset_names['forensic_hant']),
-              (root / 'ja/data/hearing-records.json', '../../assets/art/' + asset_names['forensic_hant']),
-              (root / 'source/data/hearing-records.json', '../assets/art/' + asset_names['forensic_hant']),
-              (root / 'source/en/data/hearing-records.json', '../../assets/art/' + asset_names['forensic_hant']),
-              (root / 'source/ja/data/hearing-records.json', '../../assets/art/' + asset_names['forensic_hant']),
-          ]
-          for path, image in record_files:
-              data = json.loads(path.read_text(encoding='utf-8'))
-              entry = next((item for item in data if item.get('url') == 'prison-watch/kaikai-day5-20250429/'), None)
-              if entry is None:
-                  raise SystemExit(f'Day 5 entry missing from {path}')
-              entry['image'] = image
-              path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-
-          bulletins = root / 'data/latest-bulletins.json'
-          if bulletins.exists():
-              data = json.loads(bulletins.read_text(encoding='utf-8'))
-              item = next((entry for entry in data.get('items', []) if entry.get('id') == 'kaikai-day5-20250429'), None)
-              if item is not None:
-                  item['image'] = absolute + asset_names['forensic_hant']
-                  bulletins.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-
-          sw = root / 'sw.js'
-          if sw.exists():
-              text = sw.read_text(encoding='utf-8')
-              text = re.sub(r"const VERSION = '[^']+';", "const VERSION = '2026-08-22-day5-dedicated-posters-v1';", text, count=1)
-              resources = [f"./assets/art/{name}" for name in asset_names.values()]
-              start = text.find('const APP_SHELL = [')
-              end = text.find('];', start)
-              if start >= 0 and end >= 0:
-                  segment = text[start:end]
-                  missing = [resource for resource in resources if resource not in segment]
-                  if missing:
-                      prefix = text[:end].rstrip()
-                      if not prefix.endswith(','):
-                          prefix += ','
-                      prefix += '\n' + ',\n'.join(f"  '{resource}'" for resource in missing) + '\n'
-                      text = prefix + text[end:]
-              sw.write_text(text, encoding='utf-8')
-          PY
-
-      - name: Regression checks
-        shell: bash
-        run: |
-          set -euo pipefail
+          python .github/scripts/publish_day5_poster_assets.py
           node --check hearing-records/prison-watch/kaikai-day5-20250429/day5.js
-          python - <<'PY'
-          from pathlib import Path
-          import json
-
-          root = Path('.')
-          names = [
-              'prison-watch-day5-forensic-zh-hant-20260822.webp',
-              'prison-watch-day5-forensic-zh-hans-20260822.webp',
-              'prison-watch-day5-medical-zh-hant-20260822.webp',
-              'prison-watch-day5-medical-zh-hans-20260822.webp',
-          ]
-          pages = [
-              root / 'hearing-records/prison-watch/kaikai-day5-20250429/index.html',
-              root / 'en/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
-              root / 'ja/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
-              root / 'source/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
-              root / 'source/en/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
-              root / 'source/ja/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
-          ]
-          for page in pages:
-              text = page.read_text(encoding='utf-8')
-              if names[0] not in text or names[1] not in text or names[2] not in text or names[3] not in text:
-                  raise SystemExit(f'Dedicated poster references incomplete: {page}')
-              if 'data-day5-poster="1"' not in text or 'data-day5-poster="2"' not in text:
-                  raise SystemExit(f'Poster hooks missing: {page}')
-              if 'prison-watch-day4-hearing-poster-clay-20260821-v2.webp' in text:
-                  raise SystemExit(f'Day 4 fallback remains in Day 5 page: {page}')
-
-          for path in [
-              'data/hearing-records.json',
-              'en/data/hearing-records.json',
-              'ja/data/hearing-records.json',
-              'source/data/hearing-records.json',
-              'source/en/data/hearing-records.json',
-              'source/ja/data/hearing-records.json',
-              'data/latest-bulletins.json',
-          ]:
-              candidate = root / path
-              if candidate.exists():
-                  json.loads(candidate.read_text(encoding='utf-8'))
-          PY
           git diff --check
 
       - name: Commit and remove one-off machinery
@@ -243,6 +65,7 @@ jobs:
           set -euo pipefail
           rm -f .github/day5-posters-trigger.txt
           rm -f .github/scripts/generate_day5_poster_assets.py
+          rm -f .github/scripts/publish_day5_poster_assets.py
           rm -f .github/workflows/oneoff-day5-dedicated-posters.yml
 
           git config user.name 'github-actions[bot]'
