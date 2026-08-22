@@ -1,0 +1,2 @@
+Publish the two dedicated Day 5 medical-evidence posters in Traditional and Simplified Chinese, replace the temporary Day 4 artwork across all localized Day 5 pages, and update feed/cache metadata.
+Requested: 2026-08-22T16:24:00+08:00
