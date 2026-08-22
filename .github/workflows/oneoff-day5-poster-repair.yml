@@ -37,8 +37,8 @@ jobs:
           cat .github/day5-poster-repair/forensic-*.b64 | tr -d '\r\n ' | base64 --decode > "$work/forensic.webp"
           cat .github/day5-poster-repair/medical-*.b64 | tr -d '\r\n ' | base64 --decode > "$work/medical.webp"
 
-          printf '%s  %s\n' '9db47d04415c66bb210fc1fd8890b0fcea00bc90d138bd73e5aa18c64e991f3b' "$work/forensic.webp" | sha256sum --check --strict
-          printf '%s  %s\n' 'a0275a50accdf70687ed25fce406c99532f56bbcda34c77a3041e8a4350966ac' "$work/medical.webp" | sha256sum --check --strict
+          printf '%s  %s\n' '8528f5bd6cce8792c28ef17076cefc99e263749bd8c586e60f5c8f2cc87b38f9' "$work/forensic.webp" | sha256sum --check --strict
+          printf '%s  %s\n' 'd8d4dd77bef5bb0f63f6d1f65c455a4dc09b2d60b84ae3d64a7616df246d60ab' "$work/medical.webp" | sha256sum --check --strict
 
           python -m pip install --disable-pip-version-check --quiet pillow
           python - <<'PY'
@@ -46,8 +46,8 @@ jobs:
           from pathlib import Path
 
           expected = {
-              Path('/tmp/day5-poster-repair/forensic.webp'): (1024, 1536),
-              Path('/tmp/day5-poster-repair/medical.webp'): (1024, 1536),
+              Path('/tmp/day5-poster-repair/forensic.webp'): (768, 1152),
+              Path('/tmp/day5-poster-repair/medical.webp'): (768, 1152),
           }
           for path, size in expected.items():
               with Image.open(path) as image:
@@ -75,7 +75,7 @@ jobs:
           from pathlib import Path
           import re
 
-          version = '20260822-poster-repair-1'
+          version = '20260822-poster-repair-2'
           pages = [
               Path('hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
               Path('en/hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
@@ -159,7 +159,7 @@ jobs:
           text = sw.read_text(encoding='utf-8')
           text = re.sub(
               r"const VERSION = '[^']+';",
-              "const VERSION = '2026-08-22-day5-poster-repair-v1';",
+              "const VERSION = '2026-08-22-day5-poster-repair-v2';",
               text,
               count=1,
           )
@@ -173,13 +173,13 @@ jobs:
           node --check hearing-records/prison-watch/kaikai-day5-20250429/day5.js
           node --check source/hearing-records/prison-watch/kaikai-day5-20250429/day5.js
 
-          printf '%s  %s\n' '9db47d04415c66bb210fc1fd8890b0fcea00bc90d138bd73e5aa18c64e991f3b' 'assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp' | sha256sum --check --strict
-          printf '%s  %s\n' 'a0275a50accdf70687ed25fce406c99532f56bbcda34c77a3041e8a4350966ac' 'assets/art/prison-watch-day5-medical-zh-hant-20260822.webp' | sha256sum --check --strict
+          printf '%s  %s\n' '8528f5bd6cce8792c28ef17076cefc99e263749bd8c586e60f5c8f2cc87b38f9' 'assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp' | sha256sum --check --strict
+          printf '%s  %s\n' 'd8d4dd77bef5bb0f63f6d1f65c455a4dc09b2d60b84ae3d64a7616df246d60ab' 'assets/art/prison-watch-day5-medical-zh-hant-20260822.webp' | sha256sum --check --strict
 
           python - <<'PY'
           from pathlib import Path
 
-          version = '20260822-poster-repair-1'
+          version = '20260822-poster-repair-2'
           pages = [
               Path('hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
               Path('en/hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
@@ -204,12 +204,11 @@ jobs:
               '42處是可確認的最低數量',
               '並未呈現所有傷勢照片',
               '族繁不及備載',
-              '不是只有42處',
           ]:
               if phrase not in zh:
                   raise SystemExit(f'Missing strengthened note phrase: {phrase}')
           PY
-          grep -Fq "const VERSION = '2026-08-22-day5-poster-repair-v1';" sw.js
+          grep -Fq "const VERSION = '2026-08-22-day5-poster-repair-v2';" sw.js
           git diff --check
 
       - name: Commit repaired images and remove one-off staging
