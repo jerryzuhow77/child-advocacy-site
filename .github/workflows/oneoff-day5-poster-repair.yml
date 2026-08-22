@@ -4,51 +4,66 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - '.github/day5-poster-repair10-trigger.txt'
-      - '.github/day5-poster-repair10/**'
+      - '.github/day5-poster-repair-exact-trigger.txt'
 
 permissions:
   contents: write
 
 concurrency:
-  group: oneoff-day5-poster-repair10
+  group: oneoff-day5-poster-repair-exact
   cancel-in-progress: false
 
 jobs:
   repair:
-    if: github.head_ref == 'repair-day5-blank-posters-20260822'
+    if: github.head_ref == 'trigger-day5-poster-repair-exact-20260822'
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repair branch
+      - name: Check out current production branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: main
           fetch-depth: 0
 
-      - name: Reconstruct and verify both selected posters
+      - name: Reconstruct and verify the two exact user-selected posters
         shell: bash
         run: |
           set -euo pipefail
-          test -f .github/day5-poster-repair10-trigger.txt || { echo 'Repair already applied.'; exit 0; }
+          git pull --rebase origin main
 
-          work='/tmp/day5-poster-repair10'
+          work='/tmp/day5-poster-repair-exact'
           rm -rf "$work"
           mkdir -p "$work"
 
-          cat .github/day5-poster-repair10/forensic-*.b64 | tr -d '\r\n ' | base64 --decode > "$work/forensic.webp"
-          cat .github/day5-poster-repair10/medical-*.b64 | tr -d '\r\n ' | base64 --decode > "$work/medical.webp"
+          cat \
+            .github/day5-exact-image-chunks/poster1-00.b64 \
+            .github/day5-exact-image-chunks/poster1-01a.b64 \
+            .github/day5-exact-image-chunks/poster1-01b.b64 \
+            .github/day5-exact-image-chunks/poster1-01c.b64 \
+            .github/day5-exact-image-chunks/poster1-02.b64 \
+            .github/day5-exact-image-chunks/poster1-03.b64 \
+            | tr -d '\r\n ' | base64 --decode > "$work/forensic.webp"
 
-          printf '%s  %s\n' 'c4b478119d380b401c1287a9adf2ea99adbcf11abefb19ba848f34ed7ce175d9' "$work/forensic.webp" | sha256sum --check --strict
-          printf '%s  %s\n' '1266367242aa535b14376f9e3dc81b100fd9cf0152936241531e5132059d2eda' "$work/medical.webp" | sha256sum --check --strict
+          cat \
+            .github/day5-exact-image-chunks/poster2-00.b64 \
+            .github/day5-exact-image-chunks/poster2-01ab.b64 \
+            .github/day5-exact-image-chunks/poster2-01c.b64 \
+            .github/day5-exact-image-chunks/poster2-02ab.b64 \
+            .github/day5-exact-image-chunks/poster2-02c.b64 \
+            .github/day5-exact-image-chunks/poster2-03ab.b64 \
+            .github/day5-exact-image-chunks/poster2-03c.b64 \
+            | tr -d '\r\n ' | base64 --decode > "$work/medical.webp"
+
+          printf '%s  %s\n' '454848c56839996a8364e93073c738d5cb7b46d3908ad28a7b158b0f932f15ec' "$work/forensic.webp" | sha256sum --check --strict
+          printf '%s  %s\n' '34580a2690b33550f1aa1e61a0fa68fa768ff1ad5af9e23f7dec1f61d318b082' "$work/medical.webp" | sha256sum --check --strict
 
           python -m pip install --disable-pip-version-check --quiet pillow
           python - <<'PY'
-          from PIL import Image, ImageStat
           from pathlib import Path
+          from PIL import Image, ImageStat
 
           expected = {
-              Path('/tmp/day5-poster-repair10/forensic.webp'): (768, 1152),
-              Path('/tmp/day5-poster-repair10/medical.webp'): (768, 1152),
+              Path('/tmp/day5-poster-repair-exact/forensic.webp'): (400, 600),
+              Path('/tmp/day5-poster-repair-exact/medical.webp'): (400, 600),
           }
           for path, size in expected.items():
               with Image.open(path) as image:
@@ -60,26 +75,24 @@ jobs:
                   rgb = image.convert('RGB')
                   if rgb.getbbox() is None:
                       raise SystemExit(f'Blank poster: {path}')
-                  variance = sum(ImageStat.Stat(rgb.resize((96, 144))).var)
+                  variance = sum(ImageStat.Stat(rgb.resize((80, 120))).var)
                   if variance < 100:
                       raise SystemExit(f'Poster lacks visual detail: {path}; variance={variance}')
-                  print(f'{path.name}: {path.stat().st_size} bytes; variance={variance:.2f}')
+                  print(f'Validated {path.name}: {path.stat().st_size} bytes, {size[0]}x{size[1]}, variance={variance:.2f}')
           PY
 
           install -m 0644 "$work/forensic.webp" assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp
           install -m 0644 "$work/medical.webp" assets/art/prison-watch-day5-medical-zh-hant-20260822.webp
 
-      - name: Refresh cache keys and strengthen the 42-plus note
+      - name: Refresh cache keys and preserve the strengthened 42-plus note
         shell: bash
         run: |
           set -euo pipefail
-          test -f .github/day5-poster-repair10-trigger.txt || exit 0
-
           python - <<'PY'
           from pathlib import Path
           import re
 
-          version = '20260822-poster-repair-3'
+          version = '20260822-poster-repair-exact-1'
           pages = [
               Path('hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
               Path('en/hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
@@ -138,6 +151,7 @@ jobs:
                       raise SystemExit(f'Comparison card 04 not closed in {page}')
                   end += len('</article>')
                   text = text[:end] + note + text[end:]
+
               if key == 'zh':
                   text = text.replace(
                       '<strong>至少42處</strong><small>部分癒合後已看不到</small>',
@@ -155,24 +169,24 @@ jobs:
 
           sw = Path('sw.js')
           text = sw.read_text(encoding='utf-8')
-          text = re.sub(r"const VERSION = '[^']+';", "const VERSION = '2026-08-22-day5-poster-repair-v3';", text, count=1)
+          text = re.sub(r"const VERSION = '[^']+';", "const VERSION = '2026-08-22-day5-poster-repair-exact-v1';", text, count=1)
           sw.write_text(text, encoding='utf-8')
           PY
 
-      - name: Validate repaired branch
+      - name: Validate the repaired production output
         shell: bash
         run: |
           set -euo pipefail
-          test -f .github/day5-poster-repair10-trigger.txt || exit 0
-
           node --check hearing-records/prison-watch/kaikai-day5-20250429/day5.js
           node --check source/hearing-records/prison-watch/kaikai-day5-20250429/day5.js
-          printf '%s  %s\n' 'c4b478119d380b401c1287a9adf2ea99adbcf11abefb19ba848f34ed7ce175d9' assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp | sha256sum --check --strict
-          printf '%s  %s\n' '1266367242aa535b14376f9e3dc81b100fd9cf0152936241531e5132059d2eda' assets/art/prison-watch-day5-medical-zh-hant-20260822.webp | sha256sum --check --strict
+
+          printf '%s  %s\n' '454848c56839996a8364e93073c738d5cb7b46d3908ad28a7b158b0f932f15ec' assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp | sha256sum --check --strict
+          printf '%s  %s\n' '34580a2690b33550f1aa1e61a0fa68fa768ff1ad5af9e23f7dec1f61d318b082' assets/art/prison-watch-day5-medical-zh-hant-20260822.webp | sha256sum --check --strict
 
           python - <<'PY'
           from pathlib import Path
-          version = '20260822-poster-repair-3'
+
+          version = '20260822-poster-repair-exact-1'
           pages = [
               Path('hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
               Path('en/hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
@@ -198,26 +212,24 @@ jobs:
               if phrase not in zh:
                   raise SystemExit(f'Missing strengthened note phrase: {phrase}')
           PY
+          grep -Fq "const VERSION = '2026-08-22-day5-poster-repair-exact-v1';" sw.js
           git diff --check
 
-      - name: Commit repaired files to the pull-request branch
+      - name: Commit verified repair and remove staging files
         shell: bash
         run: |
           set -euo pipefail
-          test -f .github/day5-poster-repair10-trigger.txt || exit 0
-
-          rm -rf .github/day5-poster-repair10
+          rm -rf .github/day5-exact-image-chunks
           rm -rf .github/day5-poster-repair
           rm -rf .github/day5-selected-medical
-          rm -f .github/day5-poster-repair10-trigger.txt
-          rm -f .github/day5-poster-repair-trigger.txt
-          rm -f .github/day5-selected-art-trigger.txt
-          rm -f .github/workflows/oneoff-day5-user-selected-art.yml
+          rm -f .github/day5-poster-repair-exact-trigger.txt
           rm -f .github/workflows/oneoff-day5-poster-repair.yml
+          rm -f .github/workflows/oneoff-day5-user-selected-art.yml
 
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
           git diff --cached --quiet && { echo 'No repair changes produced.'; exit 1; }
-          git commit -m 'Repair Day 5 selected posters and strengthen 42-plus note [skip ci]'
-          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          git commit -m 'Repair Day 5 selected posters and strengthen 42-plus note'
+          git pull --rebase origin main
+          git push origin main
