@@ -84,7 +84,7 @@ jobs:
           install -m 0644 "$work/forensic.webp" assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp
           install -m 0644 "$work/medical.webp" assets/art/prison-watch-day5-medical-zh-hant-20260822.webp
 
-      - name: Refresh cache keys and preserve the strengthened 42-plus note
+      - name: Refresh cache keys and normalize the strengthened 42-plus note
         shell: bash
         run: |
           set -euo pipefail
@@ -92,7 +92,7 @@ jobs:
           from pathlib import Path
           import re
 
-          version = '20260822-poster-repair-exact-1'
+          version = '20260822-poster-repair-exact-2'
           pages = [
               Path('hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
               Path('en/hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
@@ -138,19 +138,19 @@ jobs:
                   f'aria-label="{title}"><strong>{title}</strong><p>{body}</p>'
                   f'<a href="#record-08">{source}</a></aside>'
               )
+
+              # Remove all stale or duplicated copies, then insert exactly one.
               pattern = re.compile(r'<aside id="day5InjuryCountNote"\b.*?</aside>', re.S)
-              if pattern.search(text):
-                  text = pattern.sub(note, text, count=1)
-              else:
-                  marker = '<article class="day5-compare-card is-agree"><header><span>04</span>'
-                  start = text.find(marker)
-                  if start < 0:
-                      raise SystemExit(f'Comparison card 04 not found in {page}')
-                  end = text.find('</article>', start)
-                  if end < 0:
-                      raise SystemExit(f'Comparison card 04 not closed in {page}')
-                  end += len('</article>')
-                  text = text[:end] + note + text[end:]
+              text = pattern.sub('', text)
+              marker = '<article class="day5-compare-card is-agree"><header><span>04</span>'
+              start = text.find(marker)
+              if start < 0:
+                  raise SystemExit(f'Comparison card 04 not found in {page}')
+              end = text.find('</article>', start)
+              if end < 0:
+                  raise SystemExit(f'Comparison card 04 not closed in {page}')
+              end += len('</article>')
+              text = text[:end] + note + text[end:]
 
               if key == 'zh':
                   text = text.replace(
@@ -169,7 +169,7 @@ jobs:
 
           sw = Path('sw.js')
           text = sw.read_text(encoding='utf-8')
-          text = re.sub(r"const VERSION = '[^']+';", "const VERSION = '2026-08-22-day5-poster-repair-exact-v1';", text, count=1)
+          text = re.sub(r"const VERSION = '[^']+';", "const VERSION = '2026-08-22-day5-poster-repair-exact-v2';", text, count=1)
           sw.write_text(text, encoding='utf-8')
           PY
 
@@ -186,7 +186,7 @@ jobs:
           python - <<'PY'
           from pathlib import Path
 
-          version = '20260822-poster-repair-exact-1'
+          version = '20260822-poster-repair-exact-2'
           pages = [
               Path('hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
               Path('en/hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
@@ -212,7 +212,7 @@ jobs:
               if phrase not in zh:
                   raise SystemExit(f'Missing strengthened note phrase: {phrase}')
           PY
-          grep -Fq "const VERSION = '2026-08-22-day5-poster-repair-exact-v1';" sw.js
+          grep -Fq "const VERSION = '2026-08-22-day5-poster-repair-exact-v2';" sw.js
           git diff --check
 
       - name: Commit verified repair and remove staging files
