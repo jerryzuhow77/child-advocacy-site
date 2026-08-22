@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-22-day5-poster-repair-exact-v3';
+const VERSION = '2026-08-22-day5-jpeg-blank-fix-v1';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -35,11 +35,15 @@ const APP_SHELL = [
   './hearing-records/prison-watch/kaikai-day4-20250428/day4-crosscheck.js',
   './hearing-records/prison-watch/kaikai-day4-20250428/day4-location-note.js',
   './hearing-records/prison-watch/kaikai-day3-20250425/day3-reading-core-20260821.js',
-  './assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp',
-  './assets/art/prison-watch-day5-forensic-zh-hans-20260822.webp',
-  './assets/art/prison-watch-day5-medical-zh-hant-20260822.webp',
-  './assets/art/prison-watch-day5-medical-zh-hans-20260822.webp',
-  './hearing-records/prison-watch/kaikai-day5-20250429/day5.js'
+
+
+
+
+  './hearing-records/prison-watch/kaikai-day5-20250429/day5.js',
+  './assets/art/prison-watch-day5-selected-evidence-01-zh-hant-20260822.jpg',
+  './assets/art/prison-watch-day5-selected-evidence-02-zh-hant-20260822.jpg',
+  './assets/art/prison-watch-day5-selected-evidence-01-zh-hans-20260822.jpg',
+  './assets/art/prison-watch-day5-selected-evidence-02-zh-hans-20260822.jpg'
 ];
 
 self.addEventListener('install', event => {
@@ -146,8 +150,7 @@ self.addEventListener('fetch', event => {
 
   const day5Fresh =
     url.pathname.endsWith('/hearing-records/prison-watch/kaikai-day5-20250429/day5.js') ||
-    url.pathname.endsWith('/assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp') ||
-    url.pathname.endsWith('/assets/art/prison-watch-day5-medical-zh-hant-20260822.webp');
+    url.pathname.includes('/assets/art/prison-watch-day5-selected-evidence-');
 
   if (day5Fresh) {
     event.respondWith(networkFirstStatic(request));
