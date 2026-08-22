@@ -1,2 +1,3 @@
 Repair the blank Day 5 poster area by switching all localized pages to four validated, cache-safe JPEG aliases of the user-selected artwork. Preserve the strengthened 42-plus minimum note and refresh page, script, metadata and PWA cache keys.
-Requested: 2026-08-22T20:25:00+08:00
+Requested: 2026-08-22T20:34:00+08:00
+Retry: corrected static-note normalization before validation.
