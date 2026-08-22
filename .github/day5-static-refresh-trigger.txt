@@ -1,0 +1,2 @@
+Refresh the Day 5 page with the user-selected two posters, an explicit static 42+ minimum note, and new asset/script cache keys.
+Requested: 2026-08-22T18:16:00+08:00
