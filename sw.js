@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-22-day5-jpeg-blank-fix-v1';
+const VERSION = '2026-08-22-day5-selected-poster-alias-v3';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -43,7 +43,11 @@ const APP_SHELL = [
   './assets/art/prison-watch-day5-selected-evidence-01-zh-hant-20260822.jpg',
   './assets/art/prison-watch-day5-selected-evidence-02-zh-hant-20260822.jpg',
   './assets/art/prison-watch-day5-selected-evidence-01-zh-hans-20260822.jpg',
-  './assets/art/prison-watch-day5-selected-evidence-02-zh-hans-20260822.jpg'
+  './assets/art/prison-watch-day5-selected-evidence-02-zh-hans-20260822.jpg',
+  './assets/art/prison-watch-day5-selected-evidence-01-zh-hant-20260822-v3.jpg',
+  './assets/art/prison-watch-day5-selected-evidence-01-zh-hans-20260822-v3.jpg',
+  './assets/art/prison-watch-day5-selected-evidence-02-zh-hant-20260822-v3.jpg',
+  './assets/art/prison-watch-day5-selected-evidence-02-zh-hans-20260822-v3.jpg'
 ];
 
 self.addEventListener('install', event => {

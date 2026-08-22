@@ -7,12 +7,37 @@
       "id": "kaikai-day5-20250429",
       "publishedAt": "2026-08-22",
       "tag": "COURT RECORD",
-      "badge": {"zh-Hant":"旁聽紀錄","zh-Hans":"旁听记录","en":"Court record","ja":"傍聴記録"},
-      "title": {"zh-Hant":"第五次審判期日","zh-Hans":"第五次审判期日","en":"Fifth Trial Date","ja":"第5回公判期日"},
-      "summary": {"zh-Hant":"兩位醫師證詞、死因研判與醫學證據對照。","zh-Hans":"两位医师证词、死因研判与医学证据对照。","en":"Two physicians' testimony, cause-of-death findings, and medical evidence compared.","ja":"2人の医師の証言、死因判断、医学証拠を比較。"},
-      "url": {"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day5-20250429/","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day5-20250429/","en":"https://jerryzuhow77.github.io/child-advocacy-site/en/hearing-records/prison-watch/kaikai-day5-20250429/","ja":"https://jerryzuhow77.github.io/child-advocacy-site/ja/hearing-records/prison-watch/kaikai-day5-20250429/"},
-      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp",
-      "imageAlt": {"zh-Hant":"第五次審判期日醫學證據與完整旁聽紀錄主視覺","zh-Hans":"第五次审判期日医学证据与完整旁听记录主视觉","en":"Cover artwork for the fifth trial date medical evidence and full court record","ja":"第5回公判期日の医学証拠と完全傍聴記録のメインビジュアル"}
+      "badge": {
+        "zh-Hant": "旁聽紀錄",
+        "zh-Hans": "旁听记录",
+        "en": "Court record",
+        "ja": "傍聴記録"
+      },
+      "title": {
+        "zh-Hant": "第五次審判期日",
+        "zh-Hans": "第五次审判期日",
+        "en": "Fifth Trial Date",
+        "ja": "第5回公判期日"
+      },
+      "summary": {
+        "zh-Hant": "兩位醫師證詞、死因研判與醫學證據對照。",
+        "zh-Hans": "两位医师证词、死因研判与医学证据对照。",
+        "en": "Two physicians' testimony, cause-of-death findings, and medical evidence compared.",
+        "ja": "2人の医師の証言、死因判断、医学証拠を比較。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day5-20250429/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day5-20250429/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/hearing-records/prison-watch/kaikai-day5-20250429/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/hearing-records/prison-watch/kaikai-day5-20250429/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day5-selected-evidence-01-zh-hant-20260822-v3.jpg?v=20260822-selected-poster-alias-v3",
+      "imageAlt": {
+        "zh-Hant": "第五次審判期日醫學證據與完整旁聽紀錄主視覺",
+        "zh-Hans": "第五次审判期日医学证据与完整旁听记录主视觉",
+        "en": "Cover artwork for the fifth trial date medical evidence and full court record",
+        "ja": "第5回公判期日の医学証拠と完全傍聴記録のメインビジュアル"
+      }
     },
     {
       "id": "kaikai-day4-20250428",

@@ -5,7 +5,7 @@
   const params = new URLSearchParams(location.search);
   const language = document.documentElement.lang || 'zh-Hant';
   const simplified = params.get('lang') === 'zh-Hans' || localStorage.getItem('siteLang') === 'zh-Hans';
-  const posterVersion = '20260822-jpeg-blank-fix-1';
+  const posterVersion = '20260822-selected-poster-alias-v3';
 
   const locale = simplified
     ? 'zh-Hans'

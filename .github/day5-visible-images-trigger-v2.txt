@@ -1,2 +1,0 @@
-Run the visible selected-image repair from the current production branch.
-Requested: 2026-08-22T20:07:00+08:00
