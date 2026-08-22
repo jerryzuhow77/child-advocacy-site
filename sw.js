@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-22-day5-user-selected-art-v2';
+const VERSION = '2026-08-22-day5-poster-repair-exact-v3';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
