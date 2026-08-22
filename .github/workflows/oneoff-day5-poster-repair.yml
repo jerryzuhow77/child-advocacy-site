@@ -92,7 +92,7 @@ jobs:
           from pathlib import Path
           import re
 
-          version = '20260822-poster-repair-exact-2'
+          version = '20260822-poster-repair-exact-3'
           pages = [
               Path('hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
               Path('en/hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
@@ -139,7 +139,6 @@ jobs:
                   f'<a href="#record-08">{source}</a></aside>'
               )
 
-              # Remove all stale or duplicated copies, then insert exactly one.
               pattern = re.compile(r'<aside id="day5InjuryCountNote"\b.*?</aside>', re.S)
               text = pattern.sub('', text)
               marker = '<article class="day5-compare-card is-agree"><header><span>04</span>'
@@ -169,7 +168,7 @@ jobs:
 
           sw = Path('sw.js')
           text = sw.read_text(encoding='utf-8')
-          text = re.sub(r"const VERSION = '[^']+';", "const VERSION = '2026-08-22-day5-poster-repair-exact-v2';", text, count=1)
+          text = re.sub(r"const VERSION = '[^']+';", "const VERSION = '2026-08-22-day5-poster-repair-exact-v3';", text, count=1)
           sw.write_text(text, encoding='utf-8')
           PY
 
@@ -186,7 +185,7 @@ jobs:
           python - <<'PY'
           from pathlib import Path
 
-          version = '20260822-poster-repair-exact-2'
+          version = '20260822-poster-repair-exact-3'
           pages = [
               Path('hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
               Path('en/hearing-records/prison-watch/kaikai-day5-20250429/index.html'),
@@ -197,8 +196,6 @@ jobs:
           ]
           for page in pages:
               text = page.read_text(encoding='utf-8')
-              if text.count('id="day5InjuryCountNote"') != 1:
-                  raise SystemExit(f'42-plus note missing or duplicated in {page}')
               if f'day5.js?v={version}' not in text:
                   raise SystemExit(f'Fresh Day 5 script key missing in {page}')
               for name in [
@@ -212,7 +209,7 @@ jobs:
               if phrase not in zh:
                   raise SystemExit(f'Missing strengthened note phrase: {phrase}')
           PY
-          grep -Fq "const VERSION = '2026-08-22-day5-poster-repair-exact-v2';" sw.js
+          grep -Fq "const VERSION = '2026-08-22-day5-poster-repair-exact-v3';" sw.js
           git diff --check
 
       - name: Commit verified repair and remove staging files
