@@ -209,14 +209,15 @@
   const comparison = document.getElementById('comparison');
 
   if (compareGrid && comparison) {
-    if (!document.getElementById('day5InjuryCountNote')) {
-      const note = document.createElement('aside');
+    let note = document.getElementById('day5InjuryCountNote');
+    if (!note) {
+      note = document.createElement('aside');
       note.id = 'day5InjuryCountNote';
       note.className = 'day5-injury-count-note';
-      note.setAttribute('aria-label', copy.noteTitle);
-      note.innerHTML = `<strong>${copy.noteTitle}</strong><p>${copy.noteBody}</p><a href="#record-08">${copy.noteSource}</a>`;
       (compareCards[3] || compareGrid.lastElementChild)?.after(note);
     }
+    note.setAttribute('aria-label', copy.noteTitle);
+    note.innerHTML = `<strong>${copy.noteTitle}</strong><p>${copy.noteBody}</p><a href="#record-08">${copy.noteSource}</a>`;
 
     if (!comparison.querySelector('.day5-compare-filters')) {
       const filters = document.createElement('div');
