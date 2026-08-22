@@ -47,7 +47,7 @@ jobs:
             base64 --decode "$part" >> "$archive"
           done
 
-          printf '%s  %s\n' '8054d0413aa568ae4117841525d2f9303a600a7e869ee5681212220aa1959ebf' "$archive" | sha256sum --check --strict
+          printf '%s  %s\n' '6923d74a9798c46071f60d6bad6baaa2c78301c2507a4c3eb29052b99471aeef' "$archive" | sha256sum --check --strict
           xz --test "$archive"
           tar -xJf "$archive" -C "$work"
           test -f "$work/install.py"
