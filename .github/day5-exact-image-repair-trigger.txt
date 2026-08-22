@@ -1,0 +1,2 @@
+Convert the verified Day 5 selected poster artwork to unique JPEG URLs, bypass stale WebP/service-worker caches, and keep the strengthened 42-plus injury-minimum note.
+Requested: 2026-08-22T19:05:00+08:00
