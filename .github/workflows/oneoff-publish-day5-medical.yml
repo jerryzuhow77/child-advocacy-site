@@ -1,0 +1,129 @@
+name: One-off publish Day 5 medical testimony page
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/oneoff-publish-day5-medical.yml'
+      - '.github/day5-deploy-package.tar.xz'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: oneoff-publish-day5-medical
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install and validate Day 5 page
+        shell: bash
+        run: |
+          set -euo pipefail
+          git pull --rebase origin main
+
+          archive='.github/day5-deploy-package.tar.xz'
+          work='/tmp/day5-deploy'
+          rm -rf "$work"
+          mkdir -p "$work"
+
+          printf '%s  %s\n' '1032d5eb8e0ecb291115750f8e6b76868341fd4558e0c2bad4557e4bb0e9ad2c' "$archive" | sha256sum --check --strict
+          tar -xJf "$archive" -C "$work"
+          package="$work/day5_deploy_package"
+          test -f "$package/install_day5.py"
+          (cd "$package" && sha256sum --check --strict SHA256SUMS)
+
+          python "$package/install_day5.py"
+          node --check hearing-records/prison-watch/kaikai-day5-20250429/day5.js
+
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import json
+
+          root = Path('.')
+          pages = [
+              root / 'hearing-records/prison-watch/kaikai-day5-20250429/index.html',
+              root / 'en/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
+              root / 'ja/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
+              root / 'source/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
+              root / 'source/en/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
+              root / 'source/ja/hearing-records/prison-watch/kaikai-day5-20250429/index.html',
+          ]
+
+          class IdParser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.ids = []
+              def handle_starttag(self, tag, attrs):
+                  for key, value in attrs:
+                      if key == 'id' and value:
+                          self.ids.append(value)
+
+          for page in pages:
+              if not page.is_file() or page.stat().st_size < 10_000:
+                  raise SystemExit(f'missing or undersized page: {page}')
+              text = page.read_text(encoding='utf-8')
+              parser = IdParser()
+              parser.feed(text)
+              duplicates = sorted({value for value in parser.ids if parser.ids.count(value) > 1})
+              if duplicates:
+                  raise SystemExit(f'duplicate IDs in {page}: {duplicates}')
+              if 'id="comparison"' not in text:
+                  raise SystemExit(f'missing comparison anchor in {page}')
+              if text.count('day5-compare-card') < 7:
+                  raise SystemExit(f'not enough doctor-comparison cards in {page}')
+              if text.count('day5-record-chapter') != 11:
+                  raise SystemExit(f'unexpected complete-record chapter count in {page}')
+
+          for path in [
+              root / 'data/hearing-records.json',
+              root / 'en/data/hearing-records.json',
+              root / 'ja/data/hearing-records.json',
+              root / 'data/search-index.json',
+          ]:
+              json.loads(path.read_text(encoding='utf-8'))
+
+          required_assets = [
+              'assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp',
+              'assets/art/prison-watch-day5-forensic-zh-hans-20260822.webp',
+              'assets/art/prison-watch-day5-medical-zh-hant-20260822.webp',
+              'assets/art/prison-watch-day5-medical-zh-hans-20260822.webp',
+          ]
+          for item in required_assets:
+              path = root / item
+              if not path.is_file() or path.stat().st_size < 15_000:
+                  raise SystemExit(f'missing Day 5 art asset: {path}')
+
+          sitemap = (root / 'sitemap.xml').read_text(encoding='utf-8')
+          canonical = 'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day5-20250429/'
+          if canonical not in sitemap:
+              raise SystemExit('Day 5 canonical URL missing from sitemap')
+          PY
+
+      - name: Commit publication and remove one-off staging files
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .github/day5-payload
+          rm -f .github/day5-deploy-package.tar.xz
+          rm -f .github/workflows/oneoff-publish-day5-medical.yml
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then
+            echo 'No publication changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Publish Day 5 medical testimony comparison and full record'
+          git pull --rebase origin main
+          git push origin main
