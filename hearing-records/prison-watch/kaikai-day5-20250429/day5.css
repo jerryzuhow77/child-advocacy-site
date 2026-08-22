@@ -31,3 +31,27 @@
 .day5-compare-caution{max-width:1000px;margin:27px auto 0;padding:18px 21px;border:1px solid rgba(164,74,46,.14);border-radius:19px;background:rgba(255,250,246,.82);box-shadow:0 9px 26px rgba(83,43,37,.055)}.day5-compare-caution b{color:#824638}.day5-compare-caution p{margin:.45rem 0 0;color:#5c7078;line-height:1.72}
 @media(max-width:900px){.day5-compare-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.day5-compare-sides{grid-template-columns:1fr}.day5-compare-sides>i{height:25px;transform:rotate(90deg)}}
 @media(max-width:560px){.day5-compare-summary{grid-template-columns:1fr}.day5-compare-card{padding:18px 14px;border-left-width:5px;border-radius:20px}.day5-compare-card>header>span{flex-basis:40px;width:40px;height:40px}.day5-compare-sides section{padding:46px 15px 16px}.day5-compare-legend{justify-content:flex-start}}
+
+
+/* Day 5 reading and comparison usability refinement */
+.day5-compare-filters{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;max-width:1180px;margin:0 auto 22px}
+.day5-compare-filter{min-height:42px;padding:.58rem .9rem;border:1px solid rgba(18,56,68,.16);border-radius:999px;background:rgba(255,255,255,.88);color:var(--day5-navy);font:inherit;font-size:.78rem;font-weight:900;cursor:pointer;box-shadow:0 5px 16px rgba(18,56,68,.06)}
+.day5-compare-filter:hover,.day5-compare-filter:focus-visible{outline:2px solid rgba(49,95,100,.28);outline-offset:2px}
+.day5-compare-filter[aria-pressed="true"]{border-color:var(--day5-navy);background:var(--day5-navy);color:#fff}
+.day5-compare-card[hidden]{display:none}
+.day5-compare-card.is-difference{background:linear-gradient(145deg,#fffaf7,#f8e9e3)}
+.day5-compare-card.is-difference>header:after{content:"核心爭點";margin-left:auto;padding:.34rem .58rem;border-radius:999px;background:#a44a2e;color:#fff;font-size:.68rem;font-weight:900;white-space:nowrap}
+.day5-compare-sides>i:after{content:attr(data-mobile-label)}
+.day5-record-chapter>header{cursor:pointer}
+.day5-chapter-toggle:focus-visible{outline:3px solid rgba(164,74,46,.34);outline-offset:3px}
+.day5-back-to-comparison{position:sticky;bottom:14px;z-index:8;display:none;width:max-content;margin:12px 14px 12px auto;padding:.55rem .82rem;border-radius:999px;background:var(--day5-navy);color:#fff!important;font-size:.76rem;font-weight:900;text-decoration:none;box-shadow:0 10px 28px rgba(18,56,68,.24)}
+.day5-record-active .day5-back-to-comparison{display:block}
+@media(max-width:900px){
+  .day5-compare-sides>i{height:auto;min-height:34px;transform:none;font-size:0}
+  .day5-compare-sides>i:after{display:inline-flex;padding:.38rem .68rem;border-radius:999px;background:color-mix(in srgb,var(--compare-accent) 9%,#fff);font-size:.74rem;font-weight:900}
+}
+@media(max-width:560px){
+  .day5-compare-filters{justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap;padding:2px 1px 8px;scrollbar-width:thin}
+  .day5-compare-filter{flex:0 0 auto}
+  .day5-compare-card.is-difference>header:after{display:none}
+}
