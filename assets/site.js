@@ -12,7 +12,7 @@
 
   var current=document.currentScript&&document.currentScript.src?document.currentScript.src:'';
   var base=current?current.slice(0,current.lastIndexOf('/')+1):'./assets/';
-  var version='20260823-mobile-shared-views-2';
+  var version='20260823-mobile-kv-views-4';
   function load(name,marker,done){
     var existing=document.querySelector('script[data-cpa-site-layer="'+marker+'"]');
     if(existing){if(done)done();return;}
