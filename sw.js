@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-23-relief-map-v1';
+const VERSION = '2026-08-24-mobile-history-map-visible-v1';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -30,6 +30,7 @@ const APP_SHELL = [
   './assets/home-history-paper-art-20260823.css',
   './assets/home-history-relief-map-20260823.js',
   './assets/home-history-relief-map-20260823.css',
+  './assets/home-history-mobile-visibility-20260824.css',
   './assets/art/east-asia-case-memory-map-relief-20260823.webp',
   './assets/home-ia-hearing-campaign-20260823.js',
   './assets/home-ia-bootstrap-20260823.js',
