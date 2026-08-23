@@ -1,10 +1,10 @@
 'use strict';
 
-const VERSION = '2026-08-23-mobile-kv-views-v4';
+const VERSION = '2026-08-23-relief-map-v1';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
-const MAX_RUNTIME_ITEMS = 140;
+const MAX_RUNTIME_ITEMS = 150;
 
 const APP_SHELL = [
   './',
@@ -26,6 +26,11 @@ const APP_SHELL = [
   './assets/home-ia-core-20260823.js',
   './assets/home-ia-layout-20260823.js',
   './assets/home-ia-history-20260823.js',
+  './assets/home-history-paper-art-20260823.js',
+  './assets/home-history-paper-art-20260823.css',
+  './assets/home-history-relief-map-20260823.js',
+  './assets/home-history-relief-map-20260823.css',
+  './assets/art/east-asia-case-memory-map-relief-20260823.webp',
   './assets/home-ia-hearing-campaign-20260823.js',
   './assets/home-ia-bootstrap-20260823.js',
   './assets/home-ia-v2-final.css',
@@ -169,11 +174,11 @@ self.addEventListener('fetch', event => {
     url.pathname.endsWith('/assets/site-base-20260823.js') ||
     url.pathname.endsWith('/assets/site-four-language-qa-20260823.js') ||
     url.pathname.endsWith('/assets/mobile-nav-view-counter-20260823.js') ||
-    url.pathname.endsWith('/assets/home-view-counter-20260811.js') ||
     url.pathname.endsWith('/assets/home-gsap.js') ||
     url.pathname.endsWith('/assets/home-gsap-base-20260823.js') ||
     url.pathname.endsWith('/assets/home-archive-layout-20260823.js') ||
     url.pathname.includes('/assets/home-ia-') ||
+    url.pathname.includes('/assets/home-history-') ||
     url.pathname.endsWith('/assets/home-ia-v2-final.css') ||
     url.pathname.endsWith('/assets/global-protection-wall-portal.js') ||
     url.pathname.endsWith('/assets/global-protection-wall-portal.css') ||
