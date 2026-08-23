@@ -406,7 +406,7 @@ function initSiteSearch(){
       <div class="site-search-filters" aria-label="搜尋分類"></div>
       <div class="site-search-status" aria-live="polite">輸入關鍵字開始搜尋</div>
       <div class="site-search-results"></div>
-      <div class="site-search-tips">可搜尋「土城」、「白麗芳」、「凱道」、「2026/08/06」等內容。鍵盤可按 <kbd>/</kbd> 或 <kbd>Ctrl</kbd> + <kbd>K</kbd> 開啟搜尋。</div>
+      <div class="site-search-tips">可搜尋「土城家暴雙屍案」、「剴剴案」、「保護令」、「2026/08/21」等內容。鍵盤可按 <kbd>/</kbd> 或 <kbd>Ctrl</kbd> + <kbd>K</kbd> 開啟搜尋。</div>
     </section>`;
   document.body.appendChild(overlay);
 
