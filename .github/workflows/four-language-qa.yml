@@ -1,0 +1,119 @@
+name: Four-language content QA and 9-16 hearing campaign
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/site.js'
+      - 'assets/site-base-20260823.js'
+      - 'assets/site-four-language-qa-20260823.js'
+      - 'assets/home-archive-layout-20260823.js'
+      - 'assets/home-ia-hearing-campaign-20260823.js'
+      - 'assets/home-ia-bootstrap-20260823.js'
+      - 'assets/global-protection-wall-portal.js'
+      - 'sw.js'
+      - '.github/workflows/four-language-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: JavaScript syntax checks
+        run: |
+          set -euo pipefail
+          node --check assets/site.js
+          node --check assets/site-base-20260823.js
+          node --check assets/site-four-language-qa-20260823.js
+          node --check assets/home-archive-layout-20260823.js
+          node --check assets/home-ia-hearing-campaign-20260823.js
+          node --check assets/home-ia-bootstrap-20260823.js
+          node --check assets/global-protection-wall-portal.js
+          node --check sw.js
+
+      - name: Static synchronization assertions
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          root = Path('.')
+          base = (root / 'assets/site-base-20260823.js').read_text(encoding='utf-8')
+          loader = (root / 'assets/site.js').read_text(encoding='utf-8')
+          qa = (root / 'assets/site-four-language-qa-20260823.js').read_text(encoding='utf-8')
+          hearing = (root / 'assets/home-ia-hearing-campaign-20260823.js').read_text(encoding='utf-8')
+          portal = (root / 'assets/global-protection-wall-portal.js').read_text(encoding='utf-8')
+          sw = (root / 'sw.js').read_text(encoding='utf-8')
+
+          assert len(base) > 100_000, 'Original site behavior was not preserved in the base layer.'
+          assert 'site-base-20260823.js' in loader and 'site-four-language-qa-20260823.js' in loader
+          assert 'https://cn.globalprotectionwall.com/?section=member-submit' in qa
+          assert "['中國大陸','大陸']" in qa and "['中国大陆','大陆']" in qa
+          assert "['Mainland China','Mainland']" in qa
+          assert '控訴審準備手続' in qa and '児童保護行動連盟' in qa
+          assert '9/16 開庭前，留下你想說的話' in hearing
+          assert 'Before the September 16 appeal hearing' in hearing
+          assert '9月16日の控訴審を前に' in hearing
+          assert '2026-09-16T14:30' in hearing
+          assert "const mainlandWallBase='https://cn.globalprotectionwall.com/'" in portal
+          assert 'four-language-qa-916-v1' in sw
+          print('Static synchronization assertions passed.')
+          PY
+
+      - name: Browser-level homepage and campaign checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          BROWSER="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          if [[ -z "$BROWSER" ]]; then
+            echo '::notice::No Chromium-compatible browser is installed on this runner; syntax and static assertions passed.'
+            exit 0
+          fi
+
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/child-site-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          sleep 2
+
+          dump_dom() {
+            "$BROWSER" \
+              --headless=new \
+              --no-sandbox \
+              --disable-gpu \
+              --disable-dev-shm-usage \
+              --disable-background-networking \
+              --virtual-time-budget=12000 \
+              --dump-dom "$1"
+          }
+
+          dump_dom 'http://127.0.0.1:8765/?qa=916-hant' > /tmp/home-hant.html
+          grep -F 'qa916-hearing-campaign' /tmp/home-hant.html
+          grep -F '9/16 開庭前，留下你想說的話' /tmp/home-hant.html
+
+          dump_dom 'http://127.0.0.1:8765/?lang=zh-Hans&qa=916-hans' > /tmp/home-hans.html
+          grep -F '9/16 开庭前，留下你想说的话' /tmp/home-hans.html
+          grep -F 'https://cn.globalprotectionwall.com/?section=member-submit' /tmp/home-hans.html
+
+          dump_dom 'http://127.0.0.1:8765/en/?qa=916-en' > /tmp/home-en.html
+          grep -F 'Before the September 16 appeal hearing' /tmp/home-en.html
+          if grep -F 'Mainland China' /tmp/home-en.html; then
+            echo 'English UI still contains the deprecated Mainland China label.' >&2
+            exit 1
+          fi
+
+          dump_dom 'http://127.0.0.1:8765/ja/activity-records/20260820-kaikai-story-collection/?qa=916-ja' > /tmp/story-ja.html
+          grep -F '控訴審準備手続' /tmp/story-ja.html
+          grep -F '思いを投稿する' /tmp/story-ja.html
+          if grep -E '治験|二次試験' /tmp/story-ja.html; then
+            echo 'Japanese page still contains mistranslated court terminology.' >&2
+            exit 1
+          fi
+
+          echo 'Browser-level four-language checks passed.'
