@@ -2,9 +2,17 @@
   'use strict';
   if(window.__cpaSiteQaLoader)return;
   window.__cpaSiteQaLoader=true;
+
+  var counterEndpoint='https://sweet-art-bed8child-advocacy-page-views.jerryzuhow77.workers.dev/views';
+  window.CPA_VIEW_COUNTER=window.CPA_VIEW_COUNTER||{};
+  if(!window.CPA_VIEW_COUNTER.endpoint){
+    window.CPA_VIEW_COUNTER.endpoint=counterEndpoint;
+  }
+  window.CPA_VIEW_COUNTER_API=window.CPA_VIEW_COUNTER.endpoint;
+
   var current=document.currentScript&&document.currentScript.src?document.currentScript.src:'';
   var base=current?current.slice(0,current.lastIndexOf('/')+1):'./assets/';
-  var version='20260823-mobile-nav-views-1';
+  var version='20260823-mobile-shared-views-2';
   function load(name,marker,done){
     var existing=document.querySelector('script[data-cpa-site-layer="'+marker+'"]');
     if(existing){if(done)done();return;}
