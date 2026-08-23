@@ -26,6 +26,11 @@
     }
   };
 
+  var exactLabels={
+    en:{'cases of public concern':'Cases','Cases of Public Concern':'Cases','activity record':'Activity Records','event album':'Event Albums','official community':'Official Social Media','Thematic tour':'Related Content'},
+    ja:{'テーマ別ツアー':'関連コンテンツ','公式コミュニティ':'公式SNS','社会的関心事件':'社会事件'}
+  };
+
   var replacements={
     'zh-Hant':[
       ['中國大陸','大陸']
@@ -35,9 +40,6 @@
     ],
     en:[
       ['Mainland China','Mainland'],
-      ['cases of public concern','Cases'],['Cases of Public Concern','Cases'],
-      ['activity record','Activity Records'],['event album','Event Albums'],['official community','Official Social Media'],
-      ['Thematic tour','Related Content'],
       ['Second trial preparation procedure','Second-instance preparatory hearing'],
       ['Court observation notes of the second trial preparation process','Court observation record of the second-instance preparatory hearing'],
       ['Attendance record of the Tucheng Two-Year-Old Boy Death Case Art advertising picture','Artwork introducing the Tucheng two-year-old case court record'],
@@ -54,9 +56,6 @@
       ['薬物運転防止と飲酒運転防止。開道パレード','薬物・飲酒運転の根絶を訴える凱達格蘭大道パレード'],
       ['開道パレード','凱達格蘭大道パレード'],
       ['イベントテキスト、フォトアルバム、ビデオ記録','活動レポート・写真・映像記録'],
-      ['テーマ別ツアー','関連コンテンツ'],
-      ['公式コミュニティ','公式SNS'],
-      ['社会的関心事件','社会事件'],
       ['立会い記録','傍聴記録']
     ]
   };
@@ -79,6 +78,8 @@
 
   function replaceString(value,locale){
     var result=value||'';
+    var match=result.match(/^(\s*)([\s\S]*?)(\s*)$/);
+    if(match&&exactLabels[locale]&&Object.prototype.hasOwnProperty.call(exactLabels[locale],match[2]))result=match[1]+exactLabels[locale][match[2]]+match[3];
     (replacements[locale]||[]).forEach(function(pair){result=result.split(pair[0]).join(pair[1]);});
     return result;
   }
@@ -104,7 +105,7 @@
   }
 
   function submissionUrl(locale){
-    if(locale==='zh-Hans')return 'https://cn.globalprotectionwall.com/';
+    if(locale==='zh-Hans')return 'https://cn.globalprotectionwall.com/?section=member-submit';
     var url=new URL('global-protection-wall/',siteRoot);
     url.searchParams.set('section','member-submit');
     if(locale!=='zh-Hant')url.searchParams.set('lang',locale);

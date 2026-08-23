@@ -18,7 +18,7 @@
   }
   function submitUrl(l){
     if(window.FourLanguageQA)return window.FourLanguageQA.submissionUrl(l);
-    if(l==='zh-Hans')return 'https://cn.globalprotectionwall.com/';
+    if(l==='zh-Hans')return 'https://cn.globalprotectionwall.com/?section=member-submit';
     var u=new URL('global-protection-wall/',siteRoot);u.searchParams.set('section','member-submit');if(l!=='zh-Hant')u.searchParams.set('lang',l);return u.href;
   }
   function campaignUrl(l){
