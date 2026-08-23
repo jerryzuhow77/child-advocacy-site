@@ -31,6 +31,15 @@ APP_DIR="$(cd "$APP_DIR" && pwd -P)"
 PACKAGE_DIR="$(cd "$PACKAGE_DIR" && pwd -P)"
 COMPONENT_PATCH="$PACKAGE_DIR/patches/guardian-wall.archive.patch"
 CSS_PATCH="$PACKAGE_DIR/patches/globals.archive.patch"
+
+if [[ ! -f "$COMPONENT_PATCH" || ! -f "$CSS_PATCH" ]]; then
+  [[ -x "$PACKAGE_DIR/restore_patches.sh" || -f "$PACKAGE_DIR/restore_patches.sh" ]] || {
+    echo 'Patch files are absent and restore_patches.sh was not found.' >&2
+    exit 3
+  }
+  bash "$PACKAGE_DIR/restore_patches.sh"
+fi
+
 for f in "$COMPONENT_PATCH" "$CSS_PATCH" "$APP_DIR/components/guardian-wall.tsx" "$APP_DIR/app/globals.css"; do
   [[ -f "$f" ]] || { echo "Required file missing: $f" >&2; exit 3; }
 done
