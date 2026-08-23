@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-23-four-language-qa-916-v1';
+const VERSION = '2026-08-23-mobile-kv-views-v4';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -13,6 +13,7 @@ const APP_SHELL = [
   './assets/site.js',
   './assets/site-base-20260823.js',
   './assets/site-four-language-qa-20260823.js',
+  './assets/mobile-nav-view-counter-20260823.js',
   './assets/pwa-install.css',
   './assets/pwa-install.js',
   './assets/home-gsap.css',
@@ -167,6 +168,8 @@ self.addEventListener('fetch', event => {
     url.pathname.endsWith('/assets/site.js') ||
     url.pathname.endsWith('/assets/site-base-20260823.js') ||
     url.pathname.endsWith('/assets/site-four-language-qa-20260823.js') ||
+    url.pathname.endsWith('/assets/mobile-nav-view-counter-20260823.js') ||
+    url.pathname.endsWith('/assets/home-view-counter-20260811.js') ||
     url.pathname.endsWith('/assets/home-gsap.js') ||
     url.pathname.endsWith('/assets/home-gsap-base-20260823.js') ||
     url.pathname.endsWith('/assets/home-archive-layout-20260823.js') ||
