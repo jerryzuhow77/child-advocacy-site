@@ -1,0 +1,14 @@
+{
+  "generated_at": "2026-08-23T18:38:00+08:00",
+  "target": "https://cn.globalprotectionwall.com/",
+  "branch": "handoff/global-protection-archive-20260823",
+  "library_package": "/Sites/Global-Protection/Global-Protection_Content-Archive_20260823.zip",
+  "sha256": "cf97ab82b819b9f5caae75931c226f85e49c38b7904ffde9e30ee2a7ba5d06f3",
+  "source_baseline": "Global-Protection_Sites_Auto-Handoff_20260821",
+  "package_status": "validated_handoff_ready",
+  "live_deployment_status": "not_deployed_from_this_session",
+  "database_migration": false,
+  "protected_integrations_preserved": true,
+  "reason": "Tencent Cloud application source/runtime is not connected to the available tools. No live-deployment claim is made.",
+  "next_action": "Merge the supplied front-end patch and incremental CSS into the current live source, run full regression tests, and deploy only if all checks pass."
+}
