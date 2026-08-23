@@ -1,0 +1,81 @@
+name: Mobile history map cache bust
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/home-gsap.js'
+      - 'assets/home-archive-layout-20260823.js'
+      - 'assets/home-history-relief-map-20260823.js'
+      - 'assets/home-history-mobile-visibility-20260824.css'
+      - 'assets/home-ia-bootstrap-20260823.js'
+      - '.github/workflows/mobile-history-map-release.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch-entrypoints:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update homepage asset versions and PWA cache
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          version = '20260824-mobile-visible-1'
+          html_files = [
+              Path('index.html'),
+              Path('en/index.html'),
+              Path('ja/index.html'),
+              Path('source/index.html'),
+          ]
+          for path in html_files:
+              if not path.exists():
+                  continue
+              text = path.read_text(encoding='utf-8')
+              text = re.sub(r'home-gsap\.js\?v=[^"\']+', f'home-gsap.js?v={version}', text)
+              text = re.sub(r'site\.js\?v=[^"\']+', f'site.js?v={version}', text)
+              path.write_text(text, encoding='utf-8')
+
+          sw_path = Path('sw.js')
+          sw = sw_path.read_text(encoding='utf-8')
+          sw = re.sub(r"const VERSION = '[^']+';", "const VERSION = '2026-08-24-mobile-history-map-visible-v1';", sw, count=1)
+          mobile_css = "  './assets/home-history-mobile-visibility-20260824.css',\n"
+          anchor = "  './assets/home-history-relief-map-20260823.css',\n"
+          if mobile_css.strip() not in sw:
+              sw = sw.replace(anchor, anchor + mobile_css)
+          sw_path.write_text(sw, encoding='utf-8')
+          PY
+
+      - name: Verify mobile visibility release
+        run: |
+          set -euo pipefail
+          grep -R "home-gsap.js?v=20260824-mobile-visible-1" index.html en/index.html ja/index.html source/index.html
+          grep -F "2026-08-24-mobile-history-map-visible-v1" sw.js
+          grep -F "home-history-mobile-visibility-20260824.css" sw.js
+          node --check assets/home-gsap.js
+          node --check assets/home-archive-layout-20260823.js
+          node --check assets/home-history-relief-map-20260823.js
+          node --check assets/home-ia-bootstrap-20260823.js
+
+      - name: Commit generated entrypoint updates
+        run: |
+          set -euo pipefail
+          if git diff --quiet; then
+            echo 'No generated changes required.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html en/index.html ja/index.html source/index.html sw.js
+          git commit -m 'Expose relief map on mobile and refresh cached entrypoints'
+          git push origin HEAD:main

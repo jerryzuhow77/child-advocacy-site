@@ -1,0 +1,128 @@
+/* Mobile visibility safeguard for the East Asia case memory map — 2026-08-24 */
+@media (max-width:760px){
+  #home-historical-cases,
+  #home-historical-cases .history-archive-v3,
+  #home-historical-cases .history-map-panel,
+  #home-historical-cases .history-map-art,
+  #home-historical-cases .history-relief-figure,
+  #home-historical-cases .history-relief-image,
+  #home-historical-cases .history-relief-region-dock,
+  #home-historical-cases .history-region-list{
+    content-visibility:visible!important;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+
+  #home-historical-cases .history-map-panel,
+  #home-historical-cases .history-relief-figure,
+  #home-historical-cases .history-relief-image{
+    transform:none!important;
+  }
+
+  #home-historical-cases .history-map-panel{
+    display:block!important;
+    width:100%!important;
+    min-height:0!important;
+  }
+
+  #home-historical-cases .history-relief-map-art{
+    display:block!important;
+    width:100%!important;
+    min-height:0!important;
+    overflow:visible!important;
+  }
+
+  #home-historical-cases .history-relief-figure{
+    display:block!important;
+    width:100%!important;
+    min-height:220px!important;
+    aspect-ratio:16/10!important;
+    margin:0!important;
+    overflow:hidden!important;
+    background:#e97964!important;
+  }
+
+  #home-historical-cases .history-relief-image{
+    display:block!important;
+    width:100%!important;
+    height:100%!important;
+    min-height:220px!important;
+    object-fit:cover!important;
+    object-position:center center!important;
+    filter:saturate(1.01) contrast(1.02)!important;
+  }
+
+  #home-historical-cases .history-relief-region-dock,
+  #home-historical-cases .history-relief-pin,
+  #home-historical-cases .history-map-copy,
+  #home-historical-cases .history-region,
+  #home-historical-cases .history-timeline,
+  #home-historical-cases .history-paper-file-card,
+  #home-historical-cases .home-historical-card{
+    visibility:visible!important;
+    opacity:1!important;
+  }
+
+  /* A no-JavaScript-enhancement fallback: the artwork still appears before the relief module finishes. */
+  #home-historical-cases .history-map-art:not(.history-relief-map-art){
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:8px!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    padding:0!important;
+    border:0!important;
+    background:transparent!important;
+    overflow:visible!important;
+  }
+
+  #home-historical-cases .history-map-art:not(.history-relief-map-art)::before{
+    content:""!important;
+    position:relative!important;
+    inset:auto!important;
+    z-index:1!important;
+    display:block!important;
+    grid-column:1/-1!important;
+    width:100%!important;
+    min-height:220px!important;
+    aspect-ratio:16/10!important;
+    border:1px solid rgba(111,66,51,.18)!important;
+    border-radius:19px 11px 21px 12px!important;
+    background-color:#e97964!important;
+    background-image:url("./art/east-asia-case-memory-map-relief-20260823.webp?v=20260824-mobile-visible-1")!important;
+    background-repeat:no-repeat!important;
+    background-position:center center!important;
+    background-size:cover!important;
+    box-shadow:0 18px 35px rgba(89,48,38,.22),0 5px 0 rgba(145,77,55,.11)!important;
+  }
+
+  #home-historical-cases .history-map-art:not(.history-relief-map-art) .map-dot{
+    position:relative!important;
+    inset:auto!important;
+    left:auto!important;
+    right:auto!important;
+    top:auto!important;
+    bottom:auto!important;
+    width:auto!important;
+    min-width:0!important;
+    min-height:54px!important;
+    transform:none!important;
+    opacity:1!important;
+    visibility:visible!important;
+  }
+}
+
+@media (min-width:461px) and (max-width:760px){
+  #home-historical-cases .history-map-art:not(.history-relief-map-art){
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+}
+
+@media (max-width:390px){
+  #home-historical-cases .history-relief-figure,
+  #home-historical-cases .history-relief-image,
+  #home-historical-cases .history-map-art:not(.history-relief-map-art)::before{
+    min-height:205px!important;
+  }
+}
