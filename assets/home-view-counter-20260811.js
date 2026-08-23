@@ -5,6 +5,12 @@
   window.__cpaHomeViewCounterWorker = true;
 
   const DEFAULT_ENDPOINT = 'https://sweet-art-bed8child-advocacy-page-views.jerryzuhow77.workers.dev/views';
+  /*
+   * IMPORTANT: homepage-all-languages-v1 is the original production KV key.
+   * Keep every historical/home alias pointed at that key so redesigns,
+   * language switches and newer page-home naming never reset the total.
+   */
+  const HOMEPAGE_CANONICAL_KEY = 'homepage-all-languages-v1';
   const HOMEPAGE_KEYS = new Set([
     'homepage-all-languages-v1',
     'homepage-zh-hant',
@@ -58,7 +64,7 @@
 
   function widgetKey(widget) {
     const configured = cleanKey(localizedData(widget, 'counterKey'));
-    return HOMEPAGE_KEYS.has(configured) ? 'page-home' : configured;
+    return HOMEPAGE_KEYS.has(configured) ? HOMEPAGE_CANONICAL_KEY : configured;
   }
 
   function formatNumber(value, locale) {
