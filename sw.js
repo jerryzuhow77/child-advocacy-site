@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-22-day5-selected-poster-alias-v3';
+const VERSION = '2026-08-23-home-ia-v2-final';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -17,10 +17,20 @@ const APP_SHELL = [
   './assets/global-protection-home.css',
   './assets/visitor-submission.js',
   './assets/home-gsap.js',
+  './assets/home-gsap-base-20260823.js',
+  './assets/home-archive-layout-20260823.js',
+  './assets/home-ia-core-20260823.js',
+  './assets/home-ia-layout-20260823.js',
+  './assets/home-ia-history-20260823.js',
+  './assets/home-ia-bootstrap-20260823.js',
+  './assets/home-ia-v2-final.css',
   './assets/activity-impact.js',
   './assets/home-view-counter-20260811.js',
   './assets/home-view-counter-20260811.css',
   './assets/qiqi-classical-notes.js',
+  './assets/global-protection-wall-portal.css',
+  './assets/global-protection-wall-portal.js',
+  './global-protection-wall/',
   './assets/vendor/gsap-3.13.0.min.js',
   './assets/vendor/ScrollTrigger-3.13.0.min.js',
   './assets/icons/app-icon-192.png',
@@ -35,10 +45,6 @@ const APP_SHELL = [
   './hearing-records/prison-watch/kaikai-day4-20250428/day4-crosscheck.js',
   './hearing-records/prison-watch/kaikai-day4-20250428/day4-location-note.js',
   './hearing-records/prison-watch/kaikai-day3-20250425/day3-reading-core-20260821.js',
-
-
-
-
   './hearing-records/prison-watch/kaikai-day5-20250429/day5.js',
   './assets/art/prison-watch-day5-selected-evidence-01-zh-hant-20260822.jpg',
   './assets/art/prison-watch-day5-selected-evidence-02-zh-hant-20260822.jpg',
@@ -152,11 +158,18 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  const day5Fresh =
+  const alwaysFresh =
+    url.pathname.endsWith('/assets/home-gsap.js') ||
+    url.pathname.endsWith('/assets/home-gsap-base-20260823.js') ||
+    url.pathname.endsWith('/assets/home-archive-layout-20260823.js') ||
+    url.pathname.includes('/assets/home-ia-') ||
+    url.pathname.endsWith('/assets/home-ia-v2-final.css') ||
+    url.pathname.endsWith('/assets/global-protection-wall-portal.js') ||
+    url.pathname.endsWith('/assets/global-protection-wall-portal.css') ||
     url.pathname.endsWith('/hearing-records/prison-watch/kaikai-day5-20250429/day5.js') ||
     url.pathname.includes('/assets/art/prison-watch-day5-selected-evidence-');
 
-  if (day5Fresh) {
+  if (alwaysFresh) {
     event.respondWith(networkFirstStatic(request));
     return;
   }

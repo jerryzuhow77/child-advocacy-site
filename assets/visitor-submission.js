@@ -1,14 +1,7 @@
 (function () {
   'use strict';
 
-  var promptLastShownKey = 'child-advocacy-visitor-prompt-last-shown-v3';
-  var promptIntervalMs = 8 * 60 * 60 * 1000;
-
-  function wasPromptShownRecently(rawLastShownAt, now) {
-    var lastShownAt = Number(rawLastShownAt);
-    var elapsed = now - lastShownAt;
-    return lastShownAt > 0 && elapsed >= 0 && elapsed < promptIntervalMs;
-  }
+  var promptSeenKey = 'child-advocacy-visitor-prompt-seen-v4';
 
   function initVisitorSubmission() {
     var launch = document.querySelector('[data-visitor-launch]');
@@ -18,24 +11,16 @@
     var locale = document.documentElement.lang;
 
     if (['zh-Hant', 'zh-Hans', 'en', 'ja'].indexOf(locale) < 0) locale = 'zh-Hant';
+    var officialWall = 'https://jerryzuhow77.github.io/child-advocacy-site/global-protection-wall/?section=guest-message';
+    if (locale !== 'zh-Hant') officialWall += '&lang=' + encodeURIComponent(locale);
     document.querySelectorAll('[data-visitor-wall-link]').forEach(function (link) {
-      link.href = 'https://global-protection.jerryzuhow77.chatgpt.site/?lang=' + encodeURIComponent(locale) + '#guest-message';
+      link.href = officialWall;
     });
 
     if (launch && gsap && !reduceMotion) {
-      gsap.fromTo(launch.querySelector('.home-visitor-launch-link'), {
-        autoAlpha: 0,
-        y: -22,
-        scale: 0.985
-      }, {
-        autoAlpha: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.72,
-        delay: 0.12,
-        ease: 'power3.out',
-        clearProps: 'transform,opacity,visibility'
-      });
+      gsap.set(launch, { autoAlpha: 0, display: 'none' });
+    } else if (launch) {
+      launch.hidden = true;
     }
 
     if (!dialog) return;
@@ -45,14 +30,17 @@
     var primary = dialog.querySelector('.visitor-submit-dialog-primary');
     var directToForm = window.location.hash === '#guest-message';
     var forcePrompt = new URLSearchParams(window.location.search).get('showVisitorPrompt') === '1';
-    var shownWithinInterval = false;
+    var shownBefore = false;
     var closing = false;
     var previousOverflow = '';
 
-    try {
-      shownWithinInterval = wasPromptShownRecently(window.localStorage.getItem(promptLastShownKey), Date.now());
-    } catch (error) { /* Keep the reminder available without storage. */ }
-    if ((directToForm || shownWithinInterval) && !forcePrompt) return;
+    try { shownBefore = window.localStorage.getItem(promptSeenKey) === '1'; } catch (error) { /* Keep the first-visit reminder available without storage. */ }
+    if ((directToForm || shownBefore) && !forcePrompt) return;
+
+    function rememberPrompt() {
+      if (forcePrompt) return;
+      try { window.localStorage.setItem(promptSeenKey, '1'); } catch (error) { /* The reminder still works without storage. */ }
+    }
 
     function finishClose() {
       if (typeof dialog.close === 'function' && dialog.open) dialog.close();
@@ -64,13 +52,14 @@
     function closePrompt() {
       if (closing || !dialog.hasAttribute('open')) return;
       closing = true;
+      rememberPrompt();
       if (!gsap || reduceMotion || !stage || !card) {
         finishClose();
         return;
       }
       gsap.timeline({ onComplete: finishClose })
-        .to(card, { autoAlpha: 0, y: 24, scale: 0.96, duration: 0.25, ease: 'power2.in' })
-        .to(stage, { autoAlpha: 0, duration: 0.2, ease: 'power1.out' }, '-=0.12');
+        .to(card, { autoAlpha: 0, y: 18, scale: 0.975, duration: 0.22, ease: 'power2.in' })
+        .to(stage, { autoAlpha: 0, duration: 0.18, ease: 'power1.out' }, '-=0.1');
     }
 
     dialog.querySelectorAll('[data-visitor-prompt-close]').forEach(function (button) {
@@ -83,11 +72,11 @@
     if (stage) stage.addEventListener('mousedown', function (event) {
       if (event.target === stage) closePrompt();
     });
+    if (primary) primary.addEventListener('click', rememberPrompt);
 
     window.setTimeout(function () {
-      if (!forcePrompt) {
-        try { window.localStorage.setItem(promptLastShownKey, String(Date.now())); } catch (error) { /* The reminder still opens without storage. */ }
-      }
+      if (document.querySelector('dialog[open], [aria-modal="true"]')) return;
+      rememberPrompt();
       previousOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
       if (typeof dialog.showModal === 'function') dialog.showModal();
@@ -100,12 +89,12 @@
 
       var accents = card.querySelectorAll('.visitor-submit-dialog-accent i');
       var copy = card.querySelectorAll('.visitor-submit-dialog-copy > *, .visitor-submit-dialog-actions > *');
-      gsap.timeline({ defaults: { ease: 'power3.out' }, onComplete: function () { if (primary) primary.focus(); } })
-        .fromTo(stage, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.36 })
-        .fromTo(card, { autoAlpha: 0, y: 46, scale: 0.92, rotate: -1.2 }, { autoAlpha: 1, y: 0, scale: 1, rotate: 0, duration: 0.72, ease: 'back.out(1.25)' }, '-=0.19')
-        .fromTo(accents, { autoAlpha: 0, y: 18, scale: 0.7, rotate: -12 }, { autoAlpha: 1, y: 0, scale: 1, rotate: 0, duration: 0.48, stagger: 0.08, ease: 'back.out(1.7)' }, '-=0.43')
-        .fromTo(copy, { autoAlpha: 0, y: 15 }, { autoAlpha: 1, y: 0, duration: 0.42, stagger: 0.055 }, '-=0.34');
-    }, 680);
+      gsap.timeline({ defaults: { ease: 'power2.out' }, onComplete: function () { if (primary) primary.focus(); } })
+        .fromTo(stage, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 })
+        .fromTo(card, { autoAlpha: 0, y: 28, scale: 0.965 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.52 }, '-=0.12')
+        .fromTo(accents, { autoAlpha: 0, y: 10, scale: 0.84 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.34, stagger: 0.055 }, '-=0.28')
+        .fromTo(copy, { autoAlpha: 0, y: 9 }, { autoAlpha: 1, y: 0, duration: 0.34, stagger: 0.04 }, '-=0.22');
+    }, 780);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initVisitorSubmission, { once: true });
