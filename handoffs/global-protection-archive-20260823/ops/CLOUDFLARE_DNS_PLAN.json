@@ -1,0 +1,20 @@
+{
+  "zone": "globalprotectionwall.com",
+  "record": {
+    "type": "A",
+    "name": "cn",
+    "content": "150.109.69.104",
+    "ttl": 300,
+    "observed_live": true
+  },
+  "verification": {
+    "cloudflare_resolver": "passed",
+    "google_resolver": "passed",
+    "origin_http": 301,
+    "origin_https": 200,
+    "ports_open": [22, 80, 443]
+  },
+  "status": "already_live_no_dns_write_required",
+  "production_mutated_by_probe": false,
+  "dns_mutated_by_probe": false
+}
