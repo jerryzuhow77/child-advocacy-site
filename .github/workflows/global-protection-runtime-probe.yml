@@ -7,6 +7,12 @@ on:
     paths:
       - .github/workflows/global-protection-runtime-probe.yml
       - handoffs/global-protection-archive-20260823/**
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/global-protection-runtime-probe.yml
+      - handoffs/global-protection-archive-20260823/**
 
 permissions:
   contents: read
