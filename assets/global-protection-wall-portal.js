@@ -1,6 +1,7 @@
 (function(){
   'use strict';
   const wallBase='https://wall.globalprotectionwall.com/';
+  const mainlandWallBase='https://cn.globalprotectionwall.com/';
   const supported=['zh-Hant','zh-Hans','en','ja'];
   const sections=['home','bulletins','guest-message','member-submit','guidelines'];
   const copy={
@@ -12,11 +13,11 @@
       loading:'正在連接全球守護留言牆…',frameTitle:'全球守護留言牆'
     },
     'zh-Hans':{
-      skip:'跳至留言墙内容',alliance:'护童行动联盟',officialBadge:'留言墙社群空间',title:'全球守护留言墙',
+      skip:'跳至留言墙内容',alliance:'护童行动联盟',officialBadge:'简体留言墙社群空间',title:'全球守护留言墙',
       officialHome:'官网首页',wallHome:'留言墙首页',guest:'访客留言',member:'会员投稿',guidelines:'社群守则',
       openSeparate:'独立打开',connected:'人的声音，在这里相遇',connectedHint:'官网记住事实；留言墙留下祝福、文章与倡议',
-      facts:'官网・事实',voices:'留言墙・声音',fallbackHint:'若登录或投稿受浏览器限制，可使用右上方“独立打开”。',
-      loading:'正在连接全球守护留言墙…',frameTitle:'全球守护留言墙'
+      facts:'官网・事实',voices:'留言墙・声音',fallbackHint:'简体版连接 cn.globalprotectionwall.com；若嵌入浏览受限，请使用右上方“独立打开”。',
+      loading:'正在连接简体全球守护留言墙…',frameTitle:'全球守护留言墙简体版'
     },
     en:{
       skip:'Skip to the Guardian Wall',alliance:'Child Protection Action Alliance',officialBadge:'Community space',title:'Global Guardian Wall',
@@ -46,6 +47,11 @@
   let section=sections.includes(requested.get('section'))?requested.get('section'):'home';
 
   const wallUrl=()=>{
+    if(locale==='zh-Hans'){
+      const target=new URL(mainlandWallBase);
+      if(section!=='home')target.searchParams.set('section',section);
+      return target.toString();
+    }
     const path=section==='member-submit'?'submit/':section==='guidelines'?'guidelines/':'';
     const target=new URL(path,wallBase);
     if(locale!=='zh-Hant')target.searchParams.set('lang',locale);

@@ -1,15 +1,18 @@
 'use strict';
 
-const VERSION = '2026-08-23-home-ia-v2-final';
+const VERSION = '2026-08-23-four-language-qa-916-v1';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
-const MAX_RUNTIME_ITEMS = 120;
+const MAX_RUNTIME_ITEMS = 140;
 
 const APP_SHELL = [
   './',
   './offline.html',
   './manifest.webmanifest',
+  './assets/site.js',
+  './assets/site-base-20260823.js',
+  './assets/site-four-language-qa-20260823.js',
   './assets/pwa-install.css',
   './assets/pwa-install.js',
   './assets/home-gsap.css',
@@ -22,6 +25,7 @@ const APP_SHELL = [
   './assets/home-ia-core-20260823.js',
   './assets/home-ia-layout-20260823.js',
   './assets/home-ia-history-20260823.js',
+  './assets/home-ia-hearing-campaign-20260823.js',
   './assets/home-ia-bootstrap-20260823.js',
   './assets/home-ia-v2-final.css',
   './assets/activity-impact.js',
@@ -31,6 +35,7 @@ const APP_SHELL = [
   './assets/global-protection-wall-portal.css',
   './assets/global-protection-wall-portal.js',
   './global-protection-wall/',
+  './activity-records/20260820-kaikai-story-collection/images/kaikai-story-collection-hero.webp',
   './assets/vendor/gsap-3.13.0.min.js',
   './assets/vendor/ScrollTrigger-3.13.0.min.js',
   './assets/icons/app-icon-192.png',
@@ -159,6 +164,9 @@ self.addEventListener('fetch', event => {
   }
 
   const alwaysFresh =
+    url.pathname.endsWith('/assets/site.js') ||
+    url.pathname.endsWith('/assets/site-base-20260823.js') ||
+    url.pathname.endsWith('/assets/site-four-language-qa-20260823.js') ||
     url.pathname.endsWith('/assets/home-gsap.js') ||
     url.pathname.endsWith('/assets/home-gsap-base-20260823.js') ||
     url.pathname.endsWith('/assets/home-archive-layout-20260823.js') ||
