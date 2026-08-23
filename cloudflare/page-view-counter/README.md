@@ -2,22 +2,28 @@
 
 本目錄提供 `child-advocacy-site` 的 Cloudflare Worker + Workers KV 瀏覽計數後端。
 
-## Cloudflare 設定
+## 已部署環境
 
-1. Cloudflare Dashboard → Workers & Pages → KV → Create instance。
-2. 建立 namespace：`child-advocacy-page-views`。
-3. 複製 KV Namespace ID，填入 `wrangler.jsonc` 的 `REPLACE_WITH_KV_NAMESPACE_ID`。
-4. 在本目錄執行 `npx wrangler deploy`，第一次會要求登入 Cloudflare。
-5. 記下部署後網址，例如：`https://child-advocacy-page-views.<你的 workers.dev 子網域>.workers.dev`。
-6. 測試 `/health`，應回傳 `{ "ok": true, ... }`。
-7. 官網前端設定 `window.CPA_VIEW_COUNTER_API` 為 `<Worker網址>/views` 後即可啟用全站共用計數。
+- Worker：`sweet-art-bed8child-advocacy-page-views`
+- KV namespace：`child-advocacy-page-views`
+- KV binding：`PAGE_VIEWS`
+- API endpoint：`https://sweet-art-bed8child-advocacy-page-views.jerryzuhow77.workers.dev/views`
+- 健康檢查：`https://sweet-art-bed8child-advocacy-page-views.jerryzuhow77.workers.dev/health`
+
+官網前端已在 `assets/site.js` 設定 `window.CPA_VIEW_COUNTER.endpoint`，各頁面透過 `assets/mobile-nav-view-counter-20260823.js` 顯示共用累計瀏覽次數。
 
 ## API
 
-- `GET /views?key=<文章ID>`：讀取瀏覽數。
-- `POST /views` JSON `{ "key": "<文章ID>" }`：瀏覽數 +1 並回傳最新數字。
-- `GET /health`：健康檢查。
+- `GET /health`：回傳服務與 KV binding 狀態。
+- `GET /views?page=<文章ID>&increment=0`：只讀取瀏覽數。
+- `GET /views?page=<文章ID>&increment=1`：瀏覽數 +1 並回傳最新數字。
+- `GET /views?key=<文章ID>`：相容的只讀格式。
+- `POST /views`，JSON `{ "key": "<文章ID>" }`：瀏覽數 +1。
 
-## 注意
+## 前端防重複
 
-前端會用 sessionStorage 防止同一分頁工作階段反覆重新整理灌數。Worker 亦限制 CORS 到護童行動聯盟 GitHub Pages 與全球守護留言牆相關網域。
+前端使用 `sessionStorage`，同一瀏覽工作階段重新整理不會一直累加。Worker 或網路暫時失效時，頁面會自動降級為本裝置瀏覽數，不會讓文章版面壞掉。
+
+## Wrangler 後續維護
+
+若未來改用 Wrangler CLI 重新部署，請先把 `wrangler.jsonc` 內的 `REPLACE_WITH_KV_NAMESPACE_ID` 換成 Cloudflare 後台顯示的實際 Namespace ID，避免覆蓋既有 binding。
