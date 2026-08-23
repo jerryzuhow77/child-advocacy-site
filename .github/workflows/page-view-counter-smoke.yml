@@ -1,0 +1,36 @@
+name: Page view counter smoke test
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/page-view-counter-smoke.yml'
+      - 'cloudflare/page-view-counter/**'
+      - 'assets/site.js'
+      - 'assets/mobile-nav-view-counter-20260823.js'
+
+permissions:
+  contents: read
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check Worker health endpoint
+        env:
+          ENDPOINT: https://sweet-art-bed8child-advocacy-page-views.jerryzuhow77.workers.dev
+        run: |
+          set -euo pipefail
+          response="$(curl --fail --silent --show-error --retry 5 --retry-all-errors --retry-delay 3 "$ENDPOINT/health")"
+          printf '%s\n' "$response"
+          RESPONSE="$response" python3 - <<'PY'
+          import json
+          import os
+
+          data = json.loads(os.environ['RESPONSE'])
+          assert data.get('ok') is True, data
+          assert data.get('service') == 'child-advocacy-page-views', data
+          assert data.get('binding') == 'PAGE_VIEWS', data
+          print('Cloudflare Worker health check passed.')
+          PY
