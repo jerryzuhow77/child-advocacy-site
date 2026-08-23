@@ -8,6 +8,7 @@
   var all=H.all;
   var make=H.make;
   var reduce=H.reduce;
+  var c=H.c||{};
   var originalHistory=H.features.history;
   var VERSION='20260823-paper-archive-deluxe-1';
 
@@ -40,7 +41,7 @@
 
   function paperMapSvg(){
     return ''+
-      '<svg class="history-paper-map-svg" viewBox="0 0 640 420" role="img" aria-label="East Asia layered paper-cut memory map">'+
+      '<svg class="history-paper-map-svg" viewBox="0 0 640 420" aria-hidden="true" focusable="false">'+
         '<defs>'+
           '<linearGradient id="paperSeaWash" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#edf1ea"/><stop offset=".5" stop-color="#dfe9e6"/><stop offset="1" stop-color="#eedfd5"/></linearGradient>'+
           '<linearGradient id="paperGoldEdge" x1="0" x2="1"><stop offset="0" stop-color="#b38a55" stop-opacity=".16"/><stop offset=".5" stop-color="#d8bd85" stop-opacity=".62"/><stop offset="1" stop-color="#8a6846" stop-opacity=".12"/></linearGradient>'+
@@ -112,7 +113,7 @@
       art.classList.add('history-paper-map-art');
       art.insertAdjacentHTML('afterbegin',paperMapSvg());
       art.insertAdjacentHTML('beforeend',
-        '<span class="history-map-caption" aria-hidden="true"><b>東亞案件記憶地圖</b><small>MEMORY · PLACE · TIME</small></span>'+
+        '<span class="history-map-caption" aria-hidden="true"><b>'+((c.history&&c.history[2])||'東亞案件記憶地圖')+'</b><small>MEMORY · PLACE · TIME</small></span>'+
         '<span class="history-map-ink-wash wash-one" aria-hidden="true"></span>'+
         '<span class="history-map-ink-wash wash-two" aria-hidden="true"></span>'
       );
