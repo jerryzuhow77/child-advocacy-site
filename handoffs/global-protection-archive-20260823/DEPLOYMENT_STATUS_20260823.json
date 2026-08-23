@@ -1,9 +1,11 @@
 {
-  "generated_at": "2026-08-23T19:56:49+08:00",
+  "generated_at": "2026-08-23T19:58:19+08:00",
   "target": "https://cn.globalprotectionwall.com/",
   "branch": "handoff/global-protection-archive-20260823",
   "github_pr": 24,
-  "github_pr_state": "open_mergeable",
+  "github_pr_state": "merged",
+  "github_merge_commit": "e01380a2466632e6a23caba82f9115f9949158bd",
+  "github_handoff_status": "merged_to_main",
   "library_package": "/Sites/Global-Protection/Global-Protection_Content-Archive_Verified_20260823.zip",
   "library_checksum_file": "/Sites/Global-Protection/Global-Protection_Content-Archive_Verified_20260823.sha256",
   "sha256": "2cfc231e4c528b9428386ea749de5a032c02500cda120cd47da9934a2daf0159",
