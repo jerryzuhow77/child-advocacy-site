@@ -1,0 +1,228 @@
+name: Global Protection runtime read-only probe
+
+on:
+  push:
+    branches:
+      - ops/global-protection-runtime-probe-20260823
+    paths:
+      - .github/workflows/global-protection-runtime-probe.yml
+      - handoffs/global-protection-archive-20260823/**
+
+permissions:
+  contents: read
+
+concurrency:
+  group: global-protection-runtime-probe
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    name: Read-only DNS, origin and credential probe
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      DEFAULT_HOST: 150.109.69.104
+      DEFAULT_USER: ubuntu
+      DEFAULT_PORT: "22"
+      TARGET_DOMAIN: cn.globalprotectionwall.com
+      ZONE_NAME: globalprotectionwall.com
+      WORKER_URL: https://global-protection-sync.jerryzuhow77.workers.dev/
+    steps:
+      - name: Check out probe files
+        uses: actions/checkout@v4
+
+      - name: Run read-only infrastructure probe
+        shell: bash
+        env:
+          TENCENT_SSH_HOST: ${{ secrets.TENCENT_SSH_HOST }}
+          TENCENT_SSH_USER: ${{ secrets.TENCENT_SSH_USER }}
+          TENCENT_SSH_PORT: ${{ secrets.TENCENT_SSH_PORT }}
+          TENCENT_SSH_PRIVATE_KEY: ${{ secrets.TENCENT_SSH_PRIVATE_KEY }}
+          TENCENT_CVM_SSH_KEY: ${{ secrets.TENCENT_CVM_SSH_KEY }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          TENCENT_APP_PATH: ${{ secrets.TENCENT_APP_PATH }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          mkdir -p probe-output
+
+          HOST="${TENCENT_SSH_HOST:-$DEFAULT_HOST}"
+          USER_NAME="${TENCENT_SSH_USER:-$DEFAULT_USER}"
+          PORT="${TENCENT_SSH_PORT:-$DEFAULT_PORT}"
+
+          bool_json() {
+            if [[ -n "${1:-}" ]]; then printf 'true'; else printf 'false'; fi
+          }
+
+          SSH_KEY=""
+          SSH_KEY_SOURCE="none"
+          if [[ -n "${TENCENT_SSH_PRIVATE_KEY:-}" ]]; then
+            SSH_KEY="$TENCENT_SSH_PRIVATE_KEY"
+            SSH_KEY_SOURCE="TENCENT_SSH_PRIVATE_KEY"
+          elif [[ -n "${TENCENT_CVM_SSH_KEY:-}" ]]; then
+            SSH_KEY="$TENCENT_CVM_SSH_KEY"
+            SSH_KEY_SOURCE="TENCENT_CVM_SSH_KEY"
+          elif [[ -n "${SSH_PRIVATE_KEY:-}" ]]; then
+            SSH_KEY="$SSH_PRIVATE_KEY"
+            SSH_KEY_SOURCE="SSH_PRIVATE_KEY"
+          fi
+
+          cat > probe-output/secret-presence.json <<JSON
+          {
+            "tencent_host_secret_present": $(bool_json "${TENCENT_SSH_HOST:-}"),
+            "tencent_user_secret_present": $(bool_json "${TENCENT_SSH_USER:-}"),
+            "tencent_port_secret_present": $(bool_json "${TENCENT_SSH_PORT:-}"),
+            "tencent_ssh_key_present": $(bool_json "$SSH_KEY"),
+            "tencent_app_path_present": $(bool_json "${TENCENT_APP_PATH:-}"),
+            "cloudflare_api_token_present": $(bool_json "${CLOUDFLARE_API_TOKEN:-}"),
+            "cloudflare_zone_id_present": $(bool_json "${CLOUDFLARE_ZONE_ID:-}")
+          }
+          JSON
+
+          printf '%s\n' "target_domain=$TARGET_DOMAIN" "origin_host=$HOST" "ssh_user=$USER_NAME" "ssh_port=$PORT" > probe-output/target.txt
+
+          for resolver in cloudflare google; do
+            case "$resolver" in
+              cloudflare)
+                url="https://cloudflare-dns.com/dns-query?name=${TARGET_DOMAIN}&type=A"
+                accept="application/dns-json"
+                ;;
+              google)
+                url="https://dns.google/resolve?name=${TARGET_DOMAIN}&type=A"
+                accept="application/json"
+                ;;
+            esac
+            curl --silent --show-error --max-time 15 \
+              -H "Accept: ${accept}" "$url" \
+              > "probe-output/dns-${resolver}-a.json" || true
+          done
+
+          : > probe-output/ports.txt
+          for p in 22 80 443; do
+            if timeout 6 bash -c "</dev/tcp/${HOST}/${p}" 2>/dev/null; then
+              printf '%s open\n' "$p" >> probe-output/ports.txt
+            else
+              printf '%s closed_or_filtered\n' "$p" >> probe-output/ports.txt
+            fi
+          done
+
+          curl --silent --show-error --insecure --max-time 15 --head \
+            -H "Host: ${TARGET_DOMAIN}" "http://${HOST}/" \
+            > probe-output/origin-http-headers.txt || true
+          curl --silent --show-error --insecure --max-time 15 --head \
+            --resolve "${TARGET_DOMAIN}:443:${HOST}" "https://${TARGET_DOMAIN}/" \
+            > probe-output/origin-https-headers.txt || true
+
+          curl --silent --show-error --max-time 15 \
+            -D probe-output/worker-headers.txt "$WORKER_URL" \
+            > probe-output/worker-body.txt || true
+
+          if [[ -n "${CLOUDFLARE_API_TOKEN:-}" ]]; then
+            if [[ -n "${CLOUDFLARE_ZONE_ID:-}" ]]; then
+              ZONE_ID="$CLOUDFLARE_ZONE_ID"
+            else
+              zone_json="$(curl --silent --show-error --max-time 20 \
+                -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+                -H 'Content-Type: application/json' \
+                "https://api.cloudflare.com/client/v4/zones?name=${ZONE_NAME}&status=active" || true)"
+              printf '%s' "$zone_json" > probe-output/cloudflare-zone-query.json
+              ZONE_ID="$(printf '%s' "$zone_json" | python3 -c 'import json,sys; d=json.load(sys.stdin); print((d.get("result") or [{}])[0].get("id", ""))' 2>/dev/null || true)"
+            fi
+            if [[ -n "${ZONE_ID:-}" ]]; then
+              curl --silent --show-error --max-time 20 \
+                -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+                -H 'Content-Type: application/json' \
+                "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/dns_records?name=${TARGET_DOMAIN}" \
+                > probe-output/cloudflare-cn-record.json || true
+            fi
+          fi
+
+          SSH_CONNECTED=false
+          if [[ -n "$SSH_KEY" ]]; then
+            printf '%s\n' "$SSH_KEY" > probe-output/id_runtime_probe
+            chmod 600 probe-output/id_runtime_probe
+            if ssh -i probe-output/id_runtime_probe -p "$PORT" \
+              -o BatchMode=yes -o ConnectTimeout=12 \
+              -o StrictHostKeyChecking=accept-new \
+              "${USER_NAME}@${HOST}" 'bash -s' > probe-output/ssh-readonly.txt 2> probe-output/ssh-error.txt <<'REMOTE'
+          set -u
+          echo 'ssh_connected=true'
+          printf 'hostname='; hostname
+          printf 'kernel='; uname -srmo
+          printf 'identity='; id
+          printf 'home='; printf '%s\n' "$HOME"
+          echo '--- available runtimes ---'
+          for cmd in git node npm pnpm yarn docker docker-compose pm2 nginx systemctl; do
+            if command -v "$cmd" >/dev/null 2>&1; then printf '%s=%s\n' "$cmd" "$(command -v "$cmd")"; fi
+          done
+          echo '--- candidate project descriptors (paths only) ---'
+          for root in /var/www /srv /opt /home/ubuntu; do
+            [[ -d "$root" ]] || continue
+            find "$root" -maxdepth 4 -type f \
+              \( -name package.json -o -name pnpm-lock.yaml -o -name package-lock.json \
+                 -o -name yarn.lock -o -name docker-compose.yml -o -name docker-compose.yaml \
+                 -o -name compose.yml -o -name compose.yaml -o -name Dockerfile \
+                 -o -name guardian-wall.tsx -o -name wrangler.toml \) \
+              2>/dev/null | head -n 160
+          done
+          echo '--- running containers (names/images/status/ports only) ---'
+          if command -v docker >/dev/null 2>&1; then
+            docker ps --format '{{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}' 2>/dev/null || true
+          fi
+          echo '--- candidate services (names/status only) ---'
+          if command -v systemctl >/dev/null 2>&1; then
+            systemctl --no-pager --plain --type=service --state=running 2>/dev/null \
+              | grep -Ei 'nginx|caddy|node|docker|container|global|guardian|protection' \
+              | head -n 80 || true
+          fi
+          REMOTE
+            then
+              SSH_CONNECTED=true
+            fi
+            rm -f probe-output/id_runtime_probe
+          else
+            printf '%s\n' 'ssh_skipped=no_private_key_secret_available' > probe-output/ssh-error.txt
+          fi
+
+          cat > probe-output/probe-summary.json <<JSON
+          {
+            "generated_at_utc": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "target_domain": "${TARGET_DOMAIN}",
+            "origin_host": "${HOST}",
+            "ssh_user": "${USER_NAME}",
+            "ssh_port": "${PORT}",
+            "ssh_key_source": "${SSH_KEY_SOURCE}",
+            "ssh_connected": ${SSH_CONNECTED},
+            "mode": "read_only",
+            "production_mutated": false,
+            "dns_mutated": false
+          }
+          JSON
+
+          {
+            echo '## Global Protection read-only probe'
+            echo
+            echo "- Target: \`${TARGET_DOMAIN}\`"
+            echo "- Origin: \`${HOST}\`"
+            echo "- SSH account: \`${USER_NAME}\`"
+            echo "- SSH key secret available: \`$(bool_json "$SSH_KEY")\`"
+            echo "- SSH connected: \`${SSH_CONNECTED}\`"
+            echo "- Cloudflare token available: \`$(bool_json "${CLOUDFLARE_API_TOKEN:-}")\`"
+            echo '- No production or DNS write was performed.'
+            echo
+            echo '### Port probe'
+            echo '```text'
+            cat probe-output/ports.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload sanitized probe evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: global-protection-runtime-probe
+          path: probe-output/
+          if-no-files-found: warn
+          retention-days: 7
