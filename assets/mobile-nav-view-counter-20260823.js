@@ -171,7 +171,7 @@ async function sharedCount(element){
 
 function addViews(){
   if(document.getElementById('cpa-page-views'))return;
-  if(counterName()==='page-home'&&document.querySelector('[data-home-view-counter]'))return;
+  if(document.querySelector('[data-home-view-counter]'))return;
   var text=copy();
   var element=document.createElement('div');
   element.id='cpa-page-views';
