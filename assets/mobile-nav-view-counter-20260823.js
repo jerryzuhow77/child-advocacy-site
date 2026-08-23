@@ -4,6 +4,7 @@ if(window.__cpaMobileNavViews)return;
 window.__cpaMobileNavViews=true;
 
 var DEFAULT_ENDPOINT='https://sweet-art-bed8child-advocacy-page-views.jerryzuhow77.workers.dev/views';
+var SCRIPT_SOURCE=document.currentScript&&document.currentScript.src?document.currentScript.src:'';
 var css=`
 #cpa-mobile-bar{display:none}
 #cpa-page-views{font:600 13px/1.4 system-ui,-apple-system,sans-serif;color:#52646b;background:rgba(247,250,248,.94);border:1px solid rgba(82,100,107,.16);border-radius:999px;padding:7px 12px;width:max-content;max-width:calc(100% - 32px);margin:14px auto 20px;box-shadow:0 3px 12px rgba(35,55,60,.06)}
@@ -37,17 +38,30 @@ function langCode(){
 
 function copy(){
   var all={
-    'zh-Hant':{brand:'護童行動聯盟',open:'開啟選單',language:'語言',loading:'◉ 累計瀏覽讀取中…',total:'◉ 累計瀏覽',local:'◉ 本裝置瀏覽',unit:'次',links:[['首頁',''],['關於我們','about/'],['法院紀錄','court-records/'],['旁聽紀錄','hearing-records/'],['案件追蹤','cases/'],['活動紀錄','activity-records/'],['法庭漫畫','court-comics/'],['特別專題','special-topics/'],['官方社群','social/'],['全球守護留言牆','https://cn.globalprotectionwall.com/']]},
-    'zh-Hans':{brand:'护童行动联盟',open:'打开菜单',language:'语言',loading:'◉ 累计浏览读取中…',total:'◉ 累计浏览',local:'◉ 本设备浏览',unit:'次',links:[['首页',''],['关于我们','about/'],['法院记录','court-records/'],['旁听记录','hearing-records/'],['案件追踪','cases/'],['活动记录','activity-records/'],['法庭漫画','court-comics/'],['特别专题','special-topics/'],['官方社群','social/'],['全球守护留言墙','https://cn.globalprotectionwall.com/']]},
-    en:{brand:'Child Protection Action Alliance',open:'Open menu',language:'Language',loading:'◉ Loading views…',total:'◉ Total views',local:'◉ Views on this device',unit:'',links:[['Home',''],['About','about/'],['Court records','court-records/'],['Hearing records','hearing-records/'],['Case tracking','cases/'],['Activities','activity-records/'],['Court comics','court-comics/'],['Features','special-topics/'],['Social','social/'],['Global Protection Wall','https://cn.globalprotectionwall.com/']]},
-    ja:{brand:'子ども保護行動連盟',open:'メニューを開く',language:'言語',loading:'◉ 閲覧数を取得中…',total:'◉ 累計閲覧',local:'◉ この端末での閲覧',unit:'回',links:[['ホーム',''],['私たちについて','about/'],['裁判記録','court-records/'],['傍聴記録','hearing-records/'],['事件追跡','cases/'],['活動記録','activity-records/'],['法廷漫画','court-comics/'],['特集','special-topics/'],['公式SNS','social/'],['グローバル保護メッセージウォール','https://cn.globalprotectionwall.com/']]}
+    'zh-Hant':{brand:'護童行動聯盟',open:'開啟選單',language:'語言',loading:'◉ 累計瀏覽讀取中…',total:'◉ 累計瀏覽',local:'◉ 本裝置瀏覽',unit:'次',links:[['首頁',''],['關於我們','about/'],['法庭漫畫','court-comics/'],['社會案件','cases/'],['旁聽紀錄','hearing-records/'],['歷史案件','#home-historical-cases'],['活動紀錄','activity-records/'],['活動相簿','activity-records/albums/'],['官方社群','social/'],['特別專題','#home-special-features'],['全球守護留言牆','https://cn.globalprotectionwall.com/']]},
+    'zh-Hans':{brand:'护童行动联盟',open:'打开菜单',language:'语言',loading:'◉ 累计浏览读取中…',total:'◉ 累计浏览',local:'◉ 本设备浏览',unit:'次',links:[['首页',''],['关于我们','about/'],['法庭漫画','court-comics/'],['社会案件','cases/'],['旁听记录','hearing-records/'],['历史案件','#home-historical-cases'],['活动记录','activity-records/'],['活动相册','activity-records/albums/'],['官方社群','social/'],['特别专题','#home-special-features'],['全球守护留言墙','https://cn.globalprotectionwall.com/']]},
+    en:{brand:'Child Protection Action Alliance',open:'Open menu',language:'Language',loading:'◉ Loading views…',total:'◉ Total views',local:'◉ Views on this device',unit:'',links:[['Home',''],['About','about/'],['Court comics','court-comics/'],['Social cases','cases/'],['Hearing records','hearing-records/'],['Historical cases','#home-historical-cases'],['Activities','activity-records/'],['Albums','activity-records/albums/'],['Social','social/'],['Features','#home-special-features'],['Global Protection Wall','https://cn.globalprotectionwall.com/']]},
+    ja:{brand:'子ども保護行動連盟',open:'メニューを開く',language:'言語',loading:'◉ 閲覧数を取得中…',total:'◉ 累計閲覧',local:'◉ この端末での閲覧',unit:'回',links:[['ホーム',''],['私たちについて','about/'],['法廷漫画','court-comics/'],['社会事件','cases/'],['傍聴記録','hearing-records/'],['過去の事件','#home-historical-cases'],['活動記録','activity-records/'],['活動アルバム','activity-records/albums/'],['公式SNS','social/'],['特集','#home-special-features'],['グローバル保護メッセージウォール','https://cn.globalprotectionwall.com/']]}
   };
   return all[langCode()]||all['zh-Hant'];
 }
 
-function rootPath(){
+function siteBase(){
+  if(SCRIPT_SOURCE){
+    try{
+      var path=new URL('../',SCRIPT_SOURCE).pathname;
+      return /\/$/.test(path)?path:path+'/';
+    }catch(_){}
+  }
   var parts=location.pathname.split('/').filter(Boolean);
-  return parts.length?'/'+parts[0]+'/':'/';
+  return parts[0]==='child-advocacy-site'?'/child-advocacy-site/':'/';
+}
+
+function rootPath(){
+  var base=siteBase();
+  var relative=location.pathname.indexOf(base)===0?location.pathname.slice(base.length):location.pathname.replace(/^\//,'');
+  var first=(relative.split('/').filter(Boolean)[0]||'').toLowerCase();
+  return first==='en'||first==='ja'?base+first+'/':base;
 }
 
 function addNav(){
@@ -97,7 +111,9 @@ function canonicalPath(){
 }
 
 function contentPath(){
-  var path=canonicalPath().replace(/^\/child-advocacy-site(?=\/|$)/,'');
+  var path=canonicalPath();
+  var base=siteBase();
+  if(base!=='/'&&path.indexOf(base)===0)path='/'+path.slice(base.length);
   if(!path.startsWith('/'))path='/'+path;
   path=path.replace(/^\/(?:en|ja|zh-hant|zh-hans)(?=\/|$)/i,'');
   if(!path||path==='/')return'/';
