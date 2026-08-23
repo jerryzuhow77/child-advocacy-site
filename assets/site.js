@@ -1413,3 +1413,34 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     ? document.addEventListener('DOMContentLoaded',initPremiumHeaderToolbar,{once:true})
     : initPremiumHeaderToolbar();
 })();
+
+
+/* Tucheng domestic violence case toolbar sync 20260823 */
+(function(){
+  function addLink(column, href, title, note){
+    if(!column || column.querySelector('a[href*="tucheng-domestic-violence-double-homicide"]')) return;
+    var a=document.createElement('a');
+    a.className='social-case-menu-item';
+    a.href=href;
+    a.innerHTML='<b>'+title+'</b><span>'+note+'</span>';
+    column.appendChild(a);
+  }
+  function sync(){
+    var lang=(document.documentElement.lang||'zh-Hant').toLowerCase();
+    if(lang.indexOf('zh')!==0) return;
+    document.querySelectorAll('.social-case-nav-menu').forEach(function(menu){
+      var cols=menu.querySelectorAll('.social-case-menu-column');
+      if(!cols.length) return;
+      var caseCol=null, hearingCol=null;
+      cols.forEach(function(col){
+        var head=(col.querySelector('.social-case-menu-heading,.social-case-tier-toggle')||{}).textContent||'';
+        if(/案件介紹|CASE INTRODUCTIONS/.test(head)) caseCol=col.querySelector('.social-case-tier-children')||col;
+        if(/旁聽紀錄|COURT HEARING NOTES/.test(head)) hearingCol=col.querySelector('.social-case-tier-children')||col;
+      });
+      var hans=lang.indexOf('hans')>-1;
+      addLink(caseCol,'/child-advocacy-site/cases/tucheng-domestic-violence-double-homicide/',hans?'土城家暴双尸案':'土城家暴雙屍案',hans?'裂痕之前：一个家庭的沉默与崩解':'裂痕之前：一個家庭的沉默與崩解');
+      addLink(hearingCol,'/child-advocacy-site/hearing-records/tucheng-domestic-violence-double-homicide-20260821/',hans?'土城家暴双尸案':'土城家暴雙屍案',hans?'2026.08.21・一审宣判与量刑攻防':'2026.08.21・一審宣判與量刑攻防');
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',sync); else sync();
+})();

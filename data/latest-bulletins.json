@@ -1,8 +1,80 @@
 {
   "version": 1,
-  "generatedAt": "2026-08-22T19:30:00+08:00",
+  "generatedAt": "2026-08-23T15:30:00+08:00",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "items": [
+    {
+      "id": "tucheng-domestic-violence-hearing-20260821",
+      "publishedAt": "2026-08-23",
+      "tag": "COURT RECORD",
+      "badge": {
+        "zh-Hant": "旁聽紀錄",
+        "zh-Hans": "旁听记录",
+        "en": "Court record",
+        "ja": "傍聴記録"
+      },
+      "title": {
+        "zh-Hant": "土城家暴雙屍案｜完整旁聽筆記",
+        "zh-Hans": "土城家暴双尸案｜完整旁听笔记",
+        "en": "Tucheng Domestic-Violence Double Homicide: Full Court Notes",
+        "ja": "土城DV二人死亡事件｜完全傍聴記録"
+      },
+      "summary": {
+        "zh-Hant": "一審宣判、檢辯量刑攻防、鑑定爭點與判決結果。",
+        "zh-Hans": "一审宣判、检辩量刑攻防、鉴定争点与判决结果。",
+        "en": "First-instance judgment, sentencing arguments, expert-assessment issues, and the verdict.",
+        "ja": "一審判決、量刑をめぐる攻防、鑑定上の争点と判決結果。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/tucheng-domestic-violence-double-homicide-20260821/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/tucheng-domestic-violence-double-homicide-20260821/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/tucheng-domestic-violence-double-homicide-20260821/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/tucheng-domestic-violence-double-homicide-20260821/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/images/tucheng-hearing-20260821-hero.jpg",
+      "imageAlt": {
+        "zh-Hant": "土城家暴雙屍案2026年8月21日完整旁聽筆記主視覺",
+        "zh-Hans": "土城家暴双尸案2026年8月21日完整旁听笔记主视觉",
+        "en": "Cover artwork for the complete August 21, 2026 court notes",
+        "ja": "2026年8月21日完全傍聴記録のメインビジュアル"
+      }
+    },
+    {
+      "id": "tucheng-domestic-violence-case-feature-20260823",
+      "publishedAt": "2026-08-23",
+      "tag": "CASE FEATURE",
+      "badge": {
+        "zh-Hant": "社會案件專題",
+        "zh-Hans": "社会案件专题",
+        "en": "Case feature",
+        "ja": "事件特集"
+      },
+      "title": {
+        "zh-Hant": "裂痕之前：一個家庭的沉默與崩解",
+        "zh-Hans": "裂痕之前：一个家庭的沉默与崩解",
+        "en": "Before the Fracture: A Family’s Silence and Collapse",
+        "ja": "亀裂の前に――ある家族の沈黙と崩壊"
+      },
+      "summary": {
+        "zh-Hant": "從家暴、保護令與尾隨風險，回看悲劇發生前已出現的警訊。",
+        "zh-Hans": "从家暴、保护令与尾随风险，回看悲剧发生前已出现的警讯。",
+        "en": "A reflection on domestic violence, protection orders, stalking risk, and the warning signs before tragedy.",
+        "ja": "DV、保護命令、つきまといの危険から、悲劇以前の警告兆候を振り返る。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/cases/tucheng-domestic-violence-double-homicide/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/cases/tucheng-domestic-violence-double-homicide/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/cases/tucheng-domestic-violence-double-homicide/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/cases/tucheng-domestic-violence-double-homicide/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/images/tucheng-family-feature-20260823.jpg",
+      "imageAlt": {
+        "zh-Hant": "裂痕之前：土城家暴雙屍案家庭悲劇與制度反思主視覺",
+        "zh-Hans": "裂痕之前：土城家暴双尸案家庭悲剧与制度反思主视觉",
+        "en": "Cover artwork for the Tucheng case feature on family tragedy and institutional reflection",
+        "ja": "土城事件の家族悲劇と制度的省察を描く特集ビジュアル"
+      }
+    },
     {
       "id": "kaikai-day5-20250429",
       "publishedAt": "2026-08-22",
