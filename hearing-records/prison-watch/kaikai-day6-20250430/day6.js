@@ -2,11 +2,6 @@ const topbar=document.querySelector('.top');
 const menu=document.querySelector('#menu');
 menu?.addEventListener('click',()=>{const open=topbar.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));});
 document.querySelectorAll('.top a').forEach(a=>a.addEventListener('click',()=>topbar.classList.remove('open')));
-const load=document.querySelector('#loadText');
-const raw=document.querySelector('#rawText');
-let loaded=false;
-load?.addEventListener('click',async()=>{const show=raw.hidden;raw.hidden=!show;load.setAttribute('aria-expanded',String(show));load.textContent=show?'收合可搜尋全文':'展開可搜尋全文';if(show&&!loaded){try{const r=await fetch('../../../assets/documents/prison-watch-day6-20250430.txt');if(!r.ok)throw Error();raw.textContent=await r.text();loaded=true;}catch{raw.textContent='全文載入失敗，請改用上方 PDF 原件。';}}});
-
 const recordChapters=[
   {n:'01',time:'09:07',title:'續行審理｜鑑定程序與資料基礎',intro:'檢察官欲提示周保母拍攝之甲證85照片並描述衣服等，審判長制止，改由鑑定人說明。丘彥南醫師以鑑定人身分具結。',points:[
     '丘醫師於2022年退休，為台灣兒童青少年精神醫學會顧問、前理事長，曾成立司法精神鑑定委員會，主責兒少司法精神鑑定逾百例。',
@@ -68,8 +63,12 @@ const recordChapters=[
 const recordRoot=document.querySelector('#day6Record');
 if(recordRoot){
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const hi=s=>esc(s)
+    .replace(/(長期、嚴重、多重虐待|至少達(?:到)?「?適應障礙併發憂鬱症」?|非特定的?憂鬱症|共同知情|對鑑定非常確定)/g,'<mark class="record-mark is-certain">$1</mark>')
+    .replace(/(高度懷疑|很可能符合)/g,'<mark class="record-mark is-probable">$1</mark>')
+    .replace(/(資料不足|資訊不足|無法判斷|無法百分之百區分|無法百分之百分開)/g,'<mark class="record-mark is-limit">$1</mark>');
   recordRoot.innerHTML=recordChapters.map((chapter,index)=>{
-    const body=chapter.points?`<ul>${chapter.points.map(p=>`<li>${esc(p)}</li>`).join('')}</ul>`:`<div class="qa-list">${chapter.qa.map(([q,a])=>`<article><div class="q"><small>提問</small><p>${esc(q)}</p></div><div class="a"><small>丘彥南醫師回答</small><p>${esc(a)}</p></div></article>`).join('')}</div>`;
+    const body=chapter.points?`<ul>${chapter.points.map(p=>`<li>${hi(p)}</li>`).join('')}</ul>`:`<div class="qa-list">${chapter.qa.map(([q,a])=>`<article><div class="q"><small>提問</small><p>${hi(q)}</p></div><div class="a"><small>丘彥南醫師回答</small><p>${hi(a)}</p></div></article>`).join('')}</div>`;
     return `<details class="record-chapter" ${index<3?'open':''}><summary><b>${chapter.n}</b><span><small>${esc(chapter.time)}</small><strong>${esc(chapter.title)}</strong></span><i aria-hidden="true">＋</i></summary><div class="record-body">${chapter.intro?`<p class="record-intro">${esc(chapter.intro)}</p>`:''}${body}<p class="record-source">資料來源｜監所關注小組 DAY6 PDF</p></div></details>`;
   }).join('');
   document.querySelectorAll('[data-record-action]').forEach(button=>button.addEventListener('click',()=>{
