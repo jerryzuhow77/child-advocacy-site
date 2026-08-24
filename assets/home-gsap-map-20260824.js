@@ -4,6 +4,14 @@
   var basePath=current?current.slice(0,current.lastIndexOf('/')+1):'./assets/';
   var version='20260824-paper-clay-map-4';
   var balancedArtwork=basePath+'art/east-asia-case-memory-map-paper-clay-balanced-20260824.webp?v='+version;
+  function injectMobileMapRepair(){
+    if(!window.matchMedia('(max-width:760px)').matches||document.getElementById('home-mobile-map-repair-5'))return;
+    var repair=document.createElement('link');
+    repair.id='home-mobile-map-repair-5';
+    repair.rel='stylesheet';
+    repair.href=basePath+'home-ia-refinement-20260824.css?v=20260824-mobile-map-visible-5';
+    document.head.appendChild(repair);
+  }
   function forceBalancedMobileArtwork(root){
     if(!window.matchMedia('(max-width:760px)').matches)return;
     var scope=root&&root.querySelectorAll?root:document;
@@ -16,6 +24,7 @@
       }
     });
   }
+  injectMobileMapRepair();
   forceBalancedMobileArtwork(document);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){forceBalancedMobileArtwork(document);},{once:true});
   var mapObserver=new MutationObserver(function(records){

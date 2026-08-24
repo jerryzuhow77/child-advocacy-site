@@ -44,4 +44,14 @@ body.case-map-in-view .home-download-app-fab span,body.case-map-in-view .pwa-flo
  #home-historical-cases .history-region-list{margin-top:1rem}
  .premium-home-hero h1{font-size:clamp(2.45rem,11vw,4.2rem)!important}
 }
+@media(max-width:760px){
+ #home-historical-cases .history-map-panel{width:100%!important;min-height:0!important;margin-left:0!important;padding:12px 11px 14px!important;overflow:visible!important}
+ #home-historical-cases .history-map-art{display:block!important;width:100%!important;height:auto!important;min-height:220px!important;border:1px solid rgba(111,66,51,.2)!important;border-radius:19px 11px 21px 12px!important;background:#e97964 url("./art/east-asia-case-memory-map-paper-clay-balanced-20260824.webp?v=20260824-mobile-map-visible-5") center/cover no-repeat!important;overflow:visible!important}
+ #home-historical-cases .history-map-art::before,#home-historical-cases .history-map-art::after{content:none!important;display:none!important}
+ #home-historical-cases .history-relief-figure{display:block!important;width:100%!important;max-width:100%!important;min-height:220px!important;aspect-ratio:16/9!important;margin:0!important;transform:none!important;background:transparent!important;visibility:visible!important;opacity:1!important}
+ #home-historical-cases .history-relief-image{position:relative!important;inset:auto!important;display:block!important;width:100%!important;height:100%!important;min-height:220px!important;object-fit:cover!important;object-position:center!important;visibility:visible!important;opacity:1!important;transform:none!important}
+ #home-historical-cases .history-relief-region-dock{position:relative!important;inset:auto!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;margin-top:10px!important;pointer-events:auto!important}
+ #home-historical-cases .history-region-list{display:grid!important;gap:10px!important;width:100%!important;margin-top:14px!important;visibility:visible!important;opacity:1!important}
+ #home-historical-cases .history-region,#home-historical-cases .history-region:not(.is-active-region){display:block!important;width:100%!important;visibility:visible!important;opacity:1!important}
+}
 @media(prefers-reduced-motion:reduce){.home-document-disc-shell,#home-historical-cases .history-relief-figure{transform:none!important}.home-download-app-fab,.pwa-floating-install{transition:none!important}}
