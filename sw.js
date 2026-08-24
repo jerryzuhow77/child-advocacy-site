@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-24-attachment-history-map-v13';
+const VERSION = '2026-08-24-desktop-history-map-repair-v14';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
