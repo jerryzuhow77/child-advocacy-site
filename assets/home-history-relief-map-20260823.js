@@ -3,7 +3,7 @@
   var H=window.HomeIA2;if(!H)return;
   var one=H.one,all=H.all,make=H.make,reduce=H.reduce;
   var originalHistory=H.features.history;
-  var VERSION='20260824-paper-clay-map-1';
+  var VERSION='20260824-paper-clay-map-2';
   var mobile=window.matchMedia('(max-width:760px)').matches;
   var language=(H.locale||document.documentElement.lang||'zh-Hant').toLowerCase();
   var locale=language.indexOf('zh-hans')===0||language.indexOf('zh-cn')===0?'zh-Hans':language.indexOf('en')===0?'en':language.indexOf('ja')===0?'ja':'zh-Hant';
