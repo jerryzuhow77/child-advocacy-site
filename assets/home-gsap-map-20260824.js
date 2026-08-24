@@ -18,3 +18,14 @@
   base.onerror=loadEnhancement;
   document.head.appendChild(base);
 })();
+
+
+/* Load the 2026-08-24 homepage information-architecture refinement. */
+(function(){
+  if(document.querySelector('script[data-home-ia-refinement]')) return;
+  var script=document.createElement('script');
+  script.src='./assets/home-ia-refinement-20260824.js?v=20260824-2';
+  script.defer=true;
+  script.dataset.homeIaRefinement='true';
+  document.head.appendChild(script);
+})();
