@@ -3,7 +3,7 @@
   var H=window.HomeIA2;if(!H)return;
   var one=H.one,all=H.all,make=H.make,reduce=H.reduce;
   var originalHistory=H.features.history;
-  var VERSION='20260824-attachment-map-9';
+  var VERSION='20260824-desktop-map-repair-1';
   var mobile=window.matchMedia('(max-width:760px)').matches;
   var language=(H.locale||document.documentElement.lang||'zh-Hant').toLowerCase();
   var locale=language.indexOf('zh-hans')===0||language.indexOf('zh-cn')===0?'zh-Hans':language.indexOf('en')===0?'en':language.indexOf('ja')===0?'ja':'zh-Hant';
@@ -33,7 +33,7 @@
     if(document.querySelector('link[data-history-relief-preload]'))return;
     var preload=document.createElement('link');
     preload.rel='preload';preload.as='image';preload.type='image/webp';
-    preload.href=H.base+'art/east-asia-case-memory-map-attachment-20260824.svg?v='+VERSION;
+    preload.href=H.base+'art/east-asia-case-memory-map-paper-clay-balanced-20260824.webp?v='+VERSION;
     preload.dataset.historyReliefPreload='true';
     document.head.appendChild(preload);
   }
@@ -67,7 +67,7 @@
 
     var figure=make('figure','history-relief-figure');
     figure.innerHTML=''+
-      '<img class="history-relief-image" src="'+H.base+'art/east-asia-case-memory-map-attachment-20260824.svg?v='+VERSION+'" width="1672" height="941" loading="eager" fetchpriority="high" decoding="async" alt="'+words[locale].alt+'">'+
+      '<img class="history-relief-image" src="'+H.base+'art/east-asia-case-memory-map-paper-clay-balanced-20260824.webp?v='+VERSION+'" width="1672" height="941" loading="eager" fetchpriority="high" decoding="async" alt="'+words[locale].alt+'">'+
       '<span class="history-relief-inner-frame" aria-hidden="true"></span>'+
       '<span class="history-relief-sheen" aria-hidden="true"></span>'+
       '<span class="history-relief-cover-cloud" aria-hidden="true"><i></i><i></i><i></i></span>'+
