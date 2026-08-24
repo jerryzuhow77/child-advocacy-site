@@ -9,7 +9,7 @@
     var repair=document.createElement('link');
     repair.id='home-mobile-map-repair-5';
     repair.rel='stylesheet';
-    repair.href=basePath+'home-history-mobile-visibility-20260824.css?v=20260824-mobile-map-repair-3';
+    repair.href=basePath+'home-history-mobile-visibility-20260824.css?v=20260824-mobile-map-stable-4';
     document.head.appendChild(repair);
   }
   function forceBalancedMobileArtwork(root){
@@ -47,6 +47,11 @@
   });
   mapObserver.observe(document.documentElement,{childList:true,subtree:true});
   window.setTimeout(function(){forceBalancedMobileArtwork(document);mapObserver.disconnect();},12000);
+  var mobileStaticOnly=window.matchMedia('(max-width:760px)').matches;
+  if(mobileStaticOnly){
+    animateVisibleStaticMap();
+    return;
+  }
   function loadEnhancement(){
     if(document.querySelector('script[data-home-ia-final]'))return;
     var enhancement=document.createElement('script');
