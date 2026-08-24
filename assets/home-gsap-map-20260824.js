@@ -2,7 +2,29 @@
   'use strict';
   var current=document.currentScript&&document.currentScript.src?document.currentScript.src:'';
   var basePath=current?current.slice(0,current.lastIndexOf('/')+1):'./assets/';
-  var version='20260824-paper-clay-map-3';
+  var version='20260824-paper-clay-map-4';
+  var balancedArtwork=basePath+'art/east-asia-case-memory-map-paper-clay-balanced-20260824.webp?v='+version;
+  function forceBalancedMobileArtwork(root){
+    if(!window.matchMedia('(max-width:760px)').matches)return;
+    var scope=root&&root.querySelectorAll?root:document;
+    var images=scope.querySelectorAll('#home-historical-cases .history-relief-image,#home-historical-cases .home-history-static-map img');
+    Array.prototype.forEach.call(images,function(image){
+      if(image.getAttribute('src')!==balancedArtwork){
+        image.setAttribute('src',balancedArtwork);
+        image.setAttribute('srcset','');
+        image.dataset.mobileBalancedMap='true';
+      }
+    });
+  }
+  forceBalancedMobileArtwork(document);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){forceBalancedMobileArtwork(document);},{once:true});
+  var mapObserver=new MutationObserver(function(records){
+    records.forEach(function(record){
+      Array.prototype.forEach.call(record.addedNodes,function(node){if(node.nodeType===1)forceBalancedMobileArtwork(node.matches&&node.matches('#home-historical-cases')?node:document);});
+    });
+  });
+  mapObserver.observe(document.documentElement,{childList:true,subtree:true});
+  window.setTimeout(function(){forceBalancedMobileArtwork(document);mapObserver.disconnect();},12000);
   function loadEnhancement(){
     if(document.querySelector('script[data-home-ia-final]'))return;
     var enhancement=document.createElement('script');
@@ -17,15 +39,4 @@
   base.onload=loadEnhancement;
   base.onerror=loadEnhancement;
   document.head.appendChild(base);
-})();
-
-
-/* Load the 2026-08-24 homepage information-architecture refinement. */
-(function(){
-  if(document.querySelector('script[data-home-ia-refinement]')) return;
-  var script=document.createElement('script');
-  script.src='./assets/home-ia-refinement-20260824.js?v=20260824-2';
-  script.defer=true;
-  script.dataset.homeIaRefinement='true';
-  document.head.appendChild(script);
 })();

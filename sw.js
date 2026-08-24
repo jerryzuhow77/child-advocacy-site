@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-24-paper-clay-history-map-v9';
+const VERSION = '2026-08-24-paper-clay-history-map-v10';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
