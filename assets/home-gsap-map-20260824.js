@@ -3,13 +3,13 @@
   var current=document.currentScript&&document.currentScript.src?document.currentScript.src:'';
   var basePath=current?current.slice(0,current.lastIndexOf('/')+1):'./assets/';
   var version='20260824-desktop-map-repair-1';
-  var balancedArtwork=basePath+'art/east-asia-case-memory-map-paper-clay-balanced-20260824.webp?v='+version;
+  var balancedArtwork=basePath+'art/east-asia-case-memory-map-paper-clay-20260824.webp?v='+version;
   function injectMobileMapRepair(){
     if(!window.matchMedia('(max-width:760px)').matches||document.getElementById('home-mobile-map-repair-5'))return;
     var repair=document.createElement('link');
     repair.id='home-mobile-map-repair-5';
     repair.rel='stylesheet';
-    repair.href=basePath+'home-history-mobile-visibility-20260824.css?v=20260824-mobile-map-repair-2';
+    repair.href=basePath+'home-history-mobile-visibility-20260824.css?v=20260824-mobile-map-repair-3';
     document.head.appendChild(repair);
   }
   function forceBalancedMobileArtwork(root){
