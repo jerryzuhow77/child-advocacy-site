@@ -33,7 +33,7 @@
     if(document.querySelector('link[data-history-relief-preload]'))return;
     var preload=document.createElement('link');
     preload.rel='preload';preload.as='image';preload.type='image/webp';
-    preload.href=H.base+'art/east-asia-case-memory-map-paper-clay-balanced-20260824.webp?v='+VERSION;
+    preload.href=H.base+'art/east-asia-case-memory-map-paper-clay-20260824.webp?v='+VERSION;
     preload.dataset.historyReliefPreload='true';
     document.head.appendChild(preload);
   }
@@ -67,7 +67,7 @@
 
     var figure=make('figure','history-relief-figure');
     figure.innerHTML=''+
-      '<img class="history-relief-image" src="'+H.base+'art/east-asia-case-memory-map-paper-clay-balanced-20260824.webp?v='+VERSION+'" width="1672" height="941" loading="eager" fetchpriority="high" decoding="async" alt="'+words[locale].alt+'">'+
+      '<img class="history-relief-image" src="'+H.base+'art/east-asia-case-memory-map-paper-clay-20260824.webp?v='+VERSION+'" width="1672" height="941" loading="eager" fetchpriority="high" decoding="async" alt="'+words[locale].alt+'">'+
       '<span class="history-relief-inner-frame" aria-hidden="true"></span>'+
       '<span class="history-relief-sheen" aria-hidden="true"></span>'+
       '<span class="history-relief-cover-cloud" aria-hidden="true"><i></i><i></i><i></i></span>'+
