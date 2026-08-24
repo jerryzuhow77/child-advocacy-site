@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-24-mobile-history-map-visible-v1';
+const VERSION = '2026-08-24-gsap-history-map-v4';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;

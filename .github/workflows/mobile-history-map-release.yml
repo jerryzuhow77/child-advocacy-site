@@ -31,7 +31,7 @@ jobs:
           from pathlib import Path
           import re
 
-          version = '20260824-mobile-visible-1'
+          version = '20260824-gsap-map-3'
           html_files = [
               Path('index.html'),
               Path('en/index.html'),
@@ -48,7 +48,7 @@ jobs:
 
           sw_path = Path('sw.js')
           sw = sw_path.read_text(encoding='utf-8')
-          sw = re.sub(r"const VERSION = '[^']+';", "const VERSION = '2026-08-24-mobile-history-map-visible-v1';", sw, count=1)
+          sw = re.sub(r"const VERSION = '[^']+';", "const VERSION = '2026-08-24-gsap-history-map-v4';", sw, count=1)
           mobile_css = "  './assets/home-history-mobile-visibility-20260824.css',\n"
           anchor = "  './assets/home-history-relief-map-20260823.css',\n"
           if mobile_css.strip() not in sw:
@@ -59,8 +59,8 @@ jobs:
       - name: Verify mobile visibility release
         run: |
           set -euo pipefail
-          grep -R "home-gsap.js?v=20260824-mobile-visible-1" index.html en/index.html ja/index.html source/index.html
-          grep -F "2026-08-24-mobile-history-map-visible-v1" sw.js
+          grep -R "home-gsap.js?v=20260824-gsap-map-3" index.html en/index.html ja/index.html source/index.html
+          grep -F "2026-08-24-gsap-history-map-v4" sw.js
           grep -F "home-history-mobile-visibility-20260824.css" sw.js
           node --check assets/home-gsap.js
           node --check assets/home-archive-layout-20260823.js
@@ -77,5 +77,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html en/index.html ja/index.html source/index.html sw.js
-          git commit -m 'Expose relief map on mobile and refresh cached entrypoints'
+          git commit -m 'Refresh GSAP memory map entrypoints'
           git push origin HEAD:main

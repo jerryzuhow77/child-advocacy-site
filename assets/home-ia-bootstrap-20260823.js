@@ -8,7 +8,7 @@
     var link=document.createElement('link');
     link.id='home-history-mobile-visibility-styles';
     link.rel='stylesheet';
-    link.href=H.base+'home-history-mobile-visibility-20260824.css?v=20260824-mobile-visible-1';
+    link.href=H.base+'home-history-mobile-visibility-20260824.css?v=20260824-gsap-map-3';
     document.head.appendChild(link);
   }
 
@@ -62,7 +62,7 @@
       var link=document.createElement('link');
       link.id='home-ia-v2-final-styles';
       link.rel='stylesheet';
-      link.href=H.base+'home-ia-v2-final.css?v=20260824-mobile-visible-1';
+      link.href=H.base+'home-ia-v2-final.css?v=20260824-gsap-map-3';
       document.head.appendChild(link);
     }
     H.replaceMainland(document.body);
