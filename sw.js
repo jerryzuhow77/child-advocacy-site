@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-24-home-hearing-map-responsive-v11';
+const VERSION = '2026-08-24-attachment-history-map-v12';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
