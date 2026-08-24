@@ -1,0 +1,47 @@
+/* Homepage information architecture refinement — 2026-08-24 */
+:root{--home-ink:#18384a;--home-russet:#9b5639;--home-clay:#c87455}
+.premium-home-hero h1,.premium-home-hero .premium-hero-title{color:var(--home-ink)!important}
+.premium-home-hero h1 em,.premium-home-hero .premium-hero-title em{color:var(--home-russet)!important}
+.art-eyebrow{font-size:clamp(.66rem,.72vw,.78rem)!important;letter-spacing:.16em}
+.home-document-disc-section{padding-block:clamp(2.8rem,5vw,4.6rem)!important}
+.home-document-disc-shell{min-height:min(680px,72vh)!important;transform:scale(.88);transform-origin:50% 45%;margin-block:-2rem!important}
+.home-document-disc-card:nth-of-type(n+6){display:none!important}
+.home-hearing-zone{padding-block:clamp(3rem,5vw,5rem)!important}
+.home-hearing-zone .container{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);gap:1.15rem}
+.home-hearing-zone-head,.home-hearing-zone-all,.home-hearing-archive-links{grid-column:1/-1}
+.home-hearing-zone-feature{min-height:0!important}
+.home-hearing-zone-feature:nth-of-type(n+3){display:none!important}
+.home-hearing-archive-links{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem}
+.case-database-intro{max-width:1180px;margin:0 auto;padding:3.6rem 1.25rem 1rem;text-align:center}
+.case-database-intro h2{margin:.25rem 0 .55rem;color:var(--home-ink);font-size:clamp(2rem,4vw,3.6rem)}
+.case-database-intro p{max-width:760px;margin:0 auto;color:#526773;line-height:1.8}
+.case-database-tabs{display:flex;justify-content:center;flex-wrap:wrap;gap:.65rem;margin:1.4rem auto .2rem}
+.case-database-tab{border:1px solid rgba(24,56,74,.2);border-radius:999px;padding:.75rem 1.15rem;background:#fffaf2;color:var(--home-ink);font:800 .95rem/1 inherit;cursor:pointer;box-shadow:0 8px 22px rgba(24,56,74,.08)}
+.case-database-tab[aria-selected="true"]{background:var(--home-ink);color:#fff;border-color:var(--home-ink)}
+.case-db-hidden{display:none!important}
+#home-historical-cases .home-crafted-head p::after{content:" 先選擇地區，再沿著年代閱讀案件如何推動司法與制度改變。";display:block;margin-top:.5rem;color:#405c69;font-weight:700}
+#home-historical-cases .history-archive-v3{grid-template-columns:minmax(0,1.55fr) minmax(320px,.65fr)!important;gap:1.25rem!important}
+#home-historical-cases .history-map-panel{min-height:clamp(660px,72vw,880px)!important;overflow:hidden}
+#home-historical-cases .history-relief-figure{width:118%!important;max-width:none!important;margin-left:-9%!important;transform:scale(1.06);transform-origin:center}
+#home-historical-cases .history-relief-image{width:100%!important;height:100%!important;object-fit:contain!important}
+#home-historical-cases .history-relief-region-dock{display:none!important}
+#home-historical-cases .history-region:not(.is-active-region){display:none}
+#home-historical-cases{padding-block:clamp(3rem,5vw,5rem)!important}
+#global-protection-wall{margin-top:0!important}
+.home-download-app-fab,.pwa-floating-install{transition:width .2s ease,padding .2s ease}
+body.case-map-in-view .home-download-app-fab,body.case-map-in-view .pwa-floating-install{width:52px!important;min-width:52px!important;padding-inline:0!important;overflow:hidden}
+body.case-map-in-view .home-download-app-fab span,body.case-map-in-view .pwa-floating-install span{display:none!important}
+.home-card a,.read-btn,.btn{font-weight:800}
+@media(max-width:900px){
+ .home-document-disc-shell{transform:scale(.95);margin-block:-1rem!important}
+ .home-hearing-zone .container{display:block}
+ .home-hearing-zone-feature:nth-of-type(n+2){display:none!important}
+ .home-hearing-archive-links{grid-template-columns:1fr!important}
+ .case-database-intro{padding-top:2.5rem}
+ #home-historical-cases .history-archive-v3{display:block!important}
+ #home-historical-cases .history-map-panel{min-height:clamp(500px,128vw,720px)!important;width:calc(100vw - 24px)!important;margin-left:calc(50% - 50vw + 12px)!important}
+ #home-historical-cases .history-relief-figure{width:138%!important;margin-left:-19%!important;transform:scale(1.08)}
+ #home-historical-cases .history-region-list{margin-top:1rem}
+ .premium-home-hero h1{font-size:clamp(2.45rem,11vw,4.2rem)!important}
+}
+@media(prefers-reduced-motion:reduce){.home-document-disc-shell,#home-historical-cases .history-relief-figure{transform:none!important}.home-download-app-fab,.pwa-floating-install{transition:none!important}}
