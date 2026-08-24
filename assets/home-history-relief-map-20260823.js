@@ -3,7 +3,7 @@
   var H=window.HomeIA2;if(!H)return;
   var one=H.one,all=H.all,make=H.make,reduce=H.reduce;
   var originalHistory=H.features.history;
-  var VERSION='20260824-gsap-map-2';
+  var VERSION='20260824-gsap-map-3';
   var mobile=window.matchMedia('(max-width:760px)').matches;
   var language=(H.locale||document.documentElement.lang||'zh-Hant').toLowerCase();
   var locale=language.indexOf('zh-hans')===0||language.indexOf('zh-cn')===0?'zh-Hans':language.indexOf('en')===0?'en':language.indexOf('ja')===0?'ja':'zh-Hant';
@@ -122,11 +122,11 @@
     var canScrollReveal=!!(canAnimate&&window.ScrollTrigger&&!mobile);
     if(canAnimate){
       var reveal=window.gsap.timeline(canScrollReveal?{scrollTrigger:{trigger:figure,start:'top 88%',once:true}}:{});
-      reveal.fromTo(figure,{clipPath:'inset(48% 48% 48% 48% round 28px)'},{clipPath:'inset(0% 0% 0% 0% round 0px)',duration:1.15,ease:'power4.inOut'})
-        .fromTo(image,{scale:1.12},{scale:1,duration:1.4,ease:'power3.out'},0)
-        .fromTo(clouds,{xPercent:function(i){return i%2?-38:38;},opacity:0},{xPercent:0,opacity:function(i){return .58-i*.12;},duration:1.25,stagger:.09,ease:'power2.out'},.18)
-        .fromTo(seals,{scale:0,rotate:-24,opacity:0},{scale:1,rotate:0,opacity:1,duration:.7,stagger:.085,ease:'back.out(2)'},.48)
-        .fromTo('.history-relief-caption',{y:18,opacity:0},{y:0,opacity:1,duration:.55,ease:'power2.out'},.72);
+      reveal.fromTo(figure,{clipPath:'inset(48% 48% 48% 48% round 28px)'},{clipPath:'inset(0% 0% 0% 0% round 0px)',duration:1.15,ease:'power4.inOut',immediateRender:false})
+        .fromTo(image,{scale:1.12},{scale:1,duration:1.4,ease:'power3.out',immediateRender:false},0)
+        .fromTo(clouds,{xPercent:function(i){return i%2?-38:38;},opacity:0},{xPercent:0,opacity:function(i){return .58-i*.12;},duration:1.25,stagger:.09,ease:'power2.out',immediateRender:false},.18)
+        .fromTo(seals,{scale:0,rotate:-24,opacity:0},{scale:1,rotate:0,opacity:1,duration:.7,stagger:.085,ease:'back.out(2)',immediateRender:false},.48)
+        .fromTo('.history-relief-caption',{y:18,opacity:0},{y:0,opacity:1,duration:.55,ease:'power2.out',immediateRender:false},.72);
       clouds.forEach(function(cloud,index){window.gsap.to(cloud,{xPercent:index%2?14:-16,yPercent:index===2?-8:6,duration:9+index*2,repeat:-1,yoyo:true,ease:'sine.inOut'});});
       if(image)window.gsap.to(image,{scale:1.018,duration:6.5,repeat:-1,yoyo:true,ease:'sine.inOut'});
       seals.forEach(function(seal,index){window.gsap.to(seal,{y:index%2?-2:2,duration:1.8+index*.18,repeat:-1,yoyo:true,ease:'sine.inOut'});});
