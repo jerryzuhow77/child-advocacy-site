@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-24-gsap-history-map-v5';
+const VERSION = '2026-08-24-paper-clay-history-map-v7';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -33,7 +33,7 @@ const APP_SHELL = [
   './assets/home-history-relief-map-20260823.js',
   './assets/home-history-relief-map-20260823.css',
   './assets/home-history-mobile-visibility-20260824.css',
-  './assets/art/east-asia-case-memory-map-relief-20260823.webp',
+  './assets/art/east-asia-case-memory-map-paper-clay-20260824.webp',
   './assets/home-ia-hearing-campaign-20260823.js',
   './assets/home-ia-bootstrap-20260823.js',
   './assets/home-ia-v2-final.css',

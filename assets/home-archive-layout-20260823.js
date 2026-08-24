@@ -3,7 +3,7 @@
   if(document.querySelector('script[data-home-ia-module="core"]'))return;
   var current=document.currentScript&&document.currentScript.src?document.currentScript.src:'';
   var base=current?current.slice(0,current.lastIndexOf('/')+1):'./assets/';
-  var version='20260824-gsap-map-3';
+  var version='20260824-paper-clay-map-1';
   var files=[
     'home-ia-core-20260823.js',
     'home-ia-layout-20260823.js',
