@@ -6,13 +6,6 @@ on:
       - ops/global-protection-runtime-probe-20260823
     paths:
       - .github/workflows/global-protection-runtime-probe.yml
-      - handoffs/global-protection-archive-20260823/**
-  pull_request:
-    branches:
-      - main
-    paths:
-      - .github/workflows/global-protection-runtime-probe.yml
-      - handoffs/global-protection-archive-20260823/**
 
 permissions:
   contents: read
@@ -23,204 +16,85 @@ concurrency:
 
 jobs:
   probe:
-    name: Read-only DNS, origin and credential probe
     runs-on: ubuntu-latest
     timeout-minutes: 12
     env:
-      DEFAULT_HOST: 150.109.69.104
-      DEFAULT_USER: ubuntu
-      DEFAULT_PORT: "22"
-      TARGET_DOMAIN: cn.globalprotectionwall.com
-      ZONE_NAME: globalprotectionwall.com
+      HOST: 150.109.69.104
+      DOMAIN: cn.globalprotectionwall.com
       WORKER_URL: https://global-protection-sync.jerryzuhow77.workers.dev/
     steps:
-      - name: Check out probe files
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Run read-only infrastructure probe
+      - name: Read-only application route probe
         shell: bash
-        env:
-          TENCENT_SSH_HOST: ${{ secrets.TENCENT_SSH_HOST }}
-          TENCENT_SSH_USER: ${{ secrets.TENCENT_SSH_USER }}
-          TENCENT_SSH_PORT: ${{ secrets.TENCENT_SSH_PORT }}
-          TENCENT_SSH_PRIVATE_KEY: ${{ secrets.TENCENT_SSH_PRIVATE_KEY }}
-          TENCENT_CVM_SSH_KEY: ${{ secrets.TENCENT_CVM_SSH_KEY }}
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          TENCENT_APP_PATH: ${{ secrets.TENCENT_APP_PATH }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
         run: |
           set -Eeuo pipefail
-          umask 077
-          mkdir -p probe-output
+          mkdir -p probe-output/assets
 
-          HOST="${TENCENT_SSH_HOST:-$DEFAULT_HOST}"
-          USER_NAME="${TENCENT_SSH_USER:-$DEFAULT_USER}"
-          PORT="${TENCENT_SSH_PORT:-$DEFAULT_PORT}"
+          curl -ksS --max-time 20 --resolve "${DOMAIN}:443:${HOST}" \
+            "https://${DOMAIN}/" -D probe-output/home.headers -o probe-output/home.html || true
 
-          bool_json() {
-            if [[ -n "${1:-}" ]]; then printf 'true'; else printf 'false'; fi
-          }
+          python3 - <<'PY'
+          import re, pathlib
+          html=pathlib.Path('probe-output/home.html').read_text(errors='ignore')
+          srcs=[]
+          for s in re.findall(r'<script[^>]+src=["\']([^"\']+)', html):
+              if s.startswith('/') and s not in srcs: srcs.append(s)
+          pathlib.Path('probe-output/script-srcs.txt').write_text('\n'.join(srcs[:80]))
+          PY
 
-          SSH_KEY=""
-          SSH_KEY_SOURCE="none"
-          if [[ -n "${TENCENT_SSH_PRIVATE_KEY:-}" ]]; then
-            SSH_KEY="$TENCENT_SSH_PRIVATE_KEY"
-            SSH_KEY_SOURCE="TENCENT_SSH_PRIVATE_KEY"
-          elif [[ -n "${TENCENT_CVM_SSH_KEY:-}" ]]; then
-            SSH_KEY="$TENCENT_CVM_SSH_KEY"
-            SSH_KEY_SOURCE="TENCENT_CVM_SSH_KEY"
-          elif [[ -n "${SSH_PRIVATE_KEY:-}" ]]; then
-            SSH_KEY="$SSH_PRIVATE_KEY"
-            SSH_KEY_SOURCE="SSH_PRIVATE_KEY"
-          fi
+          i=0
+          while IFS= read -r src; do
+            [ -n "$src" ] || continue
+            i=$((i+1))
+            curl -ksS --max-time 20 --resolve "${DOMAIN}:443:${HOST}" \
+              "https://${DOMAIN}${src}" -o "probe-output/assets/${i}.js" || true
+          done < probe-output/script-srcs.txt
 
-          cat > probe-output/secret-presence.json <<JSON
-          {
-            "tencent_host_secret_present": $(bool_json "${TENCENT_SSH_HOST:-}"),
-            "tencent_user_secret_present": $(bool_json "${TENCENT_SSH_USER:-}"),
-            "tencent_port_secret_present": $(bool_json "${TENCENT_SSH_PORT:-}"),
-            "tencent_ssh_key_present": $(bool_json "$SSH_KEY"),
-            "tencent_app_path_present": $(bool_json "${TENCENT_APP_PATH:-}"),
-            "cloudflare_api_token_present": $(bool_json "${CLOUDFLARE_API_TOKEN:-}"),
-            "cloudflare_zone_id_present": $(bool_json "${CLOUDFLARE_ZONE_ID:-}")
-          }
-          JSON
+          cat probe-output/home.html probe-output/assets/*.js 2>/dev/null > probe-output/all-front-end.txt || true
+          python3 - <<'PY'
+          import re, pathlib
+          text=pathlib.Path('probe-output/all-front-end.txt').read_text(errors='ignore')
+          apis=sorted(set(re.findall(r'/api/[A-Za-z0-9_?=&%./:-]+', text)))
+          keys=[]
+          for pat in ['moderation','pending','review','approve','reject','submit','submission','sync','admin','guest','message']:
+              if re.search(pat,text,re.I): keys.append(pat)
+          pathlib.Path('probe-output/api-routes.txt').write_text('\n'.join(apis[:300]))
+          pathlib.Path('probe-output/keyword-presence.txt').write_text('\n'.join(keys))
+          PY
 
-          printf '%s\n' "target_domain=$TARGET_DOMAIN" "origin_host=$HOST" "ssh_user=$USER_NAME" "ssh_port=$PORT" > probe-output/target.txt
+          : > probe-output/route-status.txt
+          while IFS= read -r path; do
+            [ -n "$path" ] || continue
+            code=$(curl -ksS --max-time 12 --resolve "${DOMAIN}:443:${HOST}" \
+              -o /dev/null -w '%{http_code}' "https://${DOMAIN}${path}" || true)
+            printf '%s %s\n' "$code" "$path" >> probe-output/route-status.txt
+          done < probe-output/api-routes.txt
 
-          for resolver in cloudflare google; do
-            case "$resolver" in
-              cloudflare)
-                url="https://cloudflare-dns.com/dns-query?name=${TARGET_DOMAIN}&type=A"
-                accept="application/dns-json"
-                ;;
-              google)
-                url="https://dns.google/resolve?name=${TARGET_DOMAIN}&type=A"
-                accept="application/json"
-                ;;
-            esac
-            curl --silent --show-error --max-time 15 \
-              -H "Accept: ${accept}" "$url" \
-              > "probe-output/dns-${resolver}-a.json" || true
-          done
+          curl -ksS --max-time 15 --resolve "${DOMAIN}:443:${HOST}" \
+            -D probe-output/public-messages.headers \
+            "https://${DOMAIN}/api/public/messages" \
+            -o probe-output/public-messages.body || true
 
-          : > probe-output/ports.txt
-          for p in 22 80 443; do
-            if timeout 6 bash -c "</dev/tcp/${HOST}/${p}" 2>/dev/null; then
-              printf '%s open\n' "$p" >> probe-output/ports.txt
-            else
-              printf '%s closed_or_filtered\n' "$p" >> probe-output/ports.txt
-            fi
-          done
-
-          curl --silent --show-error --insecure --max-time 15 --head \
-            -H "Host: ${TARGET_DOMAIN}" "http://${HOST}/" \
-            > probe-output/origin-http-headers.txt || true
-          curl --silent --show-error --insecure --max-time 15 --head \
-            --resolve "${TARGET_DOMAIN}:443:${HOST}" "https://${TARGET_DOMAIN}/" \
-            > probe-output/origin-https-headers.txt || true
-
-          curl --silent --show-error --max-time 15 \
-            -D probe-output/worker-headers.txt "$WORKER_URL" \
-            > probe-output/worker-body.txt || true
-
-          if [[ -n "${CLOUDFLARE_API_TOKEN:-}" ]]; then
-            if [[ -n "${CLOUDFLARE_ZONE_ID:-}" ]]; then
-              ZONE_ID="$CLOUDFLARE_ZONE_ID"
-            else
-              zone_json="$(curl --silent --show-error --max-time 20 \
-                -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
-                -H 'Content-Type: application/json' \
-                "https://api.cloudflare.com/client/v4/zones?name=${ZONE_NAME}&status=active" || true)"
-              printf '%s' "$zone_json" > probe-output/cloudflare-zone-query.json
-              ZONE_ID="$(printf '%s' "$zone_json" | python3 -c 'import json,sys; d=json.load(sys.stdin); print((d.get("result") or [{}])[0].get("id", ""))' 2>/dev/null || true)"
-            fi
-            if [[ -n "${ZONE_ID:-}" ]]; then
-              curl --silent --show-error --max-time 20 \
-                -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
-                -H 'Content-Type: application/json' \
-                "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/dns_records?name=${TARGET_DOMAIN}" \
-                > probe-output/cloudflare-cn-record.json || true
-            fi
-          fi
-
-          SSH_CONNECTED=false
-          if [[ -n "$SSH_KEY" ]]; then
-            printf '%s\n' "$SSH_KEY" > probe-output/id_runtime_probe
-            chmod 600 probe-output/id_runtime_probe
-            if ssh -i probe-output/id_runtime_probe -p "$PORT" \
-              -o BatchMode=yes -o ConnectTimeout=12 \
-              -o StrictHostKeyChecking=accept-new \
-              "${USER_NAME}@${HOST}" 'bash -s' > probe-output/ssh-readonly.txt 2> probe-output/ssh-error.txt <<'REMOTE'
-          set -u
-          echo 'ssh_connected=true'
-          printf 'hostname='; hostname
-          printf 'kernel='; uname -srmo
-          printf 'identity='; id
-          printf 'home='; printf '%s\n' "$HOME"
-          echo '--- available runtimes ---'
-          for cmd in git node npm pnpm yarn docker docker-compose pm2 nginx systemctl; do
-            if command -v "$cmd" >/dev/null 2>&1; then printf '%s=%s\n' "$cmd" "$(command -v "$cmd")"; fi
-          done
-          echo '--- candidate project descriptors (paths only) ---'
-          for root in /var/www /srv /opt /home/ubuntu; do
-            [[ -d "$root" ]] || continue
-            find "$root" -maxdepth 4 -type f \
-              \( -name package.json -o -name pnpm-lock.yaml -o -name package-lock.json \
-                 -o -name yarn.lock -o -name docker-compose.yml -o -name docker-compose.yaml \
-                 -o -name compose.yml -o -name compose.yaml -o -name Dockerfile \
-                 -o -name guardian-wall.tsx -o -name wrangler.toml \) \
-              2>/dev/null | head -n 160
-          done
-          echo '--- running containers (names/images/status/ports only) ---'
-          if command -v docker >/dev/null 2>&1; then
-            docker ps --format '{{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}' 2>/dev/null || true
-          fi
-          echo '--- candidate services (names/status only) ---'
-          if command -v systemctl >/dev/null 2>&1; then
-            systemctl --no-pager --plain --type=service --state=running 2>/dev/null \
-              | grep -Ei 'nginx|caddy|node|docker|container|global|guardian|protection' \
-              | head -n 80 || true
-          fi
-          REMOTE
-            then
-              SSH_CONNECTED=true
-            fi
-            rm -f probe-output/id_runtime_probe
-          else
-            printf '%s\n' 'ssh_skipped=no_private_key_secret_available' > probe-output/ssh-error.txt
-          fi
-
-          cat > probe-output/probe-summary.json <<JSON
-          {
-            "generated_at_utc": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-            "target_domain": "${TARGET_DOMAIN}",
-            "origin_host": "${HOST}",
-            "ssh_user": "${USER_NAME}",
-            "ssh_port": "${PORT}",
-            "ssh_key_source": "${SSH_KEY_SOURCE}",
-            "ssh_connected": ${SSH_CONNECTED},
-            "mode": "read_only",
-            "production_mutated": false,
-            "dns_mutated": false
-          }
-          JSON
+          curl -sS --max-time 15 -D probe-output/worker.headers "$WORKER_URL" \
+            -o probe-output/worker.body || true
 
           {
-            echo '## Global Protection read-only probe'
+            echo '## Global Protection application route probe'
             echo
-            echo "- Target: \`${TARGET_DOMAIN}\`"
-            echo "- Origin: \`${HOST}\`"
-            echo "- SSH account: \`${USER_NAME}\`"
-            echo "- SSH key secret available: \`$(bool_json "$SSH_KEY")\`"
-            echo "- SSH connected: \`${SSH_CONNECTED}\`"
-            echo "- Cloudflare token available: \`$(bool_json "${CLOUDFLARE_API_TOKEN:-}")\`"
-            echo '- No production or DNS write was performed.'
-            echo
-            echo '### Port probe'
+            echo '### API routes discovered in front-end bundles'
             echo '```text'
-            cat probe-output/ports.txt
+            cat probe-output/api-routes.txt || true
+            echo '```'
+            echo
+            echo '### Read-only GET status'
+            echo '```text'
+            cat probe-output/route-status.txt || true
+            echo '```'
+            echo
+            echo '### Relevant bundle keywords'
+            echo '```text'
+            cat probe-output/keyword-presence.txt || true
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
@@ -228,7 +102,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: global-protection-runtime-probe
+          name: global-protection-application-route-probe
           path: probe-output/
-          if-no-files-found: warn
-          retention-days: 7
+          retention-days: 3
