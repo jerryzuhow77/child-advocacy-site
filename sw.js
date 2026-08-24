@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-24-mobile-history-map-visible-v1';
+const VERSION = '2026-08-24-static-history-map-v2';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -17,6 +17,7 @@ const APP_SHELL = [
   './assets/pwa-install.css',
   './assets/pwa-install.js',
   './assets/home-gsap.css',
+  './assets/home-history-static-map-20260824.css',
   './assets/home-first-round-optimization.css',
   './assets/global-protection-home.css',
   './assets/visitor-submission.js',
