@@ -2,7 +2,7 @@
   'use strict';
   var current=document.currentScript&&document.currentScript.src?document.currentScript.src:'';
   var basePath=current?current.slice(0,current.lastIndexOf('/')+1):'./assets/';
-  var version='20260824-mobile-visible-1';
+  var version='20260824-gsap-map-2';
   function loadEnhancement(){
     if(document.querySelector('script[data-home-ia-final]'))return;
     var enhancement=document.createElement('script');
