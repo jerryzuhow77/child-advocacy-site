@@ -9,7 +9,7 @@
     var repair=document.createElement('link');
     repair.id='home-mobile-map-repair-5';
     repair.rel='stylesheet';
-    repair.href=basePath+'home-ia-refinement-20260824.css?v=20260824-mobile-map-visible-5';
+    repair.href=basePath+'home-history-mobile-visibility-20260824.css?v=20260824-mobile-map-repair-2';
     document.head.appendChild(repair);
   }
   function forceBalancedMobileArtwork(root){
