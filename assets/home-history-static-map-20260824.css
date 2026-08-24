@@ -120,3 +120,38 @@
 @media (prefers-reduced-motion:reduce){
   .home-hearing-compact-card{transition:none}
 }
+
+
+/* 2026-08-24 mobile hard fallback: image remains visible without JS/GSAP. */
+@media (max-width:760px){
+  #home-historical-cases,
+  #home-historical-cases .container,
+  #home-historical-cases .home-historical-grid{
+    display:block!important;
+    content-visibility:visible!important;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+  #home-historical-cases .home-history-static-map{
+    display:block!important;
+    position:relative!important;
+    width:100%!important;
+    min-height:220px!important;
+    aspect-ratio:16/10!important;
+    visibility:visible!important;
+    opacity:1!important;
+    transform:none!important;
+    clip-path:none!important;
+    background:#dce9df url("./art/east-asia-case-memory-map-paper-clay-balanced-20260824.webp?v=20260824-mobile-map-repair-2") center/cover no-repeat!important;
+  }
+  #home-historical-cases .home-history-static-map img{
+    display:block!important;
+    width:100%!important;
+    height:100%!important;
+    min-height:220px!important;
+    visibility:visible!important;
+    opacity:1!important;
+    transform:none!important;
+    object-fit:cover!important;
+  }
+}
