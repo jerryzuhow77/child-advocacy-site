@@ -2,7 +2,7 @@
   'use strict';
   var current=document.currentScript&&document.currentScript.src?document.currentScript.src:'';
   var basePath=current?current.slice(0,current.lastIndexOf('/')+1):'./assets/';
-  var version='20260824-paper-clay-map-2';
+  var version='20260824-paper-clay-map-3';
   function loadEnhancement(){
     if(document.querySelector('script[data-home-ia-final]'))return;
     var enhancement=document.createElement('script');
