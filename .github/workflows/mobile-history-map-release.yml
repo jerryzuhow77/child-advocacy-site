@@ -31,7 +31,7 @@ jobs:
           from pathlib import Path
           import re
 
-          version = '20260824-gsap-map-3'
+          version = '20260824-gsap-map-4'
           html_files = [
               Path('index.html'),
               Path('en/index.html'),
@@ -42,13 +42,13 @@ jobs:
               if not path.exists():
                   continue
               text = path.read_text(encoding='utf-8')
-              text = re.sub(r'home-gsap\.js\?v=[^"\']+', f'home-gsap.js?v={version}', text)
+              text = re.sub(r'home-gsap-map-20260824\.js\?v=[^"\']+', f'home-gsap-map-20260824.js?v={version}', text)
               text = re.sub(r'site\.js\?v=[^"\']+', f'site.js?v={version}', text)
               path.write_text(text, encoding='utf-8')
 
           sw_path = Path('sw.js')
           sw = sw_path.read_text(encoding='utf-8')
-          sw = re.sub(r"const VERSION = '[^']+';", "const VERSION = '2026-08-24-gsap-history-map-v4';", sw, count=1)
+          sw = re.sub(r"const VERSION = '[^']+';", "const VERSION = '2026-08-24-gsap-history-map-v5';", sw, count=1)
           mobile_css = "  './assets/home-history-mobile-visibility-20260824.css',\n"
           anchor = "  './assets/home-history-relief-map-20260823.css',\n"
           if mobile_css.strip() not in sw:
@@ -59,8 +59,8 @@ jobs:
       - name: Verify mobile visibility release
         run: |
           set -euo pipefail
-          grep -R "home-gsap.js?v=20260824-gsap-map-3" index.html en/index.html ja/index.html source/index.html
-          grep -F "2026-08-24-gsap-history-map-v4" sw.js
+          grep -R "home-gsap-map-20260824.js?v=20260824-gsap-map-4" index.html en/index.html ja/index.html source/index.html
+          grep -F "2026-08-24-gsap-history-map-v5" sw.js
           grep -F "home-history-mobile-visibility-20260824.css" sw.js
           node --check assets/home-gsap.js
           node --check assets/home-archive-layout-20260823.js

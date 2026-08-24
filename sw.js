@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-24-gsap-history-map-v4';
+const VERSION = '2026-08-24-gsap-history-map-v5';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -22,6 +22,7 @@ const APP_SHELL = [
   './assets/global-protection-home.css',
   './assets/visitor-submission.js',
   './assets/home-gsap.js',
+  './assets/home-gsap-map-20260824.js',
   './assets/home-gsap-base-20260823.js',
   './assets/home-archive-layout-20260823.js',
   './assets/home-ia-core-20260823.js',
@@ -177,6 +178,7 @@ self.addEventListener('fetch', event => {
     url.pathname.endsWith('/assets/site-four-language-qa-20260823.js') ||
     url.pathname.endsWith('/assets/mobile-nav-view-counter-20260823.js') ||
     url.pathname.endsWith('/assets/home-gsap.js') ||
+    url.pathname.endsWith('/assets/home-gsap-map-20260824.js') ||
     url.pathname.endsWith('/assets/home-gsap-base-20260823.js') ||
     url.pathname.endsWith('/assets/home-archive-layout-20260823.js') ||
     url.pathname.includes('/assets/home-ia-') ||
