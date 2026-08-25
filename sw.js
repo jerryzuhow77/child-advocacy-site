@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-25-charity-poster-rebuild-v22-paper-weather-v4-sculpted-art';
+const VERSION = '2026-08-25-charity-poster-rebuild-v22-paper-weather-v5-unified-flecks';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -36,6 +36,12 @@ const APP_SHELL = [
   './assets/home-history-relief-map-20260823.css',
   './assets/home-history-mobile-visibility-20260824.css',
   './assets/art/east-asia-case-memory-map-paper-clay-20260824.webp',
+  './assets/art/paper-fragments-v1/fragment-01.webp',
+  './assets/art/paper-fragments-v1/fragment-02.webp',
+  './assets/art/paper-fragments-v1/fragment-03.webp',
+  './assets/art/paper-fragments-v1/fragment-04.webp',
+  './assets/art/paper-fragments-v1/fragment-05.webp',
+  './assets/art/paper-fragments-v1/fragment-06.webp',
   './assets/home-ia-hearing-campaign-20260823.js',
   './assets/home-ia-bootstrap-20260823.js',
   './assets/home-ia-v2-final.css',

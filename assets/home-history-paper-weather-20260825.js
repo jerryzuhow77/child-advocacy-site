@@ -26,6 +26,15 @@
       '</span>';
   }
 
+  function paperFleck(fleckClass, top, size, filename) {
+    var src = artUrl('paper-fragments-v1/' + filename);
+    return '' +
+      '<span class="home-map-wind-fleck ' + fleckClass + '" style="--fleck-top:' + top + ';--fleck-size:' + size + '">' +
+        '<img class="home-map-wind-fleck-face" src="' + src + '" alt="" aria-hidden="true" draggable="false" decoding="async">' +
+        '<img class="home-map-wind-fleck-back" src="' + src + '" alt="" aria-hidden="true" draggable="false" decoding="async">' +
+      '</span>';
+  }
+
   function layerMarkup(lite) {
     var cloudArt = 'paper-cloud-bank-v1.webp';
     var windArt = 'paper-wind-ribbon-v1.webp';
@@ -34,9 +43,9 @@
     var extraWind = lite ? '' : paperArtwork('home-map-paper-wind is-wind-three', 'home-map-paper-wind-art', windArt);
     var extraCurrent = lite ? '' : paperArtwork('home-map-paper-current is-current-three', 'home-map-paper-current-art', currentArt);
     var extraFlecks = lite ? '' : '' +
-      '<span class="home-map-wind-fleck is-sage" style="--fleck-top:39%;--fleck-size:19px"><i></i><b></b></span>' +
-      '<span class="home-map-wind-fleck is-coral" style="--fleck-top:52%;--fleck-size:14px"><i></i><b></b></span>' +
-      '<span class="home-map-wind-fleck is-sea" style="--fleck-top:64%;--fleck-size:17px"><i></i><b></b></span>';
+      paperFleck('is-sage', '39%', '58px', 'fragment-03.webp') +
+      paperFleck('is-ocean', '53%', '52px', 'fragment-04.webp') +
+      paperFleck('is-gold', '66%', '64px', 'fragment-06.webp');
 
     return '' +
       '<div class="home-map-current-field" aria-hidden="true">' +
@@ -53,8 +62,9 @@
       paperArtwork('home-map-paper-cloud is-near', 'home-map-paper-cloud-art', cloudArt) +
       paperArtwork('home-map-paper-cloud is-mid', 'home-map-paper-cloud-art', cloudArt) +
       extraCloud +
-      '<span class="home-map-wind-fleck is-gold" style="--fleck-top:15%;--fleck-size:21px"><i></i><b></b></span>' +
-      '<span class="home-map-wind-fleck is-ivory" style="--fleck-top:27%;--fleck-size:16px"><i></i><b></b></span>' +
+      paperFleck('is-ivory', '15%', '70px', 'fragment-01.webp') +
+      paperFleck('is-ocean', '27%', '62px', 'fragment-02.webp') +
+      (lite ? paperFleck('is-sage', '47%', '50px', 'fragment-05.webp') : '') +
       extraFlecks +
       '<span class="home-map-paper-fibres" aria-hidden="true"></span>' +
       '<span class="home-map-weather-vignette" aria-hidden="true"></span>';
@@ -238,7 +248,7 @@
     });
 
     flecks.forEach(function (fleck, index) {
-      var fleckDuration = (lite ? 10.2 : 8.4) + index * 1.15;
+      var fleckDuration = (lite ? 14.2 : 11.4) + index * 1.25;
       var fleckTravel = gsap.timeline({
         repeat: -1,
         repeatDelay: .75 + index * .2,
@@ -249,20 +259,20 @@
         .set(fleck, {
           x: -72 - index * 16,
           y: index % 2 ? -9 : 9,
-          rotation: index % 2 ? -18 : 20,
-          rotationX: index % 2 ? 34 : -30,
-          rotationY: index % 2 ? -24 : 28,
-          transformPerspective: 190,
+          rotation: index % 2 ? -12 : 14,
+          rotationX: index % 2 ? 18 : -16,
+          rotationY: index % 2 ? -20 : 22,
+          transformPerspective: 420,
           autoAlpha: 0
         })
         .to(fleck, { autoAlpha: .94, duration: .4, ease: 'sine.out' }, 0)
         .to(fleck, {
           x: function () { return figure.clientWidth + 94; },
-          y: index % 2 ? 24 : -21,
-          rotation: index % 2 ? 202 : -196,
-          rotationX: index % 2 ? 352 : -342,
-          rotationY: index % 2 ? 222 : -214,
-          transformPerspective: 190,
+          y: index % 2 ? 28 : -25,
+          rotation: index % 2 ? 112 : -106,
+          rotationX: index % 2 ? 158 : -146,
+          rotationY: index % 2 ? 196 : -188,
+          transformPerspective: 420,
           duration: fleckDuration,
           ease: 'none'
         }, 0)
