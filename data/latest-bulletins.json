@@ -1,8 +1,44 @@
 {
   "version": 1,
-  "generatedAt": "2026-08-25T08:30:00+08:00",
+  "generatedAt": "2026-08-25T18:02:00+08:00",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "items": [
+    {
+      "id": "tainan-tom-bear-case-2012",
+      "publishedAt": "2026-08-25",
+      "tag": "HISTORICAL CASE",
+      "badge": {
+        "zh-Hant": "歷史案件新作",
+        "zh-Hans": "历史案件新作",
+        "en": "New historical case",
+        "ja": "歴史的事件・新着"
+      },
+      "title": {
+        "zh-Hant": "台南湯姆熊男童命案",
+        "zh-Hans": "台南汤姆熊男童命案",
+        "en": "The Tainan Tom’s World Case",
+        "ja": "台南トムズ・ワールド男児殺害事件"
+      },
+      "summary": {
+        "zh-Hant": "他說不會判死，後來真的沒有判死｜紙雕戲臺與歷審記憶專題。",
+        "zh-Hans": "他说不会判死，后来真的没有判死｜纸雕戏台与历审记忆专题。",
+        "en": "A paper-theatre feature tracing the 2012 case and its four-year judicial path.",
+        "ja": "2012年の事件と4年に及ぶ裁判経路をたどる、切り絵劇場の記録特集。"
+      },
+      "url": {
+        "zh-Hant": "https://tainan-tom-bear-case.jerryzuhow77.chatgpt.site/",
+        "zh-Hans": "https://tainan-tom-bear-case.jerryzuhow77.chatgpt.site/",
+        "en": "https://tainan-tom-bear-case.jerryzuhow77.chatgpt.site/",
+        "ja": "https://tainan-tom-bear-case.jerryzuhow77.chatgpt.site/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/tainan-tom-bear-home-hero-20260825.webp",
+      "imageAlt": {
+        "zh-Hant": "台南湯姆熊男童命案紙雕專題主視覺，以臺南暮色、街燈與遊戲票券呈現，不重現傷害",
+        "zh-Hans": "台南汤姆熊男童命案纸雕专题主视觉，以台南暮色、街灯与游戏票券呈现，不重现伤害",
+        "en": "Paper-cut feature artwork for the 2012 Tainan Tom's World case, using dusk, street lights and an arcade ticket without depicting harm",
+        "ja": "台南トムズ・ワールド男児殺害事件の切り絵特集ビジュアル。被害は再現していません"
+      }
+    },
     {
       "id": "kaikai-day7-20250502",
       "publishedAt": "2026-08-25",
