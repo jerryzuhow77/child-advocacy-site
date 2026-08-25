@@ -1,0 +1,254 @@
+/* East Asia case-memory map: paper-cut wind, cloud and sea motion layer.
+   The artwork and interactive hotspots stay untouched; this layer is purely decorative. */
+
+#home-historical-cases .home-history-static-map.has-paper-weather-map,
+#home-historical-cases .history-relief-figure.has-paper-weather-map {
+  isolation: isolate;
+}
+
+#home-historical-cases .has-paper-weather-map > img {
+  position: relative;
+  z-index: 0;
+}
+
+#home-historical-cases .home-map-weather {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  contain: paint;
+}
+
+#home-historical-cases .home-map-weather.is-static {
+  opacity: 1;
+}
+
+#home-historical-cases .home-map-weather-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+#home-historical-cases .home-map-wind-path,
+#home-historical-cases .home-map-current-path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  will-change: stroke-dashoffset, opacity;
+}
+
+#home-historical-cases .home-map-wind-path {
+  stroke: rgba(255, 248, 222, .72);
+  stroke-width: 2.4;
+  stroke-dasharray: 22 17 5 14;
+  filter: drop-shadow(0 2px 1px rgba(86, 74, 58, .18));
+}
+
+#home-historical-cases .home-map-wind-path:nth-child(2) {
+  stroke-width: 1.7;
+  opacity: .68;
+  stroke-dasharray: 15 19 4 13;
+}
+
+#home-historical-cases .home-map-wind-path:nth-child(3) {
+  stroke-width: 1.25;
+  opacity: .5;
+  stroke-dasharray: 10 22;
+}
+
+#home-historical-cases .home-map-current-path {
+  stroke: rgba(232, 255, 247, .7);
+  stroke-width: 2.25;
+  stroke-dasharray: 13 17;
+  filter: drop-shadow(0 2px 2px rgba(28, 77, 80, .2));
+}
+
+#home-historical-cases .home-map-current-path:nth-child(2) {
+  stroke-width: 1.6;
+  opacity: .72;
+  stroke-dasharray: 9 21;
+}
+
+#home-historical-cases .home-map-current-path:nth-child(3) {
+  stroke-width: 1.15;
+  opacity: .58;
+  stroke-dasharray: 6 18;
+}
+
+#home-historical-cases .home-map-sea-flow {
+  position: absolute;
+  inset: 30% -12% -19% 42%;
+  overflow: hidden;
+  opacity: .34;
+  mix-blend-mode: screen;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, rgba(0, 0, 0, .12) 9%, #000 28%, #000 100%);
+  mask-image: linear-gradient(90deg, transparent 0, rgba(0, 0, 0, .12) 9%, #000 28%, #000 100%);
+}
+
+#home-historical-cases .home-map-sea-grain {
+  position: absolute;
+  inset: -24%;
+  background:
+    repeating-radial-gradient(ellipse at 20% 54%, transparent 0 15px, rgba(255, 255, 255, .48) 16px 18px, transparent 19px 36px),
+    repeating-linear-gradient(166deg, transparent 0 25px, rgba(191, 232, 222, .24) 27px 29px, transparent 31px 58px);
+  background-size: 118px 54px, 146px 92px;
+  transform: rotate(-6deg) translateZ(0);
+  will-change: background-position;
+}
+
+#home-historical-cases .home-map-paper-cloud {
+  --cloud-width: clamp(78px, 11.5vw, 178px);
+  --cloud-opacity: .66;
+  position: absolute;
+  left: -24%;
+  top: 8%;
+  width: var(--cloud-width);
+  height: calc(var(--cloud-width) * .47);
+  opacity: var(--cloud-opacity);
+  filter: drop-shadow(0 8px 7px rgba(77, 69, 58, .18));
+  will-change: transform, opacity;
+}
+
+#home-historical-cases .home-map-paper-cloud.is-mid {
+  --cloud-width: clamp(68px, 9vw, 142px);
+  --cloud-opacity: .54;
+  top: 22%;
+}
+
+#home-historical-cases .home-map-paper-cloud.is-far {
+  --cloud-width: clamp(54px, 7vw, 112px);
+  --cloud-opacity: .4;
+  top: 38%;
+}
+
+#home-historical-cases .home-map-paper-cloud b,
+#home-historical-cases .home-map-paper-cloud i {
+  position: absolute;
+  display: block;
+  border: 1px solid rgba(131, 119, 101, .2);
+  background: linear-gradient(145deg, rgba(255, 253, 237, .96), rgba(225, 226, 205, .92));
+  box-shadow:
+    inset 4px 4px 6px rgba(255, 255, 255, .72),
+    4px 4px 0 rgba(191, 188, 164, .24);
+}
+
+#home-historical-cases .home-map-paper-cloud b {
+  left: 7%;
+  bottom: 7%;
+  width: 86%;
+  height: 43%;
+  border-radius: 52% 58% 45% 51%;
+}
+
+#home-historical-cases .home-map-paper-cloud i:first-child {
+  left: 19%;
+  bottom: 24%;
+  width: 38%;
+  aspect-ratio: 1;
+  border-radius: 55% 48% 52% 46%;
+}
+
+#home-historical-cases .home-map-paper-cloud i:nth-child(2) {
+  right: 17%;
+  bottom: 21%;
+  width: 31%;
+  aspect-ratio: 1;
+  border-radius: 48% 56% 45% 53%;
+}
+
+#home-historical-cases .home-map-wind-fleck {
+  --fleck-size: 12px;
+  --fleck-top: 18%;
+  position: absolute;
+  left: -8%;
+  top: var(--fleck-top);
+  width: var(--fleck-size);
+  height: calc(var(--fleck-size) * .48);
+  border: 1px solid rgba(120, 103, 76, .18);
+  border-radius: 90% 12% 85% 18%;
+  background: linear-gradient(150deg, #fff7da, #d8d2ae);
+  box-shadow: 0 3px 4px rgba(70, 61, 48, .2);
+  opacity: .76;
+  will-change: transform, opacity;
+}
+
+#home-historical-cases .home-map-weather-vignette {
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 1px rgba(255, 250, 228, .38), inset 0 -18px 36px rgba(24, 68, 72, .08);
+  border-radius: inherit;
+}
+
+#home-historical-cases .has-paper-weather-map > figcaption,
+#home-historical-cases .has-paper-weather-map > .history-relief-caption {
+  z-index: 8;
+}
+
+#home-historical-cases .has-paper-weather-map .history-map-hotspot-layer,
+#home-historical-cases .has-paper-weather-map + .history-map-hotspot-layer {
+  z-index: 12;
+}
+
+@media (max-width: 760px) {
+  #home-historical-cases .home-map-wind-path {
+    stroke-width: 1.55;
+    opacity: .68;
+  }
+
+  #home-historical-cases .home-map-current-path {
+    stroke-width: 1.45;
+    opacity: .62;
+  }
+
+  #home-historical-cases .home-map-sea-flow {
+    inset: 31% -18% -20% 40%;
+    opacity: .27;
+  }
+
+  #home-historical-cases .home-map-paper-cloud {
+    --cloud-width: clamp(60px, 20vw, 104px);
+    --cloud-opacity: .55;
+  }
+
+  #home-historical-cases .home-map-paper-cloud.is-mid {
+    --cloud-width: clamp(50px, 16vw, 84px);
+    --cloud-opacity: .42;
+  }
+
+  #home-historical-cases .home-map-paper-cloud.is-far,
+  #home-historical-cases .home-map-wind-fleck.is-mobile-extra {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #home-historical-cases .home-map-weather {
+    opacity: .5 !important;
+  }
+
+  #home-historical-cases .home-map-paper-cloud {
+    transform: translateX(42vw) !important;
+  }
+
+  #home-historical-cases .home-map-paper-cloud.is-mid {
+    transform: translateX(68vw) !important;
+  }
+
+  #home-historical-cases .home-map-paper-cloud.is-far,
+  #home-historical-cases .home-map-wind-fleck {
+    display: none !important;
+  }
+}
+
+#home-historical-cases .paper-weather-lite .home-map-paper-cloud.is-far,
+#home-historical-cases .paper-weather-lite .home-map-wind-fleck.is-lite-extra,
+#home-historical-cases .paper-weather-lite .home-map-wind-path:nth-child(3),
+#home-historical-cases .paper-weather-lite .home-map-current-path:nth-child(3) {
+  display: none;
+}

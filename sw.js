@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-25-four-language-qa-916-v1-charity-visible-v18';
+const VERSION = '2026-08-25-four-language-qa-916-v1-charity-visible-v18-paper-weather-v1';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -18,11 +18,13 @@ const APP_SHELL = [
   './assets/pwa-install.js',
   './assets/home-gsap.css',
   './assets/home-history-static-map-20260824.css',
+  './assets/home-history-paper-weather-20260825.css',
   './assets/home-first-round-optimization.css',
   './assets/global-protection-home.css',
   './assets/visitor-submission.js',
   './assets/home-gsap.js',
   './assets/home-gsap-map-20260824.js',
+  './assets/home-history-paper-weather-20260825.js',
   './assets/home-gsap-base-20260823.js',
   './assets/home-archive-layout-20260823.js',
   './assets/home-ia-core-20260823.js',
