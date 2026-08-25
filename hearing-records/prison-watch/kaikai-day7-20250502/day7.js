@@ -64,7 +64,7 @@ const chapters=[
  <p><strong>保證人地位：</strong>辯方主張劉若琳不具法律義務、契約約定或事實承擔，因此不具保證人地位；原始紀錄亦載審判長提示此部分與審前說明不同。以上均屬辯方法律主張，最終由法院判斷。</p>`}
 ];
 
-document.querySelector('#crosscheckGrid').innerHTML=crosschecks.map((x,i)=>`<article class="cross-card"><header><b>${String(i+1).padStart(2,'0')}</b><div><h3>${x.t}</h3></div></header><div class="cross-sides"><section><strong>劉若琳當庭回答</strong>${x.a}</section><i>↔</i><section><strong>其他證述／紀錄／主張</strong>${x.b}</section></div><footer>${x.f}</footer></article>`).join('');
+const crosscheckGrid=document.querySelector('#crosscheckGrid');if(crosscheckGrid&&!crosscheckGrid.children.length)crosscheckGrid.innerHTML=crosschecks.map((x,i)=>`<article class="cross-card"><header><b>${String(i+1).padStart(2,'0')}</b><div><h3>${x.t}</h3></div></header><div class="cross-sides"><section><strong>劉若琳當庭回答</strong>${x.a}</section><i>↔</i><section><strong>其他證述／紀錄／主張</strong>${x.b}</section></div><footer>${x.f}</footer></article>`).join('');
 const recordList=document.querySelector('#recordList');if(recordList&&!recordList.children.length)recordList.innerHTML=chapters.map((x,i)=>`<details ${i===0?'open':''}><summary>${x.title}</summary><div class="record-content">${x.html}</div></details>`).join('');
 document.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>document.querySelectorAll('#recordList details').forEach(d=>d.open=b.dataset.action==='open')));
 const top=document.querySelector('.top'),menu=document.querySelector('#menu');menu.addEventListener('click',()=>{const open=top.classList.toggle('is-open');menu.setAttribute('aria-expanded',open)});document.querySelectorAll('.top nav a').forEach(a=>a.addEventListener('click',()=>top.classList.remove('is-open')));
