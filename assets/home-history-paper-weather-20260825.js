@@ -72,11 +72,11 @@
       cloudMarkup('is-near', 'Near') +
       cloudMarkup('is-mid', 'Mid') +
       cloudMarkup('is-far', 'Far') +
-      '<span class="home-map-wind-fleck is-warm" style="--fleck-top:15%;--fleck-size:13px"></span>' +
-      '<span class="home-map-wind-fleck is-cool" style="--fleck-top:27%;--fleck-size:9px"></span>' +
-      '<span class="home-map-wind-fleck is-lite-extra" style="--fleck-top:39%;--fleck-size:11px"></span>' +
-      '<span class="home-map-wind-fleck is-lite-extra is-mobile-extra is-warm" style="--fleck-top:51%;--fleck-size:8px"></span>' +
-      '<span class="home-map-wind-fleck is-lite-extra is-mobile-extra is-cool" style="--fleck-top:63%;--fleck-size:10px"></span>' +
+      '<span class="home-map-wind-fleck is-warm" style="--fleck-top:14%;--fleck-size:19px"></span>' +
+      '<span class="home-map-wind-fleck is-cool" style="--fleck-top:26%;--fleck-size:15px"></span>' +
+      '<span class="home-map-wind-fleck is-lite-extra" style="--fleck-top:39%;--fleck-size:17px"></span>' +
+      '<span class="home-map-wind-fleck is-lite-extra is-mobile-extra is-warm" style="--fleck-top:51%;--fleck-size:13px"></span>' +
+      '<span class="home-map-wind-fleck is-lite-extra is-mobile-extra is-cool" style="--fleck-top:64%;--fleck-size:16px"></span>' +
       '<span class="home-map-paper-fibres" aria-hidden="true"></span>' +
       '<span class="home-map-weather-vignette" aria-hidden="true"></span>';
   }
@@ -135,15 +135,17 @@
     windRibbons.forEach(function (ribbon, index) {
       var paths = all('path', ribbon);
       animations.push(gsap.to(paths, {
-        strokeDashoffset: -210 - index * 34,
-        duration: 10.5 + index * 3.2,
+        strokeDashoffset: -250 - index * 42,
+        duration: 5.6 + index * 1.35,
         repeat: -1,
         ease: 'none',
         paused: true
       }));
       animations.push(gsap.to(ribbon, {
-        opacity: index === 0 ? .82 : .54,
-        duration: 2.8 + index * .6,
+        x: 34 + index * 12,
+        y: index % 2 ? -7 : 6,
+        opacity: index === 0 ? .96 : .72,
+        duration: 4.2 + index * .65,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
@@ -153,27 +155,37 @@
 
     currentRibbons.forEach(function (ribbon, index) {
       animations.push(gsap.to(all('path', ribbon), {
-        strokeDashoffset: 188 + index * 28,
-        duration: 8.8 + index * 2.7,
+        strokeDashoffset: 230 + index * 36,
+        duration: 4.9 + index * 1.2,
         repeat: -1,
         ease: 'none',
+        paused: true
+      }));
+      animations.push(gsap.to(ribbon, {
+        x: -28 - index * 10,
+        y: index % 2 ? 9 : -6,
+        rotation: index % 2 ? -.35 : .3,
+        duration: 4.6 + index * .8,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
         paused: true
       }));
     });
 
     if (seaGrain) {
       animations.push(gsap.to(seaGrain, {
-        backgroundPositionX: '236px',
-        backgroundPositionY: '72px',
-        duration: lite ? 19 : 14,
+        backgroundPositionX: '304px',
+        backgroundPositionY: '108px',
+        duration: lite ? 12.5 : 9.5,
         repeat: -1,
         ease: 'none',
         paused: true
       }));
       animations.push(gsap.to(seaGrain, {
-        xPercent: 2.4,
-        yPercent: -1.6,
-        duration: 5.8,
+        xPercent: 5.6,
+        yPercent: -3.1,
+        duration: 4.8,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
@@ -183,11 +195,11 @@
 
     seaSheets.forEach(function (sheet, index) {
       animations.push(gsap.to(sheet, {
-        xPercent: index ? -3.5 : 4.2,
-        yPercent: index ? 2.1 : -1.7,
-        rotation: index ? -1.1 : .8,
-        opacity: index ? .38 : .62,
-        duration: 8.5 + index * 2.4,
+        xPercent: index ? -8.5 : 10.2,
+        yPercent: index ? 4.4 : -3.8,
+        rotation: index ? -1.8 : 1.45,
+        opacity: index ? .54 : .78,
+        duration: 6.2 + index * 1.4,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
@@ -207,23 +219,25 @@
     }
 
     clouds.forEach(function (cloud, index) {
-      var duration = (lite ? 29 : 24) + index * 6;
+      var duration = (lite ? 18 : 14.5) + index * (lite ? 4.5 : 3.8);
+      var cloudProgress = [0.14, 0.48, 0.72][index] || .18;
+      var cloudOpacity = [0.9, 0.76, 0.62][index] || .7;
       var travel = gsap.timeline({
         repeat: -1,
         repeatRefresh: true,
-        delay: index * (lite ? 8 : 5.5),
         paused: true
       });
       travel
-        .set(cloud, { x: function () { return -cloud.getBoundingClientRect().width * 1.35; }, autoAlpha: 0, rotation: index % 2 ? -1.2 : .8 })
-        .to(cloud, { autoAlpha: index === 0 ? .74 : .58, duration: 1.2, ease: 'sine.out' }, 0)
-        .to(cloud, { x: function () { return figure.clientWidth + cloud.getBoundingClientRect().width * 1.45; }, duration: duration, ease: 'none' }, 0)
-        .to(cloud, { autoAlpha: 0, duration: 1.45, ease: 'sine.in' }, duration - 1.45);
+        .set(cloud, { x: function () { return -cloud.getBoundingClientRect().width * 1.18; }, autoAlpha: 0, rotation: index % 2 ? -1.8 : 1.25 })
+        .to(cloud, { autoAlpha: cloudOpacity, duration: .72, ease: 'sine.out' }, 0)
+        .to(cloud, { x: function () { return figure.clientWidth + cloud.getBoundingClientRect().width * 1.24; }, duration: duration, ease: 'none' }, 0)
+        .to(cloud, { autoAlpha: 0, duration: .82, ease: 'sine.in' }, duration - .82);
+      travel.progress(cloudProgress);
       animations.push(travel);
       animations.push(gsap.to(cloud, {
-        y: index % 2 ? 6 : -7,
-        rotation: index % 2 ? 1.1 : -1,
-        duration: 4.2 + index,
+        y: index % 2 ? 12 : -13,
+        rotation: index % 2 ? 2.2 : -1.9,
+        duration: 3.2 + index * .55,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
@@ -232,30 +246,37 @@
     });
 
     flecks.forEach(function (fleck, index) {
-      animations.push(gsap.fromTo(fleck, {
-        x: -42 - index * 16,
-        y: index % 2 ? -5 : 5,
-        rotation: index % 2 ? -12 : 15,
-        rotationX: index % 2 ? 28 : -24,
-        rotationY: index % 2 ? -18 : 22,
-        transformPerspective: 180,
-        autoAlpha: 0
-      }, {
-        x: function () { return figure.clientWidth + 72; },
-        y: index % 2 ? 13 : -11,
-        rotation: index % 2 ? 170 : -165,
-        rotationX: index % 2 ? 332 : -318,
-        rotationY: index % 2 ? 196 : -184,
-        transformPerspective: 180,
-        autoAlpha: .76,
-        duration: 12 + index * 2.15,
-        delay: 1.4 + index * 2.4,
+      var fleckDuration = (lite ? 8.8 : 7.2) + index * 1.05;
+      var fleckTravel = gsap.timeline({
         repeat: -1,
-        repeatDelay: 2.2 + index * .55,
+        repeatDelay: .55 + index * .18,
         repeatRefresh: true,
-        ease: 'none',
         paused: true
-      }));
+      });
+      fleckTravel
+        .set(fleck, {
+          x: -64 - index * 18,
+          y: index % 2 ? -8 : 8,
+          rotation: index % 2 ? -16 : 18,
+          rotationX: index % 2 ? 32 : -28,
+          rotationY: index % 2 ? -22 : 26,
+          transformPerspective: 180,
+          autoAlpha: 0
+        })
+        .to(fleck, { autoAlpha: .92, duration: .34, ease: 'sine.out' }, 0)
+        .to(fleck, {
+          x: function () { return figure.clientWidth + 88; },
+          y: index % 2 ? 22 : -19,
+          rotation: index % 2 ? 190 : -184,
+          rotationX: index % 2 ? 348 : -336,
+          rotationY: index % 2 ? 214 : -206,
+          transformPerspective: 180,
+          duration: fleckDuration,
+          ease: 'none'
+        }, 0)
+        .to(fleck, { autoAlpha: 0, duration: .42, ease: 'sine.in' }, fleckDuration - .42);
+      fleckTravel.progress((.08 + index * .19) % .92);
+      animations.push(fleckTravel);
     });
 
     var controller = { figure: figure, layer: layer, animations: animations, visible: false };

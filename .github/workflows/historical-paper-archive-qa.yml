@@ -80,12 +80,17 @@ jobs:
           assert 'home-map-cloud-fibre' in weather_js
           assert 'home-map-sea-sheet' in weather_js
           assert 'home-map-paper-fibres' in weather_js
+          assert 'x: 34 + index * 12' in weather_js
+          assert 'x: -28 - index * 10' in weather_js
+          assert 'travel.progress(cloudProgress)' in weather_js
+          assert 'fleckTravel.progress' in weather_js
           assert 'IntersectionObserver' in weather_js
           assert 'prefers-reduced-motion: reduce' in weather_js
           assert 'pointer-events: none' in weather_css
           assert 'home-map-wind-shadow' in weather_css
           assert 'home-map-current-shadow' in weather_css
           assert 'home-map-cloud-crease' in weather_css
+          assert 'transform-box: fill-box' in weather_css
           assert 'transform-style: preserve-3d' in weather_css
           assert 'home-history-paper-weather-20260825.css' in home_html
           assert 'home-history-paper-weather-20260825.js' in home_html

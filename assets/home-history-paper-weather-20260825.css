@@ -46,7 +46,9 @@
 #home-historical-cases .home-map-wind-ribbon,
 #home-historical-cases .home-map-current-ribbon {
   opacity: 1;
-  will-change: opacity;
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform, opacity;
 }
 
 #home-historical-cases .home-map-wind-ribbon path,
@@ -59,23 +61,23 @@
 }
 
 #home-historical-cases .home-map-wind-shadow {
-  stroke: rgba(80, 67, 50, .23);
-  stroke-width: 6.1;
+  stroke: rgba(70, 58, 43, .34);
+  stroke-width: 7.4;
   stroke-dasharray: 22 17 5 14;
   transform: translate(2px, 3px);
   filter: blur(.25px);
 }
 
 #home-historical-cases .home-map-wind-edge {
-  stroke: rgba(205, 195, 161, .78);
-  stroke-width: 5.1;
+  stroke: rgba(196, 178, 133, .9);
+  stroke-width: 6.25;
   stroke-dasharray: 22 17 5 14;
   filter: drop-shadow(0 1px 0 rgba(255, 255, 255, .45));
 }
 
 #home-historical-cases .home-map-wind-path {
-  stroke: rgba(255, 249, 224, .94);
-  stroke-width: 3.15;
+  stroke: rgba(255, 250, 218, .98);
+  stroke-width: 4.15;
   stroke-dasharray: 22 17 5 14;
   filter: drop-shadow(0 2px 1px rgba(86, 74, 58, .16));
 }
@@ -106,22 +108,22 @@
 /* Sea-current ribbons use cool translucent paper, with a darker cut edge and
    a milky highlight that follows the same GSAP dash motion. */
 #home-historical-cases .home-map-current-shadow {
-  stroke: rgba(30, 78, 78, .25);
-  stroke-width: 6.25;
+  stroke: rgba(20, 67, 71, .36);
+  stroke-width: 7.6;
   stroke-dasharray: 13 17;
   transform: translate(2px, 3px);
   filter: blur(.3px);
 }
 
 #home-historical-cases .home-map-current-edge {
-  stroke: rgba(155, 206, 197, .7);
-  stroke-width: 5.15;
+  stroke: rgba(126, 199, 193, .88);
+  stroke-width: 6.45;
   stroke-dasharray: 13 17;
 }
 
 #home-historical-cases .home-map-current-path {
-  stroke: rgba(232, 255, 247, .9);
-  stroke-width: 3;
+  stroke: rgba(229, 255, 244, .98);
+  stroke-width: 4.2;
   stroke-dasharray: 13 17;
   filter: drop-shadow(0 2px 2px rgba(28, 77, 80, .18));
 }
@@ -155,7 +157,7 @@
   position: absolute;
   inset: 30% -12% -19% 42%;
   overflow: hidden;
-  opacity: .43;
+  opacity: .62;
   mix-blend-mode: screen;
   -webkit-mask-image: linear-gradient(90deg, transparent 0, rgba(0, 0, 0, .12) 9%, #000 28%, #000 100%);
   mask-image: linear-gradient(90deg, transparent 0, rgba(0, 0, 0, .12) 9%, #000 28%, #000 100%);
@@ -167,7 +169,7 @@
   border: 1px solid rgba(225, 250, 238, .35);
   background:
     linear-gradient(155deg, rgba(232, 255, 245, .13), rgba(128, 193, 187, .1)),
-    repeating-linear-gradient(171deg, transparent 0 18px, rgba(255, 255, 246, .2) 19px 20px, transparent 21px 43px);
+    repeating-linear-gradient(171deg, transparent 0 18px, rgba(255, 255, 246, .31) 19px 21px, transparent 22px 43px);
   box-shadow:
     inset 0 2px 0 rgba(255, 255, 255, .22),
     0 8px 14px rgba(19, 65, 70, .12);
@@ -188,8 +190,8 @@
   position: absolute;
   inset: -24%;
   background:
-    repeating-radial-gradient(ellipse at 20% 54%, transparent 0 15px, rgba(255, 255, 249, .5) 16px 18px, transparent 19px 36px),
-    repeating-linear-gradient(166deg, transparent 0 25px, rgba(191, 232, 222, .28) 27px 29px, transparent 31px 58px),
+    repeating-radial-gradient(ellipse at 20% 54%, transparent 0 15px, rgba(255, 255, 249, .68) 16px 19px, transparent 20px 36px),
+    repeating-linear-gradient(166deg, transparent 0 25px, rgba(191, 232, 222, .42) 27px 30px, transparent 31px 58px),
     repeating-linear-gradient(91deg, rgba(255, 255, 255, .07) 0 1px, transparent 1px 17px);
   background-size: 118px 54px, 146px 92px, 43px 100%;
   transform: rotate(-6deg) translateZ(0);
@@ -200,8 +202,8 @@
 /* The clouds are inline SVG paper sculptures: back paper, middle paper, face
    paper, fibres and crease lines. */
 #home-historical-cases .home-map-paper-cloud {
-  --cloud-width: clamp(90px, 13vw, 196px);
-  --cloud-opacity: .74;
+  --cloud-width: clamp(112px, 16vw, 238px);
+  --cloud-opacity: .9;
   position: absolute;
   left: -24%;
   top: 7%;
@@ -210,26 +212,26 @@
   aspect-ratio: 240 / 112;
   overflow: visible;
   opacity: var(--cloud-opacity);
-  filter: drop-shadow(0 10px 7px rgba(66, 58, 47, .2));
+  filter: drop-shadow(0 12px 8px rgba(58, 50, 39, .32));
   transform-origin: 50% 72%;
   will-change: transform, opacity;
 }
 
 #home-historical-cases .home-map-paper-cloud.is-mid {
-  --cloud-width: clamp(72px, 10vw, 154px);
-  --cloud-opacity: .61;
+  --cloud-width: clamp(92px, 12.5vw, 186px);
+  --cloud-opacity: .76;
   top: 21%;
 }
 
 #home-historical-cases .home-map-paper-cloud.is-far {
-  --cloud-width: clamp(58px, 7.8vw, 122px);
-  --cloud-opacity: .47;
+  --cloud-width: clamp(72px, 9.5vw, 142px);
+  --cloud-opacity: .62;
   top: 37%;
 }
 
 #home-historical-cases .home-map-cloud-back {
-  fill: rgba(176, 184, 158, .76);
-  stroke: rgba(92, 86, 69, .18);
+  fill: rgba(153, 166, 137, .88);
+  stroke: rgba(83, 75, 58, .3);
   stroke-width: 1.5;
 }
 
@@ -239,7 +241,7 @@
 }
 
 #home-historical-cases .home-map-cloud-top {
-  stroke: rgba(135, 121, 94, .24);
+  stroke: rgba(124, 105, 75, .36);
   stroke-width: 1.15;
 }
 
@@ -275,13 +277,13 @@
   top: var(--fleck-top);
   width: calc(var(--fleck-size) * 1.32);
   height: var(--fleck-size);
-  border: 1px solid rgba(112, 94, 66, .27);
+  border: 1px solid rgba(96, 78, 54, .38);
   background:
     repeating-linear-gradient(102deg, rgba(112, 92, 62, .09) 0 1px, transparent 1px 4px),
     linear-gradient(145deg, var(--fleck-front), var(--fleck-back));
   box-shadow:
     inset 2px 2px 1px rgba(255, 255, 255, .58),
-    0 4px 5px rgba(62, 53, 41, .22);
+    0 5px 7px rgba(53, 45, 34, .34);
   clip-path: polygon(5% 7%, 82% 0, 100% 29%, 87% 94%, 21% 100%, 0 68%);
   opacity: .78;
   transform-style: preserve-3d;
@@ -370,21 +372,21 @@
 
 @media (max-width: 760px) {
   #home-historical-cases .home-map-wind-ribbon path {
-    stroke-width: 1.55;
+    stroke-width: 2.25;
   }
 
   #home-historical-cases .home-map-wind-shadow,
   #home-historical-cases .home-map-wind-edge {
-    stroke-width: 3.2;
+    stroke-width: 4.35;
   }
 
   #home-historical-cases .home-map-current-ribbon path {
-    stroke-width: 1.45;
+    stroke-width: 2.2;
   }
 
   #home-historical-cases .home-map-current-shadow,
   #home-historical-cases .home-map-current-edge {
-    stroke-width: 3.1;
+    stroke-width: 4.25;
   }
 
   #home-historical-cases .home-map-wind-highlight,
@@ -394,17 +396,17 @@
 
   #home-historical-cases .home-map-sea-flow {
     inset: 31% -18% -20% 40%;
-    opacity: .34;
+    opacity: .5;
   }
 
   #home-historical-cases .home-map-paper-cloud {
-    --cloud-width: clamp(68px, 22vw, 112px);
-    --cloud-opacity: .62;
+    --cloud-width: clamp(84px, 26vw, 132px);
+    --cloud-opacity: .84;
   }
 
   #home-historical-cases .home-map-paper-cloud.is-mid {
-    --cloud-width: clamp(56px, 17vw, 90px);
-    --cloud-opacity: .49;
+    --cloud-width: clamp(70px, 21vw, 108px);
+    --cloud-opacity: .7;
   }
 
   #home-historical-cases .home-map-paper-cloud.is-far,
