@@ -11,6 +11,9 @@ on:
       - 'assets/home-history-relief-map-20260823.css'
       - 'assets/home-history-paper-weather-20260825.js'
       - 'assets/home-history-paper-weather-20260825.css'
+      - 'assets/art/paper-cloud-bank-v1.webp'
+      - 'assets/art/paper-wind-ribbon-v1.webp'
+      - 'assets/art/paper-ocean-current-v1.webp'
       - 'index.html'
       - 'en/index.html'
       - 'assets/art/east-asia-case-memory-map-paper-clay-20260824.webp'
@@ -57,6 +60,11 @@ jobs:
           home_html = Path('index.html').read_text(encoding='utf-8')
           home_en_html = Path('en/index.html').read_text(encoding='utf-8')
           image_path = Path('assets/art/east-asia-case-memory-map-paper-clay-20260824.webp')
+          weather_art = [
+              Path('assets/art/paper-cloud-bank-v1.webp'),
+              Path('assets/art/paper-wind-ribbon-v1.webp'),
+              Path('assets/art/paper-ocean-current-v1.webp'),
+          ]
 
           assert 'home-history-paper-art-20260823.js' in loader
           assert 'home-history-relief-map-20260823.js' in loader
@@ -72,25 +80,23 @@ jobs:
           assert 'history-relief-cover-cloud' in relief_css
           assert '@media(max-width:760px)' in relief_css
           assert '@media(prefers-reduced-motion:reduce)' in relief_css
-          assert 'home-map-wind-path' in weather_js
-          assert 'home-map-current-path' in weather_js
-          assert 'home-map-wind-ribbon' in weather_js
-          assert 'home-map-current-ribbon' in weather_js
-          assert 'home-map-cloud-top' in weather_js
-          assert 'home-map-cloud-fibre' in weather_js
-          assert 'home-map-sea-sheet' in weather_js
+          assert 'paper-cloud-bank-v1.webp' in weather_js
+          assert 'paper-wind-ribbon-v1.webp' in weather_js
+          assert 'paper-ocean-current-v1.webp' in weather_js
+          assert 'home-map-paper-wind-art' in weather_js
+          assert 'home-map-paper-current-art' in weather_js
+          assert 'home-map-paper-cloud-art' in weather_js
           assert 'home-map-paper-fibres' in weather_js
-          assert 'x: 34 + index * 12' in weather_js
-          assert 'x: -28 - index * 10' in weather_js
-          assert 'travel.progress(cloudProgress)' in weather_js
+          assert 'x: 92 + index * 30' in weather_js
+          assert 'x: -68 - index * 26' in weather_js
+          assert 'travel.progress(progress)' in weather_js
           assert 'fleckTravel.progress' in weather_js
           assert 'IntersectionObserver' in weather_js
           assert 'prefers-reduced-motion: reduce' in weather_js
           assert 'pointer-events: none' in weather_css
-          assert 'home-map-wind-shadow' in weather_css
-          assert 'home-map-current-shadow' in weather_css
-          assert 'home-map-cloud-crease' in weather_css
-          assert 'transform-box: fill-box' in weather_css
+          assert 'home-map-paper-wind.is-wind-one' in weather_css
+          assert 'home-map-paper-current.is-current-one' in weather_css
+          assert 'home-map-paper-cloud.is-near' in weather_css
           assert 'transform-style: preserve-3d' in weather_css
           assert 'home-history-paper-weather-20260825.css' in home_html
           assert 'home-history-paper-weather-20260825.js' in home_html
@@ -100,5 +106,13 @@ jobs:
           with Image.open(image_path) as image:
               assert image.width >= 1000 and image.height >= 560
               print(f'Validated map artwork: {image.width}x{image.height}')
+          for art_path in weather_art:
+              assert art_path.exists() and art_path.stat().st_size > 50000
+              with Image.open(art_path) as art:
+                  assert art.width >= 1500 and art.height >= 650
+                  assert art.mode == 'RGBA'
+                  alpha_min, alpha_max = art.getchannel('A').getextrema()
+                  assert alpha_min == 0 and alpha_max == 255
+                  print(f'Validated transparent weather artwork: {art_path.name} {art.width}x{art.height}')
           print('Historical relief archive static QA passed.')
           PY

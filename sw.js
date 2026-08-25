@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-25-charity-poster-rebuild-v21-paper-weather-v3-visible-motion';
+const VERSION = '2026-08-25-charity-poster-rebuild-v22-paper-weather-v4-sculpted-art';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
