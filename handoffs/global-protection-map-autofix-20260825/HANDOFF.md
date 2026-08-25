@@ -6,7 +6,7 @@
 - Browser regression validation: PASS.
 - Static integrity and syntax validation: PASS.
 - Production write: **not yet executed**. At package time, both authorized Desktop Commander devices were offline and no SSH or cloud deployment secret was available in this repository.
-- The read-only probe workflows on this branch did not mutate production, DNS, data, accounts, moderation, or integrations.
+- This clean replacement contains no GitHub Actions deployment or probe workflows.
 
 ## User-visible fixes
 
@@ -44,7 +44,7 @@ ZIP SHA-256:
 
 `6845fe41cb98ca65154da82ac01f7f581cc86c312397938590b6ffe691cac4da`
 
-The package contains patched TW/HK assets, dry-run-by-default deployment and rollback automation, desktop/mobile screenshots, public snapshots, integrity manifests, an offline Playwright regression harness, and permanent source-rebuild guidance.
+The canonical package contains patched TW/HK assets, desktop/mobile screenshots, public snapshots, the full integrity manifest, an offline Playwright regression harness, and permanent source-rebuild guidance. The four patched assets required by the deployment script and compact validation evidence are also committed beside this handoff so a clean checkout does not depend on Library access.
 
 ## Authorized-host deployment
 

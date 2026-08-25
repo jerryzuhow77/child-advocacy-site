@@ -1,0 +1,93 @@
+{
+  "patch_id": "global-protection-map-autofix-20260825",
+  "mode": "post_hydration_runtime_overlay",
+  "sites": {
+    "tw": {
+      "site": "tw",
+      "files": {
+        "js": "assets/tw/guardian-wall-D4pS1Kwy.js",
+        "css": "assets/tw/index-1prVp_H8.css"
+      },
+      "checks": {
+        "js_exists": true,
+        "css_exists": true,
+        "js_sha256": "1df97e33c6f583cb81d6530b4510fa0721bb9fb81f2e62c882b4784e256792b8",
+        "css_sha256": "24451637a662b738ddc412c2823dcb18e4620bb65329ca592b4edfd1f13b6ac3",
+        "js_sha_matches": true,
+        "css_sha_matches": true,
+        "node_syntax_pass": true,
+        "overlay_guard_once": true,
+        "post_hydration_delay_present": true,
+        "selector_injected_after_search": true,
+        "selector_change_uses_existing_marker_click": true,
+        "marker_click_sync_present": true,
+        "london_target_present": true,
+        "london_translation_present": true,
+        "hit_target_radius_30": true,
+        "map_visibility_inline_important": true,
+        "canonical_region_labels": true,
+        "css_patch_marker_once": true,
+        "css_map_visibility_important": true,
+        "css_hit_target_pointer_events": true,
+        "css_desktop_min_height": true,
+        "source_render_not_pre_hydration_replaced": true
+      },
+      "pass": true,
+      "node_stderr": ""
+    },
+    "hk": {
+      "site": "hk",
+      "files": {
+        "js": "assets/hk/guardian-wall-2CHQLdmM.js",
+        "css": "assets/hk/index-CA0ym-VZ.css"
+      },
+      "checks": {
+        "js_exists": true,
+        "css_exists": true,
+        "js_sha256": "a3df847cdfe8c360fe8bca16ad80d0977036b1aea34ca7b58a2f20850565c98c",
+        "css_sha256": "44599172f03721d477742123a6b3a0cac77d0cfff68d6a23daf952ecf6418457",
+        "js_sha_matches": true,
+        "css_sha_matches": true,
+        "node_syntax_pass": true,
+        "overlay_guard_once": true,
+        "post_hydration_delay_present": true,
+        "selector_injected_after_search": true,
+        "selector_change_uses_existing_marker_click": true,
+        "marker_click_sync_present": true,
+        "london_target_present": true,
+        "london_translation_present": true,
+        "hit_target_radius_30": true,
+        "map_visibility_inline_important": true,
+        "canonical_region_labels": true,
+        "css_patch_marker_once": true,
+        "css_map_visibility_important": true,
+        "css_hit_target_pointer_events": true,
+        "css_desktop_min_height": true,
+        "source_render_not_pre_hydration_replaced": true
+      },
+      "pass": true,
+      "node_stderr": ""
+    }
+  },
+  "public_message_snapshot": {
+    "total_messages": 16,
+    "mapped_messages": 14,
+    "unmapped_or_hidden_messages": 2,
+    "region_counts": {
+      "CN": 5,
+      "GB": 1,
+      "TW": 8
+    },
+    "expected_counts_match": true
+  },
+  "preview_validation_pass": true,
+  "deploy_script_bash_syntax_pass": true,
+  "safety": {
+    "react_server_render_changed": false,
+    "api_changed": false,
+    "database_changed": false,
+    "auth_changed": false,
+    "moderation_changed": false
+  },
+  "pass": true
+}
