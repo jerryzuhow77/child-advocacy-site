@@ -7,11 +7,18 @@
       "id": "tainan-tom-bear-case-2012",
       "publishedAt": "2026-08-25",
       "tag": "HISTORICAL CASE",
+      "region": "taiwan",
+      "regionLabel": {
+        "zh-Hant": "台灣｜臺南",
+        "zh-Hans": "台湾｜台南",
+        "en": "Taiwan | Tainan",
+        "ja": "台湾｜台南"
+      },
       "badge": {
-        "zh-Hant": "歷史案件新作",
-        "zh-Hans": "历史案件新作",
-        "en": "New historical case",
-        "ja": "歴史的事件・新着"
+        "zh-Hant": "台灣歷史案件新作",
+        "zh-Hans": "台湾历史案件新作",
+        "en": "New Taiwan historical case",
+        "ja": "台湾の歴史的事件・新着"
       },
       "title": {
         "zh-Hant": "台南湯姆熊男童命案",
