@@ -2,14 +2,14 @@
   'use strict';
   var current=document.currentScript&&document.currentScript.src?document.currentScript.src:'';
   var basePath=current?current.slice(0,current.lastIndexOf('/')+1):'./assets/';
-  var version='20260824-desktop-map-repair-1';
+  var version='20260825-region-filter-map-stable-1';
   var balancedArtwork=basePath+'art/east-asia-case-memory-map-paper-clay-20260824.webp?v='+version;
   function injectMobileMapRepair(){
     if(!window.matchMedia('(max-width:760px)').matches||document.getElementById('home-mobile-map-repair-5'))return;
     var repair=document.createElement('link');
     repair.id='home-mobile-map-repair-5';
     repair.rel='stylesheet';
-    repair.href=basePath+'home-history-mobile-visibility-20260824.css?v=20260824-mobile-map-stable-4';
+    repair.href=basePath+'home-history-mobile-visibility-20260824.css?v='+version;
     document.head.appendChild(repair);
   }
   function forceBalancedMobileArtwork(root){
@@ -37,7 +37,15 @@
     window.gsap.fromTo(figure,{clipPath:'inset(0 7% 0 7% round 22px)',y:20},{clipPath:'inset(0 0% 0 0% round 22px)',y:0,duration:1.05,ease:'power2.out',clearProps:'transform'});
     if(image)window.gsap.fromTo(image,{scale:1.035},{scale:1,duration:1.35,ease:'power2.out',clearProps:'transform'});
   }
-    injectMobileMapRepair();
+  function loadInteractionFix(){
+    if(document.querySelector('script[data-history-map-interaction-fix]'))return;
+    var fix=document.createElement('script');
+    fix.src=basePath+'home-history-map-interaction-fix-20260825.js?v='+version;
+    fix.defer=true;
+    fix.dataset.historyMapInteractionFix='true';
+    document.head.appendChild(fix);
+  }
+  injectMobileMapRepair();
   forceBalancedMobileArtwork(document);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){forceBalancedMobileArtwork(document);animateVisibleStaticMap();},{once:true});else animateVisibleStaticMap();
   var mapObserver=new MutationObserver(function(records){
@@ -47,18 +55,18 @@
   });
   mapObserver.observe(document.documentElement,{childList:true,subtree:true});
   window.setTimeout(function(){forceBalancedMobileArtwork(document);mapObserver.disconnect();},12000);
-  var mobileStaticOnly=window.matchMedia('(max-width:760px)').matches;
-  if(mobileStaticOnly){
-    animateVisibleStaticMap();
-    return;
-  }
+  if(window.matchMedia('(max-width:760px)').matches)animateVisibleStaticMap();
   function loadEnhancement(){
-    if(document.querySelector('script[data-home-ia-final]'))return;
+    var existing=document.querySelector('script[data-home-ia-final]');
+    if(existing){loadInteractionFix();return;}
     var enhancement=document.createElement('script');
     enhancement.src=basePath+'home-archive-layout-20260823.js?v='+version;
     enhancement.defer=true;
     enhancement.dataset.homeIaFinal='true';
+    enhancement.onload=loadInteractionFix;
+    enhancement.onerror=loadInteractionFix;
     document.head.appendChild(enhancement);
+    window.setTimeout(loadInteractionFix,120);
   }
   var base=document.createElement('script');
   base.src=basePath+'home-gsap-base-20260823.js?v='+version;
