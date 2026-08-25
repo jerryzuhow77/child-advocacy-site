@@ -39,3 +39,6 @@
   .dialogue-list .qa > mark { grid-column: 1; grid-row: 5; }
   .full-dialogue .detail-body { padding-inline: 15px; }
 }
+@media (min-width: 681px) {
+  body .full-dialogue .dialogue-list .qa { display: grid !important; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important; grid-template-rows: auto 1fr auto !important; column-gap: 14px !important; }
+}
