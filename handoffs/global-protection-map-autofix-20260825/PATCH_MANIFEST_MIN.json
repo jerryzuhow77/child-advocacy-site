@@ -1,0 +1,61 @@
+{
+  "patch_id": "global-protection-map-autofix-20260825",
+  "mode": "post_hydration_runtime_overlay",
+  "production_status_at_package_time": "not_written_authorized_remote_devices_offline",
+  "package": {
+    "library_path": "/Sites/Global-Protection/Global-Protection_Map-Autofix_20260825.zip",
+    "sha256": "6845fe41cb98ca65154da82ac01f7f581cc86c312397938590b6ffe691cac4da"
+  },
+  "targets": {
+    "tw": {
+      "javascript": {
+        "path": "/assets/guardian-wall-D4pS1Kwy.js",
+        "original_sha256": "010d6fd66c40c0e1247980a944792718c2c97f9437fc1b47b58d0557e35c2fbf",
+        "patched_sha256": "1df97e33c6f583cb81d6530b4510fa0721bb9fb81f2e62c882b4784e256792b8"
+      },
+      "stylesheet": {
+        "path": "/assets/index-1prVp_H8.css",
+        "original_sha256": "5afbe1fcbfc606a23a4ea79fca43047b29bfca8ad0f7dfb5b759fd2f84c9a2a0",
+        "patched_sha256": "24451637a662b738ddc412c2823dcb18e4620bb65329ca592b4edfd1f13b6ac3"
+      }
+    },
+    "hk": {
+      "javascript": {
+        "path": "/assets/guardian-wall-2CHQLdmM.js",
+        "original_sha256": "03fc9fc35842cb683232f001ca1301988dcc01a1a1a614e8ec45ada13184a3cf",
+        "patched_sha256": "a3df847cdfe8c360fe8bca16ad80d0977036b1aea34ca7b58a2f20850565c98c"
+      },
+      "stylesheet": {
+        "path": "/assets/index-CA0ym-VZ.css",
+        "original_sha256": "0253e679100042694f818d74aaee4685cb1ff832712060d1b8e57d3133fe6224",
+        "patched_sha256": "44599172f03721d477742123a6b3a0cac77d0cfff68d6a23daf952ecf6418457"
+      }
+    }
+  },
+  "behavior": {
+    "map_stage_remains_visible": true,
+    "marker_click_filters_region": true,
+    "region_selector_synchronized": true,
+    "london_target": {"x": 102, "y": 163},
+    "marker_hit_radius": 30
+  },
+  "public_snapshot": {
+    "total": 16,
+    "mapped": {"GB": 1, "TW": 8, "CN": 5},
+    "hidden_or_unmapped": 2
+  },
+  "validation": {
+    "browser_preview": "pass",
+    "static_integrity": "pass",
+    "javascript_syntax": "pass",
+    "deploy_execute_rollback_fixture": "pass"
+  },
+  "safety": {
+    "database_changed": false,
+    "api_changed": false,
+    "auth_changed": false,
+    "moderation_changed": false,
+    "message_content_changed": false,
+    "dns_or_tls_changed": false
+  }
+}
