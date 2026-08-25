@@ -1,8 +1,19 @@
 {
   "version": 1,
-  "generatedAt": "2026-08-23T15:30:00+08:00",
+  "generatedAt": "2026-08-25T08:30:00+08:00",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "items": [
+    {
+      "id": "kaikai-day7-20250502",
+      "publishedAt": "2026-08-25",
+      "tag": "COURT RECORD",
+      "badge": {"zh-Hant":"旁聽紀錄","zh-Hans":"旁听记录","en":"Court record","ja":"傍聴記録"},
+      "title": {"zh-Hant":"第七次審判期日","zh-Hans":"第七次审判期日","en":"Seventh Trial Date","ja":"第7回公判期日"},
+      "summary": {"zh-Hant":"劉若琳訊問、甲乙丙地證詞矛盾比對與檢辯事實法律辯論。","zh-Hans":"刘若琳讯问、甲乙丙地证词矛盾比对与检辩事实法律辩论。","en":"Liu Ruolin's examination, three-location testimony cross-check, and closing arguments.","ja":"劉若琳への質問、3地点の証言照合、事実・法律弁論。"},
+      "url": {"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day7-20250502/","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day7-20250502/","en":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day7-20250502/","ja":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day7-20250502/"},
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day7-tragedy-remembered-zh-hant-20260825.png",
+      "imageAlt": {"zh-Hant":"悲劇不忘：第七次審判期日紙雕與陶土主視覺","zh-Hans":"悲剧不忘：第七次审判期日纸雕与陶土主视觉","en":"Paper-and-clay memorial artwork for the seventh trial date","ja":"第7回公判期日の紙彫刻と粘土によるメインビジュアル"}
+    },
     {
       "id": "tucheng-domestic-violence-hearing-20260821",
       "publishedAt": "2026-08-23",
