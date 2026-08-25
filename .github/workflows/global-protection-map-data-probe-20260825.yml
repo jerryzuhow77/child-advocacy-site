@@ -1,0 +1,65 @@
+name: Global Protection map data probe 20260825
+
+on:
+  push:
+    branches:
+      - ops/global-protection-map-autofix-20260825
+    paths:
+      - .github/workflows/global-protection-map-data-probe-20260825.yml
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Fetch public globe assets and message coordinates
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p map-data-probe
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import ssl
+          import urllib.request
+          from pathlib import Path
+
+          out = Path('map-data-probe')
+          urls = {
+            'tw-paper-globe-texture-v2.png': 'https://global-protection.jerryzuhow77.chatgpt.site/paper-globe-texture-v2.png',
+            'hk-paper-globe-texture-v2.png': 'https://cn.globalprotectionwall.com/paper-globe-texture-v2.png',
+            'tw-public-messages.json': 'https://global-protection.jerryzuhow77.chatgpt.site/api/public/messages',
+            'hk-public-messages.json': 'https://cn.globalprotectionwall.com/api/public/messages',
+          }
+          report = {'mode': 'read_only', 'files': {}}
+          context = ssl.create_default_context()
+          for name, url in urls.items():
+            try:
+              request = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 GlobalProtectionReadOnlyProbe/20260825'})
+              with urllib.request.urlopen(request, timeout=30, context=context) as response:
+                body = response.read()
+                (out / name).write_bytes(body)
+                report['files'][name] = {
+                  'url': response.geturl(),
+                  'status': response.status,
+                  'content_type': response.headers.get('Content-Type', ''),
+                  'bytes': len(body),
+                  'sha256': hashlib.sha256(body).hexdigest(),
+                }
+            except Exception as exc:
+              report['files'][name] = {'url': url, 'error': repr(exc)}
+          (out / 'report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
+          print(json.dumps(report, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: global-protection-map-data-probe-20260825
+          path: map-data-probe/
+          if-no-files-found: warn
+          retention-days: 7
