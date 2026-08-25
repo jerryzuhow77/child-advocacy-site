@@ -1,0 +1,147 @@
+name: Global Protection map autofix probe 20260825
+
+on:
+  push:
+    branches:
+      - ops/global-protection-map-autofix-20260825
+    paths:
+      - .github/workflows/global-protection-map-autofix-probe-20260825.yml
+      - handoffs/global-protection-map-autofix-20260825/**
+
+permissions:
+  contents: read
+
+concurrency:
+  group: global-protection-map-autofix-probe-20260825
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    name: Read-only live HTML and asset probe
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Capture live HTML and same-origin assets
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p map-probe-output
+          cat > /tmp/probe.py <<'PY'
+          import hashlib
+          import json
+          import re
+          import ssl
+          import urllib.parse
+          import urllib.request
+          from pathlib import Path
+
+          OUT = Path('map-probe-output')
+          TARGETS = {
+              'tw-home': 'https://global-protection.jerryzuhow77.chatgpt.site/',
+              'tw-map': 'https://global-protection.jerryzuhow77.chatgpt.site/map',
+              'tw-plaza': 'https://global-protection.jerryzuhow77.chatgpt.site/plaza',
+              'hk-home': 'https://cn.globalprotectionwall.com/',
+              'hk-map': 'https://cn.globalprotectionwall.com/map',
+              'hk-plaza': 'https://cn.globalprotectionwall.com/plaza',
+          }
+          KEYWORDS = re.compile(r'(globe|earth|world|map|marker|hotspot|region|london|longitude|latitude|地球|地圖|地图|亮點|亮点|倫敦|伦敦|篩選|筛选)', re.I)
+          context = ssl.create_default_context()
+          headers = {'User-Agent': 'Mozilla/5.0 GlobalProtectionReadOnlyProbe/20260825'}
+
+          def fetch(url):
+              req = urllib.request.Request(url, headers=headers)
+              with urllib.request.urlopen(req, timeout=30, context=context) as response:
+                  return response.status, dict(response.headers), response.read(), response.geturl()
+
+          report = {'mode': 'read_only', 'targets': {}, 'assets': {}, 'keyword_hits': {}}
+          asset_urls = set()
+          for label, url in TARGETS.items():
+              try:
+                  status, response_headers, body, final_url = fetch(url)
+                  path = OUT / f'{label}.html'
+                  path.write_bytes(body)
+                  text = body.decode('utf-8', errors='replace')
+                  report['targets'][label] = {
+                      'requested_url': url,
+                      'final_url': final_url,
+                      'status': status,
+                      'content_type': response_headers.get('Content-Type', ''),
+                      'bytes': len(body),
+                      'sha256': hashlib.sha256(body).hexdigest(),
+                  }
+                  for raw in re.findall(r'''(?:src|href)=["']([^"']+\.(?:js|css)(?:\?[^"']*)?)["']''', text, flags=re.I):
+                      absolute = urllib.parse.urljoin(final_url, raw)
+                      if urllib.parse.urlparse(absolute).netloc == urllib.parse.urlparse(final_url).netloc:
+                          asset_urls.add(absolute)
+              except Exception as exc:
+                  report['targets'][label] = {'requested_url': url, 'error': repr(exc)}
+
+          assets_dir = OUT / 'assets'
+          assets_dir.mkdir(exist_ok=True)
+          for index, url in enumerate(sorted(asset_urls)):
+              if index >= 100:
+                  break
+              try:
+                  status, response_headers, body, final_url = fetch(url)
+                  suffix = '.css' if urllib.parse.urlparse(final_url).path.endswith('.css') else '.js'
+                  name = f'{index:03d}-{hashlib.sha256(final_url.encode()).hexdigest()[:12]}{suffix}'
+                  (assets_dir / name).write_bytes(body)
+                  text = body.decode('utf-8', errors='replace')
+                  report['assets'][name] = {
+                      'url': final_url,
+                      'status': status,
+                      'content_type': response_headers.get('Content-Type', ''),
+                      'bytes': len(body),
+                      'sha256': hashlib.sha256(body).hexdigest(),
+                  }
+                  hits = []
+                  for match in KEYWORDS.finditer(text):
+                      start = max(0, match.start() - 260)
+                      end = min(len(text), match.end() + 520)
+                      snippet = text[start:end].replace('\n', ' ')
+                      if snippet not in hits:
+                          hits.append(snippet)
+                      if len(hits) >= 80:
+                          break
+                  if hits:
+                      report['keyword_hits'][name] = hits
+              except Exception as exc:
+                  report['assets'][url] = {'error': repr(exc)}
+
+          (OUT / 'probe-report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
+          summary = {
+              'target_count': len(report['targets']),
+              'asset_count': len(report['assets']),
+              'assets_with_keyword_hits': len(report['keyword_hits']),
+              'production_mutated': False,
+          }
+          (OUT / 'summary.json').write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding='utf-8')
+          print(json.dumps(summary, ensure_ascii=False))
+          PY
+          python3 /tmp/probe.py
+
+      - name: Summarize
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '## Global Protection map read-only probe'
+            echo
+            echo '```json'
+            cat map-probe-output/summary.json 2>/dev/null || true
+            echo '```'
+            echo
+            echo '- No production, DNS, database, account, message, or moderation data was changed.'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload sanitized evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: global-protection-map-autofix-probe-20260825
+          path: map-probe-output/
+          if-no-files-found: warn
+          retention-days: 7
