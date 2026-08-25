@@ -4,6 +4,16 @@
   const recordLabels=pageLang==='ja'?{progress:'第1日・審理手続の閲覧進捗',title:'審理手続'}:pageLang==='en'?{progress:'Day 1 hearing-procedure reading progress',title:'Hearing procedure'}:{progress:'第一日庭審程序閱讀進度',title:'庭審程序'};
   const menu=document.querySelector('.day1-menu');
   const toc=document.querySelector('.day1-toc');
+  const pdfFigure=document.querySelector('.day1-pdf-figure');
+  const pdfImage=pdfFigure?.querySelector('img');
+  const pdfCaption=pdfFigure?.querySelector('figcaption');
+  if(pdfImage){
+    pdfImage.src='../../../assets/source/prison-watch-day1-pdf-image-p1-20250422.png';
+    pdfImage.alt='DAY1原始PDF第1頁所附圖片';
+    pdfImage.width=740;
+    pdfImage.height=477;
+  }
+  if(pdfCaption)pdfCaption.textContent='原始 PDF 圖片｜第1頁｜資料來源：監所關注小組';
   menu?.addEventListener('click',()=>{const open=!toc.classList.contains('is-open');toc.classList.toggle('is-open',open);menu.setAttribute('aria-expanded',String(open));});
   toc?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{toc.classList.remove('is-open');menu?.setAttribute('aria-expanded','false');}));
 

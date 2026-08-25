@@ -1,3 +1,11 @@
+const day7DialogueSection=document.querySelector('#dialogue');
+if(day7DialogueSection&&!day7DialogueSection.querySelector('.day7-pdf-source-figure')){
+  const figure=document.createElement('figure');
+  figure.className='day7-pdf-source-figure';
+  figure.innerHTML='<img src="../../../assets/source/prison-watch-day7-special-issue-image-p52-20250502.png" alt="監所關注小組十天旁聽全紀錄特刊第52頁DAY7所附圖片" width="740" height="624" loading="lazy" decoding="async"><figcaption>原始特刊圖片｜第52頁（DAY7首頁）｜資料來源：監所關注小組</figcaption>';
+  day7DialogueSection.querySelector(':scope > header')?.after(figure);
+}
+
 const crosschecks=[
  {t:'看見罰站與照顧頻率',a:'稱只有中午下樓，未叫A童罰站，也不知道Mira為何說A童由她照顧時不敢動、不敢玩。',b:'Mira證述A童經常未穿衣服整天罰站；檢方並主張劉若琳每天午餐時段在甲地，能看到大多數狀況。',f:'落差｜出入頻率、可見範圍，以及是否具有實際照顧或支配能力。'},
  {t:'「我放東西後再去揍」',a:'劉若琳解釋只是說說，實際沒有揍。',b:'提示乙證4對話：劉彩萱問「妳沒揍他？要揍啊」，劉若琳回覆「我放東西後再去揍」。',f:'落差｜訊息文字的通常語意，與當庭主張只是口頭說法之間。'},

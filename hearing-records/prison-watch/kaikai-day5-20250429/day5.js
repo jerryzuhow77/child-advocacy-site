@@ -253,6 +253,12 @@
   }
 
   const fullRecord = document.getElementById('full-record');
+  if (fullRecord && !fullRecord.querySelector('.day5-pdf-source-figure')) {
+    const figure = document.createElement('figure');
+    figure.className = 'day3-pdf-figure day5-pdf-source-figure';
+    figure.innerHTML = '<img src="../../../assets/source/prison-watch-day5-pdf-image-p1-20250429.png" alt="DAY5原始PDF第1頁所附圖片" width="740" height="708" loading="lazy" decoding="async"><figcaption>原始 PDF 圖片｜第1頁｜資料來源：監所關注小組</figcaption>';
+    fullRecord.querySelector(':scope > .day3-section-head')?.after(figure);
+  }
   if (fullRecord && !fullRecord.querySelector('.day5-back-to-comparison')) {
     const back = document.createElement('a');
     back.href = '#comparison';

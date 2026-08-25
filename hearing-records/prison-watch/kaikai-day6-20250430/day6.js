@@ -2,6 +2,13 @@ const topbar=document.querySelector('.top');
 const menu=document.querySelector('#menu');
 menu?.addEventListener('click',()=>{const open=topbar.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));});
 document.querySelectorAll('.top a').forEach(a=>a.addEventListener('click',()=>topbar.classList.remove('open')));
+const day6RecordSection=document.querySelector('#reconstructed-record');
+if(day6RecordSection&&!day6RecordSection.querySelector('.day6-pdf-source-figure')){
+  const figure=document.createElement('figure');
+  figure.className='day6-pdf-source-figure';
+  figure.innerHTML='<img src="../../../assets/source/prison-watch-day6-pdf-image-p1-20250430.png" alt="DAY6原始PDF第1頁所附圖片" width="740" height="680" loading="lazy" decoding="async"><figcaption>原始 PDF 圖片｜第1頁｜資料來源：監所關注小組</figcaption>';
+  day6RecordSection.querySelector(':scope > header')?.after(figure);
+}
 const recordChapters=[
   {n:'01',time:'09:07',title:'續行審理｜鑑定程序與資料基礎',intro:'檢察官欲提示周保母拍攝之甲證85照片並描述衣服等，審判長制止，改由鑑定人說明。丘彥南醫師以鑑定人身分具結。',points:[
     '丘醫師於2022年退休，為台灣兒童青少年精神醫學會顧問、前理事長，曾成立司法精神鑑定委員會，主責兒少司法精神鑑定逾百例。',
