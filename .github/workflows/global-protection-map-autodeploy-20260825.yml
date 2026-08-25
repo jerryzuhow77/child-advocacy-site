@@ -1,0 +1,488 @@
+name: Global Protection map auto-deploy 20260825
+
+on:
+  push:
+    branches:
+      - ops/global-protection-map-autofix-20260825
+    paths:
+      - .github/workflows/global-protection-map-autodeploy-20260825.yml
+      - handoffs/global-protection-map-autofix-20260825/ops/**
+      - handoffs/global-protection-map-autofix-20260825/PATCH_MANIFEST_MIN.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: global-protection-map-autodeploy-20260825
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build, deploy, and verify the globe repair
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      PATCH_ID: global-protection-map-autofix-20260825
+      HANDOFF_DIR: handoffs/global-protection-map-autofix-20260825
+      DEFAULT_HOST: 150.109.69.104
+      DEFAULT_USER: ubuntu
+      DEFAULT_PORT: "22"
+    steps:
+      - name: Check out repair branch
+        uses: actions/checkout@v4
+
+      - name: Build exact TW and HK patched assets from the current public files
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          mkdir -p deploy-output package/assets/tw package/assets/hk package/ops
+
+          build_site() {
+            local site="$1" base="$2" js_name="$3" css_name="$4"
+            local original_js="$5" original_css="$6" patched_js="$7" patched_css="$8"
+            local raw_dir="deploy-output/raw-$site"
+            mkdir -p "$raw_dir"
+
+            curl -fsSL --retry 4 --retry-delay 2 --connect-timeout 12 --max-time 60 \
+              -H 'Cache-Control: no-cache' \
+              "$base/assets/$js_name?map-autofix-build=${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" \
+              -o "$raw_dir/$js_name"
+            curl -fsSL --retry 4 --retry-delay 2 --connect-timeout 12 --max-time 60 \
+              -H 'Cache-Control: no-cache' \
+              "$base/assets/$css_name?map-autofix-build=${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" \
+              -o "$raw_dir/$css_name"
+
+            local actual_js actual_css
+            actual_js="$(sha256sum "$raw_dir/$js_name" | awk '{print $1}')"
+            actual_css="$(sha256sum "$raw_dir/$css_name" | awk '{print $1}')"
+            [[ "$actual_js" == "$original_js" || "$actual_js" == "$patched_js" ]] || {
+              echo "Unexpected $site JS SHA: $actual_js" >&2
+              exit 1
+            }
+            [[ "$actual_css" == "$original_css" || "$actual_css" == "$patched_css" ]] || {
+              echo "Unexpected $site CSS SHA: $actual_css" >&2
+              exit 1
+            }
+
+            python3 "$HANDOFF_DIR/ops/append_runtime_overlay.py" \
+              --js "$raw_dir/$js_name" \
+              --css "$raw_dir/$css_name" \
+              --out-js "package/assets/$site/$js_name" \
+              --out-css "package/assets/$site/$css_name" \
+              --report "deploy-output/build-$site.json" \
+              --check-node
+
+            [[ "$(sha256sum "package/assets/$site/$js_name" | awk '{print $1}')" == "$patched_js" ]]
+            [[ "$(sha256sum "package/assets/$site/$css_name" | awk '{print $1}')" == "$patched_css" ]]
+            grep -q "$PATCH_ID" "package/assets/$site/$js_name"
+            grep -q "$PATCH_ID" "package/assets/$site/$css_name"
+          }
+
+          build_site tw \
+            'https://global-protection.jerryzuhow77.chatgpt.site' \
+            'guardian-wall-D4pS1Kwy.js' 'index-1prVp_H8.css' \
+            '010d6fd66c40c0e1247980a944792718c2c97f9437fc1b47b58d0557e35c2fbf' \
+            '5afbe1fcbfc606a23a4ea79fca43047b29bfca8ad0f7dfb5b759fd2f84c9a2a0' \
+            '1df97e33c6f583cb81d6530b4510fa0721bb9fb81f2e62c882b4784e256792b8' \
+            '24451637a662b738ddc412c2823dcb18e4620bb65329ca592b4edfd1f13b6ac3'
+
+          build_site hk \
+            'https://cn.globalprotectionwall.com' \
+            'guardian-wall-2CHQLdmM.js' 'index-CA0ym-VZ.css' \
+            '03fc9fc35842cb683232f001ca1301988dcc01a1a1a614e8ec45ada13184a3cf' \
+            '0253e679100042694f818d74aaee4685cb1ff832712060d1b8e57d3133fe6224' \
+            'a3df847cdfe8c360fe8bca16ad80d0977036b1aea34ca7b58a2f20850565c98c' \
+            '44599172f03721d477742123a6b3a0cac77d0cfff68d6a23daf952ecf6418457'
+
+          cp "$HANDOFF_DIR/ops/deploy_map_autofix.sh" package/ops/deploy_map_autofix.sh
+          chmod 700 package/ops/deploy_map_autofix.sh
+          tar -C package -czf deploy-output/global-protection-map-autofix-20260825.tar.gz .
+          sha256sum deploy-output/global-protection-map-autofix-20260825.tar.gz \
+            > deploy-output/global-protection-map-autofix-20260825.tar.gz.sha256
+
+      - name: Detect authorized deployment credentials
+        id: credentials
+        shell: bash
+        env:
+          TENCENT_SSH_HOST: ${{ secrets.TENCENT_SSH_HOST }}
+          TENCENT_SSH_USER: ${{ secrets.TENCENT_SSH_USER }}
+          TENCENT_SSH_PORT: ${{ secrets.TENCENT_SSH_PORT }}
+          TENCENT_SSH_PRIVATE_KEY: ${{ secrets.TENCENT_SSH_PRIVATE_KEY }}
+          TENCENT_CVM_SSH_KEY: ${{ secrets.TENCENT_CVM_SSH_KEY }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          host="${TENCENT_SSH_HOST:-$DEFAULT_HOST}"
+          user_name="${TENCENT_SSH_USER:-$DEFAULT_USER}"
+          port="${TENCENT_SSH_PORT:-$DEFAULT_PORT}"
+          key=""
+          source_name="none"
+          if [[ -n "${TENCENT_SSH_PRIVATE_KEY:-}" ]]; then
+            key="$TENCENT_SSH_PRIVATE_KEY"
+            source_name="TENCENT_SSH_PRIVATE_KEY"
+          elif [[ -n "${TENCENT_CVM_SSH_KEY:-}" ]]; then
+            key="$TENCENT_CVM_SSH_KEY"
+            source_name="TENCENT_CVM_SSH_KEY"
+          elif [[ -n "${SSH_PRIVATE_KEY:-}" ]]; then
+            key="$SSH_PRIVATE_KEY"
+            source_name="SSH_PRIVATE_KEY"
+          fi
+
+          echo "host=$host" >> "$GITHUB_OUTPUT"
+          echo "user_name=$user_name" >> "$GITHUB_OUTPUT"
+          echo "port=$port" >> "$GITHUB_OUTPUT"
+          echo "key_source=$source_name" >> "$GITHUB_OUTPUT"
+          if [[ -n "$key" ]]; then
+            printf '%s\n' "$key" > deploy-output/id_map_autofix
+            chmod 600 deploy-output/id_map_autofix
+            echo 'available=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'available=false' >> "$GITHUB_OUTPUT"
+          fi
+          cat > deploy-output/credential-presence.json <<JSON
+          {
+            "authorized_ssh_key_present": $([[ -n "$key" ]] && echo true || echo false),
+            "ssh_key_source": "$source_name",
+            "host_secret_present": $([[ -n "${TENCENT_SSH_HOST:-}" ]] && echo true || echo false),
+            "user_secret_present": $([[ -n "${TENCENT_SSH_USER:-}" ]] && echo true || echo false),
+            "port_secret_present": $([[ -n "${TENCENT_SSH_PORT:-}" ]] && echo true || echo false)
+          }
+          JSON
+
+      - name: Upload the prepared repair before any production write
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: global-protection-map-autofix-prepared-20260825
+          path: |
+            deploy-output/build-*.json
+            deploy-output/credential-presence.json
+            deploy-output/global-protection-map-autofix-20260825.tar.gz
+            deploy-output/global-protection-map-autofix-20260825.tar.gz.sha256
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Deploy through the authorized Tencent SSH channel
+        id: deploy
+        if: steps.credentials.outputs.available == 'true'
+        shell: bash
+        env:
+          TENCENT_APP_PATH: ${{ secrets.TENCENT_APP_PATH }}
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          host='${{ steps.credentials.outputs.host }}'
+          user_name='${{ steps.credentials.outputs.user_name }}'
+          port='${{ steps.credentials.outputs.port }}'
+          key='deploy-output/id_map_autofix'
+          remote_tar='/tmp/global-protection-map-autofix-20260825.tar.gz'
+          remote_root='/tmp/global-protection-map-autofix-20260825'
+
+          ssh_opts=(
+            -i "$key" -p "$port"
+            -o BatchMode=yes
+            -o ConnectTimeout=15
+            -o ServerAliveInterval=10
+            -o ServerAliveCountMax=3
+            -o StrictHostKeyChecking=accept-new
+          )
+          scp_opts=(
+            -i "$key" -P "$port"
+            -o BatchMode=yes
+            -o ConnectTimeout=15
+            -o ServerAliveInterval=10
+            -o ServerAliveCountMax=3
+            -o StrictHostKeyChecking=accept-new
+          )
+          scp -q "${scp_opts[@]}" \
+            deploy-output/global-protection-map-autofix-20260825.tar.gz \
+            "${user_name}@${host}:${remote_tar}"
+
+          printf -v app_dir_q '%q' "${TENCENT_APP_PATH:-}"
+          printf -v remote_root_q '%q' "$remote_root"
+          printf -v remote_tar_q '%q' "$remote_tar"
+          ssh "${ssh_opts[@]}" "${user_name}@${host}" \
+            "APP_DIR=${app_dir_q} PACKAGE_DIR=${remote_root_q} PACKAGE_TAR=${remote_tar_q} bash -s" \
+            <<'REMOTE' | tee deploy-output/remote-deploy.log
+          set -Eeuo pipefail
+          umask 077
+          rm -rf "$PACKAGE_DIR"
+          mkdir -p "$PACKAGE_DIR"
+          tar -xzf "$PACKAGE_TAR" -C "$PACKAGE_DIR"
+          chmod 700 "$PACKAGE_DIR/ops/deploy_map_autofix.sh"
+
+          args=(--site auto --purge-cache no)
+          if [[ -n "${APP_DIR:-}" ]]; then
+            args+=(--app-dir "$APP_DIR")
+          fi
+
+          runner=(bash)
+          if [[ "$(id -u)" -ne 0 ]] && command -v sudo >/dev/null 2>&1 && sudo -n true 2>/dev/null; then
+            runner=(sudo -n bash)
+          fi
+
+          echo '--- authorized dry run ---'
+          "${runner[@]}" "$PACKAGE_DIR/ops/deploy_map_autofix.sh" "${args[@]}" \
+            | tee /tmp/global-protection-map-autofix-dry-run.log
+          echo '--- authorized execute ---'
+          "${runner[@]}" "$PACKAGE_DIR/ops/deploy_map_autofix.sh" "${args[@]}" --execute \
+            | tee /tmp/global-protection-map-autofix-execute.log
+          grep -q 'Execution complete' /tmp/global-protection-map-autofix-execute.log
+          echo 'authorized_production_write=success'
+          REMOTE
+
+          scp -q "${scp_opts[@]}" \
+            "${user_name}@${host}:/tmp/global-protection-map-autofix-dry-run.log" \
+            deploy-output/remote-dry-run.log || true
+          scp -q "${scp_opts[@]}" \
+            "${user_name}@${host}:/tmp/global-protection-map-autofix-execute.log" \
+            deploy-output/remote-execute.log || true
+          echo 'deployed=true' >> "$GITHUB_OUTPUT"
+
+      - name: Record unavailable authorized channel without changing production
+        if: steps.credentials.outputs.available != 'true'
+        shell: bash
+        run: |
+          cat > deploy-output/deployment-status.json <<'JSON'
+          {
+            "status": "not_executed",
+            "reason": "no_authorized_ssh_private_key_secret_available",
+            "production_mutated": false
+          }
+          JSON
+          {
+            echo '## Global Protection map autofix'
+            echo
+            echo '- Repair package: built and integrity-verified.'
+            echo '- Production write: not executed because no authorized SSH private-key secret was available to this workflow.'
+            echo '- Database, API, auth, moderation, messages, DNS, and integrations were not changed.'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Purge known Cloudflare asset URLs when credentials are available
+        if: steps.deploy.outputs.deployed == 'true'
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+          CLOUDFLARE_ZONE_ID_TW: ${{ secrets.CLOUDFLARE_ZONE_ID_TW }}
+          CLOUDFLARE_ZONE_ID_HK: ${{ secrets.CLOUDFLARE_ZONE_ID_HK }}
+        run: |
+          set -Eeuo pipefail
+          token="${CLOUDFLARE_API_TOKEN:-}"
+          tw_zone="${CLOUDFLARE_ZONE_ID_TW:-}"
+          hk_zone="${CLOUDFLARE_ZONE_ID_HK:-${CLOUDFLARE_ZONE_ID:-}}"
+          : > deploy-output/cache-purge.log
+
+          purge_site() {
+            local zone="$1" domain="$2" js_name="$3" css_name="$4"
+            if [[ -z "$token" || -z "$zone" ]]; then
+              printf '%s\n' "$domain: skipped (token or zone ID unavailable)" >> deploy-output/cache-purge.log
+              return 0
+            fi
+            local body result
+            body="$(printf '{\"files\":[\"https://%s/assets/%s\",\"https://%s/assets/%s\"]}' \
+              "$domain" "$js_name" "$domain" "$css_name")"
+            if result="$(curl -fsS -X POST "https://api.cloudflare.com/client/v4/zones/$zone/purge_cache" \
+              -H "Authorization: Bearer $token" \
+              -H 'Content-Type: application/json' \
+              --data "$body" 2>/dev/null)" \
+              && printf '%s' "$result" | grep -q '"success":true'; then
+              printf '%s\n' "$domain: purged" >> deploy-output/cache-purge.log
+            else
+              printf '%s\n' "$domain: purge request unavailable or rejected; continuing to cache-busted verification" \
+                >> deploy-output/cache-purge.log
+            fi
+          }
+
+          purge_site "$tw_zone" 'global-protection.jerryzuhow77.chatgpt.site' \
+            'guardian-wall-D4pS1Kwy.js' 'index-1prVp_H8.css'
+          purge_site "$hk_zone" 'cn.globalprotectionwall.com' \
+            'guardian-wall-2CHQLdmM.js' 'index-CA0ym-VZ.css'
+
+      - name: Verify public assets and public message counts
+        id: edge_verify
+        if: steps.deploy.outputs.deployed == 'true'
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          passed=false
+          for attempt in $(seq 1 12); do
+            echo "Public-edge verification attempt $attempt/12"
+            if python3 "$HANDOFF_DIR/ops/verify_live_after_deploy.py" \
+              --site auto --timeout 35 \
+              --output deploy-output/live-verification.json; then
+              passed=true
+              break
+            fi
+            sleep 10
+          done
+          [[ "$passed" == true ]]
+          echo 'passed=true' >> "$GITHUB_OUTPUT"
+
+      - name: Install browser for live interaction verification
+        if: steps.edge_verify.outputs.passed == 'true'
+        shell: bash
+        run: |
+          python3 -m pip install --disable-pip-version-check playwright==1.54.0
+          python3 -m playwright install --with-deps chromium
+
+      - name: Verify desktop and mobile globe interaction on both public sites
+        if: steps.edge_verify.outputs.passed == 'true'
+        shell: bash
+        run: |
+          cat > /tmp/live_browser_verify.py <<'PY'
+          import json
+          import time
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+
+          OUT = Path('deploy-output')
+          TARGETS = {
+              'tw': 'https://global-protection.jerryzuhow77.chatgpt.site/map',
+              'hk': 'https://cn.globalprotectionwall.com/map',
+          }
+          VIEWPORTS = {
+              'desktop': {'width': 1440, 'height': 1000},
+              'mobile': {'width': 390, 'height': 844},
+          }
+          report = {'patch_id': 'global-protection-map-autofix-20260825', 'sites': {}, 'pass': True}
+
+          def wait_select(page, expected):
+              page.wait_for_function(
+                  "expected => document.querySelector('.region-filter-select select')?.value === expected",
+                  arg=expected,
+                  timeout=8000,
+              )
+
+          def wait_count(page, expected):
+              page.wait_for_function(
+                  "expected => Number(document.querySelector('.map-count strong')?.textContent?.trim()) === expected",
+                  arg=expected,
+                  timeout=8000,
+              )
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True, args=['--no-sandbox', '--disable-dev-shm-usage'])
+              for site, base in TARGETS.items():
+                  site_report = {'viewports': {}}
+                  report['sites'][site] = site_report
+                  for viewport_name, viewport in VIEWPORTS.items():
+                      console_errors = []
+                      page_errors = []
+                      page = browser.new_page(viewport=viewport)
+                      page.on('console', lambda msg, bucket=console_errors: bucket.append(msg.text) if msg.type == 'error' else None)
+                      page.on('pageerror', lambda exc, bucket=page_errors: bucket.append(str(exc)))
+                      url = f"{base}?map-autofix-live={time.time_ns()}"
+                      page.goto(url, wait_until='domcontentloaded', timeout=60000)
+                      page.wait_for_selector('.map-stage', timeout=30000)
+                      page.wait_for_selector('.region-filter-select select', state='attached', timeout=30000)
+                      page.locator('.map-stage').scroll_into_view_if_needed()
+                      page.wait_for_timeout(2200)
+
+                      style = page.locator('.map-stage').evaluate(
+                          "el => { const s=getComputedStyle(el); const r=el.getBoundingClientRect(); "
+                          "return {opacity:s.opacity, visibility:s.visibility, display:s.display, width:r.width, height:r.height}; }"
+                      )
+                      select = page.locator('.region-filter-select select')
+                      options = select.locator('option').evaluate_all(
+                          "els => els.map(el => ({value:el.value,text:(el.textContent||'').trim()}))"
+                      )
+                      checks = {
+                          'map_visible': style['opacity'] == '1' and style['visibility'] == 'visible' and style['display'] != 'none' and style['height'] > 300,
+                          'selector_present': select.count() == 1,
+                          'selector_options': {'all', 'GB', 'TW', 'CN'}.issubset({item['value'] for item in options}),
+                      }
+
+                      if viewport_name == 'desktop':
+                          london = page.locator(
+                              '.region-map-mark[aria-label*="伦敦"], '
+                              '.region-map-mark[aria-label*="倫敦"], '
+                              '.region-map-mark[aria-label*="London"]'
+                          ).first
+                          coords = london.evaluate(
+                              "el => { const h=el.querySelector('.mark-hit-overlay'); return {"
+                              "x:Number(el.dataset.mapAutofixX), y:Number(el.dataset.mapAutofixY), "
+                              "transform:el.getAttribute('transform')||'', r:Number(h?.getAttribute('r'))}; }"
+                          )
+                          london.evaluate("el => el.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}))")
+                          wait_select(page, 'GB')
+                          wait_count(page, 1)
+                          select.select_option('TW')
+                          wait_select(page, 'TW')
+                          wait_count(page, 8)
+                          select.select_option('CN')
+                          wait_select(page, 'CN')
+                          wait_count(page, 5)
+                          select.select_option('all')
+                          wait_select(page, 'all')
+                          wait_count(page, 16)
+                          checks['london_corrected'] = coords == {'x': 102, 'y': 163, 'transform': 'translate(-150 -12)', 'r': 30}
+                          checks['marker_and_selector_filter_counts'] = True
+
+                      screenshot = OUT / f'{site}-{viewport_name}-live.png'
+                      page.screenshot(path=str(screenshot), full_page=True)
+                      viewport_pass = all(checks.values()) and not page_errors
+                      site_report['viewports'][viewport_name] = {
+                          'url': url,
+                          'style': style,
+                          'options': options,
+                          'checks': checks,
+                          'console_errors': console_errors,
+                          'page_errors': page_errors,
+                          'pass': viewport_pass,
+                      }
+                      report['pass'] = report['pass'] and viewport_pass
+                      page.close()
+              browser.close()
+
+          (OUT / 'live-browser-verification.json').write_text(
+              json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
+          )
+          print(json.dumps(report, ensure_ascii=False, indent=2))
+          raise SystemExit(0 if report['pass'] else 1)
+          PY
+          python3 /tmp/live_browser_verify.py
+
+      - name: Write final deployment summary
+        if: always()
+        shell: bash
+        run: |
+          deployed='${{ steps.deploy.outputs.deployed }}'
+          edge_passed='${{ steps.edge_verify.outputs.passed }}'
+          browser_report=false
+          [[ -f deploy-output/live-browser-verification.json ]] && browser_report=true
+          cat > deploy-output/final-status.json <<JSON
+          {
+            "patch_id": "$PATCH_ID",
+            "authorized_ssh_key_available": $([[ '${{ steps.credentials.outputs.available }}' == 'true' ]] && echo true || echo false),
+            "production_deploy_completed": $([[ "$deployed" == 'true' ]] && echo true || echo false),
+            "public_edge_verification_passed": $([[ "$edge_passed" == 'true' ]] && echo true || echo false),
+            "live_browser_report_created": $browser_report,
+            "data_or_api_mutated": false
+          }
+          JSON
+          {
+            echo '## Global Protection map autofix final status'
+            echo
+            echo '```json'
+            cat deploy-output/final-status.json
+            echo '```'
+            echo
+            echo '- Repair scope: the four existing static JS/CSS assets only.'
+            echo '- Preserved: public messages, database, API routes, authentication, moderation, synchronization, DNS, TLS, and integrations.'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload sanitized deployment and live verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: global-protection-map-autodeploy-result-20260825
+          path: |
+            deploy-output/*.json
+            deploy-output/*.log
+            deploy-output/*.png
+            deploy-output/*.sha256
+          if-no-files-found: warn
+          retention-days: 14
