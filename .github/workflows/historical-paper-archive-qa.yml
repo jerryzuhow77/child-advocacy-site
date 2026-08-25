@@ -9,6 +9,10 @@ on:
       - 'assets/home-history-paper-art-20260823.css'
       - 'assets/home-history-relief-map-20260823.js'
       - 'assets/home-history-relief-map-20260823.css'
+      - 'assets/home-history-paper-weather-20260825.js'
+      - 'assets/home-history-paper-weather-20260825.css'
+      - 'index.html'
+      - 'en/index.html'
       - 'assets/art/east-asia-case-memory-map-paper-clay-balanced-20260824.webp'
       - 'sw.js'
       - '.github/workflows/historical-paper-archive-qa.yml'
@@ -24,12 +28,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install image QA dependency
+        run: python3 -m pip install --disable-pip-version-check --quiet Pillow
+
       - name: JavaScript syntax
         run: |
           set -euo pipefail
           node --check assets/home-archive-layout-20260823.js
           node --check assets/home-history-paper-art-20260823.js
           node --check assets/home-history-relief-map-20260823.js
+          node --check assets/home-history-paper-weather-20260825.js
           node --check sw.js
 
       - name: Static visual architecture assertions
@@ -44,6 +52,10 @@ jobs:
           paper_css = Path('assets/home-history-paper-art-20260823.css').read_text(encoding='utf-8')
           relief_js = Path('assets/home-history-relief-map-20260823.js').read_text(encoding='utf-8')
           relief_css = Path('assets/home-history-relief-map-20260823.css').read_text(encoding='utf-8')
+          weather_js = Path('assets/home-history-paper-weather-20260825.js').read_text(encoding='utf-8')
+          weather_css = Path('assets/home-history-paper-weather-20260825.css').read_text(encoding='utf-8')
+          home_html = Path('index.html').read_text(encoding='utf-8')
+          home_en_html = Path('en/index.html').read_text(encoding='utf-8')
           image_path = Path('assets/art/east-asia-case-memory-map-paper-clay-balanced-20260824.webp')
 
           assert 'home-history-paper-art-20260823.js' in loader
@@ -60,6 +72,15 @@ jobs:
           assert 'history-relief-cover-cloud' in relief_css
           assert '@media(max-width:760px)' in relief_css
           assert '@media(prefers-reduced-motion:reduce)' in relief_css
+          assert 'home-map-wind-path' in weather_js
+          assert 'home-map-current-path' in weather_js
+          assert 'IntersectionObserver' in weather_js
+          assert 'prefers-reduced-motion: reduce' in weather_js
+          assert 'pointer-events: none' in weather_css
+          assert 'home-history-paper-weather-20260825.css' in home_html
+          assert 'home-history-paper-weather-20260825.js' in home_html
+          assert 'home-history-paper-weather-20260825.css' in home_en_html
+          assert 'home-history-paper-weather-20260825.js' in home_en_html
           assert image_path.exists() and image_path.stat().st_size > 50000
           with Image.open(image_path) as image:
               assert image.width >= 1000 and image.height >= 560
