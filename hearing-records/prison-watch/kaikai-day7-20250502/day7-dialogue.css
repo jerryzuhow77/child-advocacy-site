@@ -1,0 +1,20 @@
+.hero-art,
+.hero-art picture { display: block; min-height: 1px; }
+.hero-art img { height: auto; background: #e9e1d5; }
+.full-dialogue { background: #f8f2e9; }
+.full-dialogue details { margin: 14px 0; border: 1px solid #d8ded9; border-radius: 20px; background: #fff; overflow: hidden; }
+.full-dialogue summary { cursor: pointer; padding: 21px 24px; color: #173944; font-weight: 950; }
+.full-dialogue .detail-body { padding: 0 24px 24px; }
+.focus-legend { display: flex; flex-wrap: wrap; gap: 9px; margin: 0 0 24px; }
+.focus-legend span,
+.dialogue-list mark { display: inline-flex; padding: .32rem .58rem; border-radius: 999px; font-size: .72rem; font-weight: 900; text-decoration: none; }
+.is-gap { background: #f3d9d4; color: #7f3029; }
+.is-admit { background: #f5e5bd; color: #6d4b13; }
+.is-evidence { background: #dcecef; color: #215563; }
+.is-procedure { background: #e5e6e2; color: #4c5559; }
+.dialogue-list mark { margin: 9px 5px 0 0; }
+.dialogue-list .qa { padding: 16px 0; border-bottom: 1px dashed #d8ded9; }
+.dialogue-list .qa:last-child { border-bottom: 0; }
+.session-time { padding: 12px 16px; border-radius: 13px; background: #edf2f1; font-weight: 900; }
+.dialogue-caution { margin-top: 24px; padding: 20px 22px; border-left: 5px solid #9b5044; border-radius: 16px; background: #fff; }
+.dialogue-caution p { margin: .45rem 0 0; color: #354e56; line-height: 1.8; }
