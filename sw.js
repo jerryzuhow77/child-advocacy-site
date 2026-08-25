@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-25-charity-images-visible-v18';
+const VERSION = '2026-08-25-four-language-qa-916-v1-charity-visible-v18';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
