@@ -74,9 +74,19 @@ jobs:
           assert '@media(prefers-reduced-motion:reduce)' in relief_css
           assert 'home-map-wind-path' in weather_js
           assert 'home-map-current-path' in weather_js
+          assert 'home-map-wind-ribbon' in weather_js
+          assert 'home-map-current-ribbon' in weather_js
+          assert 'home-map-cloud-top' in weather_js
+          assert 'home-map-cloud-fibre' in weather_js
+          assert 'home-map-sea-sheet' in weather_js
+          assert 'home-map-paper-fibres' in weather_js
           assert 'IntersectionObserver' in weather_js
           assert 'prefers-reduced-motion: reduce' in weather_js
           assert 'pointer-events: none' in weather_css
+          assert 'home-map-wind-shadow' in weather_css
+          assert 'home-map-current-shadow' in weather_css
+          assert 'home-map-cloud-crease' in weather_css
+          assert 'transform-style: preserve-3d' in weather_css
           assert 'home-history-paper-weather-20260825.css' in home_html
           assert 'home-history-paper-weather-20260825.js' in home_html
           assert 'home-history-paper-weather-20260825.css' in home_en_html
