@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-25-charity-poster-rebuild-v22-paper-weather-v5-unified-flecks';
+const VERSION = '2026-08-25-charity-poster-rebuild-v23-history-anchor-stability';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -25,6 +25,7 @@ const APP_SHELL = [
   './assets/home-gsap.js',
   './assets/home-gsap-map-20260824.js',
   './assets/home-history-paper-weather-20260825.js',
+  './assets/home-history-anchor-stability-20260825.js',
   './assets/home-gsap-base-20260823.js',
   './assets/home-archive-layout-20260823.js',
   './assets/home-ia-core-20260823.js',
