@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-25-four-language-qa-916-v1-charity-visible-v18-paper-weather-v1';
+const VERSION = '2026-08-25-charity-poster-rebuild-v19-paper-weather-v1';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -49,7 +49,6 @@ const APP_SHELL = [
   './activity-records/20260820-kaikai-story-collection/images/kaikai-story-collection-hero.webp',
   './activity-records/20260825-111-surplus-donation/',
   './activity-records/20260825-111-surplus-donation/images/charity-paper-clay-visible-v2.jpg',
-  './activity-records/20260825-111-surplus-donation/images/charity-poster-20260825.png',
   './activity-records/20260825-111-surplus-donation/images/postal-giro-slip-20260825.jpg',
   './activity-records/20260825-111-surplus-donation/images/postal-giro-receipt-20260825.jpg',
   './assets/vendor/gsap-3.13.0.min.js',
