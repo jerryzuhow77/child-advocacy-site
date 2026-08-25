@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = '2026-08-24-mobile-history-map-stable-v17';
+const VERSION = '2026-08-25-charity-images-visible-v18';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -45,6 +45,11 @@ const APP_SHELL = [
   './assets/global-protection-wall-portal.js',
   './global-protection-wall/',
   './activity-records/20260820-kaikai-story-collection/images/kaikai-story-collection-hero.webp',
+  './activity-records/20260825-111-surplus-donation/',
+  './activity-records/20260825-111-surplus-donation/images/charity-paper-clay-visible-v2.jpg',
+  './activity-records/20260825-111-surplus-donation/images/charity-poster-20260825.png',
+  './activity-records/20260825-111-surplus-donation/images/postal-giro-slip-20260825.jpg',
+  './activity-records/20260825-111-surplus-donation/images/postal-giro-receipt-20260825.jpg',
   './assets/vendor/gsap-3.13.0.min.js',
   './assets/vendor/ScrollTrigger-3.13.0.min.js',
   './assets/icons/app-icon-192.png',
@@ -173,6 +178,7 @@ self.addEventListener('fetch', event => {
   }
 
   const alwaysFresh =
+    url.pathname.includes('/activity-records/20260825-111-surplus-donation/') ||
     url.pathname.endsWith('/assets/site.js') ||
     url.pathname.endsWith('/assets/site-base-20260823.js') ||
     url.pathname.endsWith('/assets/site-four-language-qa-20260823.js') ||
