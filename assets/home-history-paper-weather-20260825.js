@@ -317,7 +317,45 @@
     });
   }
 
+  function repairHomepageLatestReport() {
+    var article = document.querySelector('.home-charity-feature');
+    if (!article) return;
+
+    var otherRegion = all('.historical-region-static').filter(function (item) {
+      return item.textContent.trim() === '其他地區';
+    })[0];
+    if (otherRegion) otherRegion.remove();
+
+    if (!article.querySelector('.home-charity-feature-copy')) {
+      var copy = document.createElement('div');
+      copy.className = 'home-charity-feature-copy';
+      copy.innerHTML = '' +
+        '<small>08.25 · 公益行動・款項公開</small>' +
+        '<h3 id="homeLuoFeatureTitle">把共同的支持，<span>延續成另一份守護</span></h3>' +
+        '<p>1/11「反廢死・護兒少大遊行」活動互助公費結餘新臺幣 27,128 元，已透過家屬公開募款管道，全數捐贈予羅氏兄弟。</p>' +
+        '<div class="home-charity-feature-meta"><b>27,128 元全數捐贈</b><b>收據公開</b><b>關懷被害家庭</b></div>' +
+        '<a class="home-charity-feature-link" href="./activity-records/20260825-111-surplus-donation/">閱讀完整公告與捐贈證明 <span aria-hidden="true">→</span></a>';
+      article.appendChild(copy);
+    }
+
+    if (!document.getElementById('home-latest-desktop-repair-20260826')) {
+      var style = document.createElement('style');
+      style.id = 'home-latest-desktop-repair-20260826';
+      style.textContent = '@media(min-width:761px){' +
+        '.home-civic-film,.home-civic-film-track,.home-civic-film-slide{display:block!important;position:relative!important;visibility:visible!important;opacity:1!important;transform:none!important}' +
+        '.home-charity-feature{grid-template-columns:minmax(320px,.88fr) minmax(440px,1.12fr)!important;min-height:540px!important}' +
+        '.home-charity-feature-media{position:relative!important;inset:auto!important;grid-column:2;grid-row:1;min-width:0;min-height:540px;background:#6d3b2b}' +
+        '.home-charity-feature-bg{display:block!important;visibility:visible!important;opacity:1!important;object-position:center}' +
+        '.home-charity-feature-proof{right:6%;width:88%;max-height:84%;opacity:1!important;visibility:visible!important}' +
+        '.home-charity-feature-media:after{background:linear-gradient(90deg,rgba(66,28,18,.22),rgba(79,35,24,.04) 38%,rgba(79,35,24,0) 72%)}' +
+        '.home-charity-feature-copy{grid-column:1;grid-row:1;align-self:stretch;display:flex!important;flex-direction:column;justify-content:center;max-width:none;padding:clamp(34px,4.3vw,68px);background:linear-gradient(145deg,rgba(58,23,17,.98),rgba(91,42,29,.92));text-shadow:0 2px 14px rgba(25,8,5,.34)}' +
+      '}';
+      document.head.appendChild(style);
+    }
+  }
+
   function init() {
+    repairHomepageLatestReport();
     enhanceAll(document);
     var zone = document.getElementById('home-historical-cases');
     if (zone && 'MutationObserver' in window) {
