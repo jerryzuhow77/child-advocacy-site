@@ -50,6 +50,7 @@
 .home-post-stat-icon{display:inline-grid;place-items:center;min-width:1em;font-size:1.05em;line-height:1}
 .home-post-stat-label,.home-post-stat b{font:inherit;color:inherit}
 .home-post-engagement[data-load-state=unavailable] .home-post-stat:not(.is-share){opacity:.74}
+[data-engagement-host="true"] .public-view-count-card{display:none!important}
 
 .post-engagement-dialog,
 .post-share-dialog{
@@ -303,7 +304,7 @@
 
 /* The latest-report wheel presents exactly the two pinned reports as legible articles. */
 .home-latest-flash .home-document-disc-card:not([data-latest-priority="true"]){display:none!important}
-.home-latest-flash .home-document-disc-shell{height:760px!important}
+.home-latest-flash .home-document-disc-shell{height:930px!important}
 .home-latest-flash .home-document-disc-card[data-latest-priority="true"]{
   width:clamp(250px,24vw,300px)!important;
   min-height:300px!important;
@@ -318,6 +319,17 @@
 .home-latest-flash .home-document-disc-card[data-latest-priority="true"] strong{font-size:1.12rem!important}
 .home-latest-flash .home-document-disc-card[data-latest-priority="true"] em{display:block!important;font-size:.78rem!important}
 .home-latest-flash .home-document-disc-card[data-latest-priority="true"]>.home-post-engagement{margin:0 10px 10px!important}
+.home-latest-flash .home-document-disc-card[data-latest-priority="true"] .home-post-stat{gap:2px;font-size:9px}
+.home-latest-flash .home-document-disc-card[data-latest-priority="true"] .home-post-stat-label{
+  position:static;
+  display:inline;
+  width:auto;
+  height:auto;
+  overflow:visible;
+  clip:auto;
+  white-space:nowrap;
+  font-size:8px;
+}
 @media(max-width:760px){
   .home-latest-flash .home-document-disc-shell{height:650px!important}
   .home-latest-flash .home-document-disc-card[data-latest-priority="true"]{width:170px!important;min-height:230px!important;border-radius:22px!important}
@@ -327,4 +339,6 @@
   .home-latest-flash .home-document-disc-card[data-latest-priority="true"] strong{font-size:.82rem!important}
   .home-latest-flash .home-document-disc-card[data-latest-priority="true"] em{font-size:.62rem!important}
   .home-latest-flash .home-document-disc-card[data-latest-priority="true"]>.home-post-engagement{margin:0 5px 6px!important}
+  .home-latest-flash .home-document-disc-card[data-latest-priority="true"] .home-post-stat{gap:1px;font-size:7px}
+  .home-latest-flash .home-document-disc-card[data-latest-priority="true"] .home-post-stat-label{font-size:6px}
 }

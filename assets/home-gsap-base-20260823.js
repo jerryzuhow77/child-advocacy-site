@@ -482,7 +482,7 @@
     function radius() {
       if (window.innerWidth <= 430) return 175;
       if (window.innerWidth <= 760) return 190;
-      return Math.min(shell.clientWidth * 0.24, 225);
+      return Math.min(shell.clientWidth * 0.31, 290);
     }
 
     function keepCardsUpright() {
