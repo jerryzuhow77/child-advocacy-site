@@ -2,7 +2,9 @@
 document.documentElement.classList.add("js-ready");
 const menu=document.getElementById("menuButton"),nav=document.getElementById("siteNav");
 if(menu&&nav){menu.addEventListener("click",()=>{const open=nav.classList.toggle("open");menu.setAttribute("aria-expanded",String(open))});nav.addEventListener("click",e=>{if(e.target.closest("a")){nav.classList.remove("open");menu.setAttribute("aria-expanded","false")}})}
-const lang=document.documentElement.lang==="zh-Hans"||new URLSearchParams(location.search).get("lang")==="zh-Hans"?"zh-Hans":"zh-Hant";
+const requestedLang=new URLSearchParams(location.search).get("lang");
+if(document.documentElement.lang!=="zh-Hans"&&requestedLang==="zh-Hans"){location.replace("./zh-Hans/"+location.hash);return}
+const lang=document.documentElement.lang==="zh-Hans"?"zh-Hans":"zh-Hant";
 const isHans=lang==="zh-Hans",ui=(hant,hans)=>isHans?hans:hant;
 const reveals=[...document.querySelectorAll(".reveal")];
 if("IntersectionObserver"in window){const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in-view");io.unobserve(e.target)}}),{rootMargin:"0px 0px -8% 0px",threshold:.06});reveals.forEach(el=>io.observe(el))}else reveals.forEach(el=>el.classList.add("in-view"));
