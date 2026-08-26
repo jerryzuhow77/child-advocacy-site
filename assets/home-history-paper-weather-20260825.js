@@ -343,7 +343,7 @@
       style.id = 'home-latest-desktop-repair-20260826';
       style.textContent = '@media(min-width:761px){' +
         '.home-civic-film,.home-civic-film-track,.home-civic-film-slide{display:block!important;position:relative!important;visibility:visible!important;opacity:1!important;transform:none!important}' +
-        '.home-charity-feature{grid-template-columns:minmax(320px,.88fr) minmax(440px,1.12fr)!important;min-height:540px!important}' +
+        '.home-charity-feature{grid-template-columns:minmax(320px,.88fr) minmax(440px,1.12fr)!important;min-height:540px!important;opacity:1!important;visibility:visible!important;transform:none!important}' +
         '.home-charity-feature-media{position:relative!important;inset:auto!important;grid-column:2;grid-row:1;min-width:0;min-height:540px;background:#6d3b2b}' +
         '.home-charity-feature-bg{display:block!important;visibility:visible!important;opacity:1!important;object-position:center}' +
         '.home-charity-feature-proof{right:6%;width:88%;max-height:84%;opacity:1!important;visibility:visible!important}' +
