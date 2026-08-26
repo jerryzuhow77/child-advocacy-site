@@ -230,6 +230,9 @@
 .home-hearing-zone-poster::after{content:"";position:absolute;inset:0;background:linear-gradient(130deg,transparent 40%,rgba(255,255,255,.28),transparent 65%);transform:translateX(-120%)}
 .home-hearing-zone-poster:hover::after{transform:translateX(120%);transition:transform .9s ease}
 .home-hearing-zone-poster img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.home-hearing-zone-feature-day8{grid-template-columns:minmax(380px,1.18fr) minmax(300px,.82fr);gap:clamp(24px,3vw,46px)}
+.home-hearing-zone-feature-day8 .home-hearing-zone-poster{width:100%;max-width:none}
+.home-hearing-zone-feature-day8 .home-hearing-zone-poster img{aspect-ratio:1586/992;object-fit:contain;background:#ead7b3}
 .home-hearing-zone-poster>span{position:absolute;left:16px;top:16px;padding:7px 12px;border-radius:999px;background:rgba(63,85,87,.88);color:#fff;font-size:.75rem;font-weight:900;letter-spacing:.08em;backdrop-filter:blur(7px)}
 .home-hearing-zone-copy{position:relative;z-index:2}
 .home-hearing-zone-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
