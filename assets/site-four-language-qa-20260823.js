@@ -10,19 +10,19 @@
   var copy={
     'zh-Hant':{
       submit:'前往心得投稿',official:'護童行動聯盟官方網站',heroAlt:'「讓我們一起寫下剴剴的故事」心得募集活動紙雕陶土主視覺',caption:'活動主視覺｜讓我們一起寫下剴剴的故事',
-      campaign:{eyebrow:'9/16 SECOND-INSTANCE HEARING · STORY COLLECTION',title:'9/16 開庭前，留下你想說的話',body:'在陳尚潔案二審再次開庭以前，邀請你寫下關注剴剴案的感受、仍想追問的問題，以及希望兒少保護制度改變的地方。每一段文字，都會成為不讓孩子與制度課題被遺忘的共同紀錄。',primary:'前往心得投稿',secondary:'閱讀活動說明',mini:'9/16 開庭前，留下你的心得'}
+      campaign:{eyebrow:'9/16 SECOND-INSTANCE HEARING · STORY COLLECTION',title:'9/16 開庭前，留下你想說的話',body:'在陳尚潔案二審再次開庭以前，邀請你寫下關注剴剴案的感受、仍想追問的問題，以及希望兒少保護制度改變的地方。每一段文字，都會成為不讓孩子與制度課題被遺忘的共同紀錄。',primary:'前往心得投稿',secondary:'閱讀活動說明',mini:'9/16 開庭前，留下你的心得',discMeta:'08.20 · 9/16 開庭前行動',discTitle:'一起寫下剴剴的故事',discBody:'留下感受、疑問與改變期待'}
     },
     'zh-Hans':{
       submit:'前往心得投稿',official:'护童行动联盟官方网站',heroAlt:'“让我们一起写下剀剀的故事”心得征集活动纸雕陶土主视觉',caption:'活动主视觉｜让我们一起写下剀剀的故事',
-      campaign:{eyebrow:'9/16 SECOND-INSTANCE HEARING · STORY COLLECTION',title:'9/16 开庭前，留下你想说的话',body:'在陈尚洁案二审再次开庭以前，邀请你写下关注剀剀案的感受、仍想追问的问题，以及希望儿童保护制度改变的地方。每一段文字，都会成为不让孩子与制度课题被遗忘的共同记录。',primary:'前往心得投稿',secondary:'阅读活动说明',mini:'9/16 开庭前，留下你的心得'}
+      campaign:{eyebrow:'9/16 SECOND-INSTANCE HEARING · STORY COLLECTION',title:'9/16 开庭前，留下你想说的话',body:'在陈尚洁案二审再次开庭以前，邀请你写下关注剀剀案的感受、仍想追问的问题，以及希望儿童保护制度改变的地方。每一段文字，都会成为不让孩子与制度课题被遗忘的共同记录。',primary:'前往心得投稿',secondary:'阅读活动说明',mini:'9/16 开庭前，留下你的心得',discMeta:'08.20 · 9/16 开庭前行动',discTitle:'一起写下剀剀的故事',discBody:'留下感受、疑问与改变期待'}
     },
     en:{
       submit:'Share your reflection',official:'Official website',heroAlt:'Paper-cut and clay artwork for the “Let Us Write Kaikai’s Story Together” campaign',caption:'Campaign artwork｜Let Us Write Kaikai’s Story Together',
-      campaign:{eyebrow:'SEPTEMBER 16 APPEAL HEARING · STORY COLLECTION',title:'Before the September 16 appeal hearing, share what you want the system to hear',body:'Write about what stayed with you, the questions that remain, and the changes you hope to see in child protection. Each submission becomes part of a shared public record that refuses to let the child—or the institutional failures—be forgotten.',primary:'Share your reflection',secondary:'Read the campaign',mini:'Before the September 16 hearing, share your reflection'}
+      campaign:{eyebrow:'SEPTEMBER 16 APPEAL HEARING · STORY COLLECTION',title:'Before the September 16 appeal hearing, share what you want the system to hear',body:'Write about what stayed with you, the questions that remain, and the changes you hope to see in child protection. Each submission becomes part of a shared public record that refuses to let the child—or the institutional failures—be forgotten.',primary:'Share your reflection',secondary:'Read the campaign',mini:'Before the September 16 hearing, share your reflection',discMeta:'AUG 20 · BEFORE SEPTEMBER 16',discTitle:'Write Kaikai’s Story Together',discBody:'Share what stayed with you and what should change'}
     },
     ja:{
       submit:'思いを投稿する',official:'公式サイト',heroAlt:'「一緒にカイカイの物語を綴りませんか」投稿企画の切り絵・クレイアート主ビジュアル',caption:'企画主ビジュアル｜一緒にカイカイの物語を綴りませんか',
-      campaign:{eyebrow:'9月16日 控訴審 · 投稿企画',title:'9月16日の控訴審を前に、あなたの思いを残してください',body:'事件を見守る中で心に残ったこと、今も問い続けたいこと、子どもの保護制度に望む変化を、あなたの言葉でお寄せください。一つひとつの投稿が、子どもと制度上の課題を忘れないための共同記録になります。',primary:'思いを投稿する',secondary:'企画の詳細を見る',mini:'9月16日の控訴審を前に、あなたの思いを残す'}
+      campaign:{eyebrow:'9月16日 控訴審 · 投稿企画',title:'9月16日の控訴審を前に、あなたの思いを残してください',body:'事件を見守る中で心に残ったこと、今も問い続けたいこと、子どもの保護制度に望む変化を、あなたの言葉でお寄せください。一つひとつの投稿が、子どもと制度上の課題を忘れないための共同記録になります。',primary:'思いを投稿する',secondary:'企画の詳細を見る',mini:'9月16日の控訴審を前に、あなたの思いを残す',discMeta:'08.20 · 9月16日の控訴審前',discTitle:'カイカイの物語を一緒に綴る',discBody:'思い、問い、変化への願いを残す'}
     }
   };
 
@@ -161,12 +161,13 @@
   function syncCampaignCards(locale){
     var t=(copy[locale]||copy['zh-Hant']).campaign;
     document.querySelectorAll('[data-qa916-card]').forEach(function(card){
-      var mapping={eyebrow:t.eyebrow,title:t.title,body:t.body,primary:t.primary,secondary:t.secondary,mini:t.mini};
+      var mapping={eyebrow:t.eyebrow,title:t.title,body:t.body,primary:t.primary,secondary:t.secondary,mini:t.mini,discMeta:t.discMeta,discTitle:t.discTitle,discBody:t.discBody};
       Object.keys(mapping).forEach(function(role){
         card.querySelectorAll('[data-qa916-copy="'+role+'"]').forEach(function(node){node.textContent=mapping[role];});
       });
       card.querySelectorAll('[data-qa916-primary]').forEach(function(link){setLink(link,submissionUrl(locale),locale==='zh-Hans');});
       card.querySelectorAll('[data-qa916-secondary]').forEach(function(link){setLink(link,campaignUrl(locale),false);});
+      if(card.matches('a')){setLink(card,campaignUrl(locale),false);card.setAttribute('aria-label',t.title);}
       var image=card.querySelector('img[data-qa916-image]');
       if(image){image.src=new URL('activity-records/20260820-kaikai-story-collection/images/kaikai-story-collection-hero.webp',siteRoot).href;image.alt=(copy[locale]||copy['zh-Hant']).heroAlt;}
     });
