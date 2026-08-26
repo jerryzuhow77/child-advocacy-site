@@ -2,7 +2,7 @@
   "use strict";
   if (window.__cpaPostEngagement) return;
   window.__cpaPostEngagement = true;
-  const API = "https://wall.globalprotectionwall.com/api/public/official-articles";
+  const API = "https://wall.globalprotectionwall.com/api/public/messages";
   const CLIENT_KEY = "cpa_engagement_client_v1";
   const selectors = [
     "#news-flash a[href]", "#news-activity a.home-activity-primary", "#news-hearing a.home-news-card",
@@ -21,7 +21,7 @@
     const url = new URL(link.href, location.href);
     const path = url.pathname.replace(/^\/child-advocacy-site\/?/, "").replace(/\/$/, "") || "home";
     const title = (link.querySelector("strong,h3")?.textContent || link.getAttribute("aria-label") || link.textContent || "官網文章").trim().replace(/\s+/g, " ").slice(0, 160);
-    return { key: `official:${path.toLowerCase().replace(/[^a-z0-9/_-]+/g, "-")}`, title, url: url.href };
+    return { key: `official-${path.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-")}`, title, url: url.href };
   }
   async function request(item, options) {
     const response = await fetch(`${API}/${encodeURIComponent(item.key)}/engagement`, { cache: "no-store", ...options });
