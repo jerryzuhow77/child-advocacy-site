@@ -330,7 +330,19 @@
       if (blocks.length) timeline.fromTo(blocks, { autoAlpha: 0, y: 26, rotation: (index) => index % 2 ? 4 : -4 }, { autoAlpha: 0.92, y: 0, rotation: 0, duration: 0.58, stagger: 0.13, ease: "back.out(1.35)" }, 0.62);
       if (boundary) timeline.fromTo(boundary, { scaleX: 0 }, { scaleX: 1, duration: 1.15, transformOrigin: "0 50%" }, 1.12);
       if (record) timeline.fromTo(record, { autoAlpha: 0, x: 16 }, { autoAlpha: 0.56, x: 0, duration: 0.8 }, 1.46);
-      animateCraft(".tt-craft-registration-mark", { autoAlpha: 0, scale: 1.65, rotation: (index) => index % 2 ? 22 : -22 }, { autoAlpha: 0.72, scale: 1, rotation: 0, duration: 0.55, ease: "back.out(1.35)" }, 0.82, 0.12);
+      animateCraft(".tt-craft-registration-mark", {
+        autoAlpha: 0,
+        scaleX: (index) => (index === 1 || index === 3 ? -1 : 1) * 1.65,
+        scaleY: (index) => (index >= 2 ? -1 : 1) * 1.65,
+        rotation: (index) => index % 2 ? 22 : -22
+      }, {
+        autoAlpha: 0.72,
+        scaleX: (index) => index === 1 || index === 3 ? -1 : 1,
+        scaleY: (index) => index >= 2 ? -1 : 1,
+        rotation: 0,
+        duration: 0.55,
+        ease: "back.out(1.35)"
+      }, 0.82, 0.12);
       animateCraft(".tt-craft-ink-pad", { autoAlpha: 0, y: 18, scale: 0.55 }, { autoAlpha: 0.72, y: 0, scale: 1, duration: 0.55, ease: "back.out(1.5)" }, 1.12, 0.11);
       animateCraft(".tt-craft-evidence-rule", { autoAlpha: 0, scaleY: 0.08 }, { autoAlpha: 0.66, scaleY: 1, duration: 1.05, transformOrigin: "50% 0" }, 1.2);
       return;
