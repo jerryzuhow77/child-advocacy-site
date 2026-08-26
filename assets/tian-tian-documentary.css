@@ -4075,3 +4075,60 @@ html.tt-gsap-ready .tt-transition.is-visible .tt-scene-craft>i{
   animation:none!important;
   transition:none!important;
 }
+
+/* 2026-08-26 / tactile paper-sculpture atlas.
+   One transparent 3 × 3 source gives each act its own museum-craft paper
+   sculpture. Existing geometric marks remain as quiet motion accents and a
+   resilient fallback if the raster asset is unavailable. */
+.tt-scene-craft>i:not(.tt-paper-cut-atlas){
+  z-index:1;
+  filter:opacity(.34) saturate(.78);
+}
+.tt-paper-cut-atlas{
+  z-index:0;
+  inset:0;
+  display:grid!important;
+  place-items:center;
+  overflow:visible;
+}
+.tt-paper-cut-atlas-image{
+  position:relative;
+  display:block;
+  height:112%;
+  aspect-ratio:1;
+  background-image:url("./art/tian-tian-paper-cut-scene-atlas-20260826.webp");
+  background-repeat:no-repeat;
+  background-size:300% 300%;
+  background-position:var(--tt-paper-atlas-x,0%) var(--tt-paper-atlas-y,0%);
+  opacity:var(--tt-paper-atlas-opacity,.78);
+  transform-origin:50% 56%;
+  filter:drop-shadow(9px 12px 6px rgba(35,15,9,.34)) saturate(.96) brightness(.98);
+}
+.tt-scene-craft--scroll-prologue{--tt-paper-atlas-x:0%;--tt-paper-atlas-y:0%;--tt-paper-atlas-opacity:.78}
+.tt-scene-craft--wind-kite{--tt-paper-atlas-x:50%;--tt-paper-atlas-y:0%;--tt-paper-atlas-opacity:.76}
+.tt-scene-craft--ten-knot-door{--tt-paper-atlas-x:100%;--tt-paper-atlas-y:0%;--tt-paper-atlas-opacity:.8}
+.tt-scene-craft--frost-lantern{--tt-paper-atlas-x:0%;--tt-paper-atlas-y:50%;--tt-paper-atlas-opacity:.72}
+.tt-scene-craft--court-scroll{--tt-paper-atlas-x:50%;--tt-paper-atlas-y:50%;--tt-paper-atlas-opacity:.74}
+.tt-scene-craft--seal-road{--tt-paper-atlas-x:100%;--tt-paper-atlas-y:50%;--tt-paper-atlas-opacity:.76}
+.tt-scene-craft--evidence-blocks{--tt-paper-atlas-x:0%;--tt-paper-atlas-y:100%;--tt-paper-atlas-opacity:.72}
+.tt-scene-craft--seven-moon{--tt-paper-atlas-x:50%;--tt-paper-atlas-y:100%;--tt-paper-atlas-opacity:.78}
+.tt-scene-craft--guarded-lamp{--tt-paper-atlas-x:100%;--tt-paper-atlas-y:100%;--tt-paper-atlas-opacity:.8}
+
+@media(max-width:720px){
+  .tt-scene-craft{opacity:.88}
+  .tt-scene-craft>i:not(.tt-paper-cut-atlas){filter:opacity(.22) saturate(.72)}
+  .tt-paper-cut-atlas-image{
+    height:118%;
+    opacity:.72;
+    filter:drop-shadow(5px 7px 3px rgba(35,15,9,.32)) saturate(.94) brightness(.96);
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .tt-paper-cut-atlas-image{
+    opacity:var(--tt-paper-atlas-opacity,.78)!important;
+    transform:none!important;
+    filter:drop-shadow(7px 9px 4px rgba(35,15,9,.3)) saturate(.96) brightness(.98)!important;
+    will-change:auto;
+  }
+}
