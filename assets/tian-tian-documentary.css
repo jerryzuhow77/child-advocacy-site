@@ -4132,3 +4132,106 @@ html.tt-gsap-ready .tt-transition.is-visible .tt-scene-craft>i{
     will-change:auto;
   }
 }
+
+/* 2026-08-26 / carved-timber theatre direction.
+   The former red fabric curtains read too close to a circus proscenium. A
+   single transparent, hand-carved timber frame now carries the opening, all
+   nine chapter tableaux and the epilogue. The lit mulberry-paper screen stays
+   quiet behind the existing puppets and paper-sculpture motifs. */
+.tt-stage-curtain{
+  display:none!important;
+}
+
+.tt-stage::before,
+.tt-stage::after{
+  content:none!important;
+  display:none!important;
+}
+
+.tt-carved-stage-frame{
+  position:absolute;
+  inset:-.25%;
+  display:block;
+  background:url("./art/tian-tian-carved-wood-stage-frame-20260826.webp") center/100% 100% no-repeat;
+  filter:drop-shadow(0 12px 10px rgba(12,5,2,.58)) drop-shadow(0 1px 1px rgba(241,191,91,.16));
+  opacity:1;
+  transform-origin:50% 50%;
+  pointer-events:none;
+}
+.tt-carved-stage-frame--opening{z-index:3}
+.tt-carved-stage-frame--transition{z-index:10;will-change:transform,opacity}
+.tt-carved-stage-frame--ending{z-index:11}
+
+.tt-stage,
+.tt-transition[data-shadow-scene] .tt-shadow-stage,
+.tt-ending-theatre-stage{
+  border-color:rgba(61,34,20,.94)!important;
+  background:
+    linear-gradient(0deg,rgba(24,10,5,.7),transparent 24%,rgba(31,14,7,.05) 70%,rgba(16,7,4,.24)) 0 0/100% 100% no-repeat,
+    repeating-linear-gradient(93deg,rgba(91,55,31,.045) 0 1px,transparent 1px 6px) 0 0/100% 100% no-repeat,
+    url("./art/tian-tian-shadow-theatre-static-duet-20260814.webp") 50% 50%/contain no-repeat,
+    radial-gradient(ellipse at 50% 47%,#f0d69a 0%,#d2a463 45%,#7c5032 76%,#28160d 100%) 0 0/100% 100% no-repeat!important;
+  background-position:center!important;
+  box-shadow:inset 0 0 82px rgba(31,14,7,.52),0 22px 48px rgba(9,4,2,.36)!important;
+}
+
+html.tt-pose-ready .tt-stage,
+html.tt-pose-ready .tt-transition[data-shadow-scene] .tt-shadow-stage,
+.tt-transition--prologue .tt-shadow-stage,
+html.tt-pose-ready .tt-ending-theatre-stage{
+  background:
+    linear-gradient(0deg,rgba(24,10,5,.7),transparent 24%,rgba(31,14,7,.05) 70%,rgba(16,7,4,.24)) 0 0/100% 100% no-repeat,
+    repeating-linear-gradient(93deg,rgba(91,55,31,.045) 0 1px,transparent 1px 6px) 0 0/100% 100% no-repeat,
+    radial-gradient(ellipse at 50% 47%,#f0d69a 0%,#d2a463 45%,#7c5032 76%,#28160d 100%) 0 0/100% 100% no-repeat!important;
+  background-position:center!important;
+}
+
+.tt-transition.is-visible .tt-carved-stage-frame--transition{
+  animation:tt-carved-stage-settle 1.25s cubic-bezier(.2,.72,.2,1) both;
+}
+@keyframes tt-carved-stage-settle{
+  from{opacity:.72;transform:scale(1.018);filter:drop-shadow(0 8px 7px rgba(12,5,2,.42)) saturate(.88)}
+  to{opacity:1;transform:none;filter:drop-shadow(0 12px 10px rgba(12,5,2,.58)) drop-shadow(0 1px 1px rgba(241,191,91,.16)) saturate(1)}
+}
+html.tt-gsap-ready .tt-transition.is-visible .tt-carved-stage-frame--transition{
+  animation:none!important;
+}
+
+@media(max-width:720px){
+  .tt-carved-stage-frame{
+    filter:drop-shadow(0 7px 5px rgba(12,5,2,.54)) drop-shadow(0 1px 1px rgba(241,191,91,.14));
+  }
+  .tt-carved-stage-frame--opening{
+    right:0;
+    bottom:auto;
+    left:0;
+    width:100%;
+    height:auto;
+    aspect-ratio:1672/941;
+  }
+  .tt-stage{
+    background:
+      linear-gradient(0deg,rgba(25,10,5,.86),rgba(31,14,7,.08) 42%,rgba(16,7,4,.22)) 0 0/100% 100% no-repeat,
+      repeating-linear-gradient(93deg,rgba(91,55,31,.04) 0 1px,transparent 1px 6px) 0 0/100% 100% no-repeat,
+      url("./art/tian-tian-shadow-theatre-static-duet-20260814.webp") 50% 0/100% auto no-repeat,
+      radial-gradient(ellipse at 50% 17%,#efd494 0%,#c89457 31%,#512e1c 57%,#1b0d08 100%) 0 0/100% 100% no-repeat!important;
+    background-position:center top!important;
+  }
+  html.tt-pose-ready .tt-stage{
+    background:
+      linear-gradient(0deg,rgba(25,10,5,.86),rgba(31,14,7,.08) 42%,rgba(16,7,4,.22)) 0 0/100% 100% no-repeat,
+      repeating-linear-gradient(93deg,rgba(91,55,31,.04) 0 1px,transparent 1px 6px) 0 0/100% 100% no-repeat,
+      radial-gradient(ellipse at 50% 17%,#efd494 0%,#c89457 31%,#512e1c 57%,#1b0d08 100%) 0 0/100% 100% no-repeat!important;
+    background-position:center top!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .tt-carved-stage-frame{
+    animation:none!important;
+    transition:none!important;
+    opacity:1!important;
+    transform:none!important;
+    will-change:auto;
+  }
+}

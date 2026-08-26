@@ -71,6 +71,13 @@
     });
   }
 
+  function appendCarvedStageFrame(stage, context) {
+    if (!stage || $('.tt-carved-stage-frame', stage)) return;
+    const frame = makePart('span', `tt-carved-stage-frame tt-carved-stage-frame--${context}`);
+    frame.setAttribute('aria-hidden', 'true');
+    stage.append(frame);
+  }
+
   function makeShadowLine(className, paths) {
     const svg = document.createElementNS(SVG_NS, 'svg');
     svg.setAttribute('class', className);
@@ -337,6 +344,7 @@
 
     stage.append(props);
     stage.append(makePoseLayer('transition', ACT_POSES[scene] || ACT_POSES['scroll-prologue']));
+    appendCarvedStageFrame(stage, 'transition');
     return stage;
   }
 
@@ -503,6 +511,11 @@
     if (openingStage && !$('.tt-pose-layer--opening', openingStage)) {
       openingStage.append(makePoseLayer('opening', OPENING_POSES[0]));
     }
+    appendCarvedStageFrame(openingStage, 'opening');
+
+    const endingStage = $('.tt-ending-theatre-stage');
+    appendCarvedStageFrame(endingStage, 'ending');
+
     const ending = $('[data-tt-ending]');
     if (ending && !$('.tt-pose-layer--ending', ending)) {
       ending.append(makePoseLayer('ending', ENDING_POSES));

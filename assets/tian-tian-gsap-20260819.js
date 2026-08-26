@@ -372,6 +372,7 @@
     transition.dataset.ttGsapMounted = "true";
 
     const screen = one(".tt-shadow-screen", transition);
+    const carvedFrame = one(".tt-carved-stage-frame--transition", transition);
     const dialogue = one(".tt-shadow-dialogue", transition);
     const title = dialogue && one(":scope > small", dialogue);
     const lines = dialogue ? all(":scope > p", dialogue) : [];
@@ -388,6 +389,7 @@
 
     gsap.set(stage, { autoAlpha: isPrologue ? 1 : 0.18, scale: 1.035, transformOrigin: "50% 48%" });
     if (screen) gsap.set(screen, { autoAlpha: isPrologue ? 1 : 0.38, scale: 1.025 });
+    if (carvedFrame) gsap.set(carvedFrame, { autoAlpha: 0.72, scale: 1.018, transformOrigin: "50% 50%" });
     if (props.length) gsap.set(props, { autoAlpha: 0, y: 22, scale: 0.84 });
     if (woman) gsap.set(woman, { autoAlpha: 0, x: isMobile ? -34 : -82, y: 8, rotation: -2.2 });
     if (scribe) gsap.set(scribe, { autoAlpha: 0, x: isMobile ? 34 : 82, y: 8, rotation: 2.2 });
@@ -404,6 +406,7 @@
     timeline.call(() => transition.classList.add("is-visible"), null, 0);
     timeline.to(stage, { autoAlpha: 1, scale: 1, duration: 1.1 }, 0);
     if (screen) timeline.to(screen, { autoAlpha: 1, scale: 1, duration: 1.35 }, 0.06);
+    if (carvedFrame) timeline.to(carvedFrame, { autoAlpha: 1, scale: 1, duration: 1.25, ease: "power2.out" }, 0.02);
 
     if (isPrologue && curtain) {
       if (leftCurtain) gsap.set(leftCurtain, { xPercent: 0 });
