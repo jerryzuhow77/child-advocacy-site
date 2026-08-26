@@ -41,11 +41,11 @@ const keypointDefs={
   "47":{tone:"limit",labels:[["被告陳述","is-source"],["未觀察到","is-limit"]],phrases:["有提到咬自己","但沒有看到傷"],summary:"醫師區分被告提及的自傷行為與未見傷勢的觀察結果。",boundary:"未見傷勢不等於能推定行為一定發生或未發生。"},
   "48":{tone:"assessment",labels:[["治療前提","is-limit"]],phrases:["要有治療的動機"],summary:"醫師把治療動機列為社會復歸的重要前提。",boundary:"具備動機不等於責任刑當然下修。"},
   "51":{tone:"limit",labels:[["風險判斷","is-assessment"],["條件式結論","is-limit"]],phrases:["的確還是會有風險","如果沒有隔離因子的話"],summary:"劉彩萱的復歸評價仍帶有風險與隔離因子的條件。",boundary:"不是無條件的低風險結論。"},
-  "57":{tone:"assessment",labels:[["概念解釋","is-assessment"]],phrases:["讓自己不會因為自己或他人的不道德行為感到自責"],summary:"醫師以白話說明道德疏離的心理機制。",boundary:"概念解釋不等於個案事實已由此機制證實。"},
+  "57":{tone:"assessment",labels:[["概念解釋","is-assessment"]],phrases:["透過不同的認知","不會因為自己或他人的不道德行為"],summary:"醫師以白話說明道德疏離的心理機制。",boundary:"概念解釋不等於個案事實已由此機制證實。"},
   "58":{tone:"assessment",labels:[["核心鑑定意見","is-assessment"]],phrases:["沒錯，沒有不利的發展因素"],summary:"醫師確認第4、5、6款生活狀況、品行、智識程度沒有下修空間。",boundary:"鑑定意見與法院最終量刑判斷仍須區分。"},
   "59":{tone:"limit",labels:[["條件式結論","is-limit"],["復歸評價","is-assessment"]],phrases:["前提是劉彩萱開始，劉若琳後來才加入","若除去這個因素"],summary:"劉若琳較高復歸可能性建立在特定行為先後前提上。",boundary:"不是不附條件的復歸結論，也不自動下修責任。"},
   "60":{tone:"limit",labels:[["經驗揭露","is-limit"]],phrases:["四件，兩件量刑"],summary:"徐醫師當庭說明共四件鑑定經驗，其中兩件為量刑鑑定。",boundary:"供法院評價專業意見的經驗基礎。"},
-  "61":{tone:"assessment",labels:[["概念解釋","is-assessment"],["反向資料","is-limit"]],phrases:["環境因素","家長就是「外控」因素，因為家長會來接"],summary:"外控被解釋為家長接送等可介入、可監督的環境因素。",boundary:"醫師同時提到另一名孩子未出現相同現象，不能把封閉環境當成唯一原因。"}
+  "61":{tone:"assessment",labels:[["概念解釋","is-assessment"],["反向資料","is-limit"]],phrases:["環境因素","因為家長會來接"],summary:"外控被解釋為家長接送等可介入、可監督的環境因素。",boundary:"醫師同時提到另一名孩子未出現相同現象，不能把封閉環境當成唯一原因。"}
 };
 function highlightPhrase(root,phrase,tone){
   if(!root||!phrase)return false;
