@@ -197,15 +197,21 @@
   }
 
   async function fetchLegacyView(key) {
-    const response = await fetch(legacyCounterUrl(key), {
-      method: "GET", mode: "cors", cache: "no-store", credentials: "omit",
-      headers: { Accept: "application/json" },
-    });
-    if (!response.ok) throw new Error(`Legacy counter ${response.status}`);
-    const result = await response.json();
-    const value = Number(result?.value);
-    if (!Number.isFinite(value) || value < 0) throw new Error("Invalid legacy counter value");
-    return value;
+    const controller = typeof AbortController === "function" ? new AbortController() : null;
+    const timer = window.setTimeout(() => controller?.abort(), 6500);
+    try {
+      const response = await fetch(legacyCounterUrl(key), {
+        method: "GET", mode: "cors", cache: "no-store", credentials: "omit",
+        headers: { Accept: "application/json" }, signal: controller?.signal,
+      });
+      if (!response.ok) throw new Error(`Legacy counter ${response.status}`);
+      const result = await response.json();
+      const value = Number(result?.value);
+      if (!Number.isFinite(value) || value < 0) throw new Error("Invalid legacy counter value");
+      return value;
+    } finally {
+      window.clearTimeout(timer);
+    }
   }
 
   function jsonpLegacyView(key) {
