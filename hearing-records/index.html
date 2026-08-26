@@ -94,14 +94,14 @@
 fetch('../data/hearing-records.json').then(r=>r.json()).then(a=>{
   const box=document.getElementById('list');
   box.innerHTML=a.slice().sort((x,y)=>String(y.date||'').localeCompare(String(x.date||''))).map(x=>`<article class="record-card">
-    <a class="record-card-image" href="${x.url}"><img src="${x.image}" ${x.imageHans?`data-hant-src="${x.image}" data-hans-src="${x.imageHans}"`:''} alt="${x.title}"></a>
+    <a class="record-card-image" href="${x.url}"${x.urlHans?` data-hans-href="${x.urlHans}"`:''}><img src="${x.image}" ${x.imageHans?`data-hant-src="${x.image}" data-hans-src="${x.imageHans}"`:''} alt="${x.title}"></a>
     <div class="record-card-copy">
       <div class="meta">${x.date} ｜ ${x.court||''}</div>
       <h3>${x.title}</h3>
       <p>${x.summary||''}</p>
       <div class="case-record-actions">
         ${x.caseUrl?`<a class="read-btn secondary" href="${x.caseUrl}">案件介紹</a>`:''}
-        <a class="read-btn" href="${x.url}">閱讀完整紀錄 →</a>
+        <a class="read-btn" href="${x.url}"${x.urlHans?` data-hans-href="${x.urlHans}"`:''}>閱讀完整紀錄 →</a>
       </div>
     </div>
   </article>`).join('');
