@@ -2,7 +2,34 @@
   'use strict';
   var H=window.HomeIA2;if(!H)return;var one=H.one,all=H.all,make=H.make,text=H.text,c=H.c,root=H.root||(H.base?H.base.replace(/assets\/?$/,''):'./');
   function meta(card){var h=card.getAttribute('href')||'';if(h.indexOf('tainan-tom-bear-case')>-1||h.indexOf('/taiwan/tainan-tom-bear/')>-1)return{region:'taiwan',year:2012};if(h.indexOf('/taiwan/fu-junxiang/')>-1)return{region:'taiwan',year:2005};if(h.indexOf('/taiwan/wanghao/')>-1)return{region:'taiwan',year:2011};if(h.indexOf('/mainland-china/fujian-qiqi/')>-1)return{region:'mainland',year:2023};if(h.indexOf('/mainland-china/tian-tian/')>-1)return{region:'mainland',year:2023};if(h.indexOf('/japan/kurihara-mia/')>-1)return{region:'japan',year:2019};if(h.indexOf('/hong-kong/')>-1||h.indexOf('/hongkong/')>-1||h.indexOf('hong-kong-child-case')>-1)return{region:'hongkong',year:2022};if(h.indexOf('/korea/')>-1||h.indexOf('jungein-memory-door')>-1)return{region:'korea',year:2020};return{region:'unclassified',year:0}}
-  function injectJungein(){var url='https://jungein-memory-door.jerryzuhow77.chatgpt.site/',img=root+'assets/art/jungein-memory-door-home-20260826.webp';var orbit=one('#news-flash .home-document-disc-orbit');if(orbit&&!one('.is-jungein-korea',orbit)){var latest=make('a','home-document-disc-card is-jungein-korea','<img alt="韓國鄭仁案韓紙紙雕主視覺，半開紙門前放著白瓷碗、黃銅匙、褓布與童襪" decoding="async" loading="lazy" src="'+img+'"><span><small>08.26 · 韓國歷史案件新作</small><strong>鄭仁案｜門沒有打開</strong><em>三次通報，沒有形成安全出口</em></span>');latest.href=url;latest.target='_blank';latest.rel='noopener noreferrer';var cards=all('.home-document-disc-card',orbit);orbit.insertBefore(latest,cards[2]||null)}var grid=one('#home-historical-cases .home-historical-grid');if(grid&&!one('a[href*="jungein-memory-door"]',grid)){var card=make('a','home-historical-card','<span class="home-historical-image"><img src="'+img+'" alt="韓國鄭仁案韓紙紙雕主視覺，半開紙門前放著白瓷碗、黃銅匙、褓布與童襪，不呈現傷勢" loading="lazy" decoding="async"><i>韓國｜首爾・2020</i></span><span><small>KOREA HISTORICAL CASE</small><strong>韓國鄭仁案｜門沒有打開</strong><em>三次通報，沒有形成安全出口｜案件時間軸與六幕紙雕專題</em></span>');card.href=url;card.target='_blank';card.rel='noopener noreferrer';grid.insertBefore(card,grid.firstChild)}var list=one('.historical-case-nav .historical-region-list');if(list&&!one('[data-ia-region="korea"]',list)){var g=make('div','historical-region-group');g.dataset.iaRegion='korea';g.innerHTML='<button class="historical-region-toggle" type="button" aria-expanded="false" aria-controls="historicalKoreaZh"><span>韓國</span><small class="ia-nav-count">1</small><i aria-hidden="true">›</i></button><div class="historical-region-children" id="historicalKoreaZh"><a href="'+url+'" target="_blank" rel="noopener noreferrer"><img alt="韓國鄭仁案韓紙紙雕主視覺" src="'+img+'"><span><b>韓國鄭仁案｜門沒有打開</b><small>韓國歷史案件｜三次通報，沒有形成安全出口</small></span></a></div>';var japan=all('.historical-region-group',list).filter(function(x){return (x.textContent||'').indexOf('日本')>-1})[0];list.insertBefore(g,japan||null);var btn=one('button',g),child=one('.historical-region-children',g);child.hidden=true;btn.addEventListener('click',function(){var open=btn.getAttribute('aria-expanded')==='true';btn.setAttribute('aria-expanded',String(!open));child.hidden=open})}}
+  function injectJungein(){
+    var url='https://jungein-memory-door.jerryzuhow77.chatgpt.site/',img=root+'assets/art/jungein-memory-door-home-20260826.webp',copy={
+      'zh-Hant':{latest:'08.26 · 韓國歷史案件新作',title:'鄭仁案｜門沒有打開',brief:'三次通報，沒有形成安全出口',place:'韓國｜首爾・2020',desc:'三次通報，沒有形成安全出口｜案件時間軸與六幕紙雕專題',nav:'韓國歷史案件｜三次通報，沒有形成安全出口',alt:'韓國鄭仁案韓紙紙雕主視覺，半開紙門前放著白瓷碗、黃銅匙、褓布與童襪，不呈現傷勢'},
+      'zh-Hans':{latest:'08.26 · 韩国历史案件新作',title:'郑仁案｜门没有打开',brief:'三次通报，没有形成安全出口',place:'韩国｜首尔・2020',desc:'三次通报，没有形成安全出口｜案件时间轴与六幕纸雕专题',nav:'韩国历史案件｜三次通报，没有形成安全出口',alt:'韩国郑仁案韩纸纸雕主视觉，半开纸门前放着白瓷碗、黄铜匙、襁褓布与童袜，不呈现伤势'},
+      en:{latest:'08.26 · NEW KOREAN ARCHIVE',title:'The Jeong-in Case | The Door Did Not Open',brief:'Three reports never became a route to safety',place:'Korea | Seoul · 2020',desc:'Three reports, no route to safety | A six-act paper-art case timeline',nav:'Korean historical case | Three reports, no route to safety',alt:'Hanji paper-art scene for the Jeong-in case, with a half-open door, white bowl, brass spoon, wrapping cloth and child socks; no injuries depicted'},
+      ja:{latest:'08.26 · 韓国の歴史的事件・新作',title:'チョンイン事件｜開かなかった扉',brief:'三度の通報は、安全への出口にならなかった',place:'韓国｜ソウル・2020',desc:'三度の通報は安全への出口にならなかった｜事件年表と六幕の紙彫刻',nav:'韓国の歴史的事件｜三度の通報と、つながらなかった保護',alt:'チョンイン事件を表す韓紙の紙彫刻。半開きの扉、白磁の器、真鍮の匙、包み布、子どもの靴下で構成し、傷は描いていません'}
+    }[H.locale]||{};
+    var orbit=one('#news-flash .home-document-disc-orbit');
+    if(orbit&&!one('.is-jungein-korea',orbit)){
+      var latest=make('a','home-document-disc-card is-jungein-korea','<img alt="'+copy.alt+'" decoding="async" loading="lazy" src="'+img+'"><span><small>'+copy.latest+'</small><strong>'+copy.title+'</strong><em>'+copy.brief+'</em></span>');
+      latest.href=url;latest.target='_blank';latest.rel='noopener noreferrer';
+      var cards=all('.home-document-disc-card',orbit);orbit.insertBefore(latest,cards[2]||null)
+    }
+    var grid=one('#home-historical-cases .home-historical-grid');
+    if(grid&&!one('a[href*="jungein-memory-door"]',grid)){
+      var card=make('a','home-historical-card','<span class="home-historical-image"><img src="'+img+'" alt="'+copy.alt+'" loading="lazy" decoding="async"><i>'+copy.place+'</i></span><span><small>KOREA HISTORICAL CASE</small><strong>'+copy.title+'</strong><em>'+copy.desc+'</em></span>');
+      card.href=url;card.target='_blank';card.rel='noopener noreferrer';grid.insertBefore(card,grid.firstChild)
+    }
+    var list=one('.historical-case-nav .historical-region-list');
+    if(list&&!one('[data-ia-region="korea"]',list)){
+      var g=make('div','historical-region-group');g.dataset.iaRegion='korea';
+      g.innerHTML='<button class="historical-region-toggle" type="button" aria-expanded="false" aria-controls="historicalKoreaIa"><span>'+c.regions.korea+'</span><small class="ia-nav-count">1</small><i aria-hidden="true">›</i></button><div class="historical-region-children" id="historicalKoreaIa"><a href="'+url+'" target="_blank" rel="noopener noreferrer"><img alt="'+copy.alt+'" src="'+img+'"><span><b>'+copy.title+'</b><small>'+copy.nav+'</small></span></a></div>';
+      var japan=all('.historical-region-group',list).filter(function(x){return (x.textContent||'').indexOf(c.regions.japan)>-1})[0];
+      list.insertBefore(g,japan||null);
+      var btn=one('button',g),child=one('.historical-region-children',g);child.hidden=true;
+      btn.addEventListener('click',function(){var open=btn.getAttribute('aria-expanded')==='true';btn.setAttribute('aria-expanded',String(!open));child.hidden=open})
+    }
+  }
   function injectHongKong(){var url='https://hong-kong-child-case.jerryzuhow77.chatgpt.site/',img=url+'images/shaw-hero-v4.webp',copy={
     'zh-Hant':{place:'香港｜2022',title:'九點七公斤｜香港虐童案專題',desc:'房門關上以前，他曾被很多人看見｜五幕紀錄與粵式皮影專題',nav:'香港歷史案件｜房門關上以前，他曾被很多人看見'},
     'zh-Hans':{place:'香港｜2022',title:'九点七公斤｜香港虐童案专题',desc:'房门关上以前，他曾被很多人看见｜五幕记录与粤式皮影专题',nav:'香港历史案件｜房门关上以前，他曾被很多人看见'},
