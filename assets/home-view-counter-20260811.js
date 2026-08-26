@@ -21,7 +21,10 @@
     'page-home'
   ]);
   const TIMEOUT_MS = 7000;
+  const READ_SYNC_DELAY_MS = 2500;
+  const READ_SYNC_INTERVAL_MS = 10000;
   const sharedRequests = new Map();
+  const liveSyncs = new WeakMap();
 
   function endpoint() {
     const config = window.CPA_VIEW_COUNTER || {};
@@ -136,6 +139,53 @@
     return request;
   }
 
+  function renderCounter(widget, result) {
+    const number = widget.querySelector('[data-home-view-number]');
+    const label = widget.querySelector('.home-view-counter-label');
+    const unit = widget.querySelector('.home-view-counter-value span');
+    if (!number) return;
+
+    const labelCopy = localizedData(widget, 'counterLabel');
+    const unitCopy = localizedData(widget, 'counterUnit');
+    const titleCopy = localizedData(widget, 'counterTitle');
+    const locale = localizedData(widget, 'counterLocale');
+    const formatted = formatNumber(result.value, locale);
+
+    if (label && labelCopy) label.textContent = result.shared ? labelCopy : fallbackLabel();
+    if (unit && unitCopy) unit.textContent = unitCopy;
+    number.textContent = formatted;
+    widget.classList.toggle('is-unavailable', !result.shared);
+    widget.classList.toggle('is-local-fallback', !result.shared);
+    widget.title = result.shared
+      ? `${titleCopy || labelCopy}: ${formatted} ${unitCopy}`.trim()
+      : `${localizedData(widget, 'counterError') || fallbackLabel()}: ${formatted} ${unitCopy}`.trim();
+  }
+
+  function startLiveSync(widget, key) {
+    if (liveSyncs.has(widget)) return;
+    let reading = false;
+
+    const refresh = async () => {
+      if (reading || document.visibilityState === 'hidden') return;
+      reading = true;
+      try {
+        renderCounter(widget, await fetchCount(key, false));
+      } catch (_) {
+        // Preserve the last confirmed shared value during a transient read failure.
+      } finally {
+        reading = false;
+      }
+    };
+
+    const firstRead = window.setTimeout(refresh, READ_SYNC_DELAY_MS);
+    const interval = window.setInterval(refresh, READ_SYNC_INTERVAL_MS);
+    const onVisibility = () => { if (document.visibilityState === 'visible') refresh(); };
+    document.addEventListener('visibilitychange', onVisibility);
+    window.addEventListener('focus', refresh);
+    window.addEventListener('pageshow', refresh);
+    liveSyncs.set(widget, { firstRead, interval, onVisibility, refresh });
+  }
+
   async function initializeCounter(widget) {
     const number = widget.querySelector('[data-home-view-number]');
     const label = widget.querySelector('.home-view-counter-label');
@@ -145,9 +195,7 @@
 
     const labelCopy = localizedData(widget, 'counterLabel');
     const unitCopy = localizedData(widget, 'counterUnit');
-    const titleCopy = localizedData(widget, 'counterTitle');
     const errorCopy = localizedData(widget, 'counterError');
-    const locale = localizedData(widget, 'counterLocale');
 
     if (label && labelCopy) label.textContent = labelCopy;
     if (unit && unitCopy) unit.textContent = unitCopy;
@@ -155,14 +203,8 @@
 
     try {
       const result = await requestCount(key);
-      const formatted = formatNumber(result.value, locale);
-      number.textContent = formatted;
-      widget.classList.toggle('is-unavailable', !result.shared);
-      widget.classList.toggle('is-local-fallback', !result.shared);
-      if (!result.shared && label) label.textContent = fallbackLabel();
-      widget.title = result.shared
-        ? `${titleCopy || labelCopy}: ${formatted} ${unitCopy}`.trim()
-        : `${errorCopy || fallbackLabel()}: ${formatted} ${unitCopy}`.trim();
+      renderCounter(widget, result);
+      startLiveSync(widget, key);
     } catch (_) {
       number.textContent = '—';
       widget.classList.add('is-unavailable');
