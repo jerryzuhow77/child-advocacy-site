@@ -10,7 +10,7 @@
   var reduce=H.reduce;
   var c=H.c||{};
   var originalHistory=H.features.history;
-  var VERSION='20260823-paper-archive-deluxe-1';
+  var VERSION='20260826-historical-followup-1';
 
   var regionMarks={
     taiwan:'台',
