@@ -357,12 +357,12 @@
   }
 
   function mount(link, host = link, layout = "card") {
-    if (!link || !host || link.dataset.engagementReady) return;
+    if (!link || !host || link.hasAttribute("data-engagement-ready")) return;
     const item = article(link, host);
     if (!item) return;
     const copy = ui();
-    link.dataset.engagementReady = "";
-    host.dataset.engagementHost = "";
+    link.dataset.engagementReady = "true";
+    host.dataset.engagementHost = "true";
     const bar = document.createElement("span");
     bar.className = "home-post-engagement";
     bar.dataset.articleKey = item.key;
