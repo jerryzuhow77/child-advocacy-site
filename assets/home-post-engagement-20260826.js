@@ -14,6 +14,7 @@
 
   const targetDefinitions = [
     { selector: ".home-priority-links a.is-hearing", layout: "priority" },
+    { selector: "#news-flash a.home-pinned-report-card:not([data-pinned-clone])", layout: "pinned" },
     { selector: "#news-flash a.home-document-disc-card", layout: "disc" },
     { selector: "#news-hearing a.home-news-card.is-hearing" },
     {
