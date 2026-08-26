@@ -488,9 +488,9 @@
     var startRotation = 0;
 
     function radius() {
-      if (window.innerWidth <= 430) return 175;
-      if (window.innerWidth <= 760) return 190;
-      return Math.min(shell.clientWidth * 0.31, 290);
+      if (window.innerWidth <= 430) return 165;
+      if (window.innerWidth <= 760) return 175;
+      return Math.min(shell.clientWidth * 0.24, 220);
     }
 
     function keepCardsUpright() {
