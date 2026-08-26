@@ -1,106 +1,86 @@
 'use strict';
 
-const VERSION = '2026-08-25-charity-poster-rebuild-v23-history-anchor-stability';
+const VERSION = '2026-08-26-pwa-resilient-v1';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
 const MAX_RUNTIME_ITEMS = 150;
 
-const APP_SHELL = [
-  './',
+// Keep the install transaction deliberately small. A missing article image or a
+// transient GitHub Pages response must never make the whole PWA un-installable.
+const REQUIRED_SHELL = [
   './offline.html',
   './manifest.webmanifest',
+  './assets/pwa-install.css',
+  './assets/pwa-install.js',
+  './assets/icons/app-icon-192.png',
+  './assets/icons/app-icon-512.png',
+  './assets/icons/app-icon-maskable-512.png',
+  './assets/icons/apple-touch-icon-180.png'
+];
+
+// These improve the first offline launch, but are warmed opportunistically so
+// a later page rename or a temporary network error cannot block activation.
+const OPTIONAL_SHELL = [
+  './',
+  './assets/site.css',
   './assets/site.js',
   './assets/site-base-20260823.js',
   './assets/site-four-language-qa-20260823.js',
   './assets/mobile-nav-view-counter-20260823.js',
-  './assets/pwa-install.css',
-  './assets/pwa-install.js',
   './assets/home-gsap.css',
-  './assets/home-history-static-map-20260824.css',
-  './assets/home-history-paper-weather-20260825.css',
-  './assets/home-first-round-optimization.css',
-  './assets/global-protection-home.css',
-  './assets/visitor-submission.js',
   './assets/home-gsap.js',
-  './assets/home-gsap-map-20260824.js',
-  './assets/home-history-paper-weather-20260825.js',
-  './assets/home-history-anchor-stability-20260825.js',
-  './assets/home-gsap-base-20260823.js',
-  './assets/home-archive-layout-20260823.js',
-  './assets/home-ia-core-20260823.js',
-  './assets/home-ia-layout-20260823.js',
-  './assets/home-ia-history-20260823.js',
-  './assets/home-history-paper-art-20260823.js',
-  './assets/home-history-paper-art-20260823.css',
-  './assets/home-history-relief-map-20260823.js',
-  './assets/home-history-relief-map-20260823.css',
-  './assets/home-history-mobile-visibility-20260824.css',
-  './assets/art/east-asia-case-memory-map-paper-clay-20260824.webp',
-  './assets/art/paper-fragments-v1/fragment-01.webp',
-  './assets/art/paper-fragments-v1/fragment-02.webp',
-  './assets/art/paper-fragments-v1/fragment-03.webp',
-  './assets/art/paper-fragments-v1/fragment-04.webp',
-  './assets/art/paper-fragments-v1/fragment-05.webp',
-  './assets/art/paper-fragments-v1/fragment-06.webp',
-  './assets/home-ia-hearing-campaign-20260823.js',
-  './assets/home-ia-bootstrap-20260823.js',
-  './assets/home-ia-v2-final.css',
-  './assets/activity-impact.js',
-  './assets/home-view-counter-20260811.js',
-  './assets/home-view-counter-20260811.css',
-  './assets/qiqi-classical-notes.js',
-  './assets/global-protection-wall-portal.css',
-  './assets/global-protection-wall-portal.js',
-  './global-protection-wall/',
-  './activity-records/20260820-kaikai-story-collection/images/kaikai-story-collection-hero.webp',
-  './activity-records/20260825-111-surplus-donation/',
-  './activity-records/20260825-111-surplus-donation/images/charity-paper-clay-visible-v2.jpg',
-  './activity-records/20260825-111-surplus-donation/images/postal-giro-slip-20260825.jpg',
-  './activity-records/20260825-111-surplus-donation/images/postal-giro-receipt-20260825.jpg',
   './assets/vendor/gsap-3.13.0.min.js',
   './assets/vendor/ScrollTrigger-3.13.0.min.js',
-  './assets/icons/app-icon-192.png',
-  './assets/icons/app-icon-512.png',
-  './assets/icons/app-icon-maskable-512.png',
-  './assets/icons/apple-touch-icon-180.png',
-  './assets/art/global-protection-wall-home-banner.svg',
-  './assets/art/prison-watch-day4-hearing-poster-clay-20260821-v2.webp',
-  './assets/day4-verbatim-source-0.b64',
-  './assets/day4-verbatim-source-1.b64',
-  './hearing-records/prison-watch/kaikai-day4-20250428/day4-verbatim.js',
-  './hearing-records/prison-watch/kaikai-day4-20250428/day4-crosscheck.js',
-  './hearing-records/prison-watch/kaikai-day4-20250428/day4-location-note.js',
-  './hearing-records/prison-watch/kaikai-day3-20250425/day3-reading-core-20260821.js',
-  './hearing-records/prison-watch/kaikai-day5-20250429/day5.js',
-  './assets/art/prison-watch-day5-selected-evidence-01-zh-hant-20260822.jpg',
-  './assets/art/prison-watch-day5-selected-evidence-02-zh-hant-20260822.jpg',
-  './assets/art/prison-watch-day5-selected-evidence-01-zh-hans-20260822.jpg',
-  './assets/art/prison-watch-day5-selected-evidence-02-zh-hans-20260822.jpg',
-  './assets/art/prison-watch-day5-selected-evidence-01-zh-hant-20260822-v3.jpg',
-  './assets/art/prison-watch-day5-selected-evidence-01-zh-hans-20260822-v3.jpg',
-  './assets/art/prison-watch-day5-selected-evidence-02-zh-hant-20260822-v3.jpg',
-  './assets/art/prison-watch-day5-selected-evidence-02-zh-hans-20260822-v3.jpg'
+  './assets/global-protection-wall-portal.css',
+  './assets/global-protection-wall-portal.js'
 ];
 
+function scopeUrl(path) {
+  return new URL(path, self.registration.scope).href;
+}
+
+async function fetchForCache(url) {
+  const response = await fetch(url, {
+    cache: 'reload',
+    credentials: 'same-origin'
+  });
+  if (!response.ok || response.type === 'opaque') {
+    throw new Error(`Unable to cache ${url}: ${response.status}`);
+  }
+  return response;
+}
+
+async function putShellAsset(cache, path) {
+  const url = scopeUrl(path);
+  const response = await fetchForCache(url);
+  await cache.put(url, response);
+}
+
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(SHELL_CACHE)
-      .then(cache => cache.addAll(APP_SHELL.map(path => new URL(path, self.registration.scope).href)))
-      .then(() => self.skipWaiting())
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(SHELL_CACHE);
+
+    // These files define installability and the offline fallback. Fail loudly
+    // only when one of them is genuinely unavailable.
+    await Promise.all(REQUIRED_SHELL.map(path => putShellAsset(cache, path)));
+
+    // Warm the rest without turning one optional failure into an install fail.
+    await Promise.allSettled(OPTIONAL_SHELL.map(path => putShellAsset(cache, path)));
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys()
-      .then(keys => Promise.all(
-        keys
-          .filter(key => key.startsWith(CACHE_PREFIX) && key !== SHELL_CACHE && key !== RUNTIME_CACHE)
-          .map(key => caches.delete(key))
-      ))
-      .then(() => self.clients.claim())
-  );
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(
+      keys
+        .filter(key => key.startsWith(CACHE_PREFIX) && key !== SHELL_CACHE && key !== RUNTIME_CACHE)
+        .map(key => caches.delete(key))
+    );
+    await self.clients.claim();
+  })());
 });
 
 self.addEventListener('message', event => {
@@ -120,22 +100,30 @@ async function trimRuntimeCache() {
   await Promise.all(keys.slice(0, keys.length - MAX_RUNTIME_ITEMS).map(key => cache.delete(key)));
 }
 
+async function putRuntime(cache, request, response) {
+  if (!cacheable(response)) return;
+  await cache.put(request, response.clone());
+  await trimRuntimeCache();
+}
+
 async function networkFirstNavigation(request) {
-  const cache = await caches.open(RUNTIME_CACHE);
+  const runtime = await caches.open(RUNTIME_CACHE);
   try {
-    const response = await fetch(request);
-    if (cacheable(response)) {
-      await cache.put(request, response.clone());
-      await trimRuntimeCache();
-    }
+    const response = await fetch(request, { cache: 'no-cache' });
+    await putRuntime(runtime, request, response);
     return response;
   } catch (_) {
-    const exact = await cache.match(request);
+    const exact = await runtime.match(request, { ignoreSearch: true });
     if (exact) return exact;
+
     const shell = await caches.open(SHELL_CACHE);
-    const home = await shell.match(new URL('./', self.registration.scope).href);
-    if (new URL(request.url).pathname === new URL(self.registration.scope).pathname && home) return home;
-    return shell.match(new URL('./offline.html', self.registration.scope).href);
+    const requestedUrl = new URL(request.url);
+    const scope = new URL(self.registration.scope);
+    if (requestedUrl.pathname === scope.pathname) {
+      const home = await shell.match(scopeUrl('./'), { ignoreSearch: true });
+      if (home) return home;
+    }
+    return (await shell.match(scopeUrl('./offline.html'), { ignoreSearch: true })) || Response.error();
   }
 }
 
@@ -143,34 +131,44 @@ async function networkFirstStatic(request) {
   const runtime = await caches.open(RUNTIME_CACHE);
   try {
     const response = await fetch(request, { cache: 'no-cache' });
-    if (cacheable(response)) {
-      await runtime.put(request, response.clone());
-      await trimRuntimeCache();
-    }
+    await putRuntime(runtime, request, response);
     return response;
   } catch (_) {
-    const exact = await runtime.match(request);
+    const exact = await runtime.match(request, { ignoreSearch: true });
     if (exact) return exact;
     const shell = await caches.open(SHELL_CACHE);
-    return shell.match(request) || Response.error();
+    return (await shell.match(request, { ignoreSearch: true })) || Response.error();
   }
 }
 
 async function staleWhileRevalidate(request) {
-  const cache = await caches.open(RUNTIME_CACHE);
-  const cached = await cache.match(request);
-  const network = fetch(request)
+  const runtime = await caches.open(RUNTIME_CACHE);
+  const cached = await runtime.match(request, { ignoreSearch: true });
+  const networkPromise = fetch(request)
     .then(async response => {
-      if (cacheable(response)) {
-        await cache.put(request, response.clone());
-        await trimRuntimeCache();
-      }
+      await putRuntime(runtime, request, response);
       return response;
     })
     .catch(() => null);
-  if (cached) return cached;
-  const networkResponse = await network;
-  return networkResponse || Response.error();
+
+  if (cached) {
+    // Keep refreshing in the background even though the cached response wins.
+    void networkPromise;
+    return cached;
+  }
+
+  const networkResponse = await networkPromise;
+  if (networkResponse) return networkResponse;
+
+  const shell = await caches.open(SHELL_CACHE);
+  return (await shell.match(request, { ignoreSearch: true })) || Response.error();
+}
+
+function isLiveDataRequest(url) {
+  return url.pathname.includes('/api/') ||
+    url.pathname.includes('/admin-actions/') ||
+    url.pathname.includes('/functions/') ||
+    url.pathname.endsWith('/data/latest-bulletins.json');
 }
 
 self.addEventListener('fetch', event => {
@@ -178,7 +176,7 @@ self.addEventListener('fetch', event => {
   if (request.method !== 'GET' || request.headers.has('range')) return;
 
   const url = new URL(request.url);
-  if (url.origin !== self.location.origin) return;
+  if (url.origin !== self.location.origin || isLiveDataRequest(url)) return;
 
   if (request.mode === 'navigate') {
     event.respondWith(networkFirstNavigation(request));
@@ -186,7 +184,10 @@ self.addEventListener('fetch', event => {
   }
 
   const alwaysFresh =
-    url.pathname.includes('/activity-records/20260825-111-surplus-donation/') ||
+    url.pathname.endsWith('/manifest.webmanifest') ||
+    url.pathname.endsWith('/assets/pwa-install.js') ||
+    url.pathname.endsWith('/assets/pwa-install.css') ||
+    url.pathname.endsWith('/assets/site.css') ||
     url.pathname.endsWith('/assets/site.js') ||
     url.pathname.endsWith('/assets/site-base-20260823.js') ||
     url.pathname.endsWith('/assets/site-four-language-qa-20260823.js') ||
@@ -197,18 +198,15 @@ self.addEventListener('fetch', event => {
     url.pathname.endsWith('/assets/home-archive-layout-20260823.js') ||
     url.pathname.includes('/assets/home-ia-') ||
     url.pathname.includes('/assets/home-history-') ||
-    url.pathname.endsWith('/assets/home-ia-v2-final.css') ||
     url.pathname.endsWith('/assets/global-protection-wall-portal.js') ||
-    url.pathname.endsWith('/assets/global-protection-wall-portal.css') ||
-    url.pathname.endsWith('/hearing-records/prison-watch/kaikai-day5-20250429/day5.js') ||
-    url.pathname.includes('/assets/art/prison-watch-day5-selected-evidence-');
+    url.pathname.endsWith('/assets/global-protection-wall-portal.css');
 
-  if (alwaysFresh) {
+  if (alwaysFresh || request.destination === 'script' || request.destination === 'style') {
     event.respondWith(networkFirstStatic(request));
     return;
   }
 
-  if (['style', 'script', 'image', 'font'].includes(request.destination)) {
+  if (request.destination === 'image' || request.destination === 'font') {
     event.respondWith(staleWhileRevalidate(request));
   }
 });
