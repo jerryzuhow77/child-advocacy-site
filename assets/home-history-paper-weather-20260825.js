@@ -321,6 +321,12 @@
     var article = document.querySelector('.home-charity-feature');
     if (!article) return;
 
+    var featureImage = article.querySelector('.home-charity-feature-bg');
+    if (featureImage) {
+      featureImage.src = './assets/art/luo-brothers-hearing-poster.webp?v=20260826';
+      featureImage.removeAttribute('srcset');
+    }
+
     var otherRegion = all('.historical-region-static').filter(function (item) {
       return item.textContent.trim() === '其他地區';
     })[0];
