@@ -147,7 +147,7 @@
     if(href.indexOf('/mainland-china/')>-1||href.indexOf('/mainland/')>-1)return 'mainland';
     if(href.indexOf('/hong-kong/')>-1||href.indexOf('/hongkong/')>-1)return 'hongkong';
     if(href.indexOf('/japan/')>-1)return 'japan';
-    if(href.indexOf('/korea/')>-1)return 'korea';
+    if(href.indexOf('/korea/')>-1||href.indexOf('jungein-memory-door')>-1)return 'korea';
     return 'other';
   }
 

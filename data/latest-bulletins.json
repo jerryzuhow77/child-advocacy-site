@@ -1,8 +1,51 @@
 {
   "version": 1,
-  "generatedAt": "2026-08-25T18:02:00+08:00",
+  "generatedAt": "2026-08-26T18:46:00+08:00",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "items": [
+    {
+      "id": "korea-jungein-memory-door-2020",
+      "publishedAt": "2026-08-26",
+      "tag": "HISTORICAL CASE",
+      "region": "korea",
+      "regionLabel": {
+        "zh-Hant": "韓國｜首爾",
+        "zh-Hans": "韩国｜首尔",
+        "en": "South Korea | Seoul",
+        "ja": "韓国｜ソウル"
+      },
+      "badge": {
+        "zh-Hant": "韓國歷史案件新作",
+        "zh-Hans": "韩国历史案件新作",
+        "en": "New Korean historical case",
+        "ja": "韓国の歴史的事件・新着"
+      },
+      "title": {
+        "zh-Hant": "韓國鄭仁案｜門沒有打開",
+        "zh-Hans": "韩国郑仁案｜门没有打开",
+        "en": "The Jeong-in Case | The Door Did Not Open",
+        "ja": "韓国チョンイン事件｜扉は開かなかった"
+      },
+      "summary": {
+        "zh-Hant": "三次通報，沒有形成安全出口｜案件時間軸與六幕韓紙紙雕專題。",
+        "zh-Hans": "三次通报，没有形成安全出口｜案件时间轴与六幕韩纸纸雕专题。",
+        "en": "Three reports did not become a path to safety | A case timeline and six-act hanji paper-cut feature.",
+        "ja": "3度の通報は安全への出口にならなかった｜事件年表と韓紙切り絵による六幕特集。"
+      },
+      "url": {
+        "zh-Hant": "https://jungein-memory-door.jerryzuhow77.chatgpt.site/",
+        "zh-Hans": "https://jungein-memory-door.jerryzuhow77.chatgpt.site/",
+        "en": "https://jungein-memory-door.jerryzuhow77.chatgpt.site/",
+        "ja": "https://jungein-memory-door.jerryzuhow77.chatgpt.site/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/jungein-memory-door-home-20260826.webp",
+      "imageAlt": {
+        "zh-Hant": "韓國鄭仁案韓紙紙雕主視覺，半開紙門前放著白瓷碗、黃銅匙、褓布與童襪，不呈現傷勢",
+        "zh-Hans": "韩国郑仁案韩纸纸雕主视觉，半开纸门前放着白瓷碗、黄铜匙、褓布与童袜，不呈现伤势",
+        "en": "Hanji paper-cut artwork for the Jeong-in case, with a half-open paper door, porcelain bowl, brass spoon, wrapping cloth and child socks; no injuries are depicted",
+        "ja": "半開きの韓紙の扉、白磁の器、真鍮の匙、ポジャギ、子どもの靴下で構成した事件特集ビジュアル。傷害表現はありません"
+      }
+    },
     {
       "id": "tainan-tom-bear-case-2012",
       "publishedAt": "2026-08-25",
