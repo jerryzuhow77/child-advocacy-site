@@ -4,6 +4,49 @@
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "items": [
     {
+      "id": "hong-kong-nine-point-seven-2022",
+      "publishedAt": "2026-08-26",
+      "tag": "HISTORICAL CASE",
+      "region": "hongkong",
+      "regionLabel": {
+        "zh-Hant": "香港｜2022",
+        "zh-Hans": "香港｜2022",
+        "en": "Hong Kong | 2022",
+        "ja": "香港｜2022"
+      },
+      "badge": {
+        "zh-Hant": "香港歷史案件新作",
+        "zh-Hans": "香港历史案件新作",
+        "en": "New Hong Kong historical case",
+        "ja": "香港の歴史的事件・新着"
+      },
+      "title": {
+        "zh-Hant": "九點七公斤｜香港虐童案專題",
+        "zh-Hans": "九点七公斤｜香港虐童案专题",
+        "en": "Nine Point Seven Kilograms | Hong Kong Case",
+        "ja": "9.7キログラム｜香港児童虐待事件"
+      },
+      "summary": {
+        "zh-Hant": "房門關上以前，他曾被很多人看見｜五幕紀錄與粵式皮影專題。",
+        "zh-Hans": "房门关上以前，他曾被很多人看见｜五幕记录与粤式皮影专题。",
+        "en": "Before the door closed, many people had seen him | A five-act child-protection record.",
+        "ja": "扉が閉じる前、彼は多くの人に見られていた｜児童保護を問う五幕の記録。"
+      },
+      "url": {
+        "zh-Hant": "https://hong-kong-child-case.jerryzuhow77.chatgpt.site/",
+        "zh-Hans": "https://hong-kong-child-case.jerryzuhow77.chatgpt.site/",
+        "en": "https://hong-kong-child-case.jerryzuhow77.chatgpt.site/",
+        "ja": "https://hong-kong-child-case.jerryzuhow77.chatgpt.site/"
+      },
+      "image": "https://hong-kong-child-case.jerryzuhow77.chatgpt.site/images/shaw-hero-v4.webp",
+      "imageAlt": {
+        "zh-Hant": "《九點七公斤》香港手繪電影海報與紙雕主視覺，以法院、唐樓、電車、鐵閘與空椅構成，不呈現兒童或傷勢",
+        "zh-Hans": "《九点七公斤》香港手绘电影海报与纸雕主视觉，以法院、唐楼、电车、铁闸与空椅构成，不呈现儿童或伤势",
+        "en": "Hand-painted Hong Kong cinema-poster and paper-cut artwork with a court, tong lau, tram, iron gate and empty chair; no child or injuries shown",
+        "ja": "裁判所、唐楼、路面電車、鉄格子、空の椅子で構成した香港映画ポスター風の紙細工。子どもや傷害表現はありません"
+      }
+    },
+    {
       "id": "korea-jungein-memory-door-2020",
       "publishedAt": "2026-08-26",
       "tag": "HISTORICAL CASE",
