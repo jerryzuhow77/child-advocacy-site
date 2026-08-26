@@ -15,7 +15,7 @@ Total output lines: 813
 <link href="./assets/home-gsap.css?v=20260826-day8-poster-2" rel="stylesheet">
 <link href="./assets/home-history-static-map-20260824.css?v=20260824-desktop-map-repair-1" rel="stylesheet">
 <link href="./assets/home-history-mobile-visibility-20260824.css?v=20260824-mobile-map-stable-4" rel="stylesheet">
-<link href="./assets/home-history-paper-weather-20260825.css?v=20260825-paper-weather-5" rel="stylesheet">
+<link href="./assets/home-history-paper-weather-20260825.css?v=20260826-smaller-flecks-1" rel="stylesheet">
 <link href="./assets/global-protection-home.css?v=20260820-visitor-submission-2" rel="stylesheet">
 <link href="./assets/brand/favicon.jpg" rel="icon">
 <link href="./manifest.webmanifest?v=20260820-bg-2" rel="manifest">
@@ -133,7 +133,7 @@ Total output lines: 813
 <div class="historical-region-children" id="historicalJapanZh">
 <a href="./historical-cases/regions/japan/kurihara-mia/"><img alt="" src="./assets/art/kurihara-mia-mono-no-aware-hero-20260813.webp"><span><b>栗原心愛事件</b><small>｜守不住的問卷，與沒有走完的冬天</small></span></a>
 </div></div>
-<span class="historical-region-static">其他地區</span>
+
 </div><small class="historical-region-note">滑鼠移入或點擊「台灣」、「大陸」或「日本」，即可顯示案件連結。</small>
 </section></div></div>
 <a href="./activity-records/">活動紀錄</a>
@@ -284,6 +284,16 @@ Total output lines: 813
 .home-charity-feature-link{display:inline-flex;align-items:center;gap:12px;padding:14px 22px;border-radius:999px;background:#f3d597;color:#421b13!important;font-weight:950;text-decoration:none;box-shadow:0 12px 30px rgba(23,7,4,.28)}.home-charity-feature-link:hover{transform:translateY(-2px)}
 @media(max-width:760px){.home-charity-feature{display:flex;min-height:0;flex-direction:column;border-radius:22px;background:#3a1711}.home-charity-feature-media{position:relative!important;inset:auto!important;display:block!important;visibility:visible!important;order:2;min-height:430px;background:#6d3b2b url("./activity-records/20260825-111-surplus-donation/images/charity-paper-clay-visible-v2.jpg?v=20260825-mobile-visible-3") center/cover no-repeat;opacity:1!important}.home-charity-feature-bg{display:block!important;visibility:visible!important;object-position:50% center;opacity:1!important}.home-charity-feature-proof{display:block!important;visibility:visible!important;z-index:4;top:50%;right:5%;bottom:auto;width:90%;max-height:none;border-width:6px;opacity:1!important;transform:translateY(-50%) rotate(0)}.home-charity-feature-media:after{z-index:2;background:linear-gradient(180deg,rgba(66,28,18,.16) 0%,rgba(79,35,24,.03) 42%,rgba(79,35,24,.08) 100%)}.home-charity-feature-copy{order:1;max-width:none;padding:30px 24px 26px}.home-charity-feature-copy p{line-height:1.75}.home-charity-feature-meta{margin:18px 0}.home-art-footer .home-footer-bottom,.home-art-footer .home-footer-bottom span{color:#f5fffc!important;font-size:.75rem;font-weight:750;line-height:1.55;text-shadow:0 1px 2px rgba(0,0,0,.45)}.home-art-footer .home-footer-bottom a{color:#fff3df!important;font-weight:850;border-color:rgba(255,255,255,.48)!important;background:rgba(255,255,255,.08)}}
 @media(prefers-reduced-motion:no-preference){.home-charity-feature{animation:charityFeatureReveal .9s ease both}.home-charity-feature-bg{animation:charityFeatureDrift 14s ease-in-out infinite alternate}.home-charity-feature-proof{animation:charityProofFloat 6s ease-in-out infinite alternate}@keyframes charityFeatureReveal{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}@keyframes charityFeatureDrift{from{transform:scale(1.01)}to{transform:scale(1.055) translate3d(-.5%,0,0)}}@keyframes charityProofFloat{from{margin-top:-5px}to{margin-top:5px}}}
+/* Desktop reliability: keep the latest report image and information in a stable two-column card. */
+@media(min-width:761px){
+.home-civic-film,.home-civic-film-track,.home-civic-film-slide{display:block!important;position:relative!important;visibility:visible!important;opacity:1!important;transform:none!important}
+.home-charity-feature{grid-template-columns:minmax(320px,.88fr) minmax(440px,1.12fr);min-height:540px}
+.home-charity-feature-media{position:relative;inset:auto;grid-column:2;grid-row:1;min-width:0;min-height:540px;background:#6d3b2b}
+.home-charity-feature-bg{display:block;visibility:visible;opacity:1;object-position:center}
+.home-charity-feature-proof{right:6%;width:88%;max-height:84%;opacity:1;visibility:visible}
+.home-charity-feature-media:after{background:linear-gradient(90deg,rgba(66,28,18,.22),rgba(79,35,24,.04) 38%,rgba(79,35,24,0) 72%)}
+.home-charity-feature-copy{grid-column:1;grid-row:1;align-self:stretch;display:flex;flex-direction:column;justify-content:center;max-width:none;padding:clamp(34px,4.3vw,68px);background:linear-gradient(145deg,rgba(58,23,17,.98),rgba(91,42,29,.92));text-shadow:0 2px 14px rgba(25,8,5,.34)}
+}
 </style>
 <div class="home-civic-film" data-civic-film aria-label="羅氏兄弟案件與公益捐贈快報輪播">
 <div class="home-civic-film-track">
@@ -716,8 +726,8 @@ Total output lines: 813
 (()=>{const film=document.querySelector("[data-civic-film]");if(!film)return;const slides=[...film.querySelectorAll("[data-civic-film-slide]")],dots=[...film.querySelectorAll("[data-civic-film-dot]")];if(slides.length<2)return;let active=0,timer;const reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;const show=(index,manual=false)=>{active=(index+slides.length)%slides.length;slides.forEach((slide,i)=>{const on=i===active;slide.classList.toggle("is-active",on);slide.setAttribute("aria-hidden",String(!on));});dots.forEach((dot,i)=>{const on=i===active;dot.classList.toggle("is-active",on);dot.setAttribute("aria-pressed",String(on));});if(window.gsap&&!reduce){window.gsap.fromTo(slides[active],{autoAlpha:0,y:12},{autoAlpha:1,y:0,duration:.55,ease:"power2.out"});}if(manual)restart();};const restart=()=>{window.clearInterval(timer);if(!reduce)timer=window.setInterval(()=>show(active+1),8500);};dots.forEach((dot,i)=>dot.addEventListener("click",()=>show(i,true)));film.addEventListener("mouseenter",()=>window.clearInterval(timer));film.addEventListener("mouseleave",restart);film.addEventListener("focusin",()=>window.clearInterval(timer));film.addEventListener("focusout",e=>{if(!film.contains(e.relatedTarget))restart();});show(0);restart();})();
 </script>
 <script src="./assets/visitor-submission.js?v=20260820-8h-3"></script>
-<script src="./assets/home-gsap-map-20260824.js?v=20260825-tom-bear-taiwan-1"></script>
-<script src="./assets/home-history-paper-weather-20260825.js?v=20260825-paper-weather-5"></script>
+<script src="./assets/home-gsap-map-20260824.js?v=20260826-history-regions-1"></script>
+<script src="./assets/home-history-paper-weather-20260825.js?v=20260826-smaller-flecks-1"></script>
 <script src="./assets/home-history-anchor-stability-20260825.js?v=20260825-history-anchor-1"></script>
 <script src="./assets/activity-impact.js?v=20260820-1"></script>
 <script id="site-qr-script">
