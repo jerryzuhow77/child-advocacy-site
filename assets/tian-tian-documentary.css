@@ -3759,3 +3759,318 @@ html.tt-gsap-ready .tt-ending.is-epilogue-skipped .tt-ending-copy{
 .tt-transition--prologue .tt-stage-curtain--opening .tt-stage-curtain-panel{
   opacity:.82!important;
 }
+/* 2026-08-26 / scene-craft pass.
+   A restrained finishing layer gives every act its own material vocabulary:
+   bookbinding, wind traces, door hardware, frost etching, document tabs,
+   route marks, registration colour, stitch points and protective lamp arcs. */
+.tt-scene-craft{
+  position:absolute;
+  z-index:2;
+  inset:7% 6% 9%;
+  display:block;
+  overflow:hidden;
+  pointer-events:none;
+  opacity:.92;
+  filter:drop-shadow(4px 5px 2px rgba(39,18,11,.23));
+}
+.tt-scene-craft>i{
+  position:absolute;
+  display:block;
+  box-sizing:border-box;
+  pointer-events:none;
+}
+
+/* Chapter 00 — case-file binding and two hanging end knots. */
+.tt-craft-scroll-frame{
+  left:22%;right:22%;top:8%;height:42%;
+  border:1px solid rgba(216,165,82,.56);
+  outline:1px solid rgba(108,43,36,.28);
+  outline-offset:6px;
+  background:repeating-linear-gradient(90deg,rgba(116,46,38,.22) 0 2px,transparent 2px 13px);
+  clip-path:polygon(0 0,46% 0,50% 4%,54% 0,100% 0,100% 100%,54% 100%,50% 96%,46% 100%,0 100%);
+}
+.tt-craft-binding-stitch{
+  left:calc(31% + var(--tt-craft-i) * 9.5%);
+  top:6.5%;
+  width:14px;height:7px;
+  border:1px solid rgba(121,43,39,.78);
+  border-radius:50%;
+  background:rgba(224,178,91,.22);
+  box-shadow:0 0 0 2px rgba(239,205,128,.06);
+}
+.tt-craft-tassel{
+  left:calc(21% + var(--tt-craft-i) * 58%);
+  top:12%;
+  width:11px;height:62px;
+  border-left:2px solid rgba(122,42,39,.64);
+  background:repeating-linear-gradient(90deg,transparent 0 2px,rgba(205,142,63,.48) 2px 3px) 0 31px/9px 31px no-repeat;
+  transform-origin:50% 0;
+}
+
+/* Chapter 01 — three broad currents, seven clipped wind marks. */
+.tt-craft-wind-ribbon{
+  left:8%;
+  top:calc(13% + var(--tt-craft-i) * 14%);
+  width:calc(26% + var(--tt-craft-i) * 8%);
+  height:16px;
+  border-top:2px solid rgba(127,50,45,.6);
+  border-radius:50%;
+  box-shadow:0 -4px 0 -3px rgba(222,178,93,.64);
+  transform:rotate(calc(-7deg + var(--tt-craft-i) * 5deg));
+  transform-origin:0 50%;
+}
+.tt-craft-wind-mark{
+  left:calc(12% + var(--tt-craft-i) * 10.5%);
+  top:calc(39% + var(--tt-craft-i) * 4.8%);
+  width:12px;height:12px;
+  border-top:2px solid rgba(49,89,79,.64);
+  border-right:2px solid rgba(197,137,61,.7);
+  transform:rotate(34deg);
+}
+.tt-craft-edge-streamer{
+  left:calc(17% + var(--tt-craft-i) * 67%);
+  top:5%;
+  width:9px;height:55px;
+  border-left:2px solid rgba(136,47,43,.58);
+  border-radius:45%;
+  box-shadow:4px 0 rgba(206,149,70,.2);
+  transform-origin:50% 0;
+}
+
+/* Chapter 02 — paired vermilion bosses and layered thresholds. */
+.tt-craft-door-stud{
+  width:10px;height:10px;
+  border:1px solid rgba(247,199,108,.58);
+  border-radius:50%;
+  background:radial-gradient(circle at 38% 32%,#d8a653 0 20%,#8f3432 23% 66%,#4b2922 70%);
+  box-shadow:2px 3px 2px rgba(43,20,13,.3);
+}
+.tt-craft-door-stud:nth-child(-n+6){left:36%}
+.tt-craft-door-stud:nth-child(n+7){right:36%}
+.tt-craft-door-stud:nth-child(1),.tt-craft-door-stud:nth-child(7){top:21%}
+.tt-craft-door-stud:nth-child(2),.tt-craft-door-stud:nth-child(8){top:31%}
+.tt-craft-door-stud:nth-child(3),.tt-craft-door-stud:nth-child(9){top:41%}
+.tt-craft-door-stud:nth-child(4),.tt-craft-door-stud:nth-child(10){top:51%}
+.tt-craft-door-stud:nth-child(5),.tt-craft-door-stud:nth-child(11){top:61%}
+.tt-craft-door-stud:nth-child(6),.tt-craft-door-stud:nth-child(12){top:71%}
+.tt-craft-rosette{
+  left:calc(39% + var(--tt-craft-i) * 21%);
+  top:45%;
+  width:22px;height:22px;
+  border:4px double rgba(206,148,65,.72);
+  border-radius:50%;
+  background:radial-gradient(circle,#742c2d 0 23%,transparent 25%);
+  box-shadow:0 0 0 2px rgba(103,42,34,.34);
+}
+.tt-craft-threshold{
+  left:30%;right:30%;
+  bottom:calc(11% + var(--tt-craft-i) * 3.2%);
+  height:2px;
+  background:linear-gradient(90deg,transparent,#6d352c 12% 88%,transparent);
+  box-shadow:0 1px rgba(228,181,92,.28);
+  transform-origin:50% 50%;
+}
+
+/* Chapter 03 — etched ice marks and breath passing the lantern. */
+.tt-craft-ice-mark{
+  left:calc(6% + var(--tt-craft-i) * 12.5%);
+  top:calc(8% + var(--tt-craft-i) * 7.7%);
+  width:17px;height:17px;
+  background:
+    linear-gradient(90deg,transparent 46%,rgba(222,236,226,.74) 47% 53%,transparent 54%),
+    linear-gradient(transparent 46%,rgba(222,236,226,.74) 47% 53%,transparent 54%);
+  filter:drop-shadow(0 0 3px rgba(218,235,225,.4));
+}
+.tt-craft-cold-breath{
+  left:12%;
+  top:calc(36% + var(--tt-craft-i) * 12%);
+  width:24%;height:13px;
+  border-top:2px solid rgba(215,230,223,.4);
+  border-radius:50%;
+  transform:rotate(calc(-5deg + var(--tt-craft-i) * 4deg));
+  transform-origin:0 50%;
+}
+.tt-craft-frost-corner{
+  top:5%;
+  width:19%;height:27%;
+  border-top:2px solid rgba(218,233,225,.4);
+  border-left:2px solid rgba(218,233,225,.34);
+  background:repeating-linear-gradient(135deg,transparent 0 9px,rgba(223,235,228,.16) 9px 10px);
+}
+.tt-craft-frost-corner:nth-last-child(2){left:3%}
+.tt-craft-frost-corner:last-child{right:3%;transform:scaleX(-1)}
+
+/* Chapter 04 — document indexing and a level rule behind the judgment. */
+.tt-craft-document-tab{
+  right:22%;
+  top:calc(25% + var(--tt-craft-i) * 13%);
+  width:34px;height:16px;
+  border:1px solid rgba(101,53,37,.54);
+  background:linear-gradient(90deg,rgba(221,187,119,.68),rgba(139,70,44,.46));
+  box-shadow:4px 4px rgba(55,28,20,.18);
+}
+.tt-craft-balance-rule{
+  left:31%;right:31%;top:67%;height:3px;
+  background:linear-gradient(90deg,transparent,#9a4138 9% 45%,#d4a65a 46% 54%,#9a4138 55% 91%,transparent);
+  box-shadow:0 5px 0 -2px rgba(50,86,76,.44);
+  transform-origin:50% 50%;
+}
+.tt-craft-court-column{
+  left:calc(22% + var(--tt-craft-i) * 56%);
+  top:13%;bottom:16%;width:9px;
+  border:1px solid rgba(193,139,65,.46);
+  background:repeating-linear-gradient(0deg,#5a3028 0 7px,#a05a3d 7px 10px);
+  opacity:.6;
+  transform-origin:50% 100%;
+}
+
+/* Chapter 05 — measured route marks and an amber destination field. */
+.tt-craft-route-marker{
+  left:calc(29% + var(--tt-craft-i) * 17%);
+  top:calc(63% - var(--tt-craft-i) * 8%);
+  width:17px;height:17px;
+  border:3px double rgba(134,47,43,.72);
+  border-radius:50%;
+  background:rgba(222,175,86,.34);
+  box-shadow:0 0 0 3px rgba(63,99,84,.1);
+}
+.tt-craft-track{
+  left:calc(22% + var(--tt-craft-i) * 9%);
+  top:calc(72% - var(--tt-craft-i) * 5.5%);
+  width:18%;height:7px;
+  border-top:2px solid rgba(118,49,42,.38);
+  transform:rotate(-10deg);
+  transform-origin:0 50%;
+}
+.tt-craft-home-glow{
+  right:13%;bottom:8%;width:24%;height:31%;
+  border-radius:50%;
+  background:radial-gradient(ellipse,rgba(241,194,93,.34),rgba(204,125,55,.12) 46%,transparent 72%);
+  mix-blend-mode:screen;
+}
+
+/* Chapter 06 — printing registration and four mineral ink references. */
+.tt-craft-registration-mark{
+  width:16px;height:16px;
+  border-top:2px solid rgba(226,190,110,.6);
+  border-left:2px solid rgba(226,190,110,.6);
+  box-shadow:-2px -2px rgba(113,48,40,.42);
+}
+.tt-craft-registration-mark:nth-child(1){left:18%;top:21%}
+.tt-craft-registration-mark:nth-child(2){left:49%;top:21%;transform:scaleX(-1)}
+.tt-craft-registration-mark:nth-child(3){left:18%;top:62%;transform:scaleY(-1)}
+.tt-craft-registration-mark:nth-child(4){left:49%;top:62%;transform:scale(-1)}
+.tt-craft-ink-pad{
+  left:calc(22% + var(--tt-craft-i) * 13%);
+  bottom:7%;
+  width:22px;height:9px;
+  border:1px solid rgba(56,31,24,.5);
+  border-radius:50%;
+  box-shadow:0 3px rgba(50,26,20,.2),inset 0 1px rgba(245,220,157,.22);
+}
+.tt-craft-ink-pad:nth-child(5){background:#8d3737}
+.tt-craft-ink-pad:nth-child(6){background:#c1954e}
+.tt-craft-ink-pad:nth-child(7){background:#41685c}
+.tt-craft-ink-pad:nth-child(8){background:#473f37}
+.tt-craft-evidence-rule{
+  left:68%;top:13%;bottom:13%;width:2px;
+  background:repeating-linear-gradient(0deg,rgba(231,190,107,.58) 0 7px,transparent 7px 13px);
+  box-shadow:4px 0 rgba(122,45,40,.2);
+  transform-origin:50% 0;
+}
+
+/* Chapter 07 — seven punctures and an outer field of thread-light. */
+.tt-scene-craft--seven-moon{--tt-stitch-radius:clamp(66px,11vw,118px)}
+.tt-craft-stitch-point,.tt-craft-orbit-dot{
+  left:50%;top:45%;
+  border-radius:50%;
+  transform-origin:50% 50%;
+}
+.tt-craft-stitch-point{
+  width:9px;height:9px;
+  margin:-4px 0 0 -4px;
+  border:2px solid rgba(143,49,48,.8);
+  background:#d4a657;
+  box-shadow:0 0 0 3px rgba(239,211,145,.1);
+  transform:rotate(calc(var(--tt-craft-i) * 51.428deg)) translateY(calc(var(--tt-stitch-radius) * -1));
+}
+.tt-craft-orbit-dot{
+  width:5px;height:5px;
+  margin:-2px 0 0 -2px;
+  background:rgba(224,195,127,.72);
+  box-shadow:0 0 6px rgba(231,196,115,.52);
+  transform:rotate(calc(25deg + var(--tt-craft-i) * 60deg)) translateY(calc(var(--tt-stitch-radius) * -.72));
+}
+.tt-craft-needle-glint{
+  left:57%;top:27%;width:66px;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(236,213,165,.9) 35% 72%,transparent);
+  box-shadow:0 0 6px rgba(235,207,142,.42);
+  transform:rotate(-17deg);
+  transform-origin:50% 50%;
+}
+
+/* Chapter 08 — concentric protection, spring colour and a widening doorway. */
+.tt-craft-safe-arc{
+  left:calc(33% - var(--tt-craft-i) * 4%);
+  top:calc(28% - var(--tt-craft-i) * 4%);
+  width:calc(34% + var(--tt-craft-i) * 8%);
+  aspect-ratio:1;
+  border:1px solid rgba(215,164,76,.34);
+  border-bottom-color:rgba(128,46,42,.5);
+  border-radius:50%;
+  box-shadow:inset 0 0 15px rgba(235,184,84,.05);
+}
+.tt-craft-spring-dot{
+  left:calc(15% + var(--tt-craft-i) * 9.7%);
+  bottom:calc(8% + var(--tt-craft-i) * .6%);
+  width:10px;height:10px;
+  border-radius:50% 12% 50% 12%;
+  background:linear-gradient(135deg,#b84e4f,#dc9b57);
+  box-shadow:0 0 0 2px rgba(205,156,75,.12);
+  transform:rotate(calc(18deg + var(--tt-craft-i) * 14deg));
+}
+.tt-craft-door-glow{
+  right:4%;top:9%;width:25%;height:78%;
+  background:linear-gradient(90deg,transparent,rgba(245,204,111,.12) 38%,rgba(246,213,138,.34) 50%,rgba(245,204,111,.1) 62%,transparent);
+  clip-path:polygon(32% 0,68% 0,100% 100%,0 100%);
+  mix-blend-mode:screen;
+  transform-origin:50% 50%;
+}
+
+@media(min-width:901px){
+  .tt-transition[data-shadow-scene] .tt-scene-craft{z-index:5}
+}
+
+@media(max-width:720px){
+  .tt-scene-craft{inset:5% 4% 7%;z-index:2;opacity:.7;filter:drop-shadow(2px 3px 1px rgba(39,18,11,.2))}
+  .tt-craft-scroll-frame{left:25%;right:25%;height:51%}
+  .tt-craft-binding-stitch{left:calc(30% + var(--tt-craft-i) * 10%);width:9px;height:5px}
+  .tt-craft-tassel{height:38px}
+  .tt-craft-wind-ribbon{width:calc(22% + var(--tt-craft-i) * 7%)}
+  .tt-craft-edge-streamer,.tt-craft-court-column{display:none!important}
+  .tt-craft-door-stud{width:7px;height:7px}
+  .tt-craft-rosette{width:15px;height:15px;border-width:2px}
+  .tt-craft-ice-mark{width:11px;height:11px}
+  .tt-craft-document-tab{right:19%;width:24px;height:11px}
+  .tt-craft-route-marker{width:12px;height:12px;border-width:2px}
+  .tt-craft-ink-pad{width:16px;height:7px}
+  .tt-scene-craft--seven-moon{--tt-stitch-radius:clamp(48px,18vw,72px)}
+  .tt-craft-stitch-point{width:7px;height:7px;margin:-3px 0 0 -3px}
+  .tt-craft-orbit-dot{width:4px;height:4px}
+  .tt-craft-needle-glint{width:38px}
+  .tt-craft-safe-arc{opacity:.34}
+  .tt-craft-spring-dot{width:7px;height:7px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .tt-scene-craft,.tt-scene-craft>i{
+    animation:none!important;
+    transition:none!important;
+  }
+  .tt-scene-craft{opacity:.74!important}
+}
+
+html.tt-gsap-ready .tt-transition.is-visible .tt-scene-craft>i{
+  animation:none!important;
+  transition:none!important;
+}
