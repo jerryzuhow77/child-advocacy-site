@@ -30,7 +30,14 @@
     { selector: "#news-hearing-notes a.qa916-hearing-mini", layout: "mini" },
     { selector: "#home-special-features a.home-crafted-card" },
     { selector: "a.home-case-reel-card" },
-    { selector: "#home-historical-cases a.home-historical-card" },
+    {
+      selector: "#home-historical-cases a.home-historical-card",
+      layout: "historical",
+      resolve: (card) => ({
+        link: card,
+        host: card.querySelector(":scope > span:last-of-type") || card,
+      }),
+    },
     {
       selector: "#news-activity .home-activity-feature",
       layout: "standalone",
