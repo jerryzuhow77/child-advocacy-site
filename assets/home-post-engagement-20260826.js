@@ -2,77 +2,447 @@
   "use strict";
   if (window.__cpaPostEngagement) return;
   window.__cpaPostEngagement = true;
+
   const API = "https://wall.globalprotectionwall.com/api/public/view-count";
   const CLIENT_KEY = "cpa_engagement_client_v1";
-  const selectors = [
-    "#news-flash a.is-hearing", "#news-flash a.home-charity-feature-link", "#news-flash a.home-document-disc-card",
-    "#news-activity a.home-activity-primary", "#news-hearing a.home-news-card",
-    "#news-hearing-notes a.home-hearing-zone-primary", "#news-hearing-notes a.home-hearing-compact-card",
-    "#home-special-features a.home-crafted-card", "a.home-case-reel-card",
-    "#home-historical-cases a.home-historical-card", "a.activity-impact-card"
-  ].join(",");
+  const LIKED_KEY = "cpa_engagement_liked_v1";
+  const readCache = new Map();
+  const barsByKey = new Map();
+
+  const targetDefinitions = [
+    { selector: ".home-priority-links a.is-hearing", layout: "priority" },
+    { selector: "#news-flash a.home-document-disc-card", layout: "disc" },
+    { selector: "#news-hearing a.home-news-card.is-hearing" },
+    {
+      selector: "#news-hearing-notes .home-hearing-zone-feature",
+      layout: "standalone",
+      resolve: (feature) => ({
+        link: feature.querySelector("a.home-hearing-zone-primary") || feature.querySelector("a.home-hearing-zone-poster"),
+        host: feature.querySelector(".home-hearing-zone-copy") || feature,
+      }),
+    },
+    { selector: "#news-hearing-notes a.home-hearing-compact-card" },
+    { selector: "#news-hearing-notes .home-hearing-archive-links > a:not(.is-all)", layout: "archive" },
+    { selector: "#news-hearing-notes a.qa916-hearing-mini", layout: "mini" },
+    { selector: "#home-special-features a.home-crafted-card" },
+    { selector: "a.home-case-reel-card" },
+    { selector: "#home-historical-cases a.home-historical-card" },
+    {
+      selector: "#news-activity .home-activity-feature",
+      layout: "standalone",
+      resolve: (feature) => ({
+        link: feature.querySelector("a.home-activity-primary") || feature.querySelector("a.home-story-campaign-visual") || feature.querySelector("a.home-activity-image-main"),
+        host: feature.querySelector(".home-activity-copy") || feature,
+      }),
+    },
+    { selector: "a.activity-impact-card" },
+    {
+      selector: ".remember-kaikai-card",
+      layout: "standalone",
+      resolve: (card) => ({
+        link: card.querySelector("a.remember-kaikai-visual"),
+        host: card.querySelector(".remember-kaikai-copy") || card,
+      }),
+    },
+  ];
+
+  const translations = {
+    "zh-Hant": {
+      like: "按讚", comment: "留言", view: "瀏覽", share: "分享", close: "關閉",
+      barAria: "文章按讚、留言、分享與累計瀏覽",
+      commentsEyebrow: "COMMENTS · 官網文章留言", displayName: "顯示名稱", visitor: "訪客",
+      commentContent: "留言內容", commentPlaceholder: "留下祝福、關心或倡議……",
+      moderation: "留言送出後，須經全球守護留言牆後台審核通過才會公開。",
+      submit: "送交審核", loadingComments: "讀取公開留言中…", noComments: "目前尚無公開留言。",
+      commentsUnavailable: "公開留言暫時無法讀取。", submitting: "送出中…",
+      submitted: "已送交審核；通過後會顯示在這篇文章。", actionUnavailable: "目前暫時無法完成操作。",
+      shareEyebrow: "SHARE THIS ARTICLE", shareTitle: "分享這篇文章", shareHint: "可直接分享，或複製文章文字與連結後貼到社群 App。",
+      directShare: "直接分享", copyShare: "複製後貼上", nativeShare: "使用裝置分享", more: "更多",
+      copied: "已複製文章文字與連結，可貼到", copyError: "無法自動複製，請稍後再試。",
+    },
+    "zh-Hans": {
+      like: "点赞", comment: "留言", view: "浏览", share: "分享", close: "关闭",
+      barAria: "文章点赞、留言、分享与累计浏览",
+      commentsEyebrow: "COMMENTS · 官网文章留言", displayName: "显示名称", visitor: "访客",
+      commentContent: "留言内容", commentPlaceholder: "留下祝福、关心或倡议……",
+      moderation: "留言送出后，须经全球守护留言墙后台审核通过才会公开。",
+      submit: "送交审核", loadingComments: "读取公开留言中…", noComments: "目前尚无公开留言。",
+      commentsUnavailable: "公开留言暂时无法读取。", submitting: "送出中…",
+      submitted: "已送交审核；通过后会显示在这篇文章。", actionUnavailable: "目前暂时无法完成操作。",
+      shareEyebrow: "SHARE THIS ARTICLE", shareTitle: "分享这篇文章", shareHint: "可直接分享，或复制文章文字与链接后粘贴到社交 App。",
+      directShare: "直接分享", copyShare: "复制后粘贴", nativeShare: "使用设备分享", more: "更多",
+      copied: "已复制文章文字与链接，可粘贴到", copyError: "无法自动复制，请稍后再试。",
+    },
+    en: {
+      like: "Like", comment: "Comments", view: "Views", share: "Share", close: "Close",
+      barAria: "Article likes, comments, sharing, and cumulative views",
+      commentsEyebrow: "COMMENTS · OFFICIAL ARTICLE", displayName: "Display name", visitor: "Visitor",
+      commentContent: "Comment", commentPlaceholder: "Leave a message of care, support, or advocacy…",
+      moderation: "Comments become public after moderation by the Global Protection Wall team.",
+      submit: "Submit for review", loadingComments: "Loading public comments…", noComments: "No public comments yet.",
+      commentsUnavailable: "Public comments are temporarily unavailable.", submitting: "Submitting…",
+      submitted: "Submitted for review. It will appear here after approval.", actionUnavailable: "This action is temporarily unavailable.",
+      shareEyebrow: "SHARE THIS ARTICLE", shareTitle: "Share this article", shareHint: "Share directly or copy the article text and link into a social app.",
+      directShare: "Direct share", copyShare: "Copy and paste", nativeShare: "Device sharing", more: "More",
+      copied: "Article text and link copied for", copyError: "Unable to copy automatically. Please try again.",
+    },
+    ja: {
+      like: "いいね", comment: "コメント", view: "閲覧", share: "共有", close: "閉じる",
+      barAria: "記事のいいね、コメント、共有、累計閲覧数",
+      commentsEyebrow: "COMMENTS · 公式サイト記事", displayName: "表示名", visitor: "訪問者",
+      commentContent: "コメント", commentPlaceholder: "応援、関心、提案のメッセージを残してください……",
+      moderation: "コメントはグローバル保護メッセージウォールの審査後に公開されます。",
+      submit: "審査へ送信", loadingComments: "公開コメントを読み込み中…", noComments: "公開コメントはまだありません。",
+      commentsUnavailable: "公開コメントを一時的に読み込めません。", submitting: "送信中…",
+      submitted: "審査へ送信しました。承認後にこの記事へ表示されます。", actionUnavailable: "現在この操作を完了できません。",
+      shareEyebrow: "SHARE THIS ARTICLE", shareTitle: "この記事を共有", shareHint: "直接共有するか、記事の文章とリンクをコピーしてソーシャルアプリへ貼り付けられます。",
+      directShare: "直接共有", copyShare: "コピーして貼り付け", nativeShare: "端末の共有機能", more: "その他",
+      copied: "記事の文章とリンクをコピーしました：", copyError: "自動コピーできませんでした。もう一度お試しください。",
+    },
+  };
+
+  function ui() {
+    const language = (document.documentElement.lang || "zh-Hant").toLowerCase();
+    if (language.startsWith("zh-hans") || language.startsWith("zh-cn")) return translations["zh-Hans"];
+    if (language.startsWith("en")) return translations.en;
+    if (language.startsWith("ja")) return translations.ja;
+    return translations["zh-Hant"];
+  }
+
+  function locale() {
+    const language = (document.documentElement.lang || "zh-Hant").toLowerCase();
+    if (language.startsWith("zh-hans") || language.startsWith("zh-cn")) return "zh-CN";
+    if (language.startsWith("en")) return "en";
+    if (language.startsWith("ja")) return "ja";
+    return "zh-TW";
+  }
 
   function clientId() {
     try {
       let value = localStorage.getItem(CLIENT_KEY);
-      if (!value) { value = crypto.randomUUID(); localStorage.setItem(CLIENT_KEY, value); }
+      if (!value) {
+        value = crypto.randomUUID();
+        localStorage.setItem(CLIENT_KEY, value);
+      }
       return value;
-    } catch (_) { return `${Date.now()}-${Math.random().toString(36).slice(2)}`; }
+    } catch (_) {
+      return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    }
   }
-  function article(link) {
+
+  function likedArticles() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(LIKED_KEY) || "[]");
+      return new Set(Array.isArray(parsed) ? parsed : []);
+    } catch (_) {
+      return new Set();
+    }
+  }
+
+  function rememberLiked(key) {
+    try {
+      const values = likedArticles();
+      values.add(key);
+      localStorage.setItem(LIKED_KEY, JSON.stringify([...values].slice(-240)));
+    } catch (_) { /* The server still keeps the like even when storage is unavailable. */ }
+  }
+
+  function article(link, host) {
     const url = new URL(link.href, location.href);
     const isOfficialSite = url.origin === location.origin;
     const isOfficialFeature = url.hostname.endsWith(".jerryzuhow77.chatgpt.site");
     if (!/^https?:$/.test(url.protocol) || (!isOfficialSite && !isOfficialFeature)) return null;
     const path = url.pathname.replace(/^\/child-advocacy-site\/?/, "").replace(/\/$/, "") || "home";
-    const title = (link.querySelector("strong,h3")?.textContent || link.getAttribute("aria-label") || link.textContent || "官網文章").trim().replace(/\s+/g, " ").slice(0, 160);
-    const host = isOfficialSite ? "official" : url.hostname.replace(/\.jerryzuhow77\.chatgpt\.site$/, "");
-    return { key: `${host}-${path.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-")}`, title, url: url.href };
+    const titleSource = link.querySelector("[data-engagement-title-source],strong,h3,h2")
+      || host?.querySelector("[data-engagement-title-source],h2,h3,strong")
+      || link;
+    const title = (titleSource.textContent || link.getAttribute("aria-label") || link.textContent || "官網文章").trim().replace(/\s+/g, " ").slice(0, 160);
+    const articleHost = isOfficialSite ? "official" : url.hostname.replace(/\.jerryzuhow77\.chatgpt\.site$/, "");
+    return {
+      key: `${articleHost}-${path.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-")}`,
+      title,
+      url: url.href,
+    };
   }
-  async function request(item, options) {
-    const payload = options?.body ? JSON.parse(options.body) : { action: "read" };
-    const response = await fetch(API, { method: "POST", cache: "no-store", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...payload, channel: "official-article", articleKey: item.key }) });
+
+  async function request(item, payload = { action: "read" }) {
+    const response = await fetch(API, {
+      method: "POST",
+      cache: "no-store",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ ...payload, channel: "official-article", articleKey: item.key }),
+    });
     const result = await response.json();
-    if (!response.ok) throw new Error(result.error || "暫時無法完成操作");
+    if (!response.ok) throw new Error(result.error || ui().actionUnavailable);
     return result;
   }
-  function format(value) { return Number.isFinite(Number(value)) ? new Intl.NumberFormat("zh-TW").format(Number(value)) : "—"; }
-  function modal() {
+
+  function initialRead(item) {
+    if (!readCache.has(item.key)) {
+      const pending = request(item).catch((error) => {
+        readCache.delete(item.key);
+        throw error;
+      });
+      readCache.set(item.key, pending);
+    }
+    return readCache.get(item.key);
+  }
+
+  function format(value) {
+    return Number.isFinite(Number(value)) ? new Intl.NumberFormat(locale()).format(Number(value)) : "—";
+  }
+
+  function registerBar(item, bar) {
+    const bars = barsByKey.get(item.key) || new Set();
+    bars.add(bar);
+    barsByKey.set(item.key, bars);
+  }
+
+  function updateMetric(item, metric, value) {
+    const selector = metric === "like" ? ".is-like b" : metric === "comment" ? ".is-comment b" : ".is-view b";
+    (barsByKey.get(item.key) || []).forEach((bar) => {
+      const field = bar.querySelector(selector);
+      if (field) field.textContent = format(value);
+    });
+  }
+
+  function updateLiked(item) {
+    (barsByKey.get(item.key) || []).forEach((bar) => {
+      const like = bar.querySelector(".is-like");
+      const icon = like?.querySelector("[data-like-icon]");
+      like?.classList.add("is-liked");
+      if (icon) icon.textContent = "♥";
+    });
+  }
+
+  function commentsModal() {
     let dialog = document.querySelector("[data-post-engagement-dialog]");
     if (dialog) return dialog;
-    dialog = document.createElement("dialog"); dialog.className = "post-engagement-dialog"; dialog.dataset.postEngagementDialog = "";
-    dialog.innerHTML = `<form method="dialog" class="post-engagement-card"><button class="post-engagement-close" value="cancel" aria-label="關閉">×</button><small>COMMENTS · 官網文章留言</small><h2 data-engagement-title></h2><div class="post-engagement-comments" data-engagement-comments></div><label>顯示名稱<input name="nickname" maxlength="24" placeholder="訪客" required></label><label>留言內容<textarea name="content" minlength="2" maxlength="500" rows="4" required placeholder="留下祝福、關心或倡議……"></textarea></label><label class="post-engagement-hp" aria-hidden="true">網站<input name="website" tabindex="-1" autocomplete="off"></label><p>留言送出後，須經全球守護留言牆後台審核通過才會公開。</p><button type="submit" value="submit">送交審核</button><output aria-live="polite"></output></form>`;
-    document.body.appendChild(dialog); return dialog;
+    const copy = ui();
+    dialog = document.createElement("dialog");
+    dialog.className = "post-engagement-dialog";
+    dialog.dataset.postEngagementDialog = "";
+    dialog.innerHTML = `<form method="dialog" class="post-engagement-card"><button class="post-engagement-close" type="submit" value="cancel" aria-label="${copy.close}">×</button><small>${copy.commentsEyebrow}</small><h2 data-engagement-title></h2><div class="post-engagement-comments" data-engagement-comments></div><label>${copy.displayName}<input name="nickname" maxlength="24" placeholder="${copy.visitor}" required></label><label>${copy.commentContent}<textarea name="content" minlength="2" maxlength="500" rows="4" required placeholder="${copy.commentPlaceholder}"></textarea></label><label class="post-engagement-hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label><p>${copy.moderation}</p><button type="submit" value="submit">${copy.submit}</button><output aria-live="polite"></output></form>`;
+    dialog.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
+    document.body.appendChild(dialog);
+    return dialog;
   }
+
   async function openComments(item) {
-    const dialog = modal(), form = dialog.querySelector("form"), list = dialog.querySelector("[data-engagement-comments]"), output = dialog.querySelector("output");
-    dialog.querySelector("[data-engagement-title]").textContent = item.title; list.textContent = "讀取公開留言中…"; output.textContent = "";
+    const copy = ui();
+    const dialog = commentsModal();
+    const form = dialog.querySelector("form");
+    const list = dialog.querySelector("[data-engagement-comments]");
+    const output = dialog.querySelector("output");
+    dialog.querySelector("[data-engagement-title]").textContent = item.title;
+    list.textContent = copy.loadingComments;
+    output.textContent = "";
     dialog.showModal();
-    try { const data = await request(item); list.replaceChildren(...(data.comments?.length ? data.comments.map(c => { const el=document.createElement("article"); const b=document.createElement("b"),p=document.createElement("p"); b.textContent=c.nickname; p.textContent=c.content; el.append(b,p); return el; }) : [Object.assign(document.createElement("p"),{textContent:"目前尚無公開留言。"})])); } catch (_) { list.textContent = "公開留言暫時無法讀取。"; }
+    try {
+      const data = await request(item);
+      list.replaceChildren(...(data.comments?.length ? data.comments.map((comment) => {
+        const entry = document.createElement("article");
+        const name = document.createElement("b");
+        const content = document.createElement("p");
+        name.textContent = comment.nickname;
+        content.textContent = comment.content;
+        entry.append(name, content);
+        return entry;
+      }) : [Object.assign(document.createElement("p"), { textContent: copy.noComments })]));
+    } catch (_) {
+      list.textContent = copy.commentsUnavailable;
+    }
     form.onsubmit = async (event) => {
       const submitter = event.submitter;
       if (!submitter || submitter.value !== "submit") return;
-      event.preventDefault(); output.textContent = "送出中…";
+      event.preventDefault();
+      output.textContent = copy.submitting;
       const data = new FormData(form);
-      try { await request(item, { method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify({ action:"comment", nickname:data.get("nickname"), content:data.get("content"), website:data.get("website"), title:item.title, url:item.url }) }); form.reset(); output.textContent = "已送交審核；通過後會顯示在這篇文章。"; }
-      catch (error) { output.textContent = error.message; }
+      try {
+        await request(item, {
+          action: "comment",
+          nickname: data.get("nickname"),
+          content: data.get("content"),
+          website: data.get("website"),
+          title: item.title,
+          url: item.url,
+        });
+        form.reset();
+        output.textContent = copy.submitted;
+      } catch (error) {
+        output.textContent = error.message || copy.actionUnavailable;
+      }
     };
   }
-  function mount(link) {
-    if (link.dataset.engagementReady) return;
-    const item = article(link); if (!item) return;
-    link.dataset.engagementReady = "";
-    const bar = document.createElement("span"); bar.className = "home-post-engagement"; bar.setAttribute("aria-label", "文章互動與累計瀏覽");
-    bar.innerHTML = `<span class="home-post-stat is-like" role="button" tabindex="0" aria-label="愛心點讚">♡ <b>…</b></span><span class="home-post-stat is-comment" role="button" tabindex="0" aria-label="查看或新增留言">留言 <b>…</b></span><span class="home-post-stat is-view" aria-label="累計瀏覽">◉ <b>…</b></span>`;
-    link.appendChild(bar);
-    const like = bar.querySelector(".is-like"), comment = bar.querySelector(".is-comment");
-    request(item).then(data => { like.querySelector("b").textContent=format(data.likeCount); comment.querySelector("b").textContent=format(data.commentCount); bar.querySelector(".is-view b").textContent=format(data.viewCount); }).catch(()=>bar.remove());
-    const stop = (fn) => (event) => { event.preventDefault(); event.stopPropagation(); fn(); };
-    like.addEventListener("click", stop(async () => { try { const data=await request(item,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({action:"like",clientId:clientId()})}); like.classList.add("is-liked"); like.firstChild.textContent="♥ "; like.querySelector("b").textContent=format(data.likeCount); } catch(_){} }));
-    comment.addEventListener("click", stop(() => openComments(item)));
-    [like,comment].forEach(el=>el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();el.click();}}));
-    link.addEventListener("click", () => { try { navigator.sendBeacon(API, new Blob([JSON.stringify({channel:"official-article",articleKey:item.key,action:"view"})],{type:"application/json"})); } catch(_){} }, { capture:true });
+
+  function shareModal() {
+    let dialog = document.querySelector("[data-post-share-dialog]");
+    if (dialog) return dialog;
+    const copy = ui();
+    const platforms = [
+      ["X", "X", copy.directShare], ["Threads", "@", copy.directShare],
+      ["Instagram", "◎", copy.copyShare], ["Facebook", "f", copy.directShare],
+      ["抖音", "♪", copy.copyShare], ["小紅書", "小紅", copy.copyShare],
+      ["微博", "微", copy.directShare], ["更多", "⋯", copy.nativeShare],
+    ];
+    dialog = document.createElement("dialog");
+    dialog.className = "post-share-dialog";
+    dialog.dataset.postShareDialog = "";
+    dialog.innerHTML = `<section class="post-share-card"><button class="post-share-close" type="button" aria-label="${copy.close}">×</button><small>${copy.shareEyebrow}</small><h2>${copy.shareTitle}</h2><p data-share-article-title></p><div class="post-share-platforms">${platforms.map(([name, mark, mode]) => `<button type="button" data-share-platform="${name}"><i>${mark}</i><span><b>${name === "更多" ? copy.more : name}</b><small>${mode}</small></span></button>`).join("")}</div><p class="post-share-hint">${copy.shareHint}</p><output data-share-status aria-live="polite"></output></section>`;
+    dialog.querySelector(".post-share-close").addEventListener("click", () => dialog.close());
+    dialog.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
+    document.body.appendChild(dialog);
+    return dialog;
   }
-  function init(){ document.querySelectorAll(selectors).forEach(mount); }
-  document.readyState === "loading" ? document.addEventListener("DOMContentLoaded",init,{once:true}) : init();
+
+  async function copyText(value) {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(value);
+      return;
+    }
+    const field = document.createElement("textarea");
+    field.value = value;
+    field.setAttribute("readonly", "");
+    field.style.position = "fixed";
+    field.style.opacity = "0";
+    document.body.appendChild(field);
+    field.select();
+    const copied = document.execCommand("copy");
+    field.remove();
+    if (!copied) throw new Error("copy failed");
+  }
+
+  async function shareToPlatform(item, platform, dialog) {
+    const copy = ui();
+    const status = dialog.querySelector("[data-share-status]");
+    const shareText = item.title;
+    const textWithUrl = `${shareText}\n${item.url}`;
+    const encodedText = encodeURIComponent(textWithUrl);
+    const directTargets = {
+      X: `https://x.com/intent/post?text=${encodedText}`,
+      Threads: `https://www.threads.net/intent/post?text=${encodedText}`,
+      Facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(item.url)}`,
+      微博: `https://service.weibo.com/share/share.php?url=${encodeURIComponent(item.url)}&title=${encodeURIComponent(shareText)}`,
+    };
+    if (directTargets[platform]) {
+      window.open(directTargets[platform], "_blank", "noopener,noreferrer,width=720,height=680");
+      dialog.close();
+      return;
+    }
+    if (platform === "更多" && typeof navigator.share === "function") {
+      try {
+        await navigator.share({ title: item.title, text: item.title, url: item.url });
+        dialog.close();
+        return;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+      }
+    }
+    try {
+      await copyText(textWithUrl);
+      status.textContent = `${copy.copied} ${platform === "更多" ? copy.more : platform}`;
+    } catch (_) {
+      status.textContent = copy.copyError;
+    }
+  }
+
+  function openShare(item) {
+    const dialog = shareModal();
+    dialog.querySelector("[data-share-article-title]").textContent = item.title;
+    dialog.querySelector("[data-share-status]").textContent = "";
+    dialog.querySelectorAll("[data-share-platform]").forEach((button) => {
+      button.onclick = () => shareToPlatform(item, button.dataset.sharePlatform, dialog);
+    });
+    dialog.showModal();
+  }
+
+  function mount(link, host = link, layout = "card") {
+    if (!link || !host || link.dataset.engagementReady) return;
+    const item = article(link, host);
+    if (!item) return;
+    const copy = ui();
+    link.dataset.engagementReady = "";
+    host.dataset.engagementHost = "";
+    const bar = document.createElement("span");
+    bar.className = "home-post-engagement";
+    bar.dataset.articleKey = item.key;
+    bar.dataset.engagementLayout = layout;
+    bar.setAttribute("aria-label", copy.barAria);
+    bar.innerHTML = `<span class="home-post-stat is-like" role="button" tabindex="0" aria-label="${copy.like}"><span class="home-post-stat-icon" data-like-icon aria-hidden="true">♡</span><span class="home-post-stat-label">${copy.like}</span><b>…</b></span><span class="home-post-stat is-comment" role="button" tabindex="0" aria-label="${copy.comment}"><span class="home-post-stat-icon" aria-hidden="true">✎</span><span class="home-post-stat-label">${copy.comment}</span><b>…</b></span><span class="home-post-stat is-view" aria-label="${copy.view}"><span class="home-post-stat-icon" aria-hidden="true">◉</span><span class="home-post-stat-label">${copy.view}</span><b>…</b></span><span class="home-post-stat is-share" role="button" tabindex="0" aria-label="${copy.share}"><span class="home-post-stat-icon" aria-hidden="true">↗</span><span class="home-post-stat-label">${copy.share}</span></span>`;
+    host.appendChild(bar);
+    registerBar(item, bar);
+    if (likedArticles().has(item.key)) updateLiked(item);
+
+    const like = bar.querySelector(".is-like");
+    const comment = bar.querySelector(".is-comment");
+    const share = bar.querySelector(".is-share");
+    initialRead(item).then((data) => {
+      updateMetric(item, "like", data.likeCount);
+      updateMetric(item, "comment", data.commentCount);
+      updateMetric(item, "view", data.viewCount);
+      bar.dataset.loadState = "ready";
+    }).catch(() => {
+      bar.querySelectorAll("b").forEach((field) => { field.textContent = "—"; });
+      bar.dataset.loadState = "unavailable";
+    });
+
+    const stop = (action) => (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      action();
+    };
+    like.addEventListener("click", stop(async () => {
+      if (like.getAttribute("aria-busy") === "true") return;
+      like.setAttribute("aria-busy", "true");
+      try {
+        const data = await request(item, { action: "like", clientId: clientId() });
+        rememberLiked(item.key);
+        updateLiked(item);
+        updateMetric(item, "like", data.likeCount);
+      } catch (_) { /* Keep the last confirmed count visible. */ }
+      finally { like.removeAttribute("aria-busy"); }
+    }));
+    comment.addEventListener("click", stop(() => openComments(item)));
+    share.addEventListener("click", stop(() => openShare(item)));
+    [like, comment, share].forEach((control) => control.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        control.click();
+      }
+    }));
+    link.addEventListener("click", (event) => {
+      if (event.target.closest(".home-post-engagement")) return;
+      const payload = JSON.stringify({ channel: "official-article", articleKey: item.key, action: "view" });
+      try {
+        if (!navigator.sendBeacon(API, new Blob([payload], { type: "application/json" }))) {
+          fetch(API, { method: "POST", headers: { "content-type": "application/json" }, body: payload, keepalive: true });
+        }
+      } catch (_) { /* Navigation should never be blocked by counting. */ }
+    }, { capture: true });
+  }
+
+  function init() {
+    targetDefinitions.forEach((definition) => {
+      document.querySelectorAll(definition.selector).forEach((element) => {
+        const resolved = definition.resolve ? definition.resolve(element) : { link: element, host: element };
+        mount(resolved?.link, resolved?.host || resolved?.link, definition.layout || "card");
+      });
+    });
+  }
+
+  function start() {
+    init();
+    let scheduled = false;
+    const observer = new MutationObserver(() => {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(() => {
+        scheduled = false;
+        init();
+      });
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", start, { once: true }) : start();
 })();
