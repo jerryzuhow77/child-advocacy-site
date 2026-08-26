@@ -81,6 +81,16 @@ function addNav(){
   document.body.appendChild(bar);
   document.body.appendChild(menu);
 
+  var requestedLang=new URLSearchParams(location.search).get('lang');
+  if(requestedLang==='zh-Hans'||requestedLang==='zh-Hant'){
+    try{
+      localStorage.setItem('site-lang',requestedLang);
+      localStorage.setItem('siteLang',requestedLang);
+    }catch(_){}
+    document.documentElement.lang=requestedLang;
+    document.dispatchEvent(new CustomEvent('cpa-language-change',{detail:{lang:requestedLang}}));
+  }
+
   var toggle=bar.querySelector('.menu');
   function setOpen(open){
     menu.classList.toggle('open',open);
@@ -93,7 +103,10 @@ function addNav(){
   menu.addEventListener('click',function(event){
     var button=event.target.closest('[data-cpa-lang]');
     if(button){
-      try{localStorage.setItem('site-lang',button.dataset.cpaLang);}catch(_){}
+      try{
+        localStorage.setItem('site-lang',button.dataset.cpaLang);
+        localStorage.setItem('siteLang',button.dataset.cpaLang);
+      }catch(_){}
       document.documentElement.lang=button.dataset.cpaLang;
       document.dispatchEvent(new CustomEvent('cpa-language-change',{detail:{lang:button.dataset.cpaLang}}));
       setOpen(false);
