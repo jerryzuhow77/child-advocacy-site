@@ -31,6 +31,17 @@
     timeline.data = "played";
     timeline.play(0);
   };
+  const paperCutMotion = {
+    "scroll-prologue": { x: -12, y: 16, rotation: -4, scale: 0.76, restX: 0, restY: 0, restRotation: 0, alpha: 0.78 },
+    "wind-kite": { x: -34, y: 17, rotation: -9, scale: 0.8, restX: 9, restY: -5, restRotation: 1.4, alpha: 0.76 },
+    "ten-knot-door": { x: 0, y: 24, rotation: 0, scale: 0.7, restX: 0, restY: -2, restRotation: 0, alpha: 0.8 },
+    "frost-lantern": { x: -11, y: -17, rotation: -6, scale: 0.78, restX: 3, restY: 2, restRotation: 0.8, alpha: 0.72 },
+    "court-scroll": { x: 26, y: 4, rotation: 5, scale: 0.75, restX: 0, restY: 0, restRotation: 0, alpha: 0.74 },
+    "seal-road": { x: -28, y: 19, rotation: -6, scale: 0.76, restX: 6, restY: -4, restRotation: 0.9, alpha: 0.76 },
+    "evidence-blocks": { x: 0, y: 20, rotation: -5, scale: 0.7, restX: 0, restY: -1, restRotation: 0.5, alpha: 0.72 },
+    "seven-moon": { x: 0, y: 5, rotation: -13, scale: 0.66, restX: 0, restY: -4, restRotation: 1.5, alpha: 0.78 },
+    "guarded-lamp": { x: 0, y: 25, rotation: -3, scale: 0.7, restX: 0, restY: -4, restRotation: 0.5, alpha: 0.8 }
+  };
 
   const createOnceTrigger = (trigger, timeline, start) => ScrollTrigger.create({
     trigger,
@@ -191,6 +202,27 @@
     const mountains = findAll(".tt-shadow-mountain");
     const water = find(".tt-shadow-water");
     const footlights = find(".tt-shadow-footlights");
+    const paperCut = find(".tt-paper-cut-atlas-image");
+    const paperMotion = paperCutMotion[scene];
+    if (paperCut && paperMotion) {
+      timeline.fromTo(paperCut, {
+        autoAlpha: 0,
+        x: paperMotion.x,
+        y: paperMotion.y,
+        rotation: paperMotion.rotation,
+        scale: paperMotion.scale,
+        filter: "drop-shadow(3px 5px 2px rgba(35,15,9,.18)) blur(8px) saturate(.72) brightness(.76)"
+      }, {
+        autoAlpha: isMobile ? paperMotion.alpha * 0.84 : paperMotion.alpha,
+        x: paperMotion.restX,
+        y: paperMotion.restY,
+        rotation: paperMotion.restRotation,
+        scale: 1,
+        filter: "drop-shadow(7px 9px 4px rgba(35,15,9,.3)) blur(0px) saturate(.96) brightness(.98)",
+        duration: 1.7,
+        ease: "power3.out"
+      }, 0.18);
+    }
     if (sun) timeline.fromTo(sun, { autoAlpha: 0, scale: 0.72 }, { autoAlpha: 0.62, scale: 1, duration: 1.45 }, 0.12);
     if (clouds.length) timeline.fromTo(clouds, { autoAlpha: 0, x: (index) => index ? 34 : -34 }, { autoAlpha: 0.66, x: 0, duration: 2.1, stagger: 0.18, ease: "sine.out" }, 0.08);
     if (mountains.length) timeline.fromTo(mountains, { autoAlpha: 0, y: 18 }, { autoAlpha: 0.72, y: 0, duration: 1.55, stagger: 0.14 }, 0.18);

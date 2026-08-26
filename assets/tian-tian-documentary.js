@@ -237,6 +237,14 @@
       add('tt-craft-door-glow');
     }
 
+    // A single transparent atlas supplies the tactile paper sculpture for all
+    // nine acts. Keeping it in one cached image avoids nine separate mobile
+    // downloads, while the scene modifier selects the correct atlas cell.
+    const paperCut = makePart('i', 'tt-paper-cut-atlas');
+    paperCut.dataset.ttPaperCut = scene;
+    paperCut.append(makePart('span', 'tt-paper-cut-atlas-image'));
+    craft.append(paperCut);
+
     stage.append(craft);
   }
 
