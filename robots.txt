@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://jerryzuhow77.github.io/child-advocacy-site/sitemap.xml
