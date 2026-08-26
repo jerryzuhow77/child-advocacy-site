@@ -1,9 +1,10 @@
 .home-post-engagement{
   box-sizing:border-box;
-  display:flex!important;
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr));
   align-items:center;
-  flex-wrap:wrap;
   gap:7px;
+  width:100%;
   max-width:100%;
   margin-top:12px;
   position:relative;
@@ -29,6 +30,8 @@
   line-height:1.2;
   white-space:nowrap;
   text-decoration:none!important;
+  min-width:0;
+  width:100%;
 }
 .home-post-stat[role=button]{
   cursor:pointer;
@@ -219,7 +222,8 @@
 .remember-kaikai-copy>.home-post-engagement{margin-top:15px}
 .qa916-hearing-mini>.home-post-engagement{
   grid-column:1/-1;
-  display:flex!important;
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr));
   place-items:initial!important;
   width:100%!important;
   height:auto!important;
@@ -295,4 +299,32 @@
 @media(prefers-reduced-motion:reduce){
   .home-post-stat,.post-share-platforms>button{transition:none!important}
   .home-post-stat[role=button]:hover,.home-post-stat[role=button]:focus-visible,.post-share-platforms>button:hover,.post-share-platforms>button:focus-visible{transform:none}
+}
+
+/* The latest-report wheel presents exactly the two pinned reports as legible articles. */
+.home-latest-flash .home-document-disc-card:not([data-latest-priority="true"]){display:none!important}
+.home-latest-flash .home-document-disc-shell{height:760px!important}
+.home-latest-flash .home-document-disc-card[data-latest-priority="true"]{
+  width:clamp(250px,24vw,300px)!important;
+  min-height:300px!important;
+  border-radius:32px!important;
+}
+.home-latest-flash .home-document-disc-card[data-latest-priority="true"] img{
+  height:150px!important;
+  object-fit:cover;
+}
+.home-latest-flash .home-document-disc-card[data-latest-priority="true"]>span{padding:12px 16px 14px!important}
+.home-latest-flash .home-document-disc-card[data-latest-priority="true"] small{font-size:.72rem!important}
+.home-latest-flash .home-document-disc-card[data-latest-priority="true"] strong{font-size:1.12rem!important}
+.home-latest-flash .home-document-disc-card[data-latest-priority="true"] em{display:block!important;font-size:.78rem!important}
+.home-latest-flash .home-document-disc-card[data-latest-priority="true"]>.home-post-engagement{margin:0 10px 10px!important}
+@media(max-width:760px){
+  .home-latest-flash .home-document-disc-shell{height:650px!important}
+  .home-latest-flash .home-document-disc-card[data-latest-priority="true"]{width:170px!important;min-height:230px!important;border-radius:22px!important}
+  .home-latest-flash .home-document-disc-card[data-latest-priority="true"] img{height:96px!important}
+  .home-latest-flash .home-document-disc-card[data-latest-priority="true"]>span{padding:8px 9px 10px!important}
+  .home-latest-flash .home-document-disc-card[data-latest-priority="true"] small{font-size:.55rem!important}
+  .home-latest-flash .home-document-disc-card[data-latest-priority="true"] strong{font-size:.82rem!important}
+  .home-latest-flash .home-document-disc-card[data-latest-priority="true"] em{font-size:.62rem!important}
+  .home-latest-flash .home-document-disc-card[data-latest-priority="true"]>.home-post-engagement{margin:0 5px 6px!important}
 }
