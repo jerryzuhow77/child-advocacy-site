@@ -180,6 +180,11 @@
       gsap.set(paths, { strokeDasharray: 1, strokeDashoffset: 1 });
       timeline.to(paths, { strokeDashoffset: 0, duration, stagger: 0.08, ease: "power2.inOut" }, position);
     };
+    const animateCraft = (selector, fromVars, toVars, position = 0.6, stagger = 0.08) => {
+      const parts = findAll(selector);
+      if (!parts.length) return;
+      timeline.fromTo(parts, fromVars, { ...toVars, stagger }, position);
+    };
 
     const sun = find(".tt-shadow-sun-disc");
     const clouds = findAll(".tt-shadow-cloud");
@@ -203,6 +208,9 @@
       if (seal) timeline.fromTo(seal, { autoAlpha: 0, scale: 1.7, rotation: -12 }, { autoAlpha: 0.82, scale: 1, rotation: 0, duration: 0.72 }, 1.55);
       if (bloom) timeline.fromTo(bloom, { autoAlpha: 0, scale: 0.45 }, { autoAlpha: 0.76, scale: 1, duration: 0.9 }, 1.74);
       if (petals.length) timeline.fromTo(petals, { autoAlpha: 0, y: -10, scale: 0.4 }, { autoAlpha: 0.68, y: 8, scale: 1, duration: 1.2, stagger: 0.06, ease: "sine.out" }, 1.82);
+      animateCraft(".tt-craft-scroll-frame", { autoAlpha: 0, scaleX: 0.72 }, { autoAlpha: 0.72, scaleX: 1, duration: 1.2, transformOrigin: "50% 50%" }, 0.62);
+      animateCraft(".tt-craft-binding-stitch", { autoAlpha: 0, y: -11, scale: 0.45 }, { autoAlpha: 0.82, y: 0, scale: 1, duration: 0.48, ease: "back.out(1.5)" }, 1.16, 0.09);
+      animateCraft(".tt-craft-tassel", { autoAlpha: 0, y: -18, rotation: (index) => index ? 9 : -9 }, { autoAlpha: 0.72, y: 0, rotation: 0, duration: 0.9, ease: "sine.out" }, 1.42, 0.14);
       drawPaths(".tt-shadow-line path", 0.86, 1.55);
       return;
     }
@@ -217,6 +225,9 @@
         ],
         ease: "sine.inOut"
       }, 0.72);
+      animateCraft(".tt-craft-wind-ribbon", { autoAlpha: 0, x: -38, scaleX: 0.56 }, { autoAlpha: 0.58, x: 0, scaleX: 1, duration: 1.65, transformOrigin: "0 50%", ease: "sine.out" }, 0.34, 0.12);
+      animateCraft(".tt-craft-wind-mark", { autoAlpha: 0, x: -26, y: (index) => index % 2 ? 8 : -8 }, { autoAlpha: 0.66, x: 0, y: 0, duration: 0.72, ease: "power2.out" }, 0.9, 0.08);
+      animateCraft(".tt-craft-edge-streamer", { autoAlpha: 0, rotation: (index) => index ? 18 : -18, scaleY: 0.45 }, { autoAlpha: 0.64, rotation: 0, scaleY: 1, duration: 1.15, transformOrigin: "50% 0", ease: "sine.out" }, 1.18, 0.16);
       drawPaths(".tt-shadow-thread path", 0.74, 1.9);
       return;
     }
@@ -230,6 +241,9 @@
       if (lattice) timeline.fromTo(lattice, { autoAlpha: 0, scale: 0.72, rotation: -3 }, { autoAlpha: 0.78, scale: 1, rotation: 0, duration: 1.15 }, 0.78);
       if (cord) timeline.fromTo(cord, { scaleY: 0.08 }, { scaleY: 1, duration: 1.1, transformOrigin: "50% 0" }, 0.88);
       if (knots.length) timeline.fromTo(knots, { autoAlpha: 0, scale: 0.25 }, { autoAlpha: 0.92, scale: 1, duration: 0.38, stagger: 0.09, ease: "back.out(1.7)" }, 1.05);
+      animateCraft(".tt-craft-door-stud", { autoAlpha: 0, scale: 0.18 }, { autoAlpha: 0.78, scale: 1, duration: 0.34, ease: "back.out(1.8)" }, 1.04, 0.045);
+      animateCraft(".tt-craft-rosette", { autoAlpha: 0, scale: 0.42, rotation: (index) => index ? 26 : -26 }, { autoAlpha: 0.78, scale: 1, rotation: 0, duration: 0.72, ease: "back.out(1.45)" }, 1.32, 0.14);
+      animateCraft(".tt-craft-threshold", { autoAlpha: 0, scaleX: 0.1 }, { autoAlpha: 0.58, scaleX: 1, duration: 0.62, transformOrigin: "50% 50%" }, 1.58, 0.09);
       return;
     }
 
@@ -242,6 +256,9 @@
       if (wick) timeline.fromTo(wick, { autoAlpha: 0.12, scale: 0.5 }, { autoAlpha: 1, scale: 1, duration: 0.7, repeat: 1, yoyo: true, ease: "sine.inOut" }, 1.05);
       if (frost) timeline.fromTo(frost, { autoAlpha: 0, clipPath: "inset(100% 0 0 0)" }, { autoAlpha: 0.82, clipPath: "inset(0% 0 0 0)", duration: 1.5 }, 1.08);
       if (date) timeline.fromTo(date, { autoAlpha: 0, letterSpacing: "0.25em" }, { autoAlpha: 0.88, letterSpacing: "0.08em", duration: 0.82 }, 1.5);
+      animateCraft(".tt-craft-ice-mark", { autoAlpha: 0, scale: 0.2, rotation: (index) => index % 2 ? 28 : -28 }, { autoAlpha: 0.62, scale: 1, rotation: 0, duration: 0.58, ease: "back.out(1.45)" }, 0.82, 0.08);
+      animateCraft(".tt-craft-cold-breath", { autoAlpha: 0, x: -26, scaleX: 0.5 }, { autoAlpha: 0.38, x: 0, scaleX: 1, duration: 1.35, transformOrigin: "0 50%", ease: "sine.out" }, 1.2, 0.17);
+      animateCraft(".tt-craft-frost-corner", { autoAlpha: 0, clipPath: "inset(100% 100% 0 0)" }, { autoAlpha: 0.56, clipPath: "inset(0% 0% 0 0)", duration: 1.35, ease: "power2.out" }, 1.1, 0.18);
       return;
     }
 
@@ -254,6 +271,9 @@
       if (records.length) timeline.fromTo(records, { scaleX: 0 }, { scaleX: 1, duration: 0.52, stagger: 0.15, transformOrigin: "0 50%" }, 1.05);
       if (seal) timeline.fromTo(seal, { autoAlpha: 0, scale: 1.8, rotation: -11 }, { autoAlpha: 0.9, scale: 1, rotation: 0, duration: 0.68, ease: "back.out(1.5)" }, 1.5);
       if (bars) timeline.fromTo(bars, { autoAlpha: 0, y: -18 }, { autoAlpha: 0.72, y: 0, duration: 0.85 }, 1.58);
+      animateCraft(".tt-craft-document-tab", { autoAlpha: 0, x: 18 }, { autoAlpha: 0.78, x: 0, duration: 0.48, ease: "power2.out" }, 1.18, 0.12);
+      animateCraft(".tt-craft-balance-rule", { autoAlpha: 0, scaleX: 0.08 }, { autoAlpha: 0.68, scaleX: 1, duration: 1.0, transformOrigin: "50% 50%" }, 0.86);
+      animateCraft(".tt-craft-court-column", { autoAlpha: 0, scaleY: 0.18 }, { autoAlpha: 0.52, scaleY: 1, duration: 1.1, transformOrigin: "50% 100%" }, 0.72, 0.18);
       return;
     }
 
@@ -265,6 +285,9 @@
       drawPaths(".tt-shadow-road path", 0.92, 1.85);
       if (home) timeline.fromTo(home, { autoAlpha: 0, x: 18 }, { autoAlpha: 0.82, x: 0, duration: 0.9 }, 1.26);
       if (flower) timeline.fromTo(flower, { autoAlpha: 0, scale: 0.34, rotation: -14 }, { autoAlpha: 0.82, scale: 1, rotation: 0, duration: 1.0, ease: "back.out(1.55)" }, 1.52);
+      animateCraft(".tt-craft-route-marker", { autoAlpha: 0, scale: 0.22, y: -9 }, { autoAlpha: 0.78, scale: 1, y: 0, duration: 0.48, ease: "back.out(1.65)" }, 1.08, 0.18);
+      animateCraft(".tt-craft-track", { autoAlpha: 0, x: -18, scaleX: 0.45 }, { autoAlpha: 0.5, x: 0, scaleX: 1, duration: 0.64, transformOrigin: "0 50%" }, 1.14, 0.1);
+      animateCraft(".tt-craft-home-glow", { autoAlpha: 0, scale: 0.48 }, { autoAlpha: 0.62, scale: 1, duration: 1.2, ease: "sine.out" }, 1.42);
       return;
     }
 
@@ -275,6 +298,9 @@
       if (blocks.length) timeline.fromTo(blocks, { autoAlpha: 0, y: 26, rotation: (index) => index % 2 ? 4 : -4 }, { autoAlpha: 0.92, y: 0, rotation: 0, duration: 0.58, stagger: 0.13, ease: "back.out(1.35)" }, 0.62);
       if (boundary) timeline.fromTo(boundary, { scaleX: 0 }, { scaleX: 1, duration: 1.15, transformOrigin: "0 50%" }, 1.12);
       if (record) timeline.fromTo(record, { autoAlpha: 0, x: 16 }, { autoAlpha: 0.56, x: 0, duration: 0.8 }, 1.46);
+      animateCraft(".tt-craft-registration-mark", { autoAlpha: 0, scale: 1.65, rotation: (index) => index % 2 ? 22 : -22 }, { autoAlpha: 0.72, scale: 1, rotation: 0, duration: 0.55, ease: "back.out(1.35)" }, 0.82, 0.12);
+      animateCraft(".tt-craft-ink-pad", { autoAlpha: 0, y: 18, scale: 0.55 }, { autoAlpha: 0.72, y: 0, scale: 1, duration: 0.55, ease: "back.out(1.5)" }, 1.12, 0.11);
+      animateCraft(".tt-craft-evidence-rule", { autoAlpha: 0, scaleY: 0.08 }, { autoAlpha: 0.66, scaleY: 1, duration: 1.05, transformOrigin: "50% 0" }, 1.2);
       return;
     }
 
@@ -284,6 +310,9 @@
       if (moon) timeline.fromTo(moon, { autoAlpha: 0, scale: 0.58, rotation: -8 }, { autoAlpha: 0.92, scale: 1, rotation: 0, duration: 1.35, ease: "power2.out" }, 0.56);
       drawPaths(".tt-shadow-stitches path", 0.82, 2.05);
       if (thread) timeline.fromTo(thread, { autoAlpha: 0, scaleY: 0 }, { autoAlpha: 0.72, scaleY: 1, duration: 1.15, transformOrigin: "50% 0" }, 1.08);
+      animateCraft(".tt-craft-stitch-point", { autoAlpha: 0, scale: 0.15 }, { autoAlpha: 0.78, scale: 1, duration: 0.42, ease: "back.out(1.75)" }, 0.88, 0.12);
+      animateCraft(".tt-craft-orbit-dot", { autoAlpha: 0, scale: 0.25 }, { autoAlpha: 0.58, scale: 1, duration: 0.6, ease: "sine.out" }, 1.22, 0.1);
+      animateCraft(".tt-craft-needle-glint", { autoAlpha: 0, x: -28, rotation: -35 }, { autoAlpha: 0.74, x: 0, rotation: -17, duration: 0.95, ease: "power2.out" }, 1.52);
       return;
     }
 
@@ -298,6 +327,9 @@
       if (hands.length) timeline.fromTo(hands, { autoAlpha: 0, scale: 0.3, rotation: (index) => index % 2 ? 10 : -10 }, { autoAlpha: 0.84, scale: 1, rotation: 0, duration: 0.58, stagger: 0.14, ease: "back.out(1.7)" }, 1.12);
       if (bloom) timeline.fromTo(bloom, { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 0.86, scale: 1, duration: 1.05 }, 1.56);
       if (petals.length) timeline.fromTo(petals, { autoAlpha: 0, y: -16, scale: 0.35 }, { autoAlpha: 0.72, y: 9, scale: 1, duration: 1.25, stagger: 0.07, ease: "sine.out" }, 1.7);
+      animateCraft(".tt-craft-safe-arc", { autoAlpha: 0, scale: 0.54 }, { autoAlpha: 0.46, scale: 1, duration: 1.25, ease: "power2.out" }, 0.72, 0.16);
+      animateCraft(".tt-craft-spring-dot", { autoAlpha: 0, y: 12, scale: 0.2 }, { autoAlpha: 0.7, y: 0, scale: 1, duration: 0.48, ease: "back.out(1.65)" }, 1.42, 0.075);
+      animateCraft(".tt-craft-door-glow", { autoAlpha: 0, scaleX: 0.36 }, { autoAlpha: 0.66, scaleX: 1, duration: 1.35, transformOrigin: "50% 50%", ease: "sine.out" }, 1.08);
     }
   };
 
