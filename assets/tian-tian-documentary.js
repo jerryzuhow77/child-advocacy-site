@@ -202,6 +202,17 @@
     stage.dataset.ttShadowScene = scene;
     stage.append(makePart('span', 'tt-shadow-screen'));
     stage.append(makePart('span', 'tt-shadow-vignette'));
+    const atmosphere = makePart('span', 'tt-shadow-atmosphere');
+    atmosphere.append(
+      makePart('i', 'tt-shadow-sun-disc'),
+      makePart('i', 'tt-shadow-cloud tt-shadow-cloud--near'),
+      makePart('i', 'tt-shadow-cloud tt-shadow-cloud--far'),
+      makePart('i', 'tt-shadow-mountain tt-shadow-mountain--rear'),
+      makePart('i', 'tt-shadow-mountain tt-shadow-mountain--front'),
+      makePart('i', 'tt-shadow-water'),
+      makePart('i', 'tt-shadow-footlights')
+    );
+    stage.append(atmosphere);
     const props = makePart('span', 'tt-shadow-props');
 
     if (scene === 'scroll-prologue') {

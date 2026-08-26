@@ -181,6 +181,17 @@
       timeline.to(paths, { strokeDashoffset: 0, duration, stagger: 0.08, ease: "power2.inOut" }, position);
     };
 
+    const sun = find(".tt-shadow-sun-disc");
+    const clouds = findAll(".tt-shadow-cloud");
+    const mountains = findAll(".tt-shadow-mountain");
+    const water = find(".tt-shadow-water");
+    const footlights = find(".tt-shadow-footlights");
+    if (sun) timeline.fromTo(sun, { autoAlpha: 0, scale: 0.72 }, { autoAlpha: 0.62, scale: 1, duration: 1.45 }, 0.12);
+    if (clouds.length) timeline.fromTo(clouds, { autoAlpha: 0, x: (index) => index ? 34 : -34 }, { autoAlpha: 0.66, x: 0, duration: 2.1, stagger: 0.18, ease: "sine.out" }, 0.08);
+    if (mountains.length) timeline.fromTo(mountains, { autoAlpha: 0, y: 18 }, { autoAlpha: 0.72, y: 0, duration: 1.55, stagger: 0.14 }, 0.18);
+    if (water) timeline.fromTo(water, { autoAlpha: 0, scaleX: 0.82 }, { autoAlpha: 0.58, scaleX: 1, duration: 1.7, transformOrigin: "50% 50%" }, 0.24);
+    if (footlights) timeline.fromTo(footlights, { autoAlpha: 0.12 }, { autoAlpha: 0.78, duration: 0.82, repeat: 1, yoyo: true, ease: "sine.inOut" }, 0.18);
+
     if (scene === "scroll-prologue") {
       const scroll = find(".tt-shadow-scroll");
       const records = findAll(".tt-shadow-record-line");
