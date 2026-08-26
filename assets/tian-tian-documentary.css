@@ -4152,7 +4152,9 @@ html.tt-gsap-ready .tt-transition.is-visible .tt-scene-craft>i{
   position:absolute;
   inset:-.25%;
   display:block;
-  background:url("./art/tian-tian-carved-wood-stage-frame-20260826.webp") center/100% 100% no-repeat;
+  background:
+    linear-gradient(180deg,rgba(57,29,16,.97),rgba(116,71,35,.95)) 50% 88.45%/71.8% .65% no-repeat,
+    url("./art/tian-tian-carved-wood-stage-frame-20260826.webp") center/100% 100% no-repeat;
   filter:drop-shadow(0 12px 10px rgba(12,5,2,.58)) drop-shadow(0 1px 1px rgba(241,191,91,.16));
   opacity:1;
   transform-origin:50% 50%;
