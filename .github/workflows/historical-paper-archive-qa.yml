@@ -85,6 +85,8 @@ jobs:
           assert 'OTHER REGIONS' not in history_js
           assert "region:'unclassified'" in history_js
           assert "if(!b[m.region])return" in history_js
+          assert 'The Jeong-in Case | The Door Did Not Open' in history_js
+          assert 'チョンイン事件｜開かなかった扉' in history_js
           assert "20260826-historical-followup-1" in map_loader
           assert 'host: card.querySelector(":scope > span:last-of-type") || card' in engagement_js
           assert 'history-paper-map-svg' in paper_js
