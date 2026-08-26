@@ -128,6 +128,16 @@ function syncLocalizedImages(isHans, root=document){
   });
 }
 
+function syncLocalizedLinks(isHans,root=document){
+  const links=[];
+  if(root.nodeType===Node.ELEMENT_NODE && root.matches && root.matches('[data-hans-href]')) links.push(root);
+  root.querySelectorAll('[data-hans-href]').forEach(link=>links.push(link));
+  links.forEach(link=>{
+    if(!link.dataset.hantHref) link.dataset.hantHref=link.getAttribute('href');
+    link.setAttribute('href',isHans ? link.dataset.hansHref : link.dataset.hantHref);
+  });
+}
+
 function setLang(l){
   const isHans=l==='zh-Hans';
   document.documentElement.lang=l;
@@ -135,6 +145,7 @@ function setLang(l){
   getConvertibleTextNodes().forEach(node=>convertTextNode(node,isHans));
   convertAttributes(isHans);
   syncLocalizedImages(isHans);
+  syncLocalizedLinks(isHans);
 
   document.title=isHans ? cv(originalDocumentTitle) : originalDocumentTitle;
 
@@ -183,6 +194,7 @@ document.addEventListener('DOMContentLoaded',()=>{
           getConvertibleTextNodes(n).forEach(t=>convertTextNode(t,isHans));
           convertAttributes(isHans,n);
           syncLocalizedImages(isHans,n);
+          syncLocalizedLinks(isHans,n);
         }
       });
     });
