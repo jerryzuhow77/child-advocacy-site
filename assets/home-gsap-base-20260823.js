@@ -466,6 +466,14 @@
     if (!shell) return;
     var orbit = shell.querySelector('.home-document-disc-orbit');
     var priorityCards = all('.home-document-disc-card[data-latest-priority="true"]', shell);
+    function keepOnlyPinnedReports() {
+      if (priorityCards.length !== 2) return;
+      all('.home-document-disc-card:not([data-latest-priority="true"])', shell).forEach(function (card) { card.remove(); });
+    }
+    keepOnlyPinnedReports();
+    if (priorityCards.length === 2 && orbit) {
+      new MutationObserver(keepOnlyPinnedReports).observe(orbit, { childList: true });
+    }
     var cards = priorityCards.length === 2 ? priorityCards : all('.home-document-disc-card', shell);
     var spokes = shell.querySelector('.home-ferris-spokes');
     if (!orbit || !cards.length) return;

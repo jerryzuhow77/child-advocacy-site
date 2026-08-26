@@ -438,7 +438,9 @@
   }
 
   function mount(link, host = link, layout = "card") {
-    if (!link || !host || link.hasAttribute("data-engagement-ready")) return;
+    if (!link || !host) return;
+    host.querySelectorAll(".public-view-count-card").forEach((badge) => badge.remove());
+    if (link.hasAttribute("data-engagement-ready")) return;
     const item = article(link, host);
     if (!item) return;
     const copy = ui();
