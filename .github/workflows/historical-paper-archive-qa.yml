@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'assets/home-archive-layout-20260823.js'
+      - 'assets/home-ia-history-20260823.js'
+      - 'assets/home-gsap-map-20260824.js'
       - 'assets/home-history-paper-art-20260823.js'
       - 'assets/home-history-paper-art-20260823.css'
       - 'assets/home-history-relief-map-20260823.js'
@@ -16,6 +18,9 @@ on:
       - 'assets/art/paper-ocean-current-v1.webp'
       - 'index.html'
       - 'en/index.html'
+      - 'ja/index.html'
+      - 'assets/home-post-engagement-20260826.css'
+      - 'assets/home-post-engagement-20260826.js'
       - 'assets/art/east-asia-case-memory-map-paper-clay-20260824.webp'
       - 'sw.js'
       - '.github/workflows/historical-paper-archive-qa.yml'
@@ -38,6 +43,9 @@ jobs:
         run: |
           set -euo pipefail
           node --check assets/home-archive-layout-20260823.js
+          node --check assets/home-ia-history-20260823.js
+          node --check assets/home-gsap-map-20260824.js
+          node --check assets/home-post-engagement-20260826.js
           node --check assets/home-history-paper-art-20260823.js
           node --check assets/home-history-relief-map-20260823.js
           node --check assets/home-history-paper-weather-20260825.js
@@ -51,6 +59,9 @@ jobs:
           from PIL import Image
 
           loader = Path('assets/home-archive-layout-20260823.js').read_text(encoding='utf-8')
+          history_js = Path('assets/home-ia-history-20260823.js').read_text(encoding='utf-8')
+          map_loader = Path('assets/home-gsap-map-20260824.js').read_text(encoding='utf-8')
+          engagement_js = Path('assets/home-post-engagement-20260826.js').read_text(encoding='utf-8')
           paper_js = Path('assets/home-history-paper-art-20260823.js').read_text(encoding='utf-8')
           paper_css = Path('assets/home-history-paper-art-20260823.css').read_text(encoding='utf-8')
           relief_js = Path('assets/home-history-relief-map-20260823.js').read_text(encoding='utf-8')
@@ -59,6 +70,7 @@ jobs:
           weather_css = Path('assets/home-history-paper-weather-20260825.css').read_text(encoding='utf-8')
           home_html = Path('index.html').read_text(encoding='utf-8')
           home_en_html = Path('en/index.html').read_text(encoding='utf-8')
+          home_ja_html = Path('ja/index.html').read_text(encoding='utf-8')
           image_path = Path('assets/art/east-asia-case-memory-map-paper-clay-20260824.webp')
           weather_art = [
               Path('assets/art/paper-cloud-bank-v1.webp'),
@@ -67,12 +79,24 @@ jobs:
           ]
 
           assert 'home-history-paper-art-20260823.js' in loader
+          assert '20260826-historical-followup-1' in loader
           assert 'home-history-relief-map-20260823.js' in loader
+          assert "key:'other'" not in history_js
+          assert 'OTHER REGIONS' not in history_js
+          assert "region:'unclassified'" in history_js
+          assert "if(!b[m.region])return" in history_js
+          assert 'The Jeong-in Case | The Door Did Not Open' in history_js
+          assert 'チョンイン事件｜開かなかった扉' in history_js
+          assert "20260826-historical-followup-1" in map_loader
+          assert 'host: card.querySelector(":scope > span:last-of-type") || card' in engagement_js
           assert 'history-paper-map-svg' in paper_js
           assert 'history-region-seal' in paper_js
           assert 'history-silk-thread' in paper_js
           assert "mainland:'陸'" in paper_js
           assert 'paper-archive-deluxe' in paper_css
+          assert 'width:100%;\n  min-width:0;\n  max-width:100%;\n  aspect-ratio:auto;' in paper_css
+          assert '>.home-post-engagement{' in paper_css
+          assert 'order:5;' in paper_css
           assert 'history-relief-figure' in relief_js
           assert 'history-relief-region-dock' in relief_js
           assert 'east-asia-case-memory-map-paper-clay-20260824.webp' in relief_js
@@ -102,6 +126,17 @@ jobs:
           assert 'home-history-paper-weather-20260825.js' in home_html
           assert 'home-history-paper-weather-20260825.css' in home_en_html
           assert 'home-history-paper-weather-20260825.js' in home_en_html
+          assert 'home-post-engagement-20260826.css' in home_en_html
+          assert 'home-post-engagement-20260826.js' in home_en_html
+          assert 'Other Regions' not in home_en_html
+          assert 'id="home-historical-cases"' in home_ja_html
+          assert home_ja_html.count('class="home-historical-card"') == 6
+          assert 'data-view-counter-key="historical-fujian-qiqi-shared"' in home_ja_html
+          assert 'data-view-counter-key="historical-fu-junxiang-shared"' in home_ja_html
+          assert 'home-post-engagement-20260826.css' in home_ja_html
+          assert 'home-post-engagement-20260826.js' in home_ja_html
+          assert 'home-history-paper-weather-20260825.css' in home_ja_html
+          assert 'home-history-paper-weather-20260825.js' in home_ja_html
           assert image_path.exists() and image_path.stat().st_size > 50000
           with Image.open(image_path) as image:
               assert image.width >= 1000 and image.height >= 560
