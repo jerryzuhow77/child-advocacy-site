@@ -94,12 +94,12 @@ jobs:
           }
 
           dump_dom 'http://127.0.0.1:8765/?qa=916-hant' > /tmp/home-hant.html
-          grep -F 'qa916-hearing-campaign' /tmp/home-hant.html
+          grep -F 'data-qa916-card="true"' /tmp/home-hant.html
           grep -F '9/16 開庭前，留下你想說的話' /tmp/home-hant.html
 
           dump_dom 'http://127.0.0.1:8765/?lang=zh-Hans&qa=916-hans' > /tmp/home-hans.html
           grep -F '9/16 开庭前，留下你想说的话' /tmp/home-hans.html
-          grep -F 'https://cn.globalprotectionwall.com/?section=member-submit' /tmp/home-hans.html
+          grep -F '一起写下剀剀的故事' /tmp/home-hans.html
 
           dump_dom 'http://127.0.0.1:8765/en/?qa=916-en' > /tmp/home-en.html
           grep -F 'Before the September 16 appeal hearing' /tmp/home-en.html
