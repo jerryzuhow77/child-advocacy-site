@@ -1,0 +1,75 @@
+name: One-off clean accidental homepage prefix 2026-08-26
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/oneoff-clean-index-prefix-20260826.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Remove only the accidental truncation-warning prefix
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          raw = path.read_bytes()
+          prefix = (
+              b'Warning: truncated output (original token count: 227347)\n'
+              b'Total output lines: 813\n\n'
+          )
+
+          if raw.startswith(prefix):
+              clean = raw[len(prefix):]
+          elif raw.startswith(b'<!DOCTYPE html>'):
+              clean = raw
+          else:
+              raise SystemExit('Unexpected index.html prefix; refusing broad rewrite')
+
+          text = clean.decode('utf-8')
+          required = [
+              '<!DOCTYPE html>',
+              'name="viewport"',
+              'name="theme-color"',
+              'rel="manifest"',
+              'assets/pwa-install.js',
+              '</html>',
+          ]
+          missing = [marker for marker in required if marker not in text]
+          if missing:
+              raise SystemExit(f'Required homepage markers missing: {missing}')
+          if text.count('</html>') != 1:
+              raise SystemExit('Unexpected number of closing html tags')
+          if not clean.startswith(b'<!DOCTYPE html>'):
+              raise SystemExit('Cleaned homepage does not begin with doctype')
+
+          path.write_bytes(clean)
+          print(f'index.html: {len(raw)} -> {len(clean)} bytes')
+          PY
+
+      - name: Commit the surgical cleanup
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'index.html already clean'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Remove accidental truncation warning from homepage'
+          git push origin HEAD:main
