@@ -9,7 +9,8 @@
 <link href="./assets/chair-special.css?v=20260815-special-accordion2" rel="stylesheet">
 <link href="./assets/pwa-install.css?v=20260820-scroll-4" rel="stylesheet">
 <link href="./assets/home-gsap.css?v=20260826-day8-poster-2" rel="stylesheet">
-<link href="./assets/home-post-engagement-20260826.css?v=20260826-two-reports-grid-3" rel="stylesheet">
+<link href="./assets/home-post-engagement-20260826.css?v=20260826-latest-ten-grid-1" rel="stylesheet">
+<link href="./assets/home-latest-feed-20260826.css?v=20260826-pinned-marquee-1" rel="stylesheet">
 <link href="./assets/home-history-static-map-20260824.css?v=20260824-desktop-map-repair-1" rel="stylesheet">
 <link href="./assets/home-history-mobile-visibility-20260824.css?v=20260824-mobile-map-stable-4" rel="stylesheet">
 <link href="./assets/home-history-paper-weather-20260825.css?v=20260826-smaller-flecks-1" rel="stylesheet">
@@ -265,14 +266,23 @@
 </section>
 <section aria-labelledby="newsFlashTitle" class="home-latest-flash home-document-disc-section" id="news-flash">
 <div class="container">
-<div class="home-news-stream-head home-flash-head"><div><div class="art-eyebrow dark">LATEST REPORTS · RECENTLY UPDATED</div><span class="stream-icon">✦</span><h2 id="newsFlashTitle">最新快報</h2><p>最新兩則快報置頂，與近期更新內容一起搭乘 GSAP 童趣摩天輪緩慢轉動。</p></div><a href="./cases/">查看全部文件 →</a></div>
+<div class="home-news-stream-head home-flash-head"><div><div class="art-eyebrow dark">LATEST REPORTS · RECENTLY UPDATED</div><span class="stream-icon">✦</span><h2 id="newsFlashTitle">最新快報</h2><p>兩則置頂快報橫向循環；最新發布的 10 篇文章搭乘 GSAP 童趣摩天輪緩慢轉動。</p></div><a href="./cases/">查看全部文件 →</a></div>
+<section class="home-pinned-reports" aria-labelledby="homePinnedReportsTitle" data-pinned-reports>
+<header><span>PINNED REPORTS</span><h3 id="homePinnedReportsTitle">置頂快報</h3><small>兩則重要消息持續橫向循環</small></header>
+<div class="home-pinned-reports-viewport">
+<div class="home-pinned-reports-track">
+<a class="home-pinned-report-card is-luo-brothers" href="./cases/luo-brothers/"><img alt="羅氏兄弟冤案更審案件主視覺" decoding="async" fetchpriority="high" loading="eager" src="./assets/art/luo-brothers-hearing-poster.webp"><span><small>08.26 · 最新快報・置頂</small><strong>羅氏兄弟冤案更審</strong><em>最新進度、案件脈絡與完整文件</em></span></a>
+<a class="home-pinned-report-card is-charity-donation" href="./activity-records/20260825-111-surplus-donation/"><img alt="1月11日反廢死護兒少大遊行結餘27128元全數捐贈公益海報" decoding="async" fetchpriority="high" loading="eager" src="./activity-records/20260825-111-surplus-donation/images/charity-paper-clay-visible-v2.jpg?v=20260825-card-repair-1"><span><small>08.25 · 最新快報・置頂</small><strong>把共同的支持，延續成另一份守護</strong><em>活動公費結餘 27,128 元已全數捐贈</em></span></a>
+</div>
+</div>
+</section>
 <div class="home-document-disc-shell is-ferris-wheel" data-document-disc>
 <div class="home-sea-art" aria-hidden="true"><span class="sea-horizon"></span><span class="sea-wave-layer sea-wave-far"></span><span class="sea-wave-layer sea-wave-near"></span><span class="sea-sailboat"><i></i><b></b></span><span class="sea-gulls">⌒　⌒</span><span class="sea-fish fish-one">◁</span><span class="sea-fish fish-two">◁</span><span class="sea-pearls">○ · ○</span></div>
 <div class="home-ferris-cloud cloud-one" aria-hidden="true"></div><div class="home-ferris-cloud cloud-two" aria-hidden="true"></div>
 <div class="home-ferris-spokes" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-<div class="home-document-disc-orbit" role="list" aria-label="最新兩則置頂快報與近期更新內容">
-<a class="home-document-disc-card is-luo-brothers" data-latest-priority="true" role="listitem" href="./cases/luo-brothers/"><img alt="羅氏兄弟冤案更審案件主視覺" decoding="async" fetchpriority="high" loading="eager" src="./assets/art/luo-brothers-hearing-poster.webp"><span><small>08.26 · 最新快報・置頂</small><strong>羅氏兄弟冤案更審</strong><em>最新進度、案件脈絡與完整文件</em></span></a>
-<a class="home-document-disc-card is-charity-donation" data-latest-priority="true" role="listitem" href="./activity-records/20260825-111-surplus-donation/"><img alt="1月11日反廢死護兒少大遊行結餘27128元全數捐贈公益海報" decoding="async" fetchpriority="high" loading="eager" src="./activity-records/20260825-111-surplus-donation/images/charity-paper-clay-visible-v2.jpg?v=20260825-card-repair-1"><span><small>08.25 · 最新快報・置頂</small><strong>把共同的支持，延續成另一份守護</strong><em>活動公費結餘 27,128 元已全數捐贈</em></span></a>
+<div class="home-document-disc-orbit" role="list" aria-label="最新發布的十篇文章">
+<a class="home-document-disc-card is-day9" role="listitem" href="./hearing-records/prison-watch/kaikai-day9-20250506/"><img alt="悲劇不忘：第九次審判期日兩名被告證詞主視覺海報" decoding="async" loading="lazy" src="./assets/art/prison-watch-day9-kaikai-testimony-poster-zh-Hant-20260826.webp"><span><small>08.26 · 最新旁聽紀錄</small><strong>第九次審判期日</strong><em>劉彩萱與劉若琳證詞比對</em></span></a>
+<a class="home-document-disc-card is-jungein-korea" role="listitem" href="https://jungein-memory-door.jerryzuhow77.chatgpt.site/" target="_blank" rel="noopener noreferrer"><img alt="韓國鄭仁案韓紙紙雕主視覺，半開紙門前放著白瓷碗、黃銅匙、褓布與童襪" decoding="async" loading="lazy" src="./assets/art/jungein-memory-door-home-20260826.webp"><span><small>08.26 · 韓國歷史案件新作</small><strong>鄭仁案｜門沒有打開</strong><em>三次通報，沒有形成安全出口</em></span></a>
 <a class="home-document-disc-card" role="listitem" href="./hearing-records/prison-watch/kaikai-day8-20250505/"><img alt="剴剴案第八次審判期日完整旁聽紀錄主視覺" decoding="async" loading="lazy" src="./assets/art/prison-watch-day8-kaikai-evidence-poster-zh-Hant-20260826.webp"><span><small>08.26 · 最新旁聽紀錄</small><strong>第八次審判期日</strong><em>證據調查、論告與量刑文件整理</em></span></a>
 <a class="home-document-disc-card" role="listitem" href="https://tainan-tom-bear-case.jerryzuhow77.chatgpt.site/" target="_blank" rel="noopener noreferrer"><img alt="台南湯姆熊男童命案紙雕專題主視覺" decoding="async" loading="lazy" src="./assets/art/tainan-tom-bear-home-hero-20260825.webp"><span><small>08.25 · 台灣歷史案件新作</small><strong>台南湯姆熊男童命案</strong><em>他說不會判死，後來真的沒有判死</em></span></a>
 <a class="home-document-disc-card is-tucheng-domestic-hearing" role="listitem" href="./hearing-records/tucheng-domestic-violence-double-homicide-20260821/"><img alt="土城家暴雙屍案2026年8月21日完整旁聽筆記主視覺" decoding="async" loading="lazy" src="./assets/images/tucheng-hearing-20260821-hero.jpg"><span><small>08.23 · 最新旁聽紀錄</small><strong>土城家暴雙屍案</strong><em>一審宣判、量刑攻防與完整旁聽整理</em></span></a>
@@ -282,7 +292,7 @@
 <a class="home-document-disc-card" role="listitem" href="./activity-records/20260801-ketagal-rally/"><img alt="2026年8月1日反毒駕、反酒駕凱道大遊行現場紀錄" decoding="async" loading="lazy" src="./assets/art/rally-20260801-ai-poster.jpg"><span><small>08.20 · 活動紀錄更新</small><strong>反毒駕、反酒駕．凱道大遊行</strong><em>被害者家屬支持與兒少保護倡議</em></span></a>
 <a class="home-document-disc-card" role="listitem" href="./hearing-records/prison-watch/kaikai-day4-20250428/"><img alt="第四日第四次審判期日重製編輯筆記主視覺" decoding="async" loading="lazy" src="./assets/art/prison-watch-day4-hearing-poster-clay-20260821-v2.webp"><span><small>08.21 · 旁聽紀錄</small><strong>第四次審判期日</strong><em>兩位證人、三處動線與傷勢通報</em></span></a>
 </div>
-<div class="home-document-disc-center" aria-hidden="true"><span>CHILDREN'S WHEEL</span><strong>最新快報</strong><small>最新兩則置頂</small></div>
+<div class="home-document-disc-center" aria-hidden="true"><span>CHILDREN'S WHEEL</span><strong>最新快報</strong><small>最新發布 10 篇</small></div>
 <div class="home-ferris-stand" aria-hidden="true"><i></i><i></i><b></b></div>
 <button class="home-document-disc-control is-prev" type="button" data-disc-prev aria-label="上一則快報">‹</button>
 <button class="home-document-disc-control is-next" type="button" data-disc-next aria-label="下一則快報">›</button>
@@ -746,14 +756,14 @@
 <script src="./assets/site.js?v=20260826-latest-disc-1"></script>
 <script src="./assets/pwa-install.js?v=20260820-visitor-prompt-8h-v6"></script>
 <script src="./assets/home-view-counter-20260811.js?v=5"></script>
-<script src="./assets/home-post-engagement-20260826.js?v=20260826-legacy-views-2"></script>
+<script src="./assets/home-post-engagement-20260826.js?v=20260826-latest-ten-1"></script>
 <script src="./assets/vendor/gsap-3.13.0.min.js"></script>
 <script src="./assets/vendor/ScrollTrigger-3.13.0.min.js"></script>
 <script id="home-luo-civic-film-script">
 (()=>{const film=document.querySelector("[data-civic-film]");if(!film)return;const slides=[...film.querySelectorAll("[data-civic-film-slide]")],dots=[...film.querySelectorAll("[data-civic-film-dot]")];if(slides.length<2)return;let active=0,timer;const reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;const show=(index,manual=false)=>{active=(index+slides.length)%slides.length;slides.forEach((slide,i)=>{const on=i===active;slide.classList.toggle("is-active",on);slide.setAttribute("aria-hidden",String(!on));});dots.forEach((dot,i)=>{const on=i===active;dot.classList.toggle("is-active",on);dot.setAttribute("aria-pressed",String(on));});if(window.gsap&&!reduce){window.gsap.fromTo(slides[active],{autoAlpha:0,y:12},{autoAlpha:1,y:0,duration:.55,ease:"power2.out"});}if(manual)restart();};const restart=()=>{window.clearInterval(timer);if(!reduce)timer=window.setInterval(()=>show(active+1),8500);};dots.forEach((dot,i)=>dot.addEventListener("click",()=>show(i,true)));film.addEventListener("mouseenter",()=>window.clearInterval(timer));film.addEventListener("mouseleave",restart);film.addEventListener("focusin",()=>window.clearInterval(timer));film.addEventListener("focusout",e=>{if(!film.contains(e.relatedTarget))restart();});show(0);restart();})();
 </script>
 <script src="./assets/visitor-submission.js?v=20260820-8h-3"></script>
-<script src="./assets/home-gsap-map-20260824.js?v=20260826-two-reports-4"></script>
+<script src="./assets/home-gsap-map-20260824.js?v=20260826-latest-ten-1"></script>
 <script src="./assets/home-history-paper-weather-20260825.js?v=20260826-webp-3"></script>
 <script src="./assets/home-history-anchor-stability-20260825.js?v=20260825-history-anchor-1"></script>
 <script src="./assets/activity-impact.js?v=20260820-1"></script>

@@ -461,20 +461,32 @@
     });
   }
 
+  function initPinnedReports() {
+    var section = document.querySelector('[data-pinned-reports]');
+    if (!section) return;
+    var viewport = section.querySelector('.home-pinned-reports-viewport');
+    var track = section.querySelector('.home-pinned-reports-track');
+    var originals = all(':scope > .home-pinned-report-card:not([data-pinned-clone])', track);
+    if (!viewport || originals.length !== 2 || reduceMotion) return;
+    originals.forEach(function (card) {
+      var clone = card.cloneNode(true);
+      clone.dataset.pinnedClone = 'true';
+      clone.setAttribute('aria-hidden', 'true');
+      clone.tabIndex = -1;
+      track.appendChild(clone);
+    });
+    var tween = gsap.to(track, { xPercent: -50, duration: 18, repeat: -1, ease: 'none' });
+    section.addEventListener('pointerenter', function () { tween.pause(); });
+    section.addEventListener('pointerleave', function () { tween.resume(); });
+    section.addEventListener('focusin', function () { tween.pause(); });
+    section.addEventListener('focusout', function (event) { if (!section.contains(event.relatedTarget)) tween.resume(); });
+  }
+
   function initDocumentDisc() {
     var shell = document.querySelector('[data-document-disc]');
     if (!shell) return;
     var orbit = shell.querySelector('.home-document-disc-orbit');
-    var priorityCards = all('.home-document-disc-card[data-latest-priority="true"]', shell);
-    function keepOnlyPinnedReports() {
-      if (priorityCards.length !== 2) return;
-      all('.home-document-disc-card:not([data-latest-priority="true"])', shell).forEach(function (card) { card.remove(); });
-    }
-    keepOnlyPinnedReports();
-    if (priorityCards.length === 2 && orbit) {
-      new MutationObserver(keepOnlyPinnedReports).observe(orbit, { childList: true });
-    }
-    var cards = priorityCards.length === 2 ? priorityCards : all('.home-document-disc-card', shell);
+    var cards = all('.home-document-disc-card', shell).slice(0, 10);
     var spokes = shell.querySelector('.home-ferris-spokes');
     if (!orbit || !cards.length) return;
 
@@ -488,9 +500,9 @@
     var startRotation = 0;
 
     function radius() {
-      if (window.innerWidth <= 430) return 165;
-      if (window.innerWidth <= 760) return 175;
-      return Math.min(shell.clientWidth * 0.24, 220);
+      if (window.innerWidth <= 430) return 155;
+      if (window.innerWidth <= 760) return 185;
+      return Math.min(shell.clientWidth * 0.33, 305);
     }
 
     function keepCardsUpright() {
@@ -783,6 +795,7 @@
   }
 
   function init() {
+    initPinnedReports();
     initDocumentDisc();
     initSpecialFeatureScroller();
     initActivityRecordScroller();
