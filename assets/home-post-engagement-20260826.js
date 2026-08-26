@@ -2,7 +2,7 @@
   "use strict";
   if (window.__cpaPostEngagement) return;
   window.__cpaPostEngagement = true;
-  const API = "https://wall.globalprotectionwall.com/api/public/messages";
+  const API = "https://wall.globalprotectionwall.com/api/public/view-count";
   const CLIENT_KEY = "cpa_engagement_client_v1";
   const selectors = [
     "#news-flash a[href]", "#news-activity a.home-activity-primary", "#news-hearing a.home-news-card",
@@ -24,10 +24,11 @@
     return { key: `official-${path.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-")}`, title, url: url.href };
   }
   async function request(item, options) {
-    const response = await fetch(`${API}/${encodeURIComponent(item.key)}/engagement`, { cache: "no-store", ...options });
-    const payload = await response.json();
-    if (!response.ok) throw new Error(payload.error || "暫時無法完成操作");
-    return payload;
+    const payload = options?.body ? JSON.parse(options.body) : { action: "read" };
+    const response = await fetch(API, { method: "POST", cache: "no-store", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...payload, channel: "official-article", articleKey: item.key }) });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || "暫時無法完成操作");
+    return result;
   }
   function format(value) { return Number.isFinite(Number(value)) ? new Intl.NumberFormat("zh-TW").format(Number(value)) : "—"; }
   function modal() {
@@ -63,7 +64,7 @@
     like.addEventListener("click", stop(async () => { try { const data=await request(item,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({action:"like",clientId:clientId()})}); like.classList.add("is-liked"); like.firstChild.textContent="♥ "; like.querySelector("b").textContent=format(data.likeCount); } catch(_){} }));
     comment.addEventListener("click", stop(() => openComments(item)));
     [like,comment].forEach(el=>el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();el.click();}}));
-    link.addEventListener("click", () => { try { navigator.sendBeacon(`${API}/${encodeURIComponent(item.key)}/engagement`, new Blob([JSON.stringify({action:"view"})],{type:"application/json"})); } catch(_){} }, { capture:true });
+    link.addEventListener("click", () => { try { navigator.sendBeacon(API, new Blob([JSON.stringify({channel:"official-article",articleKey:item.key,action:"view"})],{type:"application/json"})); } catch(_){} }, { capture:true });
   }
   function init(){ document.querySelectorAll(selectors).forEach(mount); }
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded",init,{once:true}) : init();
