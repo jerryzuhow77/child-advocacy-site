@@ -465,7 +465,8 @@
     var shell = document.querySelector('[data-document-disc]');
     if (!shell) return;
     var orbit = shell.querySelector('.home-document-disc-orbit');
-    var cards = all('.home-document-disc-card', shell);
+    var priorityCards = all('.home-document-disc-card[data-latest-priority="true"]', shell);
+    var cards = priorityCards.length === 2 ? priorityCards : all('.home-document-disc-card', shell);
     var spokes = shell.querySelector('.home-ferris-spokes');
     if (!orbit || !cards.length) return;
 
@@ -479,9 +480,9 @@
     var startRotation = 0;
 
     function radius() {
-      if (window.innerWidth <= 430) return 152;
-      if (window.innerWidth <= 760) return 184;
-      return Math.min(shell.clientWidth * 0.35, 300);
+      if (window.innerWidth <= 430) return 175;
+      if (window.innerWidth <= 760) return 190;
+      return Math.min(shell.clientWidth * 0.24, 225);
     }
 
     function keepCardsUpright() {
