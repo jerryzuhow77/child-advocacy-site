@@ -151,6 +151,11 @@ function toggleLang(){
   setLang((localStorage.getItem('siteLang')||'zh-Hant')==='zh-Hant'?'zh-Hans':'zh-Hant');
 }
 
+document.addEventListener('cpa-language-change',event=>{
+  const next=event && event.detail ? event.detail.lang : '';
+  if(next==='zh-Hans'||next==='zh-Hant') setLang(next);
+});
+
 document.addEventListener('DOMContentLoaded',()=>{
   const staticPageLang=document.documentElement.lang;
   if(staticPageLang==='en'||staticPageLang==='ja'){
