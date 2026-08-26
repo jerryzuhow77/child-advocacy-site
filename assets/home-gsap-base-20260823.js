@@ -467,13 +467,63 @@
     var viewport = section.querySelector('.home-pinned-reports-viewport');
     var track = section.querySelector('.home-pinned-reports-track');
     var originals = all(':scope > .home-pinned-report-card:not([data-pinned-clone])', track);
-    if (!viewport || originals.length !== 2 || reduceMotion) return;
+    if (!viewport || originals.length !== 2 || reduceMotion || track.querySelector('[data-pinned-clone]')) return;
+
+    function keepCloneDisplayOnly(clone) {
+      clone.querySelectorAll('[tabindex],button,input,select,textarea,[role="button"]').forEach(function (element) {
+        element.tabIndex = -1;
+        if (element.getAttribute('role') === 'button') element.removeAttribute('role');
+      });
+    }
+
+    function mirrorEngagement(original, clone) {
+      var metricObserver;
+      var mountObserver;
+
+      function sync() {
+        var source = original.querySelector(':scope > .home-post-engagement');
+        if (!source) return false;
+        var target = clone.querySelector(':scope > .home-post-engagement');
+        if (!target) {
+          target = source.cloneNode(true);
+          clone.appendChild(target);
+        }
+        target.className = source.className;
+        target.innerHTML = source.innerHTML;
+        ['aria-label', 'data-load-state', 'data-engagement-ready'].forEach(function (name) {
+          if (source.hasAttribute(name)) target.setAttribute(name, source.getAttribute(name));
+          else target.removeAttribute(name);
+        });
+        keepCloneDisplayOnly(clone);
+        if (!metricObserver) {
+          metricObserver = new MutationObserver(sync);
+          metricObserver.observe(source, {
+            childList: true,
+            subtree: true,
+            characterData: true,
+            attributes: true,
+            attributeFilter: ['class', 'aria-label', 'aria-pressed', 'data-load-state', 'data-engagement-ready']
+          });
+        }
+        return true;
+      }
+
+      if (sync()) return;
+      mountObserver = new MutationObserver(function () {
+        if (!sync()) return;
+        mountObserver.disconnect();
+      });
+      mountObserver.observe(original, { childList: true, subtree: true });
+    }
+
     originals.forEach(function (card) {
       var clone = card.cloneNode(true);
       clone.dataset.pinnedClone = 'true';
       clone.setAttribute('aria-hidden', 'true');
       clone.tabIndex = -1;
+      keepCloneDisplayOnly(clone);
       track.appendChild(clone);
+      mirrorEngagement(card, clone);
     });
     var tween = gsap.to(track, { xPercent: -50, duration: 18, repeat: -1, ease: 'none' });
     section.addEventListener('pointerenter', function () { tween.pause(); });
@@ -493,47 +543,70 @@
     initFerrisBubbles(shell);
 
     var step = 360 / cards.length;
+    var phase = { rotation: 0 };
     var autoTween;
     var motionPaused = reduceMotion;
     var dragging = false;
+    var pointerInside = false;
     var startX = 0;
     var startRotation = 0;
 
-    function radius() {
-      if (window.innerWidth <= 430) return 155;
-      if (window.innerWidth <= 760) return 185;
-      return Math.min(shell.clientWidth * 0.33, 305);
+    function radii() {
+      if (window.innerWidth <= 760) {
+        var widestCard = Math.max.apply(null, cards.map(function (card) {
+          return card.getBoundingClientRect().width;
+        }));
+        return {
+          x: Math.min(185, Math.max(0, (shell.clientWidth - widestCard) / 2 - 6)),
+          y: 260
+        };
+      }
+      var desktop = Math.min(shell.clientWidth * 0.33, 305);
+      return { x: desktop, y: desktop };
     }
 
-    function keepCardsUpright() {
-      var rotation = Number(gsap.getProperty(orbit, 'rotation')) || 0;
-      cards.forEach(function (card) { gsap.set(card, { rotation: -rotation }); });
-      if (spokes) gsap.set(spokes, { rotation: rotation });
-    }
-
-    function layout() {
-      var r = radius();
+    function render() {
+      var radius = radii();
       cards.forEach(function (card, index) {
-        var angle = (-90 + index * step) * Math.PI / 180;
+        var angle = (-90 + index * step + phase.rotation) * Math.PI / 180;
         gsap.set(card, {
           xPercent: -50,
           yPercent: -50,
-          x: Math.cos(angle) * r,
-          y: Math.sin(angle) * r
+          x: Math.cos(angle) * radius.x,
+          y: Math.sin(angle) * radius.y,
+          rotation: 0
         });
       });
-      keepCardsUpright();
+      gsap.set(orbit, { rotation: 0 });
+      if (spokes) gsap.set(spokes, { rotation: phase.rotation });
+    }
+
+    function stopPhaseTweens() {
+      gsap.killTweensOf(phase);
+      autoTween = null;
+    }
+
+    function startAuto() {
+      if (reduceMotion || motionPaused || dragging || pointerInside) return;
+      stopPhaseTweens();
+      autoTween = gsap.to(phase, {
+        rotation: phase.rotation + 360,
+        duration: 42,
+        repeat: -1,
+        ease: 'none',
+        onUpdate: render
+      });
     }
 
     function rotateBy(delta) {
       if (reduceMotion) return;
-      if (autoTween) autoTween.pause();
-      gsap.to(orbit, {
-        rotation: function () { return (Number(gsap.getProperty(orbit, 'rotation')) || 0) + delta; },
+      stopPhaseTweens();
+      gsap.to(phase, {
+        rotation: phase.rotation + delta,
         duration: 0.72,
         ease: 'power2.inOut',
-        onUpdate: keepCardsUpright,
-        onComplete: function () { if (autoTween && !motionPaused) autoTween.resume(); }
+        onUpdate: render,
+        onComplete: startAuto
       });
     }
 
@@ -550,8 +623,8 @@
         motionPaused = !motionPaused;
         motionControl.setAttribute('aria-pressed', String(motionPaused));
         motionControl.textContent = motionPaused ? '繼續自動輪播' : '暫停自動輪播';
-        if (motionPaused) autoTween?.pause();
-        else autoTween?.resume();
+        if (motionPaused) stopPhaseTweens();
+        else startAuto();
       });
     }
     shell.appendChild(motionControl);
@@ -561,42 +634,48 @@
       if (event.key === 'ArrowRight') { event.preventDefault(); rotateBy(-step); }
     });
 
-    layout();
-    window.addEventListener('resize', layout, { passive: true });
+    render();
+    window.addEventListener('resize', render, { passive: true });
 
     if (!reduceMotion) {
       motionPaused = false;
-      autoTween = gsap.to(orbit, {
-        rotation: '+=360',
-        duration: 42,
-        repeat: -1,
-        ease: 'none',
-        onUpdate: keepCardsUpright
-      });
+      startAuto();
 
-      shell.addEventListener('pointerenter', function () { autoTween.pause(); });
-      shell.addEventListener('pointerleave', function () {
-        if (!dragging && !motionPaused) autoTween.resume();
+      shell.addEventListener('pointerenter', function (event) {
+        if (event.pointerType && event.pointerType !== 'mouse') return;
+        pointerInside = true;
+        if (autoTween) autoTween.pause();
+      });
+      shell.addEventListener('pointerleave', function (event) {
+        if (event.pointerType && event.pointerType !== 'mouse') return;
+        pointerInside = false;
+        if (!dragging && !motionPaused) {
+          if (autoTween) autoTween.resume();
+          else startAuto();
+        }
       });
       shell.addEventListener('pointerdown', function (event) {
         if (event.target.closest('a,button')) return;
         dragging = true;
         startX = event.clientX;
-        startRotation = Number(gsap.getProperty(orbit, 'rotation')) || 0;
+        startRotation = phase.rotation;
         shell.setPointerCapture(event.pointerId);
-        autoTween.pause();
+        stopPhaseTweens();
       });
       shell.addEventListener('pointermove', function (event) {
         if (!dragging) return;
-        gsap.set(orbit, { rotation: startRotation + (event.clientX - startX) * 0.32 });
-        keepCardsUpright();
+        phase.rotation = startRotation + (event.clientX - startX) * 0.32;
+        render();
       });
       shell.addEventListener('pointerup', function (event) {
         dragging = false;
         if (shell.hasPointerCapture(event.pointerId)) shell.releasePointerCapture(event.pointerId);
-        if (!motionPaused) autoTween.resume();
+        if (!motionPaused) startAuto();
       });
-      shell.addEventListener('pointercancel', function () { dragging = false; if (!motionPaused) autoTween.resume(); });
+      shell.addEventListener('pointercancel', function () {
+        dragging = false;
+        if (!motionPaused) startAuto();
+      });
     }
 
     var prev = shell.querySelector('[data-disc-prev]');
