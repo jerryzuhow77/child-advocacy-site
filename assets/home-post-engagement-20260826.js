@@ -7,7 +7,10 @@
   const CLIENT_KEY = "cpa_engagement_client_v1";
   const LIKED_KEY = "cpa_engagement_liked_v1";
   const readCache = new Map();
+  const legacyViewCache = new Map();
   const barsByKey = new Map();
+  const LEGACY_COUNTER_NS = "jerryzuhow77.github.io-child-advocacy-site";
+  const LEGACY_COUNTER_ACTION = "view";
 
   const targetDefinitions = [
     { selector: ".home-priority-links a.is-hearing", layout: "priority" },
@@ -160,9 +163,80 @@
     const articleHost = isOfficialSite ? "official" : url.hostname.replace(/\.jerryzuhow77\.chatgpt\.site$/, "");
     return {
       key: `${articleHost}-${path.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-")}`,
+      legacyViewKey: link.dataset.viewCounterKey || legacyViewKey(url),
       title,
       url: url.href,
     };
+  }
+
+  function legacyViewKey(url) {
+    const parts = url.pathname.split("/").filter(Boolean);
+    const siteIndex = parts.indexOf("child-advocacy-site");
+    const routeParts = siteIndex >= 0 ? parts.slice(siteIndex + 1) : parts;
+    if (routeParts[routeParts.length - 1] === "index.html") routeParts.pop();
+    const route = routeParts.join("/").replace(/\/+$/, "").replace(/^(?:en|ja)(?:\/|$)/, "");
+    if (!route) return "";
+    const sharedKeys = {
+      "features/social-observation/see-hear-after": "feature-see-hear-after-shared",
+      "cases/lin-xinci/features/missing-four-days": "case-lin-xinci-missing-four-days-shared",
+      "historical-cases/regions/japan/kurihara-mia": "historical-kurihara-mia-shared",
+      "historical-cases/regions/mainland-china/fujian-qiqi": "historical-fujian-qiqi-shared",
+      "historical-cases/regions/mainland-china/tian-tian": "historical-tian-tian-shared",
+      "cases/xuanxuan": "case-xuanxuan-shared",
+      "historical-cases/regions/taiwan/wanghao": "historical-wanghao-shared",
+      "historical-cases/regions/taiwan/fu-junxiang": "historical-fu-junxiang-shared",
+    };
+    return sharedKeys[route] || route.replace(/[^a-zA-Z0-9_-]+/g, "-").replace(/^-+|-+$/g, "").toLowerCase();
+  }
+
+  function legacyCounterUrl(key, callbackName = "") {
+    const base = `https://counterapi.com/api/${encodeURIComponent(LEGACY_COUNTER_NS)}/${encodeURIComponent(LEGACY_COUNTER_ACTION)}/${encodeURIComponent(key)}`;
+    const params = new URLSearchParams({ readOnly: "true" });
+    if (callbackName) params.set("callback", callbackName);
+    return `${base}?${params}`;
+  }
+
+  async function fetchLegacyView(key) {
+    const response = await fetch(legacyCounterUrl(key), {
+      method: "GET", mode: "cors", cache: "no-store", credentials: "omit",
+      headers: { Accept: "application/json" },
+    });
+    if (!response.ok) throw new Error(`Legacy counter ${response.status}`);
+    const result = await response.json();
+    const value = Number(result?.value);
+    if (!Number.isFinite(value) || value < 0) throw new Error("Invalid legacy counter value");
+    return value;
+  }
+
+  function jsonpLegacyView(key) {
+    return new Promise((resolve, reject) => {
+      const callbackName = `__cpaLegacyView_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+      const script = document.createElement("script");
+      const cleanup = () => {
+        window.clearTimeout(timer);
+        try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
+        script.remove();
+      };
+      window[callbackName] = (result) => {
+        const value = Number(result?.value);
+        cleanup();
+        if (Number.isFinite(value) && value >= 0) resolve(value);
+        else reject(new Error("Invalid legacy counter value"));
+      };
+      script.async = true;
+      script.src = legacyCounterUrl(key, callbackName);
+      script.onerror = () => { cleanup(); reject(new Error("Legacy counter JSONP failed")); };
+      const timer = window.setTimeout(() => { cleanup(); reject(new Error("Legacy counter timeout")); }, 6500);
+      document.head.appendChild(script);
+    });
+  }
+
+  function initialLegacyView(item) {
+    if (!item.legacyViewKey) return Promise.resolve(null);
+    if (!legacyViewCache.has(item.legacyViewKey)) {
+      legacyViewCache.set(item.legacyViewKey, fetchLegacyView(item.legacyViewKey).catch(() => jsonpLegacyView(item.legacyViewKey)).catch(() => null));
+    }
+    return legacyViewCache.get(item.legacyViewKey);
   }
 
   async function request(item, payload = { action: "read" }) {
@@ -377,10 +451,10 @@
     const like = bar.querySelector(".is-like");
     const comment = bar.querySelector(".is-comment");
     const share = bar.querySelector(".is-share");
-    initialRead(item).then((data) => {
+    Promise.all([initialRead(item), initialLegacyView(item)]).then(([data, legacyView]) => {
       updateMetric(item, "like", data.likeCount);
       updateMetric(item, "comment", data.commentCount);
-      updateMetric(item, "view", data.viewCount);
+      updateMetric(item, "view", legacyView ?? data.viewCount);
       bar.dataset.loadState = "ready";
     }).catch(() => {
       bar.querySelectorAll("b").forEach((field) => { field.textContent = "—"; });
