@@ -181,6 +181,65 @@
     return layer;
   }
 
+  function appendSceneCraft(stage, scene) {
+    const craft = makePart('span', `tt-scene-craft tt-scene-craft--${scene}`);
+    craft.dataset.ttSceneCraft = scene;
+
+    const add = (className, count = 1) => {
+      Array.from({ length: count }, (_, index) => {
+        const part = makePart('i', className);
+        part.style.setProperty('--tt-craft-i', String(index));
+        part.style.setProperty('--tt-craft-count', String(count));
+        part.style.setProperty('--tt-craft-progress', count > 1 ? String(index / (count - 1)) : '0');
+        craft.append(part);
+        return part;
+      });
+    };
+
+    // Each act receives a small, scene-specific finishing layer. These are
+    // abstract craft marks rather than extra narrative figures, so they enrich
+    // the Chinese cut-paper vocabulary without competing with the testimony.
+    if (scene === 'scroll-prologue') {
+      add('tt-craft-scroll-frame');
+      add('tt-craft-binding-stitch', 5);
+      add('tt-craft-tassel', 2);
+    } else if (scene === 'wind-kite') {
+      add('tt-craft-wind-ribbon', 3);
+      add('tt-craft-wind-mark', 7);
+      add('tt-craft-edge-streamer', 2);
+    } else if (scene === 'ten-knot-door') {
+      add('tt-craft-door-stud', 12);
+      add('tt-craft-rosette', 2);
+      add('tt-craft-threshold', 3);
+    } else if (scene === 'frost-lantern') {
+      add('tt-craft-ice-mark', 8);
+      add('tt-craft-cold-breath', 3);
+      add('tt-craft-frost-corner', 2);
+    } else if (scene === 'court-scroll') {
+      add('tt-craft-document-tab', 3);
+      add('tt-craft-balance-rule');
+      add('tt-craft-court-column', 2);
+    } else if (scene === 'seal-road') {
+      add('tt-craft-route-marker', 3);
+      add('tt-craft-track', 5);
+      add('tt-craft-home-glow');
+    } else if (scene === 'evidence-blocks') {
+      add('tt-craft-registration-mark', 4);
+      add('tt-craft-ink-pad', 4);
+      add('tt-craft-evidence-rule');
+    } else if (scene === 'seven-moon') {
+      add('tt-craft-stitch-point', 7);
+      add('tt-craft-orbit-dot', 6);
+      add('tt-craft-needle-glint');
+    } else if (scene === 'guarded-lamp') {
+      add('tt-craft-safe-arc', 3);
+      add('tt-craft-spring-dot', 8);
+      add('tt-craft-door-glow');
+    }
+
+    stage.append(craft);
+  }
+
   function preloadPoseSheets() {
     const requests = Object.values(POSE_SHEETS).map(src => new Promise((resolve, reject) => {
       const image = new Image();
@@ -213,6 +272,7 @@
       makePart('i', 'tt-shadow-footlights')
     );
     stage.append(atmosphere);
+    appendSceneCraft(stage, scene);
     const props = makePart('span', 'tt-shadow-props');
 
     if (scene === 'scroll-prologue') {
