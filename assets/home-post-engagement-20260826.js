@@ -5,9 +5,11 @@
   const API = "https://wall.globalprotectionwall.com/api/public/view-count";
   const CLIENT_KEY = "cpa_engagement_client_v1";
   const selectors = [
-    "#news-flash a[href]", "#news-activity a.home-activity-primary", "#news-hearing a.home-news-card",
+    "#news-flash a.is-hearing", "#news-flash a.home-charity-feature-link", "#news-flash a.home-document-disc-card",
+    "#news-activity a.home-activity-primary", "#news-hearing a.home-news-card",
     "#news-hearing-notes a.home-hearing-zone-primary", "#news-hearing-notes a.home-hearing-compact-card",
-    "#home-special-features a.home-crafted-card", "#home-historical-cases a.home-historical-card"
+    "#home-special-features a.home-crafted-card", "a.home-case-reel-card",
+    "#home-historical-cases a.home-historical-card", "a.activity-impact-card"
   ].join(",");
 
   function clientId() {
@@ -19,9 +21,13 @@
   }
   function article(link) {
     const url = new URL(link.href, location.href);
+    const isOfficialSite = url.origin === location.origin;
+    const isOfficialFeature = url.hostname.endsWith(".jerryzuhow77.chatgpt.site");
+    if (!/^https?:$/.test(url.protocol) || (!isOfficialSite && !isOfficialFeature)) return null;
     const path = url.pathname.replace(/^\/child-advocacy-site\/?/, "").replace(/\/$/, "") || "home";
     const title = (link.querySelector("strong,h3")?.textContent || link.getAttribute("aria-label") || link.textContent || "官網文章").trim().replace(/\s+/g, " ").slice(0, 160);
-    return { key: `official-${path.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-")}`, title, url: url.href };
+    const host = isOfficialSite ? "official" : url.hostname.replace(/\.jerryzuhow77\.chatgpt\.site$/, "");
+    return { key: `${host}-${path.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-")}`, title, url: url.href };
   }
   async function request(item, options) {
     const payload = options?.body ? JSON.parse(options.body) : { action: "read" };
@@ -53,8 +59,9 @@
     };
   }
   function mount(link) {
-    if (link.dataset.engagementReady || link.origin !== location.origin) return;
-    link.dataset.engagementReady = ""; const item = article(link);
+    if (link.dataset.engagementReady) return;
+    const item = article(link); if (!item) return;
+    link.dataset.engagementReady = "";
     const bar = document.createElement("span"); bar.className = "home-post-engagement"; bar.setAttribute("aria-label", "文章互動與累計瀏覽");
     bar.innerHTML = `<span class="home-post-stat is-like" role="button" tabindex="0" aria-label="愛心點讚">♡ <b>…</b></span><span class="home-post-stat is-comment" role="button" tabindex="0" aria-label="查看或新增留言">留言 <b>…</b></span><span class="home-post-stat is-view" aria-label="累計瀏覽">◉ <b>…</b></span>`;
     link.appendChild(bar);
