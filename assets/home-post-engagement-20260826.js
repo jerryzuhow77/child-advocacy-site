@@ -58,7 +58,7 @@
     bar.innerHTML = `<span class="home-post-stat is-like" role="button" tabindex="0" aria-label="愛心點讚">♡ <b>…</b></span><span class="home-post-stat is-comment" role="button" tabindex="0" aria-label="查看或新增留言">留言 <b>…</b></span><span class="home-post-stat is-view" aria-label="累計瀏覽">◉ <b>…</b></span>`;
     link.appendChild(bar);
     const like = bar.querySelector(".is-like"), comment = bar.querySelector(".is-comment");
-    request(item).then(data => { like.querySelector("b").textContent=format(data.likeCount); comment.querySelector("b").textContent=format(data.commentCount); bar.querySelector(".is-view b").textContent=format(data.viewCount); }).catch(()=>{});
+    request(item).then(data => { like.querySelector("b").textContent=format(data.likeCount); comment.querySelector("b").textContent=format(data.commentCount); bar.querySelector(".is-view b").textContent=format(data.viewCount); }).catch(()=>bar.remove());
     const stop = (fn) => (event) => { event.preventDefault(); event.stopPropagation(); fn(); };
     like.addEventListener("click", stop(async () => { try { const data=await request(item,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({action:"like",clientId:clientId()})}); like.classList.add("is-liked"); like.firstChild.textContent="♥ "; like.querySelector("b").textContent=format(data.likeCount); } catch(_){} }));
     comment.addEventListener("click", stop(() => openComments(item)));
