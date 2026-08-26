@@ -43,9 +43,9 @@
     var extraWind = lite ? '' : paperArtwork('home-map-paper-wind is-wind-three', 'home-map-paper-wind-art', windArt);
     var extraCurrent = lite ? '' : paperArtwork('home-map-paper-current is-current-three', 'home-map-paper-current-art', currentArt);
     var extraFlecks = lite ? '' : '' +
-      paperFleck('is-sage', '39%', '58px', 'fragment-03.webp') +
-      paperFleck('is-ocean', '53%', '52px', 'fragment-04.webp') +
-      paperFleck('is-gold', '66%', '64px', 'fragment-06.webp');
+      paperFleck('is-sage', '39%', '34px', 'fragment-03.webp') +
+      paperFleck('is-ocean', '53%', '30px', 'fragment-04.webp') +
+      paperFleck('is-gold', '66%', '36px', 'fragment-06.webp');
 
     return '' +
       '<div class="home-map-current-field" aria-hidden="true">' +
@@ -62,9 +62,9 @@
       paperArtwork('home-map-paper-cloud is-near', 'home-map-paper-cloud-art', cloudArt) +
       paperArtwork('home-map-paper-cloud is-mid', 'home-map-paper-cloud-art', cloudArt) +
       extraCloud +
-      paperFleck('is-ivory', '15%', '70px', 'fragment-01.webp') +
-      paperFleck('is-ocean', '27%', '62px', 'fragment-02.webp') +
-      (lite ? paperFleck('is-sage', '47%', '50px', 'fragment-05.webp') : '') +
+      paperFleck('is-ivory', '15%', '40px', 'fragment-01.webp') +
+      paperFleck('is-ocean', '27%', '36px', 'fragment-02.webp') +
+      (lite ? paperFleck('is-sage', '47%', '30px', 'fragment-05.webp') : '') +
       extraFlecks +
       '<span class="home-map-paper-fibres" aria-hidden="true"></span>' +
       '<span class="home-map-weather-vignette" aria-hidden="true"></span>';
