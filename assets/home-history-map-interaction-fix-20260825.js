@@ -4,7 +4,7 @@
   var current=document.currentScript&&document.currentScript.src?document.currentScript.src:'';
   var basePath=current?current.slice(0,current.lastIndexOf('/')+1):'./assets/';
   var VERSION='20260825-region-hotspot-filter-1';
-  var REGIONS=['mainland','hongkong','taiwan','korea','japan','other'];
+  var REGIONS=['mainland','hongkong','taiwan','korea','japan'];
   var initialized=false;
   var retryTimer=0;
   var retryCount=0;
