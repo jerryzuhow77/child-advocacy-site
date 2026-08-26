@@ -4069,6 +4069,12 @@ html.tt-gsap-ready .tt-ending.is-epilogue-skipped .tt-ending-copy{
     transition:none!important;
   }
   .tt-scene-craft{opacity:.74!important}
+  .tt-shadow-stage .tt-scene-craft--seven-moon .tt-craft-stitch-point{
+    transform:rotate(calc(var(--tt-craft-i) * 51.428deg)) translateY(calc(var(--tt-stitch-radius) * -1))!important;
+  }
+  .tt-shadow-stage .tt-scene-craft--seven-moon .tt-craft-orbit-dot{
+    transform:rotate(calc(25deg + var(--tt-craft-i) * 60deg)) translateY(calc(var(--tt-stitch-radius) * -.72))!important;
+  }
 }
 
 html.tt-gsap-ready .tt-transition.is-visible .tt-scene-craft>i{
