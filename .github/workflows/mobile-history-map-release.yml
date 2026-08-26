@@ -5,77 +5,80 @@ on:
     branches: [main]
     paths:
       - 'assets/home-gsap.js'
+      - 'assets/home-gsap-map-20260824.js'
       - 'assets/home-archive-layout-20260823.js'
+      - 'assets/home-history-paper-art-20260823.js'
+      - 'assets/home-history-paper-art-20260823.css'
       - 'assets/home-history-relief-map-20260823.js'
       - 'assets/home-history-mobile-visibility-20260824.css'
       - 'assets/home-ia-bootstrap-20260823.js'
+      - 'index.html'
+      - 'en/index.html'
+      - 'ja/index.html'
       - '.github/workflows/mobile-history-map-release.yml'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  patch-entrypoints:
+  verify-entrypoints:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Update homepage asset versions and PWA cache
+      - name: Verify mobile history version chain
         run: |
           set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
           import re
 
-          version = '20260824-paper-clay-map-3'
-          html_files = [
-              Path('index.html'),
-              Path('en/index.html'),
-              Path('ja/index.html'),
-              Path('source/index.html'),
-          ]
-          for path in html_files:
-              if not path.exists():
-                  continue
-              text = path.read_text(encoding='utf-8')
-              text = re.sub(r'home-gsap-map-20260824\.js\?v=[^"\']+', f'home-gsap-map-20260824.js?v={version}', text)
-              text = re.sub(r'site\.js\?v=[^"\']+', f'site.js?v={version}', text)
-              path.write_text(text, encoding='utf-8')
+          def capture(path, pattern, label):
+              text = Path(path).read_text(encoding='utf-8')
+              match = re.search(pattern, text)
+              assert match, f'{label} version not found in {path}'
+              return match.group(1), text
 
-          sw_path = Path('sw.js')
-          sw = sw_path.read_text(encoding='utf-8')
-          sw = re.sub(r"const VERSION = '[^']+';", "const VERSION = '2026-08-24-paper-clay-history-map-v9';", sw, count=1)
-          mobile_css = "  './assets/home-history-mobile-visibility-20260824.css',\n"
-          anchor = "  './assets/home-history-relief-map-20260823.css',\n"
-          if mobile_css.strip() not in sw:
-              sw = sw.replace(anchor, anchor + mobile_css)
-          sw_path.write_text(sw, encoding='utf-8')
+          expected, map_js = capture(
+              'assets/home-gsap-map-20260824.js',
+              r"var version='([^']+)';",
+              'map loader',
+          )
+          loader_version, _ = capture(
+              'assets/home-archive-layout-20260823.js',
+              r"var version='([^']+)';",
+              'archive loader',
+          )
+          paper_version, _ = capture(
+              'assets/home-history-paper-art-20260823.js',
+              r"var VERSION='([^']+)';",
+              'paper stylesheet',
+          )
+
+          assert loader_version == expected, (loader_version, expected)
+          assert paper_version == expected, (paper_version, expected)
+          assert 'home-history-mobile-visibility-20260824.css' in map_js
+
+          for path in ('index.html', 'en/index.html', 'ja/index.html'):
+              html = Path(path).read_text(encoding='utf-8')
+              match = re.search(r'home-gsap-map-20260824\.js\?v=([^"\']+)', html)
+              assert match, f'map loader entrypoint missing in {path}'
+              assert match.group(1) == expected, (path, match.group(1), expected)
+
+          sw = Path('sw.js').read_text(encoding='utf-8')
+          assert "url.pathname.includes('/assets/home-history-')" in sw
+          assert "url.pathname.endsWith('/assets/home-gsap-map-20260824.js')" in sw
+          print(f'Validated mobile history version chain: {expected}')
           PY
 
-      - name: Verify mobile visibility release
+      - name: JavaScript syntax
         run: |
           set -euo pipefail
-          grep -R "home-gsap-map-20260824.js?v=20260824-paper-clay-map-3" index.html en/index.html ja/index.html source/index.html
-          grep -F "2026-08-24-paper-clay-history-map-v9" sw.js
-          grep -F "home-history-mobile-visibility-20260824.css" sw.js
           node --check assets/home-gsap.js
+          node --check assets/home-gsap-map-20260824.js
           node --check assets/home-archive-layout-20260823.js
+          node --check assets/home-history-paper-art-20260823.js
           node --check assets/home-history-relief-map-20260823.js
           node --check assets/home-ia-bootstrap-20260823.js
-
-      - name: Commit generated entrypoint updates
-        run: |
-          set -euo pipefail
-          if git diff --quiet; then
-            echo 'No generated changes required.'
-            exit 0
-          fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html en/index.html ja/index.html source/index.html sw.js
-          git commit -m 'Refresh GSAP memory map entrypoints'
-          git push origin HEAD:main
