@@ -4235,3 +4235,22 @@ html.tt-gsap-ready .tt-transition.is-visible .tt-carved-stage-frame--transition{
     will-change:auto;
   }
 }
+
+/* Browser QA polish: keep the new timber proscenium visually singular and
+   replace the former striped water treatment with a quiet paper-cut wash. */
+.tt-opening::before{
+  background:
+    linear-gradient(90deg,rgba(8,4,3,.78),rgba(29,15,9,.08) 28%,rgba(29,15,9,.08) 72%,rgba(8,4,3,.8)),
+    radial-gradient(ellipse at 50% 43%,rgba(232,188,111,.28),rgba(117,69,38,.12) 42%,transparent 68%),
+    linear-gradient(180deg,#28170f 0%,#170c08 58%,#0d0705 100%)!important;
+  background-position:center!important;
+  background-size:100% 100%!important;
+  filter:none!important;
+}
+
+.tt-shadow-water{
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(204,181,126,.13),transparent 58%),
+    linear-gradient(180deg,rgba(69,103,91,.06),rgba(31,56,52,.3))!important;
+  box-shadow:inset 0 1px rgba(231,205,145,.08);
+}
