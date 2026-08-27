@@ -2,7 +2,7 @@
   'use strict';
   var current=document.currentScript&&document.currentScript.src?document.currentScript.src:'';
   var basePath=current?current.slice(0,current.lastIndexOf('/')+1):'./assets/';
-  var version='20260828-performance-p2-1';
+  var version='20260828-performance-p3-1';
   var balancedArtwork=basePath+'art/east-asia-case-memory-map-paper-clay-20260824.webp?v='+version;
   function injectMobileMapRepair(){
     if(!window.matchMedia('(max-width:760px)').matches||document.getElementById('home-mobile-map-repair-5'))return;
