@@ -475,18 +475,21 @@
     const loadMetrics = () => {
       if (bar.dataset.loadState === "loading" || bar.dataset.loadState === "ready") return;
       bar.dataset.loadState = "loading";
-      Promise.all([initialRead(item), initialLegacyView(item)]).then(([data, legacyView]) => {
+      initialRead(item).then((data) => {
         updateMetric(item, "like", data.likeCount);
         updateMetric(item, "comment", data.commentCount);
-        // Existing articles retain their historical CounterAPI total, while new
-        // articles can immediately display the total recorded by the engagement
-        // API. Taking the larger confirmed value also makes the migration
-        // monotonic instead of letting an empty legacy key mask a live count.
-        const confirmedViews = [legacyView, data.viewCount]
-          .map(Number)
-          .filter((value) => Number.isFinite(value) && value >= 0);
-        updateMetric(item, "view", confirmedViews.length ? Math.max(...confirmedViews) : 0);
+        updateMetric(item, "view", data.viewCount);
         bar.dataset.loadState = "ready";
+
+        // Render the live engagement total immediately. The legacy service is
+        // only a background migration source and must never keep new articles
+        // stuck on the loading placeholder after a reload.
+        initialLegacyView(item).then((legacyView) => {
+          const confirmedViews = [legacyView, data.viewCount]
+            .map(Number)
+            .filter((value) => Number.isFinite(value) && value >= 0);
+          if (confirmedViews.length) updateMetric(item, "view", Math.max(...confirmedViews));
+        }).catch(() => { /* Keep the live engagement total visible. */ });
       }).catch(() => {
         bar.querySelectorAll("b").forEach((field) => { field.textContent = "—"; });
         bar.dataset.loadState = "unavailable";
