@@ -79,7 +79,7 @@ jobs:
           ]
 
           assert 'home-history-paper-art-20260823.js' in loader
-          assert '20260826-historical-followup-1' in loader
+          assert "s.src=base+files[index]+'?v='+version" in loader
           assert 'home-history-relief-map-20260823.js' in loader
           assert "key:'other'" not in history_js
           assert 'OTHER REGIONS' not in history_js
@@ -87,7 +87,7 @@ jobs:
           assert "if(!b[m.region])return" in history_js
           assert 'The Jeong-in Case | The Door Did Not Open' in history_js
           assert 'チョンイン事件｜開かなかった扉' in history_js
-          assert "20260826-historical-followup-1" in map_loader
+          assert "home-archive-layout-20260823.js?v='+version" in map_loader
           assert 'host: card.querySelector(":scope > span:last-of-type") || card' in engagement_js
           assert 'history-paper-map-svg' in paper_js
           assert 'history-region-seal' in paper_js
