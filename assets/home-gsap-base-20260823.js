@@ -526,8 +526,77 @@
       mirrorEngagement(card, clone);
     });
     var tween = gsap.to(track, { xPercent: -50, duration: 18, repeat: -1, ease: 'none' });
+    var dragging = false;
+    var dragged = false;
+    var startX = 0;
+    var startProgress = 0;
+    var pointerType = '';
+    var resumeTimer = 0;
+
+    viewport.tabIndex = 0;
+    viewport.setAttribute('role', 'region');
+    var pageLanguage = (document.documentElement.lang || 'zh-Hant').toLowerCase();
+    viewport.setAttribute('aria-label', pageLanguage.indexOf('ja') === 0
+      ? '固定速報。左右にドラッグするか矢印キーで閲覧できます'
+      : pageLanguage.indexOf('en') === 0
+        ? 'Pinned reports. Drag horizontally or use the arrow keys to browse'
+        : pageLanguage.indexOf('zh-hans') === 0
+          ? '置顶快报，可左右拖动或使用方向键浏览'
+          : '置頂快報，可左右拖曳或使用方向鍵瀏覽');
+
+    function normalizeProgress(value) {
+      return ((value % 1) + 1) % 1;
+    }
+
+    function resumeAfterTouch() {
+      window.clearTimeout(resumeTimer);
+      if (pointerType === 'mouse') return;
+      resumeTimer = window.setTimeout(function () { tween.resume(); }, 1400);
+    }
+
+    viewport.addEventListener('pointerdown', function (event) {
+      if (event.button !== 0 || event.target.closest('button,input,select,textarea')) return;
+      dragging = true;
+      dragged = false;
+      pointerType = event.pointerType || 'mouse';
+      startX = event.clientX;
+      startProgress = tween.progress();
+      tween.pause();
+      viewport.classList.add('is-dragging');
+      viewport.setPointerCapture(event.pointerId);
+    });
+    viewport.addEventListener('pointermove', function (event) {
+      if (!dragging) return;
+      var delta = event.clientX - startX;
+      if (Math.abs(delta) > 5) dragged = true;
+      if (!dragged) return;
+      var loopWidth = Math.max(1, track.scrollWidth / 2);
+      tween.progress(normalizeProgress(startProgress - delta / loopWidth));
+    });
+    function finishDrag(event) {
+      if (!dragging) return;
+      dragging = false;
+      viewport.classList.remove('is-dragging');
+      if (viewport.hasPointerCapture(event.pointerId)) viewport.releasePointerCapture(event.pointerId);
+      if (dragged) viewport.dataset.suppressClickUntil = String(Date.now() + 420);
+      resumeAfterTouch();
+    }
+    viewport.addEventListener('pointerup', finishDrag);
+    viewport.addEventListener('pointercancel', finishDrag);
+    track.addEventListener('click', function (event) {
+      if (Date.now() > Number(viewport.dataset.suppressClickUntil || 0)) return;
+      event.preventDefault();
+      event.stopPropagation();
+    }, true);
+    viewport.addEventListener('keydown', function (event) {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      event.preventDefault();
+      tween.pause();
+      var direction = event.key === 'ArrowRight' ? 1 : -1;
+      tween.progress(normalizeProgress(tween.progress() + direction * 0.25));
+    });
     section.addEventListener('pointerenter', function () { tween.pause(); });
-    section.addEventListener('pointerleave', function () { tween.resume(); });
+    section.addEventListener('pointerleave', function () { if (!dragging) tween.resume(); });
     section.addEventListener('focusin', function () { tween.pause(); });
     section.addEventListener('focusout', function (event) { if (!section.contains(event.relatedTarget)) tween.resume(); });
   }
