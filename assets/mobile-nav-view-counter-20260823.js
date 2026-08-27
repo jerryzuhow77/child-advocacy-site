@@ -103,12 +103,22 @@ function addNav(){
   menu.addEventListener('click',function(event){
     var button=event.target.closest('[data-cpa-lang]');
     if(button){
+      var selectedLang=button.dataset.cpaLang;
+      var homeRoot=siteBase();
+      if(selectedLang==='en'||selectedLang==='ja'){
+        location.href=homeRoot+selectedLang+'/';
+        return;
+      }
       try{
-        localStorage.setItem('site-lang',button.dataset.cpaLang);
-        localStorage.setItem('siteLang',button.dataset.cpaLang);
+        localStorage.setItem('site-lang',selectedLang);
+        localStorage.setItem('siteLang',selectedLang);
       }catch(_){}
-      document.documentElement.lang=button.dataset.cpaLang;
-      document.dispatchEvent(new CustomEvent('cpa-language-change',{detail:{lang:button.dataset.cpaLang}}));
+      var localizedHome=new URL(homeRoot,location.origin);
+      if(selectedLang==='zh-Hans')localizedHome.searchParams.set('lang','zh-Hans');
+      else localizedHome.searchParams.delete('lang');
+      history.replaceState(null,'',localizedHome.href);
+      document.documentElement.lang=selectedLang;
+      document.dispatchEvent(new CustomEvent('cpa-language-change',{detail:{lang:selectedLang}}));
       setOpen(false);
       return;
     }
