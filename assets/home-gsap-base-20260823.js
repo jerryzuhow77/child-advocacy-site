@@ -487,6 +487,9 @@
     var section = document.querySelector('[data-pinned-reports]');
     if (!section) return;
     var viewport = section.querySelector('.home-pinned-reports-viewport');
+    // The lightweight native scroller owns this area when available. Do not
+    // recreate clones or a permanent GSAP ticker after its deferred startup.
+    if (viewport && viewport.dataset.nativePinnedScroll === 'true') return;
     var track = section.querySelector('.home-pinned-reports-track');
     var originals = all(':scope > .home-pinned-report-card:not([data-pinned-clone])', track);
     if (!viewport || originals.length !== 2 || reduceMotion || track.querySelector('[data-pinned-clone]')) return;
@@ -572,22 +575,23 @@
     var pointerInside = false;
     var startX = 0;
     var startRotation = 0;
-    var radius = { x: 0, y: 0 };
 
-    function refreshRadii() {
-      var widestCard = Math.max.apply(null, cards.map(function (card) {
-        return card.getBoundingClientRect().width;
-      }));
+    function radii() {
       if (window.innerWidth <= 760) {
-        radius.x = Math.min(185, Math.max(0, (shell.clientWidth - widestCard) / 2 - 6));
-        radius.y = 260;
-        return;
+        var widestCard = Math.max.apply(null, cards.map(function (card) {
+          return card.getBoundingClientRect().width;
+        }));
+        return {
+          x: Math.min(185, Math.max(0, (shell.clientWidth - widestCard) / 2 - 6)),
+          y: 260
+        };
       }
-      radius.x = Math.min(400, Math.max(0, (shell.clientWidth - widestCard) / 2 - 6));
-      radius.y = 350;
+      var desktop = Math.min(shell.clientWidth * 0.33, 305);
+      return { x: desktop, y: desktop };
     }
 
     function render() {
+      var radius = radii();
       cards.forEach(function (card, index) {
         var angle = (-90 + index * step + phase.rotation) * Math.PI / 180;
         gsap.set(card, {
@@ -663,12 +667,8 @@
       if (event.key === 'ArrowRight') { event.preventDefault(); rotateBy(-step); }
     });
 
-    refreshRadii();
     render();
-    window.addEventListener('resize', function () {
-      refreshRadii();
-      render();
-    }, { passive: true });
+    window.addEventListener('resize', render, { passive: true });
 
     if (!reduceMotion) {
       motionPaused = false;
