@@ -19,7 +19,7 @@
 
   var sharedPinned = [
     { className: 'is-luo-brothers', href: local('cases/luo-brothers/'), image: local('assets/art/luo-brothers-hearing-poster.webp') },
-    { className: 'is-charity-donation', href: local('activity-records/20260825-111-surplus-donation/'), image: local('activity-records/20260825-111-surplus-donation/images/charity-paper-clay-visible-v2.jpg?v=20260825-card-repair-1') }
+    { className: 'is-hearing-update', href: local('activity-records/20260820-taipei-station-advocacy/'), image: local('activity-records/20260820-taipei-station-advocacy/images/courtroom-change-20260827.webp') }
   ];
   var sharedItems = [
     { className: 'is-day10', href: local('hearing-records/prison-watch/kaikai-day10-20250507/'), imageByLocale: { en: local('assets/art/prison-watch-day10-kaikai-sentencing-poster-en-20260827.svg'), ja: local('assets/art/prison-watch-day10-kaikai-sentencing-poster-ja-20260827.svg') } },
@@ -43,7 +43,7 @@
       previous: 'Previous report', next: 'Next report', help: 'The wheel turns slowly. Hover, touch, or drag to pause, then select a carriage to read the full article.',
       pinnedItems: [
         { meta: '08.26 · LATEST REPORT · PINNED', title: 'Luo Brothers Miscarriage-of-Justice Retrial', summary: 'Latest developments, case background, and complete documents', alt: 'Key visual for the Luo brothers miscarriage-of-justice retrial' },
-        { meta: '08.25 · LATEST REPORT · PINNED', title: 'Continuing Our Shared Support as Another Act of Care', summary: 'The remaining NT$27,128 in public activity funds was donated in full', alt: 'Poster confirming the full donation of NT$27,128 remaining from the January 11 child-protection march' }
+        { meta: '08.27 · COURTROOM CHANGE · PINNED', title: 'Sep 16 Appeal Moved to Special Courtroom 1', summary: 'Moved from Courtroom 14; the hearing begins at 2:30 p.m. and the public is invited to attend', alt: 'Notice that the September 16 Chen Shang-jie appeal hearing will be held in Special Courtroom 1 at the Taiwan High Court' }
       ],
       items: [
         { meta: '08.27 · LATEST COURT RECORD', title: 'Tenth Trial Date', summary: 'Sentencing arguments and a comparison of responsibility between the two defendants', alt: 'Cover artwork for the tenth trial date, sentencing arguments, and the responsibility of two defendants' },
@@ -66,7 +66,7 @@
       previous: '前の速報', next: '次の速報', help: '観覧車はゆっくり回転します。マウスを重ねる、触れる、またはドラッグすると停止し、ゴンドラを選ぶと記事全文を読めます。',
       pinnedItems: [
         { meta: '08.26・最新速報・固定', title: '羅兄弟冤罪事件の再審理', summary: '最新動向、事件の経緯、関連資料', alt: '羅兄弟冤罪事件の再審理を伝えるメインビジュアル' },
-        { meta: '08.25・最新速報・固定', title: '皆さまの支援を、次の守りへ', summary: '活動公費の残額27,128元を全額寄付', alt: '1月11日の児童保護デモの残額27,128元を全額寄付したことを伝えるポスター' }
+        { meta: '08.27・法廷変更・固定', title: '9月16日の控訴審は専一法廷へ変更', summary: '第14法廷から変更。14:30開廷、傍聴への参加を呼びかけます', alt: '9月16日の陳尚潔控訴審が台湾高等法院の専一法廷で開かれることを知らせる案内' }
       ],
       items: [
         { meta: '08.27・最新傍聴記録', title: '第10回公判期日', summary: '量刑に関する弁論と2人の責任を比較', alt: '第10回公判期日の量刑弁論と被告2人の責任を扱うメインビジュアル' },

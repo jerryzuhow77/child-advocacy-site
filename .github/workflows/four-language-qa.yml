@@ -4,6 +4,14 @@ on:
   push:
     branches: [main]
     paths:
+      - 'index.html'
+      - 'en/index.html'
+      - 'ja/index.html'
+      - 'data/latest-bulletins.json'
+      - 'assets/home-latest-i18n-20260826.js'
+      - 'activity-records/20260820-taipei-station-advocacy/**'
+      - 'en/activity-records/20260820-taipei-station-advocacy/**'
+      - 'ja/activity-records/20260820-taipei-station-advocacy/**'
       - 'assets/site.js'
       - 'assets/site-base-20260823.js'
       - 'assets/site-four-language-qa-20260823.js'
