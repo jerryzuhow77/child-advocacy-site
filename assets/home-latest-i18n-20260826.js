@@ -20,10 +20,10 @@
   var sharedPinned = [
     { className: 'is-luo-brothers', href: local('cases/luo-brothers/'), image: local('assets/art/luo-brothers-hearing-poster.webp') },
     { className: 'is-hearing-update', href: local('activity-records/20260820-taipei-station-advocacy/'), image: local('activity-records/20260820-taipei-station-advocacy/images/courtroom-change-20260827.webp') },
-    { className: 'is-charity-donation', href: local('activity-records/20260825-111-surplus-donation/'), image: local('activity-records/20260825-111-surplus-donation/images/charity-paper-clay-thumbnail-v3.webp?v=20260828-paper-clay-1') }
+    { className: 'is-charity-donation', href: local('activity-records/20260825-111-surplus-donation/'), image: local('activity-records/20260825-111-surplus-donation/images/charity-paper-clay-background-20260825.png?v=20260828-language-neutral-1') }
   ];
   var sharedItems = [
-    { className: 'is-day10', href: local('hearing-records/prison-watch/kaikai-day10-20250507/'), imageByLocale: { en: local('assets/art/prison-watch-day10-kaikai-sentencing-poster-en-20260827.svg'), ja: local('assets/art/prison-watch-day10-kaikai-sentencing-poster-ja-20260827.svg') } },
+    { className: 'is-day10', href: localizedPath('hearing-records/prison-watch/kaikai-day10-20250507/'), imageByLocale: { en: local('assets/art/prison-watch-day10-kaikai-sentencing-poster-en-20260827.svg'), ja: local('assets/art/prison-watch-day10-kaikai-sentencing-poster-ja-20260827.svg') } },
     { className: 'is-jungein-korea', href: 'https://jungein-memory-door.jerryzuhow77.chatgpt.site/', image: local('assets/art/jungein-memory-door-home-20260826.webp'), external: true },
     { href: local('hearing-records/prison-watch/kaikai-day8-20250505/'), imageByLocale: { en: local('assets/art/prison-watch-day8-kaikai-evidence-poster-en-20260827.svg'), ja: local('assets/art/prison-watch-day8-kaikai-evidence-poster-ja-20260827.svg') } },
     { href: 'https://tainan-tom-bear-case.jerryzuhow77.chatgpt.site/', image: local('assets/art/tainan-tom-bear-home-hero-20260825.webp'), external: true },
