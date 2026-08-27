@@ -37,9 +37,12 @@
         });
         observer.observe(original, { childList: true, subtree: true, characterData: true });
       });
-      tween = window.gsap.to(track, { xPercent: -50, duration: 24, repeat: -1, ease: 'none' });
+      // Keep the loop geometry for drag/keyboard navigation, but leave the
+      // timeline paused. A continuously ticking transform on this large track
+      // was enough to starve link clicks in constrained and cloud browsers.
+      tween = window.gsap.to(track, { xPercent: -50, duration: 24, repeat: -1, ease: 'none', paused: true });
       viewport.closest('[data-pinned-reports]').addEventListener('pointerenter', function () { tween.pause(); });
-      viewport.closest('[data-pinned-reports]').addEventListener('pointerleave', function () { if (!dragging) tween.resume(); });
+      viewport.closest('[data-pinned-reports]').addEventListener('pointerleave', function () { tween.pause(); });
     }
     if (!tween || !track.querySelector('[data-pinned-clone]')) {
       if (attempts < 160) window.setTimeout(init, 60);
@@ -69,8 +72,9 @@
     function normalize(value) { return ((value % 1) + 1) % 1; }
     function resumeAfterTouch() {
       window.clearTimeout(resumeTimer);
-      if (pointerType === 'mouse') return;
-      resumeTimer = window.setTimeout(function () { tween.resume(); }, 1400);
+      // Manual movement remains available; autoplay intentionally stays paused
+      // so links and counters retain priority on the main thread.
+      resumeTimer = 0;
     }
 
     viewport.addEventListener('pointerdown', function (event) {
