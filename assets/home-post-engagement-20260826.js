@@ -554,16 +554,12 @@
 
   function start() {
     init();
-    let scheduled = false;
-    const observer = new MutationObserver(() => {
-      if (scheduled) return;
-      scheduled = true;
-      requestAnimationFrame(() => {
-        scheduled = false;
-        init();
-      });
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
+    // Cards are server-rendered. Avoid rescanning the whole document after
+    // every carousel/counter DOM mutation; one deferred pass covers scripts
+    // that append a card during startup.
+    const deferredInit = () => init();
+    if ("requestIdleCallback" in window) requestIdleCallback(deferredInit, { timeout: 1500 });
+    else window.setTimeout(deferredInit, 600);
   }
 
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", start, { once: true }) : start();
