@@ -45,7 +45,7 @@
       pinnedItems: [
         { meta: '08.26 · LATEST REPORT · PINNED', title: 'Luo Brothers Miscarriage-of-Justice Retrial', summary: 'Latest developments, case background, and complete documents', alt: 'Key visual for the Luo brothers miscarriage-of-justice retrial' },
         { meta: '08.27 · COURTROOM CHANGE · PINNED', title: 'Sep 16 Appeal Moved to Special Courtroom 1', summary: 'Moved from Courtroom 14; the hearing begins at 2:30 p.m. and the public is invited to attend', alt: 'Notice that the September 16 Chen Shang-jie appeal hearing will be held in Special Courtroom 1 at the Taiwan High Court' },
-        { meta: '08.25 · DONATION NOTICE · PINNED', title: 'Continuing Our Shared Support as Another Act of Care', summary: 'Jan 11 child-protection march: the remaining NT$27,128 in public activity funds was donated in full', alt: 'Public notice confirming the full donation of NT$27,128 remaining from the January 11 child-protection march' }
+        { meta: '08.25 · DONATION NOTICE · PINNED', title: 'Continuing Our Shared Support as Another Act of Care', summary: 'Jan 11 child-protection march: the remaining NT$27,128 in public activity funds was donated in full', alt: 'Public notice confirming the full donation of NT$27,128 remaining from the January 11 child-protection march', thumbLabel: 'DONATION', thumbAmount: 'NT$27,128', thumbNote: 'DONATED IN FULL' }
       ],
       items: [
         { meta: '08.27 · LATEST COURT RECORD', title: 'Tenth Trial Date', summary: 'Sentencing arguments and a comparison of responsibility between the two defendants', alt: 'Cover artwork for the tenth trial date, sentencing arguments, and the responsibility of two defendants' },
@@ -69,7 +69,7 @@
       pinnedItems: [
         { meta: '08.26・最新速報・固定', title: '羅兄弟冤罪事件の再審理', summary: '最新動向、事件の経緯、関連資料', alt: '羅兄弟冤罪事件の再審理を伝えるメインビジュアル' },
         { meta: '08.27・法廷変更・固定', title: '9月16日の控訴審は専一法廷へ変更', summary: '第14法廷から変更。14:30開廷、傍聴への参加を呼びかけます', alt: '9月16日の陳尚潔控訴審が台湾高等法院の専一法廷で開かれることを知らせる案内' },
-        { meta: '08.25・寄付公告・固定', title: '皆さまの支援を、次の守りへ', summary: '1月11日の児童保護デモ：活動公費の残額27,128元を全額寄付', alt: '1月11日の児童保護デモの残額27,128元を全額寄付したことを知らせる公告' }
+        { meta: '08.25・寄付公告・固定', title: '皆さまの支援を、次の守りへ', summary: '1月11日の児童保護デモ：活動公費の残額27,128元を全額寄付', alt: '1月11日の児童保護デモの残額27,128元を全額寄付したことを知らせる公告', thumbLabel: '寄付公告', thumbAmount: '27,128元', thumbNote: '全額寄付' }
       ],
       items: [
         { meta: '08.27・最新傍聴記録', title: '第10回公判期日', summary: '量刑に関する弁論と2人の責任を比較', alt: '第10回公判期日の量刑弁論と被告2人の責任を扱うメインビジュアル' },
@@ -112,6 +112,10 @@
     var text = copy.pinnedItems[index];
     var card = node('a', 'home-pinned-report-card ' + item.className); card.href = item.href;
     var image = node('img'); image.src = item.image; image.alt = text.alt; image.loading = 'eager'; image.decoding = 'async';
+    if (text.thumbLabel) {
+      var thumbCopy = node('span', 'home-pinned-thumb-copy'); thumbCopy.setAttribute('aria-hidden', 'true');
+      thumbCopy.appendChild(node('small', '', text.thumbLabel)); thumbCopy.appendChild(node('strong', '', text.thumbAmount)); thumbCopy.appendChild(node('em', '', text.thumbNote)); card.appendChild(thumbCopy);
+    }
     var cardCopy = node('span'); cardCopy.appendChild(node('small', '', text.meta)); cardCopy.appendChild(node('strong', '', text.title)); cardCopy.appendChild(node('em', '', text.summary));
     card.appendChild(image); card.appendChild(cardCopy); pinnedTrack.appendChild(card);
   });
