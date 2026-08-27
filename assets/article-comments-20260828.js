@@ -55,15 +55,20 @@
     } catch (_) { /* Count the view when session storage is unavailable. */ }
 
     const payload = JSON.stringify({ action: "view", channel: "official-article", articleKey: item.key });
-    try {
-      const sent = navigator.sendBeacon && navigator.sendBeacon(API, new Blob([payload], { type: "application/json" }));
-      if (!sent) {
-        fetch(API, { method: "POST", headers: { "content-type": "application/json" }, body: payload, keepalive: true });
-      }
+    try { sessionStorage.setItem(seenKey, "pending"); } catch (_) {}
+    fetch(API, {
+      method: "POST",
+      cache: "no-store",
+      headers: { "content-type": "application/json" },
+      body: payload,
+      keepalive: true,
+    }).then(response => {
+      if (!response.ok) throw new Error(`View counter returned ${response.status}`);
       try { sessionStorage.setItem(seenKey, "1"); } catch (_) {}
-    } catch (_) {
-      // Counting must never interfere with reading or commenting.
-    }
+    }).catch(() => {
+      // Do not permanently suppress a retry when the cross-origin request fails.
+      try { sessionStorage.removeItem(seenKey); } catch (_) {}
+    });
   }
 
   function commentNode(comment) {
