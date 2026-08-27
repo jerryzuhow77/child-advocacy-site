@@ -22,13 +22,13 @@
     { className: 'is-charity-donation', href: local('activity-records/20260825-111-surplus-donation/'), image: local('activity-records/20260825-111-surplus-donation/images/charity-paper-clay-visible-v2.jpg?v=20260825-card-repair-1') }
   ];
   var sharedItems = [
-    { className: 'is-day9', href: local('hearing-records/prison-watch/kaikai-day9-20250506/'), image: local('assets/art/prison-watch-day9-kaikai-testimony-poster-zh-Hant-20260826.webp') },
+    { className: 'is-day9', href: local('hearing-records/prison-watch/kaikai-day9-20250506/'), imageByLocale: { en: local('assets/art/prison-watch-day9-kaikai-testimony-poster-en-20260827.svg'), ja: local('assets/art/prison-watch-day9-kaikai-testimony-poster-ja-20260827.svg') } },
     { className: 'is-jungein-korea', href: 'https://jungein-memory-door.jerryzuhow77.chatgpt.site/', image: local('assets/art/jungein-memory-door-home-20260826.webp'), external: true },
-    { href: local('hearing-records/prison-watch/kaikai-day8-20250505/'), image: local('assets/art/prison-watch-day8-kaikai-evidence-poster-zh-Hant-20260826.webp') },
+    { href: local('hearing-records/prison-watch/kaikai-day8-20250505/'), imageByLocale: { en: local('assets/art/prison-watch-day8-kaikai-evidence-poster-en-20260827.svg'), ja: local('assets/art/prison-watch-day8-kaikai-evidence-poster-ja-20260827.svg') } },
     { href: 'https://tainan-tom-bear-case.jerryzuhow77.chatgpt.site/', image: local('assets/art/tainan-tom-bear-home-hero-20260825.webp'), external: true },
     { className: 'is-tucheng-domestic-hearing', href: local('hearing-records/tucheng-domestic-violence-double-homicide-20260821/'), image: local('assets/images/tucheng-hearing-20260821-hero.jpg') },
     { className: 'is-tucheng-domestic-case', href: local('cases/tucheng-domestic-violence-double-homicide/'), image: local('assets/images/tucheng-family-feature-20260823.jpg') },
-    { href: localizedPath('hearing-records/prison-watch/kaikai-day5-20250429/'), image: local('assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp') },
+    { href: localizedPath('hearing-records/prison-watch/kaikai-day5-20250429/'), imageByLocale: { en: local('assets/art/prison-watch-day5-forensic-en-20260827.svg'), ja: local('assets/art/prison-watch-day5-forensic-ja-20260827.svg') } },
     { href: localizedPath('hearing-records/prison-watch/kaikai-day4-20250428/'), image: local('assets/art/prison-watch-day4-hearing-poster-clay-20260821-v2.webp') },
     { className: 'is-story-collection', href: localizedPath('activity-records/20260820-kaikai-story-collection/'), image: local('activity-records/20260820-kaikai-story-collection/images/kaikai-story-collection-hero.webp'), qa916: true },
     { href: localizedPath('activity-records/20260801-ketagal-rally/'), image: local('assets/art/rally-20260801-ai-poster.jpg') }
@@ -128,7 +128,7 @@
     var card = node('a', 'home-document-disc-card' + (item.className ? ' ' + item.className : '')); card.href = item.href; card.setAttribute('role', 'listitem');
     if (item.external) { card.target = '_blank'; card.rel = 'noopener noreferrer'; }
     if (item.qa916) card.dataset.qa916Card = 'true';
-    var image = node('img'); image.src = item.image; image.alt = text.alt; image.loading = 'lazy'; image.decoding = 'async'; if (item.qa916) image.dataset.qa916Image = '';
+    var image = node('img'); image.src = item.imageByLocale ? item.imageByLocale[locale] : item.image; image.alt = text.alt; image.loading = 'lazy'; image.decoding = 'async'; if (item.qa916) image.dataset.qa916Image = '';
     var cardCopy = node('span'); cardCopy.appendChild(node('small', '', text.meta)); cardCopy.appendChild(node('strong', '', text.title)); cardCopy.appendChild(node('em', '', text.summary));
     card.appendChild(image); card.appendChild(cardCopy); orbit.appendChild(card);
   });

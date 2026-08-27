@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="960" viewBox="0 0 1600 960" role="img" aria-labelledby="title description">
+  <title id="title">悲劇を忘れない — 第9回公判期日</title>
+  <desc id="description">第9回公判期日における被告2人の証言を扱う日本語メインビジュアル。</desc>
+  <rect width="1600" height="960" fill="#c7aa73"/>
+  <rect y="350" width="1600" height="610" fill="#b88950"/>
+  <path d="M120 410h1360v285H120z" fill="#6c5840"/><path d="M170 445h1260v210H170z" fill="#8b7454"/>
+  <path d="M250 485h180v170H250zm460 0h180v170H710zm460 0h180v170h-180z" fill="#273b39"/>
+  <path d="M0 960V785l800-138 800 138v175Z" fill="#c9a775"/>
+  <path d="M215 720h360l105 240H110zm810 0h360l105 240h-570z" fill="#ead9b0" opacity=".88"/>
+  <path d="M365 655c70 98 224 126 435 197 220-72 360-104 435-197" fill="none" stroke="#9f3f2b" stroke-width="10"/>
+  <circle cx="800" cy="760" r="70" fill="#332c26"/><path d="M700 960V845c0-57 46-103 103-103s103 46 103 103v115Z" fill="#315f78"/>
+  <rect width="1600" height="350" fill="#ead5a9" opacity=".985"/>
+  <path d="M0 331C320 318 512 343 800 327s510 12 800-2v25H0Z" fill="#cab487" opacity=".72"/>
+  <text x="800" y="150" text-anchor="middle" fill="#173f3a" font-family="'Noto Serif JP', 'Yu Mincho', serif" font-size="108" font-weight="700" letter-spacing="14">悲劇を忘れない</text>
+  <text x="800" y="260" text-anchor="middle" fill="#873b26" font-family="'Noto Serif JP', 'Yu Mincho', serif" font-size="64" font-weight="700" letter-spacing="14">第9回公判期日</text>
+  <text x="800" y="315" text-anchor="middle" fill="#5f5039" font-family="'Noto Sans JP', sans-serif" font-size="25" letter-spacing="5">劉彩萱と劉若琳の証言を比較</text>
+</svg>

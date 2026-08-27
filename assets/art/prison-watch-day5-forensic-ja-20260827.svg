@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1200" viewBox="0 0 800 1200" role="img" aria-labelledby="title description">
+  <title id="title">第5回公判期日 — 医学証拠の検証</title>
+  <desc id="description">第5回公判期日における2人の医師の証言と医学証拠を比較する日本語メインビジュアル。</desc>
+  <rect width="800" height="1200" fill="#d6bd8f"/>
+  <circle cx="90" cy="1080" r="190" fill="#6f8b7a" opacity=".24"/><circle cx="735" cy="140" r="180" fill="#b06d5d" opacity=".18"/>
+  <rect x="42" y="42" width="716" height="1116" rx="34" fill="#f0dfbd" stroke="#b98a53" stroke-width="5" opacity=".97"/>
+  <text x="400" y="150" text-anchor="middle" fill="#174b50" font-family="'Noto Serif JP', 'Yu Mincho', serif" font-size="76" font-weight="700" letter-spacing="8">悲劇を忘れない</text>
+  <text x="400" y="220" text-anchor="middle" fill="#8b3b30" font-family="Arial, sans-serif" font-size="27" font-weight="700" letter-spacing="4">DAY 5 · 2025.04.29</text>
+  <line x1="115" y1="260" x2="685" y2="260" stroke="#b98a53" stroke-width="3"/>
+  <text x="400" y="370" text-anchor="middle" fill="#173b4b" font-family="'Noto Serif JP', 'Yu Mincho', serif" font-size="82" font-weight="700" letter-spacing="8">第5回公判期日</text>
+  <text x="400" y="455" text-anchor="middle" fill="#173b4b" font-family="'Noto Serif JP', 'Yu Mincho', serif" font-size="52" font-weight="700">医学証拠の検証</text>
+  <rect x="115" y="525" width="570" height="410" rx="30" fill="#fff7e7" stroke="#ccb184" stroke-width="3"/>
+  <circle cx="175" cy="615" r="27" fill="#4d7775"/><text x="175" y="625" text-anchor="middle" fill="white" font-family="Arial" font-size="25" font-weight="700">1</text>
+  <text x="225" y="625" fill="#3d443f" font-family="'Noto Sans JP', sans-serif" font-size="31" font-weight="700">2人の医師の証言を比較</text>
+  <circle cx="175" cy="730" r="27" fill="#4d7775"/><text x="175" y="740" text-anchor="middle" fill="white" font-family="Arial" font-size="25" font-weight="700">2</text>
+  <text x="225" y="740" fill="#3d443f" font-family="'Noto Sans JP', sans-serif" font-size="31" font-weight="700">画像・診察所見を整理</text>
+  <circle cx="175" cy="845" r="27" fill="#4d7775"/><text x="175" y="855" text-anchor="middle" fill="white" font-family="Arial" font-size="25" font-weight="700">3</text>
+  <text x="225" y="855" fill="#3d443f" font-family="'Noto Sans JP', sans-serif" font-size="31" font-weight="700">完全傍聴記録を公開</text>
+  <text x="400" y="1025" text-anchor="middle" fill="#7d6243" font-family="Georgia, serif" font-size="28" letter-spacing="3">EVIDENCE · TESTIMONY · REVIEW</text>
+  <text x="400" y="1090" text-anchor="middle" fill="#7d6243" font-family="'Noto Sans JP', sans-serif" font-size="22">児童保護行動連盟</text>
+</svg>
