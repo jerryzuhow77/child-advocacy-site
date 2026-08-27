@@ -38,3 +38,23 @@ const hero=document.getElementById("day9HeroPoster");if(hero){hero.src=lang==="z
 document.documentElement.lang=lang;document.querySelectorAll("[data-language]").forEach(a=>a.setAttribute("aria-current",String(a.dataset.language===lang)));
 window.addEventListener("load",()=>{if(!window.gsap||matchMedia("(prefers-reduced-motion: reduce)").matches)return;gsap.registerPlugin(window.ScrollTrigger);gsap.fromTo(".hero-poster img",{scale:1.035},{scale:1,duration:2.2,ease:"power2.out"});document.querySelectorAll(".comparison-section .compare-row:not(.compare-head)").forEach((row,index)=>gsap.from(row,{opacity:0,y:22,duration:.6,delay:index*.02,ease:"power2.out",scrollTrigger:{trigger:row,start:"top 88%",once:true}}))},{once:true});
 })();
+
+/* DAY10 reciprocal cross-day return */
+(() => {
+  const params = new URLSearchParams(location.search);
+  if (params.get('from') !== 'day10') return;
+  const topic = params.get('topic') || 'responsibility';
+  const allowed = new Set(['responsibility','role','pressure','awareness','records','ritual','remorse','rehabilitation']);
+  const safeTopic = allowed.has(topic) ? topic : 'responsibility';
+  const simplified = document.documentElement.lang === 'zh-Hans' || location.pathname.includes('/zh-Hans/');
+  const link = document.createElement('a');
+  link.className = 'day10-return';
+  link.href = simplified
+    ? `../../kaikai-day10-20250507/zh-Hans/#compare-${safeTopic}`
+    : `../kaikai-day10-20250507/#compare-${safeTopic}`;
+  link.innerHTML = simplified
+    ? '<span>DAY 10 对照</span><b>返回第十日责任定位</b>'
+    : '<span>DAY 10 對照</span><b>返回第十日責任定位</b>';
+  link.setAttribute('aria-label', simplified ? '返回第十日责任定位对照' : '返回第十日責任定位對照');
+  document.body.appendChild(link);
+})();
