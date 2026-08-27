@@ -71,7 +71,7 @@ jobs:
           assert '9月16日の控訴審を前に' in hearing
           assert '2026-09-16T14:30' in hearing
           assert "const mainlandWallBase='https://cn.globalprotectionwall.com/'" in portal
-          assert 'four-language-qa-916-v1' in sw
+          assert "const VERSION = '2026-08-26-pwa-resilient-v1'" in sw
           print('Static synchronization assertions passed.')
           PY
 
