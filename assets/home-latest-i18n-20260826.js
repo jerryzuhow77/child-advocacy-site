@@ -24,7 +24,7 @@
   ];
   var sharedItems = [
     { className: 'is-day10', href: localizedPath('hearing-records/prison-watch/kaikai-day10-20250507/'), imageByLocale: { en: local('assets/art/prison-watch-day10-kaikai-sentencing-poster-en-20260827.svg'), ja: local('assets/art/prison-watch-day10-kaikai-sentencing-poster-ja-20260827.svg') } },
-    { className: 'is-jungein-korea', href: 'https://jungein-memory-door.jerryzuhow77.chatgpt.site/', image: local('assets/art/jungein-memory-door-home-20260826.webp'), external: true },
+    { className: 'is-jungein-korea', href: 'https://cn.globalprotectionwall.com/historical-cases/korea/jungein', image: local('assets/art/jungein-memory-door-home-20260826.webp'), external: true },
     { href: local('hearing-records/prison-watch/kaikai-day8-20250505/'), imageByLocale: { en: local('assets/art/prison-watch-day8-kaikai-evidence-poster-en-20260827.svg'), ja: local('assets/art/prison-watch-day8-kaikai-evidence-poster-ja-20260827.svg') } },
     { href: 'https://tainan-tom-bear-case.jerryzuhow77.chatgpt.site/', image: local('assets/art/tainan-tom-bear-home-hero-20260825.webp'), external: true },
     { className: 'is-tucheng-domestic-hearing', href: local('hearing-records/tucheng-domestic-violence-double-homicide-20260821/'), image: local('assets/images/tucheng-hearing-20260821-hero.jpg') },
