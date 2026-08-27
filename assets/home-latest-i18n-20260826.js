@@ -20,7 +20,7 @@
   var sharedPinned = [
     { className: 'is-luo-brothers', href: local('cases/luo-brothers/'), image: local('assets/art/luo-brothers-hearing-poster.webp') },
     { className: 'is-hearing-update', href: local('activity-records/20260820-taipei-station-advocacy/'), image: local('activity-records/20260820-taipei-station-advocacy/images/courtroom-change-20260827.webp') },
-    { className: 'is-charity-donation', href: local('activity-records/20260825-111-surplus-donation/'), image: local('activity-records/20260825-111-surplus-donation/images/charity-paper-clay-background-20260825.png?v=20260828-language-neutral-1') }
+    { className: 'is-charity-donation', href: local('activity-records/20260825-111-surplus-donation/'), image: local('activity-records/20260825-111-surplus-donation/images/charity-paper-clay-thumbnail-v3.webp?v=20260828-thumb-restore-2') }
   ];
   var sharedItems = [
     { className: 'is-day10', href: localizedPath('hearing-records/prison-watch/kaikai-day10-20250507/'), imageByLocale: { en: local('assets/art/prison-watch-day10-kaikai-sentencing-poster-en-20260827.svg'), ja: local('assets/art/prison-watch-day10-kaikai-sentencing-poster-ja-20260827.svg') } },

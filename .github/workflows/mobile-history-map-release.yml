@@ -71,7 +71,10 @@ jobs:
               assert match, f'map loader entrypoint missing in {path}'
               entrypoint_versions[path] = match.group(1)
 
-          assert len(set(entrypoint_versions.values())) == 1, entrypoint_versions
+          assert set(entrypoint_versions.values()) == {map_dependency_version}, (
+              entrypoint_versions,
+              map_dependency_version,
+          )
 
           sw = Path('sw.js').read_text(encoding='utf-8')
           assert "url.pathname.includes('/assets/home-history-')" in sw

@@ -362,12 +362,26 @@
 
   function init() {
     repairHomepageLatestReport();
-    enhanceAll(document);
     var zone = document.getElementById('home-historical-cases');
-    if (zone && 'MutationObserver' in window) {
-      new MutationObserver(scheduleEnhance).observe(zone, { childList: true, subtree: true });
+    var activated = false;
+    function activate() {
+      if (activated) return;
+      activated = true;
+      enhanceAll(document);
+      if (zone && 'MutationObserver' in window) {
+        new MutationObserver(scheduleEnhance).observe(zone, { childList: true, subtree: true });
+      }
+      window.addEventListener('pageshow', scheduleEnhance);
     }
-    window.addEventListener('pageshow', scheduleEnhance);
+    if (!zone || !('IntersectionObserver' in window)) activate();
+    else {
+      var lazyObserver = new IntersectionObserver(function (entries) {
+        if (!entries.some(function (entry) { return entry.isIntersecting; })) return;
+        lazyObserver.disconnect();
+        activate();
+      }, { rootMargin: '700px 0px', threshold: 0 });
+      lazyObserver.observe(zone);
+    }
     document.addEventListener('visibilitychange', function () {
       controllers.forEach(function (controller) {
         if (document.hidden) controller.animations.forEach(function (animation) { animation.pause(); });
