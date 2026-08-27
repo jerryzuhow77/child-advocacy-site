@@ -22,7 +22,7 @@
     { className: 'is-charity-donation', href: local('activity-records/20260825-111-surplus-donation/'), image: local('activity-records/20260825-111-surplus-donation/images/charity-paper-clay-visible-v2.jpg?v=20260825-card-repair-1') }
   ];
   var sharedItems = [
-    { className: 'is-day9', href: local('hearing-records/prison-watch/kaikai-day9-20250506/'), imageByLocale: { en: local('assets/art/prison-watch-day9-kaikai-testimony-poster-en-20260827.svg'), ja: local('assets/art/prison-watch-day9-kaikai-testimony-poster-ja-20260827.svg') } },
+    { className: 'is-day10', href: local('hearing-records/prison-watch/kaikai-day10-20250507/'), imageByLocale: { en: local('assets/art/prison-watch-day10-kaikai-sentencing-poster-en-20260827.svg'), ja: local('assets/art/prison-watch-day10-kaikai-sentencing-poster-ja-20260827.svg') } },
     { className: 'is-jungein-korea', href: 'https://jungein-memory-door.jerryzuhow77.chatgpt.site/', image: local('assets/art/jungein-memory-door-home-20260826.webp'), external: true },
     { href: local('hearing-records/prison-watch/kaikai-day8-20250505/'), imageByLocale: { en: local('assets/art/prison-watch-day8-kaikai-evidence-poster-en-20260827.svg'), ja: local('assets/art/prison-watch-day8-kaikai-evidence-poster-ja-20260827.svg') } },
     { href: 'https://tainan-tom-bear-case.jerryzuhow77.chatgpt.site/', image: local('assets/art/tainan-tom-bear-home-hero-20260825.webp'), external: true },
@@ -46,7 +46,7 @@
         { meta: '08.25 · LATEST REPORT · PINNED', title: 'Continuing Our Shared Support as Another Act of Care', summary: 'The remaining NT$27,128 in public activity funds was donated in full', alt: 'Poster confirming the full donation of NT$27,128 remaining from the January 11 child-protection march' }
       ],
       items: [
-        { meta: '08.26 · LATEST COURT RECORD', title: 'Ninth Trial Date', summary: 'Comparing the testimony of Liu Cai-Xuan and Liu Ruo-Lin', alt: 'Cover artwork for the ninth trial date and the testimony of two defendants' },
+        { meta: '08.27 · LATEST COURT RECORD', title: 'Tenth Trial Date', summary: 'Sentencing arguments and a comparison of responsibility between the two defendants', alt: 'Cover artwork for the tenth trial date, sentencing arguments, and the responsibility of two defendants' },
         { meta: '08.26 · NEW KOREAN HISTORICAL CASE', title: 'The Jeong-in Case | The Door Did Not Open', summary: 'Three reports did not become a path to safety', alt: 'Hanji paper-cut artwork with a half-open paper door, porcelain bowl, brass spoon, wrapping cloth and child socks; no injuries are depicted' },
         { meta: '08.26 · LATEST COURT RECORD', title: 'Eighth Trial Date', summary: 'Evidence review, closing arguments, and sentencing documents', alt: 'Cover artwork for the complete court record from the eighth trial date' },
         { meta: '08.25 · NEW TAIWAN HISTORICAL CASE', title: 'The Tainan Tom’s World Case', summary: 'He said there would be no death sentence—and there was not', alt: 'Paper-cut feature artwork for the Tainan Tom’s World case' },
@@ -69,7 +69,7 @@
         { meta: '08.25・最新速報・固定', title: '皆さまの支援を、次の守りへ', summary: '活動公費の残額27,128元を全額寄付', alt: '1月11日の児童保護デモの残額27,128元を全額寄付したことを伝えるポスター' }
       ],
       items: [
-        { meta: '08.26・最新傍聴記録', title: '第9回公判期日', summary: '劉彩萱と劉若琳の証言を比較', alt: '第9回公判期日における被告2人の証言を扱うメインビジュアル' },
+        { meta: '08.27・最新傍聴記録', title: '第10回公判期日', summary: '量刑に関する弁論と2人の責任を比較', alt: '第10回公判期日の量刑弁論と被告2人の責任を扱うメインビジュアル' },
         { meta: '08.26・韓国の歴史的事件・新着', title: '韓国チョンイン事件｜扉は開かなかった', summary: '3度の通報は安全への出口にならなかった', alt: '半開きの韓紙の扉、白磁の器、真鍮の匙、ポジャギ、子どもの靴下で構成した事件特集ビジュアル。傷害表現はありません' },
         { meta: '08.26・最新傍聴記録', title: '第8回公判期日', summary: '証拠調べ、論告、量刑資料の整理', alt: '第8回公判期日の完全傍聴記録メインビジュアル' },
         { meta: '08.25・台湾の歴史的事件・新着', title: '台南トムズ・ワールド男児殺害事件', summary: '「死刑にはならない」と語り、実際に死刑にはならなかった', alt: '台南トムズ・ワールド男児殺害事件の切り絵特集ビジュアル' },

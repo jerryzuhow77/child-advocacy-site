@@ -8,14 +8,14 @@
   ],
   "items": [
     {
-      "id":"kaikai-day9-20250506","publishedAt":"2026-08-26","tag":"COURT RECORD","className":"is-day9",
+      "id":"kaikai-day10-20250507","publishedAt":"2026-08-27","tag":"COURT RECORD","className":"is-day10",
       "badge":{"zh-Hant":"最新旁聽紀錄","zh-Hans":"最新旁听记录","en":"Latest court record","ja":"最新傍聴記録"},
-      "title":{"zh-Hant":"第九次審判期日","zh-Hans":"第九次审判期日","en":"Ninth Trial Date","ja":"第9回公判期日"},
-      "summary":{"zh-Hant":"劉彩萱與劉若琳證詞比對。","zh-Hans":"刘彩萱与刘若琳证词比对。","en":"Comparing the testimony of Liu Cai-Xuan and Liu Ruo-Lin.","ja":"劉彩萱と劉若琳の証言を比較。"},
-      "url":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day9-20250506/","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day9-20250506/zh-Hans/","en":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day9-20250506/","ja":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day9-20250506/"},
-      "image":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day9-kaikai-testimony-poster-zh-Hant-20260826.webp",
-      "imageByLocale":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day9-kaikai-testimony-poster-zh-Hant-20260826.webp","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day9-kaikai-testimony-poster-zh-Hans-20260826.webp","en":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day9-kaikai-testimony-poster-en-20260827.svg","ja":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day9-kaikai-testimony-poster-ja-20260827.svg"},
-      "imageAlt":{"zh-Hant":"悲劇不忘：第九次審判期日兩名被告證詞主視覺海報","zh-Hans":"悲剧不忘：第九次审判期日两名被告证词主视觉海报","en":"Cover artwork for the ninth trial date and the testimony of two defendants","ja":"第9回公判期日における被告2人の証言を扱うメインビジュアル"}
+      "title":{"zh-Hant":"第十次審判期日","zh-Hans":"第十次审判期日","en":"Tenth Trial Date","ja":"第10回公判期日"},
+      "summary":{"zh-Hant":"科刑辯論與兩名被告責任對照。","zh-Hans":"科刑辩论与两名被告责任对照。","en":"Sentencing arguments and a comparison of responsibility between the two defendants.","ja":"量刑に関する弁論と2人の責任を比較。"},
+      "url":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day10-20250507/","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day10-20250507/zh-Hans/","en":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day10-20250507/","ja":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day10-20250507/"},
+      "image":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day10-kaikai-sentencing-hero-zh-Hant-20260827.webp",
+      "imageByLocale":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day10-kaikai-sentencing-hero-zh-Hant-20260827.webp","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day10-kaikai-sentencing-hero-zh-Hans-20260827.webp","en":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day10-kaikai-sentencing-poster-en-20260827.svg","ja":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day10-kaikai-sentencing-poster-ja-20260827.svg"},
+      "imageAlt":{"zh-Hant":"悲劇不忘：第十次審判期日科刑辯論與兩名被告責任對照主視覺","zh-Hans":"悲剧不忘：第十次审判期日科刑辩论与两名被告责任对照主视觉","en":"Cover artwork for the tenth trial date, sentencing arguments, and the responsibility of two defendants","ja":"第10回公判期日の量刑弁論と被告2人の責任を扱うメインビジュアル"}
     },
     {
       "id":"korea-jungein-memory-door-2020","publishedAt":"2026-08-26","tag":"HISTORICAL CASE","className":"is-jungein-korea",
