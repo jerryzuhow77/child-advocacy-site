@@ -164,14 +164,18 @@
     const isOfficialFeature = url.hostname.endsWith(".jerryzuhow77.chatgpt.site");
     if (!/^https?:$/.test(url.protocol) || (!isOfficialSite && !isOfficialFeature)) return null;
     const path = url.pathname.replace(/^\/child-advocacy-site\/?/, "").replace(/\/$/, "") || "home";
+    // The translated pages are alternate presentations of the same article.
+    // Keep their engagement and view totals on the canonical, locale-neutral key.
+    const sharedPath = isOfficialSite ? path.replace(/^(?:en|ja|zh-hant|zh-hans)(?:\/|$)/, "") || "home" : path;
     const titleSource = link.querySelector("[data-engagement-title-source],strong,h3,h2")
       || host?.querySelector("[data-engagement-title-source],h2,h3,strong")
       || link;
     const title = (titleSource.textContent || link.getAttribute("aria-label") || link.textContent || "官網文章").trim().replace(/\s+/g, " ").slice(0, 160);
     const articleHost = isOfficialSite ? "official" : url.hostname.replace(/\.jerryzuhow77\.chatgpt\.site$/, "");
     return {
-      key: `${articleHost}-${path.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-")}`,
+      key: `${articleHost}-${sharedPath.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-")}`,
       legacyViewKey: link.dataset.viewCounterKey || legacyViewKey(url),
+      countsOnArrival: isOfficialSite,
       title,
       url: url.href,
     };
@@ -470,7 +474,14 @@
     Promise.all([initialRead(item), initialLegacyView(item)]).then(([data, legacyView]) => {
       updateMetric(item, "like", data.likeCount);
       updateMetric(item, "comment", data.commentCount);
-      updateMetric(item, "view", legacyView ?? data.viewCount);
+      // Existing articles retain their historical CounterAPI total, while new
+      // articles can immediately display the total recorded by the engagement
+      // API. Taking the larger confirmed value also makes the migration
+      // monotonic instead of letting an empty legacy key mask a live count.
+      const confirmedViews = [legacyView, data.viewCount]
+        .map(Number)
+        .filter((value) => Number.isFinite(value) && value >= 0);
+      updateMetric(item, "view", confirmedViews.length ? Math.max(...confirmedViews) : 0);
       bar.dataset.loadState = "ready";
     }).catch(() => {
       bar.querySelectorAll("b").forEach((field) => { field.textContent = "—"; });
@@ -503,6 +514,9 @@
     }));
     link.addEventListener("click", (event) => {
       if (event.target.closest(".home-post-engagement")) return;
+      // Official article pages record the confirmed arrival themselves. This
+      // avoids counting one navigation both here and again on the destination.
+      if (item.countsOnArrival) return;
       const payload = JSON.stringify({ channel: "official-article", articleKey: item.key, action: "view" });
       try {
         if (!navigator.sendBeacon(API, new Blob([payload], { type: "application/json" }))) {

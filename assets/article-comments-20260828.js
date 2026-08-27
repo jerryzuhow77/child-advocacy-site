@@ -22,7 +22,7 @@
 
   const canonical = document.querySelector('link[rel="canonical"]')?.href || location.href.split("#")[0];
   // Keep locale-prefixed routes aligned with the keys already used by homepage cards.
-  const routeKey = path.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+  const routeKey = neutralPath.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
   const item = {
     key: `official-${routeKey || "home"}`,
     title: (document.querySelector("h1")?.textContent || document.title || "官網文章").trim().replace(/\s+/g, " ").slice(0, 160),
@@ -48,6 +48,24 @@
       });
   }
 
+  function recordView() {
+    const seenKey = `cpa_article_viewed_${item.key}`;
+    try {
+      if (sessionStorage.getItem(seenKey)) return;
+    } catch (_) { /* Count the view when session storage is unavailable. */ }
+
+    const payload = JSON.stringify({ action: "view", channel: "official-article", articleKey: item.key });
+    try {
+      const sent = navigator.sendBeacon && navigator.sendBeacon(API, new Blob([payload], { type: "application/json" }));
+      if (!sent) {
+        fetch(API, { method: "POST", headers: { "content-type": "application/json" }, body: payload, keepalive: true });
+      }
+      try { sessionStorage.setItem(seenKey, "1"); } catch (_) {}
+    } catch (_) {
+      // Counting must never interfere with reading or commenting.
+    }
+  }
+
   function commentNode(comment) {
     const article = document.createElement("article");
     const avatar = document.createElement("span");
@@ -63,6 +81,7 @@
   }
 
   function mount() {
+    recordView();
     if (document.querySelector("[data-article-comments]")) return;
     const section = document.createElement("section");
     section.className = "cpa-article-comments";
