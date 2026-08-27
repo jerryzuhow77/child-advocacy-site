@@ -1,4 +1,5 @@
 name: Four-language content QA and 9-16 hearing campaign
+# Keep this workflow aligned with the active service-worker cache version.
 
 on:
   push:
