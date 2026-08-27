@@ -2,7 +2,7 @@
   'use strict';
   var current=document.currentScript&&document.currentScript.src?document.currentScript.src:'';
   var basePath=current?current.slice(0,current.lastIndexOf('/')+1):'./assets/';
-  var version='20260828-wheel-spacing-2';
+  var version='20260828-performance-p7-1';
   var balancedArtwork=basePath+'art/east-asia-case-memory-map-paper-clay-20260824.webp?v='+version;
   function injectMobileMapRepair(){
     if(!window.matchMedia('(max-width:760px)').matches||document.getElementById('home-mobile-map-repair-5'))return;
@@ -48,13 +48,13 @@
   injectMobileMapRepair();
   forceBalancedMobileArtwork(document);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){forceBalancedMobileArtwork(document);animateVisibleStaticMap();},{once:true});else animateVisibleStaticMap();
-  var mapObserver=new MutationObserver(function(records){
-    records.forEach(function(record){
-      Array.prototype.forEach.call(record.addedNodes,function(node){if(node.nodeType===1)forceBalancedMobileArtwork(node.matches&&node.matches('#home-historical-cases')?node:document);});
-    });
-  });
-  mapObserver.observe(document.documentElement,{childList:true,subtree:true});
-  window.setTimeout(function(){forceBalancedMobileArtwork(document);mapObserver.disconnect();},12000);
+  var historyZone=document.getElementById('home-historical-cases');
+  var mapObserver=null;
+  if(historyZone&&window.matchMedia('(max-width:760px)').matches){
+    mapObserver=new MutationObserver(function(){forceBalancedMobileArtwork(historyZone);});
+    mapObserver.observe(historyZone,{childList:true,subtree:true});
+    window.setTimeout(function(){forceBalancedMobileArtwork(historyZone);mapObserver.disconnect();},5000);
+  }
   if(window.matchMedia('(max-width:760px)').matches)animateVisibleStaticMap();
   function loadEnhancement(){
     var existing=document.querySelector('script[data-home-ia-final]');
@@ -68,10 +68,20 @@
     document.head.appendChild(enhancement);
     window.setTimeout(loadInteractionFix,120);
   }
+  function loadEnhancementNearHistory(){
+    var zone=document.getElementById('home-historical-cases');
+    if(!zone||!('IntersectionObserver' in window)){loadEnhancement();return;}
+    var observer=new IntersectionObserver(function(entries){
+      if(!entries.some(function(entry){return entry.isIntersecting;}))return;
+      observer.disconnect();
+      loadEnhancement();
+    },{rootMargin:'700px 0px',threshold:0});
+    observer.observe(zone);
+  }
   var base=document.createElement('script');
   base.src=basePath+'home-gsap-base-20260823.js?v='+version;
   base.defer=true;
-  base.onload=function(){animateVisibleStaticMap();loadEnhancement();};
-  base.onerror=loadEnhancement;
+  base.onload=function(){animateVisibleStaticMap();loadEnhancementNearHistory();};
+  base.onerror=loadEnhancementNearHistory;
   document.head.appendChild(base);
 })();
