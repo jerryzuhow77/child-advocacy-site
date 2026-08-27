@@ -7,10 +7,41 @@
     attempts += 1;
     var viewport = document.querySelector('.home-pinned-reports-viewport');
     var track = viewport && viewport.querySelector('.home-pinned-reports-track');
+    var originals = track && Array.prototype.slice.call(track.querySelectorAll(':scope > .home-pinned-report-card:not([data-pinned-clone])'));
     var tween = track && window.gsap && window.gsap.getTweensOf(track).filter(function (item) {
       return item.repeat() === -1;
     })[0];
-    if (!viewport || !track || !tween || !track.querySelector('[data-pinned-clone]')) {
+    if (!viewport || !track || !window.gsap || !originals || originals.length < 2) {
+      if (attempts < 160) window.setTimeout(init, 60);
+      return;
+    }
+    if (!tween && !track.querySelector('[data-pinned-clone]')) {
+      if (attempts < 60 && !originals.every(function (card) { return card.querySelector(':scope > .home-post-engagement'); })) {
+        window.setTimeout(init, 60);
+        return;
+      }
+      originals.forEach(function (original) {
+        var clone = original.cloneNode(true);
+        clone.dataset.pinnedClone = 'true';
+        clone.setAttribute('aria-hidden', 'true');
+        clone.tabIndex = -1;
+        clone.querySelectorAll('[tabindex],button,input,select,textarea,[role="button"]').forEach(function (element) {
+          element.tabIndex = -1;
+          if (element.getAttribute('role') === 'button') element.removeAttribute('role');
+        });
+        track.appendChild(clone);
+        var observer = new MutationObserver(function () {
+          var source = original.querySelector(':scope > .home-post-engagement');
+          var target = clone.querySelector(':scope > .home-post-engagement');
+          if (source && target) target.innerHTML = source.innerHTML;
+        });
+        observer.observe(original, { childList: true, subtree: true, characterData: true });
+      });
+      tween = window.gsap.to(track, { xPercent: -50, duration: 24, repeat: -1, ease: 'none' });
+      viewport.closest('[data-pinned-reports]').addEventListener('pointerenter', function () { tween.pause(); });
+      viewport.closest('[data-pinned-reports]').addEventListener('pointerleave', function () { if (!dragging) tween.resume(); });
+    }
+    if (!tween || !track.querySelector('[data-pinned-clone]')) {
       if (attempts < 160) window.setTimeout(init, 60);
       return;
     }
