@@ -932,9 +932,19 @@
     window.setTimeout(function () { ScrollTrigger.refresh(); }, 250);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
-  } else {
-    init();
+  function startAfterContentIsUsable() {
+    // Content, links and engagement counters get the main thread first. The
+    // decorative timelines begin only after the page has loaded and stayed
+    // idle, preventing animation setup from blocking navigation/clicks.
+    var start = function () {
+      window.setTimeout(function () {
+        if ('requestIdleCallback' in window) requestIdleCallback(init, { timeout: 4000 });
+        else init();
+      }, 8000);
+    };
+    if (document.readyState === 'complete') start();
+    else window.addEventListener('load', start, { once: true });
   }
+
+  startAfterContentIsUsable();
 }());
