@@ -572,23 +572,22 @@
     var pointerInside = false;
     var startX = 0;
     var startRotation = 0;
+    var radius = { x: 0, y: 0 };
 
-    function radii() {
+    function refreshRadii() {
       var widestCard = Math.max.apply(null, cards.map(function (card) {
         return card.getBoundingClientRect().width;
       }));
       if (window.innerWidth <= 760) {
-        return {
-          x: Math.min(185, Math.max(0, (shell.clientWidth - widestCard) / 2 - 6)),
-          y: 260
-        };
+        radius.x = Math.min(185, Math.max(0, (shell.clientWidth - widestCard) / 2 - 6));
+        radius.y = 260;
+        return;
       }
-      var desktopX = Math.min(400, Math.max(0, (shell.clientWidth - widestCard) / 2 - 6));
-      return { x: desktopX, y: 350 };
+      radius.x = Math.min(400, Math.max(0, (shell.clientWidth - widestCard) / 2 - 6));
+      radius.y = 350;
     }
 
     function render() {
-      var radius = radii();
       cards.forEach(function (card, index) {
         var angle = (-90 + index * step + phase.rotation) * Math.PI / 180;
         gsap.set(card, {
@@ -664,8 +663,12 @@
       if (event.key === 'ArrowRight') { event.preventDefault(); rotateBy(-step); }
     });
 
+    refreshRadii();
     render();
-    window.addEventListener('resize', render, { passive: true });
+    window.addEventListener('resize', function () {
+      refreshRadii();
+      render();
+    }, { passive: true });
 
     if (!reduceMotion) {
       motionPaused = false;
