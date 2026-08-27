@@ -574,17 +574,17 @@
     var startRotation = 0;
 
     function radii() {
+      var widestCard = Math.max.apply(null, cards.map(function (card) {
+        return card.getBoundingClientRect().width;
+      }));
       if (window.innerWidth <= 760) {
-        var widestCard = Math.max.apply(null, cards.map(function (card) {
-          return card.getBoundingClientRect().width;
-        }));
         return {
           x: Math.min(185, Math.max(0, (shell.clientWidth - widestCard) / 2 - 6)),
           y: 260
         };
       }
-      var desktop = Math.min(shell.clientWidth * 0.33, 305);
-      return { x: desktop, y: desktop };
+      var desktopX = Math.min(400, Math.max(0, (shell.clientWidth - widestCard) / 2 - 6));
+      return { x: desktopX, y: 350 };
     }
 
     function render() {
