@@ -110,6 +110,17 @@
       event.preventDefault();
       event.stopPropagation();
     }, true);
+    originals.forEach(function (card) {
+      card.addEventListener('click', function (event) {
+        // Engagement controls intentionally stay on the homepage. A genuine
+        // card click must navigate even when the transformed GSAP track causes
+        // the browser's synthetic/default anchor activation to be dropped.
+        if (event.target.closest('.home-post-engagement')) return;
+        if (Date.now() <= Number(viewport.dataset.suppressClickUntil || 0)) return;
+        event.preventDefault();
+        window.location.assign(card.href);
+      });
+    });
     viewport.addEventListener('keydown', function (event) {
       if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
       event.preventDefault();
