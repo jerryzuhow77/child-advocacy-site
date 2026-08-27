@@ -163,7 +163,8 @@
     const url = new URL(link.href, location.href);
     const isOfficialSite = url.origin === location.origin;
     const isOfficialFeature = url.hostname.endsWith(".jerryzuhow77.chatgpt.site");
-    if (!/^https?:$/.test(url.protocol) || (!isOfficialSite && !isOfficialFeature)) return null;
+    const isGuardianWallFeature = url.hostname === "cn.globalprotectionwall.com";
+    if (!/^https?:$/.test(url.protocol) || (!isOfficialSite && !isOfficialFeature && !isGuardianWallFeature)) return null;
     const path = url.pathname.replace(/^\/child-advocacy-site\/?/, "").replace(/\/$/, "") || "home";
     // The translated pages are alternate presentations of the same article.
     // Keep their engagement and view totals on the canonical, locale-neutral key.
@@ -172,7 +173,11 @@
       || host?.querySelector("[data-engagement-title-source],h2,h3,strong")
       || link;
     const title = (titleSource.textContent || link.getAttribute("aria-label") || link.textContent || "官網文章").trim().replace(/\s+/g, " ").slice(0, 160);
-    const articleHost = isOfficialSite ? "official" : url.hostname.replace(/\.jerryzuhow77\.chatgpt\.site$/, "");
+    const articleHost = isOfficialSite
+      ? "official"
+      : isGuardianWallFeature
+        ? "global-protection-wall"
+        : url.hostname.replace(/\.jerryzuhow77\.chatgpt\.site$/, "");
     return {
       key: `${articleHost}-${sharedPath.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-")}`,
       legacyViewKey: link.dataset.viewCounterKey || legacyViewKey(url),
