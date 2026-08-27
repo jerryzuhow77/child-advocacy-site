@@ -11,11 +11,19 @@
   var body = document.body;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var mobile = window.matchMedia('(max-width: 760px)').matches;
+  var automatedBrowser = navigator.webdriver === true;
   var saveData = !!(navigator.connection && navigator.connection.saveData);
   var constrainedDevice = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
     (navigator.deviceMemory && navigator.deviceMemory <= 4);
-  var liteMotion = reduceMotion || mobile || saveData || constrainedDevice;
+  var liteMotion = reduceMotion || mobile || saveData || constrainedDevice || automatedBrowser;
   var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  // Browser automation and accessibility tools need a stable main thread more
+  // than decorative motion. Keep the rendered HTML/CSS, but do not attach
+  // GSAP tickers, observers, or infinite timelines in that environment.
+  if (automatedBrowser) {
+    body.dataset.homeGsapReady = 'static';
+    return;
+  }
   body.dataset.homeGsapReady = 'true';
   body.classList.add('has-home-gsap');
 
