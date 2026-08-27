@@ -12,7 +12,7 @@
 
   var current=document.currentScript&&document.currentScript.src?document.currentScript.src:'';
   var base=current?current.slice(0,current.lastIndexOf('/')+1):'./assets/';
-  var version='20260826-latest-disc-1';
+  var version='20260828-article-comments-1';
   function load(name,marker,done){
     var existing=document.querySelector('script[data-cpa-site-layer="'+marker+'"]');
     if(existing){if(done)done();return;}
@@ -27,6 +27,7 @@
   load('site-base-20260823.js','base',function(){
     load('site-four-language-qa-20260823.js','four-language-qa',function(){
       load('mobile-nav-view-counter-20260823.js','mobile-nav-views');
+      load('article-comments-20260828.js','article-comments');
     });
   });
 })();
