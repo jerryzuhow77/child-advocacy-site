@@ -126,7 +126,7 @@ async function initFullRecord() {
 
   const isStageLine = (line) => /^(?:\d{1,4}(?::\d{2})?\s*(?:休庭|入庭|[續续]行[審审]理|休息)|114年.*(?:[審审]理完[畢毕]|宣判)|〔.*(?:旁[聽听]席鼓掌).*〕|→(?:[調调]整成))/.test(line);
   const isSourceHeading = (line) => /^[壹貳贰參叁肆伍陸陆柒捌玖拾]、/.test(line) && !/[訴诉][訟讼][參参][與与]代理人[：:]/.test(line);
-  const isTopicText = (text) => /^[一二三四五六七八九十百]+[、：:]/u.test(text);
+  const isTopicText = (text) => /^(?:[一二三四五六七八九十百]+[、：:]|（[一二三四五六七八九十百\d]+）|小結[：:]|[A-Z][.．]\s*)/u.test(text);
 
   const normalizeParagraph = (paragraphLines) => {
     if (paragraphLines.some(line => /[▕┼_]| {3,}/.test(line))) return paragraphLines.join('\n');
