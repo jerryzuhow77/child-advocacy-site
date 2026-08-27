@@ -610,19 +610,27 @@
       });
     }
 
+    var documentLocale = (document.documentElement.lang || 'zh-Hant').toLowerCase();
+    var motionLabels = documentLocale.startsWith('ja')
+      ? { reduced: 'システム設定に合わせて静止表示にしています。すべての記事はそのまま読めます。', pause: '自動再生を一時停止', resume: '自動再生を再開' }
+      : documentLocale.startsWith('en')
+        ? { reduced: 'Motion is reduced to match your system settings. Every article remains available.', pause: 'Pause autoplay', resume: 'Resume autoplay' }
+        : documentLocale.startsWith('zh-hans') || documentLocale.startsWith('zh-cn')
+          ? { reduced: '已依系统设置改为静态列表；所有内容仍可直接阅读', pause: '暂停自动轮播', resume: '继续自动轮播' }
+          : { reduced: '已依系統設定改為靜態列表；所有內容仍可直接閱讀', pause: '暫停自動輪播', resume: '繼續自動輪播' };
     var motionControl = document.createElement(reduceMotion ? 'p' : 'button');
     motionControl.className = 'home-disc-motion-control';
     if (reduceMotion) {
-      motionControl.textContent = '已依系統設定改為靜態列表；所有內容仍可直接閱讀';
+      motionControl.textContent = motionLabels.reduced;
       motionControl.setAttribute('role', 'status');
     } else {
       motionControl.type = 'button';
-      motionControl.textContent = '暫停自動輪播';
+      motionControl.textContent = motionLabels.pause;
       motionControl.setAttribute('aria-pressed', 'false');
       motionControl.addEventListener('click', function () {
         motionPaused = !motionPaused;
         motionControl.setAttribute('aria-pressed', String(motionPaused));
-        motionControl.textContent = motionPaused ? '繼續自動輪播' : '暫停自動輪播';
+        motionControl.textContent = motionPaused ? motionLabels.resume : motionLabels.pause;
         if (motionPaused) stopPhaseTweens();
         else startAuto();
       });
