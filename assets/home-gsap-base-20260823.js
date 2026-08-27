@@ -10,9 +10,23 @@
 
   var body = document.body;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mobile = window.matchMedia('(max-width: 760px)').matches;
+  var saveData = !!(navigator.connection && navigator.connection.saveData);
+  var constrainedDevice = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
+    (navigator.deviceMemory && navigator.deviceMemory <= 4);
+  var liteMotion = reduceMotion || mobile || saveData || constrainedDevice;
   var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   body.dataset.homeGsapReady = 'true';
   body.classList.add('has-home-gsap');
+
+  // Keep the page responsive on phones, data-saving connections and cloud
+  // browsers. GSAP's global ticker otherwise keeps every infinite decorative
+  // tween active even while the document is hidden.
+  gsap.ticker.fps(liteMotion ? 30 : 60);
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) gsap.globalTimeline.pause();
+    else gsap.globalTimeline.resume();
+  });
 
   function all(selector, root) {
     return Array.prototype.slice.call((root || document).querySelectorAll(selector));
@@ -898,13 +912,15 @@
     revealGroup('.mission-grid', ':scope > *', 0);
     revealGroup('.social-preview-grid', ':scope > *', 0);
     addReelSheen();
-    animateDecorations();
+    if (!liteMotion) animateDecorations();
     animateFooterToolbar();
-    animateCraftedZones();
-    animateSeaArt();
-    animateSummerBeach();
-    animateHearingZone();
-    addCardTilt();
+    if (!liteMotion) {
+      animateCraftedZones();
+      animateSeaArt();
+      animateSummerBeach();
+      animateHearingZone();
+      addCardTilt();
+    }
     window.setTimeout(function () { ScrollTrigger.refresh(); }, 250);
   }
 

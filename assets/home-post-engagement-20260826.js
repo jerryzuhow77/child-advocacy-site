@@ -9,6 +9,7 @@
   const readCache = new Map();
   const legacyViewCache = new Map();
   const barsByKey = new Map();
+  const metricObservers = new WeakMap();
   const LEGACY_COUNTER_NS = "jerryzuhow77.github.io-child-advocacy-site";
   const LEGACY_COUNTER_ACTION = "view";
 
@@ -471,22 +472,38 @@
     const like = bar.querySelector(".is-like");
     const comment = bar.querySelector(".is-comment");
     const share = bar.querySelector(".is-share");
-    Promise.all([initialRead(item), initialLegacyView(item)]).then(([data, legacyView]) => {
-      updateMetric(item, "like", data.likeCount);
-      updateMetric(item, "comment", data.commentCount);
-      // Existing articles retain their historical CounterAPI total, while new
-      // articles can immediately display the total recorded by the engagement
-      // API. Taking the larger confirmed value also makes the migration
-      // monotonic instead of letting an empty legacy key mask a live count.
-      const confirmedViews = [legacyView, data.viewCount]
-        .map(Number)
-        .filter((value) => Number.isFinite(value) && value >= 0);
-      updateMetric(item, "view", confirmedViews.length ? Math.max(...confirmedViews) : 0);
-      bar.dataset.loadState = "ready";
-    }).catch(() => {
-      bar.querySelectorAll("b").forEach((field) => { field.textContent = "—"; });
-      bar.dataset.loadState = "unavailable";
-    });
+    const loadMetrics = () => {
+      if (bar.dataset.loadState === "loading" || bar.dataset.loadState === "ready") return;
+      bar.dataset.loadState = "loading";
+      Promise.all([initialRead(item), initialLegacyView(item)]).then(([data, legacyView]) => {
+        updateMetric(item, "like", data.likeCount);
+        updateMetric(item, "comment", data.commentCount);
+        // Existing articles retain their historical CounterAPI total, while new
+        // articles can immediately display the total recorded by the engagement
+        // API. Taking the larger confirmed value also makes the migration
+        // monotonic instead of letting an empty legacy key mask a live count.
+        const confirmedViews = [legacyView, data.viewCount]
+          .map(Number)
+          .filter((value) => Number.isFinite(value) && value >= 0);
+        updateMetric(item, "view", confirmedViews.length ? Math.max(...confirmedViews) : 0);
+        bar.dataset.loadState = "ready";
+      }).catch(() => {
+        bar.querySelectorAll("b").forEach((field) => { field.textContent = "—"; });
+        bar.dataset.loadState = "unavailable";
+      });
+    };
+    if ("IntersectionObserver" in window) {
+      const metricObserver = new IntersectionObserver((entries, observer) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        metricObservers.delete(bar);
+        loadMetrics();
+      }, { rootMargin: "500px 0px", threshold: 0 });
+      metricObservers.set(bar, metricObserver);
+      metricObserver.observe(host);
+    } else {
+      loadMetrics();
+    }
 
     const stop = (action) => (event) => {
       event.preventDefault();
