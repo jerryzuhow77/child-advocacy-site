@@ -41,36 +41,50 @@ jobs:
               assert match, f'{label} version not found in {path}'
               return match.group(1), text
 
-          expected, map_js = capture(
+          map_dependency_version, map_js = capture(
               'assets/home-gsap-map-20260824.js',
               r"var version='([^']+)';",
-              'map loader',
+              'map dependency',
           )
-          loader_version, _ = capture(
+          archive_module_version, archive_js = capture(
               'assets/home-archive-layout-20260823.js',
               r"var version='([^']+)';",
-              'archive loader',
+              'archive module',
           )
-          paper_version, _ = capture(
+          paper_stylesheet_version, paper_js = capture(
               'assets/home-history-paper-art-20260823.js',
               r"var VERSION='([^']+)';",
               'paper stylesheet',
           )
 
-          assert loader_version == expected, (loader_version, expected)
-          assert paper_version == expected, (paper_version, expected)
           assert 'home-history-mobile-visibility-20260824.css' in map_js
+          assert "home-history-mobile-visibility-20260824.css?v='+version" in map_js
+          assert "home-archive-layout-20260823.js?v='+version" in map_js
+          assert "home-gsap-base-20260823.js?v='+version" in map_js
+          assert "s.src=base+files[index]+'?v='+version" in archive_js
+          assert "home-history-paper-art-20260823.css?v='+VERSION" in paper_js
 
+          entrypoint_versions = {}
           for path in ('index.html', 'en/index.html', 'ja/index.html'):
               html = Path(path).read_text(encoding='utf-8')
               match = re.search(r'home-gsap-map-20260824\.js\?v=([^"\']+)', html)
               assert match, f'map loader entrypoint missing in {path}'
-              assert match.group(1) == expected, (path, match.group(1), expected)
+              entrypoint_versions[path] = match.group(1)
+
+          assert set(entrypoint_versions.values()) == {map_dependency_version}, (
+              entrypoint_versions,
+              map_dependency_version,
+          )
 
           sw = Path('sw.js').read_text(encoding='utf-8')
           assert "url.pathname.includes('/assets/home-history-')" in sw
           assert "url.pathname.endsWith('/assets/home-gsap-map-20260824.js')" in sw
-          print(f'Validated mobile history version chain: {expected}')
+          print('Validated mobile history cache scopes:', {
+              'entrypoint': next(iter(entrypoint_versions.values())),
+              'map_dependencies': map_dependency_version,
+              'archive_modules': archive_module_version,
+              'paper_stylesheet': paper_stylesheet_version,
+          })
           PY
 
       - name: JavaScript syntax
