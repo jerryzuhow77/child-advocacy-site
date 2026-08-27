@@ -33,13 +33,15 @@
       dragged = false;
       startX = event.clientX;
       startScroll = viewport.scrollLeft;
-      viewport.classList.add('is-dragging');
-      viewport.setPointerCapture(event.pointerId);
     });
     viewport.addEventListener('pointermove', function (event) {
       if (!dragging) return;
       var delta = event.clientX - startX;
-      if (Math.abs(delta) > 6) dragged = true;
+      if (!dragged && Math.abs(delta) > 6) {
+        dragged = true;
+        viewport.classList.add('is-dragging');
+        viewport.setPointerCapture(event.pointerId);
+      }
       if (dragged) viewport.scrollLeft = startScroll - delta;
     });
     function finish(event) {
