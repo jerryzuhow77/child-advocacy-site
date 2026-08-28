@@ -146,7 +146,7 @@ jobs:
           css = css.replace(late_mobile_title, final_mobile_title, 1)
 
           late_mobile_media = '@media(max-width:760px){main section[id]{scroll-margin-top:82px}'
-          late_mobile_fixed = '@media(max-width:760px){main section[id]{scroll-margin-top:82px}.journey-tools{position:static;grid-template-columns:minmax(0,1fr);padding:15px}'
+          late_mobile_fixed = '@media(max-width:760px){main section[id]{scroll-margin-top:82px}.journey-tools{position:static;grid-template-columns:minmax(0,1fr);padding:15px}.journey-tools label,.journey-tools input,.journey-tools p{min-width:0}.journey-tools input{width:100%;max-width:100%}'
           if css.count(late_mobile_media) != 1:
               raise SystemExit(f'Expected one late mobile media anchor, found {css.count(late_mobile_media)}')
           css = css.replace(late_mobile_media, late_mobile_fixed, 1)
@@ -173,7 +173,7 @@ jobs:
           grep -F "classList.add('in-view', 'anchor-revealed')" hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
           grep -F '.reveal.anchor-revealed' hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css
           grep -F 'font-size:clamp(32px,9.5vw,38px);white-space:nowrap' hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css
-          grep -F '.journey-tools{position:static;grid-template-columns:minmax(0,1fr);padding:15px}' hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css
+          grep -F '.journey-tools label,.journey-tools input,.journey-tools p{min-width:0}' hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css
           grep -R -F 'final-chapter.css?v=20260828-18' hearing-records/prison-watch/kaikai-final-chapter/index.html hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
           grep -R -F 'final-chapter.js?v=20260828-6' hearing-records/prison-watch/kaikai-final-chapter/index.html hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
 
