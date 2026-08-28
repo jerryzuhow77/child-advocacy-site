@@ -1,0 +1,210 @@
+name: Clean final Kaikai browser regression
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-kaikai-final-browser-green-20260829.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  chrome:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for current public assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p browser-validation/final-green
+          for attempt in $(seq 1 60); do
+            ok=1
+            for url in \
+              'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/' \
+              'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/'; do
+              html="$(curl -fsSL --connect-timeout 15 --max-time 30 "${url}?deploy=${GITHUB_SHA}-${attempt}" || true)"
+              grep -q 'final-chapter.js?v=20260829-7' <<<"$html" || ok=0
+              grep -q 'id="death-temperature-evidence"' <<<"$html" || ok=0
+            done
+            [[ "$ok" -eq 1 ]] && exit 0
+            sleep 10
+          done
+          echo 'Latest public assets did not appear.' >&2
+          exit 1
+
+      - name: Install Playwright driver
+        run: npm install --no-save playwright-core@1.55.0
+
+      - name: Run Google Chrome regression
+        run: |
+          node --input-type=module <<'JS'
+          import { chromium } from 'playwright-core';
+          import fs from 'node:fs';
+
+          const out = 'browser-validation/final-green';
+          const anchors = ['evidence-atlas','witness-conflicts','blood-boundary','restraint-boundary','responsibility-orbit','death-temperature-evidence'];
+          const sites = {
+            'zh-Hant': {
+              url: 'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/',
+              atlas: '她在法庭上怎麼說？證據又怎麼回答？',
+              blood: '血跡證明空間，不直接證明單一行為人',
+              temperature: '到院體溫約24°C',
+              conclusion: '現有公開證據不足以精確到某一鐘點'
+            },
+            'zh-Hans': {
+              url: 'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/',
+              atlas: '她在法庭上怎么说？证据又怎么回答？',
+              blood: '血迹证明空间，不直接证明单一行为人',
+              temperature: '到院体温约24°C',
+              conclusion: '现有公开证据不足以精确到某一钟点'
+            }
+          };
+          const viewports = { desktop: { width: 1440, height: 1000 }, mobile: { width: 390, height: 844 } };
+          const browser = await chromium.launch({ headless: true, executablePath: '/usr/bin/google-chrome', args: ['--no-sandbox','--disable-dev-shm-usage'] });
+          const results = [];
+
+          const waitTarget = async (page, id) => {
+            await page.waitForFunction((targetId) => {
+              const el = document.getElementById(targetId);
+              if (!el || location.hash !== `#${targetId}`) return false;
+              const rect = el.getBoundingClientRect();
+              const style = getComputedStyle(el);
+              return Number(style.opacity) >= .99 && style.display !== 'none' && style.visibility !== 'hidden' && rect.top < innerHeight && rect.bottom > 0;
+            }, id, { timeout: 12000 });
+            await page.waitForTimeout(300);
+            return page.locator(`#${id}`).evaluate((el) => {
+              const rect = el.getBoundingClientRect();
+              return { top: Math.round(rect.top), bottom: Math.round(rect.bottom), opacity: Number(getComputedStyle(el).opacity), inViewport: rect.top < innerHeight && rect.bottom > 0 };
+            });
+          };
+
+          for (const [language, site] of Object.entries(sites)) {
+            for (const [viewportName, viewport] of Object.entries(viewports)) {
+              const context = await browser.newContext({ viewport, locale: language === 'zh-Hant' ? 'zh-TW' : 'zh-CN' });
+              const page = await context.newPage();
+              const result = { language, viewport: viewportName, dimensions: viewport, status: null, ids: {}, menu: null, direct: {}, reload: {}, overflow: 0, fonts: null, pageErrors: [], sameOriginErrors: [], failedRequests: [], fatal: [] };
+              results.push(result);
+              page.on('pageerror', (error) => result.pageErrors.push(String(error)));
+              page.on('requestfailed', (request) => result.failedRequests.push({ url: request.url(), type: request.resourceType(), error: request.failure()?.errorText || '' }));
+              page.on('response', (response) => {
+                const parsed = new URL(response.url());
+                if (parsed.hostname === 'jerryzuhow77.github.io' && response.status() >= 400) result.sameOriginErrors.push({ url: response.url(), status: response.status() });
+              });
+
+              try {
+                const response = await page.goto(`${site.url}?qa=${Date.now()}-${language}-${viewportName}`, { waitUntil: 'domcontentloaded', timeout: 60000 });
+                await page.waitForTimeout(1800);
+                result.status = response?.status() ?? null;
+                for (const id of anchors) result.ids[id] = await page.locator(`#${id}`).count();
+                const bodyText = await page.locator('body').innerText();
+                const temperatureText = await page.locator('#death-temperature-evidence').innerText();
+                result.content = {
+                  atlas: bodyText.includes(site.atlas),
+                  blood: bodyText.includes(site.blood),
+                  temperature: temperatureText.includes(site.temperature),
+                  conclusion: temperatureText.includes(site.conclusion),
+                  dateTriplet: /2023\.09\.22[\s\S]*09\.25[\s\S]*09\.26/.test(bodyText),
+                  testimonySource: await page.locator('#death-temperature-evidence a[href="https://www.taisounds.com/news/content/95/230066"]').count(),
+                  forensicSource: await page.locator('#death-temperature-evidence a[href^="https://doi.org/10.1177/002580247701700209"]').count()
+                };
+                result.overflow = Math.max(result.overflow, await page.evaluate(() => Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) - innerWidth));
+
+                await page.locator('#menuButton').click();
+                const group = page.locator('.nav-group').filter({ has: page.locator('a[href="#evidence-atlas"]') });
+                await group.evaluate((el) => { el.open = true; });
+                const link = page.locator('#siteNav a[href="#evidence-atlas"]');
+                const linkVisible = await link.isVisible();
+                await link.click({ timeout: 10000 });
+                result.menu = { linkVisible, hash: await page.evaluate(() => location.hash), state: await waitTarget(page, 'evidence-atlas') };
+                await page.screenshot({ path: `${out}/${language}_${viewportName}_menu-atlas.png`, fullPage: false });
+
+                for (const id of anchors) {
+                  const directResponse = await page.goto(`${site.url}?qa=${Date.now()}-${id}#${id}`, { waitUntil: 'domcontentloaded', timeout: 60000 });
+                  const targetState = await waitTarget(page, id);
+                  const overflow = await page.evaluate(() => Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) - innerWidth);
+                  result.overflow = Math.max(result.overflow, overflow);
+                  result.direct[id] = { status: directResponse?.status() ?? null, hash: await page.evaluate(() => location.hash), state: targetState, overflow };
+                  await page.screenshot({ path: `${out}/${language}_${viewportName}_${id}.png`, fullPage: false });
+                }
+
+                for (const id of ['evidence-atlas','death-temperature-evidence']) {
+                  await page.goto(`${site.url}?qa=${Date.now()}-reload-${id}#${id}`, { waitUntil: 'domcontentloaded', timeout: 60000 });
+                  await waitTarget(page, id);
+                  const reloadResponse = await page.reload({ waitUntil: 'domcontentloaded', timeout: 60000 });
+                  result.reload[id] = { status: reloadResponse?.status() ?? null, hash: await page.evaluate(() => location.hash), state: await waitTarget(page, id) };
+                  await page.screenshot({ path: `${out}/${language}_${viewportName}_reload-${id}.png`, fullPage: false });
+                }
+
+                if (language === 'zh-Hans') {
+                  await page.evaluate(async () => { await document.fonts.ready; });
+                  result.fonts = await page.evaluate(async () => {
+                    const sample = '陈尚洁证词矛盾责任访视证据法院判断';
+                    const sans = await document.fonts.load('16px "Noto Sans SC"', sample);
+                    const serif = await document.fonts.load('32px "Noto Serif SC"', sample);
+                    const root = getComputedStyle(document.documentElement);
+                    const text = document.body.innerText;
+                    return {
+                      sansVariable: root.getPropertyValue('--sans').trim(),
+                      serifVariable: root.getPropertyValue('--serif').trim(),
+                      sansCheck: document.fonts.check('16px "Noto Sans SC"', sample),
+                      serifCheck: document.fonts.check('32px "Noto Serif SC"', sample),
+                      sansCount: sans.length,
+                      serifCount: serif.length,
+                      missing: (text.match(/\uFFFD|□/g) || []).length
+                    };
+                  });
+                }
+
+                if (result.status !== 200) result.fatal.push(`HTTP ${result.status}`);
+                for (const [id, count] of Object.entries(result.ids)) if (count !== 1) result.fatal.push(`#${id} count ${count}`);
+                for (const [name, value] of Object.entries(result.content)) if (!value) result.fatal.push(`${name} missing`);
+                if (result.overflow > 2) result.fatal.push(`horizontal overflow ${result.overflow}px`);
+                if (!result.menu.linkVisible || result.menu.hash !== '#evidence-atlas' || !result.menu.state.inViewport) result.fatal.push('menu navigation failed');
+                for (const [id, item] of Object.entries(result.direct)) if (item.status !== 200 || item.hash !== `#${id}` || !item.state.inViewport || item.state.opacity < .99) result.fatal.push(`#${id} direct failed`);
+                for (const [id, item] of Object.entries(result.reload)) if (item.status !== 200 || item.hash !== `#${id}` || !item.state.inViewport || item.state.opacity < .99) result.fatal.push(`#${id} reload failed`);
+                if (result.fonts && (!result.fonts.sansVariable.includes('Noto Sans SC') || !result.fonts.serifVariable.includes('Noto Serif SC') || !result.fonts.sansCheck || !result.fonts.serifCheck || result.fonts.sansCount < 1 || result.fonts.serifCount < 1 || result.fonts.missing)) result.fatal.push('Simplified font check failed');
+                if (result.pageErrors.length) result.fatal.push(`${result.pageErrors.length} page error(s)`);
+                if (result.sameOriginErrors.length) result.fatal.push(`${result.sameOriginErrors.length} same-origin HTTP error(s)`);
+              } catch (error) {
+                result.fatal.push(`exception: ${error?.message || error}`);
+                result.exception = String(error?.stack || error);
+                await page.screenshot({ path: `${out}/${language}_${viewportName}_exception.png`, fullPage: false }).catch(() => {});
+              }
+              await context.close();
+            }
+          }
+
+          await browser.close();
+          fs.writeFileSync(`${out}/report.json`, JSON.stringify({ generatedAt: new Date().toISOString(), results }, null, 2));
+          const lines = ['# Clean final Kaikai browser regression', ''];
+          for (const r of results) {
+            lines.push(`## ${r.language} · ${r.viewport} (${r.dimensions.width}×${r.dimensions.height})`);
+            lines.push(`- HTTP: ${r.status}`);
+            lines.push(`- Required IDs: ${Object.values(r.ids).every((v) => v === 1) ? 'PASS' : 'FAIL'}`);
+            lines.push(`- Horizontal overflow: ${r.overflow}px`);
+            lines.push(`- Menu atlas: ${r.menu?.state?.inViewport ? 'PASS' : 'FAIL'} (top ${r.menu?.state?.top ?? 'n/a'})`);
+            for (const id of anchors) lines.push(`- Direct #${id}: ${r.direct[id]?.state?.inViewport ? 'PASS' : 'FAIL'} (top ${r.direct[id]?.state?.top ?? 'n/a'})`);
+            for (const id of ['evidence-atlas','death-temperature-evidence']) lines.push(`- Reload #${id}: ${r.reload[id]?.state?.inViewport ? 'PASS' : 'FAIL'} (top ${r.reload[id]?.state?.top ?? 'n/a'})`);
+            if (r.fonts) lines.push(`- Simplified fonts: sans=${r.fonts.sansCheck}/${r.fonts.sansCount}, serif=${r.fonts.serifCheck}/${r.fonts.serifCount}, missing=${r.fonts.missing}`);
+            lines.push(`- Page errors: ${r.pageErrors.length}; same-origin HTTP errors: ${r.sameOriginErrors.length}; failed requests: ${r.failedRequests.length}`);
+            lines.push(`- Fatal checks: ${r.fatal.length ? r.fatal.join(' | ') : 'none'}`);
+            lines.push('');
+          }
+          const fatal = results.reduce((sum, r) => sum + r.fatal.length, 0);
+          lines.push(`**Total fatal checks: ${fatal}**`);
+          fs.writeFileSync(`${out}/summary.md`, lines.join('\n'));
+          console.log(lines.join('\n'));
+          if (fatal) process.exit(1);
+          JS
+
+      - name: Upload final evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kaikai-clean-final-browser-regression
+          path: browser-validation/final-green
+          retention-days: 14
