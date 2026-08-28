@@ -1,0 +1,32 @@
+name: Clean up Kaikai browser validation files
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-kaikai-browser-validation-cleanup-20260829.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Remove one-off browser validation files
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git rm -f \
+            .github/workflows/oneoff-kaikai-browser-validation-20260829.yml \
+            .github/workflows/oneoff-kaikai-browser-validation-20260829-v2.yml \
+            .github/workflows/oneoff-kaikai-browser-validation-final-20260829.yml \
+            .github/workflows/oneoff-kaikai-browser-validation-cleanup-20260829.yml \
+            scripts/validate-kaikai-browser-final-20260829.mjs \
+            scripts/validate-kaikai-simplified-fonts-20260829.mjs
+          git commit -m 'Remove one-off Kaikai browser validation files'
+          git push origin HEAD:main
