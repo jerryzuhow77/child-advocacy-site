@@ -513,6 +513,17 @@
       loadMetrics();
     }
 
+    // English and Japanese homepages replace the report section with localized
+    // cards during startup. Those cards can remain outside the initial viewport,
+    // so IntersectionObserver alone leaves every metric on the loading glyph.
+    // Prime their deduplicated reads during idle time while keeping the observer
+    // as the fast path for cards that are already visible.
+    if (/^(?:en|ja)(?:-|$)/i.test(document.documentElement.lang || "")) {
+      const primeLocalizedMetrics = () => loadMetrics();
+      if ("requestIdleCallback" in window) requestIdleCallback(primeLocalizedMetrics, { timeout: 1500 });
+      else window.setTimeout(primeLocalizedMetrics, 300);
+    }
+
     const stop = (action) => (event) => {
       event.preventDefault();
       event.stopPropagation();
