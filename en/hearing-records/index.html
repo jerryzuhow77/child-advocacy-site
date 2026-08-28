@@ -71,12 +71,12 @@
 <p>Event text, photo album and video record</p>
 </div>
 </a>
-<a class="visual-related-card" href="../social/">
-<img alt="Child Protection Action Alliance Official Community Art Advertisement Picture" decoding="async" loading="lazy" src="../../assets/social-art/instagram-official-ai.jpg">
+<a class="visual-related-card" href="../../hearing-records/prison-watch/kaikai-final-chapter/" hreflang="zh-Hant">
+<img alt="Chapter Two of the Kaikai case special feature" decoding="async" loading="lazy" src="../../assets/art/kaikai-professional-network-poster-20260828.webp">
 <div class="visual-related-copy">
-<small>official community</small>
-<h3>Facebook・Instagram・Threads</h3>
-<p>Three official platform links and social content entrances</p>
+<small>KAIKAI CASE · TRADITIONAL CHINESE</small>
+<h3>Chapter Two｜The Unwanted Child · A Life Chosen by Others</h3>
+<p>The complete chapter is available in Traditional Chinese, with a Simplified Chinese switch on the page.</p>
 </div>
 </a>
 </div>
@@ -100,7 +100,8 @@ fetch('../data/hearing-records.json').then(r=>r.json()).then(a=>{
       </div>
     </div>
   </article>`).join('');
-  setLang(localStorage.getItem('siteLang')||'zh-Hant');
+  localStorage.setItem('siteLang','en');
+  setLang('en');
 }).catch(()=>{document.getElementById('list').innerHTML='<div class="record">Court observation notess cannot be loaded at this time.</div>'});
 </script>
 </body></html>
