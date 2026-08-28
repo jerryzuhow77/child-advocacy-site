@@ -1,0 +1,73 @@
+name: Apply Kaikai witness publication 20260829
+
+on:
+  push:
+    branches:
+      - feat/kaikai-witness-analysis-20260829
+    paths:
+      - .tmp/kaikai-publish-payload.b64
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Expand prepared publication payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          base64 --decode .tmp/kaikai-publish-payload.b64 > /tmp/kaikai-publish-payload.zip
+          unzip -oq /tmp/kaikai-publish-payload.zip -d .
+          rm -f .tmp/kaikai-publish-payload.b64
+          rmdir .tmp 2>/dev/null || true
+          rm -f .github/workflows/apply-kaikai-witness-publication-20260829.yml
+
+      - name: Validate scripts, pages and required assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
+          node --check hearing-records/prison-watch/kaikai-final-chapter/witnesses/witnesses.js
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          pages = [
+              Path('hearing-records/prison-watch/kaikai-final-chapter/index.html'),
+              Path('hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html'),
+              Path('hearing-records/prison-watch/kaikai-final-chapter/witnesses/index.html'),
+              Path('hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/witnesses/index.html'),
+          ]
+          class IdParser(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.ids=[]
+              def handle_starttag(self, tag, attrs):
+                  value=dict(attrs).get('id')
+                  if value: self.ids.append(value)
+          for page in pages:
+              text=page.read_text(encoding='utf-8')
+              parser=IdParser(); parser.feed(text)
+              duplicates=sorted({x for x in parser.ids if parser.ids.count(x)>1})
+              assert not duplicates, f'{page}: duplicate ids {duplicates}'
+              assert '<main' in text and '</html>' in text, f'{page}: incomplete document'
+          assert '13名證人全文' in pages[0].read_text(encoding='utf-8')
+          assert '13名证人全文' in pages[1].read_text(encoding='utf-8')
+          assert Path('assets/art/kaikai-dual-track-responsibility-tree-zh-Hant-20260829.webp').stat().st_size > 250000
+          print('Static publication checks passed.')
+          PY
+
+      - name: Commit prepared public pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Publish Kaikai witness evidence analysis and fix chapter anchors"
+          git push origin HEAD:feat/kaikai-witness-analysis-20260829
