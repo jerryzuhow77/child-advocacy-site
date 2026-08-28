@@ -65,21 +65,44 @@ jobs:
         run: exit 1
 
       - name: Run static validation
+        id: static_validation
+        continue-on-error: true
         shell: bash
         run: |
-          node --check hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
-          git diff --check
-          python - <<'PY'
-          from pathlib import Path
-          base = Path('hearing-records/prison-watch/kaikai-final-chapter')
-          for path in (base/'index.html', base/'zh-Hans/index.html'):
-              text = path.read_text(encoding='utf-8')
-              assert text.count('class="nav-group"') == 5, path
-              assert 'id="chapter-brief"' in text, path
-              assert 'id="page-actions"' in text, path
-              assert 'sizes="100vw"' in text, path
-          print('Static assertions passed.')
-          PY
+          set -o pipefail
+          {
+            node --check hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
+            git diff --check
+            python - <<'PY'
+            from pathlib import Path
+            base = Path('hearing-records/prison-watch/kaikai-final-chapter')
+            for path in (base/'index.html', base/'zh-Hans/index.html'):
+                text = path.read_text(encoding='utf-8')
+                assert text.count('class="nav-group"') == 5, path
+                assert 'id="chapter-brief"' in text, path
+                assert 'id="page-actions"' in text, path
+                assert 'sizes="100vw"' in text, path
+            print('Static assertions passed.')
+            PY
+          } 2>&1 | tee "$RUNNER_TEMP/kaikai-artifacts/static-validation.log"
+
+      - name: Upload static validation diagnostics
+        if: ${{ steps.static_validation.outcome == 'failure' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: kaikai-chapter2-static-diagnostics
+          path: |
+            ${{ runner.temp }}/kaikai-artifacts/static-validation.log
+            hearing-records/prison-watch/kaikai-final-chapter/index.html
+            hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+            hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css
+            hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Stop after static validation failure
+        if: ${{ steps.static_validation.outcome == 'failure' }}
+        run: exit 1
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -87,9 +110,13 @@ jobs:
           node-version: '20'
 
       - name: Run Chromium smoke tests and capture views
+        id: browser_smoke
+        continue-on-error: true
         shell: bash
         run: |
           mkdir -p "$RUNNER_TEMP/kaikai-pw" "$RUNNER_TEMP/kaikai-artifacts"
+          exec > >(tee "$RUNNER_TEMP/kaikai-artifacts/browser-smoke.log") 2>&1
+          set -o pipefail
           cd "$RUNNER_TEMP/kaikai-pw"
           npm init -y >/dev/null 2>&1
           npm install --no-save playwright@1.55.0 >/dev/null 2>&1
@@ -175,12 +202,17 @@ jobs:
           node smoke.mjs
 
       - name: Upload visual QA evidence
+        if: ${{ always() && steps.static_validation.outcome == 'success' }}
         uses: actions/upload-artifact@v4
         with:
           name: kaikai-chapter2-reader-first-qa
           path: ${{ runner.temp }}/kaikai-artifacts
           if-no-files-found: error
           retention-days: 7
+
+      - name: Stop after browser smoke failure
+        if: ${{ steps.browser_smoke.outcome == 'failure' }}
+        run: exit 1
 
       - name: Commit optimized page
         shell: bash
