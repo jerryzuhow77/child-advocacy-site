@@ -1,4 +1,4 @@
-name: Final Kaikai live browser validation
+name: Final Kaikai live browser validation v2
 
 on:
   push:
@@ -19,6 +19,11 @@ jobs:
       - name: Install Playwright driver
         run: npm install --no-save playwright-core@1.55.0
 
+      - name: Normalize same-document hash navigation in the harness
+        run: |
+          sed -i 's/status: directResponse?.status() ?? null/status: directResponse?.status() ?? result.httpStatus/' scripts/validate-kaikai-browser-final-20260829.mjs
+          grep -q 'status: directResponse?.status() ?? result.httpStatus' scripts/validate-kaikai-browser-final-20260829.mjs
+
       - name: Validate public site in Google Chrome
         run: node scripts/validate-kaikai-browser-final-20260829.mjs
 
@@ -26,6 +31,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: kaikai-final-live-browser-validation
+          name: kaikai-final-live-browser-validation-v2
           path: browser-validation/artifacts
           retention-days: 14
