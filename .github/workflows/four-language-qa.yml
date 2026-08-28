@@ -60,6 +60,7 @@ jobs:
           hearing = (root / 'assets/home-ia-hearing-campaign-20260823.js').read_text(encoding='utf-8')
           portal = (root / 'assets/global-protection-wall-portal.js').read_text(encoding='utf-8')
           sw = (root / 'sw.js').read_text(encoding='utf-8')
+          bulletin = (root / 'data/latest-bulletins.json').read_text(encoding='utf-8')
 
           assert len(base) > 100_000, 'Original site behavior was not preserved in the base layer.'
           assert 'site-base-20260823.js' in loader and 'site-four-language-qa-20260823.js' in loader
@@ -73,6 +74,9 @@ jobs:
           assert '2026-09-16T14:30' in hearing
           assert "const mainlandWallBase='https://cn.globalprotectionwall.com/'" in portal
           assert "const VERSION = '2026-08-26-pwa-resilient-v1'" in sw
+          assert "const closing=group.classList.contains('is-expanded');" in base
+          assert "group.matches(':hover')" not in base, 'A hovered nested menu must still open on its first click.'
+          assert bulletin.count('kaikai-professional-network-poster-20260828.webp') >= 4, 'Chapter Two must provide neutral English and Japanese images in both feed records.'
           print('Static synchronization assertions passed.')
           PY
 

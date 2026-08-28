@@ -753,7 +753,7 @@ function initNestedCaseMenus(){
     const setExpanded=value=>{group.classList.toggle('is-expanded',value);button.setAttribute('aria-expanded',value?'true':'false')};
     button.addEventListener('click',event=>{
       event.preventDefault();event.stopPropagation();
-      const closing=group.classList.contains('is-expanded')||(window.innerWidth>800&&group.matches(':hover')&&!group.classList.contains('is-click-collapsed'));
+      const closing=group.classList.contains('is-expanded');
       group.classList.toggle('is-click-collapsed',closing);
       setExpanded(!closing);
     });
