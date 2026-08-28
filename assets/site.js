@@ -12,7 +12,7 @@
 
   var current=document.currentScript&&document.currentScript.src?document.currentScript.src:'';
   var base=current?current.slice(0,current.lastIndexOf('/')+1):'./assets/';
-  var version='20260828-view-counter-fix-2';
+  var version='20260828-layered-toolbar-init-1';
   function load(name,marker,done){
     var existing=document.querySelector('script[data-cpa-site-layer="'+marker+'"]');
     if(existing){if(done)done();return;}
