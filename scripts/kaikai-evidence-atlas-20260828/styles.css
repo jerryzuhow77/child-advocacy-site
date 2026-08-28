@@ -1,0 +1,99 @@
+/* EVIDENCE ATLAS 20260828 */
+.defendant-evidence-atlas,.witness-conflict-lab,.blood-boundary,.restraint-boundary,.responsibility-orbit{
+  margin:clamp(2rem,5vw,4.5rem) 0;padding:clamp(1.15rem,3vw,2.2rem);
+  border:1px solid rgba(94,72,49,.24);border-radius:28px;
+  background:linear-gradient(145deg,rgba(255,253,247,.98),rgba(242,235,220,.94));
+  box-shadow:0 24px 70px rgba(49,38,26,.09)
+}
+.atlas-heading,.witness-conflict-lab>header,.blood-boundary>header,.restraint-boundary>header,.responsibility-orbit>header{
+  max-width:920px;margin:0 auto 1.4rem;text-align:center
+}
+.atlas-heading small,.witness-conflict-lab>header small,.blood-boundary>header small,.restraint-boundary>header small,.responsibility-orbit>header small,.dental-duty-map header small{
+  display:block;margin-bottom:.45rem;letter-spacing:.14em;font-size:.72rem;font-weight:800;color:#8a4e32
+}
+.atlas-heading h3,.witness-conflict-lab>header h3,.blood-boundary>header h4,.restraint-boundary>header h4,.responsibility-orbit>header h3{
+  margin:.15rem 0 .65rem;font-size:clamp(1.55rem,3vw,2.45rem);line-height:1.16;color:#2c251e
+}
+.atlas-heading p,.witness-conflict-lab>header p,.blood-boundary>header p,.restraint-boundary>header p,.responsibility-orbit>header p{
+  margin:0;color:#5e554b;line-height:1.85
+}
+.atlas-thesis{
+  max-width:880px;margin:1.35rem auto 1.6rem;padding:1rem 1.3rem;border-left:6px solid #a52f2f;
+  border-radius:0 16px 16px 0;background:#fff7f1;font-size:clamp(1.15rem,2vw,1.45rem);font-weight:850;color:#5f2525
+}
+.evidence-atlas-table{display:grid;gap:1rem}
+.atlas-row{
+  display:grid;grid-template-columns:minmax(180px,.8fr) repeat(4,minmax(0,1fr));
+  border:1px solid rgba(71,56,40,.18);border-radius:20px;overflow:hidden;background:rgba(255,255,255,.9)
+}
+.atlas-row>header{padding:1.05rem;background:linear-gradient(150deg,#332d27,#59483a);color:#fff}
+.atlas-row>header span{display:inline-grid;place-items:center;width:2rem;height:2rem;border-radius:50%;background:#d5a867;color:#2d241b;font-weight:900}
+.atlas-row>header h4{margin:.7rem 0 0;font-size:1.05rem;line-height:1.45}
+.atlas-cell{padding:1rem;border-left:1px solid rgba(71,56,40,.13)}
+.atlas-cell b{display:block;margin-bottom:.45rem;color:#6e3827}
+.atlas-cell p{margin:0;line-height:1.72;color:#4c443d}
+.atlas-cell.court-cell{background:#f7f0df}
+.atlas-limit,.conflict-method,.responsibility-orbit>aside,.restraint-boundary>aside{
+  margin-top:1.25rem;padding:1rem 1.15rem;border:1px dashed rgba(112,75,44,.35);border-radius:16px;background:rgba(255,255,255,.68)
+}
+.atlas-limit p,.conflict-method p,.responsibility-orbit>aside p,.restraint-boundary>aside p{margin:.35rem 0 0;line-height:1.75}
+.conflict-legend{display:flex;flex-wrap:wrap;gap:.55rem;justify-content:center;margin:1rem 0 1.3rem}
+.conflict-legend span{padding:.52rem .72rem;border-radius:999px;background:#ede5d6;font-size:.85rem;color:#463e36}
+.conflict-legend b{display:inline-grid;place-items:center;width:1.45rem;height:1.45rem;margin-right:.25rem;border-radius:50%;background:#6d3d2c;color:#fff}
+.conflict-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+.conflict-card{display:flex;flex-direction:column;min-height:100%;padding:1.15rem;border:1px solid rgba(80,57,38,.17);border-radius:18px;background:rgba(255,255,255,.9)}
+.conflict-card header{display:flex;justify-content:space-between;align-items:center;gap:.7rem;padding-bottom:.7rem;border-bottom:1px solid rgba(90,67,45,.12)}
+.conflict-card header span{font-size:1.15rem;font-weight:900;color:#332a22}
+.conflict-card header em{font-style:normal;font-weight:850;color:#8b452f}
+.conflict-card p{margin:.75rem 0 0;line-height:1.74;color:#4f4740}
+.conflict-card footer{margin-top:auto;padding-top:.85rem;font-size:.86rem;line-height:1.6;color:#6a6057}
+.conflict-defendant{border-color:rgba(153,45,45,.35);background:#fff7f5}
+.dental-duty-map{margin:1.4rem 0 0;padding:1.2rem;border:1px solid rgba(100,67,43,.2);border-radius:20px;background:rgba(255,252,244,.9)}
+.dental-duty-map header{text-align:center;max-width:850px;margin:0 auto 1rem}
+.dental-duty-map header h4{margin:.2rem 0 .55rem;font-size:clamp(1.3rem,2.5vw,1.9rem)}
+.dental-duty-map header p{margin:0;line-height:1.75;color:#5a5047}
+.branch-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem}
+.branch-grid article{padding:.9rem;border-radius:16px;background:#fff;border:1px solid rgba(82,61,42,.14)}
+.branch-grid span{display:inline-grid;place-items:center;width:1.8rem;height:1.8rem;border-radius:50%;background:#915137;color:#fff;font-size:.78rem;font-weight:900}
+.branch-grid b{display:block;margin:.6rem 0 .35rem;color:#382f28}
+.branch-grid p{margin:0;line-height:1.62;font-size:.91rem;color:#5b5149}
+.dental-duty-map footer{margin-top:.9rem;padding:1rem;border-radius:14px;background:#efe5d2}
+.dental-duty-map footer p{margin:.35rem 0 0;line-height:1.72}
+.boundary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.9rem}
+.boundary-grid article{padding:1.05rem;border-radius:18px;background:#fff;border:1px solid rgba(78,56,38,.15)}
+.boundary-grid span{font-size:.78rem;font-weight:900;letter-spacing:.08em;color:#934532}
+.boundary-grid h5{margin:.55rem 0;font-size:1.05rem;line-height:1.4;color:#302922}
+.boundary-grid p{margin:0;line-height:1.7;color:#5a5149}
+.blood-boundary blockquote{margin:1.2rem 0;padding:1rem 1.2rem;border-radius:16px;background:#3f3028;color:#fff;font-size:1.08rem;font-weight:800;line-height:1.65}
+.boundary-court-note{padding:1rem;border-left:5px solid #7a4a37;background:#f3eadb;line-height:1.75}
+.restraint-levels{display:grid;gap:.75rem;margin:0;padding:0;list-style:none;counter-reset:none}
+.restraint-levels li{padding:1rem 1.1rem;border-radius:16px;border:1px solid rgba(77,56,39,.15);background:#fff}
+.restraint-levels li span{display:block;margin-bottom:.4rem;font-size:.8rem;font-weight:900;letter-spacing:.06em}
+.restraint-levels li p{margin:0;line-height:1.76}
+.level-confirmed span{color:#356b4b}.level-open span{color:#9b3d32}.level-rule span{color:#6b4a91}
+.orbit-map{display:grid;gap:1rem;max-width:1080px;margin:0 auto}
+.orbit-core{width:min(250px,72vw);aspect-ratio:1;margin:0 auto;display:grid;place-content:center;text-align:center;border-radius:50%;padding:1.2rem;background:radial-gradient(circle at 35% 30%,#fff8de,#d8b77a 55%,#8e5b34);box-shadow:0 0 0 14px rgba(183,140,83,.16),0 18px 45px rgba(64,43,25,.2)}
+.orbit-core small,.orbit-core span{display:block}.orbit-core strong{font-size:2rem;color:#34251d}.orbit-core span{max-width:170px;margin:.35rem auto 0;line-height:1.5;color:#4b382b}
+.orbit-band{padding:1rem;border-radius:34px}
+.orbit-band>header{text-align:center;margin-bottom:.8rem}
+.orbit-band>header span{font-size:.75rem;font-weight:900;letter-spacing:.12em}.orbit-band>header h4{margin:.2rem 0;font-size:1.25rem}
+.orbit-direct{border:3px solid rgba(157,65,45,.42);background:rgba(255,245,238,.58)}
+.orbit-system{border:3px solid rgba(61,91,112,.38);background:rgba(238,246,251,.62)}
+.orbit-nodes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.7rem}
+.orbit-nodes article{position:relative;padding:.85rem;border-radius:15px;background:#fff;box-shadow:0 7px 18px rgba(48,38,29,.07)}
+.orbit-nodes article:before{content:"";position:absolute;left:.65rem;top:.7rem;bottom:.7rem;width:4px;border-radius:5px}
+.orbit-nodes article[data-line="red"]:before{background:#a72d2d}.orbit-nodes article[data-line="orange"]:before{background:#c8742e}.orbit-nodes article[data-line="blue"]:before{background:#356b91}
+.orbit-nodes b,.orbit-nodes small{display:block;padding-left:.55rem}.orbit-nodes b{color:#342b24}.orbit-nodes small{margin-top:.3rem;line-height:1.5;color:#63584f}
+.orbit-legend{display:flex;flex-wrap:wrap;gap:.55rem;justify-content:center;margin-top:1rem}
+.orbit-legend span{padding:.48rem .72rem;border-radius:999px;background:#fff;font-size:.82rem;font-weight:800}
+.line-red{border-bottom:3px solid #a72d2d}.line-orange{border-bottom:3px solid #c8742e}.line-blue{border-bottom:3px solid #356b91}.line-gray{border-bottom:3px dashed #7c7c7c}
+@media (max-width:1050px){
+  .atlas-row{grid-template-columns:1fr 1fr}.atlas-row>header{grid-column:1/-1}.atlas-cell{border-left:0;border-top:1px solid rgba(71,56,40,.13)}
+  .branch-grid,.orbit-nodes{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:720px){
+  .defendant-evidence-atlas,.witness-conflict-lab,.blood-boundary,.restraint-boundary,.responsibility-orbit{padding:1rem;border-radius:20px}
+  .atlas-row,.conflict-grid,.boundary-grid,.branch-grid,.orbit-nodes{grid-template-columns:1fr}
+  .atlas-row>header{grid-column:auto}.atlas-cell{border-left:0;border-top:1px solid rgba(71,56,40,.13)}
+  .conflict-card{padding:1rem}.orbit-band{border-radius:22px;padding:.8rem}.orbit-core strong{font-size:1.65rem}
+}
