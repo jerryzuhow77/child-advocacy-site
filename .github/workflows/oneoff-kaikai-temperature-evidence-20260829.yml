@@ -1,0 +1,123 @@
+name: Add Kaikai 24C testimony with evidence limits
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-kaikai-temperature-evidence-20260829.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Patch Traditional and Simplified Chapter 2
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          marker = '<!-- DEATH-TEMPERATURE-EVIDENCE-20260829 -->'
+          insertion_anchor = '      </div>\n<!-- DENTAL-DUTY-MAP-20260828 -->'
+
+          traditional_block = '''<!-- DEATH-TEMPERATURE-EVIDENCE-20260829 -->
+                <aside class="dental-correction death-temperature-evidence" id="death-temperature-evidence">
+                  <b>急診醫師證詞：到院體溫約24°C，真正的離世時間能推到哪裡？</b>
+                  <p><span class="tag testimony">公開庭審報導所載證詞</span> 萬芳醫院急診醫師黃聖心在陳尚潔另案一審證稱，剴剴於2023年12月24日凌晨12時多送抵急診時，已無呼吸心跳，體溫約24°C；依其臨床觀察，孩子應已無呼吸心跳一段時間，並不像剛被發現便立即送醫。這是<strong>到院量測值</strong>，不是已知死亡瞬間的體溫。</p>
+                  <p><strong>可支持的推論：</strong>生命終止／心跳停止早於到院，而且醫師認為並非到院前才剛發生。依目前公開時間線，最應集中查驗的是12月23日晚間約10時至24日凌晨12時多到院前；但「約10時」只是照顧者說法與法院所列犯行期間節點，不是醫學上已確認的最後存活時間。24°C使「剛發現就送醫」的說法更難成立，卻不能單獨把死亡鎖定在10時、11時或午夜。</p>
+                  <p><strong>不能直接倒算：</strong>公開資料缺少核心體溫的量測部位與精確時點、室溫、衣著、體型、休克或營養不良造成的生前低體溫、運送、CPR及回溫處置等必要參數。法醫研究也指出，即使連續量測腦溫，25°C以上的估算仍約有±2.5小時不確定性，低於25°C時更大；該研究亦非本案幼兒的個案計算，只能用來說明單一體溫不能產生精確死亡鐘點。</p>
+                  <p><strong>本站目前表述：</strong>「送醫時體溫約24°C；急診醫師認為到院前已無呼吸心跳一段時間。合理推測生命終止早於到院，最需查驗12月23日晚間至24日凌晨的時段，但現有公開證據不足以精確到某一鐘點。」要再縮小區間，仍需119派遣與救護紀錄、急診病歷原始時間戳、體溫量測方式、最後一次確認生命徵象的紀錄、通訊／監視器資料及法醫完整意見。</p>
+                  <div class="source-chips"><a href="#last-day">最後一日證據線</a><a href="https://www.taisounds.com/news/content/95/230066" target="_blank" rel="noopener">黃聖心急診證詞報導 ↗</a><a href="https://doi.org/10.1177/002580247701700209" target="_blank" rel="noopener">法醫體溫推估限制 ↗</a></div>
+                </aside>
+          '''
+
+          simplified_block = '''<!-- DEATH-TEMPERATURE-EVIDENCE-20260829 -->
+                <aside class="dental-correction death-temperature-evidence" id="death-temperature-evidence">
+                  <b>急诊医师证词：到院体温约24°C，真正的离世时间能推到哪里？</b>
+                  <p><span class="tag testimony">公开庭审报道所载证词</span> 万芳医院急诊医师黄圣心在陈尚洁另案一审证称，剴剴于2023年12月24日凌晨12时多送抵急诊时，已无呼吸心跳，体温约24°C；依其临床观察，孩子应已无呼吸心跳一段时间，并不像刚被发现便立即送医。这是<strong>到院量测值</strong>，不是已知死亡瞬间的体温。</p>
+                  <p><strong>可支持的推论：</strong>生命终止／心跳停止早于到院，而且医师认为并非到院前才刚发生。依目前公开时间线，最应集中查验的是12月23日晚间约10时至24日凌晨12时多到院前；但“约10时”只是照顾者说法与法院所列犯行期间节点，不是医学上已确认的最后存活时间。24°C使“刚发现就送医”的说法更难成立，却不能单独把死亡锁定在10时、11时或午夜。</p>
+                  <p><strong>不能直接倒算：</strong>公开资料缺少核心体温的量测部位与精确时点、室温、衣着、体型、休克或营养不良造成的生前低体温、运送、CPR及回温处置等必要参数。法医研究也指出，即使连续量测脑温，25°C以上的估算仍约有±2.5小时不确定性，低于25°C时更大；该研究也不是本案幼儿的个案计算，只能用来说明单一体温不能产生精确死亡钟点。</p>
+                  <p><strong>本站目前表述：</strong>“送医时体温约24°C；急诊医师认为到院前已无呼吸心跳一段时间。合理推测生命终止早于到院，最需查验12月23日晚间至24日凌晨的时段，但现有公开证据不足以精确到某一钟点。”要再缩小区间，仍需119派遣与救护纪录、急诊病历原始时间戳、体温量测方式、最后一次确认生命征象的纪录、通讯／监视器资料及法医完整意见。</p>
+                  <div class="source-chips"><a href="#last-day">最后一日证据线</a><a href="https://www.taisounds.com/news/content/95/230066" target="_blank" rel="noopener">黄圣心急诊证词报道 ↗</a><a href="https://doi.org/10.1177/002580247701700209" target="_blank" rel="noopener">法医体温推估限制 ↗</a></div>
+                </aside>
+          '''
+
+          configs = [
+              {
+                  'path': Path('hearing-records/prison-watch/kaikai-final-chapter/index.html'),
+                  'block': traditional_block,
+                  'nav_old': '<a href="#dental-warning">牙醫警訊</a><a href="#ten-days">十日證據</a>',
+                  'nav_new': '<a href="#dental-warning">牙醫警訊</a><a href="#death-temperature-evidence">24°C與離世時間</a><a href="#ten-days">十日證據</a>',
+                  'visible_old': '資料核對至 2026.08.28',
+                  'visible_new': '資料核對至 2026.08.29',
+              },
+              {
+                  'path': Path('hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html'),
+                  'block': simplified_block,
+                  'nav_old': '<a href="#dental-warning">牙医警讯</a><a href="#ten-days">十日证据</a>',
+                  'nav_new': '<a href="#dental-warning">牙医警讯</a><a href="#death-temperature-evidence">24°C与离世时间</a><a href="#ten-days">十日证据</a>',
+                  'visible_old': '资料核对至 2026.08.28',
+                  'visible_new': '资料核对至 2026.08.29',
+              },
+          ]
+
+          def replace_once(text, old, new, label):
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{label}: expected exactly one match, found {count}')
+              return text.replace(old, new, 1)
+
+          for cfg in configs:
+              path = cfg['path']
+              text = path.read_text(encoding='utf-8')
+
+              if marker not in text:
+                  text = replace_once(
+                      text,
+                      insertion_anchor,
+                      '      </div>\n' + cfg['block'] + '<!-- DENTAL-DUTY-MAP-20260828 -->',
+                      f'{path} insertion anchor',
+                  )
+
+              if cfg['nav_new'] not in text:
+                  text = replace_once(text, cfg['nav_old'], cfg['nav_new'], f'{path} nav')
+
+              if '<meta property="article:modified_time" content="2026-08-28">' in text:
+                  text = replace_once(
+                      text,
+                      '<meta property="article:modified_time" content="2026-08-28">',
+                      '<meta property="article:modified_time" content="2026-08-29">',
+                      f'{path} modified meta',
+                  )
+              if '"dateModified":"2026-08-28"' in text:
+                  text = replace_once(
+                      text,
+                      '"dateModified":"2026-08-28"',
+                      '"dateModified":"2026-08-29"',
+                      f'{path} structured date',
+                  )
+              if cfg['visible_old'] in text:
+                  text = replace_once(text, cfg['visible_old'], cfg['visible_new'], f'{path} visible date')
+
+              if text.count(marker) != 1:
+                  raise SystemExit(f'{path}: marker count is {text.count(marker)}')
+              if text.count('id="death-temperature-evidence"') != 1:
+                  raise SystemExit(f'{path}: deep-link id count is not one')
+              if text.count('href="#death-temperature-evidence"') != 1:
+                  raise SystemExit(f'{path}: nav deep-link count is not one')
+              if '體溫約24°C' not in text and '体温约24°C' not in text:
+                  raise SystemExit(f'{path}: 24C testimony text missing')
+
+              path.write_text(text, encoding='utf-8')
+          PY
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add hearing-records/prison-watch/kaikai-final-chapter/index.html
+          git add hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+          git rm .github/workflows/oneoff-kaikai-temperature-evidence-20260829.yml
+          git diff --cached --check
+          git diff --cached --stat
+          git commit -m 'Add 24C testimony with time-of-death evidence limits'
+          git push origin HEAD:main
