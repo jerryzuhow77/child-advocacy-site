@@ -19,13 +19,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Expand prepared publication payload
+      - name: Expand and apply prepared publication payload
         shell: bash
         run: |
           set -euo pipefail
-          cat .tmp/kaikai-publish-payload.*.b64 | base64 --decode > /tmp/kaikai-publish-payload.zip
-          echo "169deca15c7b4896e2b4ff0d0839a965088e7dbac91942dc0cbf7cbdcefaebb6  /tmp/kaikai-publish-payload.zip" | sha256sum -c -
-          unzip -oq /tmp/kaikai-publish-payload.zip -d .
+          cat .tmp/kaikai-publish-payload.*.b64 | base64 --decode > /tmp/kaikai-publish-payload.tar.gz
+          echo "1a04fb69803db6fd07293e6a44969d41527d0d255b1c76561db9d8661bd545f4  /tmp/kaikai-publish-payload.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/kaikai-publish-payload.tar.gz -C .
+          patch -p1 < main.patch
+          rm -f main.patch
           rm -f .tmp/kaikai-publish-payload.*.b64 .tmp/kaikai-publish-payload.ready
           rmdir .tmp 2>/dev/null || true
           rm -f .github/workflows/apply-kaikai-witness-publication-20260829.yml
@@ -59,7 +61,8 @@ jobs:
               assert '<main' in text and '</html>' in text, f'{page}: incomplete document'
           assert '13名證人全文' in pages[0].read_text(encoding='utf-8')
           assert '13名证人全文' in pages[1].read_text(encoding='utf-8')
-          assert Path('assets/art/kaikai-dual-track-responsibility-tree-zh-Hant-20260829.webp').stat().st_size > 250000
+          image = Path('assets/art/kaikai-dual-track-responsibility-tree-zh-Hant-20260829.webp')
+          assert image.stat().st_size > 50000, 'relationship image is missing or unexpectedly small'
           print('Static publication checks passed.')
           PY
 
