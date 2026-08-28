@@ -81,22 +81,21 @@ jobs:
         continue-on-error: true
         shell: bash
         run: |
+          exec > >(tee "$GITHUB_WORKSPACE/.chapter2-static-validation.log") 2>&1
           set -o pipefail
-          {
-            node --check hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
-            git diff --check
-            python - <<'PY'
-            from pathlib import Path
-            base = Path('hearing-records/prison-watch/kaikai-final-chapter')
-            for path in (base/'index.html', base/'zh-Hans/index.html'):
-                text = path.read_text(encoding='utf-8')
-                assert text.count('class="nav-group"') == 5, path
-                assert 'id="chapter-brief"' in text, path
-                assert 'id="page-actions"' in text, path
-                assert 'sizes="100vw"' in text, path
-            print('Static assertions passed.')
-            PY
-          } 2>&1 | tee "$RUNNER_TEMP/kaikai-artifacts/static-validation.log"
+          node --check hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
+          git diff --check
+          python - <<'PY'
+          from pathlib import Path
+          base = Path('hearing-records/prison-watch/kaikai-final-chapter')
+          for path in (base/'index.html', base/'zh-Hans/index.html'):
+              text = path.read_text(encoding='utf-8')
+              assert text.count('class="nav-group"') == 5, path
+              assert 'id="chapter-brief"' in text, path
+              assert 'id="page-actions"' in text, path
+              assert 'sizes="100vw"' in text, path
+          print('Static assertions passed.')
+          PY
 
       - name: Upload static validation diagnostics
         if: ${{ steps.static_validation.outcome == 'failure' }}
@@ -104,7 +103,7 @@ jobs:
         with:
           name: kaikai-chapter2-static-diagnostics
           path: |
-            ${{ runner.temp }}/kaikai-artifacts/static-validation.log
+            ${{ github.workspace }}/.chapter2-static-validation.log
             hearing-records/prison-watch/kaikai-final-chapter/index.html
             hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
             hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css
