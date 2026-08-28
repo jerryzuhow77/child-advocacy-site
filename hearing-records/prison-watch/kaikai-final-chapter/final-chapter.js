@@ -482,7 +482,12 @@ lifeSearch?.addEventListener('input', filterLifeEvents);
   const target = getHashTarget();
   const closestSection = target?.closest('main section[data-reading-level]');
   const revealedSections = new Set();
-  if (!closestSection) return revealedSections;
+  if (!target) return revealedSections;
+  revealTargetForNavigation(target);
+  if (!closestSection) {
+    if (scroll) stabilizeHashTarget(target, true);
+    return revealedSections;
+  }
 
   let section = closestSection;
   while (section) {
