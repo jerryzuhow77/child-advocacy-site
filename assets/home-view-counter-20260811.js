@@ -21,8 +21,8 @@
     'page-home'
   ]);
   const TIMEOUT_MS = 7000;
-  const READ_SYNC_DELAY_MS = 2500;
-  const READ_SYNC_INTERVAL_MS = 10000;
+  const READ_SYNC_DELAY_MS = 1000;
+  const READ_SYNC_INTERVAL_MS = 3000;
   const sharedRequests = new Map();
   const liveSyncs = new WeakMap();
 
@@ -107,7 +107,9 @@
 
   async function fetchCount(key, increment) {
     const base = endpoint().replace(/\/$/, '');
-    const url = `${base}${base.includes('?') ? '&' : '?'}page=${encodeURIComponent(key)}&increment=${increment ? '1' : '0'}`;
+    // A unique read URL prevents intermediary/CDN caches from returning a
+    // previous total even when the browser requests no-store.
+    const url = `${base}${base.includes('?') ? '&' : '?'}page=${encodeURIComponent(key)}&increment=${increment ? '1' : '0'}&ts=${Date.now()}`;
     const controller = typeof AbortController === 'function' ? new AbortController() : null;
     const timer = window.setTimeout(() => controller && controller.abort(), TIMEOUT_MS);
     try {
