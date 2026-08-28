@@ -739,7 +739,9 @@ function initSocialCaseDropdowns(){
   document.addEventListener('click',e=>groups.forEach(group=>{if(!group.contains(e.target))close(group,true)}));
   window.addEventListener('resize',()=>groups.forEach(group=>close(group,true)));
 }
-document.addEventListener('DOMContentLoaded',initSocialCaseDropdowns);
+document.readyState==='loading'
+  ? document.addEventListener('DOMContentLoaded',initSocialCaseDropdowns,{once:true})
+  : initSocialCaseDropdowns();
 
 /* 2026-08-13 — 社會案件與歷史案件第二層導覽 */
 function initNestedCaseMenus(){
@@ -758,7 +760,9 @@ function initNestedCaseMenus(){
     group.addEventListener('keydown',event=>{if(event.key==='Escape'){setExpanded(false);button.focus()}});
   });
 }
-document.addEventListener('DOMContentLoaded',initNestedCaseMenus);
+document.readyState==='loading'
+  ? document.addEventListener('DOMContentLoaded',initNestedCaseMenus,{once:true})
+  : initNestedCaseMenus();
 
 /* 2026-08-13 — 歷史案件：地區先行的第二層導覽 */
 function initHistoricalRegionMenus(){
@@ -788,7 +792,9 @@ function initHistoricalRegionMenus(){
     });
   });
 }
-document.addEventListener('DOMContentLoaded',initHistoricalRegionMenus);
+document.readyState==='loading'
+  ? document.addEventListener('DOMContentLoaded',initHistoricalRegionMenus,{once:true})
+  : initHistoricalRegionMenus();
 
 /* =====================================================================
    2026-08-15 — 特別專題：桌機 hover、click 固定與手機逐層收放
@@ -868,7 +874,9 @@ function initSpecialFeatureColumns(){
     window.addEventListener('resize',syncMode);
   });
 }
-document.addEventListener('DOMContentLoaded',initSpecialFeatureColumns);
+document.readyState==='loading'
+  ? document.addEventListener('DOMContentLoaded',initSpecialFeatureColumns,{once:true})
+  : initSpecialFeatureColumns();
 
 /* 序幕下一層：先顯示序幕，再展開「古老的傳說」 */
 function initSpecialFeaturePrologueChildren(){
@@ -892,7 +900,9 @@ function initSpecialFeaturePrologueChildren(){
     });
   });
 }
-document.addEventListener('DOMContentLoaded',initSpecialFeaturePrologueChildren);
+document.readyState==='loading'
+  ? document.addEventListener('DOMContentLoaded',initSpecialFeaturePrologueChildren,{once:true})
+  : initSpecialFeaturePrologueChildren();
 
 
 /* =====================================================================
