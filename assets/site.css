@@ -471,6 +471,25 @@ html[lang="zh-Hans"] .btn {
 @media(max-width:800px){
   .visual-related-grid{grid-template-columns:1fr}
 }
+
+/* 2026-08-28 — Complete homepage toolbar navigation. */
+@media(min-width:801px){
+  header .special-feature-nav > .special-feature-nav-toggle[aria-expanded="true"] + .special-feature-nav-menu{
+    max-height:calc(100vh - 104px);
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    scrollbar-gutter:stable;
+  }
+}
+.special-feature-nav .special-feature-case-children[id*="PrisonWatch"]{
+  align-content:start;
+}
+.historical-region-toggle .ia-nav-count{
+  margin-left:auto;
+  color:#8b6a32;
+  font-size:10px;
+  font-weight:900;
+}
 @media(max-width:560px){
   .visual-related-card{grid-template-columns:130px 1fr}
   .visual-related-card img{min-height:180px}
