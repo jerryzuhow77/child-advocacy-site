@@ -445,7 +445,16 @@ lifeSearch?.addEventListener('input', filterLifeEvents);
     const align = (behavior = 'auto') => {
       if (sequence !== hashScrollSequence || getHashTarget() !== target) return;
       revealTargetForNavigation(target);
-      target.scrollIntoView({ behavior, block: 'start', inline: 'nearest' });
+      const top = Math.max(0, window.scrollY + target.getBoundingClientRect().top - expectedTop());
+      if (behavior === 'smooth') {
+        window.scrollTo({ top, left: window.scrollX, behavior: 'smooth' });
+        return;
+      }
+      const root = document.documentElement;
+      const previousScrollBehavior = root.style.scrollBehavior;
+      root.style.scrollBehavior = 'auto';
+      window.scrollTo({ top, left: window.scrollX, behavior: 'auto' });
+      root.style.scrollBehavior = previousScrollBehavior;
     };
     const correctLayoutShift = () => {
       if (sequence !== hashScrollSequence || getHashTarget() !== target) return;
