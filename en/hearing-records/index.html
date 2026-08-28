@@ -9,12 +9,16 @@
 <meta content="The Child Protection Action Alliance's court hearing records collate the key points, procedural progress and verifiable information of children and public cases." name="description">
 <meta content="index,follow,max-image-preview:large" name="robots">
 <meta content="#082b4b" name="theme-color">
-<link href="https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/" rel="canonical">
+<link href="https://jerryzuhow77.github.io/child-advocacy-site/en/hearing-records/" rel="canonical">
+<link href="https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/" hreflang="zh-Hant" rel="alternate">
+<link href="https://jerryzuhow77.github.io/child-advocacy-site/en/hearing-records/" hreflang="en" rel="alternate">
+<link href="https://jerryzuhow77.github.io/child-advocacy-site/ja/hearing-records/" hreflang="ja" rel="alternate">
+<link href="https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/" hreflang="x-default" rel="alternate">
 <meta content="website" property="og:type">
 <meta content="Child Protection Action Alliance" property="og:site_name">
 <meta content="Court Observation Notes｜Child Protection Action Alliance" property="og:title">
 <meta content="The Child Protection Action Alliance's court hearing records collate the key points, procedural progress and verifiable information of children and public cases." property="og:description">
-<meta content="https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/" property="og:url">
+<meta content="https://jerryzuhow77.github.io/child-advocacy-site/en/hearing-records/" property="og:url">
 <meta content="https://jerryzuhow77.github.io/child-advocacy-site/poster-hearing.jpg" property="og:image">
 <meta content="summary_large_image" name="twitter:card">
 <link rel="stylesheet" href="../../assets/mobile-palettes.css?v=20260812-1">
@@ -92,7 +96,7 @@ fetch('../data/hearing-records.json').then(r=>r.json()).then(a=>{
       <p>${x.summary||''}</p>
       <div class="case-record-actions">
         ${x.caseUrl?`<a class="read-btn secondary" href="${x.caseUrl}">Case Introductions</a>`:''}
-        <a class="read-btn" href="${x.url}">Read full transcript →</a>
+        <a class="read-btn" href="${x.url}">${x.ctaLabel || 'Read full transcript'} →</a>
       </div>
     </div>
   </article>`).join('');

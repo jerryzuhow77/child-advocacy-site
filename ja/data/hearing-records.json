@@ -52,5 +52,15 @@
     "image": "../../assets/art/prison-watch-day5-selected-evidence-01-zh-hant-20260822-v3.jpg?v=20260822-selected-poster-alias-v3",
     "url": "prison-watch/kaikai-day5-20250429/",
     "caseUrl": "../cases/kaikai/"
+  },
+  {
+    "date": "2025-05-07",
+    "title": "剴剴事件｜第10日・量刑弁論",
+    "court": "台北地方法院｜国民法官審理",
+    "summary": "量刑弁論と被告2人の責任をまとめた日本語要約。完全記録と終章は繁体字・簡体字中国語で公開しています。",
+    "image": "../../assets/art/prison-watch-day10-kaikai-sentencing-poster-ja-20260827.svg",
+    "url": "prison-watch/kaikai-day10-20250507/",
+    "ctaLabel": "要約を読む",
+    "caseUrl": "../cases/kaikai/"
   }
 ]
