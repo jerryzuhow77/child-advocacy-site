@@ -850,3 +850,11 @@ body.life-search-active #lifeQuickToggle{display:none!important}
   .atlas-row>header{grid-column:auto}.atlas-cell{border-left:0;border-top:1px solid rgba(71,56,40,.13)}
   .conflict-card{padding:1rem}.orbit-band{border-radius:22px;padding:.8rem}.orbit-core strong{font-size:1.65rem}
 }
+
+/* 2026-08-29 · final narrow-screen containment */
+@media(max-width:760px){
+  .hero h1{font-size:clamp(32px,9.5vw,38px);white-space:nowrap}
+  .journey-tools{grid-template-columns:minmax(0,1fr)}
+  .journey-tools label,.journey-tools input,.journey-tools p{min-width:0}
+  .journey-tools input{width:100%;max-width:100%}
+}
