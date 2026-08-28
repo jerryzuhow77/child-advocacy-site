@@ -162,6 +162,10 @@
   function article(link, host) {
     const url = new URL(link.href, location.href);
     const isOfficialSite = url.origin === location.origin;
+    // GitHub Pages projects share the same origin. Only pages inside this
+    // repository run the arrival counter; sibling projects (for example
+    // Justice-For-Kaikai) must record the view before navigation instead.
+    const countsOnArrival = isOfficialSite && /^\/child-advocacy-site(?:\/|$)/i.test(url.pathname);
     const isOfficialFeature = url.hostname.endsWith(".jerryzuhow77.chatgpt.site");
     const isGuardianWallFeature = url.hostname === "cn.globalprotectionwall.com";
     if (!/^https?:$/.test(url.protocol) || (!isOfficialSite && !isOfficialFeature && !isGuardianWallFeature)) return null;
@@ -181,7 +185,7 @@
     return {
       key: `${articleHost}-${sharedPath.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-")}`,
       legacyViewKey: link.dataset.viewCounterKey || legacyViewKey(url),
-      countsOnArrival: isOfficialSite,
+      countsOnArrival,
       title,
       url: url.href,
     };
