@@ -1,4 +1,4 @@
-name: Fix Kaikai nested evidence deep links v2
+name: Fix Kaikai nested evidence deep links v3
 
 on:
   push:
@@ -12,6 +12,7 @@ permissions:
 jobs:
   patch:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -24,14 +25,51 @@ jobs:
         run: |
           git diff --check
           node --check hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
+          grep -q 'if (!target) return revealedSections' hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
           grep -q 'final-chapter.js?v=20260829-7' hearing-records/prison-watch/kaikai-final-chapter/index.html
           grep -q 'final-chapter.js?v=20260829-7' hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
 
-      - name: Commit patch and remove one-off files
+      - name: Commit and push safely against concurrent main updates
+        shell: bash
         run: |
+          set -euo pipefail
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js hearing-records/prison-watch/kaikai-final-chapter/index.html hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
-          git rm scripts/fix-kaikai-generic-hash-20260829.py .github/workflows/oneoff-kaikai-generic-hash-fix-20260829.yml
-          git commit -m 'Stabilize nested Kaikai evidence deep links'
-          git push origin HEAD:main
+
+          make_commit() {
+            python scripts/fix-kaikai-generic-hash-20260829.py
+            git add hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js \
+                    hearing-records/prison-watch/kaikai-final-chapter/index.html \
+                    hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+            if git diff --cached --quiet; then
+              return 1
+            fi
+            git commit -m 'Stabilize nested Kaikai evidence deep links'
+          }
+
+          git add hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js \
+                  hearing-records/prison-watch/kaikai-final-chapter/index.html \
+                  hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+          if ! git diff --cached --quiet; then
+            git commit -m 'Stabilize nested Kaikai evidence deep links'
+          fi
+
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Push raced with main; retrying on latest main (attempt ${attempt})."
+            git fetch origin main
+            if git rebase origin/main; then
+              continue
+            fi
+            git rebase --abort || true
+            git reset --hard origin/main
+            make_commit || {
+              echo 'Patch is already present on latest main.'
+              exit 0
+            }
+          done
+
+          echo 'Unable to publish nested hash fix after retries.' >&2
+          exit 1
