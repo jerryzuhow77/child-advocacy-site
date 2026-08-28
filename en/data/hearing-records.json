@@ -52,5 +52,15 @@
     "image": "../../assets/art/prison-watch-day5-selected-evidence-01-zh-hant-20260822-v3.jpg?v=20260822-selected-poster-alias-v3",
     "url": "prison-watch/kaikai-day5-20250429/",
     "caseUrl": "../cases/kaikai/"
+  },
+  {
+    "date": "2025-05-07",
+    "title": "KaiKai case | Day 10 · Sentencing Arguments",
+    "court": "Taipei District Court｜Citizen-Judge Trial",
+    "summary": "English route-preserving summary of the sentencing arguments and the two defendants’ responsibility. The complete record and final chapter are available in Traditional and Simplified Chinese.",
+    "image": "../../assets/art/prison-watch-day10-kaikai-sentencing-poster-en-20260827.svg",
+    "url": "prison-watch/kaikai-day10-20250507/",
+    "ctaLabel": "Read summary",
+    "caseUrl": "../cases/kaikai/"
   }
 ]
