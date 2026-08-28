@@ -1,0 +1,336 @@
+name: One-off finalize Kaikai Chapter 2 browser fixes
+
+on:
+  push:
+    branches:
+      - fix/kaikai-ch2-anchor-viewport-20260828
+
+permissions:
+  contents: write
+
+concurrency:
+  group: finalize-kaikai-ch2-browser-fixes
+  cancel-in-progress: false
+
+jobs:
+  patch-test-commit:
+    if: ${{ !contains(github.event.head_commit.message, '[kaikai-browser-fixes-final]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out fix branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Apply validated anchor, reveal and mobile layout fixes
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          base = Path('hearing-records/prison-watch/kaikai-final-chapter')
+          js_path = base / 'final-chapter.js'
+          css_path = base / 'final-chapter.css'
+          html_paths = [base / 'index.html', base / 'zh-Hans' / 'index.html']
+
+          js = js_path.read_text(encoding='utf-8')
+          bootstrap = "  document.documentElement.classList.add('js-ready');"
+          bootstrap_replacement = bootstrap + "\n  try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (_) {}"
+          if js.count(bootstrap) != 1:
+              raise SystemExit(f'Expected one JS bootstrap anchor, found {js.count(bootstrap)}')
+          js = js.replace(bootstrap, bootstrap_replacement, 1)
+
+          hash_pattern = re.compile(
+              r"  const revealHashTarget = \(scroll = false\) => \{.*?\nconst applyReadingDepth = \(scrollToHash = false\) => \{.*?\n\};",
+              re.DOTALL,
+          )
+          hash_replacement = '''  let hashAlignmentToken = 0;
+          const alignHashTarget = () => {
+            const token = ++hashAlignmentToken;
+            const align = () => {
+              if (token !== hashAlignmentToken) return;
+              const target = getHashTarget();
+              if (!target) return;
+              const root = document.documentElement;
+              const previous = root.style.scrollBehavior;
+              root.style.scrollBehavior = 'auto';
+              target.scrollIntoView({ block: 'start', inline: 'nearest' });
+              root.style.scrollBehavior = previous;
+            };
+            requestAnimationFrame(() => requestAnimationFrame(align));
+            [60, 160, 320, 650, 1100, 1800].forEach((delay) => setTimeout(align, delay));
+            if (document.fonts?.ready) document.fonts.ready.then(align).catch(() => undefined);
+            if (document.readyState !== 'complete') window.addEventListener('load', align, { once: true });
+          };
+
+          const revealHashTarget = (scroll = false) => {
+            document.querySelectorAll('[data-depth-reveal="true"]').forEach((node) => {
+              node.removeAttribute('data-depth-reveal');
+              node.querySelector(':scope > .depth-reveal-note')?.remove();
+            });
+            document.querySelectorAll('.anchor-revealed').forEach((node) => node.classList.remove('anchor-revealed'));
+
+            const target = getHashTarget();
+            const revealedSections = new Set();
+            if (!target) return revealedSections;
+
+            const closestSection = target.closest('main section[data-reading-level]');
+            let section = closestSection;
+            while (section) {
+              section.dataset.depthReveal = 'true';
+              section.hidden = false;
+              section.removeAttribute('aria-hidden');
+              revealedSections.add(section);
+              section = section.parentElement?.closest('main section[data-reading-level]') || null;
+            }
+
+            if (closestSection && !closestSection.querySelector(':scope > .depth-reveal-note')) {
+              const note = document.createElement('p');
+              note.className = 'depth-reveal-note';
+              note.textContent = copy.revealed;
+              closestSection.prepend(note);
+            }
+
+            const revealNodes = new Set();
+            if (target.matches('.reveal')) revealNodes.add(target);
+            const revealAncestor = target.closest('.reveal');
+            if (revealAncestor) revealNodes.add(revealAncestor);
+            target.querySelectorAll(':scope > .reveal, :scope > header.reveal').forEach((node) => revealNodes.add(node));
+            revealNodes.forEach((node) => node.classList.add('in-view', 'anchor-revealed'));
+
+            if (scroll) alignHashTarget();
+            return revealedSections;
+          };
+          const applyReadingDepth = (scrollToHash = false) => {
+            const selected = Object.prototype.hasOwnProperty.call(depthRank, body.dataset.readingDepth)
+              ? body.dataset.readingDepth : 'guided';
+            const revealedSections = revealHashTarget(false);
+            depthSections.forEach((section) => {
+              const needed = depthRank[section.dataset.readingLevel] ?? 0;
+              const hide = needed > depthRank[selected] && !revealedSections.has(section);
+              section.hidden = hide;
+              if (hide) section.setAttribute('aria-hidden', 'true');
+              else section.removeAttribute('aria-hidden');
+            });
+            if (scrollToHash) revealHashTarget(true);
+            syncLifeToggle();
+          };'''
+          js, count = hash_pattern.subn(lambda _: hash_replacement, js, count=1)
+          if count != 1:
+              raise SystemExit(f'Expected one hash reveal block, found {count}')
+
+          initial = "  syncLifeToggle();\n  applyReadingDepth(false);"
+          if js.count(initial) != 1:
+              raise SystemExit(f'Expected one initial reading-depth call, found {js.count(initial)}')
+          js = js.replace(initial, "  syncLifeToggle();\n  applyReadingDepth(Boolean(getHashTarget()));", 1)
+          js_path.write_text(js, encoding='utf-8')
+
+          css = css_path.read_text(encoding='utf-8')
+          reveal_rule = '.js-ready .reveal.in-view{opacity:1;transform:none;transition:opacity .68s ease,transform .68s cubic-bezier(.2,.75,.2,1)}'
+          if css.count(reveal_rule) != 1:
+              raise SystemExit(f'Expected one reveal rule, found {css.count(reveal_rule)}')
+          css = css.replace(
+              reveal_rule,
+              reveal_rule + '\n.js-ready .reveal.anchor-revealed{opacity:1!important;transform:none!important;transition:none!important}',
+              1,
+          )
+
+          late_mobile_title = '.hero h1{font-size:clamp(40px,13vw,50px)}'
+          final_mobile_title = '.hero h1{font-size:clamp(32px,9.5vw,38px);white-space:nowrap}'
+          if css.count(late_mobile_title) != 1:
+              raise SystemExit(f'Expected one reader-first mobile title rule, found {css.count(late_mobile_title)}')
+          css = css.replace(late_mobile_title, final_mobile_title, 1)
+
+          late_mobile_media = '@media(max-width:760px){main section[id]{scroll-margin-top:82px}'
+          late_mobile_fixed = '@media(max-width:760px){main section[id]{scroll-margin-top:82px}.journey-tools{position:static;grid-template-columns:minmax(0,1fr);padding:15px}'
+          if css.count(late_mobile_media) != 1:
+              raise SystemExit(f'Expected one late mobile media anchor, found {css.count(late_mobile_media)}')
+          css = css.replace(late_mobile_media, late_mobile_fixed, 1)
+          css_path.write_text(css, encoding='utf-8')
+
+          for html_path in html_paths:
+              html = html_path.read_text(encoding='utf-8')
+              if html.count('final-chapter.css?v=20260828-17') != 1:
+                  raise SystemExit(f'{html_path}: unexpected CSS cache version')
+              if html.count('final-chapter.js?v=20260828-5') != 1:
+                  raise SystemExit(f'{html_path}: unexpected JS cache version')
+              html = html.replace('final-chapter.css?v=20260828-17', 'final-chapter.css?v=20260828-18', 1)
+              html = html.replace('final-chapter.js?v=20260828-5', 'final-chapter.js?v=20260828-6', 1)
+              html_path.write_text(html, encoding='utf-8')
+          PY
+
+      - name: Run static validation
+        shell: bash
+        run: |
+          node --check hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
+          git diff --check
+          grep -F "history.scrollRestoration = 'manual'" hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
+          grep -F "[60, 160, 320, 650, 1100, 1800]" hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
+          grep -F "classList.add('in-view', 'anchor-revealed')" hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
+          grep -F '.reveal.anchor-revealed' hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css
+          grep -F 'font-size:clamp(32px,9.5vw,38px);white-space:nowrap' hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css
+          grep -F '.journey-tools{position:static;grid-template-columns:minmax(0,1fr);padding:15px}' hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css
+          grep -R -F 'final-chapter.css?v=20260828-18' hearing-records/prison-watch/kaikai-final-chapter/index.html hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+          grep -R -F 'final-chapter.js?v=20260828-6' hearing-records/prison-watch/kaikai-final-chapter/index.html hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install Chromium and run regression matrix
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/kaikai-browser-final" "$GITHUB_WORKSPACE/kaikai-browser-fix-evidence"
+          cd "$RUNNER_TEMP/kaikai-browser-final"
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null 2>&1
+          npx playwright install --with-deps chromium >/dev/null
+          cat > verify.mjs <<'JS'
+          import fs from 'node:fs';
+          import path from 'node:path';
+          import { chromium } from 'playwright';
+
+          const origin = 'http://127.0.0.1:4173';
+          const route = '/hearing-records/prison-watch/kaikai-final-chapter/';
+          const output = path.join(process.env.GITHUB_WORKSPACE, 'kaikai-browser-fix-evidence');
+          const locales = [{ name: 'zh-Hant', path: '' }, { name: 'zh-Hans', path: 'zh-Hans/' }];
+          const viewports = [{ name: 'desktop', width: 1440, height: 900 }, { name: 'mobile', width: 390, height: 844 }];
+          const deepIds = ['evidence-atlas', 'witness-conflicts', 'blood-boundary', 'responsibility-orbit', 'dental-warning', 'placement-spectrum'];
+          const failures = [];
+          const observations = [];
+          const browser = await chromium.launch({ headless: true });
+
+          const targetState = (page, id) => page.locator(`#${id}`).evaluate((element) => {
+            const rect = element.getBoundingClientRect();
+            const style = getComputedStyle(element);
+            return {
+              top: Math.round(rect.top),
+              bottom: Math.round(rect.bottom),
+              opacity: Number(style.opacity),
+              hidden: element.hidden,
+              display: style.display,
+              visibility: style.visibility,
+              inViewport: rect.top < innerHeight && rect.bottom > 0
+            };
+          });
+
+          const pageState = (page) => page.evaluate(() => {
+            const heading = document.querySelector('.hero h1');
+            const titleNode = [...heading.childNodes].find((node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
+            const range = document.createRange();
+            range.selectNodeContents(titleNode);
+            const lifeSearch = document.querySelector('#lifeSearch');
+            const lifeRect = lifeSearch.getBoundingClientRect();
+            const journey = document.querySelector('.journey-tools');
+            return {
+              titleLines: range.getClientRects().length,
+              titleWhiteSpace: getComputedStyle(heading).whiteSpace,
+              overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+              lifeSearchRight: Math.round(lifeRect.right * 10) / 10,
+              lifeSearchWidth: Math.round(lifeRect.width * 10) / 10,
+              viewport: innerWidth,
+              journeyColumns: getComputedStyle(journey).gridTemplateColumns
+            };
+          });
+
+          for (const locale of locales) {
+            for (const viewport of viewports) {
+              const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height } });
+              await context.addInitScript(() => localStorage.setItem('kaikai-final-reading-depth-v1', 'quick'));
+              const page = await context.newPage();
+              const pageErrors = [];
+              page.on('pageerror', (error) => pageErrors.push(error.message));
+              const base = `${origin}${route}${locale.path}`;
+
+              await page.goto(base, { waitUntil: 'domcontentloaded', timeout: 45000 });
+              await page.waitForTimeout(500);
+              const normal = await pageState(page);
+              observations.push({ test: 'normal', locale: locale.name, viewport: viewport.name, normal });
+              if (normal.overflow > 4) failures.push(`${locale.name}/${viewport.name} overflow: ${JSON.stringify(normal)}`);
+              if (viewport.name === 'mobile' && (normal.titleLines !== 1 || normal.titleWhiteSpace !== 'nowrap')) failures.push(`${locale.name}/mobile title: ${JSON.stringify(normal)}`);
+
+              await page.locator('#menuButton').click();
+              await page.locator('.nav-group').filter({ has: page.locator('a[href="#evidence-atlas"]') }).evaluate((element) => { element.open = true; });
+              await page.locator('#siteNav a[href="#evidence-atlas"]').click();
+              await page.waitForTimeout(2100);
+              const menu = await targetState(page, 'evidence-atlas');
+              observations.push({ test: 'menu-anchor', locale: locale.name, viewport: viewport.name, menu });
+              if (!menu.inViewport || menu.opacity < 0.99 || menu.hidden) failures.push(`${locale.name}/${viewport.name} menu anchor: ${JSON.stringify(menu)}`);
+
+              for (const id of deepIds) {
+                const url = `${base}?qa=${id}-${Date.now()}#${id}`;
+                await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 45000 });
+                await page.waitForTimeout(2100);
+                const initial = await targetState(page, id);
+                await page.reload({ waitUntil: 'domcontentloaded', timeout: 45000 });
+                await page.waitForTimeout(2100);
+                const reloaded = await targetState(page, id);
+                observations.push({ test: 'deep-link', locale: locale.name, viewport: viewport.name, id, initial, reloaded });
+                for (const [phase, state] of [['initial', initial], ['reload', reloaded]]) {
+                  if (!state.inViewport || state.opacity < 0.99 || state.hidden || state.display === 'none' || state.visibility === 'hidden') failures.push(`${locale.name}/${viewport.name} #${id} ${phase}: ${JSON.stringify(state)}`);
+                }
+                if (locale.name === 'zh-Hant' && viewport.name === 'mobile' && ['dental-warning', 'responsibility-orbit'].includes(id)) await page.screenshot({ path: path.join(output, `${id}-mobile.png`), fullPage: false });
+              }
+              if (pageErrors.length) failures.push(`${locale.name}/${viewport.name} page errors: ${pageErrors.join(' | ')}`);
+              await context.close();
+            }
+          }
+
+          for (const width of [360, 320]) {
+            const page = await browser.newPage({ viewport: { width, height: 780 } });
+            await page.goto(`${origin}${route}`, { waitUntil: 'domcontentloaded', timeout: 45000 });
+            await page.waitForTimeout(500);
+            const narrow = await pageState(page);
+            observations.push({ test: 'narrow', width, narrow });
+            if (narrow.titleLines !== 1 || narrow.titleWhiteSpace !== 'nowrap' || narrow.overflow > 4 || narrow.lifeSearchRight > width + 1) failures.push(`${width}px layout: ${JSON.stringify(narrow)}`);
+            if (width === 320) await page.screenshot({ path: path.join(output, 'layout-320px.png'), fullPage: false });
+            await page.close();
+          }
+
+          await browser.close();
+          const report = { passed: failures.length === 0, failures, observations };
+          fs.writeFileSync(path.join(output, 'report.json'), JSON.stringify(report, null, 2));
+          fs.writeFileSync(path.join(output, 'summary.txt'), `Result: ${report.passed ? 'PASS' : 'FAIL'}\nFailures: ${failures.length}\n${failures.join('\n')}`);
+          console.log(JSON.stringify(report, null, 2));
+          if (failures.length) process.exit(1);
+          JS
+
+          cd "$GITHUB_WORKSPACE"
+          python -m http.server 4173 > "$RUNNER_TEMP/kaikai-browser-final-http.log" 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          for i in {1..20}; do
+            curl -fsS "http://127.0.0.1:4173/hearing-records/prison-watch/kaikai-final-chapter/" >/dev/null && break
+            sleep 1
+          done
+          cd "$RUNNER_TEMP/kaikai-browser-final"
+          node verify.mjs
+
+      - name: Upload browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kaikai-chapter2-browser-fix-evidence
+          path: kaikai-browser-fix-evidence/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Commit verified source changes and remove one-off workflows
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -- .github/workflows/oneoff-finalize-kaikai-ch2-browser-fixes.yml
+          git rm -- .github/workflows/oneoff-kaikai-browser-validation-20260829-v2.yml
+          git add hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
+          git add hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css
+          git add hearing-records/prison-watch/kaikai-final-chapter/index.html
+          git add hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+          git diff --cached --check
+          git commit -m "Fix Chapter 2 browser anchors and narrow mobile layout [kaikai-browser-fixes-final]"
+          git push origin "HEAD:${{ github.ref_name }}"
