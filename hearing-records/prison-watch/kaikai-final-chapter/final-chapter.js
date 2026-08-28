@@ -46,24 +46,31 @@
 
   const normalize = (value) => value.toLocaleLowerCase().replace(/\s+/g, ' ').trim();
   const filterLifeEvents = () => {
-    const query = normalize(lifeSearch?.value || '');
-    let shown = 0;
+  const query = normalize(lifeSearch?.value || '');
+  document.body.classList.toggle('life-search-active', Boolean(query));
+  let shown = 0;
 
-    lifeEvents.forEach((event) => {
-      const haystack = normalize(`${event.dataset.search || ''} ${event.textContent || ''}`);
-      const match = !query || haystack.includes(query);
-      event.hidden = !match;
-      if (match) shown += 1;
-    });
+  lifeEvents.forEach((event) => {
+    const haystack = normalize(`${event.dataset.search || ''} ${event.textContent || ''}`);
+    const match = !query || haystack.includes(query);
+    event.hidden = !match;
+    if (match) shown += 1;
+  });
 
-    if (lifeStatus) {
-      lifeStatus.textContent = query
-        ? `${locale === 'zh-Hans' ? '找到' : '找到'} ${shown} ${resultLabel}`
+  if (lifeStatus) {
+    const quickCollapsed = !query
+      && document.body.dataset.readingDepth === 'quick'
+      && !document.body.classList.contains('show-all-life');
+    const quickShown = Math.min(4, lifeEvents.length);
+    lifeStatus.textContent = query
+      ? `${locale === 'zh-Hans' ? '找到' : '找到'} ${shown} ${resultLabel}`
+      : quickCollapsed
+        ? `${locale === 'zh-Hans' ? '重点显示' : '重點顯示'} ${quickShown} / ${lifeEvents.length} ${totalLabel}`
         : `${locale === 'zh-Hans' ? '显示' : '顯示'} ${lifeEvents.length} ${totalLabel}`;
-    }
-  };
+  }
+};
 
-  lifeSearch?.addEventListener('input', filterLifeEvents);
+lifeSearch?.addEventListener('input', filterLifeEvents);
 
   const readingDepthButtons = [...document.querySelectorAll('[data-reading-depth]')];
   const readingDepthStatus = document.querySelector('#readingDepthStatus');
@@ -417,39 +424,47 @@
     try { return document.getElementById(decodeURIComponent(location.hash.slice(1))); } catch (_) { return null; }
   };
   const revealHashTarget = (scroll = false) => {
-    document.querySelectorAll('[data-depth-reveal="true"]').forEach((node) => {
-      node.removeAttribute('data-depth-reveal');
-      node.querySelector(':scope > .depth-reveal-note')?.remove();
-    });
-    const target = getHashTarget();
-    const section = target?.closest('main section[data-reading-level]');
-    if (!section) return null;
+  document.querySelectorAll('[data-depth-reveal="true"]').forEach((node) => {
+    node.removeAttribute('data-depth-reveal');
+    node.querySelector(':scope > .depth-reveal-note')?.remove();
+  });
+  const target = getHashTarget();
+  const closestSection = target?.closest('main section[data-reading-level]');
+  const revealedSections = new Set();
+  if (!closestSection) return revealedSections;
+
+  let section = closestSection;
+  while (section) {
     section.dataset.depthReveal = 'true';
     section.hidden = false;
     section.removeAttribute('aria-hidden');
-    if (!section.querySelector(':scope > .depth-reveal-note')) {
-      const note = document.createElement('p');
-      note.className = 'depth-reveal-note';
-      note.textContent = copy.revealed;
-      section.prepend(note);
-    }
-    if (scroll) requestAnimationFrame(() => target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }));
-    return section;
-  };
-  const applyReadingDepth = (scrollToHash = false) => {
-    const selected = Object.prototype.hasOwnProperty.call(depthRank, body.dataset.readingDepth)
-      ? body.dataset.readingDepth : 'guided';
-    const revealed = revealHashTarget(false);
-    depthSections.forEach((section) => {
-      const needed = depthRank[section.dataset.readingLevel] ?? 0;
-      const hide = needed > depthRank[selected] && section !== revealed;
-      section.hidden = hide;
-      if (hide) section.setAttribute('aria-hidden', 'true');
-      else section.removeAttribute('aria-hidden');
-    });
-    if (scrollToHash) revealHashTarget(true);
-    syncLifeToggle();
-  };
+    revealedSections.add(section);
+    section = section.parentElement?.closest('main section[data-reading-level]') || null;
+  }
+
+  if (!closestSection.querySelector(':scope > .depth-reveal-note')) {
+    const note = document.createElement('p');
+    note.className = 'depth-reveal-note';
+    note.textContent = copy.revealed;
+    closestSection.prepend(note);
+  }
+  if (scroll) requestAnimationFrame(() => target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }));
+  return revealedSections;
+};
+const applyReadingDepth = (scrollToHash = false) => {
+  const selected = Object.prototype.hasOwnProperty.call(depthRank, body.dataset.readingDepth)
+    ? body.dataset.readingDepth : 'guided';
+  const revealedSections = revealHashTarget(false);
+  depthSections.forEach((section) => {
+    const needed = depthRank[section.dataset.readingLevel] ?? 0;
+    const hide = needed > depthRank[selected] && !revealedSections.has(section);
+    section.hidden = hide;
+    if (hide) section.setAttribute('aria-hidden', 'true');
+    else section.removeAttribute('aria-hidden');
+  });
+  if (scrollToHash) revealHashTarget(true);
+  syncLifeToggle();
+};
   document.querySelectorAll('[data-reading-depth]').forEach((button) => {
     button.addEventListener('click', () => requestAnimationFrame(() => applyReadingDepth(false)));
   });
@@ -471,12 +486,13 @@
     });
   }
   function syncLifeToggle() {
-    if (!lifeToggle) return;
-    const expanded = body.classList.contains('show-all-life');
-    lifeToggle.textContent = expanded ? copy.hideLife : copy.showLife;
-    lifeToggle.setAttribute('aria-expanded', String(expanded));
-    lifeToggle.setAttribute('aria-controls', 'lifeTimeline');
-  }
+  if (!lifeToggle) return;
+  const expanded = body.classList.contains('show-all-life');
+  lifeToggle.textContent = expanded ? copy.hideLife : copy.showLife;
+  lifeToggle.setAttribute('aria-expanded', String(expanded));
+  lifeToggle.setAttribute('aria-controls', 'lifeTimeline');
+  lifeSearch?.dispatchEvent(new Event('input'));
+}
   syncLifeToggle();
   applyReadingDepth(false);
 
