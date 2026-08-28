@@ -1,4 +1,4 @@
-name: Fix Kaikai nested evidence deep links
+name: Fix Kaikai nested evidence deep links v2
 
 on:
   push:
@@ -17,64 +17,21 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Extend hash stabilization to every valid target
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          import re
-
-          js_path = Path('hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js')
-          pages = [
-              Path('hearing-records/prison-watch/kaikai-final-chapter/index.html'),
-              Path('hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html'),
-          ]
-
-          js = js_path.read_text(encoding='utf-8')
-          old = '''  const revealedSections = new Set();
-  if (!closestSection) return revealedSections;
-
-  let section = closestSection;'''
-          new = '''  const revealedSections = new Set();
-  if (!target) return revealedSections;
-  revealTargetForNavigation(target);
-  if (!closestSection) {
-    if (scroll) stabilizeHashTarget(target, true);
-    return revealedSections;
-  }
-
-  let section = closestSection;'''
-          if new not in js:
-              if js.count(old) != 1:
-                  raise SystemExit(f'Expected one nested-target guard, found {js.count(old)}')
-              js = js.replace(old, new, 1)
-              js_path.write_text(js, encoding='utf-8')
-
-          cache_pattern = re.compile(r'final-chapter\.js\?v=\d{8}-\d+')
-          for page in pages:
-              html = page.read_text(encoding='utf-8')
-              matches = cache_pattern.findall(html)
-              if len(matches) != 1:
-                  raise SystemExit(f'{page}: expected one JS cache key, found {len(matches)}')
-              html = cache_pattern.sub('final-chapter.js?v=20260829-7', html, count=1)
-              page.write_text(html, encoding='utf-8')
-          PY
+      - name: Apply nested hash-target fix
+        run: python scripts/fix-kaikai-generic-hash-20260829.py
 
       - name: Validate patch
         run: |
           git diff --check
           node --check hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
-          grep -q 'if (!target) return revealedSections' hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
-          grep -q 'if (!closestSection)' hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
           grep -q 'final-chapter.js?v=20260829-7' hearing-records/prison-watch/kaikai-final-chapter/index.html
           grep -q 'final-chapter.js?v=20260829-7' hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
 
-      - name: Commit and remove one-off workflow
+      - name: Commit patch and remove one-off files
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js \
-                  hearing-records/prison-watch/kaikai-final-chapter/index.html \
-                  hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
-          git rm .github/workflows/oneoff-kaikai-generic-hash-fix-20260829.yml
+          git add hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js hearing-records/prison-watch/kaikai-final-chapter/index.html hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+          git rm scripts/fix-kaikai-generic-hash-20260829.py .github/workflows/oneoff-kaikai-generic-hash-fix-20260829.yml
           git commit -m 'Stabilize nested Kaikai evidence deep links'
           git push origin HEAD:main
