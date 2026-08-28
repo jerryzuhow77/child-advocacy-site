@@ -1,5 +1,6 @@
 (() => {
   document.documentElement.classList.add('js-ready');
+  try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (_) {}
 
   const menuButton = document.querySelector('#menuButton');
   const siteNav = document.querySelector('#siteNav');
@@ -423,16 +424,37 @@ lifeSearch?.addEventListener('input', filterLifeEvents);
     if (!location.hash || location.hash.length < 2) return null;
     try { return document.getElementById(decodeURIComponent(location.hash.slice(1))); } catch (_) { return null; }
   };
-  const revealHashTarget = (scroll = false) => {
+  let hashAlignmentToken = 0;
+const alignHashTarget = () => {
+  const token = ++hashAlignmentToken;
+  const align = () => {
+    if (token !== hashAlignmentToken) return;
+    const target = getHashTarget();
+    if (!target) return;
+    const root = document.documentElement;
+    const previous = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    target.scrollIntoView({ block: 'start', inline: 'nearest' });
+    root.style.scrollBehavior = previous;
+  };
+  requestAnimationFrame(() => requestAnimationFrame(align));
+  [60, 160, 320, 650, 1100, 1800].forEach((delay) => setTimeout(align, delay));
+  if (document.fonts?.ready) document.fonts.ready.then(align).catch(() => undefined);
+  if (document.readyState !== 'complete') window.addEventListener('load', align, { once: true });
+};
+
+const revealHashTarget = (scroll = false) => {
   document.querySelectorAll('[data-depth-reveal="true"]').forEach((node) => {
     node.removeAttribute('data-depth-reveal');
     node.querySelector(':scope > .depth-reveal-note')?.remove();
   });
-  const target = getHashTarget();
-  const closestSection = target?.closest('main section[data-reading-level]');
-  const revealedSections = new Set();
-  if (!closestSection) return revealedSections;
+  document.querySelectorAll('.anchor-revealed').forEach((node) => node.classList.remove('anchor-revealed'));
 
+  const target = getHashTarget();
+  const revealedSections = new Set();
+  if (!target) return revealedSections;
+
+  const closestSection = target.closest('main section[data-reading-level]');
   let section = closestSection;
   while (section) {
     section.dataset.depthReveal = 'true';
@@ -442,13 +464,21 @@ lifeSearch?.addEventListener('input', filterLifeEvents);
     section = section.parentElement?.closest('main section[data-reading-level]') || null;
   }
 
-  if (!closestSection.querySelector(':scope > .depth-reveal-note')) {
+  if (closestSection && !closestSection.querySelector(':scope > .depth-reveal-note')) {
     const note = document.createElement('p');
     note.className = 'depth-reveal-note';
     note.textContent = copy.revealed;
     closestSection.prepend(note);
   }
-  if (scroll) requestAnimationFrame(() => target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }));
+
+  const revealNodes = new Set();
+  if (target.matches('.reveal')) revealNodes.add(target);
+  const revealAncestor = target.closest('.reveal');
+  if (revealAncestor) revealNodes.add(revealAncestor);
+  target.querySelectorAll(':scope > .reveal, :scope > header.reveal').forEach((node) => revealNodes.add(node));
+  revealNodes.forEach((node) => node.classList.add('in-view', 'anchor-revealed'));
+
+  if (scroll) alignHashTarget();
   return revealedSections;
 };
 const applyReadingDepth = (scrollToHash = false) => {
@@ -494,7 +524,7 @@ const applyReadingDepth = (scrollToHash = false) => {
   lifeSearch?.dispatchEvent(new Event('input'));
 }
   syncLifeToggle();
-  applyReadingDepth(false);
+  applyReadingDepth(Boolean(getHashTarget()));
 
   document.querySelectorAll('main section[id]').forEach((section) => {
     const heading = section.querySelector(':scope > .section-head h2, :scope > header.section-head h2');
