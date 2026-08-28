@@ -1,0 +1,71 @@
+name: Fix Chapter 2 hash alignment
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-kaikai-hash-instant-align-20260829.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Force corrective hash jumps to be instant
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          script = Path('hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js')
+          text = script.read_text(encoding='utf-8')
+          old = '''    const align = (behavior = 'auto') => {
+                if (sequence !== hashScrollSequence || getHashTarget() !== target) return;
+                revealTargetForNavigation(target);
+                target.scrollIntoView({ behavior, block: 'start', inline: 'nearest' });
+              };'''
+          new = '''    const align = (behavior = 'auto') => {
+                if (sequence !== hashScrollSequence || getHashTarget() !== target) return;
+                revealTargetForNavigation(target);
+                const top = Math.max(0, window.scrollY + target.getBoundingClientRect().top - expectedTop());
+                if (behavior === 'smooth') {
+                  window.scrollTo({ top, left: window.scrollX, behavior: 'smooth' });
+                  return;
+                }
+                const root = document.documentElement;
+                const previousScrollBehavior = root.style.scrollBehavior;
+                root.style.scrollBehavior = 'auto';
+                window.scrollTo({ top, left: window.scrollX, behavior: 'auto' });
+                root.style.scrollBehavior = previousScrollBehavior;
+              };'''
+          count = text.count(old)
+          if count != 1:
+              raise SystemExit(f'Expected one hash align block, found {count}')
+          text = text.replace(old, new, 1)
+          if text.count("root.style.scrollBehavior = 'auto'") != 1:
+              raise SystemExit('Instant corrective scroll guard missing or duplicated')
+          script.write_text(text, encoding='utf-8')
+
+          for path in [
+              Path('hearing-records/prison-watch/kaikai-final-chapter/index.html'),
+              Path('hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html'),
+          ]:
+              html = path.read_text(encoding='utf-8')
+              old_version = './final-chapter.js?v=20260829-6'
+              new_version = './final-chapter.js?v=20260829-7'
+              count = html.count(old_version)
+              if count != 1:
+                  raise SystemExit(f'{path}: expected one old script version, found {count}')
+              path.write_text(html.replace(old_version, new_version, 1), encoding='utf-8')
+          PY
+          node --check hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
+          git diff --check
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
+          git add hearing-records/prison-watch/kaikai-final-chapter/index.html
+          git add hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+          git rm .github/workflows/oneoff-kaikai-hash-instant-align-20260829.yml
+          git commit -m 'Fix Chapter 2 hash alignment after layout shifts'
+          git push origin HEAD:main
