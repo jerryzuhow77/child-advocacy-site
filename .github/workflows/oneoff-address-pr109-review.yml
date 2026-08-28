@@ -2,8 +2,7 @@ name: One-off address PR 109 review
 
 on:
   push:
-    branches:
-      - feat/kaikai-chapter2-full-ux-20260828
+    branches: [feat/kaikai-chapter2-full-ux-20260828]
 
 permissions:
   contents: write
@@ -17,10 +16,8 @@ jobs:
     if: ${{ !contains(github.event.head_commit.message, '[pr109-review-fixed]') }}
     runs-on: ubuntu-latest
     timeout-minutes: 25
-
     steps:
-      - name: Check out feature branch
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.ref_name }}
           fetch-depth: 0
@@ -30,30 +27,17 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
 
           base = Path('hearing-records/prison-watch/kaikai-final-chapter')
-          js_path = base / 'final-chapter.js'
-          css_path = base / 'final-chapter.css'
+          js_path, css_path = base / 'final-chapter.js', base / 'final-chapter.css'
           js = js_path.read_text(encoding='utf-8')
 
-          old_filter = '''  const filterLifeEvents = () => {
-            const query = normalize(lifeSearch?.value || '');
-            let shown = 0;
-
-            lifeEvents.forEach((event) => {
-              const haystack = normalize(`${event.dataset.search || ''} ${event.textContent || ''}`);
-              const match = !query || haystack.includes(query);
-              event.hidden = !match;
-              if (match) shown += 1;
-            });
-
-            if (lifeStatus) {
-              lifeStatus.textContent = query
-                ? `${locale === 'zh-Hans' ? '找到' : '找到'} ${shown} ${resultLabel}`
-                : `${locale === 'zh-Hans' ? '显示' : '顯示'} ${lifeEvents.length} ${totalLabel}`;
-            }
-          };'''
-          new_filter = '''  const filterLifeEvents = () => {
+          filter_pattern = re.compile(
+              r"  const filterLifeEvents = \(\) => \{.*?\n  \};\n\n  lifeSearch\?\.addEventListener\('input', filterLifeEvents\);",
+              re.DOTALL,
+          )
+          filter_replacement = '''  const filterLifeEvents = () => {
             const query = normalize(lifeSearch?.value || '');
             document.body.classList.toggle('life-search-active', Boolean(query));
             let shown = 0;
@@ -76,46 +60,18 @@ jobs:
                   ? `${locale === 'zh-Hans' ? '重点显示' : '重點顯示'} ${quickShown} / ${lifeEvents.length} ${totalLabel}`
                   : `${locale === 'zh-Hans' ? '显示' : '顯示'} ${lifeEvents.length} ${totalLabel}`;
             }
-          };'''
-          if js.count(old_filter) != 1:
-              raise SystemExit(f'Expected one life filter block, found {js.count(old_filter)}')
-          js = js.replace(old_filter, new_filter, 1)
-
-          old_depth = '''  const revealHashTarget = (scroll = false) => {
-            document.querySelectorAll('[data-depth-reveal="true"]').forEach((node) => {
-              node.removeAttribute('data-depth-reveal');
-              node.querySelector(':scope > .depth-reveal-note')?.remove();
-            });
-            const target = getHashTarget();
-            const section = target?.closest('main section[data-reading-level]');
-            if (!section) return null;
-            section.dataset.depthReveal = 'true';
-            section.hidden = false;
-            section.removeAttribute('aria-hidden');
-            if (!section.querySelector(':scope > .depth-reveal-note')) {
-              const note = document.createElement('p');
-              note.className = 'depth-reveal-note';
-              note.textContent = copy.revealed;
-              section.prepend(note);
-            }
-            if (scroll) requestAnimationFrame(() => target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }));
-            return section;
           };
-          const applyReadingDepth = (scrollToHash = false) => {
-            const selected = Object.prototype.hasOwnProperty.call(depthRank, body.dataset.readingDepth)
-              ? body.dataset.readingDepth : 'guided';
-            const revealed = revealHashTarget(false);
-            depthSections.forEach((section) => {
-              const needed = depthRank[section.dataset.readingLevel] ?? 0;
-              const hide = needed > depthRank[selected] && section !== revealed;
-              section.hidden = hide;
-              if (hide) section.setAttribute('aria-hidden', 'true');
-              else section.removeAttribute('aria-hidden');
-            });
-            if (scrollToHash) revealHashTarget(true);
-            syncLifeToggle();
-          };'''
-          new_depth = '''  const revealHashTarget = (scroll = false) => {
+
+          lifeSearch?.addEventListener('input', filterLifeEvents);'''
+          js, count = filter_pattern.subn(lambda _: filter_replacement, js, count=1)
+          if count != 1:
+              raise SystemExit(f'Expected one life filter block, found {count}')
+
+          depth_pattern = re.compile(
+              r"  const revealHashTarget = \(scroll = false\) => \{.*?\n  \};\n  const applyReadingDepth = \(scrollToHash = false\) => \{.*?\n  \};\n",
+              re.DOTALL,
+          )
+          depth_replacement = '''  const revealHashTarget = (scroll = false) => {
             document.querySelectorAll('[data-depth-reveal="true"]').forEach((node) => {
               node.removeAttribute('data-depth-reveal');
               node.querySelector(':scope > .depth-reveal-note')?.remove();
@@ -156,19 +112,14 @@ jobs:
             });
             if (scrollToHash) revealHashTarget(true);
             syncLifeToggle();
-          };'''
-          if js.count(old_depth) != 1:
-              raise SystemExit(f'Expected one reading-depth block, found {js.count(old_depth)}')
-          js = js.replace(old_depth, new_depth, 1)
+          };
+          '''
+          js, count = depth_pattern.subn(lambda _: depth_replacement, js, count=1)
+          if count != 1:
+              raise SystemExit(f'Expected one reading-depth block, found {count}')
 
-          old_sync = '''  function syncLifeToggle() {
-            if (!lifeToggle) return;
-            const expanded = body.classList.contains('show-all-life');
-            lifeToggle.textContent = expanded ? copy.hideLife : copy.showLife;
-            lifeToggle.setAttribute('aria-expanded', String(expanded));
-            lifeToggle.setAttribute('aria-controls', 'lifeTimeline');
-          }'''
-          new_sync = '''  function syncLifeToggle() {
+          sync_pattern = re.compile(r"  function syncLifeToggle\(\) \{.*?\n  \}", re.DOTALL)
+          sync_replacement = '''  function syncLifeToggle() {
             if (!lifeToggle) return;
             const expanded = body.classList.contains('show-all-life');
             lifeToggle.textContent = expanded ? copy.hideLife : copy.showLife;
@@ -176,17 +127,17 @@ jobs:
             lifeToggle.setAttribute('aria-controls', 'lifeTimeline');
             lifeSearch?.dispatchEvent(new Event('input'));
           }'''
-          if js.count(old_sync) != 1:
-              raise SystemExit(f'Expected one life toggle sync block, found {js.count(old_sync)}')
-          js = js.replace(old_sync, new_sync, 1)
+          js, count = sync_pattern.subn(lambda _: sync_replacement, js, count=1)
+          if count != 1:
+              raise SystemExit(f'Expected one life toggle sync block, found {count}')
           js_path.write_text(js, encoding='utf-8')
 
           css = css_path.read_text(encoding='utf-8')
-          old_selector = '.js-ready body[data-reading-depth="quick"]:not(.show-all-life) #lifeTimeline .life-event:nth-child(n+5){display:none}'
-          new_selector = '.js-ready body[data-reading-depth="quick"]:not(.show-all-life):not(.life-search-active) #lifeTimeline .life-event:nth-child(n+5){display:none}'
-          if css.count(old_selector) != 1:
-              raise SystemExit(f'Expected one quick timeline selector, found {css.count(old_selector)}')
-          css = css.replace(old_selector, new_selector, 1)
+          old = '.js-ready body[data-reading-depth="quick"]:not(.show-all-life) #lifeTimeline .life-event:nth-child(n+5){display:none}'
+          new = '.js-ready body[data-reading-depth="quick"]:not(.show-all-life):not(.life-search-active) #lifeTimeline .life-event:nth-child(n+5){display:none}'
+          if css.count(old) != 1:
+              raise SystemExit(f'Expected one quick timeline selector, found {css.count(old)}')
+          css = css.replace(old, new, 1)
           anchor = '#lifeQuickToggle{align-items:center;'
           if css.count(anchor) != 1:
               raise SystemExit(f'Expected one life toggle CSS anchor, found {css.count(anchor)}')
@@ -194,8 +145,7 @@ jobs:
           css_path.write_text(css, encoding='utf-8')
           PY
 
-      - name: Run static checks
-        shell: bash
+      - name: Static checks
         run: |
           node --check hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
           git diff --check
@@ -204,16 +154,14 @@ jobs:
           grep -F "life-search-active" hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
           grep -F ':not(.life-search-active) #lifeTimeline' hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
-      - name: Run targeted Chromium regression tests
+      - name: Targeted Chromium regressions
         shell: bash
         run: |
-          mkdir -p "$RUNNER_TEMP/pr109-pw"
-          cd "$RUNNER_TEMP/pr109-pw"
+          mkdir -p "$RUNNER_TEMP/pw" && cd "$RUNNER_TEMP/pw"
           npm init -y >/dev/null 2>&1
           npm install --no-save playwright@1.55.0 >/dev/null 2>&1
           npx playwright install --with-deps chromium >/dev/null
@@ -226,67 +174,57 @@ jobs:
           await context.addInitScript(() => localStorage.setItem('kaikai-final-reading-depth-v1', 'quick'));
           const page = await context.newPage();
           const failures = [];
-          page.on('pageerror', (error) => failures.push(`pageerror: ${error.message}`));
+          page.on('pageerror', e => failures.push(`pageerror: ${e.message}`));
 
-          for (const test of [
-            { hash: '#dental-warning', parent: 'chen-trial' },
-            { hash: '#placement-spectrum', parent: 'system' }
-          ]) {
+          for (const test of [{ hash: '#dental-warning', parent: 'chen-trial' }, { hash: '#placement-spectrum', parent: 'system' }]) {
             await page.goto(origin + route + test.hash, { waitUntil: 'domcontentloaded', timeout: 45000 });
-            await page.waitForTimeout(500);
+            await page.waitForTimeout(400);
             const state = await page.evaluate(({ hash, parent }) => {
               const target = document.getElementById(hash.slice(1));
               const ancestor = document.getElementById(parent);
-              return { targetHidden: target.hidden, parentHidden: ancestor.hidden, targetRects: target.getClientRects().length };
+              return { targetHidden: target.hidden, parentHidden: ancestor.hidden, rects: target.getClientRects().length };
             }, test);
-            if (state.targetHidden || state.parentHidden || !state.targetRects) failures.push(`${test.hash}: ${JSON.stringify(state)}`);
+            if (state.targetHidden || state.parentHidden || !state.rects) failures.push(`${test.hash}: ${JSON.stringify(state)}`);
           }
 
           await page.goto(origin + route, { waitUntil: 'domcontentloaded', timeout: 45000 });
           await page.locator('#lifeSearch').fill('周保母');
-          await page.waitForTimeout(250);
+          await page.waitForTimeout(200);
           const search = await page.evaluate(() => {
-            const matches = [...document.querySelectorAll('#lifeTimeline .life-event')].filter((event) => (event.dataset.search || '').includes('周保母'));
+            const matches = [...document.querySelectorAll('#lifeTimeline .life-event')].filter(e => (e.dataset.search || '').includes('周保母'));
             return {
               active: document.body.classList.contains('life-search-active'),
               matches: matches.length,
-              visible: matches.filter((event) => !event.hidden && getComputedStyle(event).display !== 'none' && event.getClientRects().length).length,
+              visible: matches.filter(e => !e.hidden && getComputedStyle(e).display !== 'none' && e.getClientRects().length).length,
               status: document.getElementById('lifeStatus').textContent,
-              toggleDisplay: getComputedStyle(document.getElementById('lifeQuickToggle')).display
+              toggle: getComputedStyle(document.getElementById('lifeQuickToggle')).display
             };
           });
-          if (!search.active || search.matches < 1 || search.visible !== search.matches || !search.status.includes('找到') || search.toggleDisplay !== 'none') failures.push(`search: ${JSON.stringify(search)}`);
+          if (!search.active || search.matches < 1 || search.visible !== search.matches || !search.status.includes('找到') || search.toggle !== 'none') failures.push(`search: ${JSON.stringify(search)}`);
           await page.locator('#lifeSearch').fill('');
-          await page.waitForTimeout(150);
+          await page.waitForTimeout(100);
           const status = await page.locator('#lifeStatus').textContent();
-          if (!status.includes('重點顯示')) failures.push(`cleared status: ${status}`);
+          if (!status.includes('重點顯示')) failures.push(`status: ${status}`);
           const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
           if (overflow > 8) failures.push(`overflow: ${overflow}px`);
-
           await browser.close();
           if (failures.length) throw new Error(failures.join('\n'));
           console.log(JSON.stringify({ search, status, overflow }, null, 2));
           JS
-
           cd "$GITHUB_WORKSPACE"
-          python -m http.server 4173 > "$RUNNER_TEMP/pr109-http.log" 2>&1 &
-          SERVER_PID=$!
-          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
-          for i in {1..20}; do
-            curl -fsS "http://127.0.0.1:4173/hearing-records/prison-watch/kaikai-final-chapter/" >/dev/null && break
-            sleep 1
-          done
-          cd "$RUNNER_TEMP/pr109-pw"
-          node smoke.mjs
+          python -m http.server 4173 > "$RUNNER_TEMP/http.log" 2>&1 &
+          PID=$!
+          trap 'kill "$PID" 2>/dev/null || true' EXIT
+          for i in {1..20}; do curl -fsS "http://127.0.0.1:4173/hearing-records/prison-watch/kaikai-final-chapter/" >/dev/null && break || sleep 1; done
+          cd "$RUNNER_TEMP/pw" && node smoke.mjs
 
-      - name: Commit verified fixes and remove one-off workflow
+      - name: Commit fixes and remove one-off workflow
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git rm -- .github/workflows/oneoff-address-pr109-review.yml
-          git add hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
-          git add hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css
+          git add hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css
           git diff --cached --check
           git commit -m "Fix nested deep links and timeline search [pr109-review-fixed]"
           git push origin "HEAD:${{ github.ref_name }}"
