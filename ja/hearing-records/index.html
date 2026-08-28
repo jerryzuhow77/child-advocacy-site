@@ -71,12 +71,12 @@
 <p>イベントテキスト、フォトアルバム、ビデオ記録</p>
 </div>
 </a>
-<a class="visual-related-card" href="../social/">
-<img alt="Child Protection Action Alliance 公式コミュニティ アート広告画像" decoding="async" loading="lazy" src="../../assets/social-art/instagram-official-ai.jpg">
+<a class="visual-related-card" href="../../hearing-records/prison-watch/kaikai-final-chapter/" hreflang="zh-Hant">
+<img alt="剴剴事件特集・第2章" decoding="async" loading="lazy" src="../../assets/art/kaikai-professional-network-poster-20260828.webp">
 <div class="visual-related-copy">
-<small>公式コミュニティ</small>
-<h3>Facebook・Instagram・Threads</h3>
-<p>3 つの公式プラットフォーム リンクとソーシャル コンテンツの入り口</p>
+<small>KAIKAI CASE・繁体字中国語</small>
+<h3>第2章｜望まれなかった子ども・選ばれる人生</h3>
+<p>完全版は繁体字中国語で公開中です。ページ上で簡体字中国語にも切り替えられます。</p>
 </div>
 </a>
 </div>
@@ -100,7 +100,8 @@ fetch('../data/hearing-records.json').then(r=>r.json()).then(a=>{
       </div>
     </div>
   </article>`).join('');
-  setLang(localStorage.getItem('siteLang')||'zh-Hant');
+  localStorage.setItem('siteLang','ja');
+  setLang('ja');
 }).catch(()=>{document.getElementById('list').innerHTML='<div class="record">現時点では傍聴 レコードをロードできません。</div>'});
 </script>
 </body></html>
