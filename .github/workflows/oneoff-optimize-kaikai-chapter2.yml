@@ -1,0 +1,182 @@
+name: One-off optimize Kaikai Chapter 2
+
+on:
+  push:
+    branches:
+      - feat/kaikai-chapter2-full-ux-20260828
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kaikai-chapter2-full-ux-20260828
+  cancel-in-progress: false
+
+jobs:
+  optimize:
+    if: ${{ !contains(github.event.head_commit.message, '[chapter2-ux-ready]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Check out optimization branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Restore one-off optimizer
+        shell: bash
+        run: |
+          cat .github/oneoff/optimizer.py.gz.b64.part* | base64 --decode | gzip --decompress > "$RUNNER_TEMP/optimize_kaikai_chapter2.py"
+          python -m py_compile "$RUNNER_TEMP/optimize_kaikai_chapter2.py"
+
+      - name: Install optimizer dependencies
+        run: python -m pip install --disable-pip-version-check --quiet pillow beautifulsoup4
+
+      - name: Apply reader-first optimization
+        run: python "$RUNNER_TEMP/optimize_kaikai_chapter2.py"
+
+      - name: Run static validation
+        shell: bash
+        run: |
+          node --check hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
+          git diff --check
+          python - <<'PY'
+          from pathlib import Path
+          base = Path('hearing-records/prison-watch/kaikai-final-chapter')
+          for path in (base/'index.html', base/'zh-Hans/index.html'):
+              text = path.read_text(encoding='utf-8')
+              assert text.count('class="nav-group"') == 5, path
+              assert 'id="chapter-brief"' in text, path
+              assert 'id="page-actions"' in text, path
+              assert 'sizes="100vw"' in text, path
+          print('Static assertions passed.')
+          PY
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Chromium smoke tests and capture views
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/kaikai-pw" "$RUNNER_TEMP/kaikai-artifacts"
+          cd "$RUNNER_TEMP/kaikai-pw"
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null 2>&1
+          npx playwright install --with-deps chromium >/dev/null
+          cat > smoke.mjs <<'JS'
+          import { chromium } from 'playwright';
+          import { writeFile } from 'node:fs/promises';
+
+          const base = 'http://127.0.0.1:4173';
+          const artifactDir = process.env.RUNNER_TEMP + '/kaikai-artifacts';
+          const cases = [
+            { name: 'zh-Hant-desktop', path: '/hearing-records/prison-watch/kaikai-final-chapter/', viewport: { width: 1440, height: 900 }, mobile: false },
+            { name: 'zh-Hant-mobile', path: '/hearing-records/prison-watch/kaikai-final-chapter/', viewport: { width: 390, height: 844 }, mobile: true },
+            { name: 'zh-Hans-mobile', path: '/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/', viewport: { width: 390, height: 844 }, mobile: true }
+          ];
+
+          const browser = await chromium.launch({ headless: true });
+          const report = [];
+          for (const test of cases) {
+            const context = await browser.newContext({ viewport: test.viewport, isMobile: test.mobile, deviceScaleFactor: 1 });
+            const page = await context.newPage();
+            const failures = [];
+            page.on('pageerror', (error) => failures.push(`pageerror: ${error.message}`));
+            page.on('response', (response) => {
+              const url = new URL(response.url());
+              if (url.origin === base && response.status() >= 400) failures.push(`${response.status()} ${url.pathname}`);
+            });
+
+            await page.goto(base + test.path, { waitUntil: 'domcontentloaded', timeout: 45000 });
+            await page.locator('#chapter-brief').waitFor({ state: 'attached', timeout: 15000 });
+            await page.waitForTimeout(800);
+
+            const title = await page.title();
+            if (!title.includes('？')) failures.push('question-mark title boundary missing');
+            const heroLoaded = await page.locator('.hero-art img').evaluate((img) => img.complete && img.naturalWidth > 0);
+            if (!heroLoaded) failures.push('hero image did not load');
+            const order = await page.evaluate(() => ['readingDepth','chapter-brief','method','puppet-theatre','adoption-bridge'].map((id) => document.getElementById(id)?.getBoundingClientRect().top + scrollY));
+            if (!(order[0] < order[1] && order[1] < order[2] && order[2] < order[3] && order[3] < order[4])) failures.push(`reader-first order invalid: ${order.join(',')}`);
+
+            await page.locator('[data-reading-depth="quick"]').click();
+            await page.waitForTimeout(250);
+            const injuriesHidden = await page.locator('#injuries').evaluate((node) => node.hidden || getComputedStyle(node).display === 'none');
+            if (!injuriesHidden) failures.push('quick mode did not collapse guided evidence');
+
+            const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+            if (overflow > 8) failures.push(`horizontal overflow: ${overflow}px`);
+
+            await page.screenshot({ path: `${artifactDir}/${test.name}-top.png`, fullPage: false });
+            await page.locator('#chapter-brief').scrollIntoViewIfNeeded();
+            await page.waitForTimeout(200);
+            await page.screenshot({ path: `${artifactDir}/${test.name}-brief.png`, fullPage: false });
+
+            if (test.mobile) {
+              await page.locator('#menuButton').click();
+              const navOpen = await page.locator('#siteNav').evaluate((node) => node.classList.contains('open') && getComputedStyle(node).display !== 'none');
+              if (!navOpen) failures.push('mobile grouped navigation did not open');
+              await page.locator('#siteNav .nav-group').nth(2).locator('summary').click();
+              await page.locator('#siteNav a[href="#injuries"]').click();
+              await page.waitForTimeout(500);
+              const deepLink = await page.evaluate(() => ({ hash: location.hash, hidden: document.getElementById('injuries').hidden }));
+              if (deepLink.hash !== '#injuries' || deepLink.hidden) failures.push(`deep-link reveal failed: ${JSON.stringify(deepLink)}`);
+            }
+
+            report.push({ case: test.name, title, overflow, failures });
+            await context.close();
+          }
+          await browser.close();
+          await writeFile(`${artifactDir}/qa-summary.json`, JSON.stringify(report, null, 2));
+          const allFailures = report.flatMap((item) => item.failures.map((failure) => `${item.case}: ${failure}`));
+          if (allFailures.length) throw new Error(allFailures.join('\n'));
+          console.log(JSON.stringify(report, null, 2));
+          JS
+
+          cd "$GITHUB_WORKSPACE"
+          python -m http.server 4173 > "$RUNNER_TEMP/kaikai-http.log" 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          for i in {1..20}; do
+            curl -fsS "http://127.0.0.1:4173/hearing-records/prison-watch/kaikai-final-chapter/" >/dev/null && break
+            sleep 1
+          done
+          cd "$RUNNER_TEMP/kaikai-pw"
+          node smoke.mjs
+
+      - name: Upload visual QA evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: kaikai-chapter2-reader-first-qa
+          path: ${{ runner.temp }}/kaikai-artifacts
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Commit optimized page
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add hearing-records/prison-watch/kaikai-final-chapter/index.html
+          git add hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+          git add hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css
+          git add hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
+          git add assets/art/kaikai-chapter2-hero-zh-Hant-20260828-v3-*.jpg
+          git add assets/art/kaikai-chapter2-hero-zh-Hant-20260828-v3-*.webp
+          git add assets/art/kaikai-chapter2-hero-zh-Hans-20260828-v3-*.jpg
+          git add assets/art/kaikai-chapter2-hero-zh-Hans-20260828-v3-*.webp
+          git diff --cached --stat
+          if git diff --cached --quiet; then
+            echo "Optimizer produced no changes" >&2
+            exit 1
+          fi
+          git commit -m "Optimize Kaikai Chapter 2 reading experience [chapter2-ux-ready]"
+          git push origin "HEAD:${{ github.ref_name }}"
