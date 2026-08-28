@@ -253,7 +253,9 @@ function initMobileMenu(){
   });
 }
 
-document.addEventListener('DOMContentLoaded',initMobileMenu);
+document.readyState==='loading'
+  ? document.addEventListener('DOMContentLoaded',initMobileMenu,{once:true})
+  : initMobileMenu();
 
 /* ===== 護童大頭貼：精簡版 ===== */
 function initUniqueBrandAvatars(){
