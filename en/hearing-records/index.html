@@ -92,7 +92,7 @@ fetch('../data/hearing-records.json').then(r=>r.json()).then(a=>{
       <p>${x.summary||''}</p>
       <div class="case-record-actions">
         ${x.caseUrl?`<a class="read-btn secondary" href="${x.caseUrl}">Case Introductions</a>`:''}
-        <a class="read-btn" href="${x.url}">Read full transcript →</a>
+        <a class="read-btn" href="${x.url}">${x.ctaLabel || 'Read full transcript'} →</a>
       </div>
     </div>
   </article>`).join('');
