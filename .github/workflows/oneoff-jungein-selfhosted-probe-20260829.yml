@@ -1,0 +1,37 @@
+name: One-off Jungein self-hosted production probe
+
+on:
+  push:
+    branches:
+      - ops/jungein-intro-probe-20260829
+    paths:
+      - .github/workflows/oneoff-jungein-selfhosted-probe-20260829.yml
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: self-hosted
+    timeout-minutes: 5
+    steps:
+      - name: Read-only production path probe
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          echo "PROBE_MODE=read_only"
+          echo "HOSTNAME=$(hostname)"
+          echo "USER=$(id -un)"
+          echo "PWD=$PWD"
+          for path in /opt/global-protection /opt/global-protection/dist/client; do
+            if [[ -e "$path" ]]; then
+              stat -c 'PATH=%n TYPE=%F OWNER=%U:%G MODE=%a' "$path"
+            else
+              echo "PATH_MISSING=$path"
+            fi
+          done
+          if command -v systemctl >/dev/null 2>&1; then
+            systemctl is-active global-protection.service 2>/dev/null || true
+            systemctl is-active global-protection-hk.service 2>/dev/null || true
+          fi
+          echo "PRODUCTION_MUTATED=false"
