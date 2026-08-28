@@ -34,6 +34,8 @@ jobs:
         shell: bash
         run: |
           cat .github/oneoff/optimizer.py.gz.b64.part* | base64 --decode | gzip --decompress > "$RUNNER_TEMP/optimize_kaikai_chapter2.py"
+          grep -F 'text = replace_once(text, unresolved_start, inference_card + unresolved_start, "inference evidence card")' "$RUNNER_TEMP/optimize_kaikai_chapter2.py"
+          sed -i 's/text = replace_once(text, unresolved_start, inference_card + unresolved_start, "inference evidence card")/text = text.replace(unresolved_start, inference_card + unresolved_start, 1)/' "$RUNNER_TEMP/optimize_kaikai_chapter2.py"
           python -m py_compile "$RUNNER_TEMP/optimize_kaikai_chapter2.py"
 
       - name: Install optimizer dependencies
