@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Inspect live route and production source without changing it
+      - name: Inspect live route and optional production source without changing it
         shell: bash
         env:
           TENCENT_SSH_HOST: ${{ secrets.TENCENT_SSH_HOST }}
@@ -47,18 +47,25 @@ jobs:
           PORT="${TENCENT_SSH_PORT:-$DEFAULT_PORT}"
           APP_PATH="${TENCENT_APP_PATH:-$DEFAULT_APP_PATH}"
           SSH_KEY="${TENCENT_SSH_PRIVATE_KEY:-${TENCENT_CVM_SSH_KEY:-${SSH_PRIVATE_KEY:-}}}"
-          test -n "$SSH_KEY"
-          printf '%s\n' "$SSH_KEY" > probe-output/id_probe
-          chmod 600 probe-output/id_probe
 
           curl --fail --silent --show-error --location --max-time 30 \
-            -D probe-output/live-headers.txt "$TARGET_URL" \
-            -o probe-output/live-page.html
+            -A 'JungeinReadOnlyProbe/20260829' \
+            -D probe-output/live-headers.txt \
+            -w '%{url_effective}\n%{http_code}\n%{content_type}\n' \
+            "$TARGET_URL" \
+            -o probe-output/live-page.html \
+            > probe-output/live-response-meta.txt
 
           python3 - <<'PY'
-          import html, pathlib, re, urllib.parse, urllib.request
-          page_path = pathlib.Path('probe-output/live-page.html')
-          page = page_path.read_text('utf-8', errors='replace')
+          import html
+          import json
+          import pathlib
+          import re
+          import urllib.parse
+          import urllib.request
+
+          root = pathlib.Path('probe-output')
+          page = (root / 'live-page.html').read_text('utf-8', errors='replace')
           base = 'https://cn.globalprotectionwall.com/historical-cases/korea/jungein'
           urls = []
           for attr in ('src', 'href'):
@@ -68,24 +75,43 @@ jobs:
                   if parsed.hostname == 'cn.globalprotectionwall.com' and parsed.path.endswith(('.js', '.css')):
                       if url not in urls:
                           urls.append(url)
-          pathlib.Path('probe-output/live-assets.txt').write_text('\n'.join(urls) + '\n', 'utf-8')
-          for index, url in enumerate(urls[:20], 1):
+
+          manifest = []
+          for index, url in enumerate(urls[:40], 1):
               suffix = pathlib.PurePosixPath(urllib.parse.urlparse(url).path).suffix or '.txt'
-              target = pathlib.Path('probe-output/live-assets') / f'{index:02d}{suffix}'
+              filename = f'{index:02d}{suffix}'
+              target = root / 'live-assets' / filename
               request = urllib.request.Request(url, headers={'User-Agent': 'JungeinReadOnlyProbe/20260829'})
+              entry = {'index': index, 'url': url, 'file': f'live-assets/{filename}'}
               try:
                   with urllib.request.urlopen(request, timeout=30) as response:
-                      target.write_bytes(response.read(12_000_000))
+                      body = response.read(15_000_000)
+                      target.write_bytes(body)
+                      entry.update({
+                          'status': response.status,
+                          'content_type': response.headers.get('Content-Type', ''),
+                          'bytes': len(body),
+                          'final_url': response.geturl(),
+                      })
               except Exception as exc:
-                  target.with_suffix(target.suffix + '.error.txt').write_text(f'{url}\n{type(exc).__name__}: {exc}\n', 'utf-8')
+                  entry['error'] = f'{type(exc).__name__}: {exc}'
+              manifest.append(entry)
+
+          (root / 'live-assets.json').write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2), 'utf-8'
+          )
+          (root / 'live-assets.txt').write_text('\n'.join(urls) + ('\n' if urls else ''), 'utf-8')
           PY
 
-          ssh -i probe-output/id_probe -p "$PORT" \
-            -o BatchMode=yes -o ConnectTimeout=15 \
-            -o StrictHostKeyChecking=accept-new \
-            "${USER_NAME}@${HOST}" \
-            "APP_PATH=$(printf '%q' "$APP_PATH") python3 -" \
-            > probe-output/remote-source-snapshot.txt <<'PY'
+          if [[ -n "$SSH_KEY" ]]; then
+            printf '%s\n' "$SSH_KEY" > probe-output/id_probe
+            chmod 600 probe-output/id_probe
+            ssh -i probe-output/id_probe -p "$PORT" \
+              -o BatchMode=yes -o ConnectTimeout=15 \
+              -o StrictHostKeyChecking=accept-new \
+              "${USER_NAME}@${HOST}" \
+              "APP_PATH=$(printf '%q' "$APP_PATH") python3 -" \
+              > probe-output/remote-source-snapshot.txt <<'PY'
           import hashlib
           import os
           from pathlib import Path
@@ -171,16 +197,19 @@ jobs:
                   print(path.read_text('utf-8', errors='replace'))
                   print(f'===== END DESCRIPTOR {rel} =====')
           PY
-
-          rm -f probe-output/id_probe
+            rm -f probe-output/id_probe
+            printf 'ssh_probe=completed\n' > probe-output/ssh-probe-status.txt
+          else
+            printf 'ssh_probe=skipped_no_repository_key_secret\n' > probe-output/ssh-probe-status.txt
+          fi
 
           {
             echo '## Jungein production source probe'
             echo
-            echo '- Live route fetched successfully.'
-            echo '- Production source inspected over SSH without file, service, database, or DNS changes.'
-            echo "- Matched source lines: \`$(wc -l < probe-output/remote-source-snapshot.txt)\`"
+            echo '- Live route and same-origin assets were fetched read-only.'
+            echo "- SSH source probe: \`$(cut -d= -f2 probe-output/ssh-probe-status.txt)\`"
             echo "- Same-origin JS/CSS assets listed: \`$(wc -l < probe-output/live-assets.txt)\`"
+            echo '- No file, service, database, account, or DNS mutation was performed.'
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload read-only probe evidence
