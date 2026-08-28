@@ -128,24 +128,20 @@ jobs:
           if count != 1:
               raise SystemExit(f'Expected one reading-depth block, found {count}')
 
-          sync_old = '''  function syncLifeToggle() {
-            if (!lifeToggle) return;
-            const expanded = body.classList.contains('show-all-life');
-            lifeToggle.textContent = expanded ? copy.hideLife : copy.showLife;
-            lifeToggle.setAttribute('aria-expanded', String(expanded));
-            lifeToggle.setAttribute('aria-controls', 'lifeTimeline');
-          }'''
-          sync_new = '''  function syncLifeToggle() {
-            if (!lifeToggle) return;
-            const expanded = body.classList.contains('show-all-life');
-            lifeToggle.textContent = expanded ? copy.hideLife : copy.showLife;
-            lifeToggle.setAttribute('aria-expanded', String(expanded));
-            lifeToggle.setAttribute('aria-controls', 'lifeTimeline');
-            document.querySelector('#lifeSearch')?.dispatchEvent(new Event('input'));
-          }'''
-          if js.count(sync_old) != 1:
-              raise SystemExit(f'Expected one life toggle sync block, found {js.count(sync_old)}')
-          js = js.replace(sync_old, sync_new, 1)
+          sync_pattern = re.compile(r"  function syncLifeToggle\(\) \{.*?\n  \}", re.DOTALL)
+          sync_replacement = "\n".join([
+              "  function syncLifeToggle() {",
+              "    if (!lifeToggle) return;",
+              "    const expanded = body.classList.contains('show-all-life');",
+              "    lifeToggle.textContent = expanded ? copy.hideLife : copy.showLife;",
+              "    lifeToggle.setAttribute('aria-expanded', String(expanded));",
+              "    lifeToggle.setAttribute('aria-controls', 'lifeTimeline');",
+              "    document.querySelector('#lifeSearch')?.dispatchEvent(new Event('input'));",
+              "  }",
+          ])
+          js, count = sync_pattern.subn(sync_replacement, js, count=1)
+          if count != 1:
+              raise SystemExit(f'Expected one life toggle sync block, found {count}')
           js_path.write_text(js, encoding='utf-8')
 
           css = css_path.read_text(encoding='utf-8')
@@ -199,85 +195,78 @@ jobs:
           const browser = await chromium.launch({ headless: true });
           const failures = [];
 
-          const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true });
-          await context.addInitScript(() => localStorage.setItem('kaikai-final-reading-depth-v1', 'quick'));
-          const page = await context.newPage();
-          page.on('pageerror', (error) => failures.push(`pageerror: ${error.message}`));
-          page.on('response', (response) => {
-            const url = new URL(response.url());
-            if (url.origin === origin && response.status() >= 400) failures.push(`${response.status()} ${url.pathname}`);
-          });
+         ÛÛœİÛÛ^H]ØZ]œ›İÜÙ\‹›™]ĞÛÛ^
+ÈšY]ÜÜˆÈÚYˆÎLZYÚˆK\Ó[Øš[NˆYHJNÂˆ]ØZ]ÛÛ^˜Y[š]ØÜš\
 
-          await page.goto(origin + route + '#dental-warning', { waitUntil: 'domcontentloaded', timeout: 45000 });
-          await page.waitForTimeout(500);
-          const dental = await page.evaluate(() => ({
-            parentHidden: document.getElementById('chen-trial')?.hidden,
-            targetHidden: document.getElementById('dental-warning')?.hidden,
-            targetVisible: Boolean(document.getElementById('dental-warning')?.getClientRects().length),
-          }));
-          if (dental.parentHidden || dental.targetHidden || !dental.targetVisible) failures.push(`nested dental deep link failed: ${JSON.stringify(dental)}`);
 
-          await page.goto(origin + route + '#placement-spectrum', { waitUntil: 'domcontentloaded', timeout: 45000 });
-          await page.waitForTimeout(500);
-          const placement = await page.evaluate(() => ({
-            parentHidden: document.getElementById('system')?.hidden,
-            targetHidden: document.getElementById('placement-spectrum')?.hidden,
-            targetVisible: Boolean(document.getElementById('placement-spectrum')?.getClientRects().length),
-          }));
-          if (placement.parentHidden || placement.targetHidden || !placement.targetVisible) failures.push(`nested placement deep link failed: ${JSON.stringify(placement)}`);
+HOˆØØ[İÜ˜YÙKœÙ]][J	ÚØZZØZKYš[˜[\™XY[™ËY\]ŒIË	Ü]ZXÚÉÊJNÂˆÛÛœİYÙHH]ØZ]ÛÛ^›™]ÔYÙJ
+NÂˆYÙK›ÛŠ	ÜYÙY\œ›Ü‰Ë
+\œ›ÜŠHOˆ˜Z[\™\Ëœ\Ú
+YÙY\œ›Üˆ	Ù\œ›Ü‹›Y\ÜØYÙ_X
+JNÂˆYÙK›ÛŠ	Ü™\ÜÛœÙIË
+™\ÜÛœÙJHOˆÂˆÛÛœİ\›H™]ÈT“
+™\ÜÛœÙK\›
 
-          await page.goto(origin + route, { waitUntil: 'domcontentloaded', timeout: 45000 });
-          await page.locator('#lifeSearch').fill('å‘¨ä¿æ¯');
-          await page.waitForTimeout(250);
-          const search = await page.evaluate(() => {
-            const events = [...document.querySelectorAll('#lifeTimeline .life-event')];
-            const matches = events.filter((event) => (event.dataset.search || '').includes('å‘¨ä¿æ¯'));
-            return {
-              active: document.body.classList.contains('life-search-active'),
-              matches: matches.length,
-              visibleMatches: matches.filter((event) => !event.hidden && getComputedStyle(event).display !== 'none' && event.getClientRects().length).length,
-              status: document.getElementById('lifeStatus')?.textContent || '',
-              toggleDisplay: getComputedStyle(document.getElementById('lifeQuickToggle')).display,
-            };
-          });
-          if (!search.active || search.matches < 1 || search.visibleMatches !== search.matches || !search.status.includes('æ‰¾åˆ°') || search.toggleDisplay !== 'none') {
-            failures.push(`quick-mode timeline search failed: ${JSON.stringify(search)}`);
-          }
+JNÂˆYˆ
+\››ÜšYÚ[ˆOOHÜšYÚ[ˆ	‰ˆ™\ÜÛœÙKœİ]\Ê
+HH
+H˜Z[\™\Ëœ\Ú
+	Ü™\ÜÛœÙKœİ]\Ê
+_H	İ\›œ]˜[Y_X
+NÂˆJNÂ‚ˆ]ØZ]YÙK™ÛİÊÜšYÚ[ˆ
+È›İ]H
+È	ÈÙ[[]Ø\›š[™ÉËÈØZ][[ˆ	ÙÛXÛÛ[ØYY	Ë[Y[İ]ˆLJNÂˆ]ØZ]YÙKØZ]›Ü•[Y[İ]
+L
+NÂˆÛÛœİ[[H]ØZ]YÙK™]˜[X]J
 
-          await page.locator('#lifeSearch').fill('');
-          await page.waitForTimeout(150);
-          const collapsedStatus = await page.locator('#lifeStatus').textContent();
-          if (!collapsedStatus.includes('é‡é»é¡¯ç¤º')) failures.push(`quick-mode status not updated: ${collapsedStatus}`);
+HOˆ
+Âˆ\™[Y[ˆØİ[Y[™Ù][[Y[RY
+	ØÚ[‹]šX[	ÊOËšY[‹ˆ\™Ù]Y[ˆØİ[Y[™Ù][[Y[RY
+	Ù[[]Ø\›š[™ÉÊOËšY[‹ˆ\™Ù]š\ÚX›Nˆ›ÛÛX[ŠØİ[Y[™Ù][[Y[RY
+	Ù[[]Ø\›š[™ÉÊOË™Ù]ÛY[™XİÊ
+K›[™İ
+KˆJJNÂˆYˆ
+[[œ\™[Y[ˆ[[\™Ù]Y[ˆY[[\™Ù]š\ÚX›JH˜Z[\™\Ëœ\Ú
+™\İY[[Y\[šÈ˜Z[Yˆ	Ò”ÓÓ‹œİš[™ÚYJ[[
+_X
+NÂ‚ˆ]ØZ]YÙK™ÛİÊÜšYÚ[ˆ
+È›İ]H
+È	ÈÜXÙ[Y[\ÜXİ[IËÈØZ][[ˆ	ÙÛXÛÛ[ØYY	Ë[Y[İ]ˆLJNÂˆ]ØZ]YÙKØZ]›Ü•[Y[İ]
+L
+NÂˆÛÛœİXÙ[Y[H]ØZ]YÙK™]˜[X]J
 
-          const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-          if (overflow > 8) failures.push(`horizontal overflow: ${overflow}px`);
+HOˆ
+Âˆ\™[Y[ˆØİ[Y[™Ù][[Y[RY
+	ÜŞ\İ[IÊOËšY[‹ˆ\™Ù]Y[ˆØİ[Y[™Ù][[Y[RY
+	ÜXÙ[Y[\ÜXİ[IÊOËšY[‹ˆ\™Ù]š\ÚX›Nˆ›ÛÛX[ŠØİ[Y[™Ù][[Y[RY
+	ÜXÙ[Y[\ÜXİ[IÊOË™Ù]ÛY[™XİÊ
+K›[™İ
+KˆJJNÂˆYˆ
+XÙ[Y[œ\™[Y[ˆXÙ[Y[\™Ù]Y[ˆ\XÙ[Y[\™Ù]š\ÚX›JH˜Z[\™\Ëœ\Ú
+™\İYXÙ[Y[Y\[šÈ˜Z[Yˆ	Ò”ÓÓ‹œİš[™ÚYJXÙ[Y[
+_X
+NÂ‚ˆ]ØZ]YÙK™ÛİÊÜšYÚ[ˆ
+È›İ]KÈØZ][[ˆ	ÙÛXÛÛ[ØYY	Ë[Y[İ]ˆLJNÂˆ]ØZ]YÙK›ØØ]ÜŠ	ÈÛY™TÙX\˜Ú	ÊK™š[
+	ùdj9/çy«ãIÊNÂˆ]ØZ]YÙKØZ]›Ü•[Y[İ]
+L
+NÂˆÛÛœİÙX\˜ÚH]ØZ]YÙK™]˜[X]J
 
-          await context.close();
-          await browser.close();
-          if (failures.length) throw new Error(failures.join('\n'));
-          console.log(JSON.stringify({ dental, placement, search, collapsedStatus, overflow }, null, 2));
-          JS
-
-          cd "$GITHUB_WORKSPACE"
-          python -m http.server 4173 > "$RUNNER_TEMP/pr109-http.log" 2>&1 &
-          SERVER_PID=$!
-          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
-          for i in {1..20}; do
-            curl -fsS "http://127.0.0.1:4173${route:-/hearing-records/prison-watch/kaikai-final-chapter/}" >/dev/null && break
-            sleep 1
-          done
-          cd "$RUNNER_TEMP/pr109-pw"
-          node smoke.mjs
-
-      - name: Commit verified review fixes and remove one-off workflow
-        shell: bash
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git rm -- .github/workflows/oneoff-address-pr109-review.yml
-          git add hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
-          git add hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css
-          git diff --cached --check
-          git diff --cached --stat
-          git commit -m "Fix nested deep links and timeline search [pr109-review-fixed]"
-          git push origin "HEAD:${{ github.ref_name }}"
+HOˆÂˆÛÛœİ]™[ÈHË‹‹™Øİ[Y[œ]Y\TÙ[XİÜ[
+	ÈÛY™U[Y[[™H›Y™KY]™[	ÊWNÂˆÛÛœİX]Ú\ÈH]™[Ë™š[\Š
+]™[
+HOˆ
+]™[™]\Ù]œÙX\˜Ú	ÉÊKš[˜ÛY\Ê	ùdj9/çy«ãIÊJNÂˆ™]\›ˆÂˆXİ]™NˆØİ[Y[˜›ÙK˜Û\ÜÓ\İ˜ÛÛZ[œÊ	ÛY™K\ÙX\˜ÚXXİ]™IÊKˆX]Ú\ÎˆX]Ú\Ë›[™İˆš\ÚX›SX]Ú\ÎˆX]Ú\Ë™š[\Š
+]™[
+HOˆY]™[šY[ˆ	‰ˆÙ]ÛÛ\]Yİ[J]™[
+K™\Ü^HOOH	Û›Û™IÈ	‰ˆ]™[™Ù]ÛY[™XİÊ
+K›[™İ
+K›[™İˆİ]\ÎˆØİ[Y[™Ù][[Y[RY
+	ÛY™Tİ]\ÉÊOË^ÛÛ[	ÉËˆÙÙÛQ\Ü^NˆÙ]ÛÛ\]Yİ[JØİ[Y[™Ù][[Y[RY
+	ÛY™T]ZXÚÕÙÙÛIÊJK™\Ü^KˆNÂˆJNÂˆYˆ
+\ÙX\˜Ú˜Xİ]™HÙX\˜Ú›X]Ú\ÈHÙX\˜Úš\ÚX›SX]Ú\ÈOOHÙX\˜Ú›X]Ú\È\ÙX\˜Úœİ]\Ëš[˜ÛY\Ê	ù¢o¹b,	ÊHÙX\˜ÚÙÙÛQ\Ü^HOOH	Û›Û™IÊHÂˆ˜Z[\™\Ëœ\Ú
+]ZXÚË[[ÙH[Y[[™HÙX\˜Ú˜Z[Yˆ	Ò”ÓÓ‹œİš[™ÚYJÙX\˜Ú
+_X
+NÂˆB‚ˆ]ØZ]YÙK›ØØ]ÜŠ	ÈÛY™TÙX\˜Ú	ÊK™š[
+	ÉÊNÂˆ]ØZ]YÙKØZ]›Ü•[Y[İ]
+ML
+NÂˆ6öç7B6öÆÆ6VE7FGW2Òv—BvRæÆö6F÷"‚r6Æ–fU7FGW2r’çFW‡D6öçFVçB‚“°¢–b‚6öÆÆ6VE7FGW2æ–æ6ÇVFW2‚~˜xŞ›¹îšşzK¢r’’f–ÇW&W2çW6‚†V–6²ÖÖöFR7FGW2æ÷BWFFVC¢G¶6öÆÆ6VE7FGW7Ö“° ¢6öç7B÷fW&fÆ÷rÒv—BvRæWfÇVFR‚‚’ÓâFö7VÖVçBæFö7VÖVçDVÆVÖVçBç67&öÆÅv–GF‚ÒFö7VÖVçBæFö7VÖVçDVÆVÖVçBæ6Æ–VçEv–GF‚“°¢–b†÷fW&fÆ÷râ‚’f–ÇW&W2çW6‚††÷&—¦öçFÂ÷fW&fÆ÷s¢G¶÷fW&fÆ÷w×†“° ¢v—B6öçFW‡Bæ6Æ÷6R‚“°¢v—B'&÷w6W"æ6Æ÷6R‚“°¢–b†f–ÇW&W2æÆVæwF‚’F‡&÷ræWrW'&÷"†f–ÇW&W2æ¦ö–â‚uÆâr’“°¢6öç6öÆRæÆör„¥4ôâç7G&–æv–g’‡²FVçFÂÂÆ6VÖVçBÂ6V&6‚Â6öÆÆ6VE7FGW2Â÷fW&fÆ÷rÒÂçVÆÂÂ"’“°¢¥0 ¢6B"Dt•D…T%õtõ$µ54R ¢—F†öâÖÒ‡GGç6W'fW"Cs2â"E%TääU%õDTÕ÷#’Ö‡GGæÆör"#âc`¢4U%dU%õ”CÒB¢G&v¶–ÆÂ"E4U%dU%õ”B"#âöFWböçVÆÂÇÂG'VRrU„•@¢f÷"’–â³âã#Ó²Fğ¢7W&ÂÖg52&‡GG¢òó#rããã£Cs2G·&÷WFS¢Òö†V&–ær×&V6÷&G2÷&—6öâ×vF6‚ö¶–¶’Öf–æÂÖ6†FW"÷Ò"âöFWböçVÆÂbb'&V°¢6ÆVW¢FöæP¢6B"E%TääU%õDTÕ÷#’×r ¢æöFR6Öö¶RæÖ§0 ¢ÒæÖS¢6öÖÖ—BfW&–f–VB&Wf–Wrf—†W2æB&VÖ÷fRöæRÖöfbv÷&¶fÆ÷p¢6†VÆÃ¢&6€¢'Vã¢À¢v—B6öæf–rW6W"ææÖR&v—F‡V"Ö7F–öç5¶&÷EÒ ¢v—B6öæf–rW6W"æVÖ–Â#Cƒ“ƒ#ƒ"¶v—F‡V"Ö7F–öç5¶&÷EÔW6W'2ææ÷&WÇ’æv—F‡V"æ6öÒ ¢v—B&ÒÒÒæv—F‡V"÷v÷&¶fÆ÷w2ööæVöfbÖFG&W72×#’×&Wf–Wrç–ÖÀ¢v—BFB†V&–ær×&V6÷&G2÷&—6öâ×vF6‚ö¶–¶’Öf–æÂÖ6†FW"öf–æÂÖ6†FW"æ§0¢v—BFB†V&–ær×&V6÷&G2÷&—6öâ×vF6‚ö¶–¶’Öf–æÂÖ6†FW"öf–æÂÖ6†FW"æ770¢v—BF–fbÒÖ66†VBÒÖ6†V6°¢v—BF–fbÒÖ66†VBÒ×7F@¢v—B6öÖÖ—BÖÒ$f—‚æW7FVBFVWÆ–æ·2æBF–ÖVÆ–æR6V&6‚·#’×&Wf–WrÖf—†VEÒ ¢v—BW6‚÷&–v–â$„TC¢G·²v—F‡V"ç&VeöæÖR×Ò  
