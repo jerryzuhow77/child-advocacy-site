@@ -423,6 +423,48 @@ lifeSearch?.addEventListener('input', filterLifeEvents);
     if (!location.hash || location.hash.length < 2) return null;
     try { return document.getElementById(decodeURIComponent(location.hash.slice(1))); } catch (_) { return null; }
   };
+  let hashScrollSequence = 0;
+  const revealTargetForNavigation = (target) => {
+    if (!target) return;
+    let node = target;
+    while (node && node !== document.documentElement) {
+      if (node.classList?.contains('reveal')) node.classList.add('in-view');
+      if (node.matches?.('section[data-heavy="true"]')) node.style.contentVisibility = 'visible';
+      node = node.parentElement;
+    }
+  };
+  const stabilizeHashTarget = (target, smooth = false) => {
+    if (!target) return;
+    const sequence = ++hashScrollSequence;
+    revealTargetForNavigation(target);
+
+    const expectedTop = () => {
+      const value = Number.parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop);
+      return Number.isFinite(value) ? value : 90;
+    };
+    const align = (behavior = 'auto') => {
+      if (sequence !== hashScrollSequence || getHashTarget() !== target) return;
+      revealTargetForNavigation(target);
+      target.scrollIntoView({ behavior, block: 'start', inline: 'nearest' });
+    };
+    const correctLayoutShift = () => {
+      if (sequence !== hashScrollSequence || getHashTarget() !== target) return;
+      revealTargetForNavigation(target);
+      const top = target.getBoundingClientRect().top;
+      if (Math.abs(top - expectedTop()) > 8) align('auto');
+    };
+
+    requestAnimationFrame(() => align(smooth && !reduceMotion ? 'smooth' : 'auto'));
+    [120, 360, 850, 1500].forEach((delay) => window.setTimeout(correctLayoutShift, delay));
+    if (document.fonts?.ready) document.fonts.ready.then(() => window.setTimeout(correctLayoutShift, 0));
+  };
+  const cancelHashStabilization = () => { hashScrollSequence += 1; };
+  window.addEventListener('wheel', cancelHashStabilization, { passive: true });
+  window.addEventListener('touchstart', cancelHashStabilization, { passive: true });
+  window.addEventListener('keydown', (event) => {
+    if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(event.key)) cancelHashStabilization();
+  });
+
   const revealHashTarget = (scroll = false) => {
   document.querySelectorAll('[data-depth-reveal="true"]').forEach((node) => {
     node.removeAttribute('data-depth-reveal');
@@ -442,13 +484,14 @@ lifeSearch?.addEventListener('input', filterLifeEvents);
     section = section.parentElement?.closest('main section[data-reading-level]') || null;
   }
 
+  revealTargetForNavigation(target);
   if (!closestSection.querySelector(':scope > .depth-reveal-note')) {
     const note = document.createElement('p');
     note.className = 'depth-reveal-note';
     note.textContent = copy.revealed;
     closestSection.prepend(note);
   }
-  if (scroll) requestAnimationFrame(() => target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }));
+  if (scroll) stabilizeHashTarget(target, true);
   return revealedSections;
 };
 const applyReadingDepth = (scrollToHash = false) => {
@@ -472,6 +515,10 @@ const applyReadingDepth = (scrollToHash = false) => {
     new MutationObserver(() => applyReadingDepth(false)).observe(body, { attributes: true, attributeFilter: ['data-reading-depth'] });
   }
   window.addEventListener('hashchange', () => applyReadingDepth(true));
+  window.addEventListener('load', () => {
+    const target = getHashTarget();
+    if (target) stabilizeHashTarget(target, false);
+  }, { once: true });
 
   const lifeTimeline = document.querySelector('#lifeTimeline');
   let lifeToggle = null;
@@ -494,7 +541,7 @@ const applyReadingDepth = (scrollToHash = false) => {
   lifeSearch?.dispatchEvent(new Event('input'));
 }
   syncLifeToggle();
-  applyReadingDepth(false);
+  applyReadingDepth(Boolean(location.hash));
 
   document.querySelectorAll('main section[id]').forEach((section) => {
     const heading = section.querySelector(':scope > .section-head h2, :scope > header.section-head h2');
