@@ -51,6 +51,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 - <<'PY'
+          import json
           from pathlib import Path
 
           root = Path('.')
@@ -60,7 +61,7 @@ jobs:
           hearing = (root / 'assets/home-ia-hearing-campaign-20260823.js').read_text(encoding='utf-8')
           portal = (root / 'assets/global-protection-wall-portal.js').read_text(encoding='utf-8')
           sw = (root / 'sw.js').read_text(encoding='utf-8')
-          bulletin = (root / 'data/latest-bulletins.json').read_text(encoding='utf-8')
+          bulletin = json.loads((root / 'data/latest-bulletins.json').read_text(encoding='utf-8'))
 
           assert len(base) > 100_000, 'Original site behavior was not preserved in the base layer.'
           assert 'site-base-20260823.js' in loader and 'site-four-language-qa-20260823.js' in loader
@@ -76,7 +77,13 @@ jobs:
           assert "const VERSION = '2026-08-26-pwa-resilient-v1'" in sw
           assert "const closing=group.classList.contains('is-expanded');" in base
           assert "group.matches(':hover')" not in base, 'A hovered nested menu must still open on its first click.'
-          assert bulletin.count('kaikai-professional-network-poster-20260828.webp') >= 4, 'Chapter Two must provide neutral English and Japanese images in both feed records.'
+          feed_sections = {
+              name: [item.get('id') for item in bulletin[name]]
+              for name in ('pinned', 'items')
+          }
+          for name, feed_ids in feed_sections.items():
+              assert feed_ids.count('kaikai-chapter-one-20260828') == 1, f'Chapter One must appear exactly once in {name}.'
+              assert 'kaikai-chapter-two-20260828' not in feed_ids, f'Chapter Two must stay absent from {name}.'
           print('Static synchronization assertions passed.')
           PY
 
