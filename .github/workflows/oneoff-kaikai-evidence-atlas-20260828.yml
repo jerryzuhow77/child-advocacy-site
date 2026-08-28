@@ -98,8 +98,8 @@ jobs:
                       '本区区分七名证人、陈尚洁的被告陈述，以及林心慈另案起诉资料；证人并非本案刑事被告，林心慈另案及陈尚洁本案都仍应保留未定谳与无罪推定标示。',
                       'simplified legal banner',
                   )
-                  old_css = '../final-chapter.css?v=20260828-15'
-                  new_css = '../final-chapter.css?v=20260828-16'
+                  old_css = '../final-chapter.css?v=20260828-16'
+                  new_css = '../final-chapter.css?v=20260828-17'
               else:
                   text = replace_once(
                       text,
@@ -119,8 +119,8 @@ jobs:
                       '本區區分七名證人、陳尚潔的被告陳述，以及林心慈另案起訴資料；證人並非本案刑事被告，林心慈另案及陳尚潔本案都仍應保留未定讞與無罪推定標示。',
                       'traditional legal banner',
                   )
-                  old_css = './final-chapter.css?v=20260828-15'
-                  new_css = './final-chapter.css?v=20260828-16'
+                  old_css = './final-chapter.css?v=20260828-16'
+                  new_css = './final-chapter.css?v=20260828-17'
 
               text = replace_once(
                   text,
