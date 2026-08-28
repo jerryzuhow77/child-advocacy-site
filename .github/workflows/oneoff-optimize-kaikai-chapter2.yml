@@ -50,6 +50,15 @@ jobs:
           mkdir -p "$RUNNER_TEMP/kaikai-artifacts"
           set -o pipefail
           python "$RUNNER_TEMP/optimize_kaikai_chapter2.py" 2>&1 | tee "$RUNNER_TEMP/kaikai-artifacts/optimizer.log"
+          python - <<'PY'
+          from pathlib import Path
+          for path in (
+              Path('hearing-records/prison-watch/kaikai-final-chapter/index.html'),
+              Path('hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html'),
+          ):
+              text = path.read_text(encoding='utf-8')
+              path.write_text('\n'.join(line.rstrip() for line in text.splitlines()) + '\n', encoding='utf-8')
+          PY
 
       - name: Upload optimizer diagnostics
         if: ${{ steps.apply_optimizer.outcome == 'failure' }}
