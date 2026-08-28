@@ -217,6 +217,7 @@
     const setStaticFinalState = () => {
       showDialogue(dialogueLines.length - 1);
       setProgress(1);
+      theatre.dataset.curtain = 'open';
       if (!window.gsap) return;
       window.gsap.set([female, male, dialogue], { clearProps: 'all', autoAlpha: 1, xPercent: 0, y: 0, rotation: 0, scale: 1 });
       window.gsap.set(curtainLeft, { xPercent: -105 });
@@ -236,6 +237,7 @@
     } else {
       const gsap = window.gsap;
       theatre.dataset.animated = 'true';
+      theatre.dataset.curtain = 'closed';
       gsap.set(curtainLeft, { xPercent: 0 });
       gsap.set(curtainRight, { xPercent: 0 });
       gsap.set([female, male], { autoAlpha: 0 });
@@ -260,6 +262,7 @@
       timeline
         .to(curtainLeft, { xPercent: -105, duration: 1.55, ease: 'power3.inOut' }, 0)
         .to(curtainRight, { xPercent: 105, duration: 1.55, ease: 'power3.inOut' }, 0)
+        .call(() => { theatre.dataset.curtain = 'open'; }, [], 1.4)
         .to(stageArt, { scale: 1, duration: 5.5, ease: 'sine.out' }, 0)
         .to(female, { xPercent: 0, autoAlpha: 1, rotation: 0, duration: 1.25, ease: 'back.out(1.25)' }, 0.65)
         .to(male, { xPercent: 0, autoAlpha: 1, rotation: 0, duration: 1.35, ease: 'back.out(1.2)' }, 1.05)
@@ -289,6 +292,14 @@
         }
       });
 
+      const curtainCloseAt = 28.15;
+      timeline
+        .to(dialogue, { autoAlpha: 0, y: 14, duration: 0.55, ease: 'power2.in' }, curtainCloseAt)
+        .to([female, male], { y: 12, autoAlpha: 0.72, duration: 0.8, ease: 'sine.inOut' }, curtainCloseAt)
+        .call(() => { theatre.dataset.curtain = 'closed'; }, [], curtainCloseAt + 0.3)
+        .to(curtainLeft, { xPercent: 0, duration: 1.85, ease: 'power3.inOut' }, curtainCloseAt + 0.35)
+        .to(curtainRight, { xPercent: 0, duration: 1.85, ease: 'power3.inOut' }, curtainCloseAt + 0.35);
+
       const playTimeline = (restart = false) => {
         if (restart || timeline.totalProgress() >= 0.999) timeline.restart();
         else timeline.play();
@@ -312,8 +323,9 @@
       });
       replayButton?.addEventListener('click', () => playTimeline(true));
       skipLink?.addEventListener('click', () => {
-        timeline.pause();
+        timeline.pause(0);
         audio?.pause();
+        if (audio) audio.currentTime = 0;
         setStaticFinalState();
         if (transcript) transcript.open = true;
         if (playButton) {
