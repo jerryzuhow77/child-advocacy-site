@@ -46,24 +46,31 @@
 
   const normalize = (value) => value.toLocaleLowerCase().replace(/\s+/g, ' ').trim();
   const filterLifeEvents = () => {
-    const query = normalize(lifeSearch?.value || '');
-    let shown = 0;
+  const query = normalize(lifeSearch?.value || '');
+  document.body.classList.toggle('life-search-active', Boolean(query));
+  let shown = 0;
 
-    lifeEvents.forEach((event) => {
-      const haystack = normalize(`${event.dataset.search || ''} ${event.textContent || ''}`);
-      const match = !query || haystack.includes(query);
-      event.hidden = !match;
-      if (match) shown += 1;
-    });
+  lifeEvents.forEach((event) => {
+    const haystack = normalize(`${event.dataset.search || ''} ${event.textContent || ''}`);
+    const match = !query || haystack.includes(query);
+    event.hidden = !match;
+    if (match) shown += 1;
+  });
 
-    if (lifeStatus) {
-      lifeStatus.textContent = query
-        ? `${locale === 'zh-Hans' ? '找到' : '找到'} ${shown} ${resultLabel}`
+  if (lifeStatus) {
+    const quickCollapsed = !query
+      && document.body.dataset.readingDepth === 'quick'
+      && !document.body.classList.contains('show-all-life');
+    const quickShown = Math.min(4, lifeEvents.length);
+    lifeStatus.textContent = query
+      ? `${locale === 'zh-Hans' ? '找到' : '找到'} ${shown} ${resultLabel}`
+      : quickCollapsed
+        ? `${locale === 'zh-Hans' ? '重点显示' : '重點顯示'} ${quickShown} / ${lifeEvents.length} ${totalLabel}`
         : `${locale === 'zh-Hans' ? '显示' : '顯示'} ${lifeEvents.length} ${totalLabel}`;
-    }
-  };
+  }
+};
 
-  lifeSearch?.addEventListener('input', filterLifeEvents);
+lifeSearch?.addEventListener('input', filterLifeEvents);
 
   const readingDepthButtons = [...document.querySelectorAll('[data-reading-depth]')];
   const readingDepthStatus = document.querySelector('#readingDepthStatus');
@@ -336,4 +343,232 @@
       });
     }
   }
+})();
+
+// 2026-08-28 · chapter 2 reader-first UX
+(() => {
+  const locale = document.documentElement.lang === 'zh-Hans' ? 'zh-Hans' : 'zh-Hant';
+  const isHans = locale === 'zh-Hans';
+  const body = document.body;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const copy = isHans
+    ? {
+        sectionLink: '复制本节链接', copied: '链接已复制', shareDone: '摘要链接已复制',
+        exportDone: '来源索引已下载', showLife: '显示全部生命节点', hideLife: '收合为5分钟重点',
+        top: '返回页首', revealed: '已为这个深链接暂时展开完整段落。', exportName: '剀剀案第二章-来源索引.tsv',
+        shareText: '剀剀案特定专题第二章：先用5分钟看懂两次出养程序、警讯断点与制度责任。'
+      }
+    : {
+        sectionLink: '複製本節連結', copied: '連結已複製', shareDone: '摘要連結已複製',
+        exportDone: '來源索引已下載', showLife: '顯示全部生命節點', hideLife: '收合為5分鐘重點',
+        top: '返回頁首', revealed: '已為這個深連結暫時展開完整段落。', exportName: '剴剴案第二章-來源索引.tsv',
+        shareText: '剴剴案特定專題第二章：先用5分鐘看懂兩次出養程序、警訊斷點與制度責任。'
+      };
+
+  const toast = document.createElement('div');
+  toast.className = 'chapter-toast';
+  toast.setAttribute('role', 'status');
+  toast.setAttribute('aria-live', 'polite');
+  document.body.append(toast);
+  let toastTimer = 0;
+  const notify = (message) => {
+    toast.textContent = message;
+    toast.classList.add('show');
+    window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(() => toast.classList.remove('show'), 2200);
+  };
+
+  const siteNav = document.querySelector('#siteNav');
+  const navGroups = [...document.querySelectorAll('#siteNav .nav-group')];
+  navGroups.forEach((group) => {
+    group.addEventListener('toggle', () => {
+      if (!group.open) return;
+      navGroups.forEach((other) => { if (other !== group) other.open = false; });
+    });
+  });
+  document.addEventListener('click', (event) => {
+    if (!siteNav?.contains(event.target)) navGroups.forEach((group) => { group.open = false; });
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    const openGroup = navGroups.find((group) => group.open);
+    if (openGroup) {
+      openGroup.open = false;
+      openGroup.querySelector('summary')?.focus();
+    }
+  });
+
+  const activeGroupObserver = siteNav && 'MutationObserver' in window
+    ? new MutationObserver(() => {
+        const active = siteNav.querySelector('a.active');
+        if (active && window.innerWidth > 1480) active.closest('.nav-group')?.setAttribute('open', '');
+      })
+    : null;
+  activeGroupObserver?.observe(siteNav, { attributes: true, subtree: true, attributeFilter: ['class'] });
+
+  const caption = document.querySelector('.hero-caption-details');
+  const mobileCaption = window.matchMedia('(max-width: 760px)');
+  let captionTouched = false;
+  caption?.addEventListener('toggle', () => { captionTouched = true; });
+  const syncCaption = () => {
+    if (!caption || captionTouched) return;
+    caption.open = !mobileCaption.matches;
+  };
+  syncCaption();
+  mobileCaption.addEventListener?.('change', syncCaption);
+
+  const depthRank = { quick: 0, guided: 1, full: 2 };
+  const depthSections = [...document.querySelectorAll('main section[data-reading-level]')];
+  const getHashTarget = () => {
+    if (!location.hash || location.hash.length < 2) return null;
+    try { return document.getElementById(decodeURIComponent(location.hash.slice(1))); } catch (_) { return null; }
+  };
+  const revealHashTarget = (scroll = false) => {
+  document.querySelectorAll('[data-depth-reveal="true"]').forEach((node) => {
+    node.removeAttribute('data-depth-reveal');
+    node.querySelector(':scope > .depth-reveal-note')?.remove();
+  });
+  const target = getHashTarget();
+  const closestSection = target?.closest('main section[data-reading-level]');
+  const revealedSections = new Set();
+  if (!closestSection) return revealedSections;
+
+  let section = closestSection;
+  while (section) {
+    section.dataset.depthReveal = 'true';
+    section.hidden = false;
+    section.removeAttribute('aria-hidden');
+    revealedSections.add(section);
+    section = section.parentElement?.closest('main section[data-reading-level]') || null;
+  }
+
+  if (!closestSection.querySelector(':scope > .depth-reveal-note')) {
+    const note = document.createElement('p');
+    note.className = 'depth-reveal-note';
+    note.textContent = copy.revealed;
+    closestSection.prepend(note);
+  }
+  if (scroll) requestAnimationFrame(() => target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }));
+  return revealedSections;
+};
+const applyReadingDepth = (scrollToHash = false) => {
+  const selected = Object.prototype.hasOwnProperty.call(depthRank, body.dataset.readingDepth)
+    ? body.dataset.readingDepth : 'guided';
+  const revealedSections = revealHashTarget(false);
+  depthSections.forEach((section) => {
+    const needed = depthRank[section.dataset.readingLevel] ?? 0;
+    const hide = needed > depthRank[selected] && !revealedSections.has(section);
+    section.hidden = hide;
+    if (hide) section.setAttribute('aria-hidden', 'true');
+    else section.removeAttribute('aria-hidden');
+  });
+  if (scrollToHash) revealHashTarget(true);
+  syncLifeToggle();
+};
+  document.querySelectorAll('[data-reading-depth]').forEach((button) => {
+    button.addEventListener('click', () => requestAnimationFrame(() => applyReadingDepth(false)));
+  });
+  if ('MutationObserver' in window) {
+    new MutationObserver(() => applyReadingDepth(false)).observe(body, { attributes: true, attributeFilter: ['data-reading-depth'] });
+  }
+  window.addEventListener('hashchange', () => applyReadingDepth(true));
+
+  const lifeTimeline = document.querySelector('#lifeTimeline');
+  let lifeToggle = null;
+  if (lifeTimeline?.children.length > 4) {
+    lifeToggle = document.createElement('button');
+    lifeToggle.id = 'lifeQuickToggle';
+    lifeToggle.type = 'button';
+    lifeTimeline.after(lifeToggle);
+    lifeToggle.addEventListener('click', () => {
+      body.classList.toggle('show-all-life');
+      syncLifeToggle();
+    });
+  }
+  function syncLifeToggle() {
+  if (!lifeToggle) return;
+  const expanded = body.classList.contains('show-all-life');
+  lifeToggle.textContent = expanded ? copy.hideLife : copy.showLife;
+  lifeToggle.setAttribute('aria-expanded', String(expanded));
+  lifeToggle.setAttribute('aria-controls', 'lifeTimeline');
+  lifeSearch?.dispatchEvent(new Event('input'));
+}
+  syncLifeToggle();
+  applyReadingDepth(false);
+
+  document.querySelectorAll('main section[id]').forEach((section) => {
+    const heading = section.querySelector(':scope > .section-head h2, :scope > header.section-head h2');
+    if (!heading || heading.querySelector('.section-permalink')) return;
+    const link = document.createElement('a');
+    link.className = 'section-permalink';
+    link.href = `#${section.id}`;
+    link.textContent = isHans ? '链接' : '連結';
+    link.setAttribute('aria-label', `${copy.sectionLink}：${heading.textContent.trim()}`);
+    link.title = copy.sectionLink;
+    link.addEventListener('click', async (event) => {
+      if (!navigator.clipboard) return;
+      event.preventDefault();
+      const url = `${location.href.split('#')[0]}#${section.id}`;
+      try { await navigator.clipboard.writeText(url); notify(copy.copied); history.replaceState(null, '', `#${section.id}`); }
+      catch (_) { location.hash = section.id; }
+    });
+    heading.append(link);
+  });
+
+  const progress = document.createElement('div');
+  progress.className = 'reading-progress';
+  progress.setAttribute('aria-hidden', 'true');
+  progress.innerHTML = '<span></span>';
+  document.body.prepend(progress);
+  const progressFill = progress.firstElementChild;
+  const backToTop = document.createElement('button');
+  backToTop.className = 'back-to-top';
+  backToTop.type = 'button';
+  backToTop.innerHTML = '↑';
+  backToTop.setAttribute('aria-label', copy.top);
+  backToTop.title = copy.top;
+  document.body.append(backToTop);
+  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }));
+  let ticking = false;
+  const updateScrollUi = () => {
+    const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    progressFill.style.width = `${Math.min(100, Math.max(0, window.scrollY / max * 100))}%`;
+    backToTop.classList.toggle('visible', window.scrollY > 700);
+    ticking = false;
+  };
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(updateScrollUi);
+  }, { passive: true });
+  window.addEventListener('resize', updateScrollUi, { passive: true });
+  updateScrollUi();
+
+  document.querySelector('[data-share-summary]')?.addEventListener('click', async () => {
+    const url = `${location.href.split('#')[0]}#chapter-brief`;
+    try {
+      if (navigator.share) await navigator.share({ title: document.title, text: copy.shareText, url });
+      else if (navigator.clipboard) { await navigator.clipboard.writeText(`${copy.shareText}\n${url}`); notify(copy.shareDone); }
+      else location.hash = 'chapter-brief';
+    } catch (error) {
+      if (error?.name !== 'AbortError') location.hash = 'chapter-brief';
+    }
+  });
+
+  document.querySelector('[data-export-sources]')?.addEventListener('click', () => {
+    const rows = [[isHans ? '序号' : '序號', isHans ? '来源' : '來源', isHans ? '网址' : '網址']];
+    document.querySelectorAll('#sources a[href]').forEach((link, index) => {
+      rows.push([String(index + 1), link.textContent.replace(/\s+/g, ' ').trim(), link.href]);
+    });
+    const tsv = '\ufeff' + rows.map((row) => row.map((cell) => String(cell).replace(/\t/g, ' ')).join('\t')).join('\n');
+    const href = URL.createObjectURL(new Blob([tsv], { type: 'text/tab-separated-values;charset=utf-8' }));
+    const download = document.createElement('a');
+    download.href = href;
+    download.download = copy.exportName;
+    document.body.append(download);
+    download.click();
+    download.remove();
+    URL.revokeObjectURL(href);
+    notify(copy.exportDone);
+  });
 })();
