@@ -52,6 +52,13 @@ jobs:
           python "$RUNNER_TEMP/optimize_kaikai_chapter2.py" 2>&1 | tee "$RUNNER_TEMP/kaikai-artifacts/optimizer.log"
           python - <<'PY'
           from pathlib import Path
+          css_path = Path('hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css')
+          css = css_path.read_text(encoding='utf-8')
+          missing_background = "background:linear-gradient(100deg,rgba(4,28,42,.96),rgba(4,28,42,.75)),url('../../../assets/art/kaikai-final-chapter-life-thread-20260827.webp') center/cover no-repeat"
+          replacement_background = "background:radial-gradient(circle at 78% 18%,rgba(210,160,82,.2),transparent 30%),radial-gradient(circle at 12% 82%,rgba(36,95,97,.42),transparent 34%),linear-gradient(112deg,#041c2a 0%,#0b3443 58%,#502e2b 140%)"
+          if css.count(missing_background) != 1:
+              raise RuntimeError('Expected one missing closing background reference')
+          css_path.write_text(css.replace(missing_background, replacement_background, 1), encoding='utf-8')
           for path in (
               Path('hearing-records/prison-watch/kaikai-final-chapter/index.html'),
               Path('hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html'),
