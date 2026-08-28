@@ -1,0 +1,309 @@
+name: One-off Kaikai Chapter 2 corrected live browser verification
+
+on:
+  push:
+    branches:
+      - qa/kaikai-ch2-live-browser-20260828
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kaikai-ch2-live-browser-final-20260828
+  cancel-in-progress: false
+
+jobs:
+  live-browser-final:
+    if: ${{ !contains(github.event.head_commit.message, '[live-browser-final-cleanup]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install Chromium
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/kaikai-live-final"
+          cd "$RUNNER_TEMP/kaikai-live-final"
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null 2>&1
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Run corrected production browser suite
+        shell: bash
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/qa-artifacts-final"
+          cd "$RUNNER_TEMP/kaikai-live-final"
+          cat > verify-live-final.mjs <<'JS'
+          import fs from 'node:fs';
+          import path from 'node:path';
+          import { chromium } from 'playwright';
+
+          const root = 'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/';
+          const outDir = path.join(process.env.GITHUB_WORKSPACE, 'qa-artifacts-final');
+          const locales = [
+            { name: 'zh-Hant', path: '', lang: 'zh-Hant', title: '沒人要的孩子？', search: '周保母', found: '找到', collapsed: '重點顯示' },
+            { name: 'zh-Hans', path: 'zh-Hans/', lang: 'zh-Hans', title: '没人要的孩子？', search: '周保母', found: '找到', collapsed: '重点显示' }
+          ];
+          const viewports = [
+            { name: 'desktop', width: 1440, height: 900 },
+            { name: 'mobile', width: 390, height: 844 }
+          ];
+          const failures = [];
+          const observations = [];
+          const browser = await chromium.launch({ headless: true });
+          let nonce = 0;
+
+          const liveUrl = (locale, hash = '') => `${root}${locale.path}?liveqa=${Date.now()}-${++nonce}${hash}`;
+          const fail = (label, detail) => failures.push(`${label}: ${typeof detail === 'string' ? detail : JSON.stringify(detail)}`);
+
+          async function session(locale, viewport, mode = 'guided') {
+            const context = await browser.newContext({
+              viewport: { width: viewport.width, height: viewport.height },
+              deviceScaleFactor: 1,
+              reducedMotion: 'no-preference'
+            });
+            await context.addInitScript((selectedMode) => {
+              try { localStorage.setItem('kaikai-final-reading-depth-v1', selectedMode); } catch (_) {}
+            }, mode);
+            const page = await context.newPage();
+            const diagnostics = { pageErrors: [], sameOriginHttpErrors: [], sameOriginRequestFailures: [], externalConsoleErrors: [] };
+            page.on('pageerror', (error) => diagnostics.pageErrors.push(error.message));
+            page.on('console', (message) => {
+              if (message.type() === 'error') diagnostics.externalConsoleErrors.push(message.text());
+            });
+            page.on('response', (response) => {
+              const url = new URL(response.url());
+              if (url.origin === new URL(root).origin && response.status() >= 400) diagnostics.sameOriginHttpErrors.push(`${response.status()} ${url.pathname}`);
+            });
+            page.on('requestfailed', (request) => {
+              const url = new URL(request.url());
+              const errorText = request.failure()?.errorText || 'failed';
+              const isExpectedAlternateMediaAbort = errorText.includes('ERR_ABORTED') && /\/assets\/audio\//.test(url.pathname);
+              if (url.origin === new URL(root).origin && !isExpectedAlternateMediaAbort) diagnostics.sameOriginRequestFailures.push(`${errorText} ${url.pathname}`);
+            });
+            return { context, page, diagnostics };
+          }
+
+          async function open(page, url) {
+            const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+            await page.waitForLoadState('load', { timeout: 60000 }).catch(() => undefined);
+            await page.evaluate(() => document.fonts?.ready).catch(() => undefined);
+            await page.waitForTimeout(700);
+            return response;
+          }
+
+          const assertDiagnostics = (label, diagnostics) => {
+            if (diagnostics.pageErrors.length || diagnostics.sameOriginHttpErrors.length || diagnostics.sameOriginRequestFailures.length) fail(label, diagnostics);
+          };
+
+          for (const locale of locales) {
+            for (const viewport of viewports) {
+              const s = await session(locale, viewport, 'guided');
+              const response = await open(s.page, liveUrl(locale));
+              const state = await s.page.evaluate(() => {
+                const q = (selector) => document.querySelector(selector);
+                const visible = (node) => Boolean(node && node.getClientRects().length && getComputedStyle(node).display !== 'none' && getComputedStyle(node).visibility !== 'hidden');
+                const brief = q('#chapter-brief');
+                const method = q('#method');
+                const puppet = q('#puppet-theatre');
+                const stylesheet = [...document.querySelectorAll('link[rel="stylesheet"]')].map((link) => link.href).find((href) => href.includes('final-chapter.css')) || '';
+                return {
+                  lang: document.documentElement.lang,
+                  title: document.title,
+                  h1: q('h1')?.innerText || '',
+                  h1Visible: visible(q('h1')),
+                  titleBoundaryVisible: visible(q('.title-boundary')),
+                  breadcrumbVisible: visible(q('.chapter-breadcrumb')),
+                  readingControlButtons: document.querySelectorAll('button[data-reading-depth]').length,
+                  readingMode: document.body.dataset.readingDepth || '',
+                  groupedNav: document.querySelectorAll('#siteNav details.nav-group').length,
+                  correctOrder: Boolean(brief && method && puppet && (brief.compareDocumentPosition(method) & Node.DOCUMENT_POSITION_FOLLOWING) && (method.compareDocumentPosition(puppet) & Node.DOCUMENT_POSITION_FOLLOWING)),
+                  overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+                  heroSrc: q('.hero-art img')?.currentSrc || '',
+                  heroComplete: Boolean(q('.hero-art img')?.complete),
+                  heroNaturalWidth: q('.hero-art img')?.naturalWidth || 0,
+                  audioPaused: q('#chapterBgm')?.paused,
+                  audioTime: q('#chapterBgm')?.currentTime,
+                  gsap: Boolean(window.gsap),
+                  puppetReady: visible(q('[data-puppet-action="play"]')) && !q('[data-puppet-action="play"]')?.disabled,
+                  fontsStatus: document.fonts?.status || 'unsupported',
+                  stylesheet
+                };
+              });
+              observations.push({ test: 'normal-load', locale: locale.name, viewport: viewport.name, state, diagnostics: s.diagnostics });
+
+              if (!response || response.status() !== 200) fail(`${locale.name}/${viewport.name} HTTP`, response?.status() ?? 'no response');
+              if (state.lang !== locale.lang) fail(`${locale.name}/${viewport.name} lang`, state.lang);
+              if (!state.title.includes(locale.title) || !state.h1.includes(locale.title)) fail(`${locale.name}/${viewport.name} title`, { title: state.title, h1: state.h1 });
+              if (!state.h1Visible || !state.titleBoundaryVisible || !state.breadcrumbVisible) fail(`${locale.name}/${viewport.name} visible semantics`, state);
+              if (state.readingControlButtons !== 3 || state.readingMode !== 'guided') fail(`${locale.name}/${viewport.name} reading controls`, state);
+              if (state.groupedNav !== 5 || !state.correctOrder) fail(`${locale.name}/${viewport.name} structure`, state);
+              if (state.overflow > 8) fail(`${locale.name}/${viewport.name} overflow`, `${state.overflow}px`);
+              if (!state.heroComplete || !state.heroNaturalWidth || !state.heroSrc.includes('kaikai-chapter2-hero')) fail(`${locale.name}/${viewport.name} hero`, state);
+              if (viewport.name === 'mobile' && !/-640\.|-960\./.test(state.heroSrc)) fail(`${locale.name}/mobile responsive hero`, state.heroSrc);
+              if (state.audioPaused !== true || Number(state.audioTime) !== 0) fail(`${locale.name}/${viewport.name} audio autoplay`, state);
+              if (!state.gsap || !state.puppetReady) fail(`${locale.name}/${viewport.name} puppet readiness`, state);
+              if (!state.stylesheet.includes('20260828-17')) fail(`${locale.name}/${viewport.name} CSS deployment`, state.stylesheet);
+              assertDiagnostics(`${locale.name}/${viewport.name} runtime`, s.diagnostics);
+
+              if (viewport.name === 'mobile') {
+                await s.page.screenshot({ path: path.join(outDir, `${locale.name}-mobile-top.png`), fullPage: false });
+                await s.page.locator('#menuButton').click();
+                const opened = await s.page.evaluate(() => ({ expanded: document.querySelector('#menuButton')?.getAttribute('aria-expanded'), navVisible: Boolean(document.querySelector('#siteNav')?.getClientRects().length) }));
+                await s.page.locator('#siteNav details.nav-group').first().locator('summary').click();
+                await s.page.locator('#siteNav a[href="#method"]').click();
+                await s.page.waitForTimeout(250);
+                const closed = await s.page.evaluate(() => ({ expanded: document.querySelector('#menuButton')?.getAttribute('aria-expanded'), hash: location.hash }));
+                observations.push({ test: 'mobile-menu', locale: locale.name, opened, closed });
+                if (opened.expanded !== 'true' || !opened.navVisible || closed.expanded !== 'false' || closed.hash !== '#method') fail(`${locale.name} mobile menu`, { opened, closed });
+              } else if (locale.name === 'zh-Hant') {
+                await s.page.screenshot({ path: path.join(outDir, 'zh-Hant-desktop-top.png'), fullPage: false });
+                await s.page.locator('[data-puppet-action="play"]').click();
+                await s.page.waitForTimeout(850);
+                const playing = await s.page.evaluate(() => ({ progress: Number(document.querySelector('.puppet-progress')?.getAttribute('aria-valuenow') || 0), playDisabled: document.querySelector('[data-puppet-action="play"]')?.disabled, audioPaused: document.querySelector('#chapterBgm')?.paused }));
+                await s.page.locator('[data-puppet-action="pause"]').click();
+                await s.page.waitForTimeout(120);
+                const paused = await s.page.evaluate(() => ({ audioPaused: document.querySelector('#chapterBgm')?.paused, pauseDisabled: document.querySelector('[data-puppet-action="pause"]')?.disabled }));
+                observations.push({ test: 'puppet-controls', playing, paused });
+                if (!(playing.progress > 0) || playing.playDisabled !== true || paused.audioPaused !== true || paused.pauseDisabled !== true) fail('puppet controls', { playing, paused });
+              }
+              await s.context.close();
+            }
+          }
+
+          for (const locale of locales) {
+            const modes = {};
+            for (const mode of ['quick', 'guided', 'full']) {
+              const s = await session(locale, viewports[0], mode);
+              await open(s.page, liveUrl(locale));
+              modes[mode] = await s.page.evaluate(() => {
+                const sections = [...document.querySelectorAll('main section[data-reading-level]')];
+                return {
+                  mode: document.body.dataset.readingDepth,
+                  total: sections.length,
+                  hidden: sections.filter((section) => section.hidden).length,
+                  pressed: [...document.querySelectorAll('button[data-reading-depth]')].filter((button) => button.getAttribute('aria-pressed') === 'true').map((button) => button.dataset.readingDepth)
+                };
+              });
+              assertDiagnostics(`${locale.name}/${mode} runtime`, s.diagnostics);
+              await s.context.close();
+            }
+            observations.push({ test: 'reading-modes', locale: locale.name, modes });
+            if (modes.quick.mode !== 'quick' || modes.guided.mode !== 'guided' || modes.full.mode !== 'full') fail(`${locale.name} mode persistence`, modes);
+            if (modes.quick.hidden < 1 || modes.full.hidden !== 0 || modes.quick.hidden < modes.guided.hidden || modes.guided.hidden < modes.full.hidden) fail(`${locale.name} mode hierarchy`, modes);
+            if (modes.quick.pressed[0] !== 'quick' || modes.guided.pressed[0] !== 'guided' || modes.full.pressed[0] !== 'full') fail(`${locale.name} mode aria`, modes);
+          }
+
+          const deepLinks = [
+            { hash: '#dental-warning', ancestor: 'chen-trial' },
+            { hash: '#placement-spectrum', ancestor: 'system' },
+            { hash: '#people-network', ancestor: 'people-network' },
+            { hash: '#sources', ancestor: 'sources' }
+          ];
+          for (const locale of locales) {
+            const s = await session(locale, viewports[1], 'quick');
+            for (const item of deepLinks) {
+              await open(s.page, liveUrl(locale, item.hash));
+              const initial = await s.page.evaluate(({ hash, ancestor }) => {
+                const target = document.getElementById(hash.slice(1));
+                const parent = document.getElementById(ancestor);
+                const readingAncestors = [];
+                let section = target?.closest('section[data-reading-level]') || null;
+                while (section) {
+                  readingAncestors.push({ id: section.id, hidden: section.hidden, visible: Boolean(section.getClientRects().length) });
+                  section = section.parentElement?.closest('section[data-reading-level]') || null;
+                }
+                return { hash: location.hash, targetVisible: Boolean(target?.getClientRects().length), parentHidden: parent?.hidden, parentVisible: Boolean(parent?.getClientRects().length), readingAncestors };
+              }, item);
+              await s.page.reload({ waitUntil: 'domcontentloaded', timeout: 60000 });
+              await s.page.waitForTimeout(500);
+              const reloaded = await s.page.evaluate(({ hash, ancestor }) => {
+                const target = document.getElementById(hash.slice(1));
+                const parent = document.getElementById(ancestor);
+                return { hash: location.hash, targetVisible: Boolean(target?.getClientRects().length), parentHidden: parent?.hidden, parentVisible: Boolean(parent?.getClientRects().length) };
+              }, item);
+              observations.push({ test: 'deep-link', locale: locale.name, item, initial, reloaded });
+              if (initial.hash !== item.hash || !initial.targetVisible || initial.parentHidden || !initial.parentVisible || initial.readingAncestors.some((section) => section.hidden || !section.visible)) fail(`${locale.name} ${item.hash} initial`, initial);
+              if (reloaded.hash !== item.hash || !reloaded.targetVisible || reloaded.parentHidden || !reloaded.parentVisible) fail(`${locale.name} ${item.hash} reload`, reloaded);
+              if (locale.name === 'zh-Hant' && item.hash === '#dental-warning') await s.page.screenshot({ path: path.join(outDir, 'zh-Hant-mobile-dental-deeplink.png'), fullPage: false });
+            }
+            assertDiagnostics(`${locale.name} deep-link runtime`, s.diagnostics);
+            await s.context.close();
+          }
+
+          for (const locale of locales) {
+            const s = await session(locale, viewports[1], 'quick');
+            await open(s.page, liveUrl(locale));
+            await s.page.locator('#lifeSearch').fill(locale.search);
+            await s.page.waitForTimeout(250);
+            const searched = await s.page.evaluate((term) => {
+              const normalize = (value) => value.toLocaleLowerCase().replace(/\s+/g, ' ').trim();
+              const query = normalize(term);
+              const events = [...document.querySelectorAll('#lifeTimeline .life-event')];
+              const matches = events.filter((event) => normalize(`${event.dataset.search || ''} ${event.textContent || ''}`).includes(query));
+              return {
+                active: document.body.classList.contains('life-search-active'),
+                matches: matches.length,
+                visibleMatches: matches.filter((event) => !event.hidden && getComputedStyle(event).display !== 'none' && event.getClientRects().length).length,
+                status: document.querySelector('#lifeStatus')?.textContent || '',
+                toggleDisplay: getComputedStyle(document.querySelector('#lifeQuickToggle')).display
+              };
+            }, locale.search);
+            await s.page.locator('#lifeSearch').fill('');
+            await s.page.waitForTimeout(150);
+            const cleared = await s.page.evaluate(() => ({
+              active: document.body.classList.contains('life-search-active'),
+              status: document.querySelector('#lifeStatus')?.textContent || '',
+              visibleEvents: [...document.querySelectorAll('#lifeTimeline .life-event')].filter((event) => !event.hidden && getComputedStyle(event).display !== 'none' && event.getClientRects().length).length
+            }));
+            observations.push({ test: 'life-search', locale: locale.name, searched, cleared });
+            if (!searched.active || searched.matches < 1 || searched.visibleMatches !== searched.matches || !searched.status.includes(locale.found) || searched.toggleDisplay !== 'none') fail(`${locale.name} life search`, searched);
+            if (cleared.active || !cleared.status.includes(locale.collapsed) || cleared.visibleEvents !== 4) fail(`${locale.name} life search clear`, cleared);
+            assertDiagnostics(`${locale.name} life-search runtime`, s.diagnostics);
+            await s.context.close();
+          }
+
+          await browser.close();
+          const report = { generatedAt: new Date().toISOString(), target: root, passed: failures.length === 0, failures, observations };
+          fs.writeFileSync(path.join(outDir, 'live-browser-final-report.json'), JSON.stringify(report, null, 2));
+          fs.writeFileSync(path.join(outDir, 'live-browser-final-summary.txt'), [
+            `Target: ${root}`,
+            `Generated: ${report.generatedAt}`,
+            `Result: ${report.passed ? 'PASS' : 'FAIL'}`,
+            `Failures: ${failures.length}`,
+            ...failures.map((failure) => `- ${failure}`)
+          ].join('\n'));
+          console.log(JSON.stringify(report, null, 2));
+          if (failures.length) process.exit(1);
+          JS
+          node verify-live-final.mjs
+
+      - name: Upload final browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kaikai-chapter2-live-browser-evidence-final
+          path: qa-artifacts-final/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Remove corrected one-off workflow
+        if: always()
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -- .github/workflows/oneoff-kaikai-ch2-live-browser-final-20260828.yml
+          git commit -m "Remove corrected live browser workflow [live-browser-final-cleanup]"
+          git push origin "HEAD:${{ github.ref_name }}"
