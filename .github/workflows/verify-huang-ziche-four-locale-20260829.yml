@@ -39,10 +39,10 @@ jobs:
           const { chromium } = require('playwright');
 
           const pages = [
-            { locale: 'zh-Hant', path: '/historical-cases/regions/mainland-china/huang-ziche/' },
-            { locale: 'zh-Hans', path: '/historical-cases/regions/mainland-china/huang-ziche/zh-Hans/' },
-            { locale: 'en', path: '/en/historical-cases/regions/mainland-china/huang-ziche/' },
-            { locale: 'ja', path: '/ja/historical-cases/regions/mainland-china/huang-ziche/' },
+            { locale: 'zh-Hant', path: '/historical-cases/regions/mainland-china/huang-ziche/', verdict: '判決與法律觀點', father: '生父刑責爭點' },
+            { locale: 'zh-Hans', path: '/historical-cases/regions/mainland-china/huang-ziche/zh-Hans/', verdict: '判决与法律观点', father: '生父刑责争点' },
+            { locale: 'en', path: '/en/historical-cases/regions/mainland-china/huang-ziche/', verdict: 'Judgment and legal analysis', father: 'potential criminal liability' },
+            { locale: 'ja', path: '/ja/historical-cases/regions/mainland-china/huang-ziche/', verdict: '判決と法的観点', father: '実父の刑事責任の争点' },
           ];
           const viewports = [
             { name: 'desktop', width: 1440, height: 1000 },
@@ -72,7 +72,7 @@ jobs:
                     const response = await page.goto(url, { waitUntil: 'load', timeout: 60000 });
                     if (!response || response.status() !== 200) throw new Error('HTTP ' + (response?.status() ?? 'no response'));
                     await page.waitForTimeout(2500);
-                    const result = await page.evaluate(({ locale, canonical }) => {
+                    const result = await page.evaluate(({ locale, canonical, verdict, father }) => {
                       const ids = new Set([...document.querySelectorAll('[id]')].map(node => node.id));
                       const missingAnchors = [...document.querySelectorAll('a[href^="#"]')]
                         .map(link => link.getAttribute('href').slice(1))
@@ -88,23 +88,31 @@ jobs:
                       return {
                         lang: document.documentElement.lang,
                         canonical: document.querySelector('link[rel="canonical"]')?.href,
-                        hasCss: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.css')),
-                        hasJs: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.js')),
+                        hasCss: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.css?v=6')),
+                        hasJs: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.js?v=4')),
                         hasRail: Boolean(document.querySelector('.hz-lantern-rail')),
                         hasBackTop: Boolean(document.querySelector('.hz-back-top')),
                         hasMobileSummary: Boolean(document.querySelector('.hz-mobile-summary')),
                         hasEnding: Boolean(document.querySelector('[data-hz-ending]')),
+                        hasVerdictTranslation: document.querySelector('#verdict')?.textContent.includes(verdict),
+                        hasFatherTranslation: document.querySelector('#father')?.textContent.includes(father),
+                        verdictCards: document.querySelectorAll('#verdict .tt-action-grid article').length,
+                        fatherCards: document.querySelectorAll('#father .tt-action-grid article').length,
                         missingAnchors,
                         brokenImages,
                         overflow: Math.max(0, document.documentElement.scrollWidth - innerWidth),
                       };
-                    }, { locale: item.locale, canonical: url });
+                    }, { locale: item.locale, canonical: url, verdict: item.verdict, father: item.father });
                     const mismatches = [];
                     if (result.lang !== item.locale) mismatches.push('lang=' + result.lang);
                     if (result.canonical !== url) mismatches.push('canonical=' + result.canonical);
                     for (const key of ['hasCss','hasJs','hasRail','hasBackTop','hasMobileSummary','hasEnding']) {
                       if (!result[key]) mismatches.push(key + '=false');
                     }
+                    if (!result.hasVerdictTranslation) mismatches.push('verdict translation missing');
+                    if (!result.hasFatherTranslation) mismatches.push('father translation missing');
+                    if (result.verdictCards !== 4) mismatches.push('verdictCards=' + result.verdictCards);
+                    if (result.fatherCards !== 5) mismatches.push('fatherCards=' + result.fatherCards);
                     if (result.missingAnchors.length) mismatches.push('missing anchors=' + result.missingAnchors.join(','));
                     if (result.brokenImages.length) mismatches.push('broken images=' + result.brokenImages.join(','));
                     if (result.overflow > 1) mismatches.push('overflow=' + result.overflow);

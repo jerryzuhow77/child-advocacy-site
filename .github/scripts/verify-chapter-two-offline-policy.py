@@ -4,6 +4,19 @@ import re
 index = Path('index.html').read_text(encoding='utf-8')
 sitemap = Path('sitemap.xml').read_text(encoding='utf-8')
 
+public_discovery_files = [
+    'index.html',
+    'en/index.html',
+    'ja/index.html',
+    'hearing-records/index.html',
+    'en/hearing-records/index.html',
+    'ja/hearing-records/index.html',
+    'hearing-records/prison-watch/kaikai-day10-20250507/index.html',
+    'hearing-records/prison-watch/kaikai-day10-20250507/zh-Hans/index.html',
+    'en/hearing-records/prison-watch/kaikai-day10-20250507/index.html',
+    'ja/hearing-records/prison-watch/kaikai-day10-20250507/index.html',
+]
+
 forbidden_index = [
     'data-kaikai-chapter-two-root-entry',
     'data-kaikai-medical-root-entry',
@@ -31,6 +44,16 @@ if present:
         if any(token in line for token in present)
     )
     raise SystemExit(f'Public Chapter 2 homepage entries remain: {present}\n{numbered}')
+
+for path in public_discovery_files:
+    source = Path(path).read_text(encoding='utf-8')
+    if 'kaikai-final-chapter' in source:
+        numbered = '\n'.join(
+            f'{line_no}: {line[:360]}'
+            for line_no, line in enumerate(source.splitlines(), 1)
+            if 'kaikai-final-chapter' in line
+        )
+        raise SystemExit(f'Public Chapter 2 entry remains in {path}:\n{numbered}')
 
 pinned_cards = re.findall(
     r'<a\b[^>]*class="[^"]*\bhome-pinned-report-card\b[^"]*"',
@@ -63,4 +86,4 @@ missing_content = [path for path in retained_content if not Path(path).is_file()
 if missing_content:
     raise SystemExit(f'Chapter 2 content files were unexpectedly removed: {missing_content}')
 
-print('Chapter 2 is absent from public discovery surfaces; four original pinned reports remain; content files are retained.')
+print('Chapter 2 is absent from all four-language home, hearing-index, Day 10, and sitemap discovery surfaces; four original pinned reports remain; content files are retained.')
