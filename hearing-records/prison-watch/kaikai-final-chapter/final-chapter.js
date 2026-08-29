@@ -69,6 +69,11 @@
   const prologuePlay = prologueOverlay?.querySelector('[data-prologue-play]');
   const prologueProgress = prologueOverlay?.querySelector('[data-prologue-progress]');
   const prologueReplayLinks = [...document.querySelectorAll('a[href="#prologue-film"]')];
+  // PROLOGUE-AUDIO-AUTOSTART-20260829
+  const prologueAudio = document.querySelector('#chapterBgm');
+  const prologueAudioVolume = document.querySelector('[data-audio-volume]');
+  const prologueAudioPrompt = locale === 'zh-Hans' ? '播放序幕与配乐' : '播放序幕與配樂';
+  let prologueAudioBlocked = false;
   const prologuePageLayers = prologueOverlay
     ? [...document.body.children].filter((element) => element !== prologueOverlay && element.tagName !== 'NOSCRIPT')
     : [];
@@ -91,10 +96,42 @@
     });
   };
 
-  const showProloguePlayPrompt = () => {
+  const showProloguePlayPrompt = ({ audioBlocked = false } = {}) => {
     if (!prologueOverlay || !prologuePlay) return;
+    if (audioBlocked) prologueAudioBlocked = true;
     prologueOverlay.classList.add('is-blocked');
+    prologueOverlay.classList.toggle('is-audio-blocked', prologueAudioBlocked);
+    const labelNode = [...prologuePlay.childNodes].find((node) => node.nodeType === Node.TEXT_NODE);
+    if (labelNode) labelNode.nodeValue = prologueAudioPrompt;
+    prologuePlay.setAttribute('aria-label', prologueAudioPrompt);
     prologuePlay.hidden = false;
+  };
+
+  const startPrologueAudio = ({ restart = false } = {}) => {
+    if (!prologueAudio) return Promise.resolve(false);
+    if (restart || prologueAudio.ended) {
+      try { prologueAudio.currentTime = 0; } catch (_) {}
+    }
+    prologueAudio.muted = false;
+    prologueAudio.volume = Number(prologueAudioVolume?.value || prologueAudio.volume || 0.58);
+    prologueAudio.dataset.prologueAutoplay = 'attempting';
+    const attempt = prologueAudio.play();
+    if (!attempt) {
+      const playing = !prologueAudio.paused;
+      prologueAudio.dataset.prologueAutoplay = playing ? 'playing' : 'blocked';
+      if (!playing) showProloguePlayPrompt({ audioBlocked: true });
+      return Promise.resolve(playing);
+    }
+    return attempt.then(() => {
+      prologueAudioBlocked = false;
+      prologueAudio.dataset.prologueAutoplay = 'playing';
+      prologueOverlay?.classList.remove('is-audio-blocked');
+      return true;
+    }).catch(() => {
+      prologueAudio.dataset.prologueAutoplay = 'blocked';
+      showProloguePlayPrompt({ audioBlocked: true });
+      return false;
+    });
   };
 
   const closePrologue = ({ focusMain = false } = {}) => {
@@ -129,33 +166,43 @@
     prologueClosed = false;
     prologueOverlay.hidden = false;
     prologueOverlay.removeAttribute('aria-hidden');
-    prologueOverlay.classList.remove('is-closing', 'is-blocked');
+    prologueOverlay.classList.remove('is-closing', 'is-blocked', 'is-audio-blocked');
     if (prologuePlay) prologuePlay.hidden = true;
+    prologueAudioBlocked = false;
     setProloguePageState(true);
     prologueVideo.muted = true;
     prologueVideo.currentTime = 0;
     if (prologueProgress) prologueProgress.style.transform = 'scaleX(0)';
 
+    void startPrologueAudio({ restart: true });
     const playAttempt = prologueVideo.play();
     playAttempt?.catch(() => showProloguePlayPrompt());
     prologueFailsafeTimer = window.setTimeout(() => {
       if (prologueVideo.paused && !prologueVideo.ended) showProloguePlayPrompt();
+      else if (prologueAudioBlocked || prologueAudio?.paused) showProloguePlayPrompt({ audioBlocked: true });
       else closePrologue();
     }, 12000);
   };
 
   prologueSkip?.addEventListener('click', () => {
-    // Use only this explicit entry gesture to unlock audible media.
-    // Natural prologue completion remains silent and keeps the player ready.
-    playChapterAudioFromGesture();
+    void startPrologueAudio({ restart: false });
     closePrologue({ focusMain: true });
   });
   prologuePlay?.addEventListener('click', () => {
-    const playAttempt = prologueVideo?.play();
-    playAttempt?.then(() => {
-      prologueOverlay?.classList.remove('is-blocked');
-      if (prologuePlay) prologuePlay.hidden = true;
-    }).catch(() => showProloguePlayPrompt());
+    if (prologueVideo) {
+      try { prologueVideo.currentTime = 0; } catch (_) {}
+    }
+    const videoAttempt = prologueVideo?.play()
+      ?.then(() => true)
+      .catch(() => false) || Promise.resolve(false);
+    Promise.all([videoAttempt, startPrologueAudio({ restart: true })]).then(([videoStarted, audioStarted]) => {
+      if (videoStarted && audioStarted) {
+        prologueOverlay?.classList.remove('is-blocked', 'is-audio-blocked');
+        if (prologuePlay) prologuePlay.hidden = true;
+      } else {
+        showProloguePlayPrompt({ audioBlocked: !audioStarted });
+      }
+    });
   });
   prologueVideo?.addEventListener('timeupdate', () => {
     if (!prologueProgress) return;
@@ -165,7 +212,13 @@
     const ratio = Math.min(1, Math.max(0, prologueVideo.currentTime / duration));
     prologueProgress.style.transform = `scaleX(${ratio})`;
   });
-  prologueVideo?.addEventListener('ended', () => closePrologue());
+  prologueVideo?.addEventListener('ended', () => {
+    if (prologueAudioBlocked || prologueAudio?.paused) {
+      showProloguePlayPrompt({ audioBlocked: true });
+      return;
+    }
+    closePrologue();
+  });
   prologueVideo?.addEventListener('error', showProloguePlayPrompt);
   prologueReplayLinks.forEach((link) => {
     link.addEventListener('click', (event) => {
@@ -175,12 +228,14 @@
   });
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && prologueOverlay && !prologueOverlay.hidden) {
+      void startPrologueAudio({ restart: false });
       closePrologue({ focusMain: true });
     }
   });
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState !== 'visible' || !prologueOverlay || prologueOverlay.hidden || prologueClosed) return;
     prologueVideo?.play().catch(() => showProloguePlayPrompt());
+    void startPrologueAudio({ restart: false });
   });
   requestAnimationFrame(playPrologue);
 

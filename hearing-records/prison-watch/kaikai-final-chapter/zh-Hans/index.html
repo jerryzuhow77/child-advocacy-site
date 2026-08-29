@@ -34,7 +34,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;800;900&amp;family=Noto+Serif+SC:wght@600;700;900&amp;display=swap">  <!-- ENTRY-PROLOGUE-PRELOAD-20260829 -->
   <link rel="preload" as="image" href="../assets/kaikai-final-chapter-prologue-poster.jpg" fetchpriority="high">
 
-  <link rel="stylesheet" href="../final-chapter.css?v=20260829-mobile-panorama-1">
+  <link rel="stylesheet" href="../final-chapter.css?v=20260829-prologue-audio-1">
   <style id="zh-hans-font-stack">
     html[lang="zh-Hans"] {
       --serif: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
@@ -57,11 +57,11 @@
     <div class="entry-prologue__copy">
       <span>PROLOGUE ANIMATION · 00:05</span>
       <h2 id="prologueFilmTitle">在阅读终章之前</h2>
-      <p id="prologueFilmDescription">序幕会在进站时立即静音播放；播放完毕后自动揭开正文。按“略过／进入”会启动背景配乐。象征性公益影像，非案件现场或证据影像。</p>
+      <p id="prologueFilmDescription">序幕进站时会立即静音播放，并同步尝试启动网页背景配乐；若浏览器阻挡有声自动播放，请按“播放序幕与配乐”。象征性公益影像，非案件现场或证据影像。</p>
     </div>
   </div>
-  <button class="entry-prologue__skip" type="button" data-prologue-skip aria-label="略过序幕、进入正文并播放背景配乐" title="进入正文并播放背景配乐">略过／进入<span aria-hidden="true">↓</span></button>
-  <button class="entry-prologue__play" type="button" data-prologue-play hidden>播放序幕<span aria-hidden="true">▶</span></button>
+  <button class="entry-prologue__skip" type="button" data-prologue-skip aria-label="略过序幕、进入正文并继续背景配乐" title="进入正文并继续背景配乐">略过／进入<span aria-hidden="true">↓</span></button>
+  <button class="entry-prologue__play" type="button" data-prologue-play hidden aria-label="播放序幕与配乐">播放序幕与配乐<span aria-hidden="true">▶</span></button>
   <div class="entry-prologue__progress" aria-hidden="true"><i data-prologue-progress></i></div>
 </section>
 <noscript><style>body.prologue-active{overflow:auto!important}.entry-prologue{display:none!important}</style></noscript>
@@ -87,7 +87,7 @@
 </nav>
 
 <div class="chapter-audio" data-audio-controller role="group" aria-label="双曲循环背景配乐">
-  <audio id="chapterBgm" preload="metadata" data-track-count="2">
+  <audio id="chapterBgm" preload="auto" data-track-count="2">
     <source src="../../../../assets/audio/kaikai-chapter2-bgm-20260828.webm" type="audio/webm">
     <source src="../../../../assets/audio/kaikai-chapter2-bgm-20260828.m4a" type="audio/mp4">
   </audio>
@@ -1153,6 +1153,6 @@
 
 <footer><p>悲剧不忘，不是让伤痛停在记忆里。</p><small>把每一个可被修补的缝隙，变成下一个孩子的安全网。</small></footer>
 <script src="../../../../assets/vendor/gsap-3.15.0.min.js" defer></script>
-<script src="../final-chapter.js?v=20260829-35" defer></script>
+<script src="../final-chapter.js?v=20260829-prologue-audio-1" defer></script>
 </body>
 </html>
