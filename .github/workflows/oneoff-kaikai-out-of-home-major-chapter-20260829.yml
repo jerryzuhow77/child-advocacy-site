@@ -22,6 +22,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          git pull --rebase origin main
           python3 .github/scripts/prepare-kaikai-out-of-home-major-chapter-20260829.py
           python3 -m py_compile .github/scripts/promote-kaikai-out-of-home-major-chapter-20260829.py
           node --check .github/scripts/verify-kaikai-out-of-home-major-chapter-20260829.mjs
@@ -30,7 +31,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git pull --rebase origin main
           python3 .github/scripts/promote-kaikai-out-of-home-major-chapter-20260829.py
           node --check hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
           git diff --check
