@@ -1,0 +1,253 @@
+name: Apply repaired Kaikai witness publication v3 20260829
+
+on:
+  push:
+    branches:
+      - feat/kaikai-witness-analysis-20260829
+    paths:
+      - .tmp/kaikai-publish-xz.ready-repaired-v3
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kaikai-witness-publication-repaired-v3-20260829
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Check out full carrier history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Recover package from verified repairs and carrier history
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import base64
+          import hashlib
+          import subprocess
+          from pathlib import Path
+
+          expected_lengths = [17500] * 15 + [11784]
+          expected_sha256 = [
+              '860878a1c6ab38bfe35826a34e86f5f7e129b992ec740e7cc64716382c49501e',
+              '7f7ab8e9ae80fc4907457984f0f1ea39efdb3758ed125b16e9c7b38bd7a8d9e8',
+              '738c98e7d9e7652edc84096c33a9f853ec91a37f326be7b69a0f3e7c585128c4',
+              '89bd6ebfe47e1afb9fe83636164a71f389d4e6fc6f0ea0197228f57291e3211c',
+              '15411cb94803c99e82265097e6150e50b571b5d8cefd48497ff6a309003a3f9b',
+              '4fceece10561f40e6f36b338ff6b40adbf8d6166750de571dca3455285b35114',
+              '51894bfdc06ed018397b44b8775a1fe88db69321c9feac49f3c3d65840baf90f',
+              '9e74ac36bd57699231260f21789162618f1bb4b885b5a872145b1d623720e2f7',
+              'aa5b63f569f935a3aec3484ac86923934ee5dedf44d42a619ca87da9e482960b',
+              '9a72b6d84dedb80efb9dd5e74e7f0ad4076ef190c096b7529fb5e68c0dfdd937',
+              'ac8213f0ac0ce0f2da33b6bbda451a62188dfd05e7be843bc044c62e608c5f5e',
+              'b1c8f0f96627f8afc9595d593db920ecf02f75b3cab705608704216935259607',
+              '7ce9366dffbc0a9d6c28e6f1e552a84a70fccb8836b7ab66f621a22e5d69b0fe',
+              '9134bb9a1d400b586c2ca3f9bb60dcd2c03b8b849b02ca6e1ac959adbdc61a67',
+              '809636f50319b022090531d8e1f98d6f258db3b7760becfdf96f225264360d9d',
+              '75acb51a9c6c781ff51684eb4c218016f1ddcd579a18478a1d3e60e6a6ee89a2',
+          ]
+          fully_repaired = {6, 7, 11, 14, 15}
+          alphabet = frozenset('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=')
+
+          def clean_text(text: str) -> str:
+              for escaped in ('\\n', '\\r', '\\t'):
+                  text = text.replace(escaped, '')
+              return ''.join(ch for ch in text if ch in alphabet)
+
+          def decode_verified(encoded: str, expected_digest: str):
+              try:
+                  data = base64.b64decode(encoded, validate=True)
+              except Exception:
+                  return None
+              return data if hashlib.sha256(data).hexdigest() == expected_digest else None
+
+          def recover(clean: str, expected_chars: int, digest: str, index: int):
+              if len(clean) < expected_chars:
+                  return None, None
+              if len(clean) == expected_chars:
+                  data = decode_verified(clean, digest)
+                  if data is not None:
+                      return data, 'exact'
+              extra = len(clean) - expected_chars
+              for start in range(extra + 1):
+                  data = decode_verified(clean[start:start + expected_chars], digest)
+                  if data is not None:
+                      return data, f'window@{start}'
+              if extra > 0:
+                  for start in range(expected_chars + 1):
+                      candidate = clean[:start] + clean[start + extra:]
+                      if len(candidate) != expected_chars:
+                          continue
+                      data = decode_verified(candidate, digest)
+                      if data is not None:
+                          return data, f'delete-{extra}@{start}'
+              if index == 0:
+                  parts = sorted(Path('.tmp/repair-xz').glob('000.0[0-4].b64'))
+                  prefix = ''.join(clean_text(path.read_text(encoding='utf-8')) for path in parts)
+                  if len(prefix) == 12500:
+                      suffix_length = expected_chars - len(prefix)
+                      for start in range(len(clean) - suffix_length + 1):
+                          data = decode_verified(prefix + clean[start:start + suffix_length], digest)
+                          if data is not None:
+                              return data, f'prefix+suffix@{start}'
+              return None, None
+
+          def historical_candidates(path: str):
+              seen = set()
+              working = Path(path)
+              if working.is_file():
+                  text = working.read_text(encoding='utf-8')
+                  seen.add(text)
+                  yield 'working-tree', text
+              commits = subprocess.run(
+                  ['git', 'log', '--all', '--format=%H', '--', path],
+                  check=True, capture_output=True, text=True
+              ).stdout.splitlines()
+              for commit in commits:
+                  shown = subprocess.run(
+                      ['git', 'show', f'{commit}:{path}'],
+                      capture_output=True, text=True
+                  )
+                  if shown.returncode or shown.stdout in seen:
+                      continue
+                  seen.add(shown.stdout)
+                  yield commit[:12], shown.stdout
+
+          decoded = []
+          for index, (expected_chars, digest) in enumerate(zip(expected_lengths, expected_sha256)):
+              if index in fully_repaired:
+                  parts = sorted(Path('.tmp/repair-xz').glob(f'{index:03d}.*.b64'))
+                  encoded = ''.join(clean_text(path.read_text(encoding='utf-8')) for path in parts)
+                  if len(encoded) != expected_chars:
+                      raise SystemExit(f'chunk {index:03d}: repaired length {len(encoded)} != {expected_chars}')
+                  data = decode_verified(encoded, digest)
+                  method = f'{len(parts)} repair parts'
+              else:
+                  data = None
+                  method = None
+                  path = f'.tmp/kaikai-publish-xz.{index:03d}.b64'
+                  for source, text in historical_candidates(path):
+                      candidate, recovery = recover(clean_text(text), expected_chars, digest, index)
+                      if candidate is not None:
+                          data = candidate
+                          method = f'{source}:{recovery}'
+                          break
+              if data is None:
+                  raise SystemExit(f'chunk {index:03d}: unrecoverable from repairs and history')
+              print(f'chunk {index:03d}: verified via {method}, bytes={len(data)}')
+              decoded.append(data)
+
+          package = b''.join(decoded)
+          digest = hashlib.sha256(package).hexdigest()
+          expected = '20fb08156b1bc8aa4f653ebab7ef4dd809a26e6921181005d4343bc6eb2b67e8'
+          if digest != expected:
+              raise SystemExit(f'package sha256 mismatch: expected {expected}, got {digest}')
+          Path('/tmp/kaikai-publish-compact.tar.xz').write_bytes(package)
+          print(f'package verified: {len(package)} bytes, sha256={digest}')
+          PY
+
+      - name: Apply publication idempotently on latest main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git checkout -B kaikai-publication origin/main
+          chapter='hearing-records/prison-watch/kaikai-final-chapter'
+          if test -s "$chapter/witnesses/index.html" \
+            && grep -q '13名證人全文' "$chapter/index.html" \
+            && grep -q 'syncAnchorOffset' "$chapter/final-chapter.js"; then
+              echo 'Publication is already present on main; validating existing files.'
+          else
+              tar -xJf /tmp/kaikai-publish-compact.tar.xz -C .
+              patch --batch --forward -p1 < main.patch
+              rm -f main.patch
+              test -z "$(find . \( -name '*.rej' -o -name '*.orig' \) -print -quit)"
+          fi
+
+      - name: Validate public source contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          chapter='hearing-records/prison-watch/kaikai-final-chapter'
+          hant="$chapter/witnesses/index.html"
+          hans="$chapter/zh-Hans/witnesses/index.html"
+          git diff --check
+          node --check "$chapter/final-chapter.js"
+          node --check "$chapter/witnesses/witnesses.js"
+          test "$(grep -o 'class="witness-card"' "$hant" | wc -l | tr -d ' ')" = '13'
+          test "$(grep -o 'class="witness-card"' "$hans" | wc -l | tr -d ' ')" = '13'
+          test "$(grep -o 'class="issue-row"' "$hant" | wc -l | tr -d ' ')" = '13'
+          test "$(grep -o 'class="issue-row"' "$hans" | wc -l | tr -d ' ')" = '13'
+          grep -q '13名證人全文' "$chapter/index.html"
+          grep -q '13名证人全文' "$chapter/zh-Hans/index.html"
+          grep -q '束帶直接扣住私處並綁在便盆' "$hant"
+          grep -q '束带直接扣住私处并绑在便盆' "$hans"
+          grep -q '法院並未公開官方逐字稿' "$hant"
+          grep -q '法院并未公开官方逐字稿' "$hans"
+          grep -q '/kaikai-final-chapter/witnesses/' sitemap.xml
+          grep -q '/kaikai-final-chapter/zh-Hans/witnesses/' sitemap.xml
+          grep -q 'syncAnchorOffset' "$chapter/final-chapter.js"
+          grep -q 'scroll-padding-top:var(--chapter-anchor-offset)' "$chapter/final-chapter.css"
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          pages = [
+              Path('hearing-records/prison-watch/kaikai-final-chapter/index.html'),
+              Path('hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html'),
+              Path('hearing-records/prison-watch/kaikai-final-chapter/witnesses/index.html'),
+              Path('hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/witnesses/index.html'),
+          ]
+          class IdParser(HTMLParser):
+              def __init__(self): super().__init__(); self.ids=[]
+              def handle_starttag(self, tag, attrs):
+                  value=dict(attrs).get('id')
+                  if value: self.ids.append(value)
+          for page in pages:
+              text=page.read_text(encoding='utf-8'); parser=IdParser(); parser.feed(text)
+              duplicates=sorted({item for item in parser.ids if parser.ids.count(item)>1})
+              if duplicates: raise SystemExit(f'{page}: duplicate ids {duplicates}')
+              if '<main' not in text or '</html>' not in text: raise SystemExit(f'{page}: incomplete')
+          for page in pages[2:]:
+              text=page.read_text(encoding='utf-8')
+              for required in ('contradiction-matrix','witness-01','witness-13'):
+                  if f'id="{required}"' not in text: raise SystemExit(f'{page}: missing #{required}')
+          image=Path('assets/art/kaikai-dual-track-responsibility-tree-zh-Hant-20260829.webp').read_bytes()
+          if len(image)<50000 or image[:4]!=b'RIFF' or image[8:12]!=b'WEBP':
+              raise SystemExit('responsibility-tree WebP invalid')
+          print('Static publication checks passed.')
+          PY
+
+      - name: Commit and publish when needed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            assets/art/kaikai-dual-track-responsibility-tree-zh-Hant-20260829.webp \
+            hearing-records/prison-watch/kaikai-final-chapter/index.html \
+            hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html \
+            hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css \
+            hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js \
+            hearing-records/prison-watch/kaikai-final-chapter/witnesses \
+            hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/witnesses \
+            sitemap.xml
+          if git diff --cached --quiet; then
+            echo 'No publication commit needed.'
+            exit 0
+          fi
+          git commit -m 'Publish Kaikai witness evidence analysis and fix chapter anchors'
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            git rebase origin/main
+          done
+          echo 'Unable to publish after five push attempts.' >&2
+          exit 1
