@@ -1,0 +1,173 @@
+name: One-off restore unpublished Chapter 2 policy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-restore-chapter-two-offline-20260829.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: oneoff-restore-chapter-two-offline-20260829
+  cancel-in-progress: false
+
+jobs:
+  restore:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Remove every public Chapter 2 entry point and restore four pinned reports
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git fetch origin main --prune
+          git checkout -B main origin/main
+
+          removal_patch="$(mktemp)"
+          git diff 7c5d49fa7a329414487cc65b6a9691df34ffb1e5^ 7c5d49fa7a329414487cc65b6a9691df34ffb1e5 -- index.html > "$removal_patch"
+          test -s "$removal_patch"
+          if git apply --check "$removal_patch"; then
+            git apply "$removal_patch"
+          else
+            git apply --3way "$removal_patch"
+          fi
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          sitemap_path = Path('sitemap.xml')
+          sitemap = sitemap_path.read_text(encoding='utf-8')
+          block_re = re.compile(r'  <url>\n.*?  </url>\n?', re.S)
+          removed = 0
+
+          def keep_or_remove(match: re.Match[str]) -> str:
+              global removed
+              block = match.group(0)
+              if '/hearing-records/prison-watch/kaikai-final-chapter/' in block:
+                  removed += 1
+                  return ''
+              return block
+
+          sitemap = block_re.sub(keep_or_remove, sitemap)
+          if '/hearing-records/prison-watch/kaikai-final-chapter/' in sitemap:
+              raise SystemExit('Chapter 2 URL remains in sitemap.xml')
+          sitemap_path.write_text(sitemap, encoding='utf-8')
+          print(f'Removed {removed} Chapter 2 sitemap URL blocks')
+          PY
+
+          cat > .github/scripts/verify-chapter-two-offline-policy.py <<'PY'
+          from pathlib import Path
+          import re
+
+          index = Path('index.html').read_text(encoding='utf-8')
+          sitemap = Path('sitemap.xml').read_text(encoding='utf-8')
+
+          forbidden_index = [
+              'data-kaikai-chapter-two-root-entry',
+              'data-kaikai-medical-root-entry',
+              'data-kaikai-chapter-two-launch',
+              'data-kaikai-medical-launch',
+              'data-kaikai-chapter-two-card',
+              'data-kaikai-chapter-two-footer',
+              'home-kaikai-chapter-two-20260829',
+              'hearing-records/prison-watch/kaikai-final-chapter/',
+          ]
+          present = [token for token in forbidden_index if token in index]
+          if present:
+              raise SystemExit(f'Public Chapter 2 homepage entries remain: {present}')
+
+          pinned_cards = re.findall(
+              r'<a\b[^>]*class="[^"]*\bhome-pinned-report-card\b[^"]*"',
+              index,
+              flags=re.I,
+          )
+          if len(pinned_cards) != 4:
+              raise SystemExit(f'Expected exactly four pinned report cards, found {len(pinned_cards)}')
+
+          required_pinned_links = [
+              'https://jerryzuhow77.github.io/Justice-For-Kaikai/',
+              'https://jerryzuhow77.github.io/Raise-Stone-Injustice/',
+              'trial-updates.html#hearing-2026-09-16',
+              'donate.html',
+          ]
+          missing = [link for link in required_pinned_links if link not in index]
+          if missing:
+              raise SystemExit(f'Original pinned report links are missing: {missing}')
+
+          if '/hearing-records/prison-watch/kaikai-final-chapter/' in sitemap:
+              raise SystemExit('Chapter 2 remains discoverable in sitemap.xml')
+
+          retained_content = [
+              'hearing-records/prison-watch/kaikai-final-chapter/index.html',
+              'hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html',
+              'hearing-records/prison-watch/kaikai-final-chapter/witnesses/index.html',
+              'hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/index.html',
+          ]
+          missing_content = [path for path in retained_content if not Path(path).is_file()]
+          if missing_content:
+              raise SystemExit(f'Chapter 2 content files were unexpectedly removed: {missing_content}')
+
+          print('Chapter 2 is absent from public discovery surfaces; four original pinned reports remain; content files are retained.')
+          PY
+
+          cat > .github/workflows/chapter-two-offline-policy.yml <<'YAML'
+          name: Guard unpublished Chapter 2 public entry points
+
+          on:
+            push:
+              branches: [main]
+              paths:
+                - 'index.html'
+                - 'sitemap.xml'
+                - '.github/scripts/verify-chapter-two-offline-policy.py'
+                - '.github/workflows/chapter-two-offline-policy.yml'
+            pull_request:
+              paths:
+                - 'index.html'
+                - 'sitemap.xml'
+                - '.github/scripts/verify-chapter-two-offline-policy.py'
+                - '.github/workflows/chapter-two-offline-policy.yml'
+            workflow_dispatch:
+
+          permissions:
+            contents: read
+
+          jobs:
+            verify:
+              runs-on: ubuntu-latest
+              steps:
+                - uses: actions/checkout@v4
+                - name: Verify Chapter 2 remains unpublished from official entry points
+                  run: python3 .github/scripts/verify-chapter-two-offline-policy.py
+          YAML
+
+          python3 .github/scripts/verify-chapter-two-offline-policy.py
+          git diff --check
+
+          rm .github/workflows/oneoff-restore-chapter-two-offline-20260829.yml
+          git add index.html sitemap.xml \
+            .github/scripts/verify-chapter-two-offline-policy.py \
+            .github/workflows/chapter-two-offline-policy.yml \
+            .github/workflows/oneoff-restore-chapter-two-offline-20260829.yml
+
+          git commit -m 'fix: keep unpublished Chapter 2 off public entry points'
+
+          pushed=0
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              pushed=1
+              break
+            fi
+            git pull --rebase origin main
+          done
+          test "$pushed" -eq 1
