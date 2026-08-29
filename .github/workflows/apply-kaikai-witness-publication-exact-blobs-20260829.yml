@@ -1,0 +1,216 @@
+name: Apply Kaikai witness publication from exact blobs 20260829
+
+on:
+  push:
+    branches:
+      - feat/kaikai-witness-analysis-20260829
+    paths:
+      - .tmp/kaikai-publish-exact-blobs.ready
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kaikai-witness-publication-20260829
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Check out publication carrier branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Assemble verified publication package
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import base64
+          import hashlib
+          import json
+          import os
+          import urllib.request
+          from pathlib import Path
+
+          expected_lengths = [17500] * 15 + [11784]
+          expected_sha256 = [
+              '11ab5ae66ffcc89497c58392b073ce5c6b84dbdda2143abcc2b3545cb67bd4a1',
+              '1b6612260baa2915c09f605ea2dca359f3ddd2e40a000f3225d1016b37b980c6',
+              '365dccdd8b3ef64af4947957faef7adfc1b33f8d8f98a2087fddb0ef314d6159',
+              '173831c3529b83bfa39317cccecdc80799c20c579b35436beb46e81f783137e5',
+              '6a724381fe95edf0c5a6cd7cd9a1eed2f47a78a0e34ee5253a625925ac8dd9da',
+              '97e95488e5d3aa23c4de98061046012f55abf6a460a7a751ed97c998bb9cc8ae',
+              '1f00c4ced5b56a062e64e746ef941b96700bf5fa0538b222749384b2bc3ca051',
+              '3b8b3289db503518b8707d84497a6400b791b95ce0ec941763d8d5f6f9c04b1e',
+              '7ee59a0bd5473a5c49e1dc85a77532fb03e7c52fbc95b8b401625b6a777a59e7',
+              '5bba145ea431435db6df6cc640ae8b0fab56377202bdad3218d5b65625a7fef6',
+              '5959c729a40642122a0e719876fbd01ccf84a3f4ada8eb5985f52c3141684d41',
+              '638641270bcfcc03d19b6397e810dbad45b5764862cb1ea033152ef7dcfc0ab5',
+              '55d00fb105a5120669a219e5f050059b2321964c296595139ad34e9891b5e540',
+              'ea913476575d33af1f9c1f786b61fb9ac656e64369d2991009e2d6861429956e',
+              'b811dc3a2bb275a4b103f4fb1c9dccd5e08162809ff3a5bc9302f75bcf6f6e45',
+              '9d740b7d170a039b406d44f04829f686bb36618e7425dd2d060d9cc61128e774',
+          ]
+          repair_blob_shas = {
+              6: ['6b3ab63ad3e20385ddde4a36276218acde8b6dcf', 'ef1fb2d99f281c39190997b9f2627555229784fc'],
+              7: ['b3472dd7b413cc99c01c5e8f5679523642476693', '31e6c60676376b05754e349dca2263771101ad98'],
+              11: ['cc215c24d67441283804792c65d68e18eec617e8'],
+              14: ['1046ba25150e87848ae86c231e2b1457817e2f38'],
+              15: ['eed9a186ebb5db06d45344f6bd65ae6b6ec9749e'],
+          }
+          alphabet = frozenset('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=')
+          repo = os.environ['GH_REPO']
+          token = os.environ['GH_TOKEN']
+
+          def fetch_blob(sha: str) -> bytes:
+              request = urllib.request.Request(
+                  f'https://api.github.com/repos/{repo}/git/blobs/{sha}',
+                  headers={
+                      'Accept': 'application/vnd.github+json',
+                      'Authorization': f'Bearer {token}',
+                      'X-GitHub-Api-Version': '2022-11-28',
+                      'User-Agent': 'kaikai-publication-workflow',
+                  },
+              )
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  payload = json.load(response)
+              if payload.get('encoding') != 'base64':
+                  raise SystemExit(f'blob {sha}: unsupported encoding {payload.get("encoding")}')
+              return base64.b64decode(payload['content'])
+
+          chunks = []
+          for index, (expected_chars, expected_digest) in enumerate(zip(expected_lengths, expected_sha256)):
+              if index in repair_blob_shas:
+                  decoded = b''.join(fetch_blob(sha) for sha in repair_blob_shas[index])
+                  source = 'exact Git blob repair'
+              else:
+                  path = Path(f'.tmp/kaikai-publish-xz.{index:03d}.b64')
+                  if not path.is_file():
+                      raise SystemExit(f'{path}: carrier chunk is missing')
+                  text = path.read_text(encoding='utf-8')
+                  for escaped in ('\\n', '\\r', '\\t'):
+                      text = text.replace(escaped, '')
+                  clean = ''.join(char for char in text if char in alphabet)
+                  if len(clean) != expected_chars:
+                      raise SystemExit(
+                          f'chunk {index:03d}: expected {expected_chars} base64 chars, found {len(clean)}'
+                      )
+                  decoded = base64.b64decode(clean, validate=True)
+                  source = 'carrier text'
+
+              digest = hashlib.sha256(decoded).hexdigest()
+              if digest != expected_digest:
+                  raise SystemExit(
+                      f'chunk {index:03d}: checksum mismatch from {source}; '
+                      f'expected {expected_digest}, got {digest}'
+                  )
+              print(f'chunk {index:03d}: verified from {source} ({len(decoded)} bytes)')
+              chunks.append(decoded)
+
+          data = b''.join(chunks)
+          expected_digest = '20fb08156b1bc8aa4f653ebab7ef4dd809a26e6921181005d4343bc6eb2b67e8'
+          digest = hashlib.sha256(data).hexdigest()
+          if digest != expected_digest:
+              raise SystemExit(f'publication checksum mismatch: expected {expected_digest}, got {digest}')
+          Path('/tmp/kaikai-publish-compact.tar.xz').write_bytes(data)
+          print(f'Assembled verified publication package: {len(data)} bytes, sha256={digest}')
+          PY
+
+      - name: Switch to current main and apply publication package
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git checkout -B kaikai-publication origin/main
+          tar -xJf /tmp/kaikai-publish-compact.tar.xz -C .
+          patch --batch --forward -p1 < main.patch
+          rm -f main.patch
+          test -z "$(find . \( -name '*.rej' -o -name '*.orig' \) -print -quit)"
+
+      - name: Validate generated public files
+        shell: bash
+        run: |
+          set -euo pipefail
+          chapter='hearing-records/prison-watch/kaikai-final-chapter'
+          hant="$chapter/witnesses/index.html"
+          hans="$chapter/zh-Hans/witnesses/index.html"
+          git diff --check
+          node --check "$chapter/final-chapter.js"
+          node --check "$chapter/witnesses/witnesses.js"
+          test "$(grep -o 'class="witness-card"' "$hant" | wc -l | tr -d ' ')" = '13'
+          test "$(grep -o 'class="witness-card"' "$hans" | wc -l | tr -d ' ')" = '13'
+          test "$(grep -o 'class="issue-row"' "$hant" | wc -l | tr -d ' ')" = '13'
+          test "$(grep -o 'class="issue-row"' "$hans" | wc -l | tr -d ' ')" = '13'
+          grep -q '13名證人全文' "$chapter/index.html"
+          grep -q '13名证人全文' "$chapter/zh-Hans/index.html"
+          grep -q '束帶直接扣住私處並綁在便盆' "$hant"
+          grep -q '束带直接扣住私处并绑在便盆' "$hans"
+          grep -q '法院並未公開官方逐字稿' "$hant"
+          grep -q '法院并未公开官方逐字稿' "$hans"
+          grep -q '/kaikai-final-chapter/witnesses/' sitemap.xml
+          grep -q '/kaikai-final-chapter/zh-Hans/witnesses/' sitemap.xml
+          grep -q 'syncAnchorOffset' "$chapter/final-chapter.js"
+          grep -q 'scroll-padding-top:var(--chapter-anchor-offset)' "$chapter/final-chapter.css"
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          pages = [
+              Path('hearing-records/prison-watch/kaikai-final-chapter/index.html'),
+              Path('hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html'),
+              Path('hearing-records/prison-watch/kaikai-final-chapter/witnesses/index.html'),
+              Path('hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/witnesses/index.html'),
+          ]
+          class IdParser(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.ids=[]
+              def handle_starttag(self, tag, attrs):
+                  value=dict(attrs).get('id')
+                  if value: self.ids.append(value)
+          for page in pages:
+              text=page.read_text(encoding='utf-8')
+              parser=IdParser(); parser.feed(text)
+              duplicates=sorted({item for item in parser.ids if parser.ids.count(item)>1})
+              if duplicates: raise SystemExit(f'{page}: duplicate ids: {duplicates}')
+              if '<main' not in text or '</html>' not in text: raise SystemExit(f'{page}: incomplete document')
+          for page in pages[2:]:
+              text=page.read_text(encoding='utf-8')
+              for required in ('contradiction-matrix','witness-01','witness-13'):
+                  if f'id="{required}"' not in text: raise SystemExit(f'{page}: missing #{required}')
+          image=Path('assets/art/kaikai-dual-track-responsibility-tree-zh-Hant-20260829.webp').read_bytes()
+          if len(image)<50000 or image[:4]!=b'RIFF' or image[8:12]!=b'WEBP':
+              raise SystemExit('responsibility-tree WebP is invalid')
+          print('Static publication checks passed.')
+          PY
+
+      - name: Commit and publish to main
+        shell: bash
+        run: |
+          set -euo pipefail
+          chapter='hearing-records/prison-watch/kaikai-final-chapter'
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            assets/art/kaikai-dual-track-responsibility-tree-zh-Hant-20260829.webp \
+            "$chapter/index.html" \
+            "$chapter/zh-Hans/index.html" \
+            "$chapter/final-chapter.css" \
+            "$chapter/final-chapter.js" \
+            "$chapter/witnesses" \
+            "$chapter/zh-Hans/witnesses" \
+            sitemap.xml
+          git commit -m "Publish Kaikai witness evidence analysis and fix chapter anchors"
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then exit 0; fi
+            echo "Main advanced; rebasing publication commit (attempt ${attempt})."
+            git fetch origin main
+            git rebase origin/main
+          done
+          echo 'Unable to publish after five push attempts.' >&2
+          exit 1
