@@ -1,9 +1,21 @@
 from pathlib import Path
+import json
 import re
+import xml.etree.ElementTree as ET
 
-index = Path('index.html').read_text(encoding='utf-8')
-sitemap = Path('sitemap.xml').read_text(encoding='utf-8')
-bulletins = Path('data/latest-bulletins.json').read_text(encoding='utf-8')
+ROOT = Path('.')
+BASE = 'https://jerryzuhow77.github.io/child-advocacy-site'
+CHAPTER_ID = 'kaikai-chapter-two-20260829'
+NEUTRAL_IMAGE = f'{BASE}/assets/art/kaikai-puppet-stage-20260828.webp'
+LOCALE_URLS = {
+    'zh-Hant': f'{BASE}/hearing-records/prison-watch/kaikai-final-chapter/',
+    'zh-Hans': f'{BASE}/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/',
+    'en': f'{BASE}/en/hearing-records/prison-watch/kaikai-final-chapter/',
+    'ja': f'{BASE}/ja/hearing-records/prison-watch/kaikai-final-chapter/',
+}
+
+index = (ROOT / 'index.html').read_text(encoding='utf-8')
+bulletins = json.loads((ROOT / 'data/latest-bulletins.json').read_text(encoding='utf-8'))
 
 required_home_tokens = [
     'specialFeatureChapterTwoZh',
@@ -18,8 +30,21 @@ missing_home = [token for token in required_home_tokens if token not in index]
 if missing_home:
     raise SystemExit(f'Chapter 2 publication is incomplete on the homepage: {missing_home}')
 
-if bulletins.count('"id":"kaikai-chapter-two-20260829"') != 2:
-    raise SystemExit('Chapter 2 must appear exactly once in both pinned and latest bulletin feeds')
+if int(bulletins.get('version', 0)) < 8:
+    raise SystemExit('The official bulletin feed must be version 8 or later')
+
+for section in ('pinned', 'items'):
+    matches = [item for item in bulletins[section] if item.get('id') == CHAPTER_ID]
+    if len(matches) != 1:
+        raise SystemExit(f'Chapter 2 must appear exactly once in {section}; found {len(matches)}')
+    item = matches[0]
+    if item.get('urlByLocale') != LOCALE_URLS:
+        raise SystemExit(f'Chapter 2 locale routes are incomplete in {section}')
+    images = item.get('imageByLocale', {})
+    if images.get('en') != NEUTRAL_IMAGE or images.get('ja') != NEUTRAL_IMAGE:
+        raise SystemExit(f'English and Japanese Chapter 2 cards must use the language-neutral image in {section}')
+    if 'zh-Hant' in images.get('en', '') or 'zh-Hant' in images.get('ja', ''):
+        raise SystemExit(f'English/Japanese Chapter 2 cards still use Traditional-Chinese art in {section}')
 
 pinned_cards = re.findall(
     r'<a\b[^>]*class="[^"]*\bhome-pinned-report-card\b[^"]*"',
@@ -45,20 +70,49 @@ public_surfaces = [
     'ja/index.html',
     'en/hearing-records/index.html',
     'ja/hearing-records/index.html',
+    'hearing-records/prison-watch/kaikai-day10-20250507/index.html',
+    'hearing-records/prison-watch/kaikai-day10-20250507/zh-Hans/index.html',
+    'en/hearing-records/prison-watch/kaikai-day10-20250507/index.html',
+    'ja/hearing-records/prison-watch/kaikai-day10-20250507/index.html',
 ]
 for path in public_surfaces:
-    source = Path(path).read_text(encoding='utf-8')
+    source = (ROOT / path).read_text(encoding='utf-8')
     if 'kaikai-final-chapter' not in source:
         raise SystemExit(f'Chapter 2 public entry is missing from {path}')
 
-required_sitemap_routes = [
-    '/hearing-records/prison-watch/kaikai-final-chapter/',
-    '/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/',
-    '/hearing-records/prison-watch/kaikai-final-chapter/witnesses/',
-    '/hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/',
-]
-missing_routes = [route for route in required_sitemap_routes if route not in sitemap]
-if missing_routes:
-    raise SystemExit(f'Published Chapter 2 routes are missing from sitemap.xml: {missing_routes}')
+locale_pages = {
+    'zh-Hant': ROOT / 'hearing-records/prison-watch/kaikai-final-chapter/index.html',
+    'zh-Hans': ROOT / 'hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html',
+    'en': ROOT / 'en/hearing-records/prison-watch/kaikai-final-chapter/index.html',
+    'ja': ROOT / 'ja/hearing-records/prison-watch/kaikai-final-chapter/index.html',
+}
+for locale, path in locale_pages.items():
+    if not path.is_file():
+        raise SystemExit(f'Published Chapter 2 locale page is missing: {locale} ({path})')
+    source = path.read_text(encoding='utf-8')
+    canonical = re.search(r'<link rel="canonical" href="([^"]+)">', source)
+    if not canonical or canonical.group(1) != LOCALE_URLS[locale]:
+        raise SystemExit(f'Chapter 2 canonical is wrong for {locale}')
+    for alt_locale, url in LOCALE_URLS.items():
+        token = f'hreflang="{alt_locale}" href="{url}"'
+        if token not in source:
+            raise SystemExit(f'Chapter 2 {locale} page is missing hreflang {alt_locale}')
 
-print('Chapter 2 publication surfaces, five pinned reports, and sitemap discovery are complete.')
+tree = ET.parse(ROOT / 'sitemap.xml')
+ns = {'sm': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
+locations = [node.text for node in tree.findall('.//sm:loc', ns)]
+if len(locations) != len(set(locations)):
+    raise SystemExit('sitemap.xml contains duplicate URLs')
+for url in LOCALE_URLS.values():
+    if locations.count(url) != 1:
+        raise SystemExit(f'Published Chapter 2 route must occur exactly once in sitemap.xml: {url}')
+
+required_related_routes = [
+    f'{BASE}/hearing-records/prison-watch/kaikai-final-chapter/witnesses/',
+    f'{BASE}/hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/',
+]
+missing_related = [url for url in required_related_routes if locations.count(url) != 1]
+if missing_related:
+    raise SystemExit(f'Published Chapter 2 related routes are missing or duplicated: {missing_related}')
+
+print('Chapter 2 four-locale routes, neutral images, Day 10 entries, five pinned reports, and sitemap discovery are complete.')

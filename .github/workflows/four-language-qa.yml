@@ -8,6 +8,18 @@ on:
       - 'index.html'
       - 'en/index.html'
       - 'ja/index.html'
+      - 'en/hearing-records/index.html'
+      - 'ja/hearing-records/index.html'
+      - 'en/hearing-records/prison-watch/kaikai-final-chapter/**'
+      - 'ja/hearing-records/prison-watch/kaikai-final-chapter/**'
+      - 'hearing-records/prison-watch/kaikai-final-chapter/index.html'
+      - 'hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html'
+      - 'hearing-records/prison-watch/kaikai-day10-20250507/index.html'
+      - 'hearing-records/prison-watch/kaikai-day10-20250507/zh-Hans/index.html'
+      - 'en/hearing-records/prison-watch/kaikai-day10-20250507/index.html'
+      - 'ja/hearing-records/prison-watch/kaikai-day10-20250507/index.html'
+      - 'sitemap.xml'
+      - '.github/scripts/verify-chapter-two-publication.py'
       - 'data/latest-bulletins.json'
       - 'assets/home-latest-i18n-20260826.js'
       - 'activity-records/20260820-taipei-station-advocacy/**'
@@ -87,6 +99,9 @@ jobs:
           print('Static synchronization assertions passed.')
           PY
 
+      - name: Chapter Two publication contract
+        run: python3 .github/scripts/verify-chapter-two-publication.py
+
       - name: Browser-level homepage and campaign checks
         shell: bash
         run: |
@@ -123,6 +138,12 @@ jobs:
 
           dump_dom 'http://127.0.0.1:8765/en/?qa=916-en' > /tmp/home-en.html
           grep -F 'Before the September 16 appeal hearing' /tmp/home-en.html
+          dump_dom 'http://127.0.0.1:8765/en/hearing-records/prison-watch/kaikai-final-chapter/' > /tmp/chapter-two-en.html
+          grep -F 'Translation status' /tmp/chapter-two-en.html
+          grep -F 'Traditional Chinese complete edition' /tmp/chapter-two-en.html
+          dump_dom 'http://127.0.0.1:8765/ja/hearing-records/prison-watch/kaikai-final-chapter/' > /tmp/chapter-two-ja.html
+          grep -F '翻訳の公開状況' /tmp/chapter-two-ja.html
+          grep -F '繁体字中国語・完全版' /tmp/chapter-two-ja.html
           if grep -F 'Mainland China' /tmp/home-en.html; then
             echo 'English UI still contains the deprecated Mainland China label.' >&2
             exit 1
