@@ -47,6 +47,7 @@
   const curtains = [...ending.querySelectorAll('.hz-ending-curtain i')];
   const finalCopy = ending.querySelector('.hz-ending-final');
   let played = false;
+  let finaleTimeline = null;
 
   const finish = () => {
     ending.classList.add('is-haipai-playing','is-haipai-complete');
@@ -66,7 +67,7 @@
     const water = ending.querySelector('.hz-wool-water');
     const puppets = ending.querySelectorAll('.tt-ending-theatre-puppet');
     const scriptLines = ending.querySelectorAll('.tt-ending-theatre-script p');
-    const timeline = gsap.timeline({defaults:{ease:'power2.out'},onComplete:()=>ending.classList.add('is-haipai-complete')});
+    const timeline = finaleTimeline = gsap.timeline({defaults:{ease:'power2.out'},onComplete:()=>ending.classList.add('is-haipai-complete')});
     timeline
       .fromTo(water,{opacity:.18,yPercent:22},{opacity:.72,yPercent:0,duration:2.2})
       .fromTo(lantern,{opacity:0,scale:.42,rotation:-7},{opacity:1,scale:mobile ? .68:.9,rotation:0,duration:2.1},.4)
@@ -91,7 +92,7 @@
   } else play();
 
   ending.querySelector('[data-hz-ending-skip]')?.addEventListener('click', () => {
-    if (window.gsap) gsap.globalTimeline.clear();
+    if (finaleTimeline) finaleTimeline.progress(1).kill();
     played = true;
     finish();
     finalCopy?.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});
