@@ -62,33 +62,122 @@
   const lifeStatus = document.querySelector('#lifeStatus');
   const lifeEvents = [...document.querySelectorAll('#lifeTimeline .life-event')];
   const locale = document.documentElement.lang === 'zh-Hans' ? 'zh-Hans' : 'zh-Hant';
-  // PROLOGUE-VIDEO-20260829
-  const prologueVideo = document.querySelector('[data-prologue-video]');
-  const prologueSkip = document.querySelector('[data-prologue-skip]');
-  let prologueWasSkipped = false;
+  // ENTRY-PROLOGUE-OVERLAY-20260829
+  const prologueOverlay = document.querySelector('[data-entry-prologue]');
+  const prologueVideo = prologueOverlay?.querySelector('[data-prologue-video]');
+  const prologueSkip = prologueOverlay?.querySelector('[data-prologue-skip]');
+  const prologuePlay = prologueOverlay?.querySelector('[data-prologue-play]');
+  const prologueProgress = prologueOverlay?.querySelector('[data-prologue-progress]');
+  const prologueReplayLinks = [...document.querySelectorAll('a[href="#prologue-film"]')];
+  const prologuePageLayers = prologueOverlay
+    ? [...document.body.children].filter((element) => element !== prologueOverlay && element.tagName !== 'NOSCRIPT')
+    : [];
+  let prologueClosed = false;
+  let prologueFailsafeTimer = 0;
+  let prologueHideTimer = 0;
 
-  // PROLOGUE-AUTOPLAY-STANDARD-CHROME-20260829
-  const startPrologueVideo = () => {
-    if (!prologueVideo || prologueWasSkipped || !prologueVideo.paused || prologueVideo.ended) return;
-    prologueVideo.muted = true;
-    prologueVideo.defaultMuted = true;
-    prologueVideo.playsInline = true;
-    prologueVideo.setAttribute('muted', '');
-    prologueVideo.setAttribute('playsinline', '');
-    const playback = prologueVideo.play();
-    playback?.catch?.(() => undefined);
+  const setProloguePageState = (active) => {
+    document.body.classList.toggle('prologue-active', active);
+    prologuePageLayers.forEach((element) => {
+      if (active) {
+        element.dataset.prologueInert = element.hasAttribute('inert') ? 'preserve' : 'added';
+        element.setAttribute('inert', '');
+      } else if (element.dataset.prologueInert === 'added') {
+        element.removeAttribute('inert');
+        delete element.dataset.prologueInert;
+      } else if (element.dataset.prologueInert === 'preserve') {
+        delete element.dataset.prologueInert;
+      }
+    });
   };
 
-  prologueSkip?.addEventListener('click', () => {
-    prologueWasSkipped = true;
-    prologueVideo?.pause();
-  });
+  const showProloguePlayPrompt = () => {
+    if (!prologueOverlay || !prologuePlay) return;
+    prologueOverlay.classList.add('is-blocked');
+    prologuePlay.hidden = false;
+  };
 
-  if (prologueVideo) {
-    requestAnimationFrame(startPrologueVideo);
-    prologueVideo.addEventListener('canplay', startPrologueVideo, { once: true });
-    window.addEventListener('pageshow', startPrologueVideo, { once: true });
-  }
+  const closePrologue = ({ focusMain = false } = {}) => {
+    if (!prologueOverlay || prologueClosed) return;
+    prologueClosed = true;
+    window.clearTimeout(prologueFailsafeTimer);
+    window.clearTimeout(prologueHideTimer);
+    prologueVideo?.pause();
+    prologueOverlay.classList.remove('is-blocked');
+    if (prologuePlay) prologuePlay.hidden = true;
+    prologueOverlay.classList.add('is-closing');
+    setProloguePageState(false);
+    prologueHideTimer = window.setTimeout(() => {
+      prologueOverlay.hidden = true;
+      prologueOverlay.setAttribute('aria-hidden', 'true');
+      prologueOverlay.classList.remove('is-closing');
+      if (focusMain) {
+        const main = document.querySelector('#main');
+        main?.setAttribute('tabindex', '-1');
+        main?.focus({ preventScroll: true });
+      }
+    }, 700);
+  };
+
+  const playPrologue = () => {
+    if (!prologueOverlay || !prologueVideo) {
+      document.body.classList.remove('prologue-active');
+      return;
+    }
+    window.clearTimeout(prologueFailsafeTimer);
+    window.clearTimeout(prologueHideTimer);
+    prologueClosed = false;
+    prologueOverlay.hidden = false;
+    prologueOverlay.removeAttribute('aria-hidden');
+    prologueOverlay.classList.remove('is-closing', 'is-blocked');
+    if (prologuePlay) prologuePlay.hidden = true;
+    setProloguePageState(true);
+    prologueVideo.muted = true;
+    prologueVideo.currentTime = 0;
+    if (prologueProgress) prologueProgress.style.transform = 'scaleX(0)';
+
+    const playAttempt = prologueVideo.play();
+    playAttempt?.catch(() => showProloguePlayPrompt());
+    prologueFailsafeTimer = window.setTimeout(() => {
+      if (prologueVideo.paused && !prologueVideo.ended) showProloguePlayPrompt();
+      else closePrologue();
+    }, 12000);
+  };
+
+  prologueSkip?.addEventListener('click', () => closePrologue({ focusMain: true }));
+  prologuePlay?.addEventListener('click', () => {
+    const playAttempt = prologueVideo?.play();
+    playAttempt?.then(() => {
+      prologueOverlay?.classList.remove('is-blocked');
+      if (prologuePlay) prologuePlay.hidden = true;
+    }).catch(() => showProloguePlayPrompt());
+  });
+  prologueVideo?.addEventListener('timeupdate', () => {
+    if (!prologueProgress) return;
+    const duration = Number.isFinite(prologueVideo.duration) && prologueVideo.duration > 0
+      ? prologueVideo.duration
+      : 5;
+    const ratio = Math.min(1, Math.max(0, prologueVideo.currentTime / duration));
+    prologueProgress.style.transform = `scaleX(${ratio})`;
+  });
+  prologueVideo?.addEventListener('ended', () => closePrologue());
+  prologueVideo?.addEventListener('error', showProloguePlayPrompt);
+  prologueReplayLinks.forEach((link) => {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      playPrologue();
+    });
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && prologueOverlay && !prologueOverlay.hidden) {
+      closePrologue({ focusMain: true });
+    }
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'visible' || !prologueOverlay || prologueOverlay.hidden || prologueClosed) return;
+    prologueVideo?.play().catch(() => showProloguePlayPrompt());
+  });
+  requestAnimationFrame(playPrologue);
 
   const totalLabel = locale === 'zh-Hans' ? '个生命节点' : '個生命節點';
   const resultLabel = locale === 'zh-Hans' ? '个相符节点' : '個相符節點';
