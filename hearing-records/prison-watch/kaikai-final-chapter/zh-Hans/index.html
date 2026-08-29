@@ -32,7 +32,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;800;900&amp;family=Noto+Serif+SC:wght@600;700;900&amp;display=swap">
-  <link rel="stylesheet" href="../final-chapter.css?v=20260829-21">
+  <link rel="stylesheet" href="../final-chapter.css?v=20260829-22">
   <style id="zh-hans-font-stack">
     html[lang="zh-Hans"] {
       --serif: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
@@ -71,6 +71,7 @@
   <button class="audio-toggle" type="button" aria-controls="chapterBgm" aria-pressed="false"><span aria-hidden="true">♫</span><b data-audio-label>播放配乐</b></button>
   <time data-audio-time aria-live="polite">00:00 / 00:31</time>
   <label><span>音量</span><input data-audio-volume type="range" min="0" max="1" value="0.58" step="0.01" aria-label="配乐音量"></label>
+  <button class="audio-collapse" type="button" data-audio-collapse aria-expanded="true" aria-label="收合配乐控制器" title="收合配乐控制器"><span aria-hidden="true">⌄</span></button>
 </div>
 
 <main id="main">
@@ -113,25 +114,25 @@
       <div class="reading-depth-copy"><small>READING DEPTH</small><h3>选择本章阅读深度</h3><p>切换会调整全页呈现深度；资料不会删除，深链接仍可直接揭露指定段落。</p></div>
       <div class="reading-depth-controls" role="group" aria-label="本章阅读深度">
         <button type="button" data-reading-depth="quick" aria-pressed="false"><b>5分钟</b><span>核心结论与边界</span></button>
-        <button type="button" data-reading-depth="guided" aria-pressed="true"><b>30分钟</b><span>主线、证词与责任</span></button>
+        <button type="button" data-reading-depth="guided" aria-pressed="true"><b>15分钟</b><span>人物、机构与医疗警讯</span></button>
         <button type="button" data-reading-depth="full" aria-pressed="false"><b>完整纪录</b><span>全部章节与DAY1—10</span></button>
       </div>
-      <p class="reading-depth-status" id="readingDepthStatus" aria-live="polite">三十分钟模式：显示三层证据状态、四阶段形成图与十项跨日勾稽。</p>
+      <p class="reading-depth-status" id="readingDepthStatus" aria-live="polite">十五分钟模式：显示人物、机构、医疗警讯与责任闭环。</p>
     </div>
 
-<section class="section chapter-brief-section" id="chapter-brief" aria-labelledby="chapterBriefTitleHans">
+<section class="section chapter-brief-section" id="chapter-brief" aria-labelledby="chapterBriefTitleHans" data-reading-level="quick">
   <header class="section-head reveal"><small>5-MINUTE BRIEF</small><h2 id="chapterBriefTitleHans">本章先说清楚：确认、尚未定谳、仍待查明</h2><p>先用三张卡片建立证据边界，再选择是否进入完整时间轴、证词与制度责任链。</p></header>
   <div class="chapter-brief-grid">
     <article class="brief-card brief-confirmed reveal"><span class="tag admin">官方资料已确认</span><h3>两次启动收出养程序，不是两次完成收养</h3><p>第一次因监护人失联而暂停结案；第二次在外婆取得监护权后重启，孩子其后进入合作保母的24小时全日照顾。</p><a href="#adoption-bridge">查看两次程序与来源</a></article>
     <article class="brief-card brief-nonfinal reveal"><span class="tag nonfinal">一审认定・尚未定谳</span><h3>争点不只在“有没有看到”，也在看见后是否查证到底</h3><p>陈尚洁另案一审认定包含未要求客观证明、未调查矛盾、未增加访视与未启动通报等疏失；案件仍在上诉。</p><a href="#judgment-omissions">查看六组一审认定</a></article>
     <article class="brief-card brief-open reveal"><span class="tag unresolved">公开资料仍待回答</span><h3>最后数小时、完整交接文件与跨机关闭环仍有缺口</h3><p>本页把不能由现有资料回答的部分明列出来，不用倡议推论填补卷证或行政纪录的空白。</p><a href="#unresolved">查看未清争点</a></article>
   </div>
-  <aside class="brief-route reveal"><b>建议阅读路线</b><p><a href="#adoption-bridge">照顾路径</a> → <a href="#dental-warning">警讯如何停住</a> → <a href="#people-network">115天责任图</a> → <a href="#reform">改革检验</a></p></aside>
+  <aside class="brief-route reveal" aria-labelledby="briefRouteTitle"><b id="briefRouteTitle">三条阅读路线</b><div class="brief-route-grid"><a class="reading-route-card route-quick" href="#chapter-brief" data-reading-route="quick"><strong>5分钟｜只看法院与监察院认定</strong><span>核心结论、行政认定、证据界线与改革检验。</span></a><a class="reading-route-card route-guided" href="#medical-network-omissions" data-reading-route="guided"><strong>15分钟｜看人物、机构与医疗警讯</strong><span>加入照顾路径、证词、医疗闭环与115天责任图。</span></a><a class="reading-route-card route-full" href="#sources" data-reading-route="full"><strong>完整阅读｜展开全部卷证导读</strong><span>显示DAY1—10、宫庙／睡眠争点与完整来源索引。</span></a></div></aside>
 </section>
 
 
 
-  <section class="section paper" id="method">
+  <section class="section paper" id="method" data-reading-level="quick">
     <header class="section-head reveal"><small>01 · HOW TO READ</small><h2>先分清：哪一层证据在说话</h2><p>十日公开旁听纪录不是一份判决，行政纠正也不是刑事定罪。本页用六种标签，让读者知道每一句结论能走到哪里、不能走到哪里。</p></header>
     <div class="evidence-legend">
       <article class="reveal"><span class="tag court">法院认定</span><h3>已由裁判处理</h3><p>以法院新闻稿或裁判摘要为准；一审与定谳分开标示。</p></article>
@@ -146,7 +147,7 @@
     <aside class="source-integrity reveal"><div><b>引用与更新规则</b><p>重要结论须能回到官方文件、裁判、页码或庭审节点；跨来源推论另行标示，不能冒充单一来源的直接认定。</p></div><dl><div><dt>资料核对</dt><dd>2026.08.28</dd></div><div><dt>法律状态</dt><dd>定谳／一审／起诉分开</dd></div><div><dt>修订原则</dt><dd>保留来源与更正边界</dd></div></dl></aside>
   </section>
 
-<section class="section puppet-theatre-section" id="puppet-theatre" aria-labelledby="puppetTheatreTitleHans" data-reading-level="guided">
+<section class="section puppet-theatre-section" id="puppet-theatre" aria-labelledby="puppetTheatreTitleHans" data-reading-level="guided" data-heavy="true">
     <header class="section-head reveal"><small>TAIWANESE GLOVE-PUPPET PROLOGUE</small><h2 id="puppetTheatreTitleHans">春水未归｜选择与等待的布袋戏寓言</h2><p>精致木雕戏台以阿里山、春水、桃花与台湾蓝鹊构成岛屿意象；男女戏偶用一场关于远行、重逢与责任的对话，从“大人可以选择”反照“孩子无法替自己选择”。</p></header>
     <aside class="puppet-literary-note reveal"><b>文学化设定</b><p>本段依您提供的古典抒情、浪漫感伤与莎士比亚式悲剧反诘重新创作；不是案件重演，也不是任何当事人、证人或法院的原话。证据内容仍以正文标签与来源为准。</p></aside>
     <div class="puppet-theatre reveal" data-puppet-theatre>
@@ -187,7 +188,7 @@
     <aside class="puppet-evidence-bridge reveal"><b>舞台在此落幕，证据从下一节开始</b><p>寓言只提出“谁能选择、谁必须等待”的问题；接下来回到法院、行政调查、机关回应与可回查文件，逐层标示已知、仍待查明与不能越过的界线。</p><a href="#method">进入证据阅读方法 ↓</a></aside>
   </section>
 
-  <section class="section adoption-bridge-section" id="adoption-bridge">
+  <section class="section adoption-bridge-section" id="adoption-bridge" data-reading-level="quick">
     <header class="section-head reveal"><small>CHAPTER 02 · TWO REFERRALS, ONE CHILD</small><h2>不是两次完成收养，而是两次启动出养程序</h2><p>监察院完整调查报告的精确用语是“2度转介儿盟进行收出养媒合服务”。第一次因监护人失联而暂停并结案；第二次在外婆取得监护权后重启。直到剀剀离世，公开资料没有显示曾完成法院认可的收养。</p></header>
     <aside class="chapter-title-boundary reveal"><b>篇名的证据界线</b><p>“没人要的孩子”描述的是孩子在照顾与制度间被反复安排的处境，不是对家人的道德判决。官方资料同时记载：母亲曾主动求助，外婆曾接回照顾、另觅保母并完成改定监护。出养是法律与照顾选择，不能被简化成“没有人爱”。</p></aside>
 
@@ -240,7 +241,7 @@
     </section>
   </section>
 
-  <section class="section life-section" id="life">
+  <section class="section life-section" id="life" data-reading-level="guided" data-heavy="true">
     <header class="section-head reveal"><small>02 · A LIFE IN 672 DAYS</small><h2>剀剀的一生，不从最后三个月开始</h2><p>以下依监察院纠正案文建立日期骨架，再用 DAY2—DAY9 的证词补入孩子的发展、照顾与被看见的方式。出生及离世当日均计入，共672个日历日。</p></header>
     <div class="journey-tools" role="search">
       <label><span>搜寻生命节点、人物或机关</span><input id="lifeSearch" type="search" placeholder="例如：周保母、交接、访视、掉牙" autocomplete="off"></label>
@@ -298,7 +299,7 @@
     </ol>
   </section>
 
-  <section class="section last-day-section" id="last-day" data-reading-level="guided">
+  <section class="section last-day-section" id="last-day" data-reading-level="guided" data-heavy="true">
     <header class="section-head reveal"><small>03 · THE FINAL DAY, WITH EVIDENCE LIMITS</small><h2>生命最后一日：证词能拼到哪里，不能拼到哪里</h2><p>这不是逐分钟重演，也不是替卷证补写情节。以下只把法院已认定的时间边界、公开庭讯片段与医学机转放在同一条线上；每一步都标明证据强度。</p></header>
     <aside class="last-day-rule reveal"><b>先说结论</b><p>目前最可靠的还原是：剀剀早已处于长期营养不良、身体衰弱与多处新旧伤势累积的危险状态；12月23日中午后至少已出现活动力不佳，法院认定共同犯行持续至晚间约10时，之后公开纪录出现“没心跳了”、CPR与119，最终于24日凌晨因低血容量性休克死亡。公开资料不足以认定最后一日每一个暴力动作、精确时间及在场者。</p></aside>
     <div class="final-day-track">
@@ -315,7 +316,7 @@
     <aside class="time-conflict reveal"><b>时间纪录有落差</b><p>DAY1公开旁听纪录写“00:27宣告死亡”；陈尚洁另案的一审法院新闻稿则记载“凌晨1时31分许死亡”，主案一审新闻稿只写“凌晨”。在取得可核对的判决原本与完整急诊病历前，本页统一使用“12月24日凌晨”，不自行选定其中一个分钟数。</p></aside>
   </section>
 
-  <section class="section injury-section" id="injuries" data-reading-level="guided">
+  <section class="section injury-section" id="injuries" data-reading-level="guided" data-heavy="true">
     <header class="section-head reveal"><small>04 · NON-GRAPHIC WHOLE-BODY EVIDENCE MAP</small><h2>全身伤势解析：至少42处，是可确认下限，不是全部</h2><p>以下依DAY5吕立医师与许倬宪法医师的公开庭讯整理。示意图只标示身体区域，不呈现写实伤口；同一区域可能有多处、新旧不同的伤势，已愈合而看不见者也不在“至少42处”之内。</p></header>
     <aside class="injury-guard reveal"><b>重要界线</b><p>医师逐区说明的是伤势形态与医学合理性；精确形成时间、每一处由谁造成及个别行为的法律归责，仍由法院依全部证据判断。高度疑似性虐待也不等于公开资料已证明特定性动机或特定行为人。</p></aside>
     <div class="injury-layout">
@@ -508,7 +509,7 @@
 </section>
     <aside class="chen-source-note reveal"><b>来源与限制</b><p>本区依本网站“法庭纪录漫画”对公开一审开庭纪录的重点整理，以及台北地院一审新闻稿交叉编写，并非庭讯逐字稿。若证词摘要与裁判原本或终局裁判出现差异，应以裁判为准。</p><div class="source-chips"><a href="../../../../court-comics/episode-02/?lang=zh-Hans">白丽芳证词图文</a><a href="../../../../court-comics/episode-03/">主管证词图文</a><a href="../../../../cases/chen-shangjie/">陈尚洁案专页</a><a href="https://judgment.judicial.gov.tw/FJUD/data.aspx?ty=JD&amp;id=TPDM%2c114%2c%e8%a8%b4%2c51%2c20260416%2c2&amp;ot=in" target="_blank" rel="noopener">一审判决全文 ↗</a><a href="https://www.judicial.gov.tw/tw/cp-1888-1528027-1ee8d-1.html" target="_blank" rel="noopener">台北地院一审新闻稿 ↗</a><a href="https://www.cna.com.tw/news/asoc/202605150165.aspx" target="_blank" rel="noopener">检方提起上诉报道 ↗</a></div></aside>
 
-    <section class="dental-warning reveal" id="dental-warning" aria-labelledby="dentalWarningTitle" data-reading-level="guided" data-heavy="true">
+    <section class="dental-warning reveal" id="dental-warning" aria-labelledby="dentalWarningTitle" data-reading-level="quick" data-heavy="true">
       <header><small>DENTAL WARNING · EVIDENCE-CORRECTED</small><h3 id="dentalWarningTitle">牙医警讯如何走到社工，又停在转述里？</h3><p>掉牙不是孤立的一次医疗事件。把监察院调查报告、新闻稿与一审判决理由放在同一条线上，可以看见医疗端、保母、儿盟社工与外婆之间的讯息流动，却看不到一个完成查证与保护升级的闭环。</p></header>
       <aside class="dental-correction"><b>先校正一句关键叙述</b><p>监察院报告记载的是：<strong>刘彩萱向陈尚洁转述牙医意见</strong>，不是牙医直接对陈尚洁说。公开资料也不足以写成“牙医已向陈尚洁正式通报儿虐”。能确认的是，保母转述的可能原因已包含“受过刺激、不平等待遇或潜在症状”。</p></aside>
       <ol class="dental-chain">
@@ -522,29 +523,42 @@
         <article><span class="tag court">一审法院认定｜未定谳</span><h4>社工端的疏失</h4><p>法院认为，陈尚洁对频繁发烧、过敏、受伤等状况未督促妥适就医或确认治疗；对异常多停在口头询问、表示了解或再评估，没有形成有效行动。</p></article>
       </div>
 <!-- MEDICAL-NETWORK-OMISSIONS-20260829 -->
-      <section class="medical-network-omissions" id="medical-network-omissions" aria-labelledby="medicalNetworkTitle">
+      <section class="medical-network-omissions" id="medical-network-omissions" aria-labelledby="medicalNetworkTitle" data-reading-level="quick" data-heavy="true">
         <header><small>MEDICAL CONTACTS × OFFICIAL FINDINGS</small><h4 id="medicalNetworkTitle">医疗接触不等于安全闭环：监察院还认定了哪些漏接？</h4><p>本区把“监察院正式认定”“已知就医节点”与“仍待原始病历厘清”分开。曾经看诊、拿药或被建议转院，不等于儿虐风险已被排除，也不能把未被点名的诊所直接写成已认定失职。</p></header>
         <div class="medical-status-legend" aria-label="医疗证据状态图例"><span class="medical-status status-official">监察院正式认定</span><span class="medical-status status-record">已知医疗节点</span><span class="medical-status status-open">仍待原始资料</span></div>
+<!-- READER-OPTIMIZATIONS-20260829 -->
+        <section class="medical-alert-loop" aria-labelledby="medicalLoopTitle">
+          <header><small>CLOSED-LOOP CHECK</small><h5 id="medicalLoopTitle">医疗警讯闭环图｜看见之后，还要完成七个动作</h5><p>下列节点把“当时看见什么、谁掌握、应做什么、公开资料目前看见什么”放在同一条线上。红色中断线表示公开资料尚未呈现已完成的闭环，不等同认定某一人必然违法。</p></header>
+          <ol>
+            <li class="loop-record"><time datetime="2023-11-07">11.07</time><b>第一次儿科接触</b><dl><div><dt>看见</dt><dd>体温偏高、口鼻脓痂疹</dd></div><div><dt>掌握</dt><dd>照顾者与看诊医师</dd></div><div><dt>应做</dt><dd>病历化、评估是否与年龄及病史相符</dd></div><div><dt>公开资料</dt><dd>记载拿药；诊所名称待核实</dd></div></dl></li>
+            <li class="loop-record"><time datetime="2023-11-09">11.09</time><b>再次儿科就医</b><dl><div><dt>看见</dt><dd>短期内再次看诊</dd></div><div><dt>掌握</dt><dd>照顾者与儿科端</dd></div><div><dt>应做</dt><dd>比对前次症状、成长与反复就医</dd></div><div><dt>公开资料</dt><dd>仅见再诊节点，未见完整病历</dd></div></dl></li>
+            <li class="loop-official"><time datetime="2023-11-23">11.23</time><b>牙科明显异常</b><dl><div><dt>看见</dt><dd>3颗乳牙脱落、大块口腔溃疡</dd></div><div><dt>掌握</dt><dd>牙医、照顾者</dd></div><div><dt>应做</dt><dd>辨识外力风险、依法通报并转完整评估</dd></div><div><dt>监察院</dt><dd>认定错失辨识与通报时机</dd></div></dl></li>
+            <li class="loop-break"><time>转诊</time><b>确认大医院评估</b><dl><div><dt>应做</dt><dd>取得转诊单、完成日期与诊疗结果</dd></div><div><dt>闭环</dt><dd>不是只“建议去”，而是确认真的去了</dd></div><div><dt>公开资料</dt><dd>未见转诊完成的可回查纪录</dd></div></dl></li>
+            <li class="loop-break"><time>社福</time><b>把医疗结果带回风险图</b><dl><div><dt>应做</dt><dd>核实诊所说法、病历与照顾者解释</dd></div><div><dt>比对</dt><dd>照片、体重、访视、前保母与其他警讯</dd></div><div><dt>公开资料</dt><dd>未见完成跨次、跨来源勾稽</dd></div></dl></li>
+            <li class="loop-break"><time>通报</time><b>启动法定保护程序</b><dl><div><dt>门槛</dt><dd>知悉或合理怀疑受虐，不必等到确诊</dd></div><div><dt>应做</dt><dd>责任通报、儿保医疗或跨网络共访</dd></div><div><dt>公开资料</dt><dd>未见本警讯形成正式通报</dd></div></dl></li>
+            <li class="loop-goal"><time>闭环</time><b>孩子安全被重新确认</b><dl><div><dt>完成条件</dt><dd>医疗、社福、照顾现场相互验证</dd></div><div><dt>保护结果</dt><dd>风险升级、增加访视或立即移离危险</dd></div><div><dt>核心</dt><dd>每一步都有负责人、期限与可追溯纪录</dd></div></dl></li>
+          </ol>
+        </section>
         <div class="medical-contact-cascade">
           <article class="medical-contact-card medical-contact-record">
             <header><time datetime="2023-11-07">11.07／11.09</time><span class="medical-status status-record">名称待原始病历核实｜非监察院点名失职</span></header>
-            <h5>兴隆内科小儿科诊所（名称待核实）</h5>
+            <h5>兴隆内科小儿科诊所（名称待核实）</h5><p class="medical-card-takeaway"><b>一句结论</b>确有两次儿科就医节点，但公开资料尚不足以核实诊所名称，也不能直接认定个别失职。</p>
             <p>依本次指定名称列入待核实节点。儿盟公开时间轴仅记载，刘彩萱于11月7日带孩子至“儿科诊所”准备接种疫苗，回报医师评估体温偏高、口鼻处有脓痂疹，因此先看诊拿药；11月9日再次至儿科诊所。该公开时间轴未披露诊所名称。</p>
             <aside><b>证据界线</b><p>监察院公开调查报告及儿盟公开时间轴均未把该次儿科就诊具名为兴隆内科小儿科诊所，监察院也没有对该诊所作个别失职认定。本站依本次指定名称列为待核实节点；是否确为该次就医机构，以及当时是否已出现可辨识儿虐的身体征象、需要转诊或通报，仍须原始病历、当时可见症状、照顾者主诉、医师证词与后续追踪纪录。</p></aside>
-            <div class="source-chips"><a href="https://judgment.judicial.gov.tw/FJUD/data.aspx?ty=JD&amp;id=TPDM%2c114%2c%e8%a8%b4%2c51%2c20260416%2c2&amp;ot=in" target="_blank" rel="noopener">一审判决全文 ↗</a><a href="https://www.children.org.tw/news/news_detail/kaikai-case-timeline" target="_blank" rel="noopener">儿盟公开时间轴｜机构来源 ↗</a></div>
+            <details class="evidence-source-drawer"><summary>查看证据、直接性与限制</summary><div class="source-drawer-body"><dl><div><dt>来源性质</dt><dd>法院裁判全文、机构公开时间轴</dd></div><div><dt>可直接支持</dt><dd>11月7日与11月9日曾有儿科就医节点</dd></div><div><dt>不能直接支持</dt><dd>公开来源未披露诊所名称，也非监察院个别失职认定</dd></div><div><dt>最后核对</dt><dd>2026.08.29</dd></div></dl><div class="source-chips"><a href="https://judgment.judicial.gov.tw/FJUD/data.aspx?ty=JD&amp;id=TPDM%2c114%2c%e8%a8%b4%2c51%2c20260416%2c2&amp;ot=in" target="_blank" rel="noopener">一审判决全文 ↗</a><a href="https://www.children.org.tw/news/news_detail/kaikai-case-timeline" target="_blank" rel="noopener">儿盟公开时间轴｜机构来源 ↗</a></div></div></details>
           </article>
           <article class="medical-contact-card medical-contact-official">
             <header><time datetime="2023-11-23">11.23</time><span class="medical-status status-official">监察院正式认定</span></header>
-            <h5>牙医诊所：3颗乳牙脱落与大块口腔溃疡</h5>
+            <h5>牙医诊所：3颗乳牙脱落与大块口腔溃疡</h5><p class="medical-card-takeaway"><b>一句结论</b>掉牙与口腔溃疡已构成明显异常；监察院认定医疗端错失辨识与通报时机。</p>
             <p>监察院记载，病历有3颗牙齿脱落及口腔用药，牙医建议到大医院接受小儿科完整检查；侦查笔录并显示，整颗牙齿脱出通常涉及撞击力量，且当天未观察到孩子持续磨牙。</p>
             <aside><b>监察院判断</b><p>一岁多幼童出现3颗掉牙与大块口腔溃疡，明显不属常态；医事人员虽已意识孩子异常并建议转院，却未察觉可能存在成人外力不当对待的风险，错失及时通报时机。</p></aside>
-            <div class="source-chips"><a href="https://cybsbox.cy.gov.tw/CYBSBoxSSL/edoc/download/76497" target="_blank" rel="noopener">监察院调查报告 P.45–48 ↗</a></div>
+            <details class="evidence-source-drawer"><summary>查看证据、页码与限制</summary><div class="source-drawer-body"><dl><div><dt>来源性质</dt><dd>监察院正式调查报告</dd></div><div><dt>文件位置</dt><dd>调查报告第45—48页</dd></div><div><dt>可直接支持</dt><dd>牙科病历、转大医院建议及监察院的行政判断</dd></div><div><dt>法律界线</dt><dd>行政调查不直接替代刑事责任判断</dd></div></dl><div class="source-chips"><a href="https://cybsbox.cy.gov.tw/CYBSBoxSSL/edoc/download/76497" target="_blank" rel="noopener">监察院调查报告 P.45–48 ↗</a></div></div></details>
           </article>
           <article class="medical-contact-card medical-contact-system">
             <header><time>制度层</time><span class="medical-status status-open">从单次看诊到跨网络闭环</span></header>
-            <h5>基层诊所是第一线，但资讯没有自动进入儿保系统</h5>
+            <h5>基层诊所是第一线，但资讯没有自动进入儿保系统</h5><p class="medical-card-takeaway"><b>一句结论</b>单次看诊若未被带入跨次、跨专业风险图，就不会自动形成安全闭环。</p>
             <p>监察院指出，学龄前幼儿通常先到基层诊所就医；一般儿科、家医科与牙科因此都是重要的受虐辨识网络。幼儿专责医师制度仍受被动派案、家长拒绝或儿童实际就医习惯限制，不能取代所有第一线医事人员的责任通报敏感度。</p>
-            <aside><b>要形成安全闭环</b><p>医疗端须能辨识与年龄不符的伤势并依法通报；社福端须取得就医结果、核实转诊是否完成，把跨次看诊与照片、体重、行为变化放在同一张风险图上。</p></aside>
+            <aside><b>要形成安全闭环</b><p>医疗端须能辨识与年龄不符的伤势并依法通报；社福端须取得就医结果、核实转诊是否完成，把跨次看诊与照片、体重、行为变化放在同一张风险图上。</p></aside><details class="evidence-source-drawer"><summary>查看制度来源与限制</summary><div class="source-drawer-body"><dl><div><dt>来源性质</dt><dd>监察院调查报告与调查新闻稿</dd></div><div><dt>可直接支持</dt><dd>基层医疗辨识、责任通报与幼儿专责医师制度限制</dd></div><div><dt>本站整理</dt><dd>“安全闭环”是跨来源的流程化呈现，不是官方原图</dd></div><div><dt>最后核对</dt><dd>2026.08.29</dd></div></dl><div class="source-chips"><a href="https://cybsbox.cy.gov.tw/CYBSBoxSSL/edoc/download/76497" target="_blank" rel="noopener">监察院调查报告 ↗</a><a href="https://www.cy.gov.tw/News_Content.aspx?Create=1&amp;n=125&amp;s=34118" target="_blank" rel="noopener">监察院新闻稿 ↗</a></div></div></details>
           </article>
         </div>
         <details class="control-yuan-omissions">
@@ -559,7 +573,7 @@
           </div>
         </details>
         <aside class="medical-evidence-boundary"><b>固定判读规则</b><p><strong>监察院行政认定</strong>针对政府制度与执行失职；<strong>法院刑事认定</strong>依各审级裁判及其是否确定为准；<strong>兴隆诊所名称</strong>目前只列为待核实就医节点。三种证据状态不得混成同一种法律责任。</p></aside>
-        <div class="source-chips"><a href="https://www.cy.gov.tw/News_Content.aspx?Create=1&amp;n=125&amp;s=34118" target="_blank" rel="noopener">监察院新闻稿 ↗</a><a href="https://cybsbox.cy.gov.tw/CYBSBoxSSL/edoc/download/76497" target="_blank" rel="noopener">监察院调查报告 ↗</a><a href="https://www.judicial.gov.tw/tw/cp-1888-1528027-1ee8d-1.html" target="_blank" rel="noopener">台北地院一审新闻稿 ↗</a></div>
+        <details class="evidence-source-drawer section-source-drawer"><summary>本区来源索引与更新纪录</summary><div class="source-drawer-body"><dl><div><dt>主要依据</dt><dd>监察院调查报告、调查新闻稿、法院裁判与机构时间轴</dd></div><div><dt>状态规则</dt><dd>行政认定、法院裁判、机构纪录与待核实名称分开标示</dd></div><div><dt>更新方式</dt><dd>原始病历或新裁判出现时，先修正证据状态，再更新结论</dd></div><div><dt>最后核对</dt><dd>2026.08.29</dd></div></dl><div class="source-chips"><a href="https://www.cy.gov.tw/News_Content.aspx?Create=1&amp;n=125&amp;s=34118" target="_blank" rel="noopener">监察院新闻稿 ↗</a><a href="https://cybsbox.cy.gov.tw/CYBSBoxSSL/edoc/download/76497" target="_blank" rel="noopener">监察院调查报告 ↗</a><a href="https://www.judicial.gov.tw/tw/cp-1888-1528027-1ee8d-1.html" target="_blank" rel="noopener">台北地院一审新闻稿 ↗</a></div></div></details>
       </section>
 <!-- DEATH-TEMPERATURE-EVIDENCE-20260829 -->
       <aside class="dental-correction death-temperature-evidence" id="death-temperature-evidence">
@@ -641,7 +655,7 @@
     </section>
   </section>
 
-  <section class="section ten-days-section" id="ten-days" data-heavy="true">
+  <section class="section ten-days-section" id="ten-days" data-reading-level="full" data-heavy="true">
     <header class="section-head reveal"><small>07 · HOW THE EVIDENCE FORMED ACROSS TEN DAYS</small><h2>十日庭审证据形成图</h2><p>DAY1到DAY10不是十份同质的“证人证词”，而是程序基础、生活证人、医学鉴定、被告陈述与科刑主张逐层累积。以下可依阅读时间切换深度，再由争点反查每一日来源。</p></header>
 
 
@@ -742,7 +756,7 @@
     </section>
   </section>
 
-  <section class="section temple-section" id="temple" data-reading-level="guided" data-heavy="true">
+  <section class="section temple-section" id="temple" data-reading-level="full" data-heavy="true">
     <header class="section-head reveal"><small>08 · TEMPLE, SLEEP &amp; CARE-PATH CONTROVERSIES</small><h2>宫庙、睡眠与合作来源：三条证据线不能混成因果</h2><p>公开庭讯同时出现北投宫庙、收惊与法会、睡眠控制，以及刘彩萱如何接触励馨与儿福联盟的说法。人物与时间有交集，不代表宫庙曾指示剥夺睡眠或参与收出养媒合；以下逐条拆开核对。</p></header>
     <aside class="temple-premise reveal"><b>阅读原则</b><p>不评判宗教信仰，也不把仪式污名化。每一题分开检验“谁说的、何时说、是否有文件互证”；法会、收惊、睡眠控制与接案来源各有不同的证明范围。</p></aside>
     <div class="temple-grid">
@@ -1046,7 +1060,7 @@
     </div>
   </section>
 
-  <section class="section reform-section" id="reform" data-heavy="true">
+  <section class="section reform-section" id="reform" data-reading-level="quick" data-heavy="true">
     <header class="section-head reveal"><small>12 · REFORM IS A TEST, NOT AN ENDING</small><h2>制度已经改了什么，还要怎么验证</h2><p>监察院在2026年7月22日将纠正案结案。结案代表改善与处置获委员会存查，不代表每一个风险已被永久消除。</p></header>
     <div class="reform-table">
       <div class="reform-row head"><b>事件后措施</b><b>它回应的旧缺口</b><b>下一步公开检验</b></div>
@@ -1079,11 +1093,11 @@
     </div>
   </section>
 
-  <section class="section page-actions-section" id="page-actions" aria-labelledby="pageActionsTitleHans">
+  <section class="section page-actions-section" id="page-actions" aria-labelledby="pageActionsTitleHans" data-reading-level="quick">
   <div class="page-actions-inner reveal"><header><small>READ · VERIFY · SHARE</small><h2 id="pageActionsTitleHans">把阅读结果带走，而不是只留下情绪</h2><p>可导出本章来源索引、分享五分钟摘要，或返回官网继续阅读剀剀案专题。</p></header><div class="page-action-buttons"><button type="button" data-export-sources>下载本章来源索引</button><button type="button" data-share-summary>分享5分钟摘要</button><a href="../../../../">返回官网专题总览</a></div></div>
 </section>
 
-  <section class="section sources-section" id="sources" data-heavy="true">
+  <section class="section sources-section" id="sources" data-reading-level="full" data-heavy="true">
     <header class="section-head reveal"><small>13 · SOURCES &amp; LIMITS</small><h2>来源、版本与限制</h2><p>本页为公共倡议与证据导读，不是法院裁判书、法律意见或完整卷证。制度认定优先使用官方资料；陈尚洁案仍在上诉、林心慈仅遭起诉、施盈如为证人，三者法律状态不可混同。林心慈的职称依台北市社会局说法标为“前访视人员”，不称社工。</p></header>
     <div class="source-columns">
       <article class="reveal"><h3>十日庭审索引</h3><ol><li><a href="../../kaikai-day1-20250422/?lang=zh-Hans">DAY1｜程序与争点</a></li><li><a href="../../kaikai-day2-20250423/?lang=zh-Hans">DAY2｜Mira</a></li><li><a href="../../kaikai-day3-20250425/?lang=zh-Hans">DAY3｜前保母与家中证人</a></li><li><a href="../../kaikai-day4-20250428/?lang=zh-Hans">DAY4｜两名专业保母证词</a></li><li><a href="../../kaikai-day5-20250429/?lang=zh-Hans">DAY5｜法医与儿保医师</a></li><li><a href="../../kaikai-day6-20250430/?lang=zh-Hans">DAY6｜儿童精神鉴定</a></li><li><a href="../../kaikai-day7-20250502/?lang=zh-Hans">DAY7｜事实与法律辩论</a></li><li><a href="../../kaikai-day8-20250505/?lang=zh-Hans">DAY8｜外婆与量刑鉴定</a></li><li><a href="../../kaikai-day9-20250506/zh-Hans/">DAY9｜两名被告讯问</a></li><li><a href="../../kaikai-day10-20250507/zh-Hans/">DAY10｜科刑辩论</a></li></ol></article>
@@ -1096,6 +1110,6 @@
 
 <footer><p>悲剧不忘，不是让伤痛停在记忆里。</p><small>把每一个可被修补的缝隙，变成下一个孩子的安全网。</small></footer>
 <script src="../../../../assets/vendor/gsap-3.15.0.min.js" defer></script>
-<script src="../final-chapter.js?v=20260829-8" defer></script>
+<script src="../final-chapter.js?v=20260829-9" defer></script>
 </body>
 </html>

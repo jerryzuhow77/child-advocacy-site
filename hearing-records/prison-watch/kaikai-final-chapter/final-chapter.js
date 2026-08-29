@@ -83,12 +83,12 @@ lifeSearch?.addEventListener('input', filterLifeEvents);
   const readingDepthCopy = locale === 'zh-Hans'
     ? {
         quick: '五分钟模式：显示核心结论与三层证据状态。',
-        guided: '三十分钟模式：显示三层证据状态、四阶段形成图与十项跨日勾稽。',
+        guided: '十五分钟模式：显示人物、机构、医疗警讯与责任闭环。',
         full: '完整纪录模式：再显示并展开DAY1—DAY10逐日入口。'
       }
     : {
         quick: '五分鐘模式：顯示核心結論與三層證據狀態。',
-        guided: '三十分鐘模式：顯示三層證據狀態、四階段形成圖與十項跨日勾稽。',
+        guided: '十五分鐘模式：顯示人物、機構、醫療警訊與責任閉環。',
         full: '完整紀錄模式：再顯示並展開DAY1—DAY10逐日入口。'
       };
 
@@ -109,6 +109,13 @@ lifeSearch?.addEventListener('input', filterLifeEvents);
   setReadingDepth(savedReadingDepth, false);
   readingDepthButtons.forEach((button) => {
     button.addEventListener('click', () => setReadingDepth(button.dataset.readingDepth));
+  });
+  document.querySelectorAll('[data-reading-route]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const depth = link.dataset.readingRoute;
+      const button = document.querySelector(`[data-reading-depth="${depth}"]`);
+      button?.click();
+    });
   });
 
   const navLinks = [...document.querySelectorAll('#siteNav a[href^="#"]')];
@@ -183,8 +190,42 @@ lifeSearch?.addEventListener('input', filterLifeEvents);
     updateAudioState();
   }
 
+
+  // READER-OPTIMIZATIONS-20260829
+  const audioController = document.querySelector('[data-audio-controller]');
+  const audioCollapse = document.querySelector('[data-audio-collapse]');
+  const mobileAudio = window.matchMedia('(max-width: 760px)');
+  const audioPanelCopy = locale === 'zh-Hans' ? { expand: '展开配乐控制器', collapse: '收合配乐控制器' } : { expand: '展開配樂控制器', collapse: '收合配樂控制器' };
+  let audioManualOpenAt = -1;
+  const setAudioCollapsed = (collapsed, reason = 'auto') => {
+    if (!audioController || !audioCollapse) return;
+    const next = mobileAudio.matches ? Boolean(collapsed) : false;
+    audioController.classList.toggle('is-collapsed', next);
+    audioCollapse.setAttribute('aria-expanded', String(!next));
+    audioCollapse.setAttribute('aria-label', next ? audioPanelCopy.expand : audioPanelCopy.collapse);
+    audioCollapse.title = next ? audioPanelCopy.expand : audioPanelCopy.collapse;
+    if (!next && reason === 'manual') audioManualOpenAt = window.scrollY;
+    if (next) audioManualOpenAt = -1;
+  };
+  audioCollapse?.addEventListener('click', () => setAudioCollapsed(!audioController?.classList.contains('is-collapsed'), 'manual'));
+  let audioScrollTicking = false;
+  const syncAudioPanelWithScroll = () => {
+    audioScrollTicking = false;
+    if (!audioController || !mobileAudio.matches) return;
+    if (window.scrollY < 120) { setAudioCollapsed(false, 'auto'); return; }
+    if (audioManualOpenAt >= 0 && window.scrollY - audioManualOpenAt < 280) return;
+    setAudioCollapsed(true, 'auto');
+  };
+  window.addEventListener('scroll', () => { if (!audioScrollTicking) { audioScrollTicking = true; requestAnimationFrame(syncAudioPanelWithScroll); } }, { passive: true });
+  mobileAudio.addEventListener?.('change', () => { audioManualOpenAt = -1; setAudioCollapsed(mobileAudio.matches && window.scrollY >= 120, 'auto'); });
+  document.addEventListener('click', (event) => { if (event.target.closest('a[href^="#"]') && mobileAudio.matches) setAudioCollapsed(true, 'anchor'); }, { capture: true });
+  window.addEventListener('hashchange', () => { if (mobileAudio.matches) setAudioCollapsed(true, 'anchor'); });
+  setAudioCollapsed(mobileAudio.matches && window.scrollY >= 120, 'auto');
+
   const theatre = document.querySelector('[data-puppet-theatre]');
-  if (theatre) {
+  const initPuppetTheatre = () => {
+    if (!theatre || theatre.dataset.runtimeReady === 'true') return;
+    theatre.dataset.runtimeReady = 'true';
     const stage = theatre.querySelector('.puppet-stage');
     const stageArt = theatre.querySelector('.puppet-stage-art');
     const female = theatre.querySelector('[data-puppet="female"]');
@@ -347,6 +388,16 @@ lifeSearch?.addEventListener('input', filterLifeEvents);
         if (pauseButton) pauseButton.disabled = true;
       });
     }
+  };
+  if (theatre) {
+    if ('IntersectionObserver' in window) {
+      const theatreObserver = new IntersectionObserver((entries, observer) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        initPuppetTheatre();
+        observer.disconnect();
+      }, { rootMargin: '800px 0px 800px 0px', threshold: 0.01 });
+      theatreObserver.observe(theatre);
+    } else { initPuppetTheatre(); }
   }
 })();
 
@@ -431,6 +482,11 @@ lifeSearch?.addEventListener('input', filterLifeEvents);
   let hashScrollSequence = 0;
   const revealTargetForNavigation = (target) => {
     if (!target) return;
+    let disclosure = target.closest?.('details');
+    while (disclosure) {
+      disclosure.open = true;
+      disclosure = disclosure.parentElement?.closest('details') || null;
+    }
     let node = target;
     while (node && node !== document.documentElement) {
       if (node.classList?.contains('reveal')) node.classList.add('in-view');
