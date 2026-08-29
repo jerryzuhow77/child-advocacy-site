@@ -9,7 +9,13 @@ old = """    await page.locator('.special-feature-nav-toggle').click({ force: tr
     await page.locator('[data-kaikai-medical-root-entry] .special-feature-menu-prologue').click({ force: true });
     await page.waitForTimeout(350);
 """
-new = """    await page.evaluate(caseLabel => {
+new = """    await page.evaluate(() => {
+      window.__qaBaselineOverflow = Math.max(
+        0,
+        Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) - innerWidth
+      );
+    });
+    await page.evaluate(caseLabel => {
       const open = button => {
         if (button instanceof HTMLElement && button.getAttribute('aria-expanded') !== 'true') button.click();
       };
@@ -65,5 +71,11 @@ new = """    await page.evaluate(caseLabel => {
 count = text.count(old)
 if count != 1:
     raise SystemExit(f'Expected one old menu interaction block, found {count}')
-path.write_text(text.replace(old, new, 1), encoding='utf-8')
-print('Patched the verifier to exercise hidden responsive menus through DOM events and render them safely for screenshots.')
+text = text.replace(old, new, 1)
+overflow_old = "overflow: Math.max(0, Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) - innerWidth)"
+overflow_new = "overflow: window.__qaBaselineOverflow ?? Math.max(0, Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) - innerWidth)"
+if text.count(overflow_old) < 2:
+    raise SystemExit(f'Expected root and hub overflow expressions, found {text.count(overflow_old)}')
+text = text.replace(overflow_old, overflow_new, 1)
+path.write_text(text, encoding='utf-8')
+print('Patched the verifier to exercise responsive menus and measure genuine page overflow before QA-only rendering styles.')
