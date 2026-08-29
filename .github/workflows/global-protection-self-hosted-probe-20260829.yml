@@ -1,0 +1,48 @@
+name: Global Protection self-hosted runner probe 20260829
+
+on:
+  push:
+    branches:
+      - ops/global-protection-runner-probe-20260829
+    paths:
+      - .github/workflows/global-protection-self-hosted-probe-20260829.yml
+
+permissions:
+  contents: read
+
+env:
+  PROBE_ONLY: "true"
+
+jobs:
+  identify-runner:
+    name: Identify authorized self-hosted runner
+    runs-on: self-hosted
+    timeout-minutes: 4
+    steps:
+      - name: Report runner and Global Protection runtime presence
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          echo "PROBE_ONLY=${PROBE_ONLY}"
+          echo "UTC=$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          echo "RUNNER_NAME=${RUNNER_NAME:-unknown}"
+          echo "RUNNER_OS=${RUNNER_OS:-unknown}"
+          echo "RUNNER_ARCH=${RUNNER_ARCH:-unknown}"
+          printf 'HOSTNAME='; hostname || true
+          printf 'USER='; id -un 2>/dev/null || whoami || true
+          printf 'UNAME='; uname -a 2>/dev/null || true
+          printf 'PWD='; pwd
+          if [[ -d /opt/global-protection ]]; then
+            echo 'GLOBAL_PROTECTION_DIR=present'
+            if [[ -f /opt/global-protection/package.json ]]; then
+              node -e 'const p=require("/opt/global-protection/package.json"); console.log(`PACKAGE_NAME=${p.name||""}`)' 2>/dev/null || true
+            fi
+          else
+            echo 'GLOBAL_PROTECTION_DIR=absent'
+          fi
+          if command -v systemctl >/dev/null 2>&1; then
+            printf 'GLOBAL_PROTECTION_SERVICE='; systemctl is-active global-protection.service 2>/dev/null || true
+          else
+            echo 'GLOBAL_PROTECTION_SERVICE=systemctl-unavailable'
+          fi
+          echo 'PROBE_COMPLETE=true'
