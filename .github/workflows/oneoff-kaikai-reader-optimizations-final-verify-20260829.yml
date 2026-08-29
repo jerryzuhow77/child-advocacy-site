@@ -57,7 +57,7 @@ jobs:
           echo 'The current optimized public version was not observable in time.' >&2
           exit 1
 
-      - name: Correct the verification sequence for the top-of-page audio state
+      - name: Correct top-of-page audio verification sequence
         shell: bash
         run: |
           set -euo pipefail
@@ -65,17 +65,11 @@ jobs:
           from pathlib import Path
           path = Path('.github/scripts/verify-kaikai-reader-optimizations-20260829.mjs')
           text = path.read_text(encoding='utf-8')
-          old = '''      if (viewportName === 'mobile') {
-        result.states.audioTop = await page.locator('[data-audio-controller]').evaluate(controller => ({ collapsed: controller.classList.contains('is-collapsed'), width: Math.round(controller.getBoundingClientRect().width), aria: controller.querySelector('[data-audio-collapse]')?.getAttribute('aria-label') || '', bottom: getComputedStyle(controller).bottom }));'''
-          new = '''      if (viewportName === 'mobile') {
-        await page.evaluate(() => window.scrollTo(0, 0));
-        await page.waitForFunction(() => !document.querySelector('[data-audio-controller]')?.classList.contains('is-collapsed'), null, { timeout: 5000 });
-        await page.waitForTimeout(350);
-        result.states.audioTop = await page.locator('[data-audio-controller]').evaluate(controller => ({ collapsed: controller.classList.contains('is-collapsed'), width: Math.round(controller.getBoundingClientRect().width), aria: controller.querySelector('[data-audio-collapse]')?.getAttribute('aria-label') || '', bottom: getComputedStyle(controller).bottom }));'''
-          count = text.count(old)
-          if count != 1:
-              raise SystemExit(f'Expected one verifier sequence, found {count}')
-          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          anchor = "      if (viewportName === 'mobile') {\n"
+          insertion = "        await page.evaluate(() => window.scrollTo(0, 0));\n        await page.waitForFunction(() => !document.querySelector('[data-audio-controller]')?.classList.contains('is-collapsed'), null, { timeout: 5000 });\n        await page.waitForTimeout(350);\n"
+          if text.count(anchor) != 1:
+              raise SystemExit(f'Expected one mobile verifier anchor, found {text.count(anchor)}')
+          path.write_text(text.replace(anchor, anchor + insertion, 1), encoding='utf-8')
           PY
           node --check .github/scripts/verify-kaikai-reader-optimizations-20260829.mjs
 
