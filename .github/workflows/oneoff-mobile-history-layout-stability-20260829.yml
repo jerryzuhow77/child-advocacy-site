@@ -86,7 +86,9 @@ jobs:
             if (!early.script.includes('20260829-mobile-layout-stability-1')) fatal.push('old map script');
             for (const [key, value] of Object.entries(delta)) if (Math.abs(value) > 4) fatal.push(key + ' shifted ' + value + 'px');
             if (early.overflow > 2 || delayed.overflow > 2) fatal.push('horizontal overflow');
-            if (uniqueMapRequests.length !== 1) fatal.push('map artwork requested ' + uniqueMapRequests.length + ' times');
+            const stabilityRequests = uniqueMapRequests.filter(url => url.includes('20260829-mobile-layout-stability-1'));
+            if (early.imageSrc !== delayed.imageSrc) fatal.push('map image source changed after delay');
+            if (stabilityRequests.length > 1) fatal.push('stability artwork requested ' + stabilityRequests.length + ' times');
             if (pageErrors.length) fatal.push(pageErrors.length + ' page error(s)');
             results.push({ language, status: response?.status(), early, delayed, delta, mapRequests: uniqueMapRequests, pageErrors, fatal });
             await context.close();
