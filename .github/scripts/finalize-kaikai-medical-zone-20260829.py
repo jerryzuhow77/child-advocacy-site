@@ -92,4 +92,26 @@ for page in [root / 'index.html', root / 'zh-Hans' / 'index.html']:
         if phrase not in text:
             raise SystemExit(f'{page}: missing {phrase}')
 
-print('Finalized the canonical witness entry points and verified both medical-zone pages.')
+# The verifier visits several public pages in one browser context. Navigating
+# away can abort the existing Chapter 2 background-audio request. Chrome reports
+# that expected media cancellation as net::ERR_ABORTED; it is not a broken asset.
+verifier_path = Path('.github/scripts/verify-kaikai-medical-zone-live-20260829.mjs')
+verifier = verifier_path.read_text(encoding='utf-8')
+old = """      if (parsed.hostname === 'jerryzuhow77.github.io') {
+        sameOriginRequestFailures.push({ url: request.url(), type: request.resourceType(), error: request.failure()?.errorText || '' });
+      }
+"""
+new = """      const type = request.resourceType();
+      const error = request.failure()?.errorText || '';
+      const expectedMediaAbort = type === 'media' && error === 'net::ERR_ABORTED';
+      if (parsed.hostname === 'jerryzuhow77.github.io' && !expectedMediaAbort) {
+        sameOriginRequestFailures.push({ url: request.url(), type, error });
+      }
+"""
+if old in verifier:
+    verifier = verifier.replace(old, new, 1)
+elif new not in verifier:
+    raise SystemExit('Could not find the request-failure filter in the browser verifier')
+verifier_path.write_text(verifier, encoding='utf-8')
+
+print('Finalized witness links, verified both pages, and normalized expected media aborts in browser proof.')
