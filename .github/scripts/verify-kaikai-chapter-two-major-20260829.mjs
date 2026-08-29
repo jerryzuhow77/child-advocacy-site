@@ -221,26 +221,17 @@ for (const [language, site] of Object.entries(sites)) {
         witnessesHref: language === 'zh-Hant'
           ? targetHtml.includes('./witnesses/')
           : targetHtml.includes('./witnesses/') || targetHtml.includes('witnesses/'),
-        title: targetHtml.includes(expected.title)
+        title: targetHtml.includes(site.title)
       };
 
-      const expectedGroupHrefs = language === 'zh-Hant'
-        ? [
-            site.chapterUrl,
-            `${site.chapterUrl}#chapter-brief`,
-            `${site.chapterUrl}#placement-spectrum`,
-            `${site.chapterUrl}#placement-harm-cases`,
-            `${site.chapterUrl}#system`,
-            `${site.chapterUrl}witnesses/`
-          ]
-        : [
-            site.chapterUrl,
-            `${site.chapterUrl}#chapter-brief`,
-            `${site.chapterUrl}#placement-spectrum`,
-            `${site.chapterUrl}#placement-harm-cases`,
-            `${site.chapterUrl}#system`,
-            `${site.chapterUrl}witnesses/`
-          ];
+      const expectedGroupHrefs = [
+        site.chapterUrl,
+        `${site.chapterUrl}#chapter-brief`,
+        `${site.chapterUrl}#placement-spectrum`,
+        `${site.chapterUrl}#placement-harm-cases`,
+        `${site.chapterUrl}#system`,
+        `${site.chapterUrl}witnesses/`
+      ];
 
       result.checks = {
         homepageHttp200: response?.status() === 200,
