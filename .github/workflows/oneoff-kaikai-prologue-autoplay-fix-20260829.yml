@@ -1,0 +1,94 @@
+name: Apply Kaikai prologue autoplay correction
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-kaikai-prologue-autoplay-fix-20260829.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply minimal autoplay correction
+        run: |
+          python <<'PY'
+          from pathlib import Path
+
+          js_path = Path('hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js')
+          js = js_path.read_text(encoding='utf-8')
+          old = """  // PROLOGUE-VIDEO-20260829
+          const prologueVideo = document.querySelector('[data-prologue-video]');
+          const prologueSkip = document.querySelector('[data-prologue-skip]');
+          prologueSkip?.addEventListener('click', () => prologueVideo?.pause());
+          """
+          new = """  // PROLOGUE-VIDEO-20260829
+          const prologueVideo = document.querySelector('[data-prologue-video]');
+          const prologueSkip = document.querySelector('[data-prologue-skip]');
+          let prologueWasSkipped = false;
+
+          // PROLOGUE-AUTOPLAY-STANDARD-CHROME-20260829
+          const startPrologueVideo = () => {
+            if (!prologueVideo || prologueWasSkipped || !prologueVideo.paused || prologueVideo.ended) return;
+            prologueVideo.muted = true;
+            prologueVideo.defaultMuted = true;
+            prologueVideo.playsInline = true;
+            prologueVideo.setAttribute('muted', '');
+            prologueVideo.setAttribute('playsinline', '');
+            const playback = prologueVideo.play();
+            playback?.catch?.(() => undefined);
+          };
+
+          prologueSkip?.addEventListener('click', () => {
+            prologueWasSkipped = true;
+            prologueVideo?.pause();
+          });
+
+          if (prologueVideo) {
+            requestAnimationFrame(startPrologueVideo);
+            prologueVideo.addEventListener('canplay', startPrologueVideo, { once: true });
+            window.addEventListener('pageshow', startPrologueVideo, { once: true });
+          }
+          """
+          if js.count(old) != 1:
+              raise SystemExit(f'expected one prologue block, found {js.count(old)}')
+          js_path.write_text(js.replace(old, new, 1), encoding='utf-8')
+
+          for html_path in [
+              Path('hearing-records/prison-watch/kaikai-final-chapter/index.html'),
+              Path('hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html'),
+          ]:
+              html = html_path.read_text(encoding='utf-8')
+              old_version = 'final-chapter.js?v=20260829-32'
+              new_version = 'final-chapter.js?v=20260829-33'
+              if html.count(old_version) != 1:
+                  raise SystemExit(f'{html_path}: expected one {old_version}, found {html.count(old_version)}')
+              html_path.write_text(html.replace(old_version, new_version, 1), encoding='utf-8')
+          PY
+
+          node --check hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
+          grep -q 'PROLOGUE-AUTOPLAY-STANDARD-CHROME-20260829' hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
+          grep -q 'final-chapter.js?v=20260829-33' hearing-records/prison-watch/kaikai-final-chapter/index.html
+          grep -q 'final-chapter.js?v=20260829-33' hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+          git diff --check
+          git diff --stat
+
+      - name: Commit correction to main
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js \
+                  hearing-records/prison-watch/kaikai-final-chapter/index.html \
+                  hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+          git commit -m 'Ensure Kaikai prologue starts under standard browser policy'
+          git pull --rebase origin main
+          git push origin HEAD:main
+          echo "Published source commit: $(git rev-parse HEAD)"
