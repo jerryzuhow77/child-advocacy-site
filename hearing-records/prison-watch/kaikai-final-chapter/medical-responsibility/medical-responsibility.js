@@ -33,12 +33,52 @@
     menuButton.setAttribute('aria-expanded', String(open));
   };
 
+  const getHashTarget = (hash = location.hash) => {
+    if (!hash || hash === '#') return null;
+    try {
+      return document.querySelector(hash);
+    } catch (_) {
+      return null;
+    }
+  };
+
+  const revealTarget = (target) => {
+    if (!target) return;
+    let details = target.closest('details');
+    while (details) {
+      details.open = true;
+      details = details.parentElement?.closest('details') || null;
+    }
+    target.style.contentVisibility = 'visible';
+  };
+
+  const alignHashTarget = (hash = location.hash) => {
+    const target = getHashTarget(hash);
+    if (!target) return;
+    revealTarget(target);
+    const rootStyle = getComputedStyle(document.documentElement);
+    const padding = Number.parseFloat(rootStyle.scrollPaddingTop) || 0;
+    const top = Math.max(0, window.scrollY + target.getBoundingClientRect().top - padding);
+    const previous = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = 'auto';
+    window.scrollTo({ top, left: window.scrollX, behavior: 'auto' });
+    document.documentElement.style.scrollBehavior = previous;
+  };
+
   menuButton?.addEventListener('click', () => {
     setMenu(!nav?.classList.contains('open'));
   });
 
   nav?.addEventListener('click', (event) => {
-    if (event.target.closest('a')) setMenu(false);
+    const link = event.target.closest('a[href^="#"]');
+    if (!link) return;
+    event.preventDefault();
+    const hash = link.getAttribute('href');
+    history.pushState(null, '', hash);
+    setMenu(false);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => alignHashTarget(hash));
+    });
   });
 
   document.addEventListener('click', (event) => {
@@ -137,22 +177,13 @@
   }
 
   const revealHashTarget = () => {
-    if (!location.hash) return;
-    let target;
-    try {
-      target = document.querySelector(location.hash);
-    } catch (_) {
-      return;
-    }
+    const target = getHashTarget();
     if (!target) return;
-    let details = target.closest('details');
-    while (details) {
-      details.open = true;
-      details = details.parentElement?.closest('details') || null;
-    }
-    target.style.contentVisibility = 'visible';
+    revealTarget(target);
+    requestAnimationFrame(() => alignHashTarget());
   };
   window.addEventListener('hashchange', revealHashTarget);
+  window.addEventListener('load', revealHashTarget, { once: true });
   revealHashTarget();
   applyFilter('all');
 })();
