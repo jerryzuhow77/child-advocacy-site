@@ -88,8 +88,8 @@ jobs:
                       return {
                         lang: document.documentElement.lang,
                         canonical: document.querySelector('link[rel="canonical"]')?.href,
-                        hasCss: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.css?v=7')),
-                        hasJs: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.js?v=4')),
+                        hasCss: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.css?v=9')),
+                        hasJs: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.js?v=6')),
                         hasRail: Boolean(document.querySelector('.hz-lantern-rail')),
                         hasBackTop: Boolean(document.querySelector('.hz-back-top')),
                         hasMobileSummary: Boolean(document.querySelector('.hz-mobile-summary')),
