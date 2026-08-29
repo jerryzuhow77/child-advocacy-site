@@ -5,7 +5,7 @@ on:
     branches:
       - feat/kaikai-witness-analysis-20260829
     paths:
-      - .tmp/kaikai-publish-payload.ready
+      - .tmp/kaikai-publish-xz.ready-final
 
 permissions:
   contents: write
@@ -34,15 +34,35 @@ jobs:
           import itertools
           from pathlib import Path
 
-          parts = sorted(Path('.tmp').glob('kaikai-publish-xz.*.b64'))
-          if len(parts) != 16:
-              raise SystemExit(f'Expected 16 XZ publication chunks, found {len(parts)}')
+          parts = [Path(f'.tmp/kaikai-publish-xz.{index:03d}.b64') for index in range(16)]
+          missing = [str(path) for path in parts if not path.is_file()]
+          if missing:
+              raise SystemExit(f'Missing XZ publication chunks: {missing}')
 
           alphabet = frozenset('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=')
-          expected_lengths = [17500] * 15 + [11944]
+          expected_lengths = [17500] * 15 + [11784]
           all_candidates = []
 
           for index, (path, expected_chars) in enumerate(zip(parts, expected_lengths)):
+              if index == 6:
+                  repair_parts = [
+                      Path('.tmp/repair-bin/006.0.bin'),
+                      Path('.tmp/repair-bin/006.1.bin'),
+                  ]
+                  missing_repairs = [str(item) for item in repair_parts if not item.is_file()]
+                  if missing_repairs:
+                      raise SystemExit(f'Missing verified binary repair parts: {missing_repairs}')
+                  decoded = b''.join(item.read_bytes() for item in repair_parts)
+                  expected_decoded = expected_chars // 4 * 3
+                  if len(decoded) != expected_decoded:
+                      raise SystemExit(
+                          f'Chunk 006 binary repair has {len(decoded)} bytes; expected {expected_decoded}'
+                      )
+                  candidates = [(0, decoded)]
+                  print(f'chunk 006: using verified binary repair ({len(decoded)} bytes)')
+                  all_candidates.append(candidates)
+                  continue
+
               text = path.read_text(encoding='utf-8')
               for escaped in ('\\n', '\\r', '\\t'):
                   text = text.replace(escaped, '')
