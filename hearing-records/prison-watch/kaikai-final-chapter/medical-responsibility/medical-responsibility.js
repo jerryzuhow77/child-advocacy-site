@@ -186,4 +186,24 @@
   window.addEventListener('load', revealHashTarget, { once: true });
   revealHashTarget();
   applyFilter('all');
+
+  document.addEventListener('click', async (event) => {
+    const button = event.target.closest('[data-copy-transcript]');
+    if (!button) return;
+    const body = button.closest('.transcript-panel')?.querySelector('[data-transcript-body]');
+    if (!body) return;
+    const text = [...body.querySelectorAll('.transcript-line')]
+      .map((line) => line.innerText.replace(/^\d{3}\s*/, ''))
+      .join('\n');
+    try {
+      await navigator.clipboard.writeText(text);
+      const original = button.textContent;
+      button.textContent = locale === 'zh-Hans' ? '已复制' : '已複製';
+      showToast(copy.copied);
+      window.setTimeout(() => { button.textContent = original; }, 1400);
+    } catch (_) {
+      showToast(copy.copyFail);
+    }
+  });
+
 })();
