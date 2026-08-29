@@ -144,7 +144,12 @@
     }, 12000);
   };
 
-  prologueSkip?.addEventListener('click', () => closePrologue({ focusMain: true }));
+  prologueSkip?.addEventListener('click', () => {
+    // Use only this explicit entry gesture to unlock audible media.
+    // Natural prologue completion remains silent and keeps the player ready.
+    playChapterAudioFromGesture();
+    closePrologue({ focusMain: true });
+  });
   prologuePlay?.addEventListener('click', () => {
     const playAttempt = prologueVideo?.play();
     playAttempt?.then(() => {
