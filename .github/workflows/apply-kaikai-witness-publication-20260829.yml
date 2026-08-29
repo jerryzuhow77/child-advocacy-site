@@ -31,90 +31,92 @@ jobs:
           python - <<'PY'
           import base64
           import hashlib
-          import itertools
           from pathlib import Path
-
-          parts = [Path(f'.tmp/kaikai-publish-xz.{index:03d}.b64') for index in range(16)]
-          missing = [str(path) for path in parts if not path.is_file()]
-          if missing:
-              raise SystemExit(f'Missing XZ publication chunks: {missing}')
 
           alphabet = frozenset('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=')
           expected_lengths = [17500] * 15 + [11784]
-          all_candidates = []
+          expected_blobs = [
+              'f6e9cba19807019315d6f2585a74e1d4c8f73150',
+              '3ff92ebae2b2a0861c4f7ea4e0f2f418ea5416bc',
+              '0f73f267bc6bdc8ccc7171d97b2fe91dac97329e',
+              '83f05e92ab689e8a835286afcd1585af064262f4',
+              'ab1f640355ab375c1a41e64c7f7edace02178fc7',
+              'b0fbe18869ac81840882cc00683981ab39b7886f',
+              'a48b41686f195759f31b16ee24d32d73d0c9c062',
+              '95497d6619aaa46b7ecceb8874742c8f925d2bd2',
+              '397be6717e9d8d530137fee8967d1ba2a91c94cd',
+              'b0bd9c4a50f9dc07628cd58664c4a8ce7df19c43',
+              'f71bf29fddb1f2b04d2001313db37552fbb84ab3',
+              '6238491168e02febafb4e9e4e4a53bb6cf849440',
+              '0c08379a64ef0278510c58d59338d496c2fe1718',
+              'd0398c4316b42ad6d0dbebd13def6860b324facb',
+              '0de339779444442e936ea50ac5837c1bf4a77bbb',
+              '1c0865b8bc561eb98b49fe7e36407cf43b47f738',
+          ]
+          repaired_indices = {6, 7}
 
-          for index, (path, expected_chars) in enumerate(zip(parts, expected_lengths)):
-              if index == 6:
-                  repair_parts = [
-                      Path('.tmp/repair-bin/006.0.bin'),
-                      Path('.tmp/repair-bin/006.1.bin'),
-                  ]
-                  missing_repairs = [str(item) for item in repair_parts if not item.is_file()]
-                  if missing_repairs:
-                      raise SystemExit(f'Missing verified binary repair parts: {missing_repairs}')
-                  decoded = b''.join(item.read_bytes() for item in repair_parts)
-                  expected_decoded = expected_chars // 4 * 3
-                  if len(decoded) != expected_decoded:
-                      raise SystemExit(
-                          f'Chunk 006 binary repair has {len(decoded)} bytes; expected {expected_decoded}'
-                      )
-                  candidates = [(0, decoded)]
-                  print(f'chunk 006: using verified binary repair ({len(decoded)} bytes)')
-                  all_candidates.append(candidates)
-                  continue
-
-              text = path.read_text(encoding='utf-8')
+          def clean_text(text: str) -> str:
               for escaped in ('\\n', '\\r', '\\t'):
                   text = text.replace(escaped, '')
-              clean = ''.join(char for char in text if char in alphabet)
-              if len(clean) < expected_chars:
-                  raise SystemExit(f'{path}: expected at least {expected_chars} base64 chars, found {len(clean)}')
+              return ''.join(char for char in text if char in alphabet)
 
-              extra = len(clean) - expected_chars
-              candidates = []
-              seen = set()
-              for start in range(extra + 1):
-                  window = clean[start:start + expected_chars]
-                  if window in seen:
-                      continue
-                  seen.add(window)
-                  try:
-                      decoded = base64.b64decode(window, validate=True)
-                  except Exception:
-                      continue
-                  candidates.append((start, decoded))
+          def git_blob_sha(text: str) -> str:
+              data = text.encode('utf-8')
+              header = f'blob {len(data)}\0'.encode('ascii')
+              return hashlib.sha1(header + data).hexdigest()
 
-              if not candidates:
-                  raise SystemExit(f'{path}: no valid contiguous base64 window of {expected_chars} characters')
-              print(f'{path}: clean={len(clean)}, expected={expected_chars}, valid_windows={len(candidates)}')
-              all_candidates.append(candidates)
+          selected = []
+          for index, (expected_length, expected_blob) in enumerate(zip(expected_lengths, expected_blobs)):
+              if index in repaired_indices:
+                  repair_parts = sorted(Path('.tmp/repair-xz').glob(f'{index:03d}.*.b64'))
+                  if not repair_parts:
+                      raise SystemExit(f'chunk {index:03d}: repair parts are missing')
+                  clean = ''.join(clean_text(path.read_text(encoding='utf-8')) for path in repair_parts)
+                  source = f'{len(repair_parts)} verified repair parts'
+              else:
+                  path = Path(f'.tmp/kaikai-publish-xz.{index:03d}.b64')
+                  if not path.is_file():
+                      raise SystemExit(f'{path}: carrier chunk is missing')
+                  clean = clean_text(path.read_text(encoding='utf-8'))
+                  source = path.name
 
-          expected_sha = '20fb08156b1bc8aa4f653ebab7ef4dd809a26e6921181005d4343bc6eb2b67e8'
-          variable_indices = [index for index, candidates in enumerate(all_candidates) if len(candidates) > 1]
-          variable_lists = [all_candidates[index] for index in variable_indices]
-          combinations = 1
-          for candidates in variable_lists:
-              combinations *= len(candidates)
-          print(f'Testing {combinations} carrier-window combinations across chunks {variable_indices}')
+              candidate = None
+              offset = 0
+              if len(clean) == expected_length and git_blob_sha(clean) == expected_blob:
+                  candidate = clean
+              elif len(clean) >= expected_length:
+                  for start in range(len(clean) - expected_length + 1):
+                      window = clean[start:start + expected_length]
+                      if git_blob_sha(window) == expected_blob:
+                          candidate = window
+                          offset = start
+                          break
 
-          selected_data = None
-          selected_offsets = None
-          for combination in itertools.product(*variable_lists):
-              chosen = [candidates[0] for candidates in all_candidates]
-              for index, candidate in zip(variable_indices, combination):
-                  chosen[index] = candidate
-              data = b''.join(decoded for _, decoded in chosen)
-              if hashlib.sha256(data).hexdigest() == expected_sha:
-                  selected_data = data
-                  selected_offsets = [start for start, _ in chosen]
-                  break
+              if candidate is None:
+                  raise SystemExit(
+                      f'chunk {index:03d}: could not recover expected blob {expected_blob}; '
+                      f'source={source}, clean_length={len(clean)}, expected_length={expected_length}'
+                  )
+              try:
+                  base64.b64decode(candidate, validate=True)
+              except Exception as exc:
+                  raise SystemExit(f'chunk {index:03d}: recovered text is not valid base64: {exc}') from exc
+              print(
+                  f'chunk {index:03d}: verified {expected_blob}, chars={len(candidate)}, '
+                  f'source={source}, offset={offset}'
+              )
+              selected.append(candidate)
 
-          if selected_data is None:
-              raise SystemExit(f'No contiguous-window reconstruction matched expected sha256 {expected_sha}')
-
-          output = Path('/tmp/kaikai-publish-compact.tar.xz')
-          output.write_bytes(selected_data)
-          print(f'Reconstructed {len(selected_data)} bytes with offsets {selected_offsets}; sha256={expected_sha}')
+          encoded = ''.join(selected)
+          if len(encoded) != 274284:
+              raise SystemExit(f'assembled base64 length is {len(encoded)}; expected 274284')
+          data = base64.b64decode(encoded, validate=True)
+          digest = hashlib.sha256(data).hexdigest()
+          expected_digest = '20fb08156b1bc8aa4f653ebab7ef4dd809a26e6921181005d4343bc6eb2b67e8'
+          if digest != expected_digest:
+              raise SystemExit(f'publication checksum mismatch: expected {expected_digest}, got {digest}')
+          Path('/tmp/kaikai-publish-compact.tar.xz').write_bytes(data)
+          print(f'Assembled verified publication package: {len(data)} bytes, sha256={digest}')
           PY
           git fetch origin main
           git checkout -B kaikai-publication origin/main
