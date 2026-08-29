@@ -767,3 +767,26 @@ body.hz-page:not(.tt-opening-active) .tt-replay{opacity:1!important;pointer-even
  .hz-page .tt-replay{min-width:116px!important;height:44px!important;font-size:.76rem!important}
 }
 @media(max-width:390px), (max-height:690px) and (max-width:900px){.hz-page .tt-stage{--hz-opening-art:min(38svh,calc((100vw - 16px) * .61))}}
+
+/* Opening theatre: lift the lantern light so the puppets and enlarged frame read clearly. */
+.hz-page .tt-stage,
+html.tt-pose-ready body.hz-page .tt-stage{
+ background:
+  linear-gradient(90deg,rgba(35,13,7,.38),transparent 20% 80%,rgba(35,13,7,.38)),
+  radial-gradient(ellipse at 50% 43%,#fae9bb 0%,#e2b975 43%,#9a6137 72%,#3b1d10 100%)!important;
+}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-sprite{
+ filter:brightness(1.72) saturate(1.38) contrast(1.1) drop-shadow(0 8px 9px rgba(48,16,5,.34))!important;
+}
+.hz-page .tt-stage .tt-carved-stage-frame--opening{
+ filter:brightness(1.42) saturate(1.2) contrast(1.08) drop-shadow(0 14px 24px rgba(16,6,3,.62))!important;
+}
+.hz-page .tt-stage>.tt-stage-craft{
+ filter:brightness(1.24) saturate(1.16) contrast(1.05)!important;
+}
+@media(max-width:900px){
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-sprite{
+  filter:brightness(1.82) saturate(1.42) contrast(1.1) drop-shadow(0 6px 7px rgba(48,16,5,.3))!important;
+ }
+ .hz-page .tt-stage .tt-carved-stage-frame--opening{filter:brightness(1.5) saturate(1.22) contrast(1.07) drop-shadow(0 9px 15px rgba(16,6,3,.55))!important}
+}
