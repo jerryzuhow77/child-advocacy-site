@@ -60,5 +60,23 @@ new_pairing = """    # Remove the existing standalone visual from its old locati
 if place.count(old_pairing) != 1:
     raise SystemExit(f'Expected one adjacency-dependent pairing block, found {place.count(old_pairing)}')
 place = place.replace(old_pairing, new_pairing, 1)
+old_tail = """css_path.write_text(css, encoding='utf-8')
+
+print('Placed the bilingual dual-track poster beside the five-layer responsibility tree.')
+"""
+new_tail = """css_path.write_text(css, encoding='utf-8')
+
+# Generated wrapper placement can leave indentation-only lines where the old
+# standalone visual lived. Normalize all touched text files before diff checks.
+for output_path in [ROOT / 'index.html', ROOT / 'zh-Hans' / 'index.html', css_path]:
+    generated = output_path.read_text(encoding='utf-8')
+    normalized = '\\n'.join(line.rstrip() for line in generated.splitlines()) + '\\n'
+    output_path.write_text(normalized, encoding='utf-8')
+
+print('Placed the bilingual dual-track poster beside the five-layer responsibility tree.')
+"""
+if place.count(old_tail) != 1:
+    raise SystemExit(f'Expected one placement-script tail, found {place.count(old_tail)}')
+place = place.replace(old_tail, new_tail, 1)
 place_path.write_text(place, encoding='utf-8')
-print('Prepared dual-track renderer and robust paired placement for the current web asset.')
+print('Prepared dual-track renderer, robust placement, and whitespace normalization.')
