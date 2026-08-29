@@ -34,5 +34,31 @@ place = place_path.read_text(encoding='utf-8')
 count = place.count('width="1536" height="864"')
 if count != 2:
     raise SystemExit(f'Expected two HTML dimensions, found {count}')
-place_path.write_text(place.replace('width="1536" height="864"', 'width="960" height="540"'), encoding='utf-8')
-print('Prepared dual-track renderer for the current 960×540 web asset.')
+place = place.replace('width="1536" height="864"', 'width="960" height="540"')
+old_pairing = """    first_start = min(visual_start, tree_start)
+    last_end = max(visual_end, tree_end)
+    middle = text[min(visual_end, tree_end):max(visual_start, tree_start)]
+    if re.sub(r'<!--.*?-->|\\s+', '', middle, flags=re.S):
+        raise SystemExit(f'{path}: unexpected content between visual and five-layer tree')
+
+    wrapper = f'''{PAIR_MARKER}\\n    <div class=\"responsibility-tree-pair\">\\n      {visual_template}\\n\\n{tree_block}\\n    </div>'''
+    text = text[:first_start] + wrapper + text[last_end:]
+"""
+new_pairing = """    # Remove the existing standalone visual from its old location, preserve any
+    # intervening explanatory content, then wrap the five-layer tree at its own
+    # location. This makes the placement robust even when notes sit between them.
+    text = text[:visual_start] + text[visual_end:]
+    tree_start, tree_end, tree_block = find_balanced_block(
+        text,
+        r'<section\\b[^>]*\\bclass=\"[^\"]*responsibility-tree-panel[^\"]*\"[^>]*>',
+        'section',
+        f'{path} five-layer tree after visual removal',
+    )
+    wrapper = f'''{PAIR_MARKER}\\n    <div class=\"responsibility-tree-pair\">\\n      {visual_template}\\n\\n{tree_block}\\n    </div>'''
+    text = text[:tree_start] + wrapper + text[tree_end:]
+"""
+if place.count(old_pairing) != 1:
+    raise SystemExit(f'Expected one adjacency-dependent pairing block, found {place.count(old_pairing)}')
+place = place.replace(old_pairing, new_pairing, 1)
+place_path.write_text(place, encoding='utf-8')
+print('Prepared dual-track renderer and robust paired placement for the current web asset.')
