@@ -1,0 +1,159 @@
+name: Publish and verify Kaikai prologue music and menu cleanup
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-kaikai-prologue-audio-and-menu-20260829.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Remove the menu NEW label and start webpage music with the prologue
+        shell: bash
+        run: |
+          set -euo pipefail
+          git pull --rebase origin main
+          python3 .github/scripts/prepare-kaikai-prologue-patch-20260829.py
+          python3 -m py_compile .github/scripts/patch-kaikai-prologue-audio-and-menu-20260829.py
+          python3 .github/scripts/patch-kaikai-prologue-audio-and-menu-20260829.py
+          node --check hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
+          node --check .github/scripts/verify-kaikai-prologue-audio-and-menu-20260829.mjs
+          git diff --check
+
+          pages=(
+            hearing-records/prison-watch/kaikai-final-chapter/index.html
+            hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+          )
+          for page in "${pages[@]}"; do
+            grep -q 'preload="auto" data-track-count="2"' "$page"
+            grep -q 'data-prologue-play hidden aria-label=' "$page"
+            grep -q '同步嘗試啟動網頁背景配樂\|同步尝试启动网页背景配乐' "$page"
+          done
+          grep -q '播放序幕與配樂' "${pages[0]}"
+          grep -q '播放序幕与配乐' "${pages[1]}"
+
+          CSS_VERSION="$(grep -o 'final-chapter.css?v=20260829-[0-9]*' "${pages[0]}" | head -1 | cut -d= -f2)"
+          JS_VERSION="$(grep -o 'final-chapter.js?v=20260829-[0-9]*' "${pages[0]}" | head -1 | cut -d= -f2)"
+          test -n "$CSS_VERSION"
+          test -n "$JS_VERSION"
+          grep -q "final-chapter.css?v=${CSS_VERSION}" "${pages[1]}"
+          grep -q "final-chapter.js?v=${JS_VERSION}" "${pages[1]}"
+          echo "CSS_VERSION=${CSS_VERSION}" >> "$GITHUB_ENV"
+          echo "JS_VERSION=${JS_VERSION}" >> "$GITHUB_ENV"
+
+          css='hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css'
+          js='hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js'
+          grep -q 'PROLOGUE-AUDIO-AUTOSTART-20260829' "$css"
+          grep -q 'PROLOGUE-AUDIO-AUTOSTART-20260829' "$js"
+          grep -q '.nav-group-major>summary:before{display:none!important;content:none!important}' "$css"
+          ! grep -q "content:'NEW'" "$css"
+          ! grep -q 'content:"NEW"' "$css"
+          grep -q "prologueAudio.dataset.prologueAutoplay = 'playing'" "$js"
+          grep -q "showProloguePlayPrompt({ audioBlocked: true })" "$js"
+
+          # The preparation helper intentionally edits the temporary patch script
+          # only in this checkout. Restore it before any rebase/push retry.
+          git restore .github/scripts/patch-kaikai-prologue-audio-and-menu-20260829.py
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add hearing-records/prison-watch/kaikai-final-chapter/index.html
+          git add hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+          git add hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css
+          git add hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
+          git commit -m 'Start Chapter 2 music with the prologue and remove menu NEW label'
+          pushed=0
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              pushed=1
+              break
+            fi
+            git pull --rebase origin main
+          done
+          test "$pushed" -eq 1
+
+      - name: Wait for GitHub Pages to expose the revised prologue and menu
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p browser-validation/prologue-audio-and-menu
+          pages=(
+            'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/'
+            'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/'
+          )
+          css_url='https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css'
+          js_url='https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js'
+          for attempt in $(seq 1 120); do
+            ready=1
+            for i in 0 1; do
+              token="${GITHUB_SHA}-${attempt}-${i}"
+              html="$(curl -fsSL --connect-timeout 15 --max-time 30 "${pages[$i]}?qa=${token}" || true)"
+              grep -q 'preload="auto" data-track-count="2"' <<<"$html" || ready=0
+              grep -q 'data-prologue-play hidden aria-label=' <<<"$html" || ready=0
+              grep -q "final-chapter.css?v=${CSS_VERSION}" <<<"$html" || ready=0
+              grep -q "final-chapter.js?v=${JS_VERSION}" <<<"$html" || ready=0
+            done
+            css="$(curl -fsSL --connect-timeout 15 --max-time 30 "${css_url}?v=${CSS_VERSION}&qa=${GITHUB_SHA}-${attempt}" || true)"
+            js="$(curl -fsSL --connect-timeout 15 --max-time 30 "${js_url}?v=${JS_VERSION}&qa=${GITHUB_SHA}-${attempt}" || true)"
+            grep -q 'PROLOGUE-AUDIO-AUTOSTART-20260829' <<<"$css" || ready=0
+            grep -q '.nav-group-major>summary:before{display:none!important;content:none!important}' <<<"$css" || ready=0
+            grep -q 'PROLOGUE-AUDIO-AUTOSTART-20260829' <<<"$js" || ready=0
+            grep -q "prologueAudio.dataset.prologueAutoplay = 'playing'" <<<"$js" || ready=0
+            if [[ "$ready" -eq 1 ]]; then
+              echo 'The revised prologue audio behavior and menu label are live.'
+              exit 0
+            fi
+            sleep 10
+          done
+          echo 'Timed out before GitHub Pages exposed the revised prologue behavior.' >&2
+          exit 1
+
+      - name: Install Playwright driver
+        run: npm install --no-save playwright-core@1.55.0
+
+      - name: Verify automatic playback, policy fallback, desktop, and mobile Chrome
+        run: node .github/scripts/verify-kaikai-prologue-audio-and-menu-20260829.mjs
+
+      - name: Upload browser screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kaikai-prologue-audio-and-menu-browser-proof
+          path: browser-validation/prologue-audio-and-menu
+          retention-days: 14
+
+      - name: Remove completed one-off tools
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
+          git rm -f --ignore-unmatch .github/workflows/oneoff-kaikai-prologue-audio-and-menu-20260829.yml
+          git rm -f --ignore-unmatch .github/scripts/patch-kaikai-prologue-audio-and-menu-20260829.py
+          git rm -f --ignore-unmatch .github/scripts/prepare-kaikai-prologue-patch-20260829.py
+          git rm -f --ignore-unmatch .github/scripts/verify-kaikai-prologue-audio-and-menu-20260829.mjs
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m 'Remove completed prologue audio verification tools'
+          pushed=0
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              pushed=1
+              break
+            fi
+            git pull --rebase origin main
+          done
+          test "$pushed" -eq 1
