@@ -6,7 +6,10 @@ on:
     paths:
       - 'index.html'
       - '**/index.html'
+      - 'sitemap.xml'
       - 'scripts/sync_sitemap.py'
+      - '.github/scripts/verify-chapter-two-offline-policy.py'
+      - '.github/workflows/sitemap-auto-sync.yml'
   workflow_dispatch:
 
 permissions:
@@ -24,16 +27,38 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Rebuild sitemap
-        run: python3 scripts/sync_sitemap.py
+      - name: Rebuild sitemap from latest main and verify publication policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main --prune
+          git checkout -B main origin/main
+          python3 scripts/sync_sitemap.py
+          python3 .github/scripts/verify-chapter-two-offline-policy.py
 
       - name: Publish sitemap only when changed
+        shell: bash
         run: |
+          set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -- sitemap.xml
           git diff --cached --check
           git diff --cached --quiet && exit 0
           git commit -m 'Keep sitemap synchronized with public pages'
-          git pull --rebase origin main
-          git push
+
+          pushed=0
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              pushed=1
+              break
+            fi
+            git fetch origin main --prune
+            git rebase origin/main
+            python3 scripts/sync_sitemap.py
+            python3 .github/scripts/verify-chapter-two-offline-policy.py
+            git add -- sitemap.xml
+            git diff --cached --check
+            git commit --amend --no-edit
+          done
+          test "$pushed" -eq 1
