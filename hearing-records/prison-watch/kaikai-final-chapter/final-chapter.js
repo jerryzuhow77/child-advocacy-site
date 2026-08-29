@@ -160,57 +160,118 @@ lifeSearch?.addEventListener('input', filterLifeEvents);
     sections.forEach((section) => sectionObserver.observe(section));
   }
 
-  const audio = document.querySelector('#chapterBgm');
-  const audioToggle = document.querySelector('[data-audio-label]')?.closest('button');
-  const audioLabel = document.querySelector('[data-audio-label]');
-  const audioTime = document.querySelector('[data-audio-time]');
-  const audioVolume = document.querySelector('[data-audio-volume]');
-  const audioCopy = locale === 'zh-Hans'
-    ? { play: '播放配乐', pause: '暂停配乐', replay: '重播配乐' }
-    : { play: '播放配樂', pause: '暫停配樂', replay: '重播配樂' };
+const audio = document.querySelector('#chapterBgm');
+const audioToggle = document.querySelector('[data-audio-label]')?.closest('button');
+const audioLabel = document.querySelector('[data-audio-label]');
+const audioTime = document.querySelector('[data-audio-time]');
+const audioVolume = document.querySelector('[data-audio-volume]');
+const audioCopy = locale === 'zh-Hans'
+  ? { play: '播放配乐', pause: '暂停配乐', replay: '重播配乐', track: '当前曲目' }
+  : { play: '播放配樂', pause: '暫停配樂', replay: '重播配樂', track: '目前曲目' };
 
-  const formatMediaTime = (value) => {
-    const safeValue = Number.isFinite(value) ? Math.max(0, value) : 0;
-    const minutes = Math.floor(safeValue / 60);
-    const seconds = Math.floor(safeValue % 60);
-    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-  };
-
-  const updateAudioTime = () => {
-    if (!audio || !audioTime) return;
-    audioTime.textContent = `${formatMediaTime(audio.currentTime)} / ${formatMediaTime(audio.duration || 30.8)}`;
-  };
-
-  const updateAudioState = () => {
-    if (!audio || !audioToggle || !audioLabel) return;
-    const playing = !audio.paused && !audio.ended;
-    audioToggle.setAttribute('aria-pressed', String(playing));
-    audioLabel.textContent = playing ? audioCopy.pause : (audio.ended ? audioCopy.replay : audioCopy.play);
-    updateAudioTime();
-  };
-
-  const playChapterAudioFromGesture = (restart = false) => {
-    if (!audio) return Promise.resolve();
-    if (restart || audio.ended || (audio.duration && audio.currentTime >= audio.duration - 0.05)) audio.currentTime = 0;
-    return audio.play().catch(() => undefined);
-  };
-
-  if (audio) {
-    audio.loop = false;
-    audio.volume = Number(audioVolume?.value || 0.58);
-    audio.addEventListener('loadedmetadata', updateAudioTime);
-    audio.addEventListener('timeupdate', updateAudioTime);
-    audio.addEventListener('play', updateAudioState);
-    audio.addEventListener('pause', updateAudioState);
-    audio.addEventListener('ended', updateAudioState);
-    audioToggle?.addEventListener('click', () => {
-      if (audio.paused || audio.ended) playChapterAudioFromGesture(audio.ended);
-      else audio.pause();
-    });
-    audioVolume?.addEventListener('input', () => { audio.volume = Number(audioVolume.value); });
-    updateAudioState();
+const originalAudioSources = audio
+  ? [...audio.querySelectorAll('source')].map((source) => ({
+      src: source.src,
+      type: source.type
+    }))
+  : [];
+const audioDirectory = originalAudioSources[0]
+  ? new URL('.', originalAudioSources[0].src)
+  : new URL('../../../assets/audio/', document.baseURI);
+const audioTracks = [
+  {
+    title: locale === 'zh-Hans' ? '第二章主题配乐' : '第二章主題配樂',
+    sources: originalAudioSources
+  },
+  {
+    title: '退潮的街',
+    sources: [
+      {
+        src: new URL('kaikai-chapter2-bgm-02-20260829.webm', audioDirectory).href,
+        type: 'audio/webm; codecs="opus"'
+      }
+    ]
   }
+].filter((track) => track.sources.length);
+let audioTrackIndex = 0;
 
+const formatMediaTime = (value) => {
+  const safeValue = Number.isFinite(value) ? Math.max(0, value) : 0;
+  const minutes = Math.floor(safeValue / 60);
+  const seconds = Math.floor(safeValue % 60);
+  return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+};
+
+const currentAudioTrack = () => audioTracks[audioTrackIndex] || audioTracks[0];
+
+const updateAudioTime = () => {
+  if (!audio || !audioTime || !audioTracks.length) return;
+  audioTime.textContent = `${audioTrackIndex + 1}/${audioTracks.length} · ${formatMediaTime(audio.currentTime)} / ${formatMediaTime(audio.duration || 30.8)}`;
+  const title = currentAudioTrack()?.title || '';
+  const accessible = `${audioCopy.track}：${title}，${audioTrackIndex + 1}/${audioTracks.length}`;
+  audioTime.setAttribute('aria-label', accessible);
+  audioTime.title = accessible;
+};
+
+const updateAudioState = () => {
+  if (!audio || !audioToggle || !audioLabel || !audioTracks.length) return;
+  const playing = !audio.paused && !audio.ended;
+  const action = playing ? audioCopy.pause : (audio.ended ? audioCopy.replay : audioCopy.play);
+  audioToggle.setAttribute('aria-pressed', String(playing));
+  audioLabel.textContent = action;
+  const title = currentAudioTrack()?.title || '';
+  audioToggle.setAttribute('aria-label', `${action}：${title}`);
+  audioToggle.title = `${title} · ${audioTrackIndex + 1}/${audioTracks.length}`;
+  updateAudioTime();
+};
+
+const setAudioTrack = (index, autoplay = false) => {
+  if (!audio || !audioTracks.length) return Promise.resolve(false);
+  audioTrackIndex = ((index % audioTracks.length) + audioTracks.length) % audioTracks.length;
+  const track = currentAudioTrack();
+  const sourceNodes = track.sources.map(({ src, type }) => {
+    const source = document.createElement('source');
+    source.src = src;
+    if (type) source.type = type;
+    return source;
+  });
+  audio.replaceChildren(...sourceNodes);
+  audio.dataset.trackIndex = String(audioTrackIndex);
+  audio.dataset.trackCount = String(audioTracks.length);
+  audio.dataset.trackTitle = track.title;
+  audio.load();
+  updateAudioState();
+  if (!autoplay) return Promise.resolve(true);
+  return audio.play().then(() => true).catch(() => false);
+};
+
+const playChapterAudioFromGesture = (restart = false) => {
+  if (!audio) return Promise.resolve();
+  if (restart || audio.ended || (audio.duration && audio.currentTime >= audio.duration - 0.05)) audio.currentTime = 0;
+  return audio.play().catch(() => undefined);
+};
+
+if (audio && audioTracks.length) {
+  audio.loop = false;
+  audio.volume = Number(audioVolume?.value || 0.58);
+  audio.dataset.trackIndex = '0';
+  audio.dataset.trackCount = String(audioTracks.length);
+  audio.dataset.trackTitle = currentAudioTrack().title;
+  audio.addEventListener('loadedmetadata', updateAudioTime);
+  audio.addEventListener('durationchange', updateAudioTime);
+  audio.addEventListener('timeupdate', updateAudioTime);
+  audio.addEventListener('play', updateAudioState);
+  audio.addEventListener('pause', updateAudioState);
+  audio.addEventListener('ended', () => {
+    setAudioTrack(audioTrackIndex + 1, true);
+  });
+  audioToggle?.addEventListener('click', () => {
+    if (audio.paused || audio.ended) playChapterAudioFromGesture(audio.ended);
+    else audio.pause();
+  });
+  audioVolume?.addEventListener('input', () => { audio.volume = Number(audioVolume.value); });
+  updateAudioState();
+}
 
   // READER-OPTIMIZATIONS-20260829
   const audioController = document.querySelector('[data-audio-controller]');
