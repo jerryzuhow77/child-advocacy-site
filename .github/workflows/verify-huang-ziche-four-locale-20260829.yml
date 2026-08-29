@@ -122,7 +122,10 @@ jobs:
                 try {
                   await routePage.goto(process.env.BASE_URL + '/historical-cases/regions/mainland-china/huang-ziche/zh-Hans/', { waitUntil: 'load', timeout: 60000 });
                   await routePage.waitForTimeout(500);
-                  await routePage.goto(process.env.BASE_URL + '/historical-cases/regions/mainland-china/huang-ziche/', { waitUntil: 'load', timeout: 60000 });
+                  await Promise.all([
+                    routePage.waitForNavigation({ waitUntil: 'load', timeout: 60000 }),
+                    routePage.click('.tt-language a[title="zh-Hant"]'),
+                  ]);
                   await routePage.waitForTimeout(1000);
                   const returnedLang = await routePage.evaluate(() => document.documentElement.lang);
                   if (returnedLang !== 'zh-Hant') failures.push(viewport.name + ' route zh-Hans→zh-Hant: lang=' + returnedLang);
