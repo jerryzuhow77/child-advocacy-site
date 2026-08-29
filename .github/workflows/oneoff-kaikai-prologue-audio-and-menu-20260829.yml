@@ -1,6 +1,6 @@
 name: Publish and verify Kaikai prologue music and menu cleanup
 
-# Revision 2: resilient cache-key matching and localized skip-button replacement.
+# Revision 3: support descriptive CSS/JS cache keys currently used by Chapter 2.
 on:
   push:
     branches: [main]
@@ -35,20 +35,17 @@ jobs:
             hearing-records/prison-watch/kaikai-final-chapter/index.html
             hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
           )
+          CSS_VERSION='20260829-prologue-audio-1'
+          JS_VERSION='20260829-prologue-audio-1'
           for page in "${pages[@]}"; do
             grep -q 'preload="auto" data-track-count="2"' "$page"
             grep -q 'data-prologue-play hidden aria-label=' "$page"
             grep -q '同步嘗試啟動網頁背景配樂\|同步尝试启动网页背景配乐' "$page"
+            grep -q "final-chapter.css?v=${CSS_VERSION}" "$page"
+            grep -q "final-chapter.js?v=${JS_VERSION}" "$page"
           done
           grep -q '播放序幕與配樂' "${pages[0]}"
           grep -q '播放序幕与配乐' "${pages[1]}"
-
-          CSS_VERSION="$(grep -o 'final-chapter.css?v=20260829-[0-9]*' "${pages[0]}" | head -1 | cut -d= -f2)"
-          JS_VERSION="$(grep -o 'final-chapter.js?v=20260829-[0-9]*' "${pages[0]}" | head -1 | cut -d= -f2)"
-          test -n "$CSS_VERSION"
-          test -n "$JS_VERSION"
-          grep -q "final-chapter.css?v=${CSS_VERSION}" "${pages[1]}"
-          grep -q "final-chapter.js?v=${JS_VERSION}" "${pages[1]}"
           echo "CSS_VERSION=${CSS_VERSION}" >> "$GITHUB_ENV"
           echo "JS_VERSION=${JS_VERSION}" >> "$GITHUB_ENV"
 
@@ -62,6 +59,7 @@ jobs:
           grep -q "prologueAudio.dataset.prologueAutoplay = 'playing'" "$js"
           grep -q "showProloguePlayPrompt({ audioBlocked: true })" "$js"
 
+          # The helper edits only the temporary patch script in this checkout.
           git restore .github/scripts/patch-kaikai-prologue-audio-and-menu-20260829.py
 
           git config user.name 'github-actions[bot]'
