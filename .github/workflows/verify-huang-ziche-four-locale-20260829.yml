@@ -118,6 +118,20 @@ jobs:
                     await page.close();
                   }
                 }
+                const routePage = await context.newPage();
+                try {
+                  await routePage.goto(process.env.BASE_URL + '/historical-cases/regions/mainland-china/huang-ziche/zh-Hans/', { waitUntil: 'networkidle', timeout: 90000 });
+                  await routePage.waitForTimeout(500);
+                  await routePage.goto(process.env.BASE_URL + '/historical-cases/regions/mainland-china/huang-ziche/', { waitUntil: 'networkidle', timeout: 90000 });
+                  await routePage.waitForTimeout(1000);
+                  const returnedLang = await routePage.evaluate(() => document.documentElement.lang);
+                  if (returnedLang !== 'zh-Hant') failures.push(viewport.name + ' route zh-Hans→zh-Hant: lang=' + returnedLang);
+                  else console.log('PASS', viewport.name, 'route zh-Hans→zh-Hant');
+                } catch (error) {
+                  failures.push(viewport.name + ' route zh-Hans→zh-Hant: ' + error.message);
+                } finally {
+                  await routePage.close();
+                }
                 await context.close();
               }
             } finally {
