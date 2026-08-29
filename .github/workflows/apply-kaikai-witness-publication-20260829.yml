@@ -5,7 +5,7 @@ on:
     branches:
       - feat/kaikai-witness-analysis-20260829
     paths:
-      - .tmp/kaikai-publish-full.ready
+      - .tmp/kaikai-publish-payload.ready
 
 permissions:
   contents: write
@@ -28,7 +28,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cat .tmp/kaikai-publish-full.*.b64 | base64 --decode > /tmp/kaikai-publish-compact.tar.gz
+          cat .tmp/kaikai-publish-payload.*.b64 | base64 --decode > /tmp/kaikai-publish-compact.tar.gz
           echo "1a04fb69803db6fd07293e6a44969d41527d0d255b1c76561db9d8661bd545f4  /tmp/kaikai-publish-compact.tar.gz" | sha256sum -c -
           git fetch origin main
           git checkout -B kaikai-publication origin/main
@@ -40,7 +40,7 @@ jobs:
           tar -xzf /tmp/kaikai-publish-compact.tar.gz -C .
           patch --batch --forward -p1 < main.patch
           rm -f main.patch
-          test -z "$(find . -name '*.rej' -o -name '*.orig' -print -quit)"
+          test -z "$(find . \( -name '*.rej' -o -name '*.orig' \) -print -quit)"
 
       - name: Validate generated public files
         shell: bash
