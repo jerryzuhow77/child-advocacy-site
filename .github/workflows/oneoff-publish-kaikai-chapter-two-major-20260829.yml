@@ -1,0 +1,156 @@
+name: Publish and verify Kaikai Chapter 2 as a new major homepage chapter
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-publish-kaikai-chapter-two-major-20260829.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Promote Chapter 2 throughout the homepage
+        shell: bash
+        run: |
+          set -euo pipefail
+          git pull --rebase origin main
+          python3 -m py_compile .github/scripts/publish-kaikai-chapter-two-major-20260829.py
+          python3 .github/scripts/publish-kaikai-chapter-two-major-20260829.py
+          node --check assets/home-kaikai-chapter-two-20260829.js
+          node --check .github/scripts/verify-kaikai-chapter-two-major-20260829.mjs
+          git diff --check
+
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('index.html').read_text(encoding='utf-8')
+          required_counts = {
+              '<!-- KAIKAI-CHAPTER-TWO-ROOT-ENTRY-20260829 -->': 1,
+              '<!-- KAIKAI-CHAPTER-TWO-MAJOR-LAUNCH-20260829 -->': 1,
+              '<!-- KAIKAI-CHAPTER-TWO-FOOTER-20260829 -->': 1,
+              'data-kaikai-chapter-two-root-entry': 1,
+              'data-kaikai-chapter-two-launch': 1,
+              'data-kaikai-chapter-two-card': 1,
+              'specialFeatureChapterTwoZh': 2,
+              'home-kaikai-chapter-two-20260829.css?v=20260829-1': 1,
+              'home-kaikai-chapter-two-20260829.js?v=20260829-1': 1,
+          }
+          for phrase, expected in required_counts.items():
+              count = text.count(phrase)
+              if count != expected:
+                  raise SystemExit(f'{phrase}: expected {expected}, found {count}')
+          if 'is-kaikai-final-chapter' in text or '悲劇不忘・終章｜剴剴的672天' in text:
+              raise SystemExit('Legacy final-chapter homepage copy remains')
+          if text.find('data-kaikai-chapter-two-card') > text.find('class="home-crafted-card is-kaikai-chapter-one"'):
+              raise SystemExit('Chapter 2 special-feature card is not ahead of Chapter 1')
+          if text.count('data-chapter2-hans-href') < 12 or text.count('data-chapter2-hans-src') < 3:
+              raise SystemExit('Localized Chapter 2 links or images are incomplete')
+          PY
+
+          grep -q 'KAIKAI-CHAPTER-TWO-MAJOR-LAUNCH-20260829' assets/home-kaikai-chapter-two-20260829.css
+          grep -q 'data-chapter2-hant' assets/home-kaikai-chapter-two-20260829.js
+          test -s assets/art/kaikai-chapter2-hero-zh-Hant-20260828-v3.jpg
+          test -s assets/art/kaikai-chapter2-hero-zh-Hans-20260828-v3.jpg
+          grep -q 'id="placement-harm-cases"' hearing-records/prison-watch/kaikai-final-chapter/index.html
+          grep -q 'id="placement-harm-cases"' hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Publish Chapter 2 as a new major homepage chapter'
+          pushed=0
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              pushed=1
+              break
+            fi
+            git pull --rebase origin main
+          done
+          test "$pushed" -eq 1
+
+      - name: Wait for the homepage and both Chapter 2 targets to deploy
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p browser-validation/kaikai-chapter-two-major
+          home='https://jerryzuhow77.github.io/child-advocacy-site/'
+          targets=(
+            'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/'
+            'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/'
+          )
+          assets=(
+            'https://jerryzuhow77.github.io/child-advocacy-site/assets/home-kaikai-chapter-two-20260829.css?v=20260829-1'
+            'https://jerryzuhow77.github.io/child-advocacy-site/assets/home-kaikai-chapter-two-20260829.js?v=20260829-1'
+          )
+          for attempt in $(seq 1 105); do
+            ready=1
+            token="${GITHUB_SHA}-${attempt}"
+            html="$(curl -fsSL --connect-timeout 15 --max-time 30 "${home}?qa=${token}" || true)"
+            grep -q 'data-kaikai-chapter-two-root-entry' <<<"$html" || ready=0
+            grep -q 'data-kaikai-chapter-two-launch' <<<"$html" || ready=0
+            grep -q 'data-kaikai-chapter-two-card' <<<"$html" || ready=0
+            grep -q 'home-kaikai-chapter-two-20260829.css?v=20260829-1' <<<"$html" || ready=0
+            grep -q 'home-kaikai-chapter-two-20260829.js?v=20260829-1' <<<"$html" || ready=0
+            ! grep -q '悲劇不忘・終章｜剴剴的672天' <<<"$html" || ready=0
+            for target in "${targets[@]}"; do
+              target_html="$(curl -fsSL --connect-timeout 15 --max-time 30 "${target}?qa=${token}" || true)"
+              grep -q 'id="chapter-brief"' <<<"$target_html" || ready=0
+              grep -q 'id="placement-harm-cases"' <<<"$target_html" || ready=0
+              grep -q 'id="system"' <<<"$target_html" || ready=0
+            done
+            css="$(curl -fsSL --connect-timeout 15 --max-time 30 "${assets[0]}&qa=${token}" || true)"
+            js="$(curl -fsSL --connect-timeout 15 --max-time 30 "${assets[1]}&qa=${token}" || true)"
+            grep -q 'KAIKAI-CHAPTER-TWO-MAJOR-LAUNCH-20260829' <<<"$css" || ready=0
+            grep -q 'data-chapter2-hant' <<<"$js" || ready=0
+            if [[ "$ready" -eq 1 ]]; then
+              echo 'Chapter 2 major homepage publication is live.'
+              exit 0
+            fi
+            sleep 10
+          done
+          echo 'Timed out before the Chapter 2 major homepage publication became public.' >&2
+          exit 1
+
+      - name: Install Playwright driver
+        run: npm install --no-save playwright-core@1.55.0
+
+      - name: Verify Traditional and Simplified desktop and mobile Chrome
+        run: node .github/scripts/verify-kaikai-chapter-two-major-20260829.mjs
+
+      - name: Upload homepage browser screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kaikai-chapter-two-major-homepage-browser-proof
+          path: browser-validation/kaikai-chapter-two-major
+          retention-days: 14
+
+      - name: Remove completed one-off publication tools
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
+          git rm -f .github/workflows/oneoff-publish-kaikai-chapter-two-major-20260829.yml
+          git rm -f .github/scripts/publish-kaikai-chapter-two-major-20260829.py
+          git rm -f .github/scripts/verify-kaikai-chapter-two-major-20260829.mjs
+          git commit -m 'Remove completed Chapter 2 homepage publication tools'
+          pushed=0
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              pushed=1
+              break
+            fi
+            git pull --rebase origin main
+          done
+          test "$pushed" -eq 1
