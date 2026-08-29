@@ -69,7 +69,7 @@ jobs:
                   });
                   const url = process.env.BASE_URL + item.path;
                   try {
-                    const response = await page.goto(url, { waitUntil: 'networkidle', timeout: 90000 });
+                    const response = await page.goto(url, { waitUntil: 'load', timeout: 60000 });
                     if (!response || response.status() !== 200) throw new Error('HTTP ' + (response?.status() ?? 'no response'));
                     await page.waitForTimeout(2500);
                     const result = await page.evaluate(({ locale, canonical }) => {
@@ -120,9 +120,9 @@ jobs:
                 }
                 const routePage = await context.newPage();
                 try {
-                  await routePage.goto(process.env.BASE_URL + '/historical-cases/regions/mainland-china/huang-ziche/zh-Hans/', { waitUntil: 'networkidle', timeout: 90000 });
+                  await routePage.goto(process.env.BASE_URL + '/historical-cases/regions/mainland-china/huang-ziche/zh-Hans/', { waitUntil: 'load', timeout: 60000 });
                   await routePage.waitForTimeout(500);
-                  await routePage.goto(process.env.BASE_URL + '/historical-cases/regions/mainland-china/huang-ziche/', { waitUntil: 'networkidle', timeout: 90000 });
+                  await routePage.goto(process.env.BASE_URL + '/historical-cases/regions/mainland-china/huang-ziche/', { waitUntil: 'load', timeout: 60000 });
                   await routePage.waitForTimeout(1000);
                   const returnedLang = await routePage.evaluate(() => document.documentElement.lang);
                   if (returnedLang !== 'zh-Hant') failures.push(viewport.name + ' route zh-Hans→zh-Hant: lang=' + returnedLang);
