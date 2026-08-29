@@ -46,14 +46,21 @@ def insert_witness_cta(text: str, section_id: str, href: str, label: str, file_l
     start = text.find(marker)
     if start < 0:
         raise SystemExit(f'{file_label}: official medical source section not found')
-    header_end = text.find('</header>', start)
-    if header_end < 0:
-        raise SystemExit(f'{file_label}: official source header closing tag not found')
-    header_block = text[start:header_end]
-    if href in header_block and label in header_block:
+    section_end = text.find('</aside>', start)
+    if section_end < 0:
+        raise SystemExit(f'{file_label}: official medical source section closing tag not found')
+    section = text[start:section_end]
+    if href in section and label in section:
         return text
-    cta = f'<div class="official-source-links medical-zone-entry"><a href="{href}">{label}</a></div>'
-    return text[:header_end] + cta + text[header_end:]
+    links_start = section.find('<div class="supplement-links">')
+    if links_start < 0:
+        raise SystemExit(f'{file_label}: supplement-links container not found')
+    links_end = section.find('</div>', links_start)
+    if links_end < 0:
+        raise SystemExit(f'{file_label}: supplement-links closing tag not found')
+    absolute_end = start + links_end
+    link = f'<a class="medical-zone-entry" href="{href}">{label}</a>'
+    return text[:absolute_end] + link + text[absolute_end:]
 
 
 traditional_parent = ROOT / 'index.html'
@@ -119,7 +126,7 @@ witness_text = insert_witness_cta(
     '進入醫療責任釐清專區',
     str(traditional_witness),
 )
-if witness_text.count('../medical-responsibility/') != 1:
+if witness_text.count('進入醫療責任釐清專區') != 1:
     raise SystemExit('Traditional witness medical-zone link count is not one')
 traditional_witness.write_text(witness_text, encoding='utf-8')
 
@@ -132,7 +139,7 @@ simplified_witness_text = insert_witness_cta(
     '进入医疗责任厘清专区',
     str(simplified_witness),
 )
-if simplified_witness_text.count('../../medical-responsibility/zh-Hans/') != 1:
+if simplified_witness_text.count('进入医疗责任厘清专区') != 1:
     raise SystemExit('Simplified witness medical-zone link count is not one')
 simplified_witness.write_text(simplified_witness_text, encoding='utf-8')
 
