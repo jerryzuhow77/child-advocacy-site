@@ -4,6 +4,29 @@
   const menuButton = document.querySelector('#menuButton');
   const siteNav = document.querySelector('#siteNav');
 
+  // LEGACY-MEDICAL-HASH-REDIRECT-20260829
+  const legacyMedicalHashRoutes = {
+    'medical-special-topic': '',
+    'dental-warning': 'dental-warning',
+    'medical-network-omissions': 'medical-network-omissions',
+    'medical-investigation-sources': 'medical-investigation-sources',
+    'death-temperature-evidence': 'death-temperature-evidence'
+  };
+  let legacyMedicalHash = '';
+  try { legacyMedicalHash = decodeURIComponent(location.hash.slice(1)); }
+  catch (_) { legacyMedicalHash = location.hash.slice(1); }
+  if (Object.prototype.hasOwnProperty.call(legacyMedicalHashRoutes, legacyMedicalHash)) {
+    const medicalRoot = document.documentElement.lang === 'zh-Hans'
+      ? '../medical-responsibility/zh-Hans/'
+      : './medical-responsibility/';
+    const destination = new URL(medicalRoot, location.href);
+    const forwardedHash = legacyMedicalHashRoutes[legacyMedicalHash];
+    if (forwardedHash) destination.hash = forwardedHash;
+    location.replace(destination.href);
+    return;
+  }
+
+
   const setMenu = (open) => {
     if (!menuButton || !siteNav) return;
     siteNav.classList.toggle('open', open);
