@@ -1,0 +1,131 @@
+name: Apply Kaikai witness publication XZ v2 20260829
+
+on:
+  push:
+    branches:
+      - feat/kaikai-witness-analysis-20260829
+    paths:
+      - .tmp/kaikai-publish-xz.ready-v2
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apply-kaikai-witness-publication-xz-v2-20260829
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reconstruct verified package
+        shell: bash
+        run: |
+          set -euo pipefail
+          package=/tmp/kaikai-publish-compact.tar.xz
+          cat .tmp/kaikai-publish-xz.[0-9][0-9][0-9].b64 | base64 --decode > "$package"
+          echo "20fb08156b1bc8aa4f653ebab7ef4dd809a26e6921181005d4343bc6eb2b67e8  $package" | sha256sum -c -
+          xz -t "$package"
+
+      - name: Merge publication onto latest main and push
+        shell: bash
+        run: |
+          set -euo pipefail
+          package=/tmp/kaikai-publish-compact.tar.xz
+          chapter='hearing-records/prison-watch/kaikai-final-chapter'
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          validate() {
+            git diff --check
+            node --check "$chapter/final-chapter.js"
+            node --check "$chapter/witnesses/witnesses.js"
+            test "$(grep -o 'data-witness-card' "$chapter/witnesses/index.html" | wc -l | tr -d ' ')" = 13
+            test "$(grep -o 'data-witness-card' "$chapter/zh-Hans/witnesses/index.html" | wc -l | tr -d ' ')" = 13
+            test "$(grep -o 'class="issue-row"' "$chapter/witnesses/index.html" | wc -l | tr -d ' ')" = 13
+            test "$(grep -o 'class="issue-row"' "$chapter/zh-Hans/witnesses/index.html" | wc -l | tr -d ' ')" = 13
+            grep -q '13名證人全文' "$chapter/index.html"
+            grep -q '13名证人全文' "$chapter/zh-Hans/index.html"
+            grep -q 'WITNESS-DEEP-DIVE-20260829' "$chapter/index.html"
+            grep -q 'WITNESS-DEEP-DIVE-20260829' "$chapter/zh-Hans/index.html"
+            grep -q 'WITNESS-ANCHOR-CORRECTION-20260829' "$chapter/final-chapter.js"
+            grep -q 'html{scroll-padding-top:var(--chapter-anchor-offset)}' "$chapter/final-chapter.css"
+            grep -q 'RELATIONSHIP-TREE-REFRESH-20260829' "$chapter/index.html"
+            grep -q '法院並未公開官方逐字稿' "$chapter/witnesses/index.html"
+            grep -q '法院并未公开官方逐字稿' "$chapter/zh-Hans/witnesses/index.html"
+            grep -q '束帶直接扣住私處並綁在便盆' "$chapter/witnesses/index.html"
+            grep -q '尚未把「束帶直接扣住私處並綁在便盆」寫成一個完整、已認定的單一事實' "$chapter/witnesses/index.html"
+            grep -q '/kaikai-final-chapter/witnesses/' sitemap.xml
+            grep -q '/kaikai-final-chapter/zh-Hans/witnesses/' sitemap.xml
+            python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          root = Path('hearing-records/prison-watch/kaikai-final-chapter')
+          class P(HTMLParser):
+              def __init__(self):
+                  super().__init__(convert_charrefs=True); self.ids=[]
+              def handle_starttag(self, tag, attrs):
+                  value=dict(attrs).get('id')
+                  if value: self.ids.append(value)
+          for page in (root/'witnesses/index.html', root/'zh-Hans/witnesses/index.html'):
+              p=P(); p.feed(page.read_text(encoding='utf-8'))
+              dup=sorted({x for x in p.ids if p.ids.count(x)>1})
+              assert not dup, f'{page}: duplicate ids {dup}'
+              for required in ('contradiction-matrix','binding-evidence','witness-01','witness-13'):
+                  assert required in p.ids, f'{page}: missing #{required}'
+          image=Path('assets/art/kaikai-dual-track-responsibility-tree-zh-Hant-20260829.webp').read_bytes()
+          assert len(image)>50000 and image[:4]==b'RIFF' and image[8:12]==b'WEBP'
+          print('validation passed')
+          PY
+          }
+
+          already_published() {
+            test -s "$chapter/witnesses/index.html" \
+              && test -s "$chapter/zh-Hans/witnesses/index.html" \
+              && grep -q 'WITNESS-DEEP-DIVE-20260829' "$chapter/index.html" \
+              && grep -q 'WITNESS-ANCHOR-CORRECTION-20260829' "$chapter/final-chapter.js"
+          }
+
+          build() {
+            git fetch origin main
+            git reset --hard origin/main
+            if already_published; then
+              validate
+              return 2
+            fi
+            tar -xJf "$package" -C .
+            test -s main.patch
+            if git apply --check main.patch; then
+              git apply --whitespace=fix main.patch
+            else
+              git apply --3way --index --whitespace=fix main.patch
+            fi
+            rm -f main.patch
+            validate
+            test ! -e .github/workflows/apply-kaikai-witness-publication-xz-v2-20260829.yml
+            test ! -e .github/workflows/apply-kaikai-witness-publication-xz-20260829.yml
+            test ! -e .github/workflows/apply-kaikai-witness-publication-20260829.yml
+            git add -A
+            git diff --cached --quiet && return 2
+            git commit -m 'Publish Kaikai witness evidence atlas and anchor fix'
+          }
+
+          for attempt in 1 2 3 4 5; do
+            set +e
+            build
+            status=$?
+            set -e
+            [ "$status" -eq 2 ] && exit 0
+            [ "$status" -eq 0 ] || exit "$status"
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Push raced with main; rebuilding safely (attempt $attempt)."
+          done
+          exit 1
