@@ -1,0 +1,103 @@
+name: Final verify Kaikai prologue audio and menu cleanup
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-kaikai-prologue-audio-menu-final-verify-20260829.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  verify-and-clean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Confirm current source and fix only the stale cache-key assertion
+        shell: bash
+        run: |
+          set -euo pipefail
+          git pull --rebase origin main
+          pages=(
+            hearing-records/prison-watch/kaikai-final-chapter/index.html
+            hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+          )
+          for page in "${pages[@]}"; do
+            grep -q 'final-chapter.css?v=20260829-prologue-audio-1' "$page"
+            grep -q 'final-chapter.js?v=20260829-prologue-audio-1' "$page"
+            grep -q 'preload="auto" data-track-count="2"' "$page"
+            grep -q 'data-prologue-play hidden aria-label=' "$page"
+          done
+          css='hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css'
+          js='hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js'
+          grep -q '.nav-group-major>summary:before{display:none!important;content:none!important}' "$css"
+          ! grep -q "content:'NEW'" "$css"
+          ! grep -q 'content:"NEW"' "$css"
+          grep -q 'PROLOGUE-AUDIO-AUTOSTART-20260829' "$css"
+          grep -q 'PROLOGUE-AUDIO-AUTOSTART-20260829' "$js"
+          grep -q "prologueAudio.dataset.prologueAutoplay = 'playing'" "$js"
+          node --check "$js"
+
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('.github/scripts/verify-kaikai-prologue-audio-and-menu-20260829.mjs')
+          text = path.read_text(encoding='utf-8')
+          old = """        currentAssets: /final-chapter\\.css\\?v=20260829-\\d+/.test(result.prologue.cssHref)
+          && /final-chapter\\.js\\?v=20260829-\\d+/.test(result.prologue.jsSrc),
+"""
+          new = """        currentAssets: result.prologue.cssHref.includes('final-chapter.css?v=20260829-prologue-audio-1')
+          && result.prologue.jsSrc.includes('final-chapter.js?v=20260829-prologue-audio-1'),
+"""
+          count = text.count(old)
+          if count != 1:
+              raise SystemExit(f'Expected one stale cache assertion, found {count}')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+          node --check .github/scripts/verify-kaikai-prologue-audio-and-menu-20260829.mjs
+
+      - name: Install Playwright driver
+        run: npm install --no-save playwright-core@1.55.0
+
+      - name: Run final automatic-playback and policy-fallback Chrome checks
+        run: node .github/scripts/verify-kaikai-prologue-audio-and-menu-20260829.mjs
+
+      - name: Upload final screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kaikai-prologue-audio-and-menu-final-proof
+          path: browser-validation/prologue-audio-and-menu
+          retention-days: 14
+
+      - name: Remove completed one-off tools
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git restore .github/scripts/verify-kaikai-prologue-audio-and-menu-20260829.mjs
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
+          git rm -f --ignore-unmatch .github/workflows/oneoff-kaikai-prologue-audio-and-menu-20260829.yml
+          git rm -f --ignore-unmatch .github/workflows/oneoff-kaikai-prologue-audio-menu-final-verify-20260829.yml
+          git rm -f --ignore-unmatch .github/scripts/patch-kaikai-prologue-audio-and-menu-20260829.py
+          git rm -f --ignore-unmatch .github/scripts/prepare-kaikai-prologue-patch-20260829.py
+          git rm -f --ignore-unmatch .github/scripts/verify-kaikai-prologue-audio-and-menu-20260829.mjs
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m 'Remove completed prologue audio publication tools'
+          pushed=0
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              pushed=1
+              break
+            fi
+            git pull --rebase origin main
+          done
+          test "$pushed" -eq 1
