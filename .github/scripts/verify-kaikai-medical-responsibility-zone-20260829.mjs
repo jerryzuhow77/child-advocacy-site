@@ -21,7 +21,7 @@ const sites = {
     witnessEntry: '進入醫療責任釐清專區',
     filterLabel: '監察院正式認定',
     cssPath: '/medical-responsibility/medical-responsibility.css?v=20260829-1',
-    jsPath: '/medical-responsibility/medical-responsibility.js?v=20260829-1'
+    jsPath: '/medical-responsibility/medical-responsibility.js?v=20260829-2'
   },
   'zh-Hans': {
     page: 'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/zh-Hans/',
@@ -39,7 +39,7 @@ const sites = {
     witnessEntry: '进入医疗责任厘清专区',
     filterLabel: '监察院正式认定',
     cssPath: '/medical-responsibility/medical-responsibility.css?v=20260829-1',
-    jsPath: '/medical-responsibility/medical-responsibility.js?v=20260829-1'
+    jsPath: '/medical-responsibility/medical-responsibility.js?v=20260829-2'
   }
 };
 
@@ -59,13 +59,14 @@ let failed = false;
 
 async function waitForHash(page, id) {
   await page.waitForSelector(`#${id}`, { state: 'visible', timeout: 15000 });
+  await page.waitForFunction((targetId) => location.hash === `#${targetId}`, id, { timeout: 12000 });
   await page.waitForFunction((targetId) => {
     const target = document.getElementById(targetId);
-    if (!target || location.hash !== `#${targetId}`) return false;
+    if (!target) return false;
     const rect = target.getBoundingClientRect();
     return rect.top < innerHeight && rect.bottom > 0;
-  }, id, { timeout: 12000 });
-  await page.waitForTimeout(350);
+  }, id, { timeout: 20000 });
+  await page.waitForTimeout(450);
 }
 
 for (const [language, site] of Object.entries(sites)) {
@@ -118,7 +119,7 @@ for (const [language, site] of Object.entries(sites)) {
       await page.waitForTimeout(900);
 
       result.pageState = await page.evaluate((expected) => {
-        const text = document.body?.innerText || '';
+        const text = document.body?.textContent || '';
         const officialLinks = [...document.querySelectorAll('a[href]')].map((link) => link.href);
         const langLinks = [...document.querySelectorAll('.language-switcher a')];
         return {
