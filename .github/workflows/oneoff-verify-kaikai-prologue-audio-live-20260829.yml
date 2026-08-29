@@ -1,0 +1,241 @@
+name: Verify Chapter 2 prologue audio interaction on production
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/oneoff-verify-kaikai-prologue-audio-live-20260829.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: oneoff-verify-kaikai-prologue-audio-live-20260829
+  cancel-in-progress: false
+
+jobs:
+  verify-live:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out current main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Wait for current production assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          root='https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/'
+          ready=0
+          for attempt in $(seq 1 120); do
+            stamp="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${attempt}"
+            curl -fsSL --retry 2 -H 'Cache-Control: no-cache' "${root}?verify=${stamp}" -o /tmp/hant.html || true
+            curl -fsSL --retry 2 -H 'Cache-Control: no-cache' "${root}zh-Hans/?verify=${stamp}" -o /tmp/hans.html || true
+            if grep -q 'final-chapter.js?v=20260829-35' /tmp/hant.html 2>/dev/null \
+              && grep -q '按「略過／進入」會啟動背景配樂' /tmp/hant.html \
+              && grep -q 'final-chapter.js?v=20260829-35' /tmp/hans.html 2>/dev/null \
+              && grep -q '按“略过／进入”会启动背景配乐' /tmp/hans.html; then
+              ready=1
+              echo "Current production assets are visible on attempt ${attempt}."
+              break
+            fi
+            sleep 5
+          done
+          test "$ready" -eq 1
+
+          curl -fsSL --retry 3 "${root}final-chapter.js?v=20260829-35" -o /tmp/final-chapter-live.js
+          grep -q 'Natural prologue completion remains silent' /tmp/final-chapter-live.js
+          grep -q 'playChapterAudioFromGesture();' /tmp/final-chapter-live.js
+
+      - name: Install Chromium browser driver
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/prologue-audio-live-browser
+          cd /tmp/prologue-audio-live-browser
+          npm init -y >/dev/null 2>&1
+          npm install --silent playwright@1.55.0
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Verify the production interaction on desktop and mobile
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/prologue-audio-live-evidence
+          node <<'NODE'
+          const { chromium } = require('/tmp/prologue-audio-live-browser/node_modules/playwright');
+          const assert = require('node:assert/strict');
+
+          (async () => {
+            const browser = await chromium.launch({ headless: true });
+            const root = 'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/';
+
+            {
+              const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+              const errors = [];
+              const failedResponses = [];
+              page.on('pageerror', error => errors.push(error.message));
+              page.on('response', response => {
+                if (response.url().startsWith(root) && response.status() >= 400) {
+                  failedResponses.push(`${response.status()} ${response.url()}`);
+                }
+              });
+              await page.goto(`${root}?natural=${Date.now()}`, {
+                waitUntil: 'domcontentloaded',
+                timeout: 60000
+              });
+              const overlay = page.locator('[data-entry-prologue]');
+              await overlay.waitFor({ state: 'visible', timeout: 15000 });
+              const initial = await page.evaluate(() => ({
+                scriptVersion: [...document.scripts].map(script => script.src).find(src => src.includes('final-chapter.js')) || '',
+                buttonText: document.querySelector('[data-prologue-skip]')?.textContent?.trim() || '',
+                videoMuted: document.querySelector('[data-prologue-video]')?.muted,
+                videoAutoplay: document.querySelector('[data-prologue-video]')?.autoplay,
+                audioPaused: document.querySelector('#chapterBgm')?.paused,
+                trackCount: document.querySelector('#chapterBgm')?.dataset.trackCount
+              }));
+              console.log('natural initial', JSON.stringify(initial));
+              assert.ok(initial.scriptVersion.includes('20260829-35'));
+              assert.ok(initial.buttonText.includes('略過／進入'));
+              assert.equal(initial.videoMuted && initial.videoAutoplay, true);
+              assert.equal(initial.audioPaused, true);
+              assert.equal(initial.trackCount, '2');
+
+              await page.waitForFunction(() => {
+                const video = document.querySelector('[data-prologue-video]');
+                return Boolean(video?.error) || video.currentTime > 0.08;
+              }, null, { timeout: 30000 });
+              assert.equal(
+                await page.evaluate(() => document.querySelector('[data-prologue-video]').error),
+                null
+              );
+              await page.waitForFunction(
+                () => document.querySelector('[data-entry-prologue]').hidden === true,
+                null,
+                { timeout: 20000 }
+              );
+              const naturalResult = await page.evaluate(() => ({
+                paused: document.querySelector('#chapterBgm').paused,
+                currentTime: document.querySelector('#chapterBgm').currentTime,
+                label: document.querySelector('[data-audio-label]').textContent.trim(),
+                bodyLocked: document.body.classList.contains('prologue-active')
+              }));
+              console.log('natural result', JSON.stringify(naturalResult));
+              assert.equal(naturalResult.paused, true);
+              assert.ok(naturalResult.currentTime <= 0.05);
+              assert.equal(naturalResult.label, '播放配樂');
+              assert.equal(naturalResult.bodyLocked, false);
+              assert.deepEqual(errors, []);
+              assert.deepEqual(failedResponses, []);
+              await page.close();
+            }
+
+            const cases = [
+              ['zh-Hant-desktop', root, { width: 1440, height: 900 }, '略過／進入', '暫停配樂'],
+              ['zh-Hans-mobile', `${root}zh-Hans/`, { width: 390, height: 844 }, '略过／进入', '暂停配乐']
+            ];
+
+            for (const [name, baseUrl, viewport, entryText, playingLabel] of cases) {
+              const page = await browser.newPage({ viewport });
+              const errors = [];
+              const failedResponses = [];
+              page.on('pageerror', error => errors.push(error.message));
+              page.on('response', response => {
+                if (response.url().startsWith(root) && response.status() >= 400) {
+                  failedResponses.push(`${response.status()} ${response.url()}`);
+                }
+              });
+              await page.goto(`${baseUrl}?gesture=${Date.now()}-${name}`, {
+                waitUntil: 'domcontentloaded',
+                timeout: 60000
+              });
+              const overlay = page.locator('[data-entry-prologue]');
+              await overlay.waitFor({ state: 'visible', timeout: 15000 });
+              const entryButton = page.locator('[data-prologue-skip]');
+              assert.ok((await entryButton.textContent()).includes(entryText));
+              await page.waitForFunction(() => {
+                const video = document.querySelector('[data-prologue-video]');
+                return Boolean(video?.error) || video.currentTime > 0.08;
+              }, null, { timeout: 30000 });
+              assert.equal(
+                await page.evaluate(() => document.querySelector('[data-prologue-video]').error),
+                null
+              );
+
+              await entryButton.click();
+              await page.waitForFunction(
+                () => document.querySelector('[data-entry-prologue]').hidden === true,
+                null,
+                { timeout: 6000 }
+              );
+              await page.waitForFunction(() => {
+                const audio = document.querySelector('#chapterBgm');
+                return !audio.paused && audio.currentTime > 0.05;
+              }, null, { timeout: 20000 });
+
+              const playing = await page.evaluate(() => ({
+                paused: document.querySelector('#chapterBgm').paused,
+                currentTime: document.querySelector('#chapterBgm').currentTime,
+                label: document.querySelector('[data-audio-label]').textContent.trim(),
+                count: document.querySelector('#chapterBgm').dataset.trackCount,
+                title: document.querySelector('#chapterBgm').dataset.trackTitle,
+                overlayHidden: document.querySelector('[data-entry-prologue]').hidden,
+                bodyLocked: document.body.classList.contains('prologue-active')
+              }));
+              console.log(name, JSON.stringify(playing));
+              assert.equal(playing.paused, false);
+              assert.ok(playing.currentTime > 0.05);
+              assert.equal(playing.label, playingLabel);
+              assert.equal(playing.count, '2');
+              assert.equal(playing.overlayHidden, true);
+              assert.equal(playing.bodyLocked, false);
+
+              await page.screenshot({
+                path: `/tmp/prologue-audio-live-evidence/${name}-after-entry.png`,
+                fullPage: false
+              });
+
+              await page.locator('.audio-toggle').click();
+              await page.waitForFunction(() => document.querySelector('#chapterBgm').paused === true);
+              await page.locator('.audio-toggle').click();
+              await page.waitForFunction(() => document.querySelector('#chapterBgm').paused === false);
+              assert.deepEqual(errors, [], `${name}: ${errors.join(' | ')}`);
+              assert.deepEqual(failedResponses, [], `${name}: ${failedResponses.join(' | ')}`);
+              await page.close();
+            }
+
+            await browser.close();
+          })().catch(error => {
+            console.error(error);
+            process.exit(1);
+          });
+          NODE
+
+      - name: Upload production evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: kaikai-prologue-audio-live-evidence-20260829
+          path: /tmp/prologue-audio-live-evidence/*.png
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Remove completed one-off verifier
+        shell: bash
+        run: |
+          set -euo pipefail
+          workflow='.github/workflows/oneoff-verify-kaikai-prologue-audio-live-20260829.yml'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm "$workflow"
+          git commit -m 'Remove completed prologue audio production verifier'
+          for attempt in $(seq 1 3); do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            sleep $((attempt * 3))
+          done
+          exit 1
