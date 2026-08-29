@@ -5,73 +5,138 @@ on:
     branches:
       - feat/kaikai-witness-analysis-20260829
     paths:
-      - .tmp/kaikai-publish-payload.ready
+      - .tmp/kaikai-publish-full.ready
 
 permissions:
   contents: write
 
+concurrency:
+  group: kaikai-witness-publication-20260829
+  cancel-in-progress: false
+
 jobs:
-  apply:
+  publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - name: Check out feature branch
+      - name: Check out publication carrier branch
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Expand and apply prepared publication payload
+      - name: Assemble verified publication package and switch to latest main
         shell: bash
         run: |
           set -euo pipefail
-          cat .tmp/kaikai-publish-payload.*.b64 | base64 --decode > /tmp/kaikai-publish-payload.tar.gz
-          echo "1a04fb69803db6fd07293e6a44969d41527d0d255b1c76561db9d8661bd545f4  /tmp/kaikai-publish-payload.tar.gz" | sha256sum -c -
-          tar -xzf /tmp/kaikai-publish-payload.tar.gz -C .
-          patch -p1 < main.patch
-          rm -f main.patch
-          rm -f .tmp/kaikai-publish-payload.*.b64 .tmp/kaikai-publish-payload.ready
-          rmdir .tmp 2>/dev/null || true
-          rm -f .github/workflows/apply-kaikai-witness-publication-20260829.yml
+          cat .tmp/kaikai-publish-full.*.b64 | base64 --decode > /tmp/kaikai-publish-compact.tar.gz
+          echo "1a04fb69803db6fd07293e6a44969d41527d0d255b1c76561db9d8661bd545f4  /tmp/kaikai-publish-compact.tar.gz" | sha256sum -c -
+          git fetch origin main
+          git checkout -B kaikai-publication origin/main
 
-      - name: Validate scripts, pages and required assets
+      - name: Apply pages, relationship artwork, navigation and anchor correction
         shell: bash
         run: |
           set -euo pipefail
-          node --check hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
-          node --check hearing-records/prison-watch/kaikai-final-chapter/witnesses/witnesses.js
+          tar -xzf /tmp/kaikai-publish-compact.tar.gz -C .
+          patch --batch --forward -p1 < main.patch
+          rm -f main.patch
+          test -z "$(find . -name '*.rej' -o -name '*.orig' -print -quit)"
+
+      - name: Validate generated public files
+        shell: bash
+        run: |
+          set -euo pipefail
+          chapter='hearing-records/prison-watch/kaikai-final-chapter'
+          hant="$chapter/witnesses/index.html"
+          hans="$chapter/zh-Hans/witnesses/index.html"
+
+          git diff --check
+          node --check "$chapter/final-chapter.js"
+          node --check "$chapter/witnesses/witnesses.js"
+
+          test "$(grep -o 'class="witness-card"' "$hant" | wc -l | tr -d ' ')" = '13'
+          test "$(grep -o 'class="witness-card"' "$hans" | wc -l | tr -d ' ')" = '13'
+          test "$(grep -o 'class="issue-row"' "$hant" | wc -l | tr -d ' ')" = '13'
+          test "$(grep -o 'class="issue-row"' "$hans" | wc -l | tr -d ' ')" = '13'
+
+          grep -q '13名證人全文' "$chapter/index.html"
+          grep -q '13名证人全文' "$chapter/zh-Hans/index.html"
+          grep -q '束帶直接扣住私處並綁在便盆' "$hant"
+          grep -q '束带直接扣住私处并绑在便盆' "$hans"
+          grep -q '法院並未公開官方逐字稿' "$hant"
+          grep -q '法院并未公开官方逐字稿' "$hans"
+          grep -q '/kaikai-final-chapter/witnesses/' sitemap.xml
+          grep -q '/kaikai-final-chapter/zh-Hans/witnesses/' sitemap.xml
+          grep -q 'syncAnchorOffset' "$chapter/final-chapter.js"
+          grep -q 'scroll-padding-top:var(--chapter-anchor-offset)' "$chapter/final-chapter.css"
+
           python - <<'PY'
           from html.parser import HTMLParser
           from pathlib import Path
+
           pages = [
               Path('hearing-records/prison-watch/kaikai-final-chapter/index.html'),
               Path('hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html'),
               Path('hearing-records/prison-watch/kaikai-final-chapter/witnesses/index.html'),
               Path('hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/witnesses/index.html'),
           ]
+
           class IdParser(HTMLParser):
               def __init__(self):
-                  super().__init__(); self.ids=[]
+                  super().__init__()
+                  self.ids = []
               def handle_starttag(self, tag, attrs):
-                  value=dict(attrs).get('id')
-                  if value: self.ids.append(value)
+                  value = dict(attrs).get('id')
+                  if value:
+                      self.ids.append(value)
+
           for page in pages:
-              text=page.read_text(encoding='utf-8')
-              parser=IdParser(); parser.feed(text)
-              duplicates=sorted({x for x in parser.ids if parser.ids.count(x)>1})
-              assert not duplicates, f'{page}: duplicate ids {duplicates}'
-              assert '<main' in text and '</html>' in text, f'{page}: incomplete document'
-          assert '13名證人全文' in pages[0].read_text(encoding='utf-8')
-          assert '13名证人全文' in pages[1].read_text(encoding='utf-8')
-          image = Path('assets/art/kaikai-dual-track-responsibility-tree-zh-Hant-20260829.webp')
-          assert image.stat().st_size > 50000, 'relationship image is missing or unexpectedly small'
+              text = page.read_text(encoding='utf-8')
+              parser = IdParser()
+              parser.feed(text)
+              duplicates = sorted({item for item in parser.ids if parser.ids.count(item) > 1})
+              if duplicates:
+                  raise SystemExit(f'{page}: duplicate ids: {duplicates}')
+              if '<main' not in text or '</html>' not in text:
+                  raise SystemExit(f'{page}: incomplete document')
+
+          for page in pages[2:]:
+              text = page.read_text(encoding='utf-8')
+              for required in ('contradiction-matrix', 'witness-01', 'witness-13'):
+                  if f'id="{required}"' not in text:
+                      raise SystemExit(f'{page}: missing #{required}')
+
+          image = Path('assets/art/kaikai-dual-track-responsibility-tree-zh-Hant-20260829.webp').read_bytes()
+          if len(image) < 200_000 or image[:4] != b'RIFF' or image[8:12] != b'WEBP':
+              raise SystemExit('responsibility-tree WebP is invalid')
           print('Static publication checks passed.')
           PY
 
-      - name: Commit prepared public pages
+      - name: Commit and publish to main
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
+          git add \
+            assets/art/kaikai-dual-track-responsibility-tree-zh-Hant-20260829.webp \
+            hearing-records/prison-watch/kaikai-final-chapter/index.html \
+            hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html \
+            hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css \
+            hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js \
+            hearing-records/prison-watch/kaikai-final-chapter/witnesses \
+            hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/witnesses \
+            sitemap.xml
           git commit -m "Publish Kaikai witness evidence analysis and fix chapter anchors"
-          git push origin HEAD:feat/kaikai-witness-analysis-20260829
+
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Main advanced; rebasing publication commit (attempt ${attempt})."
+            git fetch origin main
+            git rebase origin/main
+          done
+
+          echo 'Unable to publish after five push attempts.' >&2
+          exit 1
