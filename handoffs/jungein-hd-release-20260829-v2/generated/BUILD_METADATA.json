@@ -1,0 +1,18 @@
+{
+  "release_id": "global-protection-jungein-prologue-hd-audio-20260829-v2",
+  "source": "current verified first-version production media",
+  "video": {
+    "width": 1080,
+    "height": 1234,
+    "codec": "h264",
+    "profile": "High",
+    "fps": "24/1",
+    "pixel_format": "yuv420p",
+    "duration": 15.041667,
+    "bytes": 9371458
+  },
+  "audio": {
+    "codec": "aac",
+    "sample_rate": 48000
+  }
+}
