@@ -1,0 +1,165 @@
+name: Publish and verify Kaikai medical responsibility zone
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-kaikai-medical-responsibility-zone-20260829.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Patch parent menus, hero entry points, and witness links
+        shell: bash
+        run: |
+          set -euo pipefail
+          git pull --rebase origin main
+          python3 .github/scripts/patch-kaikai-medical-responsibility-navigation-20260829.py
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/medical-responsibility.css')
+          css = path.read_text(encoding='utf-8')
+          css = css.replace('.source-links a{display:inline-flex;', '.source-links a,.source-links button{display:inline-flex;', 1)
+          css = css.replace('.source-links a:hover,.source-links a:focus-visible{', '.source-links a:hover,.source-links a:focus-visible,.source-links button:hover,.source-links button:focus-visible{', 1)
+          css = css.replace('.dark .source-links a{border-color:', '.dark .source-links a,.dark .source-links button{border-color:', 1)
+          if '.source-links button{display:inline-flex' not in css and '.source-links a,.source-links button{display:inline-flex' not in css:
+              raise SystemExit('Source-link button styling was not applied')
+          path.write_text(css, encoding='utf-8')
+          PY
+          node --check hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/medical-responsibility.js
+          node --check .github/scripts/verify-kaikai-medical-responsibility-zone-20260829.mjs
+          git diff --check
+          python3 - <<'PY'
+          from pathlib import Path
+          root = Path('hearing-records/prison-watch/kaikai-final-chapter')
+          required = {
+              root / 'medical-responsibility/index.html': ['醫療責任釐清專區', '監察院報告必須是整頁最醒目的官方主軸', '兒福聯盟不是唯一一層', '采新牙醫診所', '興隆內科小兒科診所', '蔡函妤醫師證詞', '114社調0008'],
+              root / 'medical-responsibility/zh-Hans/index.html': ['医疗责任厘清专区', '监察院报告必须是整页最醒目的官方主轴', '儿福联盟不是唯一一层', '采新牙医诊所', '兴隆内科小儿科诊所', '蔡函妤医师证词', '114社调0008'],
+              root / 'index.html': ['<summary>醫療責任</summary>', './medical-responsibility/', '醫療責任釐清專區'],
+              root / 'zh-Hans/index.html': ['<summary>医疗责任</summary>', '../medical-responsibility/zh-Hans/', '医疗责任厘清专区'],
+              root / 'witnesses/index.html': ['../medical-responsibility/', '進入醫療責任釐清專區'],
+              root / 'zh-Hans/witnesses/index.html': ['../../medical-responsibility/zh-Hans/', '进入医疗责任厘清专区'],
+          }
+          for path, phrases in required.items():
+              text = path.read_text(encoding='utf-8')
+              for phrase in phrases:
+                  if phrase not in text:
+                      raise SystemExit(f'{path}: missing {phrase}')
+          for page in [root / 'medical-responsibility/index.html', root / 'medical-responsibility/zh-Hans/index.html']:
+              text = page.read_text(encoding='utf-8')
+              ids = ['control-yuan', 'institutions', 'clinics', 'cai-hanyu', 'emergency', 'closed-loop', 'sources']
+              for section_id in ids:
+                  if text.count(f'id="{section_id}"') != 1:
+                      raise SystemExit(f'{page}: #{section_id} count is not one')
+              if text.count('class="clinic-card') != 2:
+                  raise SystemExit(f'{page}: expected two clinic cards')
+              if text.count('class="institution-card') != 5:
+                  raise SystemExit(f'{page}: expected five institution cards')
+              if text.count('<li data-source-level=') != 7:
+                  raise SystemExit(f'{page}: expected seven closed-loop items')
+          PY
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add hearing-records/prison-watch/kaikai-final-chapter/index.html
+          git add hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+          git add hearing-records/prison-watch/kaikai-final-chapter/witnesses/index.html
+          git add hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/witnesses/index.html
+          git add hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/medical-responsibility.css
+          git commit -m 'Add medical responsibility zone to Chapter 2 main navigation'
+          pushed=0
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              pushed=1
+              break
+            fi
+            git pull --rebase origin main
+          done
+          test "$pushed" -eq 1
+
+      - name: Wait for GitHub Pages to expose both localized zones and parent links
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p browser-validation/medical-responsibility-zone
+          urls=(
+            'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/'
+            'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/zh-Hans/'
+          )
+          parent_urls=(
+            'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/'
+            'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/'
+          )
+          witness_urls=(
+            'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/witnesses/'
+            'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/witnesses/'
+          )
+          page_phrases=('醫療責任釐清專區' '医疗责任厘清专区')
+          menu_phrases=('<summary>醫療責任</summary>' '<summary>医疗责任</summary>')
+          witness_phrases=('進入醫療責任釐清專區' '进入医疗责任厘清专区')
+          for attempt in $(seq 1 105); do
+            ready=1
+            for i in 0 1; do
+              page_html="$(curl -fsSL --connect-timeout 15 --max-time 30 "${urls[$i]}?qa=${GITHUB_SHA}-${attempt}" || true)"
+              parent_html="$(curl -fsSL --connect-timeout 15 --max-time 30 "${parent_urls[$i]}?qa=${GITHUB_SHA}-${attempt}" || true)"
+              witness_html="$(curl -fsSL --connect-timeout 15 --max-time 30 "${witness_urls[$i]}?qa=${GITHUB_SHA}-${attempt}" || true)"
+              grep -q "${page_phrases[$i]}" <<<"$page_html" || ready=0
+              grep -q 'id="control-yuan"' <<<"$page_html" || ready=0
+              grep -q 'id="clinics"' <<<"$page_html" || ready=0
+              grep -q 'medical-responsibility.css?v=20260829-1' <<<"$page_html" || ready=0
+              grep -q "${menu_phrases[$i]}" <<<"$parent_html" || ready=0
+              grep -q "${witness_phrases[$i]}" <<<"$witness_html" || ready=0
+            done
+            if [[ "$ready" -eq 1 ]]; then
+              echo 'Medical responsibility zone and all entry points are live.'
+              exit 0
+            fi
+            sleep 10
+          done
+          echo 'Timed out before the medical responsibility zone became public.' >&2
+          exit 1
+
+      - name: Install Playwright driver
+        run: npm install --no-save playwright-core@1.55.0
+
+      - name: Verify Traditional and Simplified desktop and mobile Chrome layouts
+        run: node .github/scripts/verify-kaikai-medical-responsibility-zone-20260829.mjs
+
+      - name: Upload browser screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kaikai-medical-responsibility-zone-browser-proof
+          path: browser-validation/medical-responsibility-zone
+          retention-days: 14
+
+      - name: Remove completed one-off tools
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
+          git rm .github/workflows/oneoff-kaikai-medical-responsibility-zone-20260829.yml
+          git rm .github/scripts/patch-kaikai-medical-responsibility-navigation-20260829.py
+          git rm .github/scripts/verify-kaikai-medical-responsibility-zone-20260829.mjs
+          git commit -m 'Remove completed medical responsibility publication tools'
+          pushed=0
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              pushed=1
+              break
+            fi
+            git pull --rebase origin main
+          done
+          test "$pushed" -eq 1
