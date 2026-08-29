@@ -98,3 +98,41 @@ main{max-width:1240px;margin:0 auto;padding:0 1.25rem 4rem}
   .witness-supplement>header h3{font-size:1.38rem}
   .witness-supplement>header p,.supplement-grid li,.supplement-reading>p,.supplement-quotes p{font-size:.9rem}
 }
+
+/* CAI-HANYU-VIDEO-EMPHASIS-20260829 */
+#witness-10-role-gap{scroll-margin-top:calc(var(--chapter-anchor-offset,92px) + 12px)}
+.witness-critical-exchange{
+  margin:22px 0;
+  padding:clamp(20px,4vw,34px);
+  overflow:hidden;
+  color:#fff;
+  background:linear-gradient(145deg,#381820 0%,#692729 56%,#163d4b 100%);
+  border:1px solid rgba(240,193,91,.74);
+  border-left:8px solid #efbf59;
+  border-radius:24px;
+  box-shadow:0 20px 48px rgba(4,25,35,.28);
+}
+.witness-critical-exchange>header small{display:block;color:#ffd875;font-weight:950;letter-spacing:.14em}
+.witness-critical-exchange>header h4{margin:7px 0 10px;color:#fff;font:950 clamp(1.45rem,3.2vw,2.25rem)/1.3 var(--serif)}
+.witness-critical-exchange>header p{margin:0;color:#f7fbfc;font-weight:650;line-height:1.82}
+.witness-critical-exchange blockquote{margin:20px 0;padding:18px 20px;background:rgba(3,22,32,.38);border:1px solid rgba(255,255,255,.2);border-left:5px solid #efbf59;border-radius:16px}
+.witness-critical-exchange blockquote p{margin:0;color:#fff;font-size:clamp(1rem,2vw,1.16rem);font-weight:750;line-height:1.85}
+.witness-critical-exchange blockquote cite{display:block;margin-top:10px;color:#ffd875;font-size:.82rem;font-style:normal;font-weight:800}
+.critical-conclusions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0}
+.critical-conclusions p{margin:0;padding:14px 15px;background:rgba(255,255,255,.1);border-radius:14px;color:#f8fcfd;line-height:1.72}
+.critical-conclusions b{color:#ffe3a0}
+.clinic-video-inspection{margin:18px 0;padding:18px 19px;background:#fff4d8;color:#193943;border:2px solid #d96043;border-left-width:8px;border-radius:17px;box-shadow:0 12px 28px rgba(0,0,0,.2)}
+.clinic-video-inspection>b{display:block;color:#9b3027;font:950 clamp(1.05rem,2.2vw,1.32rem)/1.45 var(--serif)}
+.clinic-video-inspection p{margin:8px 0 0;color:#274751;font-weight:650;line-height:1.78}
+.clinic-video-inspection .evidence-boundary{padding-top:10px;border-top:1px dashed #c79d67;color:#4d5657;font-size:.9rem}
+.critical-exchange-details{margin-top:16px;background:rgba(2,20,29,.36);border:1px solid rgba(255,255,255,.2);border-radius:15px}
+.critical-exchange-details summary{padding:14px 16px;color:#fff3cf;font-weight:900;cursor:pointer}
+.critical-exchange-details>div{padding:0 16px 16px}
+.critical-exchange-details p{margin:10px 0;color:#f5fbfc;line-height:1.78}
+.critical-exchange-details b{color:#ffd875}
+@media(max-width:720px){
+  .witness-critical-exchange{padding:19px 16px;border-radius:20px;border-left-width:6px}
+  .critical-conclusions{grid-template-columns:1fr}
+  .witness-critical-exchange>header p,.witness-critical-exchange blockquote p,.critical-conclusions p,.clinic-video-inspection p,.critical-exchange-details p{font-size:.92rem}
+  .clinic-video-inspection{padding:16px 14px}
+}
