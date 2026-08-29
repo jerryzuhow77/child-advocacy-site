@@ -1,0 +1,108 @@
+name: Verify live Kaikai Chapter 2 major homepage publication
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-verify-kaikai-chapter-two-major-live-20260829.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  verify-and-clean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Confirm the published source contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'data-kaikai-chapter-two-root-entry' index.html
+          grep -q 'data-kaikai-chapter-two-launch' index.html
+          grep -q 'data-kaikai-chapter-two-card' index.html
+          grep -q 'data-kaikai-chapter-two-footer' index.html
+          grep -q '第二章｜沒人要的孩子？' index.html
+          grep -q '第二章｜没人要的孩子？' index.html
+          ! grep -q '悲劇不忘・終章｜剴剴的672天' index.html
+          test -s assets/home-kaikai-chapter-two-20260829.css
+          test -s assets/home-kaikai-chapter-two-20260829.js
+          grep -q 'id="placement-harm-cases"' hearing-records/prison-watch/kaikai-final-chapter/index.html
+          grep -q 'id="placement-harm-cases"' hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+          node --check assets/home-kaikai-chapter-two-20260829.js
+          node --check .github/scripts/verify-kaikai-chapter-two-major-live-20260829.mjs
+
+      - name: Wait for the public homepage and Chapter 2 targets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p browser-validation/kaikai-chapter-two-major-live
+          home='https://jerryzuhow77.github.io/child-advocacy-site/'
+          targets=(
+            'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/'
+            'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/'
+          )
+          for attempt in $(seq 1 120); do
+            ready=1
+            token="${GITHUB_SHA}-${attempt}"
+            html="$(curl -fsSL --connect-timeout 15 --max-time 30 "${home}?qa=${token}" || true)"
+            grep -q 'data-kaikai-chapter-two-root-entry' <<<"$html" || ready=0
+            grep -q 'data-kaikai-chapter-two-launch' <<<"$html" || ready=0
+            grep -q 'data-kaikai-chapter-two-card' <<<"$html" || ready=0
+            grep -q 'home-kaikai-chapter-two-20260829.css?v=20260829-1' <<<"$html" || ready=0
+            grep -q 'home-kaikai-chapter-two-20260829.js?v=20260829-1' <<<"$html" || ready=0
+            ! grep -q '悲劇不忘・終章｜剴剴的672天' <<<"$html" || ready=0
+            for target in "${targets[@]}"; do
+              target_html="$(curl -fsSL --connect-timeout 15 --max-time 30 "${target}?qa=${token}" || true)"
+              grep -q 'id="chapter-brief"' <<<"$target_html" || ready=0
+              grep -q 'id="placement-spectrum"' <<<"$target_html" || ready=0
+              grep -q 'id="placement-harm-cases"' <<<"$target_html" || ready=0
+              grep -q 'id="system"' <<<"$target_html" || ready=0
+            done
+            if [[ "$ready" -eq 1 ]]; then
+              echo 'Chapter 2 is live as a major homepage chapter.'
+              exit 0
+            fi
+            sleep 10
+          done
+          echo 'Timed out before the Chapter 2 homepage publication became public.' >&2
+          exit 1
+
+      - name: Install Playwright driver
+        run: npm install --no-save playwright-core@1.55.0
+
+      - name: Verify Traditional and Simplified desktop and mobile Chrome
+        run: node .github/scripts/verify-kaikai-chapter-two-major-live-20260829.mjs
+
+      - name: Upload final browser screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kaikai-chapter-two-major-homepage-live-proof
+          path: browser-validation/kaikai-chapter-two-major-live
+          retention-days: 14
+
+      - name: Remove completed verification files
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git pull --rebase origin main
+            git rm -f .github/workflows/oneoff-verify-kaikai-chapter-two-major-live-20260829.yml
+            git rm -f .github/scripts/verify-kaikai-chapter-two-major-live-20260829.mjs
+            git commit -m 'Remove completed Chapter 2 homepage live verifier' || true
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            git reset --hard origin/main
+            sleep $((attempt * 3))
+          done
+          exit 1
