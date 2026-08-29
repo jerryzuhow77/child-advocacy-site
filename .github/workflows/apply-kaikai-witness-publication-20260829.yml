@@ -28,8 +28,28 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cat .tmp/kaikai-publish-xz.*.b64 | base64 --decode > /tmp/kaikai-publish-compact.tar.xz
-          echo "20fb08156b1bc8aa4f653ebab7ef4dd809a26e6921181005d4343bc6eb2b67e8  /tmp/kaikai-publish-compact.tar.xz" | sha256sum -c -
+          python - <<'PY'
+          import base64
+          import hashlib
+          from pathlib import Path
+
+          parts = sorted(Path('.tmp').glob('kaikai-publish-xz.*.b64'))
+          if not parts:
+              raise SystemExit('No XZ publication chunks found')
+          text = ''.join(path.read_text(encoding='utf-8') for path in parts)
+          for escaped in ('\\n', '\\r', '\\t'):
+              text = text.replace(escaped, '')
+          alphabet = frozenset('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=')
+          clean = ''.join(char for char in text if char in alphabet)
+          data = base64.b64decode(clean, validate=True)
+          output = Path('/tmp/kaikai-publish-compact.tar.xz')
+          output.write_bytes(data)
+          digest = hashlib.sha256(data).hexdigest()
+          expected = '20fb08156b1bc8aa4f653ebab7ef4dd809a26e6921181005d4343bc6eb2b67e8'
+          print(f'Assembled {len(parts)} chunks, {len(data)} bytes, sha256={digest}')
+          if digest != expected:
+              raise SystemExit(f'Publication package checksum mismatch: expected {expected}, got {digest}')
+          PY
           git fetch origin main
           git checkout -B kaikai-publication origin/main
 
