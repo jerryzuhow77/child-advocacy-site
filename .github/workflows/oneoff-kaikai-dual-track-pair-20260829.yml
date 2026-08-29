@@ -1,0 +1,302 @@
+name: Publish and verify bilingual dual-track responsibility poster
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-kaikai-dual-track-pair-20260829.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Render Simplified artwork and place both versions beside the five-layer tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git pull --rebase origin main
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends fonts-noto-cjk >/dev/null
+          python3 -m pip install --disable-pip-version-check pillow
+          python3 .github/scripts/render-kaikai-dual-track-hans-20260829.py
+          python3 .github/scripts/place-kaikai-dual-track-poster-20260829.py
+          git diff --check
+
+          python3 - <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageChops, ImageStat
+          root = Path('assets/art')
+          hant = root / 'kaikai-dual-track-responsibility-tree-zh-Hant-20260829.webp'
+          hans = root / 'kaikai-dual-track-responsibility-tree-zh-Hans-20260829.webp'
+          for path in (hant, hans):
+              if not path.is_file() or path.stat().st_size < 100_000:
+                  raise SystemExit(f'Missing or undersized artwork: {path}')
+          with Image.open(hant).convert('RGB') as a, Image.open(hans).convert('RGB') as b:
+              if a.size != (1536, 864) or b.size != (1536, 864):
+                  raise SystemExit(f'Unexpected dimensions: {a.size} / {b.size}')
+              diff = ImageChops.difference(a, b)
+              mean = sum(ImageStat.Stat(diff).mean) / 3
+              if mean < 2.0:
+                  raise SystemExit(f'Simplified artwork is not sufficiently distinct: mean difference {mean}')
+              print(f'Artwork mean pixel difference: {mean:.2f}')
+          PY
+
+          grep -q 'class="responsibility-tree-pair"' hearing-records/prison-watch/kaikai-final-chapter/index.html
+          grep -q 'class="responsibility-tree-pair"' hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+          grep -q 'kaikai-dual-track-responsibility-tree-zh-Hans-20260829.webp' hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+          grep -q 'final-chapter.css?v=20260829-24' hearing-records/prison-watch/kaikai-final-chapter/index.html
+          grep -q 'DUAL-TRACK-RESPONSIBILITY-PAIR-20260829' hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/art/kaikai-dual-track-responsibility-tree-zh-Hans-20260829.webp
+          git add hearing-records/prison-watch/kaikai-final-chapter/index.html
+          git add hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+          git add hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css
+          git commit -m 'Place bilingual dual-track poster beside five-layer responsibility tree'
+          pushed=0
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              pushed=1
+              break
+            fi
+            git pull --rebase origin main
+          done
+          test "$pushed" -eq 1
+
+      - name: Wait for both language pages and image assets on GitHub Pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p browser-validation/dual-track-pair
+          urls=(
+            'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/'
+            'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/'
+          )
+          assets=(
+            'https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-dual-track-responsibility-tree-zh-Hant-20260829.webp'
+            'https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-dual-track-responsibility-tree-zh-Hans-20260829.webp'
+          )
+          for attempt in $(seq 1 105); do
+            ready=1
+            for url in "${urls[@]}"; do
+              html="$(curl -fsSL --connect-timeout 15 --max-time 30 "${url}?qa=${GITHUB_SHA}-${attempt}" || true)"
+              grep -q 'class="responsibility-tree-pair"' <<<"$html" || ready=0
+              grep -q 'final-chapter.css?v=20260829-24' <<<"$html" || ready=0
+              grep -q 'kaikai-dual-track-responsibility-tree-zh-Hans-20260829.webp' <<<"$html" || ready=0
+            done
+            for i in 0 1; do
+              headers="browser-validation/dual-track-pair/asset-${i}.headers"
+              curl -fsSI --connect-timeout 15 --max-time 30 "${assets[$i]}?qa=${GITHUB_SHA}-${attempt}" -o "$headers" || ready=0
+              grep -Eqi '^content-type: *image/webp' "$headers" || ready=0
+            done
+            if [[ "$ready" -eq 1 ]]; then
+              echo 'Both localized poster assets and paired layouts are live.'
+              exit 0
+            fi
+            sleep 10
+          done
+          echo 'Timed out before the paired bilingual poster layout became public.' >&2
+          exit 1
+
+      - name: Install Playwright driver
+        run: npm install --no-save playwright-core@1.55.0
+
+      - name: Verify side-by-side desktop and stacked mobile layouts in Google Chrome
+        run: |
+          node --input-type=module <<'JS'
+          import { chromium } from 'playwright-core';
+          import fs from 'node:fs';
+
+          const output = 'browser-validation/dual-track-pair';
+          const sites = {
+            'zh-Hant': {
+              url: 'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/',
+              title: '剴剴出養前｜雙軌責任關係樹',
+              treeTitle: '五層責任明細樹＋法人治理旁軸',
+              displayedAsset: 'kaikai-dual-track-responsibility-tree-zh-Hant-20260829.webp',
+              firstDownload: '下載繁體 WEBP',
+              secondDownload: '下載簡體 WEBP'
+            },
+            'zh-Hans': {
+              url: 'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/',
+              title: '剀剀出养前｜双轨责任关系树',
+              treeTitle: '五层责任明细树＋法人治理旁轴',
+              displayedAsset: 'kaikai-dual-track-responsibility-tree-zh-Hans-20260829.webp',
+              firstDownload: '下载简体 WEBP',
+              secondDownload: '下载繁体 WEBP'
+            }
+          };
+          const viewports = {
+            desktop: { width: 1440, height: 1000 },
+            mobile: { width: 390, height: 844 }
+          };
+          const browser = await chromium.launch({
+            headless: true,
+            executablePath: '/usr/bin/google-chrome',
+            args: ['--no-sandbox', '--disable-dev-shm-usage']
+          });
+          const results = [];
+          let failed = false;
+
+          for (const [language, site] of Object.entries(sites)) {
+            for (const [viewportName, viewport] of Object.entries(viewports)) {
+              const context = await browser.newContext({
+                viewport,
+                locale: language === 'zh-Hant' ? 'zh-TW' : 'zh-CN',
+                colorScheme: 'light',
+                reducedMotion: 'reduce'
+              });
+              const page = await context.newPage();
+              const pageErrors = [];
+              const sameOriginErrors = [];
+              const failedRequests = [];
+              page.on('pageerror', error => pageErrors.push(String(error)));
+              page.on('response', response => {
+                const parsed = new URL(response.url());
+                if (parsed.hostname === 'jerryzuhow77.github.io' && response.status() >= 400) {
+                  sameOriginErrors.push({ url: response.url(), status: response.status() });
+                }
+              });
+              page.on('requestfailed', request => {
+                failedRequests.push({ url: request.url(), type: request.resourceType(), error: request.failure()?.errorText || '' });
+              });
+
+              const response = await page.goto(`${site.url}?qa=${Date.now()}-${language}-${viewportName}#system`, {
+                waitUntil: 'domcontentloaded',
+                timeout: 60000
+              });
+              await page.waitForSelector('#system .responsibility-tree-pair', { state: 'visible', timeout: 15000 });
+              await page.waitForFunction(() => {
+                const image = document.querySelector('#system .responsibility-tree-visual img');
+                return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0;
+              }, null, { timeout: 30000 });
+              await page.waitForTimeout(900);
+
+              const state = await page.locator('#system .responsibility-tree-pair').evaluate((pair, expected) => {
+                const visual = pair.querySelector('.responsibility-tree-visual');
+                const panel = pair.querySelector('.responsibility-tree-panel');
+                const image = visual.querySelector('img');
+                const downloads = [...visual.querySelectorAll('.responsibility-tree-downloads a')];
+                const pairRect = pair.getBoundingClientRect();
+                const visualRect = visual.getBoundingClientRect();
+                const panelRect = panel.getBoundingClientRect();
+                const text = pair.textContent || '';
+                return {
+                  hash: location.hash,
+                  titlePresent: text.includes(expected.title),
+                  treeTitlePresent: text.includes(expected.treeTitle),
+                  pairCount: document.querySelectorAll('#system .responsibility-tree-pair').length,
+                  visualCount: pair.querySelectorAll('.responsibility-tree-visual').length,
+                  panelCount: pair.querySelectorAll('.responsibility-tree-panel').length,
+                  imageSrc: image.currentSrc || image.src,
+                  imageNaturalWidth: image.naturalWidth,
+                  imageNaturalHeight: image.naturalHeight,
+                  imageComplete: image.complete,
+                  downloadTexts: downloads.map(link => (link.textContent || '').trim()),
+                  downloadHrefs: downloads.map(link => link.href),
+                  gridTemplateColumns: getComputedStyle(pair).gridTemplateColumns,
+                  pairRect: { left: Math.round(pairRect.left), right: Math.round(pairRect.right), top: Math.round(pairRect.top), bottom: Math.round(pairRect.bottom), width: Math.round(pairRect.width) },
+                  visualRect: { left: Math.round(visualRect.left), right: Math.round(visualRect.right), top: Math.round(visualRect.top), bottom: Math.round(visualRect.bottom), width: Math.round(visualRect.width) },
+                  panelRect: { left: Math.round(panelRect.left), right: Math.round(panelRect.right), top: Math.round(panelRect.top), bottom: Math.round(panelRect.bottom), width: Math.round(panelRect.width) },
+                  overflow: Math.max(0, Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) - innerWidth),
+                  cssHref: document.querySelector('link[href*="final-chapter.css"]')?.href || ''
+                };
+              }, site);
+
+              await page.locator('#system .responsibility-tree-pair').screenshot({
+                path: `${output}/${language}-${viewportName}-responsibility-pair.png`,
+                animations: 'disabled',
+                caret: 'hide'
+              });
+
+              const desktopSideBySide = state.visualRect.right <= state.panelRect.left + 3
+                && Math.abs(state.visualRect.top - state.panelRect.top) <= 4;
+              const mobileStacked = state.visualRect.bottom <= state.panelRect.top + 3
+                && Math.abs(state.visualRect.left - state.panelRect.left) <= 4;
+              const relevantFailures = failedRequests.filter(item => !(item.type === 'media' && item.error === 'net::ERR_ABORTED'));
+              const checks = {
+                http200: response?.status() === 200,
+                correctDeepLink: state.hash === '#system',
+                localizedTitles: state.titlePresent && state.treeTitlePresent,
+                uniquePair: state.pairCount === 1 && state.visualCount === 1 && state.panelCount === 1,
+                localizedDisplayedImage: state.imageSrc.endsWith(`/${site.displayedAsset}`),
+                imageDecoded: state.imageComplete && state.imageNaturalWidth === 1536 && state.imageNaturalHeight === 864,
+                bothDownloads: state.downloadTexts.includes(site.firstDownload)
+                  && state.downloadTexts.includes(site.secondDownload)
+                  && state.downloadHrefs.some(href => href.endsWith('/kaikai-dual-track-responsibility-tree-zh-Hant-20260829.webp'))
+                  && state.downloadHrefs.some(href => href.endsWith('/kaikai-dual-track-responsibility-tree-zh-Hans-20260829.webp')),
+                desktopSideBySide: viewportName !== 'desktop' || desktopSideBySide,
+                mobileStacked: viewportName !== 'mobile' || mobileStacked,
+                cardsInsideViewport: state.visualRect.left >= -1 && state.visualRect.right <= viewport.width + 1
+                  && state.panelRect.left >= -1 && state.panelRect.right <= viewport.width + 1,
+                cssVersionCurrent: state.cssHref.includes('v=20260829-24'),
+                noHorizontalOverflow: state.overflow <= 2,
+                noPageErrors: pageErrors.length === 0,
+                noSameOriginErrors: sameOriginErrors.length === 0,
+                noRelevantRequestFailures: relevantFailures.length === 0
+              };
+              const passed = Object.values(checks).every(Boolean);
+              if (!passed) failed = true;
+              results.push({ language, viewport: viewportName, dimensions: viewport, checks, state, pageErrors, sameOriginErrors, relevantFailures, passed });
+              await context.close();
+            }
+          }
+
+          await browser.close();
+          fs.writeFileSync(`${output}/report.json`, JSON.stringify({ generatedAt: new Date().toISOString(), results }, null, 2));
+          const lines = ['# Bilingual dual-track responsibility poster browser verification', ''];
+          for (const result of results) {
+            lines.push(`## ${result.language} · ${result.viewport} (${result.dimensions.width}×${result.dimensions.height})`);
+            lines.push(`- Result: ${result.passed ? 'PASS' : 'FAIL'}`);
+            lines.push(`- Image: ${result.state.imageNaturalWidth}×${result.state.imageNaturalHeight}; ${result.state.imageSrc}`);
+            lines.push(`- Visual rect: ${JSON.stringify(result.state.visualRect)}`);
+            lines.push(`- Five-layer tree rect: ${JSON.stringify(result.state.panelRect)}`);
+            lines.push(`- Grid columns: ${result.state.gridTemplateColumns}; overflow=${result.state.overflow}px`);
+            lines.push(`- Errors: page=${result.pageErrors.length}; HTTP=${result.sameOriginErrors.length}; requests=${result.relevantFailures.length}`);
+            const failedChecks = Object.entries(result.checks).filter(([, value]) => !value).map(([key]) => key);
+            lines.push(`- Failed checks: ${failedChecks.length ? failedChecks.join(', ') : 'none'}`);
+            lines.push('');
+          }
+          fs.writeFileSync(`${output}/summary.md`, lines.join('\n'));
+          console.log(lines.join('\n'));
+          if (failed) process.exit(1);
+          JS
+
+      - name: Upload browser screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kaikai-dual-track-pair-browser-proof
+          path: browser-validation/dual-track-pair
+          retention-days: 14
+
+      - name: Remove completed one-off tools
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
+          git rm .github/workflows/oneoff-kaikai-dual-track-pair-20260829.yml
+          git rm .github/scripts/render-kaikai-dual-track-hans-20260829.py
+          git rm .github/scripts/place-kaikai-dual-track-poster-20260829.py
+          git commit -m 'Remove completed dual-track poster publication tools'
+          pushed=0
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              pushed=1
+              break
+            fi
+            git pull --rebase origin main
+          done
+          test "$pushed" -eq 1
