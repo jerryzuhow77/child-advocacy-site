@@ -65,7 +65,30 @@
   // PROLOGUE-VIDEO-20260829
   const prologueVideo = document.querySelector('[data-prologue-video]');
   const prologueSkip = document.querySelector('[data-prologue-skip]');
-  prologueSkip?.addEventListener('click', () => prologueVideo?.pause());
+  let prologueWasSkipped = false;
+
+  // PROLOGUE-AUTOPLAY-STANDARD-CHROME-20260829
+  const startPrologueVideo = () => {
+    if (!prologueVideo || prologueWasSkipped || !prologueVideo.paused || prologueVideo.ended) return;
+    prologueVideo.muted = true;
+    prologueVideo.defaultMuted = true;
+    prologueVideo.playsInline = true;
+    prologueVideo.setAttribute('muted', '');
+    prologueVideo.setAttribute('playsinline', '');
+    const playback = prologueVideo.play();
+    playback?.catch?.(() => undefined);
+  };
+
+  prologueSkip?.addEventListener('click', () => {
+    prologueWasSkipped = true;
+    prologueVideo?.pause();
+  });
+
+  if (prologueVideo) {
+    requestAnimationFrame(startPrologueVideo);
+    prologueVideo.addEventListener('canplay', startPrologueVideo, { once: true });
+    window.addEventListener('pageshow', startPrologueVideo, { once: true });
+  }
 
   const totalLabel = locale === 'zh-Hans' ? '个生命节点' : '個生命節點';
   const resultLabel = locale === 'zh-Hans' ? '个相符节点' : '個相符節點';
