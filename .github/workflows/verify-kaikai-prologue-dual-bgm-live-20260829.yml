@@ -1,0 +1,309 @@
+name: Verify Kaikai prologue and dual soundtrack on production
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/verify-kaikai-prologue-dual-bgm-live-20260829.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: verify-kaikai-prologue-dual-bgm-live-20260829
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate committed source and media
+        shell: bash
+        run: |
+          set -euo pipefail
+          root='hearing-records/prison-watch/kaikai-final-chapter'
+          traditional="$root/index.html"
+          simplified="$root/zh-Hans/index.html"
+          script="$root/final-chapter.js"
+          second_track='assets/audio/kaikai-chapter2-bgm-02-20260829.webm'
+
+          node --check "$script"
+          test "$(stat -c '%s' "$second_track")" -eq 48131
+          echo 'adc89eee95493aea634e9a2435dd45ec32782f2732697f409d713e595c13dc5a  assets/audio/kaikai-chapter2-bgm-02-20260829.webm' | sha256sum -c -
+
+          grep -Fq 'PROLOGUE ANIMATION · 00:05' "$traditional"
+          grep -Fq 'PROLOGUE ANIMATION · 00:05' "$simplified"
+          grep -Fq 'data-track-count="2"' "$traditional"
+          grep -Fq 'data-track-count="2"' "$simplified"
+          grep -Fq 'kaikai-final-chapter-prologue.mp4?v=20260829-2' "$traditional"
+          grep -Fq 'kaikai-final-chapter-prologue.mp4?v=20260829-2' "$simplified"
+          grep -Fq 'final-chapter.js?v=20260829-31' "$traditional"
+          grep -Fq 'final-chapter.js?v=20260829-31' "$simplified"
+          grep -Fq "kaikai-chapter2-bgm-02-20260829.webm" "$script"
+          grep -Fq 'setAudioTrack(audioTrackIndex + 1, true)' "$script"
+          grep -Fq "title: '退潮的街'" "$script"
+
+      - name: Wait for current source on GitHub Pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          urls=(
+            'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/'
+            'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/'
+          )
+
+          for attempt in $(seq 1 120); do
+            ready=1
+            for url in "${urls[@]}"; do
+              body="$(curl --fail --silent --show-error --location \
+                --header 'Cache-Control: no-cache' \
+                "${url}?verify=${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${attempt}" || true)"
+              if ! grep -Fq 'final-chapter.js?v=20260829-31' <<<"$body"; then
+                ready=0
+                break
+              fi
+              if ! grep -Fq 'PROLOGUE ANIMATION · 00:05' <<<"$body"; then
+                ready=0
+                break
+              fi
+              if ! grep -Fq 'data-track-count="2"' <<<"$body"; then
+                ready=0
+                break
+              fi
+            done
+            if [[ "$ready" -eq 1 ]]; then
+              echo "Current production HTML detected on attempt $attempt"
+              exit 0
+            fi
+            sleep 5
+          done
+
+          echo 'Production did not expose the current source in time.' >&2
+          exit 1
+
+      - name: Verify media bytes from production
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://jerryzuhow77.github.io/child-advocacy-site'
+          curl --fail --silent --show-error --location \
+            --header 'Cache-Control: no-cache' \
+            "$base/assets/audio/kaikai-chapter2-bgm-02-20260829.webm?verify=${GITHUB_RUN_ID}" \
+            --output /tmp/kaikai-second-track.webm
+          test "$(stat -c '%s' /tmp/kaikai-second-track.webm)" -eq 48131
+          echo 'adc89eee95493aea634e9a2435dd45ec32782f2732697f409d713e595c13dc5a  /tmp/kaikai-second-track.webm' | sha256sum -c -
+
+          curl --fail --silent --show-error --location \
+            --header 'Cache-Control: no-cache' \
+            "$base/hearing-records/prison-watch/kaikai-final-chapter/assets/kaikai-final-chapter-prologue.mp4?v=20260829-2&verify=${GITHUB_RUN_ID}" \
+            --output /tmp/kaikai-prologue.mp4
+          test "$(stat -c '%s' /tmp/kaikai-prologue.mp4)" -gt 100000
+
+      - name: Run production browser checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          work='/tmp/kaikai-browser-qa'
+          mkdir -p "$work"
+          cd "$work"
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright-core@1.55.0 >/dev/null 2>&1
+
+          chrome_bin="$(command -v google-chrome-stable || command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          test -n "$chrome_bin"
+
+          NODE_PATH="$work/node_modules" CHROME_BIN="$chrome_bin" node <<'NODE'
+          const { chromium } = require('playwright-core');
+          const assert = require('node:assert/strict');
+
+          const base = 'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/';
+          const cases = [
+            { name: 'zh-Hant desktop', url: base, width: 1440, height: 1000, lang: 'zh-Hant' },
+            { name: 'zh-Hant mobile', url: base, width: 390, height: 844, lang: 'zh-Hant' },
+            { name: 'zh-Hans desktop', url: `${base}zh-Hans/`, width: 1440, height: 1000, lang: 'zh-Hans' },
+            { name: 'zh-Hans mobile', url: `${base}zh-Hans/`, width: 390, height: 844, lang: 'zh-Hans' },
+          ];
+
+          const browser = await chromium.launch({
+            executablePath: process.env.CHROME_BIN,
+            headless: true,
+            args: [
+              '--no-sandbox',
+              '--disable-dev-shm-usage',
+              '--autoplay-policy=no-user-gesture-required',
+              '--mute-audio',
+            ],
+          });
+
+          try {
+            for (const testCase of cases) {
+              const context = await browser.newContext({
+                viewport: { width: testCase.width, height: testCase.height },
+                deviceScaleFactor: 1,
+                reducedMotion: 'no-preference',
+              });
+              const page = await context.newPage();
+              const pageErrors = [];
+              const sameOriginFailures = [];
+              const origin = new URL(testCase.url).origin;
+
+              page.on('pageerror', (error) => pageErrors.push(String(error)));
+              page.on('requestfailed', (request) => {
+                const failure = request.failure()?.errorText || '';
+                let requestOrigin = '';
+                try { requestOrigin = new URL(request.url()).origin; } catch (_) {}
+                if (requestOrigin === origin && !/ERR_ABORTED/i.test(failure)) {
+                  sameOriginFailures.push(`${failure} ${request.url()}`);
+                }
+              });
+
+              const response = await page.goto(
+                `${testCase.url}?browserVerify=${Date.now()}-${Math.random()}`,
+                { waitUntil: 'domcontentloaded', timeout: 60000 },
+              );
+              assert(response && response.ok(), `${testCase.name}: page response ${response?.status()}`);
+              await page.waitForFunction(
+                () => document.documentElement.classList.contains('js-ready'),
+                null,
+                { timeout: 30000 },
+              );
+              assert.equal(await page.locator('html').getAttribute('lang'), testCase.lang, `${testCase.name}: language`);
+
+              const video = page.locator('video[data-prologue-video]');
+              await video.waitFor({ state: 'attached', timeout: 30000 });
+              await video.scrollIntoViewIfNeeded();
+              await page.waitForFunction(() => {
+                const item = document.querySelector('video[data-prologue-video]');
+                return item && Number.isFinite(item.duration) && item.duration > 4 && item.duration < 7;
+              }, null, { timeout: 30000 });
+              const videoState = await video.evaluate((item) => ({
+                autoplay: item.autoplay,
+                muted: item.muted,
+                playsInline: item.playsInline,
+                preload: item.preload,
+                duration: item.duration,
+                currentTime: item.currentTime,
+                ended: item.ended,
+                source: item.currentSrc || item.querySelector('source')?.src || '',
+                rect: item.getBoundingClientRect().toJSON(),
+              }));
+              assert.equal(videoState.autoplay, true, `${testCase.name}: prologue autoplay`);
+              assert.equal(videoState.muted, true, `${testCase.name}: prologue muted`);
+              assert.equal(videoState.playsInline, true, `${testCase.name}: prologue playsinline`);
+              assert.equal(videoState.preload, 'auto', `${testCase.name}: prologue preload`);
+              assert(videoState.source.includes('kaikai-final-chapter-prologue.mp4?v=20260829-2'), `${testCase.name}: prologue source`);
+              assert(videoState.duration > 4 && videoState.duration < 7, `${testCase.name}: prologue duration`);
+              assert(videoState.rect.width <= testCase.width + 1, `${testCase.name}: prologue width`);
+
+              const audio = page.locator('#chapterBgm');
+              await audio.waitFor({ state: 'attached', timeout: 30000 });
+              await page.waitForFunction(() => {
+                const item = document.querySelector('#chapterBgm');
+                return item?.dataset.trackCount === '2' && item?.dataset.trackIndex === '0';
+              }, null, { timeout: 30000 });
+              assert.match(await page.locator('[data-audio-time]').innerText(), /^1\/2\s*·/u, `${testCase.name}: initial counter`);
+
+              const controllerState = await page.locator('[data-audio-controller]').evaluate((item) => {
+                const rect = item.getBoundingClientRect();
+                return {
+                  label: item.getAttribute('aria-label'),
+                  left: rect.left,
+                  right: rect.right,
+                  width: rect.width,
+                };
+              });
+              assert(controllerState.label?.includes(testCase.lang === 'zh-Hans' ? '双曲' : '雙曲'), `${testCase.name}: controller label`);
+              assert(controllerState.width <= testCase.width + 1, `${testCase.name}: controller width`);
+
+              const secondAsset = await page.evaluate(async () => {
+                const response = await fetch(new URL('../../../assets/audio/kaikai-chapter2-bgm-02-20260829.webm', location.href), { cache: 'no-store' });
+                return { status: response.status, bytes: (await response.arrayBuffer()).byteLength };
+              });
+              assert.equal(secondAsset.status, 200, `${testCase.name}: second track status`);
+              assert.equal(secondAsset.bytes, 48131, `${testCase.name}: second track bytes`);
+
+              await page.locator('[data-audio-label]').click({ timeout: 30000 });
+              await page.waitForFunction(() => {
+                const item = document.querySelector('#chapterBgm');
+                return item && !item.paused && Number.isFinite(item.duration) && item.duration > 20;
+              }, null, { timeout: 30000 });
+
+              const firstState = await audio.evaluate((item) => ({
+                index: item.dataset.trackIndex,
+                count: item.dataset.trackCount,
+                title: item.dataset.trackTitle,
+                paused: item.paused,
+                duration: item.duration,
+                currentSrc: item.currentSrc,
+              }));
+              assert.equal(firstState.index, '0', `${testCase.name}: first track index`);
+              assert.equal(firstState.count, '2', `${testCase.name}: track count`);
+              assert.equal(firstState.paused, false, `${testCase.name}: first track playing`);
+              assert(firstState.currentSrc.includes('kaikai-chapter2-bgm-20260828'), `${testCase.name}: first track source`);
+
+              await audio.evaluate((item) => { item.currentTime = Math.max(0, item.duration - 0.12); });
+              await page.waitForFunction(() => {
+                const item = document.querySelector('#chapterBgm');
+                return item?.dataset.trackIndex === '1' && item?.dataset.trackTitle === '退潮的街' && !item.paused && Number.isFinite(item.duration);
+              }, null, { timeout: 15000 });
+              const secondState = await audio.evaluate((item) => ({
+                index: item.dataset.trackIndex,
+                title: item.dataset.trackTitle,
+                paused: item.paused,
+                duration: item.duration,
+                currentSrc: item.currentSrc,
+              }));
+              assert.equal(secondState.index, '1', `${testCase.name}: second track index`);
+              assert.equal(secondState.title, '退潮的街', `${testCase.name}: second track title`);
+              assert.equal(secondState.paused, false, `${testCase.name}: second track playing`);
+              assert(secondState.currentSrc.includes('kaikai-chapter2-bgm-02-20260829.webm'), `${testCase.name}: second track source`);
+              assert.match(await page.locator('[data-audio-time]').innerText(), /^2\/2\s*·/u, `${testCase.name}: second counter`);
+
+              await audio.evaluate((item) => { item.currentTime = Math.max(0, item.duration - 0.12); });
+              await page.waitForFunction(() => {
+                const item = document.querySelector('#chapterBgm');
+                return item?.dataset.trackIndex === '0' && !item.paused && (item.currentSrc || '').includes('kaikai-chapter2-bgm-20260828');
+              }, null, { timeout: 15000 });
+              assert.match(await page.locator('[data-audio-time]').innerText(), /^1\/2\s*·/u, `${testCase.name}: looped counter`);
+
+              const overflow = await page.evaluate(() => ({
+                viewport: window.innerWidth,
+                scrollWidth: document.documentElement.scrollWidth,
+              }));
+              assert(overflow.scrollWidth <= overflow.viewport + 2, `${testCase.name}: horizontal overflow ${overflow.scrollWidth}/${overflow.viewport}`);
+
+              await page.waitForTimeout(500);
+              assert.deepEqual(pageErrors, [], `${testCase.name}: page errors ${pageErrors.join(' | ')}`);
+              assert.deepEqual(sameOriginFailures, [], `${testCase.name}: request failures ${sameOriginFailures.join(' | ')}`);
+              console.log(`PASS ${testCase.name}: prologue ${videoState.duration.toFixed(2)}s; track 1 -> 退潮的街 -> track 1`);
+              await context.close();
+            }
+          } finally {
+            await browser.close();
+          }
+          NODE
+
+      - name: Remove successful one-off verification workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          workflow='.github/workflows/verify-kaikai-prologue-dual-bgm-live-20260829.yml'
+          git rm "$workflow"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Remove completed Kaikai dual-track production verification'
+          for attempt in 1 2 3; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            sleep $((attempt * 3))
+          done
+          exit 1
