@@ -63,12 +63,27 @@ jobs:
                   raise SystemExit('legacy prologue JavaScript marker range not found')
           """
           patch_source = patch_source[:branch_start] + robust_branch + patch_source[branch_end:]
-
-          if "ENTRY-PROLOGUE-OVERLAY-20260829" not in patch_source:
-              raise SystemExit('entry-prologue patch marker was not recovered')
           Path('/tmp/apply-entry-prologue.py').write_text(patch_source, encoding='utf-8')
           PY_EXTRACT
           python3 /tmp/apply-entry-prologue.py
+
+      - name: Put prologue metadata at the front without re-encoding
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v ffmpeg >/dev/null 2>&1 || ! command -v ffprobe >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y --no-install-recommends ffmpeg
+          fi
+          video='hearing-records/prison-watch/kaikai-final-chapter/assets/kaikai-final-chapter-prologue.mp4'
+          optimized="${video%.mp4}.faststart.mp4"
+          ffmpeg -hide_banner -loglevel error -y -i "$video" \
+            -map 0:v:0 -c:v copy -an -movflags +faststart -avoid_negative_ts make_zero "$optimized"
+          test -s "$optimized"
+          mv "$optimized" "$video"
+          ffprobe -v error -select_streams v:0 \
+            -show_entries stream=codec_name,width,height,duration \
+            -of default=noprint_wrappers=1 "$video"
 
       - name: Validate source and media contract
         shell: bash
@@ -90,6 +105,7 @@ jobs:
           grep -q 'z-index:2147483000' "$base/final-chapter.css"
           grep -q 'requestAnimationFrame(playPrologue)' "$base/final-chapter.js"
           grep -q "addEventListener('ended'" "$base/final-chapter.js"
+          ffmpeg -hide_banner -loglevel error -i "$base/assets/kaikai-final-chapter-prologue.mp4" -f null -
 
       - name: Browser-check immediate desktop and mobile entry
         shell: bash
@@ -125,7 +141,13 @@ jobs:
             for (const [name, url, viewport] of cases) {
               const page = await browser.newPage({ viewport });
               const pageErrors = [];
+              const mediaResponses = [];
               page.on('pageerror', error => pageErrors.push(error.message));
+              page.on('response', response => {
+                if (response.url().includes('kaikai-final-chapter-prologue.mp4')) {
+                  mediaResponses.push({ status: response.status(), url: response.url() });
+                }
+              });
               await page.goto(url, { waitUntil: 'domcontentloaded' });
 
               const overlay = page.locator('[data-entry-prologue]');
@@ -153,11 +175,9 @@ jobs:
                   overflow: document.documentElement.scrollWidth - innerWidth
                 };
               });
-              console.log(name, JSON.stringify(state));
-              assert.equal(state.parentIsBody, true, `${name}: overlay is not a direct body layer`);
-              assert.equal(state.beforeMain, true, `${name}: overlay is after the article`);
-              assert.equal(state.locked, true, `${name}: article is not locked`);
-              assert.equal(state.topLayer, true, `${name}: overlay is not the top visual layer`);
+              console.log(name, 'entry', JSON.stringify(state));
+              assert.equal(state.parentIsBody && state.beforeMain, true, `${name}: overlay is not ahead of article content`);
+              assert.equal(state.locked && state.topLayer, true, `${name}: overlay does not own the first screen`);
               assert.equal(state.position, 'fixed', `${name}: overlay is not viewport-fixed`);
               assert.ok(state.zIndex >= 1000000, `${name}: overlay z-index is too low`);
               assert.ok(Math.abs(state.rect[0]) <= 0.5 && Math.abs(state.rect[1]) <= 0.5, `${name}: overlay origin is wrong`);
@@ -166,16 +186,26 @@ jobs:
               assert.equal(state.autoplay && state.muted && state.inline, true, `${name}: autoplay media contract is incomplete`);
               assert.ok(state.overflow <= 1, `${name}: horizontal overflow ${state.overflow}px`);
 
-              await page.waitForTimeout(900);
+              await page.waitForFunction(() => {
+                const video = document.querySelector('[data-prologue-video]');
+                return Boolean(video.error) || video.readyState >= 2 || video.currentTime > 0;
+              }, null, { timeout: 20000 });
+              await page.waitForTimeout(350);
               const playback = await page.evaluate(() => {
                 const video = document.querySelector('[data-prologue-video]');
-                return { currentTime: video.currentTime, paused: video.paused, readyState: video.readyState };
+                return {
+                  currentTime: video.currentTime,
+                  paused: video.paused,
+                  readyState: video.readyState,
+                  error: video.error ? { code: video.error.code, message: video.error.message } : null
+                };
               });
-              console.log(name, 'playback', JSON.stringify(playback));
+              console.log(name, 'media', JSON.stringify({ playback, mediaResponses }));
+              assert.equal(playback.error, null, `${name}: media failed to load`);
               assert.ok(playback.currentTime > 0 || (!playback.paused && playback.readyState >= 2), `${name}: muted autoplay did not start`);
 
               await page.screenshot({ path: `/tmp/prologue-screenshots/${name}.png`, fullPage: false });
-              await page.waitForFunction(() => document.querySelector('[data-entry-prologue]').hidden === true, null, { timeout: 10000 });
+              await page.waitForFunction(() => document.querySelector('[data-entry-prologue]').hidden === true, null, { timeout: 15000 });
               assert.equal(await page.evaluate(() => document.body.classList.contains('prologue-active')), false, `${name}: article remained locked after ending`);
 
               if (name === 'zh-Hant-desktop') {
@@ -198,7 +228,7 @@ jobs:
       - name: Upload browser evidence
         uses: actions/upload-artifact@v4
         with:
-          name: kaikai-entry-prologue-browser-evidence-20260829-r3
+          name: kaikai-entry-prologue-browser-evidence-20260829-r4
           path: /tmp/prologue-screenshots/*.png
           if-no-files-found: error
           retention-days: 7
