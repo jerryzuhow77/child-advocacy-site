@@ -805,3 +805,50 @@ html.tt-pose-ready body.hz-page .tt-stage{
   overflow-wrap:normal!important;
  }
 }
+
+/* Visible inner-stage plane: the supplied carved artwork includes an opaque
+   amber paper screen. Keep its ornament, but render performers above that
+   screen and clip them to the proscenium aperture. */
+.hz-page .tt-stage .tt-carved-stage-frame--opening{z-index:3!important}
+.hz-page .tt-stage>.tt-pose-layer--opening{
+ z-index:4!important;
+ clip-path:inset(7% 9% 6% 9% round 1px)!important;
+}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor{
+ bottom:5%!important;
+ width:min(34%,380px)!important;
+ max-height:84%!important;
+}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--woman{left:11%!important}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--scribe{right:11%!important}
+
+.hz-page .tt-transition[data-shadow-scene] .tt-carved-stage-frame--transition{z-index:10!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-layer{
+ z-index:12!important;
+ clip-path:inset(7% 9% 6% 9% round 1px)!important;
+}
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor{
+ bottom:5%!important;
+ width:min(34%,400px)!important;
+ max-height:84%!important;
+}
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--woman{left:11%!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--scribe{right:11%!important}
+
+.hz-page .tt-ending-theatre-stage .tt-carved-stage-frame--ending{z-index:11!important}
+.hz-page .tt-ending-theatre-puppet{z-index:13!important}
+
+@media(max-width:900px){
+ .hz-page .tt-stage>.tt-pose-layer--opening,
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-layer{clip-path:inset(6% 8% 5% 8% round 1px)!important}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor,
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor{
+  bottom:4%!important;
+  width:36%!important;
+  max-height:86%!important;
+ }
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--woman,
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--woman{left:10%!important}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--scribe,
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--scribe{right:10%!important}
+}
