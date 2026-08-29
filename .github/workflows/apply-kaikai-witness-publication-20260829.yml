@@ -28,8 +28,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cat .tmp/kaikai-publish-payload.*.b64 | base64 --decode > /tmp/kaikai-publish-compact.tar.gz
-          echo "1a04fb69803db6fd07293e6a44969d41527d0d255b1c76561db9d8661bd545f4  /tmp/kaikai-publish-compact.tar.gz" | sha256sum -c -
+          cat .tmp/kaikai-publish-xz.*.b64 | base64 --decode > /tmp/kaikai-publish-compact.tar.xz
+          echo "20fb08156b1bc8aa4f653ebab7ef4dd809a26e6921181005d4343bc6eb2b67e8  /tmp/kaikai-publish-compact.tar.xz" | sha256sum -c -
           git fetch origin main
           git checkout -B kaikai-publication origin/main
 
@@ -37,7 +37,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          tar -xzf /tmp/kaikai-publish-compact.tar.gz -C .
+          tar -xJf /tmp/kaikai-publish-compact.tar.xz -C .
           patch --batch --forward -p1 < main.patch
           rm -f main.patch
           test -z "$(find . \( -name '*.rej' -o -name '*.orig' \) -print -quit)"
