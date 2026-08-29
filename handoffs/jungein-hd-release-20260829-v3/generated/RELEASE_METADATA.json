@@ -1,0 +1,20 @@
+{
+  "release_id": "global-protection-jungein-prologue-hd-audio-20260829-v3",
+  "source": {
+    "page_path": "/historical-cases/korea/jungein",
+    "js_name": "page-CXpiX5_u.js",
+    "js_sha256": "a1654892a294c6f94422881f3b9c4f3e78133deadc94641cfebe66b9856743ed",
+    "css_name": "index-6Q3hBOgO.css",
+    "css_sha256": "359dc736190407f3b0e972ff23e5585498d0137d13792ed0ea70d2d2b0ad2ff9"
+  },
+  "target": {
+    "js_name": "page-CXpiX5_u.js",
+    "js_sha256": "404d67dc2046f374da81218196a164d82fc6f964406c07ae58ed4058fde90450",
+    "css_name": "index-6Q3hBOgO.css",
+    "css_sha256": "1ac7a89022098aeb29522bc1e8d0888536462936f2317ebd4b9f1bf77f87f0b4",
+    "video_name": "jungein-prologue-hd-20260829.mp4",
+    "video_sha256": "0baf83f177a1abc282cce6bd66838e1fc75c0c4be8322df49cc6261dfc36bf90",
+    "poster_name": "jungein-prologue-hd-poster-20260829.webp",
+    "poster_sha256": "742499e4f8d4bcda9979e0ad0b4484b1e8c21f155228979bb8536fd226c231ad"
+  }
+}
