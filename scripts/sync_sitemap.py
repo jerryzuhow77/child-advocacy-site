@@ -17,12 +17,6 @@ EXCLUDED_PARTS = {
     "child-advocacy-site", "child-advocacy-site-main",
     "draft", "drafts", "test", "tests", "admin", "scripts",
 }
-# These pages remain in the repository while their editorial work continues,
-# but they must not appear in official discovery surfaces until publication is
-# explicitly approved.
-UNPUBLISHED_ROUTE_PREFIXES = (
-    Path("hearing-records/prison-watch/kaikai-final-chapter"),
-)
 NOINDEX_RE = re.compile(
     r'<meta\b[^>]*\bname=["\']robots["\'][^>]*\bcontent=["\'][^"\']*noindex|'
     r'<meta\b[^>]*\bcontent=["\'][^"\']*noindex[^"\']*["\'][^>]*\bname=["\']robots["\']',
@@ -46,8 +40,6 @@ def last_modified(path: Path) -> str:
 def is_public_page(path: Path) -> bool:
     rel = path.relative_to(ROOT)
     if any(part in EXCLUDED_PARTS for part in rel.parts):
-        return False
-    if any(prefix in rel.parents for prefix in UNPUBLISHED_ROUTE_PREFIXES):
         return False
     try:
         head = path.read_text(encoding="utf-8", errors="ignore")[:65536]

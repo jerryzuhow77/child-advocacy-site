@@ -83,7 +83,7 @@ jobs:
           }
           for name, feed_ids in feed_sections.items():
               assert feed_ids.count('kaikai-chapter-one-20260828') == 1, f'Chapter One must appear exactly once in {name}.'
-              assert 'kaikai-chapter-two-20260828' not in feed_ids, f'Chapter Two must stay absent from {name}.'
+              assert feed_ids.count('kaikai-chapter-two-20260829') == 1, f'Chapter Two must appear exactly once in {name}.'
           print('Static synchronization assertions passed.')
           PY
 
