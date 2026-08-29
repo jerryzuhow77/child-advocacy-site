@@ -41,13 +41,7 @@ jobs:
           css_path = base / 'final-chapter.css'
           css = css_path.read_text(encoding='utf-8')
           marker = '/* PROLOGUE-HIDDEN-PLAY-PROMPT-FIX-20260829 */'
-          rule = '''
-
-/* PROLOGUE-HIDDEN-PLAY-PROMPT-FIX-20260829 */
-.entry-prologue__play[hidden]{
-  display:none!important;
-}
-'''
+          rule = "\n\n/* PROLOGUE-HIDDEN-PLAY-PROMPT-FIX-20260829 */\n.entry-prologue__play[hidden]{\n  display:none!important;\n}\n"
           if marker not in css:
               css = css.rstrip() + rule
               css_path.write_text(css, encoding='utf-8')
