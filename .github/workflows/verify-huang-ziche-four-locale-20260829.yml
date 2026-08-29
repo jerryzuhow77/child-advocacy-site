@@ -117,13 +117,13 @@ jobs:
                         overflow: Math.max(0, document.documentElement.scrollWidth - innerWidth),
                       };
                     }, { locale: item.locale, canonical: url, verdict: item.verdict, father: item.father, precedent: item.precedent });
-                    await page.click('#precedents [data-hz-case-filter="homicide"]');
+                    await page.evaluate(() => document.querySelector('#precedents [data-hz-case-filter="homicide"]')?.click());
                     await page.waitForTimeout(120);
                     const filtered = await page.evaluate(() => ({
                       cards: document.querySelectorAll('#precedents .hz-case-card:not([hidden])').length,
                       rows: document.querySelectorAll('#precedents .hz-compare-matrix tbody tr:not([hidden])').length,
                     }));
-                    await page.click('#precedents .hz-case-card:not([hidden]) [data-hz-source-open]');
+                    await page.evaluate(() => document.querySelector('#precedents .hz-case-card:not([hidden]) [data-hz-source-open]')?.click());
                     await page.waitForTimeout(120);
                     const drawerOpen = await page.evaluate(() => Boolean(document.querySelector('[data-hz-source-drawer][open]')));
                     await page.keyboard.press('Escape');
