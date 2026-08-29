@@ -1,0 +1,196 @@
+name: One-off Jungein HD rebase current production v3
+
+on:
+  push:
+    branches:
+      - ops/jungein-hd-release-20260829-v3
+    paths:
+      - .github/workflows/oneoff-jungein-hd-rebase-current-20260829-v3.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: oneoff-jungein-hd-rebase-current-20260829-v3
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ORIGIN: https://cn.globalprotectionwall.com
+      PAGE_PATH: /historical-cases/korea/jungein
+      V2_ROOT: handoffs/jungein-hd-release-20260829-v2
+      V2_GENERATED: handoffs/jungein-hd-release-20260829-v2/generated
+      V3_GENERATED: handoffs/jungein-hd-release-20260829-v3/generated
+      HD_VIDEO: jungein-prologue-hd-20260829.mp4
+      HD_POSTER: jungein-prologue-hd-poster-20260829.webp
+      HD_MARKER: global-protection-jungein-prologue-hd-audio-20260829
+      FIRST_MARKER: global-protection-jungein-video-prologue-20260829
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Discover and fetch current production bundle
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          rm -rf "$V3_GENERATED" /tmp/jungein-v3-source
+          mkdir -p "$V3_GENERATED" /tmp/jungein-v3-source
+          stamp="$(date +%s)"
+          curl -fsSL --retry 4 --retry-all-errors \
+            "$ORIGIN$PAGE_PATH?rebase=$stamp" \
+            -o /tmp/jungein-v3-source/page.html
+          python3 - <<'PY'
+          import html
+          import os
+          import pathlib
+          import re
+          import urllib.parse
+
+          source = pathlib.Path('/tmp/jungein-v3-source')
+          page = source.joinpath('page.html').read_text('utf-8', errors='replace')
+          urls = []
+          for attr in ('src', 'href'):
+              for raw in re.findall(rf'{attr}=["\']([^"\']+)["\']', page, re.I):
+                  path = urllib.parse.urlparse(html.unescape(raw)).path
+                  if path.startswith('/assets/'):
+                      urls.append(path)
+          js = sorted({path.rsplit('/', 1)[-1] for path in urls if re.fullmatch(r'/assets/page-[^/]+\.js', path)})
+          css = sorted({path.rsplit('/', 1)[-1] for path in urls if re.fullmatch(r'/assets/index-[^/]+\.css', path)})
+          if len(js) != 1:
+              raise SystemExit(f'Expected exactly one page JS, got {js}')
+          if len(css) != 1:
+              raise SystemExit(f'Expected exactly one index CSS, got {css}')
+          source.joinpath('ASSET_NAMES.env').write_text(f'JS_NAME={js[0]}\nCSS_NAME={css[0]}\n', 'utf-8')
+          print(f'JS_NAME={js[0]}')
+          print(f'CSS_NAME={css[0]}')
+          PY
+          source /tmp/jungein-v3-source/ASSET_NAMES.env
+          curl -fsSL --retry 4 --retry-all-errors \
+            "$ORIGIN/assets/$JS_NAME?rebase=$stamp" \
+            -o "/tmp/jungein-v3-source/$JS_NAME"
+          curl -fsSL --retry 4 --retry-all-errors \
+            "$ORIGIN/assets/$CSS_NAME?rebase=$stamp" \
+            -o "/tmp/jungein-v3-source/$CSS_NAME"
+          sha256sum "/tmp/jungein-v3-source/$JS_NAME" "/tmp/jungein-v3-source/$CSS_NAME"
+
+      - name: Rebase HD overlay onto current bundle
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          source /tmp/jungein-v3-source/ASSET_NAMES.env
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          import pathlib
+          import shutil
+
+          source = pathlib.Path('/tmp/jungein-v3-source')
+          v2_root = pathlib.Path(os.environ['V2_ROOT'])
+          v2_generated = pathlib.Path(os.environ['V2_GENERATED'])
+          out = pathlib.Path(os.environ['V3_GENERATED'])
+          js_name = source.joinpath('ASSET_NAMES.env').read_text().splitlines()[0].split('=',1)[1]
+          css_name = source.joinpath('ASSET_NAMES.env').read_text().splitlines()[1].split('=',1)[1]
+          hd_marker = os.environ['HD_MARKER']
+          first_marker = os.environ['FIRST_MARKER']
+
+          live_js = source.joinpath(js_name).read_text('utf-8')
+          live_css = source.joinpath(css_name).read_text('utf-8')
+          if hd_marker in live_js or first_marker in live_js:
+              raise SystemExit('Current JS unexpectedly already contains a prologue marker')
+          if hd_marker in live_css or first_marker in live_css:
+              raise SystemExit('Current CSS unexpectedly already contains a prologue marker')
+
+          overlay_js = v2_root.joinpath('jungein-video-prologue-hd-autoplay.js').read_text('utf-8')
+          if hd_marker not in overlay_js:
+              raise SystemExit('HD overlay JS marker missing')
+
+          v2_css_files = list(v2_generated.glob('index-*.css'))
+          if len(v2_css_files) != 1:
+              raise SystemExit(f'Expected one v2 generated CSS, got {v2_css_files}')
+          v2_css = v2_css_files[0].read_text('utf-8')
+          marker_text = f'/* {first_marker} */'
+          marker_at = v2_css.find(marker_text)
+          if marker_at < 0:
+              raise SystemExit('First-version CSS marker missing from verified v2 payload')
+          overlay_css = v2_css[marker_at:]
+          if hd_marker not in overlay_css:
+              raise SystemExit('HD incremental CSS marker missing from extracted overlay CSS')
+
+          out.mkdir(parents=True, exist_ok=True)
+          out.joinpath(js_name).write_text(live_js.rstrip() + '\n' + overlay_js, 'utf-8')
+          out.joinpath(css_name).write_text(live_css.rstrip() + '\n\n' + overlay_css, 'utf-8')
+          shutil.copy2(v2_generated / os.environ['HD_VIDEO'], out / os.environ['HD_VIDEO'])
+          shutil.copy2(v2_generated / os.environ['HD_POSTER'], out / os.environ['HD_POSTER'])
+          shutil.copy2(source / 'ASSET_NAMES.env', out / 'ASSET_NAMES.env')
+
+          def sha(path):
+              h = hashlib.sha256()
+              with path.open('rb') as handle:
+                  for chunk in iter(lambda: handle.read(1024 * 1024), b''):
+                      h.update(chunk)
+              return h.hexdigest()
+
+          metadata = {
+              'release_id': 'global-protection-jungein-prologue-hd-audio-20260829-v3',
+              'source': {
+                  'page_path': os.environ['PAGE_PATH'],
+                  'js_name': js_name,
+                  'js_sha256': sha(source / js_name),
+                  'css_name': css_name,
+                  'css_sha256': sha(source / css_name),
+              },
+              'target': {
+                  'js_name': js_name,
+                  'js_sha256': sha(out / js_name),
+                  'css_name': css_name,
+                  'css_sha256': sha(out / css_name),
+                  'video_name': os.environ['HD_VIDEO'],
+                  'video_sha256': sha(out / os.environ['HD_VIDEO']),
+                  'poster_name': os.environ['HD_POSTER'],
+                  'poster_sha256': sha(out / os.environ['HD_POSTER']),
+              },
+          }
+          out.joinpath('RELEASE_METADATA.json').write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + '\n', 'utf-8')
+          PY
+
+      - name: Validate rebased release payload
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          source "$V3_GENERATED/ASSET_NAMES.env"
+          node --check "$V3_GENERATED/$JS_NAME"
+          grep -Fq "$HD_MARKER" "$V3_GENERATED/$JS_NAME"
+          grep -Fq "$HD_MARKER" "$V3_GENERATED/$CSS_NAME"
+          grep -Fq "/$HD_VIDEO" "$V3_GENERATED/$JS_NAME"
+          ffprobe -v error -select_streams v:0 \
+            -show_entries stream=codec_name,profile,width,height,r_frame_rate,pix_fmt \
+            -of default=noprint_wrappers=1 "$V3_GENERATED/$HD_VIDEO"
+          cd "$V3_GENERATED"
+          sha256sum "$JS_NAME" "$CSS_NAME" "$HD_VIDEO" "$HD_POSTER" > MANIFEST.sha256
+          sha256sum -c MANIFEST.sha256
+          cat RELEASE_METADATA.json
+          ls -lh "$JS_NAME" "$CSS_NAME" "$HD_VIDEO" "$HD_POSTER"
+
+      - name: Commit current-production release payload
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$V3_GENERATED"
+          git diff --cached --stat
+          git commit -m 'build: rebase Jungein HD release on current production [skip ci]'
+          git push origin HEAD:ops/jungein-hd-release-20260829-v3
+
+      - name: Upload audit artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jungein-hd-current-production-v3
+          path: ${{ env.V3_GENERATED }}
+          if-no-files-found: error
+          retention-days: 7
