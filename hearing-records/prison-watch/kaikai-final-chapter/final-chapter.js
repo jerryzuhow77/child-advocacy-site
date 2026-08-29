@@ -475,11 +475,26 @@ lifeSearch?.addEventListener('input', filterLifeEvents);
 
   const depthRank = { quick: 0, guided: 1, full: 2 };
   const depthSections = [...document.querySelectorAll('main section[data-reading-level]')];
-  const getHashTarget = () => {
-    if (!location.hash || location.hash.length < 2) return null;
-    try { return document.getElementById(decodeURIComponent(location.hash.slice(1))); } catch (_) { return null; }
+  const root = document.documentElement;
+  const topbar = document.querySelector('.topbar');
+  const getTargetFromHash = (hash = location.hash) => {
+    if (!hash || hash.length < 2) return null;
+    try { return document.getElementById(decodeURIComponent(hash.slice(1))); } catch (_) { return null; }
   };
+  const getHashTarget = () => getTargetFromHash(location.hash);
+  const syncAnchorOffset = () => {
+    const headerHeight = topbar ? Math.ceil(topbar.getBoundingClientRect().height) : 0;
+    const fallback = window.innerWidth <= 760 ? 82 : 92;
+    const offset = headerHeight ? Math.max(fallback, headerHeight + 14) : fallback;
+    root.style.setProperty('--chapter-anchor-offset', `${offset}px`);
+    return offset;
+  };
+  syncAnchorOffset();
+  window.addEventListener('resize', syncAnchorOffset, { passive: true });
+  if ('ResizeObserver' in window && topbar) new ResizeObserver(syncAnchorOffset).observe(topbar);
+
   let hashScrollSequence = 0;
+  let hashLayoutObserver = null;
   const revealTargetForNavigation = (target) => {
     if (!target) return;
     let disclosure = target.closest?.('details');
@@ -489,29 +504,36 @@ lifeSearch?.addEventListener('input', filterLifeEvents);
     }
     let node = target;
     while (node && node !== document.documentElement) {
+      if (node.tagName === 'DETAILS') node.open = true;
       if (node.classList?.contains('reveal')) node.classList.add('in-view');
       if (node.matches?.('section[data-heavy="true"]')) node.style.contentVisibility = 'visible';
       node = node.parentElement;
     }
   };
+  const stopHashLayoutObserver = () => {
+    hashLayoutObserver?.disconnect();
+    hashLayoutObserver = null;
+  };
   const stabilizeHashTarget = (target, smooth = false) => {
     if (!target) return;
+    stopHashLayoutObserver();
     const sequence = ++hashScrollSequence;
     revealTargetForNavigation(target);
+    syncAnchorOffset();
 
     const expectedTop = () => {
       const value = Number.parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop);
-      return Number.isFinite(value) ? value : 90;
+      return Number.isFinite(value) ? value : syncAnchorOffset();
     };
     const align = (behavior = 'auto') => {
       if (sequence !== hashScrollSequence || getHashTarget() !== target) return;
       revealTargetForNavigation(target);
+      syncAnchorOffset();
       const top = Math.max(0, window.scrollY + target.getBoundingClientRect().top - expectedTop());
       if (behavior === 'smooth') {
         window.scrollTo({ top, left: window.scrollX, behavior: 'smooth' });
         return;
       }
-      const root = document.documentElement;
       const previousScrollBehavior = root.style.scrollBehavior;
       root.style.scrollBehavior = 'auto';
       window.scrollTo({ top, left: window.scrollX, behavior: 'auto' });
@@ -520,15 +542,29 @@ lifeSearch?.addEventListener('input', filterLifeEvents);
     const correctLayoutShift = () => {
       if (sequence !== hashScrollSequence || getHashTarget() !== target) return;
       revealTargetForNavigation(target);
+      syncAnchorOffset();
       const top = target.getBoundingClientRect().top;
-      if (Math.abs(top - expectedTop()) > 8) align('auto');
+      if (Math.abs(top - expectedTop()) > 6) align('auto');
     };
 
-    requestAnimationFrame(() => align(smooth && !reduceMotion ? 'smooth' : 'auto'));
-    [120, 360, 850, 1500].forEach((delay) => window.setTimeout(correctLayoutShift, delay));
+    requestAnimationFrame(() => requestAnimationFrame(() => align(smooth && !reduceMotion ? 'smooth' : 'auto')));
+    [120, 320, 700, 1200, 1900, 2800].forEach((delay) => window.setTimeout(correctLayoutShift, delay));
     if (document.fonts?.ready) document.fonts.ready.then(() => window.setTimeout(correctLayoutShift, 0));
+    document.querySelectorAll('img:not([loading="lazy"])').forEach((image) => {
+      if (!image.complete) image.addEventListener('load', correctLayoutShift, { once: true });
+    });
+    if ('ResizeObserver' in window) {
+      hashLayoutObserver = new ResizeObserver(correctLayoutShift);
+      hashLayoutObserver.observe(document.body);
+      window.setTimeout(() => {
+        if (sequence === hashScrollSequence) stopHashLayoutObserver();
+      }, 3000);
+    }
   };
-  const cancelHashStabilization = () => { hashScrollSequence += 1; };
+  const cancelHashStabilization = () => {
+    hashScrollSequence += 1;
+    stopHashLayoutObserver();
+  };
   window.addEventListener('wheel', cancelHashStabilization, { passive: true });
   window.addEventListener('touchstart', cancelHashStabilization, { passive: true });
   window.addEventListener('keydown', (event) => {
