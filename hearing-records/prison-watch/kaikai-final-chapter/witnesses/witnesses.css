@@ -87,3 +87,14 @@ main{max-width:1240px;margin:0 auto;padding:0 1.25rem 4rem}
   .supplement-reading,.supplement-quotes{margin-left:.8rem;margin-right:.8rem}
   .supplement-boundary{padding:.8rem 1rem 1rem}
 }
+
+/* CAI-HANYU-SUPPLEMENT-NORMALIZATION-20260829 */
+#witness-10-supplement{scroll-margin-top:calc(var(--chapter-anchor-offset,92px) + 12px)}
+.witness-supplement,.witness-supplement *{box-sizing:border-box}
+.witness-supplement .supplement-grid article{min-width:0}
+.witness-supplement li,.witness-supplement p{overflow-wrap:anywhere}
+.witness-supplement .supplement-quotes p{color:#29444d}
+@media(max-width:720px){
+  .witness-supplement>header h3{font-size:1.38rem}
+  .witness-supplement>header p,.supplement-grid li,.supplement-reading>p,.supplement-quotes p{font-size:.9rem}
+}
