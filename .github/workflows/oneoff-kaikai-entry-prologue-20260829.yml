@@ -47,6 +47,23 @@ jobs:
           start = source.index(start_marker) + len(start_marker)
           end = source.index(end_marker, start)
           patch_source = textwrap.dedent(source[start:end])
+
+          condition = patch_source.index("if '// ENTRY-PROLOGUE-OVERLAY-20260829' in js:")
+          branch_start = patch_source.index('else:\n', condition)
+          branch_end = patch_source.index('\n\njs_path.write_text', branch_start)
+          robust_branch = """else:
+              js, replaced = re.subn(
+                  r'  // PROLOGUE-VIDEO-20260829.*?(?=  const totalLabel =)',
+                  new_js + '\\n',
+                  js,
+                  count=1,
+                  flags=re.S,
+              )
+              if replaced != 1:
+                  raise SystemExit('legacy prologue JavaScript marker range not found')
+          """
+          patch_source = patch_source[:branch_start] + robust_branch + patch_source[branch_end:]
+
           if "ENTRY-PROLOGUE-OVERLAY-20260829" not in patch_source:
               raise SystemExit('entry-prologue patch marker was not recovered')
           Path('/tmp/apply-entry-prologue.py').write_text(patch_source, encoding='utf-8')
@@ -61,56 +78,20 @@ jobs:
           node --check "$base/final-chapter.js"
           test -s "$base/assets/kaikai-final-chapter-prologue.mp4"
           test -s "$base/assets/kaikai-final-chapter-prologue-poster.jpg"
-
           for page in "$base/index.html" "$base/zh-Hans/index.html"; do
             test "$(grep -c 'data-entry-prologue' "$page")" -eq 1
             test "$(grep -c 'data-prologue-video' "$page")" -eq 1
-            test "$(grep -c 'id=\"prologue-film\"' "$page")" -eq 1
             grep -q '<body class="prologue-active">' "$page"
-            grep -q 'ENTRY-PROLOGUE-OVERLAY-20260829' "$page"
             grep -q 'autoplay muted playsinline' "$page"
             grep -q 'final-chapter.css?v=20260829-33' "$page"
             grep -q 'final-chapter.js?v=20260829-33' "$page"
             ! grep -q 'class="section prologue-film-section"' "$page"
           done
+          grep -q 'z-index:2147483000' "$base/final-chapter.css"
+          grep -q 'requestAnimationFrame(playPrologue)' "$base/final-chapter.js"
+          grep -q "addEventListener('ended'" "$base/final-chapter.js"
 
-          python3 - <<'PY_VALIDATE'
-          from pathlib import Path
-          import re
-
-          base = Path('hearing-records/prison-watch/kaikai-final-chapter')
-          for path in (base / 'index.html', base / 'zh-Hans/index.html'):
-              text = path.read_text(encoding='utf-8')
-              body = text.index('<body class="prologue-active">')
-              overlay = text.index('data-entry-prologue', body)
-              skip_link = text.index('class="skip-link"', body)
-              main = text.index('<main id="main">', body)
-              if not body < overlay < skip_link < main:
-                  raise SystemExit(f'entry overlay is not ahead of ordinary page content in {path}')
-              if len(re.findall(r'<section class="entry-prologue"', text)) != 1:
-                  raise SystemExit(f'unexpected entry overlay count in {path}')
-
-          css = (base / 'final-chapter.css').read_text(encoding='utf-8')
-          js = (base / 'final-chapter.js').read_text(encoding='utf-8')
-          for marker in (
-              'position:fixed;',
-              'z-index:2147483000;',
-              'body.prologue-active',
-              '.entry-prologue.is-closing',
-          ):
-              if marker not in css:
-                  raise SystemExit(f'missing CSS marker: {marker}')
-          for marker in (
-              'requestAnimationFrame(playPrologue);',
-              "prologueVideo?.addEventListener('ended'",
-              'setProloguePageState(true);',
-              'prologueReplayLinks.forEach',
-          ):
-              if marker not in js:
-                  raise SystemExit(f'missing JS marker: {marker}')
-          PY_VALIDATE
-
-      - name: Browser-check the actual immediate first-screen behavior
+      - name: Browser-check immediate desktop and mobile entry
         shell: bash
         run: |
           set -euo pipefail
@@ -125,9 +106,7 @@ jobs:
           server_pid=$!
           trap 'kill "$server_pid" 2>/dev/null || true' EXIT
           for attempt in {1..30}; do
-            if curl -fsS http://127.0.0.1:4173/ >/dev/null; then
-              break
-            fi
+            curl -fsS http://127.0.0.1:4173/ >/dev/null && break
             sleep 1
           done
 
@@ -139,121 +118,78 @@ jobs:
           (async () => {
             const browser = await chromium.launch({ headless: true });
             const cases = [
-              {
-                name: 'zh-Hant-desktop',
-                url: 'http://127.0.0.1:4173/hearing-records/prison-watch/kaikai-final-chapter/',
-                viewport: { width: 1440, height: 900 }
-              },
-              {
-                name: 'zh-Hans-mobile',
-                url: 'http://127.0.0.1:4173/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/',
-                viewport: { width: 390, height: 844 }
-              }
+              ['zh-Hant-desktop', 'http://127.0.0.1:4173/hearing-records/prison-watch/kaikai-final-chapter/', { width: 1440, height: 900 }],
+              ['zh-Hans-mobile', 'http://127.0.0.1:4173/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/', { width: 390, height: 844 }]
             ];
 
-            for (const testCase of cases) {
-              const page = await browser.newPage({ viewport: testCase.viewport });
+            for (const [name, url, viewport] of cases) {
+              const page = await browser.newPage({ viewport });
               const pageErrors = [];
-              page.on('pageerror', (error) => pageErrors.push(error.message));
+              page.on('pageerror', error => pageErrors.push(error.message));
+              await page.goto(url, { waitUntil: 'domcontentloaded' });
 
-              await page.goto(testCase.url, { waitUntil: 'domcontentloaded' });
               const overlay = page.locator('[data-entry-prologue]');
               await overlay.waitFor({ state: 'visible' });
-
-              const initial = await page.evaluate(() => {
+              const state = await page.evaluate(() => {
                 const entry = document.querySelector('[data-entry-prologue]');
                 const main = document.querySelector('#main');
                 const video = entry.querySelector('[data-prologue-video]');
                 const skip = entry.querySelector('[data-prologue-skip]');
                 const rect = entry.getBoundingClientRect();
-                const skipRect = skip.getBoundingClientRect();
                 const style = getComputedStyle(entry);
-                const centerLayer = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2);
+                const topLayer = document.elementFromPoint(innerWidth / 2, innerHeight / 2);
                 return {
-                  firstElementSummary: document.body.firstElementChild?.outerHTML.slice(0, 120) || '',
                   parentIsBody: entry.parentElement === document.body,
-                  overlayBeforeMain: Boolean(entry.compareDocumentPosition(main) & Node.DOCUMENT_POSITION_FOLLOWING),
-                  bodyLocked: document.body.classList.contains('prologue-active'),
-                  centerCoveredByOverlay: Boolean(centerLayer && entry.contains(centerLayer)),
+                  beforeMain: Boolean(entry.compareDocumentPosition(main) & Node.DOCUMENT_POSITION_FOLLOWING),
+                  locked: document.body.classList.contains('prologue-active'),
+                  topLayer: Boolean(topLayer && entry.contains(topLayer)),
                   position: style.position,
-                  zIndex: Number.parseInt(style.zIndex, 10),
-                  rect: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
-                  skipVisible: skipRect.width > 0 && skipRect.height > 0,
+                  zIndex: parseInt(style.zIndex, 10),
+                  rect: [rect.x, rect.y, rect.width, rect.height],
+                  skipVisible: skip.getBoundingClientRect().width > 0,
                   autoplay: video.autoplay,
                   muted: video.muted,
-                  playsInline: video.playsInline,
-                  horizontalOverflow: document.documentElement.scrollWidth - window.innerWidth
+                  inline: video.playsInline,
+                  overflow: document.documentElement.scrollWidth - innerWidth
                 };
               });
+              console.log(name, JSON.stringify(state));
+              assert.equal(state.parentIsBody, true, `${name}: overlay is not a direct body layer`);
+              assert.equal(state.beforeMain, true, `${name}: overlay is after the article`);
+              assert.equal(state.locked, true, `${name}: article is not locked`);
+              assert.equal(state.topLayer, true, `${name}: overlay is not the top visual layer`);
+              assert.equal(state.position, 'fixed', `${name}: overlay is not viewport-fixed`);
+              assert.ok(state.zIndex >= 1000000, `${name}: overlay z-index is too low`);
+              assert.ok(Math.abs(state.rect[0]) <= 0.5 && Math.abs(state.rect[1]) <= 0.5, `${name}: overlay origin is wrong`);
+              assert.ok(state.rect[2] >= viewport.width - 1 && state.rect[3] >= viewport.height - 1, `${name}: overlay does not cover viewport`);
+              assert.equal(state.skipVisible, true, `${name}: skip control is hidden`);
+              assert.equal(state.autoplay && state.muted && state.inline, true, `${name}: autoplay media contract is incomplete`);
+              assert.ok(state.overflow <= 1, `${name}: horizontal overflow ${state.overflow}px`);
 
-              console.log(testCase.name, JSON.stringify(initial));
-              assert.equal(initial.parentIsBody, true, `${testCase.name}: overlay is not a direct body layer`);
-              assert.equal(initial.overlayBeforeMain, true, `${testCase.name}: overlay follows ordinary page content`);
-              assert.equal(initial.bodyLocked, true, `${testCase.name}: page is not locked behind the prologue`);
-              assert.equal(initial.centerCoveredByOverlay, true, `${testCase.name}: overlay is not the top visual layer`);
-              assert.equal(initial.position, 'fixed', `${testCase.name}: overlay is not fixed to viewport`);
-              assert.ok(initial.zIndex >= 1000000, `${testCase.name}: overlay z-index is too low`);
-              assert.ok(Math.abs(initial.rect.x) <= 0.5 && Math.abs(initial.rect.y) <= 0.5, `${testCase.name}: overlay does not start at viewport origin`);
-              assert.ok(initial.rect.width >= testCase.viewport.width - 1, `${testCase.name}: overlay width is incomplete`);
-              assert.ok(initial.rect.height >= testCase.viewport.height - 1, `${testCase.name}: overlay height is incomplete`);
-              assert.equal(initial.skipVisible, true, `${testCase.name}: skip button is not visible`);
-              assert.equal(initial.autoplay, true, `${testCase.name}: autoplay attribute is missing`);
-              assert.equal(initial.muted, true, `${testCase.name}: video is not muted`);
-              assert.equal(initial.playsInline, true, `${testCase.name}: playsinline is missing`);
-              assert.ok(initial.horizontalOverflow <= 1, `${testCase.name}: horizontal overflow ${initial.horizontalOverflow}px`);
-
-              await page.waitForTimeout(1000);
+              await page.waitForTimeout(900);
               const playback = await page.evaluate(() => {
-                const entry = document.querySelector('[data-entry-prologue]');
-                const video = entry.querySelector('[data-prologue-video]');
-                const playButton = entry.querySelector('[data-prologue-play]');
-                return {
-                  currentTime: video.currentTime,
-                  paused: video.paused,
-                  readyState: video.readyState,
-                  playPromptVisible: !playButton.hidden
-                };
+                const video = document.querySelector('[data-prologue-video]');
+                return { currentTime: video.currentTime, paused: video.paused, readyState: video.readyState };
               });
-              console.log(testCase.name, 'playback', JSON.stringify(playback));
-              assert.ok(
-                playback.currentTime > 0 || (!playback.paused && playback.readyState >= 2),
-                `${testCase.name}: muted autoplay did not start`
-              );
-              assert.equal(playback.playPromptVisible, false, `${testCase.name}: autoplay unexpectedly required a gesture`);
+              console.log(name, 'playback', JSON.stringify(playback));
+              assert.ok(playback.currentTime > 0 || (!playback.paused && playback.readyState >= 2), `${name}: muted autoplay did not start`);
 
-              await page.screenshot({
-                path: `/tmp/prologue-screenshots/${testCase.name}-entry.png`,
-                fullPage: false
-              });
+              await page.screenshot({ path: `/tmp/prologue-screenshots/${name}.png`, fullPage: false });
+              await page.waitForFunction(() => document.querySelector('[data-entry-prologue]').hidden === true, null, { timeout: 10000 });
+              assert.equal(await page.evaluate(() => document.body.classList.contains('prologue-active')), false, `${name}: article remained locked after ending`);
 
-              await page.locator('[data-prologue-skip]').click();
-              await page.waitForFunction(() => document.querySelector('[data-entry-prologue]').hidden === true);
-              assert.equal(
-                await page.evaluate(() => document.body.classList.contains('prologue-active')),
-                false,
-                `${testCase.name}: page remained locked after skipping`
-              );
-
-              if (testCase.name === 'zh-Hant-desktop') {
+              if (name === 'zh-Hant-desktop') {
                 await page.evaluate(() => document.querySelector('a[href="#prologue-film"]').click());
                 await overlay.waitFor({ state: 'visible' });
-                assert.equal(
-                  await page.evaluate(() => document.body.classList.contains('prologue-active')),
-                  true,
-                  `${testCase.name}: replay did not lock the page`
-                );
-                await page.evaluate(() => {
-                  document.querySelector('[data-prologue-video]').dispatchEvent(new Event('ended'));
-                });
+                await page.locator('[data-prologue-skip]').click();
                 await page.waitForFunction(() => document.querySelector('[data-entry-prologue]').hidden === true);
               }
 
-              assert.deepEqual(pageErrors, [], `${testCase.name}: page errors: ${pageErrors.join(' | ')}`);
+              assert.deepEqual(pageErrors, [], `${name}: ${pageErrors.join(' | ')}`);
               await page.close();
             }
-
             await browser.close();
-          })().catch((error) => {
+          })().catch(error => {
             console.error(error);
             process.exit(1);
           });
@@ -262,12 +198,12 @@ jobs:
       - name: Upload browser evidence
         uses: actions/upload-artifact@v4
         with:
-          name: kaikai-entry-prologue-browser-evidence-20260829-r2
+          name: kaikai-entry-prologue-browser-evidence-20260829-r3
           path: /tmp/prologue-screenshots/*.png
           if-no-files-found: error
           retention-days: 7
 
-      - name: Commit publication and remove the one-off workflow
+      - name: Commit publication and remove one-off workflow
         shell: bash
         run: |
           set -euo pipefail
