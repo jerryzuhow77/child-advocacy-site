@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - '.github/workflows/oneoff-kaikai-entry-prologue-20260829.yml'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -29,474 +30,28 @@ jobs:
           set -euo pipefail
           git pull --rebase origin main
 
-      - name: Convert the in-page video into an immediate full-screen entry prologue
+      - name: Apply the immediate full-screen entry prologue patch
         shell: bash
         run: |
           set -euo pipefail
-          python3 - <<'PY_PATCH'
+          original_commit='7f7c5814068644bc36377c740819b5fb28c88d8d'
+          workflow='.github/workflows/oneoff-kaikai-entry-prologue-20260829.yml'
+          git show "${original_commit}:${workflow}" > /tmp/original-entry-prologue-workflow.yml
+          python3 - <<'PY_EXTRACT'
           from pathlib import Path
-          import re
+          import textwrap
 
-          base = Path('hearing-records/prison-watch/kaikai-final-chapter')
-          pages = [
-              {
-                  'path': base / 'index.html',
-                  'asset': './assets',
-                  'title': '在閱讀終章之前',
-                  'description': '序幕會在進站時立即播放；播放完畢後自動揭開正文。象徵性公益影像，非案件現場或證據影像。',
-                  'skip': '略過序幕',
-                  'play': '播放序幕',
-                  'video_label': '剴剴案第二章象徵性進站序幕動畫',
-                  'fallback': '你的瀏覽器不支援影片播放。'
-              },
-              {
-                  'path': base / 'zh-Hans/index.html',
-                  'asset': '../assets',
-                  'title': '在阅读终章之前',
-                  'description': '序幕会在进站时立即播放；播放完毕后自动揭开正文。象征性公益影像，非案件现场或证据影像。',
-                  'skip': '略过序幕',
-                  'play': '播放序幕',
-                  'video_label': '剀剀案第二章象征性进站序幕动画',
-                  'fallback': '你的浏览器不支持影片播放。'
-              },
-          ]
-
-          old_section = re.compile(
-              r'\n\s*<section class="section prologue-film-section" id="prologue-film".*?</section>\s*\n',
-              re.S,
-          )
-          existing_overlay = re.compile(
-              r'\n?\s*<!-- ENTRY-PROLOGUE-OVERLAY-20260829 -->.*?'
-              r'<noscript><style>body\.prologue-active\{overflow:auto!important\}'
-              r'\.entry-prologue\{display:none!important\}</style></noscript>\s*\n?',
-              re.S,
-          )
-          existing_preload = re.compile(
-              r'\n?\s*<!-- ENTRY-PROLOGUE-PRELOAD-20260829 -->\s*'
-              r'<link rel="preload" as="image"[^>]+>\s*'
-              r'<link rel="preload" as="video"[^>]+>\s*',
-              re.S,
-          )
-
-          for page in pages:
-              path = page['path']
-              text = path.read_text(encoding='utf-8')
-              text = existing_overlay.sub('\n', text)
-              text = existing_preload.sub('\n', text)
-              text, removed = old_section.subn('\n', text, count=1)
-              if removed != 1:
-                  raise SystemExit(f'expected one legacy in-page prologue in {path}, removed {removed}')
-
-              text, body_count = re.subn(
-                  r'<body(?:\s+class="[^"]*")?>',
-                  '<body class="prologue-active">',
-                  text,
-                  count=1,
-              )
-              if body_count != 1:
-                  raise SystemExit(f'body marker not found in {path}')
-
-              asset = page['asset']
-              preload = (
-                  '  <!-- ENTRY-PROLOGUE-PRELOAD-20260829 -->\n'
-                  f'  <link rel="preload" as="image" href="{asset}/kaikai-final-chapter-prologue-poster.jpg" fetchpriority="high">\n'
-                  f'  <link rel="preload" as="video" href="{asset}/kaikai-final-chapter-prologue.mp4?v=20260829-3" type="video/mp4">\n'
-              )
-              text, preload_count = re.subn(
-                  r'(?=\s*<link rel="stylesheet" href="(?:\./|\.\./)final-chapter\.css\?v=)',
-                  preload,
-                  text,
-                  count=1,
-              )
-              if preload_count != 1:
-                  raise SystemExit(f'stylesheet insertion point not found in {path}')
-
-              overlay = f'''<!-- ENTRY-PROLOGUE-OVERLAY-20260829 -->
-          <section class="entry-prologue" id="prologue-film" data-entry-prologue role="dialog" aria-modal="true" aria-labelledby="prologueFilmTitle" aria-describedby="prologueFilmDescription" tabindex="-1">
-            <video class="entry-prologue__video" data-prologue-video autoplay muted playsinline webkit-playsinline preload="auto" poster="{asset}/kaikai-final-chapter-prologue-poster.jpg" aria-label="{page['video_label']}">
-              <source src="{asset}/kaikai-final-chapter-prologue.mp4?v=20260829-3" type="video/mp4">
-              <p>{page['fallback']}</p>
-            </video>
-            <div class="entry-prologue__scrim" aria-hidden="true"></div>
-            <div class="entry-prologue__chrome">
-              <p class="entry-prologue__kicker">KAIKAI SPECIAL FEATURE · CHAPTER 02</p>
-              <div class="entry-prologue__copy">
-                <span>PROLOGUE ANIMATION · 00:05</span>
-                <h2 id="prologueFilmTitle">{page['title']}</h2>
-                <p id="prologueFilmDescription">{page['description']}</p>
-              </div>
-            </div>
-            <button class="entry-prologue__skip" type="button" data-prologue-skip>{page['skip']}<span aria-hidden="true">↓</span></button>
-            <button class="entry-prologue__play" type="button" data-prologue-play hidden>{page['play']}<span aria-hidden="true">▶</span></button>
-            <div class="entry-prologue__progress" aria-hidden="true"><i data-prologue-progress></i></div>
-          </section>
-          <noscript><style>body.prologue-active{{overflow:auto!important}}.entry-prologue{{display:none!important}}</style></noscript>
-          '''
-              body_marker = '<body class="prologue-active">\n'
-              if body_marker not in text:
-                  raise SystemExit(f'normalized body marker not found in {path}')
-              text = text.replace(body_marker, body_marker + overlay, 1)
-
-              text = re.sub(
-                  r'(final-chapter\.css\?v=)[^"]+',
-                  r'\g<1>20260829-33',
-                  text,
-                  count=1,
-              )
-              text = re.sub(
-                  r'(final-chapter\.js\?v=)[^"]+',
-                  r'\g<1>20260829-33',
-                  text,
-                  count=1,
-              )
-              path.write_text(text, encoding='utf-8')
-
-          css_path = base / 'final-chapter.css'
-          css = css_path.read_text(encoding='utf-8')
-          css_marker = '/* ENTRY-PROLOGUE-OVERLAY-20260829 */'
-          if css_marker in css:
-              css = css.split(css_marker, 1)[0].rstrip()
-          css += r'''
-
-          /* ENTRY-PROLOGUE-OVERLAY-20260829 */
-          body.prologue-active{
-            overflow:hidden;
-            overscroll-behavior:none;
-            touch-action:none;
-          }
-          .entry-prologue{
-            position:fixed;
-            inset:0;
-            z-index:2147483000;
-            display:grid;
-            min-width:100%;
-            min-height:100%;
-            overflow:hidden;
-            isolation:isolate;
-            background:#020b11;
-            color:#fff;
-            opacity:1;
-            visibility:visible;
-            transition:opacity .68s ease,visibility .68s ease;
-          }
-          .entry-prologue[hidden]{display:none}
-          .entry-prologue.is-closing{
-            opacity:0;
-            visibility:hidden;
-            pointer-events:none;
-          }
-          .entry-prologue__video{
-            position:absolute;
-            inset:0;
-            z-index:0;
-            width:100%;
-            height:100%;
-            max-width:none;
-            object-fit:cover;
-            object-position:center;
-            background:#020b11;
-          }
-          .entry-prologue__scrim{
-            position:absolute;
-            inset:0;
-            z-index:1;
-            background:
-              linear-gradient(180deg,rgba(1,10,16,.62) 0%,rgba(1,10,16,.08) 34%,rgba(1,10,16,.18) 58%,rgba(1,10,16,.88) 100%),
-              radial-gradient(circle at 50% 45%,transparent 20%,rgba(1,10,16,.32) 100%);
-            pointer-events:none;
-          }
-          .entry-prologue__chrome{
-            position:relative;
-            z-index:2;
-            display:flex;
-            flex-direction:column;
-            justify-content:space-between;
-            min-height:100%;
-            padding:
-              max(30px,env(safe-area-inset-top))
-              max(30px,env(safe-area-inset-right))
-              max(42px,env(safe-area-inset-bottom))
-              max(30px,env(safe-area-inset-left));
-            pointer-events:none;
-          }
-          .entry-prologue__kicker{
-            margin:0;
-            color:#f0c77b;
-            font-size:clamp(10px,1vw,13px);
-            font-weight:900;
-            letter-spacing:.2em;
-            text-shadow:0 2px 18px rgba(0,0,0,.72);
-          }
-          .entry-prologue__copy{
-            width:min(760px,calc(100vw - 60px));
-            margin:0 0 clamp(16px,4vh,42px);
-            text-shadow:0 3px 26px rgba(0,0,0,.82);
-          }
-          .entry-prologue__copy>span{
-            display:block;
-            margin-bottom:10px;
-            color:#efc77d;
-            font-size:11px;
-            font-weight:900;
-            letter-spacing:.17em;
-          }
-          .entry-prologue__copy h2{
-            margin:0;
-            color:#fff;
-            font:900 clamp(36px,6vw,88px)/1.13 var(--serif);
-            letter-spacing:.02em;
-          }
-          .entry-prologue__copy p{
-            max-width:690px;
-            margin:18px 0 0;
-            color:rgba(255,255,255,.84);
-            font-size:clamp(13px,1.3vw,17px);
-            line-height:1.85;
-          }
-          .entry-prologue__skip,
-          .entry-prologue__play{
-            position:absolute;
-            z-index:4;
-            display:inline-flex;
-            align-items:center;
-            justify-content:center;
-            gap:9px;
-            min-height:46px;
-            padding:10px 17px;
-            border:1px solid rgba(255,255,255,.58);
-            border-radius:999px;
-            background:rgba(2,15,22,.5);
-            color:#fff;
-            font-weight:900;
-            letter-spacing:.04em;
-            cursor:pointer;
-            backdrop-filter:blur(12px);
-            box-shadow:0 10px 30px rgba(0,0,0,.2);
-          }
-          .entry-prologue__skip{
-            top:max(24px,env(safe-area-inset-top));
-            right:max(24px,env(safe-area-inset-right));
-          }
-          .entry-prologue__play{
-            top:50%;
-            left:50%;
-            transform:translate(-50%,-50%);
-            background:rgba(9,38,58,.86);
-            border-color:#efc77d;
-          }
-          .entry-prologue__skip:hover,
-          .entry-prologue__skip:focus-visible,
-          .entry-prologue__play:hover,
-          .entry-prologue__play:focus-visible{
-            background:#fff;
-            color:#09263a;
-            outline:3px solid rgba(239,199,125,.48);
-            outline-offset:4px;
-          }
-          .entry-prologue__progress{
-            position:absolute;
-            z-index:4;
-            right:0;
-            bottom:0;
-            left:0;
-            height:4px;
-            overflow:hidden;
-            background:rgba(255,255,255,.18);
-            pointer-events:none;
-          }
-          .entry-prologue__progress i{
-            display:block;
-            width:100%;
-            height:100%;
-            transform:scaleX(0);
-            transform-origin:left center;
-            background:#efc77d;
-            will-change:transform;
-          }
-          @media(max-width:760px){
-            .entry-prologue__video{object-position:center center}
-            .entry-prologue__chrome{
-              padding:
-                max(22px,env(safe-area-inset-top))
-                max(18px,env(safe-area-inset-right))
-                max(30px,env(safe-area-inset-bottom))
-                max(18px,env(safe-area-inset-left));
-            }
-            .entry-prologue__kicker{
-              max-width:62vw;
-              font-size:9px;
-              line-height:1.55;
-            }
-            .entry-prologue__copy{
-              width:calc(100vw - 36px);
-              margin-bottom:clamp(34px,8vh,76px);
-            }
-            .entry-prologue__copy h2{font-size:clamp(34px,11vw,54px)}
-            .entry-prologue__copy p{
-              max-width:32rem;
-              margin-top:13px;
-              font-size:13px;
-              line-height:1.75;
-            }
-            .entry-prologue__skip{
-              top:max(16px,env(safe-area-inset-top));
-              right:max(14px,env(safe-area-inset-right));
-              min-height:42px;
-              padding:8px 13px;
-              font-size:12px;
-            }
-          }
-          @media(prefers-reduced-motion:reduce){
-            .entry-prologue{transition:none}
-            .entry-prologue__progress i{will-change:auto}
-          }
-          '''
-          css_path.write_text(css.rstrip() + '\n', encoding='utf-8')
-
-          js_path = base / 'final-chapter.js'
-          js = js_path.read_text(encoding='utf-8')
-          new_js = r'''  // ENTRY-PROLOGUE-OVERLAY-20260829
-            const prologueOverlay = document.querySelector('[data-entry-prologue]');
-            const prologueVideo = prologueOverlay?.querySelector('[data-prologue-video]');
-            const prologueSkip = prologueOverlay?.querySelector('[data-prologue-skip]');
-            const prologuePlay = prologueOverlay?.querySelector('[data-prologue-play]');
-            const prologueProgress = prologueOverlay?.querySelector('[data-prologue-progress]');
-            const prologueReplayLinks = [...document.querySelectorAll('a[href="#prologue-film"]')];
-            const prologuePageLayers = prologueOverlay
-              ? [...document.body.children].filter((element) => element !== prologueOverlay && element.tagName !== 'NOSCRIPT')
-              : [];
-            let prologueClosed = false;
-            let prologueFailsafeTimer = 0;
-            let prologueHideTimer = 0;
-
-            const setProloguePageState = (active) => {
-              document.body.classList.toggle('prologue-active', active);
-              prologuePageLayers.forEach((element) => {
-                if (active) {
-                  element.dataset.prologueInert = element.hasAttribute('inert') ? 'preserve' : 'added';
-                  element.setAttribute('inert', '');
-                } else if (element.dataset.prologueInert === 'added') {
-                  element.removeAttribute('inert');
-                  delete element.dataset.prologueInert;
-                } else if (element.dataset.prologueInert === 'preserve') {
-                  delete element.dataset.prologueInert;
-                }
-              });
-            };
-
-            const showProloguePlayPrompt = () => {
-              if (!prologueOverlay || !prologuePlay) return;
-              prologueOverlay.classList.add('is-blocked');
-              prologuePlay.hidden = false;
-            };
-
-            const closePrologue = ({ focusMain = false } = {}) => {
-              if (!prologueOverlay || prologueClosed) return;
-              prologueClosed = true;
-              window.clearTimeout(prologueFailsafeTimer);
-              window.clearTimeout(prologueHideTimer);
-              prologueVideo?.pause();
-              prologueOverlay.classList.remove('is-blocked');
-              if (prologuePlay) prologuePlay.hidden = true;
-              prologueOverlay.classList.add('is-closing');
-              setProloguePageState(false);
-              prologueHideTimer = window.setTimeout(() => {
-                prologueOverlay.hidden = true;
-                prologueOverlay.setAttribute('aria-hidden', 'true');
-                prologueOverlay.classList.remove('is-closing');
-                if (focusMain) {
-                  const main = document.querySelector('#main');
-                  main?.setAttribute('tabindex', '-1');
-                  main?.focus({ preventScroll: true });
-                }
-              }, 700);
-            };
-
-            const playPrologue = () => {
-              if (!prologueOverlay || !prologueVideo) {
-                document.body.classList.remove('prologue-active');
-                return;
-              }
-              window.clearTimeout(prologueFailsafeTimer);
-              window.clearTimeout(prologueHideTimer);
-              prologueClosed = false;
-              prologueOverlay.hidden = false;
-              prologueOverlay.removeAttribute('aria-hidden');
-              prologueOverlay.classList.remove('is-closing', 'is-blocked');
-              if (prologuePlay) prologuePlay.hidden = true;
-              setProloguePageState(true);
-              prologueVideo.muted = true;
-              prologueVideo.currentTime = 0;
-              if (prologueProgress) prologueProgress.style.transform = 'scaleX(0)';
-
-              const playAttempt = prologueVideo.play();
-              playAttempt?.catch(() => showProloguePlayPrompt());
-              prologueFailsafeTimer = window.setTimeout(() => {
-                if (prologueVideo.paused && !prologueVideo.ended) showProloguePlayPrompt();
-                else closePrologue();
-              }, 12000);
-            };
-
-            prologueSkip?.addEventListener('click', () => closePrologue({ focusMain: true }));
-            prologuePlay?.addEventListener('click', () => {
-              const playAttempt = prologueVideo?.play();
-              playAttempt?.then(() => {
-                prologueOverlay?.classList.remove('is-blocked');
-                if (prologuePlay) prologuePlay.hidden = true;
-              }).catch(() => showProloguePlayPrompt());
-            });
-            prologueVideo?.addEventListener('timeupdate', () => {
-              if (!prologueProgress) return;
-              const duration = Number.isFinite(prologueVideo.duration) && prologueVideo.duration > 0
-                ? prologueVideo.duration
-                : 5;
-              const ratio = Math.min(1, Math.max(0, prologueVideo.currentTime / duration));
-              prologueProgress.style.transform = `scaleX(${ratio})`;
-            });
-            prologueVideo?.addEventListener('ended', () => closePrologue());
-            prologueVideo?.addEventListener('error', showProloguePlayPrompt);
-            prologueReplayLinks.forEach((link) => {
-              link.addEventListener('click', (event) => {
-                event.preventDefault();
-                playPrologue();
-              });
-            });
-            document.addEventListener('keydown', (event) => {
-              if (event.key === 'Escape' && prologueOverlay && !prologueOverlay.hidden) {
-                closePrologue({ focusMain: true });
-              }
-            });
-            document.addEventListener('visibilitychange', () => {
-              if (document.visibilityState !== 'visible' || !prologueOverlay || prologueOverlay.hidden || prologueClosed) return;
-              prologueVideo?.play().catch(() => showProloguePlayPrompt());
-            });
-            requestAnimationFrame(playPrologue);
-          '''
-
-          if '// ENTRY-PROLOGUE-OVERLAY-20260829' in js:
-              js = re.sub(
-                  r'  // ENTRY-PROLOGUE-OVERLAY-20260829.*?(?=  const totalLabel =)',
-                  new_js + '\n',
-                  js,
-                  count=1,
-                  flags=re.S,
-              )
-          else:
-              js, replaced = re.subn(
-                  r'  // PROLOGUE-VIDEO-20260829\s+'
-                  r"  const prologueVideo = document\.querySelector\('\[data-prologue-video\]'\);\s+"
-                  r"  const prologueSkip = document\.querySelector\('\[data-prologue-skip\]'\);\s+"
-                  r"  prologueSkip\?\.addEventListener\('click', \(\) => prologueVideo\?\.pause\(\)\);\s*",
-                  new_js + '\n',
-                  js,
-                  count=1,
-                  flags=re.S,
-              )
-              if replaced != 1:
-                  raise SystemExit('legacy prologue JavaScript block not found')
-
-          js_path.write_text(js, encoding='utf-8')
-          PY_PATCH
+          source = Path('/tmp/original-entry-prologue-workflow.yml').read_text(encoding='utf-8')
+          start_marker = "          python3 - <<'PY_PATCH'\n"
+          end_marker = "\n          PY_PATCH"
+          start = source.index(start_marker) + len(start_marker)
+          end = source.index(end_marker, start)
+          patch_source = textwrap.dedent(source[start:end])
+          if "ENTRY-PROLOGUE-OVERLAY-20260829" not in patch_source:
+              raise SystemExit('entry-prologue patch marker was not recovered')
+          Path('/tmp/apply-entry-prologue.py').write_text(patch_source, encoding='utf-8')
+          PY_EXTRACT
+          python3 /tmp/apply-entry-prologue.py
 
       - name: Validate source and media contract
         shell: bash
@@ -522,39 +77,40 @@ jobs:
           python3 - <<'PY_VALIDATE'
           from pathlib import Path
           import re
+
           base = Path('hearing-records/prison-watch/kaikai-final-chapter')
           for path in (base / 'index.html', base / 'zh-Hans/index.html'):
               text = path.read_text(encoding='utf-8')
               body = text.index('<body class="prologue-active">')
               overlay = text.index('data-entry-prologue', body)
               skip_link = text.index('class="skip-link"', body)
-              if not body < overlay < skip_link:
-                  raise SystemExit(f'entry overlay is not the first rendered body layer in {path}')
+              main = text.index('<main id="main">', body)
+              if not body < overlay < skip_link < main:
+                  raise SystemExit(f'entry overlay is not ahead of ordinary page content in {path}')
               if len(re.findall(r'<section class="entry-prologue"', text)) != 1:
                   raise SystemExit(f'unexpected entry overlay count in {path}')
+
           css = (base / 'final-chapter.css').read_text(encoding='utf-8')
           js = (base / 'final-chapter.js').read_text(encoding='utf-8')
-          required_css = [
+          for marker in (
               'position:fixed;',
               'z-index:2147483000;',
               'body.prologue-active',
               '.entry-prologue.is-closing',
-          ]
-          required_js = [
+          ):
+              if marker not in css:
+                  raise SystemExit(f'missing CSS marker: {marker}')
+          for marker in (
               'requestAnimationFrame(playPrologue);',
               "prologueVideo?.addEventListener('ended'",
               'setProloguePageState(true);',
               'prologueReplayLinks.forEach',
-          ]
-          for marker in required_css:
-              if marker not in css:
-                  raise SystemExit(f'missing CSS marker: {marker}')
-          for marker in required_js:
+          ):
               if marker not in js:
                   raise SystemExit(f'missing JS marker: {marker}')
           PY_VALIDATE
 
-      - name: Browser-check immediate first frame on desktop and mobile
+      - name: Browser-check the actual immediate first-screen behavior
         shell: bash
         run: |
           set -euo pipefail
@@ -563,14 +119,18 @@ jobs:
           npm init -y >/dev/null 2>&1
           npm install --silent playwright@1.55.0
           npx playwright install --with-deps chromium >/dev/null
+
           cd "$GITHUB_WORKSPACE"
           python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/prologue-http.log 2>&1 &
           server_pid=$!
           trap 'kill "$server_pid" 2>/dev/null || true' EXIT
           for attempt in {1..30}; do
-            if curl -fsS http://127.0.0.1:4173/ >/dev/null; then break; fi
+            if curl -fsS http://127.0.0.1:4173/ >/dev/null; then
+              break
+            fi
             sleep 1
           done
+
           mkdir -p /tmp/prologue-screenshots
           node <<'NODE'
           const { chromium } = require('/tmp/prologue-browser/node_modules/playwright');
@@ -602,13 +162,21 @@ jobs:
 
               const initial = await page.evaluate(() => {
                 const entry = document.querySelector('[data-entry-prologue]');
-                const video = document.querySelector('[data-prologue-video]');
-                const skip = document.querySelector('[data-prologue-skip]');
+                const main = document.querySelector('#main');
+                const video = entry.querySelector('[data-prologue-video]');
+                const skip = entry.querySelector('[data-prologue-skip]');
                 const rect = entry.getBoundingClientRect();
                 const skipRect = skip.getBoundingClientRect();
+                const style = getComputedStyle(entry);
+                const centerLayer = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2);
                 return {
-                  firstBodyElement: document.body.firstElementChild === entry,
+                  firstElementSummary: document.body.firstElementChild?.outerHTML.slice(0, 120) || '',
+                  parentIsBody: entry.parentElement === document.body,
+                  overlayBeforeMain: Boolean(entry.compareDocumentPosition(main) & Node.DOCUMENT_POSITION_FOLLOWING),
                   bodyLocked: document.body.classList.contains('prologue-active'),
+                  centerCoveredByOverlay: Boolean(centerLayer && entry.contains(centerLayer)),
+                  position: style.position,
+                  zIndex: Number.parseInt(style.zIndex, 10),
                   rect: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
                   skipVisible: skipRect.width > 0 && skipRect.height > 0,
                   autoplay: video.autoplay,
@@ -618,30 +186,40 @@ jobs:
                 };
               });
 
-              assert.equal(initial.firstBodyElement, true, `${testCase.name}: overlay is not first in body`);
-              assert.equal(initial.bodyLocked, true, `${testCase.name}: body is not locked`);
-              assert.ok(initial.rect.x <= 0.5 && initial.rect.y <= 0.5, `${testCase.name}: overlay does not start at viewport origin`);
+              console.log(testCase.name, JSON.stringify(initial));
+              assert.equal(initial.parentIsBody, true, `${testCase.name}: overlay is not a direct body layer`);
+              assert.equal(initial.overlayBeforeMain, true, `${testCase.name}: overlay follows ordinary page content`);
+              assert.equal(initial.bodyLocked, true, `${testCase.name}: page is not locked behind the prologue`);
+              assert.equal(initial.centerCoveredByOverlay, true, `${testCase.name}: overlay is not the top visual layer`);
+              assert.equal(initial.position, 'fixed', `${testCase.name}: overlay is not fixed to viewport`);
+              assert.ok(initial.zIndex >= 1000000, `${testCase.name}: overlay z-index is too low`);
+              assert.ok(Math.abs(initial.rect.x) <= 0.5 && Math.abs(initial.rect.y) <= 0.5, `${testCase.name}: overlay does not start at viewport origin`);
               assert.ok(initial.rect.width >= testCase.viewport.width - 1, `${testCase.name}: overlay width is incomplete`);
               assert.ok(initial.rect.height >= testCase.viewport.height - 1, `${testCase.name}: overlay height is incomplete`);
               assert.equal(initial.skipVisible, true, `${testCase.name}: skip button is not visible`);
-              assert.equal(initial.autoplay, true, `${testCase.name}: autoplay attribute missing`);
+              assert.equal(initial.autoplay, true, `${testCase.name}: autoplay attribute is missing`);
               assert.equal(initial.muted, true, `${testCase.name}: video is not muted`);
               assert.equal(initial.playsInline, true, `${testCase.name}: playsinline is missing`);
               assert.ok(initial.horizontalOverflow <= 1, `${testCase.name}: horizontal overflow ${initial.horizontalOverflow}px`);
 
-              await page.waitForTimeout(700);
+              await page.waitForTimeout(1000);
               const playback = await page.evaluate(() => {
-                const video = document.querySelector('[data-prologue-video]');
+                const entry = document.querySelector('[data-entry-prologue]');
+                const video = entry.querySelector('[data-prologue-video]');
+                const playButton = entry.querySelector('[data-prologue-play]');
                 return {
                   currentTime: video.currentTime,
                   paused: video.paused,
-                  readyState: video.readyState
+                  readyState: video.readyState,
+                  playPromptVisible: !playButton.hidden
                 };
               });
+              console.log(testCase.name, 'playback', JSON.stringify(playback));
               assert.ok(
                 playback.currentTime > 0 || (!playback.paused && playback.readyState >= 2),
                 `${testCase.name}: muted autoplay did not start`
               );
+              assert.equal(playback.playPromptVisible, false, `${testCase.name}: autoplay unexpectedly required a gesture`);
 
               await page.screenshot({
                 path: `/tmp/prologue-screenshots/${testCase.name}-entry.png`,
@@ -653,12 +231,17 @@ jobs:
               assert.equal(
                 await page.evaluate(() => document.body.classList.contains('prologue-active')),
                 false,
-                `${testCase.name}: body remained locked after skip`
+                `${testCase.name}: page remained locked after skipping`
               );
 
               if (testCase.name === 'zh-Hant-desktop') {
                 await page.evaluate(() => document.querySelector('a[href="#prologue-film"]').click());
                 await overlay.waitFor({ state: 'visible' });
+                assert.equal(
+                  await page.evaluate(() => document.body.classList.contains('prologue-active')),
+                  true,
+                  `${testCase.name}: replay did not lock the page`
+                );
                 await page.evaluate(() => {
                   document.querySelector('[data-prologue-video]').dispatchEvent(new Event('ended'));
                 });
@@ -679,7 +262,7 @@ jobs:
       - name: Upload browser evidence
         uses: actions/upload-artifact@v4
         with:
-          name: kaikai-entry-prologue-browser-evidence-20260829
+          name: kaikai-entry-prologue-browser-evidence-20260829-r2
           path: /tmp/prologue-screenshots/*.png
           if-no-files-found: error
           retention-days: 7
