@@ -1,0 +1,76 @@
+name: Clean Kaikai publication carriers after live verification
+
+on:
+  push:
+    branches:
+      - feat/kaikai-witness-analysis-20260829
+    paths:
+      - .tmp/kaikai-live-cleanup.ready
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: kaikai-live-cleanup-20260829
+  cancel-in-progress: false
+
+jobs:
+  verify-and-clean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Wait for GitHub Pages and verify all public targets
+        shell: bash
+        run: |
+          set -euo pipefail
+          main='https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/'
+          hant="${main}witnesses/"
+          hans="${main}zh-Hans/witnesses/"
+          image='https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-dual-track-responsibility-tree-zh-Hant-20260829.webp'
+
+          for attempt in $(seq 1 60); do
+            stamp="$(date +%s)-${attempt}"
+            if curl -fsSL --max-time 25 "${main}?v=${stamp}" | grep -q '13名證人全文' \
+              && curl -fsSL --max-time 25 "${main}?v=${stamp}" | grep -q 'syncAnchorOffset' \
+              && curl -fsSL --max-time 25 "${hant}?v=${stamp}" | grep -q '法院並未公開官方逐字稿' \
+              && curl -fsSL --max-time 25 "${hant}?v=${stamp}" | grep -q '束帶直接扣住私處並綁在便盆' \
+              && curl -fsSL --max-time 25 "${hans}?v=${stamp}" | grep -q '法院并未公开官方逐字稿' \
+              && curl -fsSL --max-time 25 "${hans}?v=${stamp}" | grep -q '束带直接扣住私处并绑在便盆' \
+              && test "$(curl -fsSL --max-time 25 "$hant?v=${stamp}" | grep -o 'class="witness-card"' | wc -l | tr -d ' ')" = '13' \
+              && test "$(curl -fsSL --max-time 25 "$hans?v=${stamp}" | grep -o 'class="witness-card"' | wc -l | tr -d ' ')" = '13' \
+              && curl -fsSL --max-time 25 "$image?v=${stamp}" | python -c "import sys; d=sys.stdin.buffer.read(); assert len(d)>50000 and d[:4]==b'RIFF' and d[8:12]==b'WEBP'"; then
+                echo 'Live Traditional Chinese, Simplified Chinese, anchor source, witness counts and artwork verified.'
+                exit 0
+            fi
+            sleep 10
+          done
+          echo 'GitHub Pages did not reach the required public contract in time.' >&2
+          exit 1
+
+      - name: Close accidental temporary draft pull requests
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api --paginate \
+            'repos/jerryzuhow77/child-advocacy-site/pulls?state=open&head=jerryzuhow77:feat/kaikai-witness-analysis-20260829&per_page=100' \
+            --jq '.[] | select(.title == "test") | .number' \
+          | while read -r number; do
+              test -n "$number" || continue
+              gh api -X PATCH "repos/jerryzuhow77/child-advocacy-site/pulls/${number}" -f state=closed >/dev/null
+              echo "Closed accidental draft PR #${number}."
+            done
+
+      - name: Remove one-off carrier branches
+        shell: bash
+        run: |
+          set -euo pipefail
+          git init cleanup
+          cd cleanup
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/jerryzuhow77/child-advocacy-site.git"
+          git push origin --delete chore/export-repo-20260829 2>/dev/null || true
+          git push origin --delete ops/kaikai-witness-publish-20260829 2>/dev/null || true
+          git push origin --delete feat/kaikai-witness-analysis-20260829
+          echo 'Temporary carrier branches removed after live verification.'
