@@ -1,0 +1,151 @@
+from pathlib import Path
+
+HTML_MARKER = '<!-- MEDICAL-NETWORK-OMISSIONS-20260829 -->'
+INSERTION_MARKER = '<!-- DEATH-TEMPERATURE-EVIDENCE-20260829 -->'
+CSS_MARKER = '/* MEDICAL-NETWORK-OMISSIONS-20260829 */'
+
+TRADITIONAL = '''<!-- MEDICAL-NETWORK-OMISSIONS-20260829 -->
+      <section class="medical-network-omissions" id="medical-network-omissions" aria-labelledby="medicalNetworkTitle">
+        <header><small>MEDICAL CONTACTS × OFFICIAL FINDINGS</small><h4 id="medicalNetworkTitle">醫療接觸不等於安全閉環：監察院還認定了哪些漏接？</h4><p>本區把「監察院正式認定」、「已知就醫節點」與「仍待原始病歷釐清」分開。曾經看診、拿藥或被建議轉院，不等於兒虐風險已被排除，也不能把未被點名的診所直接寫成已認定失職。</p></header>
+        <div class="medical-status-legend" aria-label="醫療證據狀態圖例"><span class="medical-status status-official">監察院正式認定</span><span class="medical-status status-record">已知醫療節點</span><span class="medical-status status-open">仍待原始資料</span></div>
+        <div class="medical-contact-cascade">
+          <article class="medical-contact-card medical-contact-record">
+            <header><time datetime="2023-11-07">11.07／11.09</time><span class="medical-status status-record">已知就醫節點｜非監察院點名違失</span></header>
+            <h5>興隆內科小兒科診所</h5>
+            <p>公開就醫時間軸記載，劉彩萱於11月7日帶孩子至兒科診所準備接種疫苗，回報醫師評估體溫偏高、口鼻處有膿痂疹，因此先看診拿藥；11月9日再度帶孩子至兒科診所。</p>
+            <aside><b>證據界線</b><p>監察院公開調查報告沒有點名興隆內科小兒科診所，也沒有對該診所作個別違失認定。本站將它列為「應回查的醫療接觸節點」；是否已出現可辨識兒虐的身體徵象、是否需要轉診或通報，仍須原始病歷、當時可見症狀、照顧者主訴、醫師證詞與後續追蹤紀錄。</p></aside>
+            <div class="source-chips"><a href="https://judgment.judicial.gov.tw/FJUD/data.aspx?ty=JD&amp;id=TPDM%2c114%2c%e8%a8%b4%2c51%2c20260416%2c2&amp;ot=in" target="_blank" rel="noopener">一審判決全文 ↗</a><a href="https://www.children.org.tw/news/news_detail/kaikai-case-timeline" target="_blank" rel="noopener">兒盟公開時間軸｜機構來源 ↗</a></div>
+          </article>
+          <article class="medical-contact-card medical-contact-official">
+            <header><time datetime="2023-11-23">11.23</time><span class="medical-status status-official">監察院正式認定</span></header>
+            <h5>牙醫診所：3顆乳牙脫落與大塊口腔潰瘍</h5>
+            <p>監察院記載，病歷有3顆牙齒脫落及口腔用藥，牙醫建議到大醫院接受小兒科完整檢查；偵查筆錄並顯示，整顆牙齒脫出通常涉及撞擊力量，且當天未觀察到孩子持續磨牙。</p>
+            <aside><b>監察院判斷</b><p>一歲多幼童出現3顆掉牙與大塊口腔潰瘍，明顯不屬常態；醫事人員雖已意識孩子異常並建議轉院，卻未察覺可能存在成人外力不當對待的風險，錯失及時通報時機。</p></aside>
+            <div class="source-chips"><a href="https://cybsbox.cy.gov.tw/CYBSBoxSSL/edoc/download/76497" target="_blank" rel="noopener">監察院調查報告 P.45–48 ↗</a></div>
+          </article>
+          <article class="medical-contact-card medical-contact-system">
+            <header><time>制度層</time><span class="medical-status status-open">從單次看診到跨網絡閉環</span></header>
+            <h5>基層診所是第一線，但資訊沒有自動進入兒保系統</h5>
+            <p>監察院指出，學齡前幼兒通常先到基層診所就醫；一般兒科、家醫科與牙科因此都是重要的受虐辨識網絡。幼兒專責醫師制度仍受被動派案、家長拒絕或兒童實際就醫習慣限制，不能取代所有第一線醫事人員的責任通報敏感度。</p>
+            <aside><b>要形成安全閉環</b><p>醫療端須能辨識與年齡不符的傷勢並依法通報；社福端須取得就醫結果、核實轉診是否完成、把跨次看診與照片、體重、行為變化放在同一張風險圖上。</p></aside>
+          </article>
+        </div>
+        <details class="control-yuan-omissions">
+          <summary><span>其他監察院認定或要求檢討的制度斷點</span><em>展開6項</em></summary>
+          <div class="control-yuan-omission-grid">
+            <article><span>01</span><b>衛福部檢查、評鑑未及早發現</b><p>兒盟收出養服務的7項程序缺失，是案件發生後實際查核才被發現；歷年業務檢查與定期評鑑未能揭露。</p></article>
+            <article><span>02</span><b>出養前全日照顧落在監管灰區</b><p>具家外替代性照顧性質，卻未完整受到寄養安置的監管、支持與服務規範。</p></article>
+            <article><span>03</span><b>新北被動接受片面資訊</b><p>樹鶯未進一步親訪、跨體系聯繫、共同訪視或召開個案研討；督導審核紀錄並有數月落差。</p></article>
+            <article><span>04</span><b>臺北居托訪視與紀錄失真</b><p>案後才發現實際托育地不是登記處所且環境髒亂、煙味濃；9月26日訪視未記載前一日照片可見的額頭瘀傷，並記錄「每天填寫」實際不存在的寶寶日誌。</p></article>
+            <article><span>05</span><b>另一名幼童家長反映後未實訪</b><p>11月10日家長反映幼童時常紅屁股並欲更換保母，居托中心仍未實地了解幼童及照顧情形。</p></article>
+            <article><span>06</span><b>跨縣市資訊與訓練機制不足</b><p>收出養流程缺少跨縣市通報與資訊流通；保母取得技術士證至登記服務相隔10餘年，也欠缺服務前的強化實務訓練配套。</p></article>
+          </div>
+        </details>
+        <aside class="medical-evidence-boundary"><b>固定判讀規則</b><p><strong>監察院行政認定</strong>針對政府制度與執行違失；<strong>一審法院認定</strong>仍在上訴；<strong>興隆診所</strong>目前只列為已知就醫節點。三種證據狀態不得混成同一種法律責任。</p></aside>
+        <div class="source-chips"><a href="https://www.cy.gov.tw/News_Content.aspx?Create=1&amp;n=125&amp;s=34118" target="_blank" rel="noopener">監察院新聞稿 ↗</a><a href="https://cybsbox.cy.gov.tw/CYBSBoxSSL/edoc/download/76497" target="_blank" rel="noopener">監察院調查報告 ↗</a><a href="https://www.judicial.gov.tw/tw/cp-1888-1528027-1ee8d-1.html" target="_blank" rel="noopener">臺北地院一審新聞稿 ↗</a></div>
+      </section>'''
+
+SIMPLIFIED = '''<!-- MEDICAL-NETWORK-OMISSIONS-20260829 -->
+      <section class="medical-network-omissions" id="medical-network-omissions" aria-labelledby="medicalNetworkTitle">
+        <header><small>MEDICAL CONTACTS × OFFICIAL FINDINGS</small><h4 id="medicalNetworkTitle">医疗接触不等于安全闭环：监察院还认定了哪些漏接？</h4><p>本区把“监察院正式认定”“已知就医节点”与“仍待原始病历厘清”分开。曾经看诊、拿药或被建议转院，不等于儿虐风险已被排除，也不能把未被点名的诊所直接写成已认定失职。</p></header>
+        <div class="medical-status-legend" aria-label="医疗证据状态图例"><span class="medical-status status-official">监察院正式认定</span><span class="medical-status status-record">已知医疗节点</span><span class="medical-status status-open">仍待原始资料</span></div>
+        <div class="medical-contact-cascade">
+          <article class="medical-contact-card medical-contact-record">
+            <header><time datetime="2023-11-07">11.07／11.09</time><span class="medical-status status-record">已知就医节点｜非监察院点名失职</span></header>
+            <h5>兴隆内科小儿科诊所</h5>
+            <p>公开就医时间轴记载，刘彩萱于11月7日带孩子至儿科诊所准备接种疫苗，回报医师评估体温偏高、口鼻处有脓痂疹，因此先看诊拿药；11月9日再次带孩子至儿科诊所。</p>
+            <aside><b>证据界线</b><p>监察院公开调查报告没有点名兴隆内科小儿科诊所，也没有对该诊所作个别失职认定。本站将它列为“应回查的医疗接触节点”；是否已出现可辨识儿虐的身体征象、是否需要转诊或通报，仍须原始病历、当时可见症状、照顾者主诉、医师证词与后续追踪纪录。</p></aside>
+            <div class="source-chips"><a href="https://judgment.judicial.gov.tw/FJUD/data.aspx?ty=JD&amp;id=TPDM%2c114%2c%e8%a8%b4%2c51%2c20260416%2c2&amp;ot=in" target="_blank" rel="noopener">一审判决全文 ↗</a><a href="https://www.children.org.tw/news/news_detail/kaikai-case-timeline" target="_blank" rel="noopener">儿盟公开时间轴｜机构来源 ↗</a></div>
+          </article>
+          <article class="medical-contact-card medical-contact-official">
+            <header><time datetime="2023-11-23">11.23</time><span class="medical-status status-official">监察院正式认定</span></header>
+            <h5>牙医诊所：3颗乳牙脱落与大块口腔溃疡</h5>
+            <p>监察院记载，病历有3颗牙齿脱落及口腔用药，牙医建议到大医院接受小儿科完整检查；侦查笔录并显示，整颗牙齿脱出通常涉及撞击力量，且当天未观察到孩子持续磨牙。</p>
+            <aside><b>监察院判断</b><p>一岁多幼童出现3颗掉牙与大块口腔溃疡，明显不属常态；医事人员虽已意识孩子异常并建议转院，却未察觉可能存在成人外力不当对待的风险，错失及时通报时机。</p></aside>
+            <div class="source-chips"><a href="https://cybsbox.cy.gov.tw/CYBSBoxSSL/edoc/download/76497" target="_blank" rel="noopener">监察院调查报告 P.45–48 ↗</a></div>
+          </article>
+          <article class="medical-contact-card medical-contact-system">
+            <header><time>制度层</time><span class="medical-status status-open">从单次看诊到跨网络闭环</span></header>
+            <h5>基层诊所是第一线，但资讯没有自动进入儿保系统</h5>
+            <p>监察院指出，学龄前幼儿通常先到基层诊所就医；一般儿科、家医科与牙科因此都是重要的受虐辨识网络。幼儿专责医师制度仍受被动派案、家长拒绝或儿童实际就医习惯限制，不能取代所有第一线医事人员的责任通报敏感度。</p>
+            <aside><b>要形成安全闭环</b><p>医疗端须能辨识与年龄不符的伤势并依法通报；社福端须取得就医结果、核实转诊是否完成，把跨次看诊与照片、体重、行为变化放在同一张风险图上。</p></aside>
+          </article>
+        </div>
+        <details class="control-yuan-omissions">
+          <summary><span>其他监察院认定或要求检讨的制度断点</span><em>展开6项</em></summary>
+          <div class="control-yuan-omission-grid">
+            <article><span>01</span><b>卫福部检查、评鉴未及早发现</b><p>儿盟收出养服务的7项程序缺失，是案件发生后实际查核才被发现；历年业务检查与定期评鉴未能揭露。</p></article>
+            <article><span>02</span><b>出养前全日照顾落在监管灰区</b><p>具家外替代性照顾性质，却未完整受到寄养安置的监管、支持与服务规范。</p></article>
+            <article><span>03</span><b>新北被动接受片面资讯</b><p>树莺未进一步亲访、跨体系联系、共同访视或召开个案研讨；督导审核纪录并有数月落差。</p></article>
+            <article><span>04</span><b>台北居托访视与纪录失真</b><p>案后才发现实际托育地不是登记处所且环境脏乱、烟味浓；9月26日访视未记载前一日照片可见的额头瘀伤，并记录“每天填写”实际不存在的宝宝日志。</p></article>
+            <article><span>05</span><b>另一名幼童家长反映后未实访</b><p>11月10日家长反映幼童时常红屁股并欲更换保母，居托中心仍未实地了解幼童及照顾情形。</p></article>
+            <article><span>06</span><b>跨县市资讯与训练机制不足</b><p>收出养流程缺少跨县市通报与资讯流通；保母取得技术士证至登记服务相隔10余年，也欠缺服务前的强化实务训练配套。</p></article>
+          </div>
+        </details>
+        <aside class="medical-evidence-boundary"><b>固定判读规则</b><p><strong>监察院行政认定</strong>针对政府制度与执行失职；<strong>一审法院认定</strong>仍在上诉；<strong>兴隆诊所</strong>目前只列为已知就医节点。三种证据状态不得混成同一种法律责任。</p></aside>
+        <div class="source-chips"><a href="https://www.cy.gov.tw/News_Content.aspx?Create=1&amp;n=125&amp;s=34118" target="_blank" rel="noopener">监察院新闻稿 ↗</a><a href="https://cybsbox.cy.gov.tw/CYBSBoxSSL/edoc/download/76497" target="_blank" rel="noopener">监察院调查报告 ↗</a><a href="https://www.judicial.gov.tw/tw/cp-1888-1528027-1ee8d-1.html" target="_blank" rel="noopener">台北地院一审新闻稿 ↗</a></div>
+      </section>'''
+
+CSS_BLOCK = r'''
+
+/* MEDICAL-NETWORK-OMISSIONS-20260829 */
+.medical-network-omissions{scroll-margin-top:90px;margin:18px 0 20px;padding:clamp(22px,3.5vw,38px);background:linear-gradient(145deg,#fffaf0,#efe1c6);color:var(--text);border:1px solid rgba(210,160,82,.62);border-left:8px solid var(--gold);box-shadow:0 18px 48px rgba(0,0,0,.18)}
+.medical-network-omissions>header{max-width:950px;margin:0 auto 20px;text-align:center}.medical-network-omissions>header small{color:var(--red);font-size:9px;font-weight:950;letter-spacing:.15em}.medical-network-omissions>header h4{margin:7px 0 9px;color:var(--ink);font:900 clamp(25px,3.4vw,41px)/1.34 var(--serif)}.medical-network-omissions>header p{margin:0;color:#52625f;font-size:13px;line-height:1.82}
+.medical-status-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-bottom:18px}.medical-status{display:inline-flex;align-items:center;min-height:28px;padding:4px 10px;border-radius:999px;color:#fff;font-size:9px;font-weight:950;letter-spacing:.045em}.status-official{background:#87372f}.status-record{background:#355f78}.status-open{background:#7e622b}
+.medical-contact-cascade{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.medical-contact-card{display:flex;flex-direction:column;min-width:0;padding:20px;background:rgba(255,254,248,.96);border-top:6px solid var(--teal);box-shadow:0 10px 26px rgba(8,37,48,.08)}.medical-contact-record{border-top-color:#355f78}.medical-contact-official{border-top-color:var(--red)}.medical-contact-system{border-top-color:var(--gold)}.medical-contact-card>header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:7px}.medical-contact-card time{color:var(--red-dark);font-size:12px;font-weight:950;letter-spacing:.07em}.medical-contact-card h5{margin:13px 0 8px;color:var(--ink);font:900 20px/1.42 var(--serif)}.medical-contact-card>p{margin:0;color:#52615e;font-size:12px;line-height:1.76}.medical-contact-card>aside{margin-top:14px;padding:14px 15px;background:#e7ddc8;border-left:5px solid var(--teal)}.medical-contact-official>aside{border-left-color:var(--red)}.medical-contact-system>aside{border-left-color:var(--gold)}.medical-contact-card>aside b{display:block;margin-bottom:4px;color:var(--ink);font:900 14px/1.4 var(--serif)}.medical-contact-card>aside p{margin:0;color:#53615e;font-size:11px;line-height:1.72}.medical-contact-card .source-chips{margin-top:auto}
+.control-yuan-omissions{margin-top:16px;background:#fffdf7;border:1px solid #cfbb91}.control-yuan-omissions>summary{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:16px 18px;background:var(--navy);color:#fff;cursor:pointer;font-weight:900;list-style:none}.control-yuan-omissions>summary::-webkit-details-marker{display:none}.control-yuan-omissions>summary span{font:900 17px/1.45 var(--serif)}.control-yuan-omissions>summary em{flex:0 0 auto;color:#f0c77b;font-size:10px;font-style:normal;letter-spacing:.06em}.control-yuan-omissions>summary:after{content:'＋';display:grid;place-items:center;width:26px;height:26px;border:1px solid rgba(255,255,255,.45);border-radius:50%;font-size:17px}.control-yuan-omissions[open]>summary:after{content:'−'}
+.control-yuan-omission-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:#d8c6a3}.control-yuan-omission-grid article{position:relative;min-height:178px;padding:20px 18px;background:#fffaf0}.control-yuan-omission-grid article>span{position:absolute;top:0;right:0;padding:5px 8px;background:#e2d1ad;color:var(--red-dark);font-size:9px;font-weight:950}.control-yuan-omission-grid b{display:block;padding-right:24px;color:var(--ink);font:900 16px/1.46 var(--serif)}.control-yuan-omission-grid p{margin:8px 0 0;color:#53615e;font-size:11px;line-height:1.72}
+.medical-evidence-boundary{display:grid;grid-template-columns:180px 1fr;gap:18px;align-items:center;margin-top:15px;padding:17px 19px;background:#173d4e;color:#fff;border-left:7px solid var(--gold)}.medical-evidence-boundary b{color:#f0c77b;font:900 17px/1.45 var(--serif)}.medical-evidence-boundary p{margin:0;color:#d4dfda;font-size:11px;line-height:1.75}.medical-evidence-boundary strong{color:#fff}.medical-network-omissions>.source-chips{border-top-color:#c9b68e}
+@media(max-width:980px){.medical-contact-cascade,.control-yuan-omission-grid{grid-template-columns:1fr 1fr}.medical-contact-system{grid-column:1/-1}}
+@media(max-width:640px){.medical-network-omissions{padding:22px 13px}.medical-contact-cascade,.control-yuan-omission-grid,.medical-evidence-boundary{grid-template-columns:1fr}.medical-contact-system{grid-column:auto}.medical-contact-card{padding:18px 15px}.control-yuan-omission-grid article{min-height:0}.control-yuan-omissions>summary{padding:14px}.control-yuan-omissions>summary span{font-size:15px}.control-yuan-omissions>summary em{display:none}}
+@media print{.medical-network-omissions{background:#fff;color:#111;box-shadow:none}.medical-contact-cascade,.control-yuan-omission-grid{break-inside:avoid}.control-yuan-omissions:not([open])>.control-yuan-omission-grid{display:grid}}
+'''
+
+CONFIGS = [
+    {
+        'path': Path('hearing-records/prison-watch/kaikai-final-chapter/index.html'),
+        'block': TRADITIONAL,
+        'nav_old': '<a href="#dental-warning">牙醫警訊</a><a href="#death-temperature-evidence">24°C與離世時間</a>',
+        'nav_new': '<a href="#dental-warning">牙醫警訊</a><a href="#medical-network-omissions">醫療漏接</a><a href="#death-temperature-evidence">24°C與離世時間</a>',
+        'required': ['興隆內科小兒科診所', '非監察院點名違失', '其他監察院認定或要求檢討的制度斷點'],
+    },
+    {
+        'path': Path('hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html'),
+        'block': SIMPLIFIED,
+        'nav_old': '<a href="#dental-warning">牙医警讯</a><a href="#death-temperature-evidence">24°C与离世时间</a>',
+        'nav_new': '<a href="#dental-warning">牙医警讯</a><a href="#medical-network-omissions">医疗漏接</a><a href="#death-temperature-evidence">24°C与离世时间</a>',
+        'required': ['兴隆内科小儿科诊所', '非监察院点名失职', '其他监察院认定或要求检讨的制度断点'],
+    },
+]
+
+for config in CONFIGS:
+    path = config['path']
+    text = path.read_text(encoding='utf-8')
+    if HTML_MARKER not in text:
+        if text.count(INSERTION_MARKER) != 1:
+            raise SystemExit(f'{path}: expected one insertion marker, found {text.count(INSERTION_MARKER)}')
+        text = text.replace(INSERTION_MARKER, config['block'] + '\n' + INSERTION_MARKER, 1)
+    if config['nav_new'] not in text:
+        if text.count(config['nav_old']) != 1:
+            raise SystemExit(f'{path}: expected one navigation anchor, found {text.count(config["nav_old"])}')
+        text = text.replace(config['nav_old'], config['nav_new'], 1)
+    text = text.replace('final-chapter.css?v=20260829-20', 'final-chapter.css?v=20260829-21')
+    if text.count('id="medical-network-omissions"') != 1:
+        raise SystemExit(f'{path}: medical anchor count is not one')
+    if text.count('href="#medical-network-omissions"') != 1:
+        raise SystemExit(f'{path}: medical navigation count is not one')
+    for phrase in config['required']:
+        if phrase not in text:
+            raise SystemExit(f'{path}: missing phrase {phrase}')
+    path.write_text(text, encoding='utf-8')
+
+css_path = Path('hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css')
+css = css_path.read_text(encoding='utf-8')
+if CSS_MARKER not in css:
+    css += CSS_BLOCK
+if css.count(CSS_MARKER) != 1:
+    raise SystemExit(f'CSS marker count is {css.count(CSS_MARKER)}')
+for phrase in ['.medical-network-omissions', '.medical-contact-cascade', '.control-yuan-omission-grid']:
+    if phrase not in css:
+        raise SystemExit(f'CSS missing {phrase}')
+css_path.write_text(css, encoding='utf-8')
