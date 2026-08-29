@@ -6,6 +6,20 @@ from pathlib import Path
 
 def ensure_witness_entry(path: Path, section_id: str, href: str, label: str) -> None:
     text = path.read_text(encoding='utf-8')
+
+    # Earlier one-off attempts could place the CTA in a later witness header.
+    # Remove every stale copy globally before inserting the single canonical link.
+    stale_wrapper = re.compile(
+        rf'<div\s+class="official-source-links medical-zone-entry">\s*<a\b[^>]*>\s*{re.escape(label)}\s*</a>\s*</div>',
+        re.S,
+    )
+    text = stale_wrapper.sub('', text)
+    stale_anchor = re.compile(
+        rf'<a\b[^>]*class="[^"]*medical-zone-entry[^"]*"[^>]*>\s*{re.escape(label)}\s*</a>',
+        re.S,
+    )
+    text = stale_anchor.sub('', text)
+
     marker = f'id="{section_id}"'
     marker_at = text.find(marker)
     if marker_at < 0:
@@ -17,13 +31,6 @@ def ensure_witness_entry(path: Path, section_id: str, href: str, label: str) -> 
     section_end += len('</aside>')
     section = text[section_start:section_end]
 
-    # Remove stale copies from earlier one-off attempts, then insert exactly one
-    # entry in the existing source-link row.
-    anchor_pattern = re.compile(r'<a\b[^>]*>.*?</a>', re.S)
-    section = anchor_pattern.sub(
-        lambda match: '' if label in match.group(0) or f'href="{href}"' in match.group(0) else match.group(0),
-        section,
-    )
     links_open = '<div class="supplement-links">'
     links_at = section.find(links_open)
     if links_at < 0:
