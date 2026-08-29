@@ -4,7 +4,7 @@
   const page = document.querySelector('.hz-page');
   if (!page) return;
 
-  const ids = ['before', 'taken', 'unseen', 'abuse', 'last-day', 'hospital', 'verdict', 'father', 'protection'];
+  const ids = ['before', 'taken', 'unseen', 'abuse', 'last-day', 'hospital', 'verdict', 'father', 'precedents', 'protection'];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mobile = matchMedia('(max-width: 900px)').matches;
   const rail = document.querySelector('.hz-lantern-rail');
@@ -479,4 +479,79 @@
     finish();
     finalCopy?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
   });
+})();
+
+
+/* v7: interactive legal comparison, source drawer and restrained GSAP craft reveals. */
+(() => {
+  'use strict';
+
+  const filterButtons = [...document.querySelectorAll('[data-hz-case-filter]')];
+  const caseCards = [...document.querySelectorAll('.hz-case-card[data-case-tags]')];
+  const matrixRows = [...document.querySelectorAll('.hz-compare-matrix tbody tr[data-case-tags]')];
+  const count = document.querySelector('[data-hz-filter-count]');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const countSuffix = count ? count.textContent.replace(/^\d+\s*/, '') : '';
+
+  const matches = (node, filter) =>
+    filter === 'all' || (node.dataset.caseTags || '').split(/\s+/).includes(filter);
+
+  filterButtons.forEach(button => button.addEventListener('click', () => {
+    const filter = button.dataset.hzCaseFilter || 'all';
+    filterButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+
+    caseCards.forEach(card => { card.hidden = !matches(card, filter); });
+    matrixRows.forEach(row => { row.hidden = !matches(row, filter); });
+
+    const visibleCards = caseCards.filter(card => !card.hidden);
+    if (count) count.textContent = visibleCards.length + ' ' + countSuffix;
+
+    if (!reduce && window.gsap && visibleCards.length) {
+      gsap.fromTo(visibleCards, { opacity: 0, y: 12 }, {
+        opacity: 1, y: 0, duration: .42, stagger: .06, ease: 'power2.out', clearProps: 'opacity,transform'
+      });
+    }
+  }));
+
+  const drawer = document.querySelector('[data-hz-source-drawer]');
+  const drawerTitle = drawer?.querySelector('[data-hz-source-title]');
+  const drawerStatus = drawer?.querySelector('[data-hz-source-status]');
+  const drawerDate = drawer?.querySelector('[data-hz-source-date]');
+  const drawerSummary = drawer?.querySelector('[data-hz-source-summary]');
+  const drawerLink = drawer?.querySelector('[data-hz-source-link]');
+
+  document.querySelectorAll('[data-hz-source-open]').forEach(button => {
+    button.addEventListener('click', () => {
+      if (!drawer) return;
+      if (drawerTitle) drawerTitle.textContent = button.dataset.sourceTitle || '';
+      if (drawerStatus) drawerStatus.textContent = button.dataset.sourceStatus || '';
+      if (drawerDate) drawerDate.textContent = button.dataset.sourceDate || '';
+      if (drawerSummary) drawerSummary.textContent = button.dataset.sourceSummary || '';
+      if (drawerLink) drawerLink.href = button.dataset.sourceUrl || '#';
+      if (typeof drawer.showModal === 'function') drawer.showModal();
+      else drawer.setAttribute('open', '');
+      if (!reduce && window.gsap) {
+        const panel = drawer.querySelector('.hz-source-drawer-panel');
+        if (panel) gsap.fromTo(panel, { xPercent: 12, opacity: .7 }, { xPercent: 0, opacity: 1, duration: .38, ease: 'power2.out', clearProps: 'transform,opacity' });
+      }
+    });
+  });
+
+  if (!reduce && window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+    document.querySelectorAll('.hz-matrix-zone, .hz-intent-panel, .hz-evidence-panel, .hz-intervention-panel').forEach(panel => {
+      gsap.fromTo(panel, { opacity: .72, y: 18 }, {
+        opacity: 1, y: 0, duration: .72, ease: 'power2.out',
+        scrollTrigger: { trigger: panel, start: 'top 86%', once: true },
+        clearProps: 'opacity,transform'
+      });
+    });
+    document.querySelectorAll('.hz-evidence-tree li, .hz-intervention-path li').forEach((item, index) => {
+      gsap.fromTo(item, { opacity: .55, y: 10 }, {
+        opacity: 1, y: 0, duration: .5, delay: (index % 3) * .05, ease: 'power2.out',
+        scrollTrigger: { trigger: item, start: 'top 91%', once: true },
+        clearProps: 'opacity,transform'
+      });
+    });
+  }
 })();
