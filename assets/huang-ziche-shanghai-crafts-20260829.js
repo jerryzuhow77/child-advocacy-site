@@ -162,7 +162,7 @@
       if (openingCraftLayer) {
         gsap.to(openingCraftLayer, {
           '--hz-stage-craft-x': mobile ? '1.4%' : '2.4%',
-          '--hz-stage-craft-glow': mobile ? .4 : .48,
+          '--hz-stage-craft-glow': mobile ? .72 : .68,
           duration: 4.8,
           repeat: -1,
           yoyo: true,
@@ -300,8 +300,8 @@
         const craftLayer = stage.querySelector('.tt-pose-layer');
         if (craftLayer) {
           gsap.fromTo(craftLayer,
-            { '--hz-stage-craft-x': '-1.8%', '--hz-stage-craft-glow': .22 },
-            { '--hz-stage-craft-x': '1.8%', '--hz-stage-craft-glow': .46, duration: 3.8, ease: 'sine.inOut',
+            { '--hz-stage-craft-x': '-1.2%', '--hz-stage-craft-glow': .48 },
+            { '--hz-stage-craft-x': '1.2%', '--hz-stage-craft-glow': .7, duration: 3.8, ease: 'sine.inOut',
               scrollTrigger: { trigger: stage, start: 'top 90%', end: 'bottom 15%', scrub: .65 } });
         }
         const woman = stage.querySelector('.tt-pose-actor--woman');
