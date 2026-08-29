@@ -23,6 +23,18 @@ jobs:
         run: |
           set -euo pipefail
           git pull --rebase origin main
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('.github/scripts/publish-kaikai-chapter-two-major-20260829.py')
+          text = path.read_text(encoding='utf-8')
+          old = "'data-kaikai-medical-root-entry': 1,"
+          new = "'data-kaikai-medical-root-entry': 2,"
+          if old in text:
+              text = text.replace(old, new, 1)
+          elif new not in text:
+              raise SystemExit('Could not normalize the existing medical-root marker count')
+          path.write_text(text, encoding='utf-8')
+          PY
           python3 -m py_compile .github/scripts/publish-kaikai-chapter-two-major-20260829.py
           python3 .github/scripts/publish-kaikai-chapter-two-major-20260829.py
           node --check assets/home-kaikai-chapter-two-20260829.js
