@@ -1,0 +1,48 @@
+name: Fresh public Kaikai Chapter 2 browser verification
+
+on:
+  push:
+    branches:
+      - qa/kaikai-reader-live-browser-20260829
+    paths:
+      - '.github/workflows/qa-kaikai-reader-live-browser-20260829.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  chrome:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Correct top-of-page mobile audio test sequence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('.github/scripts/verify-kaikai-reader-live-20260829.mjs')
+          text = path.read_text(encoding='utf-8')
+          anchor = "      if (viewportName === 'mobile') {\n"
+          insertion = "        await page.evaluate(() => window.scrollTo(0, 0));\n        await page.waitForFunction(() => !document.querySelector('[data-audio-controller]')?.classList.contains('is-collapsed'), null, { timeout: 5000 });\n        await page.waitForTimeout(350);\n"
+          if text.count(anchor) != 1:
+              raise SystemExit(f'Expected one mobile verifier anchor, found {text.count(anchor)}')
+          path.write_text(text.replace(anchor, anchor + insertion, 1), encoding='utf-8')
+          PY
+          node --check .github/scripts/verify-kaikai-reader-live-20260829.mjs
+
+      - name: Install Playwright driver
+        run: npm install --no-save playwright-core@1.55.0
+
+      - name: Run public Traditional and Simplified desktop and mobile Chrome checks
+        run: node .github/scripts/verify-kaikai-reader-live-20260829.mjs
+
+      - name: Upload screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kaikai-current-live-browser-proof
+          path: browser-validation/reader-optimizations
+          retention-days: 14
