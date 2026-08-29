@@ -1,0 +1,403 @@
+name: Publish mobile panorama prologue for Kaikai Chapter 2
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/oneoff-kaikai-mobile-panorama-prologue-20260829.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: oneoff-kaikai-mobile-panorama-prologue-20260829
+  cancel-in-progress: false
+
+jobs:
+  publish-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out current main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Rebase onto latest main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git pull --rebase origin main
+
+      - name: Apply mobile panorama presentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY_PATCH'
+          from pathlib import Path
+          import re
+
+          base = Path('hearing-records/prison-watch/kaikai-final-chapter')
+          css_path = base / 'final-chapter.css'
+          css = css_path.read_text(encoding='utf-8')
+
+          start_marker = '/* MOBILE-PANORAMA-PROLOGUE-20260829 */'
+          end_marker = '/* END-MOBILE-PANORAMA-PROLOGUE-20260829 */'
+          css = re.sub(
+              rf'\n?{re.escape(start_marker)}.*?{re.escape(end_marker)}\n?',
+              '\n',
+              css,
+              flags=re.S,
+          ).rstrip()
+
+          panorama_css = r'''
+
+/* MOBILE-PANORAMA-PROLOGUE-20260829 */
+@media (max-width:900px) and (orientation:portrait){
+  .entry-prologue{
+    background:#020b11;
+  }
+  .entry-prologue::before{
+    position:absolute;
+    z-index:0;
+    inset:-8%;
+    background:
+      linear-gradient(180deg,rgba(1,10,16,.34),rgba(1,10,16,.58)),
+      url("./assets/kaikai-final-chapter-prologue-poster.jpg") center / cover no-repeat;
+    filter:blur(24px) saturate(.88) brightness(.56);
+    transform:scale(1.08);
+    opacity:.96;
+    pointer-events:none;
+    content:"";
+  }
+  .entry-prologue__video{
+    z-index:1;
+    object-fit:contain;
+    object-position:center center;
+    background:transparent;
+    filter:drop-shadow(0 0 28px rgba(0,0,0,.68));
+  }
+  .entry-prologue__scrim{
+    z-index:2;
+    background:
+      linear-gradient(180deg,rgba(1,10,16,.58) 0%,rgba(1,10,16,.04) 29%,rgba(1,10,16,.06) 63%,rgba(1,10,16,.86) 100%),
+      radial-gradient(circle at 50% 50%,transparent 18%,rgba(1,10,16,.18) 100%);
+  }
+  .entry-prologue__chrome{
+    z-index:3;
+  }
+}
+/* END-MOBILE-PANORAMA-PROLOGUE-20260829 */
+'''
+          css_path.write_text(css + panorama_css, encoding='utf-8')
+
+          pages = [base / 'index.html', base / 'zh-Hans/index.html']
+          for page in pages:
+              html = page.read_text(encoding='utf-8')
+              html, count = re.subn(
+                  r'(final-chapter\.css\?v=)[^"\']+',
+                  r'\g<1>20260829-mobile-panorama-1',
+                  html,
+                  count=1,
+              )
+              if count != 1:
+                  raise SystemExit(f'CSS cache marker not found in {page}')
+              page.write_text(html, encoding='utf-8')
+          PY_PATCH
+
+          git diff --check
+
+      - name: Validate the narrow source contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='hearing-records/prison-watch/kaikai-final-chapter'
+          css="$base/final-chapter.css"
+          grep -q 'MOBILE-PANORAMA-PROLOGUE-20260829' "$css"
+          grep -q 'object-fit:contain' "$css"
+          grep -q 'kaikai-final-chapter-prologue-poster.jpg' "$css"
+          grep -q 'filter:blur(24px)' "$css"
+          grep -q 'final-chapter.css?v=20260829-mobile-panorama-1' "$base/index.html"
+          grep -q 'final-chapter.css?v=20260829-mobile-panorama-1' "$base/zh-Hans/index.html"
+          grep -q 'data-entry-prologue' "$base/index.html"
+          grep -q 'data-entry-prologue' "$base/zh-Hans/index.html"
+          grep -q 'data-track-count="2"' "$base/index.html"
+          grep -q 'data-track-count="2"' "$base/zh-Hans/index.html"
+          test -s "$base/assets/kaikai-final-chapter-prologue-poster.jpg"
+          test -s "$base/assets/kaikai-final-chapter-prologue.webm"
+          test -s "$base/assets/kaikai-final-chapter-prologue.mp4"
+
+      - name: Install Chromium verification tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/kaikai-panorama-browser
+          cd /tmp/kaikai-panorama-browser
+          npm init -y >/dev/null 2>&1
+          npm install --silent playwright@1.55.0
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Verify local mobile panorama and desktop preservation
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$GITHUB_WORKSPACE"
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/kaikai-panorama-http.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:4173/ >/dev/null && break
+            sleep 1
+          done
+
+          mkdir -p /tmp/kaikai-panorama-local
+          node <<'NODE'
+          const { chromium } = require('/tmp/kaikai-panorama-browser/node_modules/playwright');
+          const assert = require('node:assert/strict');
+          const fs = require('node:fs');
+
+          (async () => {
+            const browser = await chromium.launch({ headless: true });
+            const root = 'http://127.0.0.1:4173/hearing-records/prison-watch/kaikai-final-chapter/';
+            const cases = [
+              ['zh-Hant-mobile', root, { width: 390, height: 844 }, true],
+              ['zh-Hans-mobile', `${root}zh-Hans/`, { width: 390, height: 844 }, true],
+              ['zh-Hant-desktop', root, { width: 1440, height: 1000 }, false]
+            ];
+            const report = [];
+
+            for (const [name, url, viewport, mobile] of cases) {
+              const page = await browser.newPage({ viewport, isMobile: mobile, hasTouch: mobile });
+              const pageErrors = [];
+              page.on('pageerror', error => pageErrors.push(error.message));
+              const response = await page.goto(url, { waitUntil: 'domcontentloaded' });
+              assert.equal(response.status(), 200, `${name}: document status`);
+              const overlay = page.locator('[data-entry-prologue]');
+              await overlay.waitFor({ state: 'visible' });
+              await page.waitForFunction(() => {
+                const video = document.querySelector('[data-prologue-video]');
+                return Boolean(video?.error) || (video?.videoWidth > 0 && video?.videoHeight > 0);
+              }, null, { timeout: 20000 });
+
+              const state = await page.evaluate(() => {
+                const overlay = document.querySelector('[data-entry-prologue]');
+                const video = document.querySelector('[data-prologue-video]');
+                const style = getComputedStyle(video);
+                const backdrop = getComputedStyle(overlay, '::before');
+                const rect = video.getBoundingClientRect();
+                const intrinsicRatio = video.videoWidth / video.videoHeight;
+                const boxRatio = rect.width / rect.height;
+                const paintedWidth = intrinsicRatio >= boxRatio ? rect.width : rect.height * intrinsicRatio;
+                const paintedHeight = intrinsicRatio >= boxRatio ? rect.width / intrinsicRatio : rect.height;
+                return {
+                  objectFit: style.objectFit,
+                  objectPosition: style.objectPosition,
+                  videoWidth: video.videoWidth,
+                  videoHeight: video.videoHeight,
+                  boxWidth: rect.width,
+                  boxHeight: rect.height,
+                  paintedWidth,
+                  paintedHeight,
+                  backdropContent: backdrop.content,
+                  backdropImage: backdrop.backgroundImage,
+                  backdropFilter: backdrop.filter,
+                  overflowX: document.documentElement.scrollWidth - innerWidth,
+                  bodyLocked: document.body.classList.contains('prologue-active')
+                };
+              });
+
+              if (mobile) {
+                assert.equal(state.objectFit, 'contain', `${name}: mobile video is not contain`);
+                assert.ok(state.backdropContent !== 'none', `${name}: panorama backdrop is missing`);
+                assert.ok(state.backdropImage.includes('kaikai-final-chapter-prologue-poster.jpg'), `${name}: poster backdrop is missing`);
+                assert.ok(state.backdropFilter.includes('blur'), `${name}: backdrop blur is missing`);
+                assert.ok(state.paintedWidth >= viewport.width - 1, `${name}: panorama does not use the full phone width`);
+                assert.ok(state.paintedHeight < state.boxHeight, `${name}: expected letterbox space was not preserved`);
+              } else {
+                assert.equal(state.objectFit, 'cover', `${name}: desktop cover presentation regressed`);
+              }
+              assert.ok(state.videoWidth > state.videoHeight, `${name}: prologue is not a landscape source`);
+              assert.ok(state.overflowX <= 1, `${name}: horizontal overflow ${state.overflowX}px`);
+              assert.equal(state.bodyLocked, true, `${name}: prologue no longer owns entry screen`);
+              assert.deepEqual(pageErrors, [], `${name}: page errors: ${pageErrors.join(' | ')}`);
+
+              await page.screenshot({ path: `/tmp/kaikai-panorama-local/${name}.png`, fullPage: false });
+              report.push({ name, viewport, ...state });
+              await page.close();
+            }
+
+            fs.writeFileSync('/tmp/kaikai-panorama-local/report.json', JSON.stringify(report, null, 2));
+            await browser.close();
+          })().catch(error => {
+            console.error(error);
+            process.exit(1);
+          });
+          NODE
+
+      - name: Commit publication and remove the one-off workflow
+        id: publish
+        shell: bash
+        run: |
+          set -euo pipefail
+          workflow='.github/workflows/oneoff-kaikai-mobile-panorama-prologue-20260829.yml'
+          git rm "$workflow"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Show the complete prologue panorama on phones'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git rebase origin/main
+            if git push origin HEAD:main; then
+              break
+            fi
+            sleep $((attempt * 3))
+          done
+          commit_sha="$(git rev-parse HEAD)"
+          echo "commit_sha=$commit_sha" >> "$GITHUB_OUTPUT"
+          echo "Published $commit_sha"
+
+      - name: Wait for GitHub Pages propagation
+        shell: bash
+        run: |
+          set -euo pipefail
+          site='https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/'
+          ready=0
+          for attempt in $(seq 1 120); do
+            stamp="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${attempt}"
+            curl -fsSL --retry 2 -H 'Cache-Control: no-cache' "${site}?panorama-verify=${stamp}" -o /tmp/live-zh-Hant.html || true
+            curl -fsSL --retry 2 -H 'Cache-Control: no-cache' "${site}zh-Hans/?panorama-verify=${stamp}" -o /tmp/live-zh-Hans.html || true
+            if grep -q 'final-chapter.css?v=20260829-mobile-panorama-1' /tmp/live-zh-Hant.html 2>/dev/null \
+              && grep -q 'final-chapter.css?v=20260829-mobile-panorama-1' /tmp/live-zh-Hans.html 2>/dev/null; then
+              css_url="${site}final-chapter.css?v=20260829-mobile-panorama-1&verify=${stamp}"
+              curl -fsSL --retry 2 -H 'Cache-Control: no-cache' "$css_url" -o /tmp/live-final-chapter.css || true
+              if grep -q 'MOBILE-PANORAMA-PROLOGUE-20260829' /tmp/live-final-chapter.css 2>/dev/null; then
+                ready=1
+                echo "Production panorama release visible on attempt ${attempt}."
+                break
+              fi
+            fi
+            sleep 5
+          done
+          test "$ready" -eq 1
+
+      - name: Verify production mobile panorama in Chromium
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/kaikai-panorama-live
+          node <<'NODE'
+          const { chromium } = require('/tmp/kaikai-panorama-browser/node_modules/playwright');
+          const assert = require('node:assert/strict');
+          const fs = require('node:fs');
+
+          (async () => {
+            const browser = await chromium.launch({ headless: true });
+            const root = 'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/';
+            const cases = [
+              ['zh-Hant-mobile', root, { width: 390, height: 844 }, true],
+              ['zh-Hans-mobile', `${root}zh-Hans/`, { width: 390, height: 844 }, true],
+              ['zh-Hant-desktop', root, { width: 1440, height: 1000 }, false]
+            ];
+            const report = [];
+
+            for (const [name, baseUrl, viewport, mobile] of cases) {
+              const page = await browser.newPage({ viewport, isMobile: mobile, hasTouch: mobile });
+              const pageErrors = [];
+              const failedRequests = [];
+              page.on('pageerror', error => pageErrors.push(error.message));
+              page.on('requestfailed', request => failedRequests.push({ url: request.url(), error: request.failure()?.errorText || '' }));
+
+              const response = await page.goto(`${baseUrl}?live-panorama=${Date.now()}-${name}`, {
+                waitUntil: 'domcontentloaded',
+                timeout: 60000
+              });
+              assert.equal(response.status(), 200, `${name}: production document status`);
+              const overlay = page.locator('[data-entry-prologue]');
+              await overlay.waitFor({ state: 'visible', timeout: 15000 });
+              await page.waitForFunction(() => {
+                const video = document.querySelector('[data-prologue-video]');
+                return Boolean(video?.error) || (video?.videoWidth > 0 && video?.videoHeight > 0);
+              }, null, { timeout: 30000 });
+
+              const state = await page.evaluate(() => {
+                const overlay = document.querySelector('[data-entry-prologue]');
+                const video = document.querySelector('[data-prologue-video]');
+                const style = getComputedStyle(video);
+                const backdrop = getComputedStyle(overlay, '::before');
+                const rect = video.getBoundingClientRect();
+                const intrinsicRatio = video.videoWidth / video.videoHeight;
+                const boxRatio = rect.width / rect.height;
+                const paintedWidth = intrinsicRatio >= boxRatio ? rect.width : rect.height * intrinsicRatio;
+                const paintedHeight = intrinsicRatio >= boxRatio ? rect.width / intrinsicRatio : rect.height;
+                const cssHref = document.querySelector('link[href*="final-chapter.css"]')?.href || '';
+                const audio = document.querySelector('#chapterBgm');
+                return {
+                  cssHref,
+                  objectFit: style.objectFit,
+                  objectPosition: style.objectPosition,
+                  videoWidth: video.videoWidth,
+                  videoHeight: video.videoHeight,
+                  currentTime: video.currentTime,
+                  paused: video.paused,
+                  boxWidth: rect.width,
+                  boxHeight: rect.height,
+                  paintedWidth,
+                  paintedHeight,
+                  backdropContent: backdrop.content,
+                  backdropImage: backdrop.backgroundImage,
+                  backdropFilter: backdrop.filter,
+                  overflowX: document.documentElement.scrollWidth - innerWidth,
+                  bodyLocked: document.body.classList.contains('prologue-active'),
+                  audioTrackCount: audio?.dataset.trackCount || ''
+                };
+              });
+
+              assert.ok(state.cssHref.includes('20260829-mobile-panorama-1'), `${name}: stale CSS`);
+              if (mobile) {
+                assert.equal(state.objectFit, 'contain', `${name}: production mobile video is cropped`);
+                assert.ok(state.backdropContent !== 'none', `${name}: production backdrop is missing`);
+                assert.ok(state.backdropImage.includes('kaikai-final-chapter-prologue-poster.jpg'), `${name}: production poster backdrop is missing`);
+                assert.ok(state.backdropFilter.includes('blur'), `${name}: production backdrop blur is missing`);
+                assert.ok(state.paintedWidth >= viewport.width - 1, `${name}: production panorama does not fill phone width`);
+                assert.ok(state.paintedHeight < state.boxHeight, `${name}: production panorama is not preserving the full frame`);
+              } else {
+                assert.equal(state.objectFit, 'cover', `${name}: production desktop presentation regressed`);
+              }
+              assert.ok(state.videoWidth > state.videoHeight, `${name}: production source is not landscape`);
+              assert.ok(state.overflowX <= 1, `${name}: production horizontal overflow ${state.overflowX}px`);
+              assert.equal(state.bodyLocked, true, `${name}: production entry behavior regressed`);
+              assert.equal(state.audioTrackCount, '2', `${name}: two-track audio regressed`);
+              assert.deepEqual(pageErrors, [], `${name}: page errors: ${pageErrors.join(' | ')}`);
+              assert.deepEqual(
+                failedRequests.filter(item => item.url.startsWith('https://jerryzuhow77.github.io/child-advocacy-site/')),
+                [],
+                `${name}: same-origin failures`
+              );
+
+              await page.screenshot({ path: `/tmp/kaikai-panorama-live/${name}.png`, fullPage: false });
+              report.push({ name, viewport, ...state, pageErrors, failedRequests });
+              await page.close();
+            }
+
+            fs.writeFileSync('/tmp/kaikai-panorama-live/report.json', JSON.stringify({
+              verifiedAt: new Date().toISOString(),
+              cases: report
+            }, null, 2));
+            await browser.close();
+          })().catch(error => {
+            console.error(error);
+            process.exit(1);
+          });
+          NODE
+
+      - name: Upload browser evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: kaikai-mobile-panorama-prologue-evidence-20260829
+          path: |
+            /tmp/kaikai-panorama-local/*
+            /tmp/kaikai-panorama-live/*
+          if-no-files-found: error
+          retention-days: 7
