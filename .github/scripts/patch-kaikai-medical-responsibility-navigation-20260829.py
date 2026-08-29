@@ -28,21 +28,20 @@ def replace_nav_group(text: str, summary: str, medical_links: set[str], new_grou
 
 
 def insert_hero_link(text: str, href: str, label: str, file_label: str) -> str:
-    if f'href="{href}"' in text and label in text:
-        return text
     start = text.find('<div class="hero-actions">')
     if start < 0:
         raise SystemExit(f'{file_label}: hero actions not found')
     end = text.find('</div>', start)
     if end < 0:
         raise SystemExit(f'{file_label}: hero actions closing tag not found')
+    hero_block = text[start:end]
+    if f'href="{href}"' in hero_block and label in hero_block:
+        return text
     link = f'<a class="button secondary-link medical-zone-entry" href="{href}">{label}</a>'
     return text[:end] + link + text[end:]
 
 
 def insert_witness_cta(text: str, section_id: str, href: str, label: str, file_label: str) -> str:
-    if href in text and label in text:
-        return text
     marker = f'id="{section_id}"'
     start = text.find(marker)
     if start < 0:
@@ -50,6 +49,9 @@ def insert_witness_cta(text: str, section_id: str, href: str, label: str, file_l
     header_end = text.find('</header>', start)
     if header_end < 0:
         raise SystemExit(f'{file_label}: official source header closing tag not found')
+    header_block = text[start:header_end]
+    if href in header_block and label in header_block:
+        return text
     cta = f'<div class="official-source-links medical-zone-entry"><a href="{href}">{label}</a></div>'
     return text[:header_end] + cta + text[header_end:]
 
