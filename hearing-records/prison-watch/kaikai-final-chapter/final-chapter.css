@@ -1263,3 +1263,35 @@ body.prologue-active{
 .entry-prologue.is-audio-blocked .entry-prologue__play:before{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#efc77d;color:#09263a;font-size:14px;font-weight:950;content:'♫'}
 .entry-prologue.is-audio-blocked .entry-prologue__copy span:after{margin-left:8px;color:#f0c77d;font-weight:950;content:'· 請點擊啟動配樂'}
 html[lang="zh-Hans"] .entry-prologue.is-audio-blocked .entry-prologue__copy span:after{content:'· 请点击启动配乐'}
+
+/* COMPACT-PROLOGUE-CONTROLS-20260829 */
+.entry-prologue__play{
+  min-height:38px;
+  max-width:calc(100vw - 32px);
+  padding:7px 12px;
+  gap:6px;
+  font-size:13px;
+  line-height:1.15;
+  white-space:nowrap;
+}
+.entry-prologue__play:before{
+  width:18px;
+  height:18px;
+  font-size:11px;
+}
+@media (max-width:640px){
+  .entry-prologue__play{
+    min-height:34px;
+    padding:6px 10px;
+    gap:5px;
+    font-size:11px;
+    letter-spacing:.02em;
+  }
+  .entry-prologue__play:before{
+    width:16px;
+    height:16px;
+    font-size:10px;
+  }
+  .entry-prologue__play span[aria-hidden="true"]{font-size:10px}
+}
+/* END-COMPACT-PROLOGUE-CONTROLS-20260829 */
