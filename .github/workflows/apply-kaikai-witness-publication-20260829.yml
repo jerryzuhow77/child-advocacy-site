@@ -31,36 +31,70 @@ jobs:
           python - <<'PY'
           import base64
           import hashlib
+          import itertools
           from pathlib import Path
 
           parts = sorted(Path('.tmp').glob('kaikai-publish-xz.*.b64'))
           if len(parts) != 16:
               raise SystemExit(f'Expected 16 XZ publication chunks, found {len(parts)}')
+
           alphabet = frozenset('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=')
-          blocks = []
-          for index, path in enumerate(parts):
+          expected_lengths = [17500] * 15 + [11944]
+          all_candidates = []
+
+          for index, (path, expected_chars) in enumerate(zip(parts, expected_lengths)):
               text = path.read_text(encoding='utf-8')
               for escaped in ('\\n', '\\r', '\\t'):
                   text = text.replace(escaped, '')
               clean = ''.join(char for char in text if char in alphabet)
-              expected_chars = 11944 if index == len(parts) - 1 else 17500
               if len(clean) < expected_chars:
                   raise SystemExit(f'{path}: expected at least {expected_chars} base64 chars, found {len(clean)}')
-              if len(clean) > expected_chars:
-                  print(f'{path}: trimming {len(clean) - expected_chars} duplicated carrier characters')
-              clean = clean[:expected_chars]
-              try:
-                  blocks.append(base64.b64decode(clean, validate=True))
-              except Exception as exc:
-                  raise SystemExit(f'{path}: invalid base64 chunk: {exc}') from exc
-          data = b''.join(blocks)
+
+              extra = len(clean) - expected_chars
+              candidates = []
+              seen = set()
+              for start in range(extra + 1):
+                  window = clean[start:start + expected_chars]
+                  if window in seen:
+                      continue
+                  seen.add(window)
+                  try:
+                      decoded = base64.b64decode(window, validate=True)
+                  except Exception:
+                      continue
+                  candidates.append((start, decoded))
+
+              if not candidates:
+                  raise SystemExit(f'{path}: no valid contiguous base64 window of {expected_chars} characters')
+              print(f'{path}: clean={len(clean)}, expected={expected_chars}, valid_windows={len(candidates)}')
+              all_candidates.append(candidates)
+
+          expected_sha = '20fb08156b1bc8aa4f653ebab7ef4dd809a26e6921181005d4343bc6eb2b67e8'
+          variable_indices = [index for index, candidates in enumerate(all_candidates) if len(candidates) > 1]
+          variable_lists = [all_candidates[index] for index in variable_indices]
+          combinations = 1
+          for candidates in variable_lists:
+              combinations *= len(candidates)
+          print(f'Testing {combinations} carrier-window combinations across chunks {variable_indices}')
+
+          selected_data = None
+          selected_offsets = None
+          for combination in itertools.product(*variable_lists):
+              chosen = [candidates[0] for candidates in all_candidates]
+              for index, candidate in zip(variable_indices, combination):
+                  chosen[index] = candidate
+              data = b''.join(decoded for _, decoded in chosen)
+              if hashlib.sha256(data).hexdigest() == expected_sha:
+                  selected_data = data
+                  selected_offsets = [start for start, _ in chosen]
+                  break
+
+          if selected_data is None:
+              raise SystemExit(f'No contiguous-window reconstruction matched expected sha256 {expected_sha}')
+
           output = Path('/tmp/kaikai-publish-compact.tar.xz')
-          output.write_bytes(data)
-          digest = hashlib.sha256(data).hexdigest()
-          expected = '20fb08156b1bc8aa4f653ebab7ef4dd809a26e6921181005d4343bc6eb2b67e8'
-          print(f'Assembled {len(parts)} chunks, {len(data)} bytes, sha256={digest}')
-          if digest != expected:
-              raise SystemExit(f'Publication package checksum mismatch: expected {expected}, got {digest}')
+          output.write_bytes(selected_data)
+          print(f'Reconstructed {len(selected_data)} bytes with offsets {selected_offsets}; sha256={expected_sha}')
           PY
           git fetch origin main
           git checkout -B kaikai-publication origin/main
