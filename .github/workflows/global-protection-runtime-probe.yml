@@ -1,4 +1,5 @@
 name: Global Protection runtime read-only probe
+# Refreshed 2026-08-30 for read-only deployment connectivity verification
 
 on:
   push:
