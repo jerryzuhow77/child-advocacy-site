@@ -919,3 +919,49 @@ main [id]{scroll-margin-top:var(--chapter-anchor-offset)}
 @media(max-width:1180px){.responsibility-tree-pair{grid-template-columns:1fr}.responsibility-tree-pair>.responsibility-tree-visual{position:static}.responsibility-tree-downloads a{flex:1 1 180px}}
 @media(max-width:640px){.responsibility-tree-pair{gap:13px;margin:14px 0}.responsibility-tree-visual{padding:13px}.responsibility-tree-visual>header h3{font-size:22px}.responsibility-tree-downloads{display:grid;grid-template-columns:1fr 1fr}.responsibility-tree-downloads a{min-width:0;padding-inline:8px}}
 @media print{.responsibility-tree-pair{display:block}.responsibility-tree-pair>.responsibility-tree-visual{position:static;break-after:page}.responsibility-tree-downloads{display:none}}
+
+/* CHAPTER2-CLINIC-JUDGMENT-SOURCES-20260829 */
+#medical-investigation-sources{scroll-margin-top:calc(var(--chapter-anchor-offset,92px) + 14px)}
+.judgment-medical-network{background:linear-gradient(150deg,#f8f0dd 0%,#fdfaf2 46%,#e8f1ee 100%)}
+.judgment-clinic-correction{margin:22px 0;padding:clamp(22px,4vw,34px);background:linear-gradient(140deg,#0a3548,#124e5e);color:#f6fbfb;border:1px solid rgba(255,255,255,.28);border-left:9px solid #e1ae52;box-shadow:0 20px 48px rgba(4,29,42,.22)}
+.judgment-clinic-correction h5{margin:9px 0;color:#fff;font:900 clamp(1.45rem,3vw,2.2rem)/1.38 var(--serif)}
+.judgment-clinic-correction p{margin:0;color:#eef8f8;font-weight:600;line-height:1.82}
+.judgment-clinic-correction strong,.judgment-clinic-correction b{color:#ffd880}
+.judgment-clinic-correction .source-chips{border-color:rgba(255,255,255,.2)}
+.judgment-clinic-correction .source-chips a{border-color:rgba(255,255,255,.42);color:#fff}
+.judgment-source-badges{display:flex;flex-wrap:wrap;gap:7px}
+.judgment-source-badges span{display:inline-flex;align-items:center;min-height:29px;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.24);color:#f6d79b;font-size:.72rem;font-weight:900;letter-spacing:.05em}
+.judgment-medical-timeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin:22px 0}
+.medical-judgment-event{position:relative;min-width:0;padding:21px 18px 17px;background:#fffdf8;color:#29454d;border:1px solid #d9cfb9;border-top:6px solid #8d4a3b;box-shadow:0 11px 27px rgba(8,37,48,.09)}
+.medical-judgment-event.event-pediatrics{border-top-color:#a77b2b}.medical-judgment-event.event-dental{border-top-color:#1e6874}.medical-judgment-event.event-comparison{border-top-color:#0b3c4d}
+.medical-judgment-event .event-index{position:absolute;top:13px;right:14px;color:#b6a88e;font-size:1.65rem;font-weight:950;line-height:1}
+.medical-judgment-event time{display:block;padding-right:42px;color:#8d3f34;font-size:.78rem;font-weight:950;letter-spacing:.06em}
+.medical-judgment-event h5{margin:8px 0;color:#153842;font:900 1.16rem/1.45 var(--serif)}
+.medical-judgment-event p{margin:0;color:#36515a;font-size:.9rem;font-weight:600;line-height:1.78}
+.medical-judgment-event footer{margin-top:13px;padding-top:10px;border-top:1px dashed #cbbda2;color:#6d5b43;font-size:.75rem;font-weight:800;line-height:1.55}
+.chapter-medical-source-ledger{margin:25px 0;padding:clamp(20px,3.5vw,31px);background:#082f42;color:#f3f8f7;border-top:8px solid #cf9c43;box-shadow:0 19px 44px rgba(3,24,34,.23)}
+.chapter-medical-source-ledger>header small{color:#f3c873;font-weight:900;letter-spacing:.14em}
+.chapter-medical-source-ledger>header h5{margin:7px 0 0;color:#fff;font:900 clamp(1.35rem,2.7vw,1.9rem)/1.4 var(--serif)}
+.chapter-medical-source-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-top:18px}
+.chapter-medical-source-card{min-width:0;padding:19px;background:#fffaf0;color:#2d4850;border:1px solid rgba(255,255,255,.25);border-top:6px solid #8e3b34}
+.chapter-medical-source-card.source-control-yuan{border-top-color:#c69a42}.chapter-medical-source-card.source-hearing{border-top-color:#287182}
+.chapter-medical-source-card>span{display:inline-flex;padding:4px 8px;background:#143f50;color:#fff;border-radius:999px;font-size:.71rem;font-weight:900;letter-spacing:.05em}
+.chapter-medical-source-card h6{margin:10px 0 7px;color:#123540;font:900 1.05rem/1.5 var(--serif)}
+.chapter-medical-source-card p{margin:7px 0;color:#324d55;font-size:.88rem;font-weight:600;line-height:1.76}
+.chapter-medical-source-card .source-boundary-note{padding:10px;background:#fff0e5;border-left:5px solid #a64237;color:#5a3e36}
+.chapter-medical-source-card .source-chips{border-color:#d9cfb9}
+.medical-cross-source-reading{margin:22px 0;padding:18px 21px;background:#fff3d7;color:#29444c;border:1px solid #d4b873;border-left:8px solid #a64035}
+.medical-cross-source-reading b{display:block;color:#7f342e;font:900 1.15rem/1.45 var(--serif)}
+.medical-cross-source-reading p{margin:6px 0 0;font-weight:600;line-height:1.8}
+@media(max-width:1080px){.judgment-medical-timeline{grid-template-columns:1fr 1fr}.chapter-medical-source-grid{grid-template-columns:1fr 1fr}.chapter-medical-source-card.source-hearing{grid-column:1/-1}}
+@media(max-width:720px){
+  .judgment-clinic-correction{padding:20px 16px;border-left-width:6px}
+  .judgment-source-badges{display:grid;grid-template-columns:1fr}
+  .judgment-source-badges span{justify-content:center;text-align:center}
+  .judgment-medical-timeline,.chapter-medical-source-grid{grid-template-columns:1fr}
+  .chapter-medical-source-card.source-hearing{grid-column:auto}
+  .medical-judgment-event,.chapter-medical-source-card{padding:18px 15px}
+  .judgment-clinic-correction .source-chips a,.chapter-medical-source-card .source-chips a{width:100%;justify-content:center}
+  .medical-cross-source-reading{padding:17px 15px}
+}
+@media print{.judgment-clinic-correction,.chapter-medical-source-ledger,.medical-judgment-event,.medical-cross-source-reading{box-shadow:none;break-inside:avoid}}
