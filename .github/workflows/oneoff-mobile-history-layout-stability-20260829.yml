@@ -48,6 +48,7 @@ jobs:
               waitUntil: 'domcontentloaded',
               timeout: 60000
             });
+            await page.locator('#home-historical-cases').scrollIntoViewIfNeeded();
             await page.waitForFunction(() => document.querySelector('#home-historical-cases .history-relief-figure'), null, { timeout: 20000 });
             await page.waitForTimeout(1000);
 
