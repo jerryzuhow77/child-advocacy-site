@@ -1,0 +1,424 @@
+name: Verify current Chapter 2 in Chromium r2
+
+on:
+  push:
+    branches:
+      - qa/browser-verify-chapter2-current-20260829
+    paths:
+      - .github/workflows/verify-current-chapter2-browser-r2-20260829.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: verify-current-chapter2-browser-r2-20260829
+  cancel-in-progress: true
+
+jobs:
+  browser-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Chromium browser harness
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Run comprehensive production browser verification
+        env:
+          SITE: https://jerryzuhow77.github.io/child-advocacy-site
+          CHAPTER: https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter
+          EXPECTED_MAIN_SHA: 33fdddbca3e7ebede521b63ee1bad1dc10174730
+        run: |
+          mkdir -p /tmp/chapter2-browser-r2
+          node <<'JS'
+          const { chromium } = require('playwright');
+          const assert = require('node:assert/strict');
+          const path = require('node:path');
+
+          const site = process.env.SITE;
+          const chapter = process.env.CHAPTER;
+          const sha = process.env.EXPECTED_MAIN_SHA;
+          const screenshots = '/tmp/chapter2-browser-r2';
+          const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+          const pageErrors = [];
+          const badResponses = [];
+          const failedRequests = [];
+          const metricsReport = [];
+
+          function buildUrl(raw, attempt, hash = '') {
+            const url = new URL(raw);
+            url.searchParams.set('chromium-qa', sha);
+            url.searchParams.set('attempt', String(attempt));
+            if (hash) url.hash = hash.startsWith('#') ? hash : `#${hash}`;
+            return url.href;
+          }
+
+          function attachDiagnostics(page, label) {
+            page.on('pageerror', (error) => pageErrors.push(`${label}: ${error.message}`));
+            page.on('response', (response) => {
+              const url = response.url();
+              if (url.startsWith(site) && response.status() >= 400) {
+                badResponses.push(`${label}: HTTP ${response.status()} ${url}`);
+              }
+            });
+            page.on('requestfailed', (request) => {
+              const url = request.url();
+              const failure = request.failure()?.errorText || 'unknown';
+              if (url.startsWith(site) && !/ERR_ABORTED|NS_BINDING_ABORTED/i.test(failure)) {
+                failedRequests.push(`${label}: ${failure} ${url}`);
+              }
+            });
+          }
+
+          async function makeContext(browser, mobile) {
+            const context = await browser.newContext(mobile
+              ? {
+                  viewport: { width: 390, height: 844 },
+                  isMobile: true,
+                  hasTouch: true,
+                  deviceScaleFactor: 1,
+                  locale: 'zh-TW',
+                }
+              : {
+                  viewport: { width: 1440, height: 1000 },
+                  deviceScaleFactor: 1,
+                  locale: 'zh-TW',
+                });
+            await context.addInitScript(() => {
+              window.__qaCLS = 0;
+              try {
+                new PerformanceObserver((list) => {
+                  for (const entry of list.getEntries()) {
+                    if (!entry.hadRecentInput) window.__qaCLS += entry.value;
+                  }
+                }).observe({ type: 'layout-shift', buffered: true });
+              } catch (_) {}
+            });
+            return context;
+          }
+
+          async function openReady(page, raw, requiredText, hash = '', attempts = 24) {
+            let last = '';
+            for (let attempt = 1; attempt <= attempts; attempt += 1) {
+              const target = buildUrl(raw, attempt, hash);
+              try {
+                const response = await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 45_000 });
+                const sourceText = await page.locator('body').textContent({ timeout: 12_000 });
+                const status = response?.status() ?? 0;
+                last = `HTTP ${status}; ${String(sourceText).slice(0, 160)}`;
+                if ((status === 200 || status === 0) && sourceText?.includes(requiredText)) {
+                  await page.waitForTimeout(1_300);
+                  return;
+                }
+              } catch (error) {
+                last = String(error);
+              }
+              console.log(`Waiting for production ${attempt}/${attempts}: ${target} :: ${last}`);
+              await sleep(5_000);
+            }
+            throw new Error(`Production page did not become ready: ${raw}${hash ? `#${hash}` : ''} :: ${last}`);
+          }
+
+          async function assertNoDuplicateIds(page, label) {
+            const duplicates = await page.evaluate(() => {
+              const counts = new Map();
+              for (const node of document.querySelectorAll('[id]')) {
+                counts.set(node.id, (counts.get(node.id) || 0) + 1);
+              }
+              return [...counts].filter(([, count]) => count > 1);
+            });
+            assert.deepEqual(duplicates, [], `${label}: duplicate IDs ${JSON.stringify(duplicates)}`);
+          }
+
+          async function assertLayout(page, label, maxCLS) {
+            const metrics = await page.evaluate(() => ({
+              width: innerWidth,
+              scrollWidth: document.documentElement.scrollWidth,
+              overflow: document.documentElement.scrollWidth - innerWidth,
+              cls: window.__qaCLS || 0,
+              h1Count: document.querySelectorAll('h1').length,
+            }));
+            metricsReport.push({ label, ...metrics });
+            assert.ok(metrics.overflow <= 2, `${label}: horizontal overflow ${metrics.overflow}px`);
+            assert.ok(metrics.cls <= maxCLS, `${label}: severe cumulative layout shift ${metrics.cls.toFixed(4)} > ${maxCLS}`);
+            assert.ok(metrics.h1Count >= 1, `${label}: no H1`);
+            await assertNoDuplicateIds(page, label);
+          }
+
+          async function assertLoadedImages(page, selector, label) {
+            const images = page.locator(selector);
+            const count = await images.count();
+            for (let index = 0; index < count; index += 1) {
+              const image = images.nth(index);
+              await image.scrollIntoViewIfNeeded().catch(() => {});
+              await image.evaluate((node) => {
+                if (node.complete) return;
+                return new Promise((resolve) => {
+                  const timer = setTimeout(resolve, 8_000);
+                  node.addEventListener('load', () => { clearTimeout(timer); resolve(); }, { once: true });
+                  node.addEventListener('error', () => { clearTimeout(timer); resolve(); }, { once: true });
+                });
+              });
+            }
+            const broken = await images.evaluateAll((nodes) => nodes
+              .filter((node) => node.complete && node.naturalWidth === 0)
+              .map((node) => node.currentSrc || node.src || node.getAttribute('src')));
+            assert.deepEqual(broken, [], `${label}: broken images ${JSON.stringify(broken)}`);
+          }
+
+          async function verifyHomepage(browser, mobile) {
+            const context = await makeContext(browser, mobile);
+            const page = await context.newPage();
+            const label = `homepage-${mobile ? 'mobile' : 'desktop'}`;
+            attachDiagnostics(page, label);
+            await openReady(page, `${site}/`, '第二章');
+            await page.waitForTimeout(6_500);
+
+            const chapterLinks = page.locator('a[href*="kaikai-final-chapter"]:visible');
+            assert.ok(await chapterLinks.count() >= 1, `${label}: no visible Chapter 2 link`);
+            const links = await chapterLinks.evaluateAll((nodes) => nodes.map((node) => ({
+              text: node.innerText.trim(),
+              href: node.href,
+            })));
+            assert.ok(links.some((entry) => /第二章|沒人要的孩子|证据|制度|醫療|监护/.test(entry.text)), `${label}: Chapter 2 entries lack meaningful labels ${JSON.stringify(links)}`);
+            assert.ok(links.every((entry) => entry.href.includes('kaikai-final-chapter')), `${label}: malformed Chapter 2 href`);
+
+            await assertLoadedImages(page, 'img:visible', label);
+            await assertLayout(page, label, mobile ? 0.35 : 0.30);
+            await page.screenshot({ path: path.join(screenshots, `${label}.png`), fullPage: false });
+            await context.close();
+          }
+
+          async function revealAndRead(page, selector) {
+            const locator = page.locator(selector);
+            await locator.scrollIntoViewIfNeeded();
+            await page.waitForTimeout(350);
+            return (await locator.textContent()) || '';
+          }
+
+          async function verifyChapterMain(browser, urlPath, simplified, mobile) {
+            const context = await makeContext(browser, mobile);
+            const page = await context.newPage();
+            const label = `chapter-${simplified ? 'hans' : 'hant'}-${mobile ? 'mobile' : 'desktop'}`;
+            attachDiagnostics(page, label);
+            const url = `${chapter}${urlPath}`;
+            const officialTitle = simplified
+              ? '监察院报告必须是整页最醒目的官方主轴'
+              : '監察院報告必須是整頁最醒目的官方主軸';
+            await openReady(page, url, officialTitle);
+            await page.waitForTimeout(6_500);
+            await assertLayout(page, `${label}-initial`, mobile ? 0.38 : 0.32);
+
+            assert.equal(await page.locator('#control-yuan.chapter-control-yuan-axis').count(), 1, `${label}: Control Yuan official axis`);
+            assert.equal(await page.locator('#control-yuan .finding-card').count(), 4, `${label}: Control Yuan finding cards`);
+            assert.equal(await page.locator('#emergency .temperature-card').count(), 1, `${label}: 24°C card`);
+            assert.equal(await page.locator('#emergency .temperature-limits').count(), 1, `${label}: 24°C limits`);
+            assert.equal(await page.locator('#closed-loop .closed-loop>li').count(), 7, `${label}: seven-step closed loop`);
+            assert.equal(await page.locator('#institutional-failures .institution-card').count(), 5, `${label}: institutional cards`);
+            assert.equal(await page.locator('#institutional-failures .deficiency-list>li').count(), 7, `${label}: Child Welfare League deficiencies`);
+            assert.equal(await page.locator('#restraint-boundary .restraint-levels>li').count(), 5, `${label}: restraint evidence levels`);
+
+            const bodySource = (await page.locator('body').textContent()) || '';
+            assert.ok(!bodySource.includes(simplified ? '完整医疗子页仍保留' : '完整醫療子頁仍保留'), `${label}: removed reminder still exists`);
+            assert.equal(await page.locator('#siteNav summary').filter({ hasText: simplified ? '医疗专题' : '醫療專題' }).count(), 0, `${label}: medical topic remains in main menu`);
+            assert.ok(await page.locator('#siteNav a').filter({ hasText: simplified ? '12名证人全文' : '12名證人全文' }).count() >= 1, `${label}: 12-witness entry missing`);
+
+            const restraint = await revealAndRead(page, '#restraint-boundary');
+            assert.ok(restraint.includes(simplified ? '二审检方已勘验照片' : '二審檢方已勘驗照片'), `${label}: second-instance photo inspection missing`);
+            assert.ok(restraint.includes(simplified
+              ? '尚未找到足以把“反折、用束带扣住私处、绑在便盆”整句列为法院已认定单一事实'
+              : '尚未找到足以把「反折、用束帶扣住私處、綁在便盆」整句列為法院已認定單一事實'), `${label}: compound-sentence boundary missing`);
+
+            for (const selector of ['#control-yuan', '#emergency', '#closed-loop', '#institutional-failures']) {
+              await page.locator(selector).scrollIntoViewIfNeeded();
+              await page.waitForTimeout(250);
+            }
+            await assertLoadedImages(page, '.hero img,#injuries img,#people-network img,#system img', label);
+            await assertLayout(page, `${label}-after-scroll`, mobile ? 0.55 : 0.45);
+            await page.locator('#control-yuan').scrollIntoViewIfNeeded();
+            await page.screenshot({ path: path.join(screenshots, `${label}-control-yuan.png`), fullPage: false });
+            await page.locator('#restraint-boundary').scrollIntoViewIfNeeded();
+            await page.screenshot({ path: path.join(screenshots, `${label}-restraint.png`), fullPage: false });
+            await context.close();
+          }
+
+          async function verifyAnchor(browser, urlPath, id, mobile) {
+            const context = await makeContext(browser, mobile);
+            const page = await context.newPage();
+            const label = `anchor-${urlPath.includes('zh-Hans') ? 'hans' : 'hant'}-${id}-${mobile ? 'mobile' : 'desktop'}`;
+            attachDiagnostics(page, label);
+            await openReady(page, `${chapter}${urlPath}`, '第二章', id);
+            await page.waitForTimeout(3_200);
+            const result = await page.evaluate((targetId) => {
+              const target = document.getElementById(targetId);
+              if (!target) return { found: false };
+              const expected = Number.parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+              const actual = target.getBoundingClientRect().top;
+              return {
+                found: true,
+                expected,
+                actual,
+                difference: Math.abs(actual - expected),
+                hash: location.hash,
+              };
+            }, id);
+            assert.equal(result.found, true, `${label}: missing target`);
+            assert.equal(result.hash, `#${id}`, `${label}: hash changed`);
+            assert.ok(result.difference <= (mobile ? 72 : 58), `${label}: anchor mismatch ${JSON.stringify(result)}`);
+            await context.close();
+          }
+
+          async function verifyWitnesses(browser, urlPath, simplified) {
+            const context = await makeContext(browser, true);
+            const page = await context.newPage();
+            const label = `witnesses-${simplified ? 'hans' : 'hant'}-mobile`;
+            attachDiagnostics(page, label);
+            await openReady(page, `${chapter}${urlPath}`, simplified ? '12名证人，不是12座孤岛' : '12名證人，不是12座孤島');
+            await page.waitForTimeout(2_000);
+
+            assert.equal(await page.locator('[data-witness-card]').count(), 12, `${label}: witness card count`);
+            assert.equal(await page.locator('#witnessQuickNav>a').count(), 12, `${label}: quick-nav count`);
+            assert.equal(await page.locator('#witness-10.moved-witness-card').count(), 1, `${label}: moved Cai Hanyu callout`);
+            assert.equal(await page.locator('article.witness-card#witness-10').count(), 0, `${label}: Cai Hanyu still in witness cards`);
+            assert.deepEqual(
+              await Promise.all(['11', '12', '13'].map(async (id) => (await page.locator(`#witness-${id} .witness-number`).innerText()).trim())),
+              ['10', '11', '12'],
+              `${label}: shifted witness numbering`
+            );
+
+            await page.locator('#witnessSearch').fill('林心慈');
+            await page.waitForTimeout(300);
+            assert.equal(await page.locator('#witness-11').isVisible(), true, `${label}: Lin Xin-ci search target hidden`);
+            assert.ok(await page.locator('[data-witness-card]:visible').count() >= 1, `${label}: search returned no result`);
+            await page.locator('#witnessSearch').fill('');
+
+            await assertLayout(page, label, 0.32);
+            await page.screenshot({ path: path.join(screenshots, `${label}.png`), fullPage: false });
+            await context.close();
+          }
+
+          async function verifyMedical(browser, urlPath, simplified, mobile) {
+            const context = await makeContext(browser, mobile);
+            const page = await context.newPage();
+            const label = `medical-${simplified ? 'hans' : 'hant'}-${mobile ? 'mobile' : 'desktop'}`;
+            attachDiagnostics(page, label);
+            const title = simplified
+              ? '蔡函妤牙医证词：完整全文正式移入医疗专题'
+              : '蔡函妤牙醫證詞：完整全文正式移入醫療專題';
+            await openReady(page, `${chapter}${urlPath}`, title);
+            await page.waitForTimeout(2_000);
+
+            assert.equal(await page.locator('#clinics').count(), 1, `${label}: clinics section`);
+            assert.equal(await page.locator('#cai-hanyu-full').count(), 1, `${label}: full Cai Hanyu card`);
+            assert.equal(await page.locator('#cai-hanyu-transcript').count(), 1, `${label}: transcript details`);
+            assert.ok(await page.locator('#cai-hanyu-full .transcript-line').count() > 30, `${label}: transcript incomplete`);
+            assert.equal(await page.locator('.main-section-relocation').count(), 3, `${label}: relocation notices`);
+            assert.equal(await page.locator('section#control-yuan,section#emergency,section#closed-loop').count(), 0, `${label}: duplicated moved sections`);
+
+            const source = (await page.locator('body').textContent()) || '';
+            assert.ok(source.includes(simplified ? '兴隆内科小儿科诊所' : '興隆內科小兒科診所'), `${label}: pediatric clinic name`);
+            assert.ok(source.includes(simplified ? '采新牙医诊所' : '采新牙醫診所'), `${label}: dental clinic name`);
+            assert.ok(!source.includes(simplified ? '完整医疗子页仍保留' : '完整醫療子頁仍保留'), `${label}: removed reminder remains`);
+
+            await page.locator('#cai-hanyu').scrollIntoViewIfNeeded();
+            await page.locator('#cai-hanyu-transcript>summary').click();
+            assert.equal(await page.locator('#cai-hanyu-transcript').getAttribute('open'), '', `${label}: transcript did not open`);
+            assert.ok(await page.locator('#cai-hanyu-transcript [data-copy-transcript]').count() >= 1, `${label}: copy control missing`);
+
+            await assertLayout(page, label, 0.35);
+            await page.screenshot({ path: path.join(screenshots, `${label}-cai.png`), fullPage: false });
+            await context.close();
+          }
+
+          async function verifyLegacyHash(browser, hash, expected) {
+            const context = await makeContext(browser, true);
+            const page = await context.newPage();
+            const label = `legacy-${hash}`;
+            attachDiagnostics(page, label);
+            const target = buildUrl(`${chapter}/`, 1, hash);
+            await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 45_000 });
+            if (expected === 'main') {
+              await page.waitForTimeout(1_400);
+              const current = new URL(page.url());
+              assert.ok(current.pathname.endsWith('/kaikai-final-chapter/'), `${label}: unexpected redirect ${current.href}`);
+              assert.equal(current.hash, `#${hash}`);
+            } else if (expected === 'dental') {
+              await page.waitForURL((url) => url.pathname.includes('/medical-responsibility/') && url.hash === '#dental-warning', { timeout: 20_000 });
+            } else {
+              await page.waitForURL((url) => url.pathname.endsWith('/medical-responsibility/') && !url.hash, { timeout: 20_000 });
+            }
+            await context.close();
+          }
+
+          (async () => {
+            const browser = await chromium.launch({ headless: true });
+
+            await verifyHomepage(browser, false);
+            await verifyHomepage(browser, true);
+
+            await verifyChapterMain(browser, '/', false, false);
+            await verifyChapterMain(browser, '/', false, true);
+            await verifyChapterMain(browser, '/zh-Hans/', true, false);
+            await verifyChapterMain(browser, '/zh-Hans/', true, true);
+
+            for (const id of ['control-yuan', 'emergency', 'closed-loop', 'institutional-failures', 'restraint-boundary']) {
+              await verifyAnchor(browser, '/', id, false);
+              await verifyAnchor(browser, '/', id, true);
+            }
+            for (const id of ['control-yuan', 'emergency', 'closed-loop', 'institutional-failures', 'restraint-boundary']) {
+              await verifyAnchor(browser, '/zh-Hans/', id, true);
+            }
+
+            await verifyWitnesses(browser, '/witnesses/', false);
+            await verifyWitnesses(browser, '/zh-Hans/witnesses/', true);
+
+            await verifyMedical(browser, '/medical-responsibility/', false, false);
+            await verifyMedical(browser, '/medical-responsibility/', false, true);
+            await verifyMedical(browser, '/medical-responsibility/zh-Hans/', true, false);
+            await verifyMedical(browser, '/medical-responsibility/zh-Hans/', true, true);
+
+            await verifyLegacyHash(browser, 'death-temperature-evidence', 'main');
+            await verifyLegacyHash(browser, 'medical-network-omissions', 'main');
+            await verifyLegacyHash(browser, 'dental-warning', 'dental');
+            await verifyLegacyHash(browser, 'medical-special-topic', 'topic');
+
+            await browser.close();
+
+            console.log('METRICS', JSON.stringify(metricsReport, null, 2));
+            assert.deepEqual(pageErrors, [], `Browser page errors:\n${pageErrors.join('\n')}`);
+            assert.deepEqual(badResponses, [], `Same-origin HTTP failures:\n${badResponses.join('\n')}`);
+            assert.deepEqual(failedRequests, [], `Same-origin request failures:\n${failedRequests.join('\n')}`);
+            console.log('BROWSER VERIFICATION PASSED: current homepage entry; Traditional and Simplified Chapter 2 on desktop/mobile; direct anchors; Control Yuan axis; emergency and seven-step closed loop; institutional responsibility; second-instance photo evidence boundary; 12-witness page; full Cai Hanyu medical subpage; legacy hashes; no horizontal overflow, severe CLS, browser page errors, or same-origin request failures.');
+          })().catch((error) => {
+            console.error(error);
+            console.error('METRICS', JSON.stringify(metricsReport, null, 2));
+            console.error('Page errors', pageErrors);
+            console.error('Bad responses', badResponses);
+            console.error('Request failures', failedRequests);
+            process.exit(1);
+          });
+          JS
+
+      - name: Upload verification screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chapter2-browser-r2-${{ github.run_id }}
+          path: /tmp/chapter2-browser-r2
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Delete temporary QA branch
+        if: success()
+        shell: bash
+        run: |
+          git init /tmp/cleanup
+          cd /tmp/cleanup
+          git remote add origin https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git
+          git push origin --delete qa/browser-verify-chapter2-current-20260829
