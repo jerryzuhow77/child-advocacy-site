@@ -1,0 +1,115 @@
+name: Activate Kaikai Chapter 2 dual background playlist
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/oneoff-kaikai-dual-track-activate-20260829.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: oneoff-kaikai-dual-track-activate-20260829
+  cancel-in-progress: false
+
+jobs:
+  activate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out current main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate second track and create AAC fallback
+        shell: bash
+        run: |
+          set -euo pipefail
+          webm='assets/audio/kaikai-chapter2-bgm-02-20260829.webm'
+          m4a='assets/audio/kaikai-chapter2-bgm-02-20260829.m4a'
+          test -s "$webm"
+          command -v ffmpeg >/dev/null
+          command -v ffprobe >/dev/null
+          duration="$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$webm")"
+          python3 - "$duration" <<'PY_CHECK'
+          import sys
+          duration = float(sys.argv[1])
+          if not 29.0 <= duration <= 33.0:
+              raise SystemExit(f'unexpected second-track duration: {duration}')
+          PY_CHECK
+          ffmpeg -hide_banner -loglevel error -y -i "$webm" -vn \
+            -c:a aac -b:a 48k -ar 44100 -ac 1 -movflags +faststart "$m4a"
+          test -s "$m4a"
+          fallback_duration="$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$m4a")"
+          python3 - "$duration" "$fallback_duration" <<'PY_CHECK'
+          import sys
+          source, fallback = map(float, sys.argv[1:])
+          if abs(source - fallback) > 0.25:
+              raise SystemExit(f'AAC duration mismatch: source={source}, fallback={fallback}')
+          PY_CHECK
+
+      - name: Load the playlist controller on both Chapter 2 pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY_PATCH'
+          from pathlib import Path
+          import re
+
+          pages = [
+              Path('hearing-records/prison-watch/kaikai-final-chapter/index.html'),
+              Path('hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html'),
+          ]
+          pattern = re.compile(
+              r'(?P<tag><script\b[^>]*\bsrc="(?P<src>[^"]*final-chapter\.js\?v=[^"]+)"[^>]*></script>)'
+          )
+          for page in pages:
+              text = page.read_text(encoding='utf-8')
+              if 'final-chapter-playlist.js?v=20260829-1' in text:
+                  continue
+              match = pattern.search(text)
+              if not match:
+                  raise SystemExit(f'final-chapter.js script tag not found in {page}')
+              src = match.group('src')
+              prefix = src.rsplit('final-chapter.js', 1)[0]
+              playlist = f'<script src="{prefix}final-chapter-playlist.js?v=20260829-1"></script>'
+              updated = text[:match.end()] + '\n  ' + playlist + text[match.end():]
+              page.write_text(updated, encoding='utf-8')
+          PY_PATCH
+
+      - name: Verify source contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='hearing-records/prison-watch/kaikai-final-chapter'
+          node --check "$base/final-chapter.js"
+          node --check "$base/final-chapter-playlist.js"
+          grep -q 'data-prologue-video' "$base/index.html"
+          grep -q './final-chapter-playlist.js?v=20260829-1' "$base/index.html"
+          grep -q '../final-chapter-playlist.js?v=20260829-1' "$base/zh-Hans/index.html"
+          grep -q 'kaikai-chapter2-bgm-02-20260829.webm' "$base/final-chapter-playlist.js"
+          grep -q 'kaikai-chapter2-bgm-02-20260829.m4a' "$base/final-chapter-playlist.js"
+          test -s "$base/assets/kaikai-final-chapter-prologue.mp4"
+          test -s 'assets/audio/kaikai-chapter2-bgm-02-20260829.webm'
+          test -s 'assets/audio/kaikai-chapter2-bgm-02-20260829.m4a'
+
+      - name: Commit activation and remove one-off workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          workflow='.github/workflows/oneoff-kaikai-dual-track-activate-20260829.yml'
+          git rm "$workflow"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Activate Chapter 2 prologue and two-track background playlist'
+          for attempt in 1 2 3; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            sleep $((attempt * 3))
+          done
+          exit 1
