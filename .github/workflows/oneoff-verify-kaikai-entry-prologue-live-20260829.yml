@@ -1,0 +1,216 @@
+name: Verify immediate Chapter 2 prologue on production
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/oneoff-verify-kaikai-entry-prologue-live-20260829.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: oneoff-verify-kaikai-entry-prologue-live-20260829
+  cancel-in-progress: false
+
+jobs:
+  verify-live:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out current main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Wait for the production CDN to expose the entry-prologue release
+        shell: bash
+        run: |
+          set -euo pipefail
+          site='https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/'
+          ready=0
+          for attempt in $(seq 1 120); do
+            stamp="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${attempt}"
+            curl -fsSL --retry 2 -H 'Cache-Control: no-cache' "${site}?verify=${stamp}" -o /tmp/zh-Hant.html || true
+            curl -fsSL --retry 2 -H 'Cache-Control: no-cache' "${site}zh-Hans/?verify=${stamp}" -o /tmp/zh-Hans.html || true
+            if grep -q 'data-entry-prologue' /tmp/zh-Hant.html 2>/dev/null \
+              && grep -q 'kaikai-final-chapter-prologue.webm?v=20260829-4' /tmp/zh-Hant.html \
+              && grep -q 'final-chapter.js?v=20260829-34' /tmp/zh-Hant.html \
+              && grep -q 'data-entry-prologue' /tmp/zh-Hans.html 2>/dev/null \
+              && grep -q 'kaikai-final-chapter-prologue.webm?v=20260829-4' /tmp/zh-Hans.html \
+              && grep -q 'final-chapter.js?v=20260829-34' /tmp/zh-Hans.html; then
+              ready=1
+              echo "Production release visible on attempt ${attempt}."
+              break
+            fi
+            sleep 5
+          done
+          test "$ready" -eq 1
+
+          curl -fsSL --retry 3 "${site}assets/kaikai-final-chapter-prologue.webm?v=20260829-4" -o /tmp/prologue.webm
+          curl -fsSL --retry 3 "${site}assets/kaikai-final-chapter-prologue.mp4?v=20260829-4" -o /tmp/prologue.mp4
+          test "$(stat -c '%s' /tmp/prologue.webm)" -gt 100000
+          test "$(stat -c '%s' /tmp/prologue.mp4)" -gt 100000
+
+      - name: Install Chromium browser driver
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/prologue-live-browser
+          cd /tmp/prologue-live-browser
+          npm init -y >/dev/null 2>&1
+          npm install --silent playwright@1.55.0
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Verify the live first screen on desktop and mobile
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/prologue-live-screenshots
+          node <<'NODE'
+          const { chromium } = require('/tmp/prologue-live-browser/node_modules/playwright');
+          const assert = require('node:assert/strict');
+
+          (async () => {
+            const browser = await chromium.launch({ headless: true });
+            const root = 'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/';
+            const cases = [
+              ['zh-Hant-desktop', root, { width: 1440, height: 900 }],
+              ['zh-Hans-mobile', `${root}zh-Hans/`, { width: 390, height: 844 }]
+            ];
+
+            for (const [name, baseUrl, viewport] of cases) {
+              const page = await browser.newPage({ viewport });
+              const pageErrors = [];
+              const mediaResponses = [];
+              page.on('pageerror', error => pageErrors.push(error.message));
+              page.on('response', response => {
+                if (response.url().includes('kaikai-final-chapter-prologue.')) {
+                  mediaResponses.push({ status: response.status(), url: response.url() });
+                }
+              });
+
+              const url = `${baseUrl}?verify-live=${Date.now()}-${name}`;
+              await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+              const overlay = page.locator('[data-entry-prologue]');
+              await overlay.waitFor({ state: 'visible', timeout: 15000 });
+
+              const entry = await page.evaluate(() => {
+                const layer = document.querySelector('[data-entry-prologue]');
+                const main = document.querySelector('#main');
+                const video = layer.querySelector('[data-prologue-video]');
+                const skip = layer.querySelector('[data-prologue-skip]');
+                const rect = layer.getBoundingClientRect();
+                const style = getComputedStyle(layer);
+                const topAtCenter = document.elementFromPoint(innerWidth / 2, innerHeight / 2);
+                const audio = document.querySelector('#chapterBgm');
+                return {
+                  parentIsBody: layer.parentElement === document.body,
+                  beforeMain: Boolean(layer.compareDocumentPosition(main) & Node.DOCUMENT_POSITION_FOLLOWING),
+                  bodyLocked: document.body.classList.contains('prologue-active'),
+                  topAtCenter: Boolean(topAtCenter && layer.contains(topAtCenter)),
+                  position: style.position,
+                  zIndex: Number.parseInt(style.zIndex, 10),
+                  rect: [rect.x, rect.y, rect.width, rect.height],
+                  skipVisible: skip.getBoundingClientRect().width > 0,
+                  autoplay: video.autoplay,
+                  muted: video.muted,
+                  playsInline: video.playsInline,
+                  webmCapability: video.canPlayType('video/webm; codecs="vp9"'),
+                  audioTrackCount: audio?.dataset.trackCount || '',
+                  overflow: document.documentElement.scrollWidth - innerWidth
+                };
+              });
+
+              console.log(name, 'entry', JSON.stringify(entry));
+              assert.equal(entry.parentIsBody && entry.beforeMain, true, `${name}: prologue is not ahead of article content`);
+              assert.equal(entry.bodyLocked && entry.topAtCenter, true, `${name}: prologue does not own the first screen`);
+              assert.equal(entry.position, 'fixed', `${name}: prologue is not viewport-fixed`);
+              assert.ok(entry.zIndex >= 1000000, `${name}: prologue z-index is too low`);
+              assert.ok(Math.abs(entry.rect[0]) <= 0.5 && Math.abs(entry.rect[1]) <= 0.5, `${name}: prologue origin is wrong`);
+              assert.ok(entry.rect[2] >= viewport.width - 1 && entry.rect[3] >= viewport.height - 1, `${name}: prologue does not cover the viewport`);
+              assert.equal(entry.skipVisible, true, `${name}: skip control is unavailable`);
+              assert.equal(entry.autoplay && entry.muted && entry.playsInline, true, `${name}: autoplay attributes are incomplete`);
+              assert.notEqual(entry.webmCapability, '', `${name}: Chromium cannot decode the selected WebM source`);
+              assert.equal(entry.audioTrackCount, '2', `${name}: dual background playlist regressed`);
+              assert.ok(entry.overflow <= 1, `${name}: horizontal overflow ${entry.overflow}px`);
+
+              await page.waitForFunction(() => {
+                const video = document.querySelector('[data-prologue-video]');
+                return Boolean(video.error) || video.currentTime > 0.08;
+              }, null, { timeout: 30000 });
+
+              const playback = await page.evaluate(() => {
+                const video = document.querySelector('[data-prologue-video]');
+                return {
+                  currentTime: video.currentTime,
+                  paused: video.paused,
+                  readyState: video.readyState,
+                  currentSrc: video.currentSrc,
+                  error: video.error ? { code: video.error.code, message: video.error.message } : null
+                };
+              });
+              console.log(name, 'playback', JSON.stringify({ playback, mediaResponses }));
+              assert.equal(playback.error, null, `${name}: prologue media error`);
+              assert.equal(playback.paused, false, `${name}: prologue autoplay is paused`);
+              assert.ok(playback.currentTime > 0.08, `${name}: prologue autoplay did not advance`);
+              assert.ok(playback.currentSrc.includes('kaikai-final-chapter-prologue.webm'), `${name}: Chromium did not select WebM`);
+              assert.ok(mediaResponses.some(item => item.status >= 200 && item.status < 400 && item.url.includes('.webm')), `${name}: production WebM request failed`);
+
+              await page.screenshot({ path: `/tmp/prologue-live-screenshots/${name}-entry.png`, fullPage: false });
+              await page.waitForFunction(() => document.querySelector('[data-entry-prologue]').hidden === true, null, { timeout: 20000 });
+
+              const revealed = await page.evaluate(() => ({
+                bodyLocked: document.body.classList.contains('prologue-active'),
+                mainVisible: document.querySelector('#main')?.getBoundingClientRect().height > 0,
+                overlayHidden: document.querySelector('[data-entry-prologue]').hidden
+              }));
+              assert.equal(revealed.bodyLocked, false, `${name}: article remains locked after the prologue`);
+              assert.equal(revealed.mainVisible && revealed.overlayHidden, true, `${name}: article was not revealed after playback`);
+
+              if (name === 'zh-Hant-desktop') {
+                await page.evaluate(() => document.querySelector('a[href="#prologue-film"]').click());
+                await overlay.waitFor({ state: 'visible' });
+                await page.locator('[data-prologue-skip]').click();
+                await page.waitForFunction(() => document.querySelector('[data-entry-prologue]').hidden === true);
+              }
+
+              assert.deepEqual(pageErrors, [], `${name}: ${pageErrors.join(' | ')}`);
+              await page.close();
+            }
+
+            await browser.close();
+          })().catch(error => {
+            console.error(error);
+            process.exit(1);
+          });
+          NODE
+
+      - name: Upload production browser evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: kaikai-entry-prologue-production-evidence-20260829
+          path: /tmp/prologue-live-screenshots/*.png
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Remove completed one-off verifier
+        shell: bash
+        run: |
+          set -euo pipefail
+          workflow='.github/workflows/oneoff-verify-kaikai-entry-prologue-live-20260829.yml'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git pull --rebase origin main
+            git rm -f "$workflow"
+            git commit -m 'Remove completed entry-prologue production verifier' || true
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            git reset --hard origin/main
+            sleep $((attempt * 3))
+          done
+          exit 1
