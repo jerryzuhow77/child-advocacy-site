@@ -176,6 +176,87 @@
  .hz-page .tt-replay{width:44px;height:44px;border-radius:50%;font-size:0;right:.8rem;bottom:4.3rem}
  .hz-page .tt-replay:before{content:"燈";font-size:1rem}
 }
+
+/* 2026-08-29 phone repair: keep the opening duet visible before and after
+   the sprite sheets finish loading, enlarge the proscenium outwards, and
+   leave the actors inside the clear stage aperture. */
+.hz-page .tt-stage>.tt-stage-craft{
+ position:absolute!important;z-index:2!important;inset:0 0 auto!important;
+ display:block!important;width:100%!important;height:var(--hz-opening-art)!important;
+ margin:0!important;opacity:.94;transition:opacity .25s ease
+}
+html.tt-pose-ready .hz-page .tt-stage>.tt-stage-craft{opacity:0;visibility:hidden}
+.hz-page .tt-stage>.tt-pose-layer--opening{
+ z-index:3!important;opacity:1!important;visibility:visible!important
+}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-sprite{
+ opacity:1!important;mix-blend-mode:normal!important;
+ filter:brightness(1.13) saturate(1.08) contrast(1.04)!important
+}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor{
+ bottom:1.5%!important;width:min(33%,370px)!important;max-height:92%!important
+}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--woman{left:9%!important}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--scribe{right:9%!important}
+.hz-page .tt-stage .tt-carved-stage-frame--opening{
+ z-index:4!important;inset:-2.8%!important;width:105.6%!important;height:calc(var(--hz-opening-art) * 1.056)!important;
+ max-width:none!important;transform:none!important;background-size:100% 100%!important
+}
+.hz-page .tt-transition[data-shadow-scene] .tt-shadow-stage{overflow:visible!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-carved-stage-frame--transition{
+ inset:-3.25%!important;width:106.5%!important;height:106.5%!important;background-size:100% 100%!important
+}
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor{bottom:1%!important;width:min(32%,430px)!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--woman{left:8%!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--scribe{right:8%!important}
+
+/* A permanent, labelled replay control replaces the ambiguous lantern-only dot. */
+.hz-page .tt-replay{
+ position:fixed!important;z-index:160!important;left:max(.85rem,env(safe-area-inset-left))!important;right:auto!important;
+ bottom:max(.85rem,env(safe-area-inset-bottom))!important;width:auto!important;height:46px!important;min-width:124px!important;
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:.55rem!important;
+ padding:.55rem 1rem!important;border:1px solid rgba(213,164,79,.62)!important;border-radius:999px!important;
+ background:rgba(7,28,38,.94)!important;color:var(--hz-ivory)!important;font-size:.82rem!important;letter-spacing:.08em!important;
+ box-shadow:0 12px 30px rgba(0,0,0,.34)!important;backdrop-filter:blur(12px);cursor:pointer
+}
+.hz-page .tt-replay::before{content:"↻"!important;font-size:1.15rem!important;color:var(--hz-amber)}
+.hz-page .tt-replay span{display:inline!important;font:inherit!important;color:inherit!important}
+body.tt-opening-active.hz-page .tt-replay{opacity:0!important;pointer-events:none!important;transform:translateY(8px)!important}
+body.hz-page:not(.tt-opening-active) .tt-replay{opacity:1!important;pointer-events:auto!important;transform:none!important}
+
+/* Dedicated Shanghai layered-paper curtain. Each half reads the corresponding
+   half of one transparent 16:9 artwork, so GSAP can close it without a seam jump. */
+.hz-page .hz-ending-curtain i,
+.hz-page .hz-ending-curtain i+i{
+ background-color:rgba(75,17,29,.93)!important;
+ background-image:url("./art/huang-ziche-shanghai-papercut-curtain-20260829.png")!important;
+ background-repeat:no-repeat!important;background-size:200% 100%!important;
+ box-shadow:inset -12px 0 30px rgba(22,5,11,.32),0 0 0 1px rgba(218,169,80,.12)!important
+}
+.hz-page .hz-ending-curtain i{background-position:left center!important}
+.hz-page .hz-ending-curtain i+i{background-position:right center!important;box-shadow:inset 12px 0 30px rgba(22,5,11,.32),0 0 0 1px rgba(218,169,80,.12)!important}
+
+@media(max-width:900px){
+ body.hz-page{--hz-stage-art:min(44svh,calc((100vw - 16px) * .61))}
+ .hz-page .tt-stage{--hz-opening-art:var(--hz-stage-art)}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor{bottom:0!important;width:39%!important;max-height:90%!important}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--woman{left:7%!important}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--scribe{right:7%!important}
+ .hz-page .tt-stage>.tt-stage-craft .tt-puppet--girl{left:10%!important}
+ .hz-page .tt-stage>.tt-stage-craft .tt-puppet--scribe{right:10%!important}
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor{width:34%!important}
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--woman{left:7%!important}
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--scribe{right:7%!important}
+ .hz-page .tt-replay{min-width:116px!important;height:44px!important;font-size:.76rem!important}
+}
+
+@media(max-width:390px), (max-height:690px) and (max-width:900px){
+ .hz-page .tt-stage{--hz-opening-art:min(38svh,calc((100vw - 16px) * .61))}
+}
+
+@media(prefers-reduced-motion:reduce){
+ body.hz-page:not(.tt-opening-active) .tt-replay{opacity:1!important;transform:none!important}
+}
 @media(max-width:560px){
  .hz-page .tt-hero-art{aspect-ratio:16/9}
  .hz-page .tt-hero-art img{position:absolute;inset:7px;width:calc(100% - 14px);height:calc(100% - 14px)}
@@ -649,3 +730,40 @@ body.hz-page::after{
  .hz-page .tt-ending-theatre-script>p,.hz-page .hz-ending-reveal,.hz-page .hz-ending-final{opacity:1!important;transform:none!important}
  .hz-page .hz-ending-curtain{display:none!important}
 }
+
+/* Final cascade: supplied-phone stage visibility and proportion repair. */
+.hz-page .tt-stage>.tt-stage-craft{position:absolute!important;z-index:2!important;inset:0 0 auto!important;display:block!important;width:100%!important;height:var(--hz-opening-art)!important;margin:0!important;opacity:.94;transition:opacity .25s ease}
+html.tt-pose-ready .hz-page .tt-stage>.tt-stage-craft{opacity:0;visibility:hidden}
+.hz-page .tt-stage>.tt-pose-layer--opening{z-index:3!important;opacity:1!important;visibility:visible!important}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-sprite{opacity:1!important;mix-blend-mode:normal!important;filter:brightness(1.13) saturate(1.08) contrast(1.04)!important}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor{bottom:1.5%!important;width:min(33%,370px)!important;max-height:92%!important}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--woman{left:9%!important}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--scribe{right:9%!important}
+.hz-page .tt-stage .tt-carved-stage-frame--opening{z-index:4!important;inset:-2.8%!important;width:105.6%!important;height:calc(var(--hz-opening-art) * 1.056)!important;max-width:none!important;transform:none!important;background-size:100% 100%!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-shadow-stage{overflow:visible!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-carved-stage-frame--transition{inset:-3.25%!important;width:106.5%!important;height:106.5%!important;background-size:100% 100%!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor{bottom:1%!important;width:min(32%,430px)!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--woman{left:8%!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--scribe{right:8%!important}
+.hz-page .tt-replay{position:fixed!important;z-index:160!important;left:max(.85rem,env(safe-area-inset-left))!important;right:auto!important;bottom:max(.85rem,env(safe-area-inset-bottom))!important;width:auto!important;height:46px!important;min-width:124px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:.55rem!important;padding:.55rem 1rem!important;border:1px solid rgba(213,164,79,.62)!important;border-radius:999px!important;background:rgba(7,28,38,.94)!important;color:var(--hz-ivory)!important;font-size:.82rem!important;letter-spacing:.08em!important;box-shadow:0 12px 30px rgba(0,0,0,.34)!important;backdrop-filter:blur(12px);cursor:pointer}
+.hz-page .tt-replay::before{content:"↻"!important;font-size:1.15rem!important;color:var(--hz-amber)}
+.hz-page .tt-replay span{display:inline!important;font:inherit!important;color:inherit!important}
+body.tt-opening-active.hz-page .tt-replay{opacity:0!important;pointer-events:none!important;transform:translateY(8px)!important}
+body.hz-page:not(.tt-opening-active) .tt-replay{opacity:1!important;pointer-events:auto!important;transform:none!important}
+.hz-page .hz-ending-curtain i,.hz-page .hz-ending-curtain i+i{background-color:rgba(75,17,29,.93)!important;background-image:url("./art/huang-ziche-shanghai-papercut-curtain-20260829.png")!important;background-repeat:no-repeat!important;background-size:200% 100%!important;box-shadow:inset -12px 0 30px rgba(22,5,11,.32),0 0 0 1px rgba(218,169,80,.12)!important}
+.hz-page .hz-ending-curtain i{background-position:left center!important}
+.hz-page .hz-ending-curtain i+i{background-position:right center!important;box-shadow:inset 12px 0 30px rgba(22,5,11,.32),0 0 0 1px rgba(218,169,80,.12)!important}
+@media(max-width:900px){
+ body.hz-page{--hz-stage-art:min(44svh,calc((100vw - 16px) * .61))}
+ .hz-page .tt-stage{--hz-opening-art:var(--hz-stage-art)}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor{bottom:0!important;width:39%!important;max-height:90%!important}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--woman{left:7%!important}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--scribe{right:7%!important}
+ .hz-page .tt-stage>.tt-stage-craft .tt-puppet--girl{left:10%!important}
+ .hz-page .tt-stage>.tt-stage-craft .tt-puppet--scribe{right:10%!important}
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor{width:34%!important}
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--woman{left:7%!important}
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--scribe{right:7%!important}
+ .hz-page .tt-replay{min-width:116px!important;height:44px!important;font-size:.76rem!important}
+}
+@media(max-width:390px), (max-height:690px) and (max-width:900px){.hz-page .tt-stage{--hz-opening-art:min(38svh,calc((100vw - 16px) * .61))}}

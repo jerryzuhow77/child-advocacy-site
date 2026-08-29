@@ -168,6 +168,34 @@
         stagger: .16,
         ease: 'power2.out'
       });
+
+      const openingWoman = openingStage.querySelector('.tt-pose-actor--woman');
+      const openingScribe = openingStage.querySelector('.tt-pose-actor--scribe');
+      if (openingWoman && openingScribe) {
+        gsap.to(openingWoman, {
+          y: -5,
+          rotation: -.55,
+          duration: 2.35,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut'
+        });
+        gsap.to(openingScribe, {
+          y: -4,
+          rotation: .48,
+          duration: 2.7,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut'
+        });
+        document.addEventListener('tt:opening-scene', event => {
+          const index = Number(event.detail?.index || 0);
+          const speaker = index === 1 || index === 3 ? openingScribe : openingWoman;
+          gsap.timeline({ overwrite: 'auto' })
+            .to(speaker, { xPercent: speaker === openingWoman ? 3 : -3, duration: .42, ease: 'power2.out' })
+            .to(speaker, { xPercent: 0, duration: .7, ease: 'sine.inOut' });
+        });
+      }
     }
 
     if (window.ScrollTrigger) {
