@@ -2,8 +2,12 @@
   'use strict';
   var current=document.currentScript&&document.currentScript.src?document.currentScript.src:'';
   var basePath=current?current.slice(0,current.lastIndexOf('/')+1):'./assets/';
-  var version='20260828-performance-p7-1';
+  var version='20260829-mobile-layout-stability-1';
   var balancedArtwork=basePath+'art/east-asia-case-memory-map-paper-clay-20260824.webp?v='+version;
+  function sameArtwork(source,target){
+    try{return new URL(source,document.baseURI).pathname===new URL(target,document.baseURI).pathname;}
+    catch(error){return source.split('?')[0]===target.split('?')[0];}
+  }
   function injectMobileMapRepair(){
     if(!window.matchMedia('(max-width:760px)').matches||document.getElementById('home-mobile-map-repair-5'))return;
     var repair=document.createElement('link');
@@ -17,7 +21,10 @@
     var scope=root&&root.querySelectorAll?root:document;
     var images=scope.querySelectorAll('#home-historical-cases .history-relief-image,#home-historical-cases .home-history-static-map img');
     Array.prototype.forEach.call(images,function(image){
-      if(image.getAttribute('src')!==balancedArtwork){
+      /* Do not reload the same intrinsic-size artwork just because a cache-busting
+         query differs. The old reload fired near the five-second observer cutoff,
+         refreshed ScrollTrigger, and could move the mobile reading position. */
+      if(!sameArtwork(image.getAttribute('src')||'',balancedArtwork)){
         image.setAttribute('src',balancedArtwork);
         image.setAttribute('srcset','');
         image.dataset.mobileBalancedMap='true';
