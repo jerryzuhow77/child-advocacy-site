@@ -69,10 +69,10 @@
     const timeline = gsap.timeline({defaults:{ease:'power2.out'},onComplete:()=>ending.classList.add('is-haipai-complete')});
     timeline
       .fromTo(water,{opacity:.18,yPercent:22},{opacity:.72,yPercent:0,duration:2.2})
-      .fromTo(lantern,{opacity:0,scale:.42,rotation:-7},{opacity:1,scale:mobile?.68:.9,rotation:0,duration:2.1},.4)
+      .fromTo(lantern,{opacity:0,scale:.42,rotation:-7},{opacity:1,scale:mobile ? .68:.9,rotation:0,duration:2.1},.4)
       .to(lantern,{rotation:360,duration:mobile?5:8,ease:'none'},1.3)
       .fromTo(door,{opacity:.12,filter:'brightness(.5)'},{opacity:.92,filter:'brightness(1.16)',duration:3},1.2)
-      .to(words,{opacity:1,y:0,stagger:mobile?.65:.9,duration:.8},2.2)
+      .to(words,{opacity:1,y:0,stagger:mobile ? .65:.9,duration:.8},2.2)
       .fromTo(scriptLines,{opacity:0,y:10},{opacity:1,y:0,stagger:1.15,duration:.65},3.2)
       .to(paths,{strokeDashoffset:0,stagger:.28,duration:3.2,ease:'none'},5)
       .to(puppets,{x:index=>index===0?-55:55,opacity:.34,duration:1.8},mobile?8.4:11.4)
@@ -86,7 +86,7 @@
         play();
         observer.disconnect();
       }
-    }, {threshold:mobile?.18:.32});
+    }, {threshold:mobile ? .18:.32});
     observer.observe(ending);
   } else play();
 
