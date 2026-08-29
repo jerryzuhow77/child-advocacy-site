@@ -1,0 +1,177 @@
+name: One-off Jungein HD release payload v2
+
+on:
+  push:
+    branches:
+      - ops/jungein-hd-release-20260829-v2
+    paths:
+      - .github/workflows/oneoff-jungein-hd-build-20260829-v2.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: oneoff-jungein-hd-release-20260829-v2
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      ORIGIN: https://cn.globalprotectionwall.com
+      ROOT: handoffs/jungein-hd-release-20260829-v2
+      GENERATED: handoffs/jungein-hd-release-20260829-v2/generated
+      JS_NAME: page-CXpiX5_u.js
+      CSS_NAME: index-C4x89g2N.css
+      SOURCE_VIDEO: jungein-prologue-20260829.mp4
+      HD_VIDEO: jungein-prologue-hd-20260829.mp4
+      HD_POSTER: jungein-prologue-hd-poster-20260829.webp
+      SOURCE_JS_SHA: f3042267b8c4c517d8e24cf3d95e910f0ab1f6b1b95d92eb543540b38dd41a81
+      SOURCE_CSS_SHA: 9ddfef636e0ebc054af60502a3a0c02e009a96be527285e091cf403382011628
+      SOURCE_VIDEO_SHA: 94b22df4ce713df85bbc5973d194fbc578e3bcf78e9530a189c98e97b1fbbd50
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Ensure media tools
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          if ! command -v ffmpeg >/dev/null 2>&1 || ! command -v ffprobe >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y ffmpeg
+          fi
+          ffmpeg -version | head -n 1
+
+      - name: Fetch locked production sources
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          rm -rf "$GENERATED"
+          mkdir -p "$GENERATED" /tmp/jungein-hd-source
+          stamp="$(date +%s)"
+          curl -fsSL --retry 4 --retry-all-errors "$ORIGIN/assets/$JS_NAME?build=$stamp" -o "/tmp/jungein-hd-source/$JS_NAME"
+          curl -fsSL --retry 4 --retry-all-errors "$ORIGIN/assets/$CSS_NAME?build=$stamp" -o "/tmp/jungein-hd-source/$CSS_NAME"
+          curl -fsSL --retry 4 --retry-all-errors "$ORIGIN/$SOURCE_VIDEO?build=$stamp" -o "/tmp/jungein-hd-source/$SOURCE_VIDEO"
+          test "$(sha256sum "/tmp/jungein-hd-source/$JS_NAME" | awk '{print $1}')" = "$SOURCE_JS_SHA"
+          test "$(sha256sum "/tmp/jungein-hd-source/$CSS_NAME" | awk '{print $1}')" = "$SOURCE_CSS_SHA"
+          test "$(sha256sum "/tmp/jungein-hd-source/$SOURCE_VIDEO" | awk '{print $1}')" = "$SOURCE_VIDEO_SHA"
+
+      - name: Build page assets
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ['ROOT'])
+          generated = Path(os.environ['GENERATED'])
+          js_name = os.environ['JS_NAME']
+          css_name = os.environ['CSS_NAME']
+          source = Path('/tmp/jungein-hd-source')
+          old_marker = '/* global-protection-jungein-video-prologue-20260829 */'
+          hd_marker = '/* global-protection-jungein-prologue-hd-audio-20260829 */'
+
+          live_js = (source / js_name).read_text('utf-8')
+          marker_at = live_js.find(old_marker)
+          if marker_at < 0:
+              raise SystemExit('locked first-version JS marker not found')
+          base_js = live_js[:marker_at].rstrip() + '\n'
+          overlay_js = (root / 'jungein-video-prologue-hd-autoplay.js').read_text('utf-8')
+          if hd_marker not in overlay_js:
+              raise SystemExit('HD JS source marker missing')
+          (generated / js_name).write_text(base_js + overlay_js, 'utf-8')
+
+          live_css = (source / css_name).read_text('utf-8').rstrip() + '\n'
+          overlay_css = (root / 'jungein-video-prologue-hd-autoplay.css').read_text('utf-8')
+          if hd_marker not in overlay_css:
+              raise SystemExit('HD CSS source marker missing')
+          if hd_marker in live_css:
+              raise SystemExit('live CSS already contains HD marker; refusing duplicate build')
+          (generated / css_name).write_text(live_css + '\n' + overlay_css, 'utf-8')
+          PY
+          node --check "$GENERATED/$JS_NAME"
+          grep -Fq 'global-protection-jungein-prologue-hd-audio-20260829' "$GENERATED/$JS_NAME"
+          grep -Fq 'global-protection-jungein-prologue-hd-audio-20260829' "$GENERATED/$CSS_NAME"
+          grep -Fq '/jungein-prologue-hd-20260829.mp4' "$GENERATED/$JS_NAME"
+
+      - name: Build 1080p-class HD prologue and poster
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          ffmpeg -nostdin -hide_banner -loglevel warning \
+            -i "/tmp/jungein-hd-source/$SOURCE_VIDEO" \
+            -map 0:v:0 -map 0:a:0 \
+            -vf "hqdn3d=1.2:1.0:3.0:2.0,scale=1080:1234:flags=lanczos,unsharp=5:5:0.36:3:3:0,format=yuv420p" \
+            -r 24 -c:v libx264 -preset slow -crf 18 -profile:v high -level:v 4.1 \
+            -colorspace bt709 -color_primaries bt709 -color_trc bt709 \
+            -c:a aac -b:a 192k -ar 48000 -movflags +faststart \
+            "$GENERATED/$HD_VIDEO"
+          ffmpeg -nostdin -hide_banner -loglevel warning \
+            -ss 0.20 -i "$GENERATED/$HD_VIDEO" -frames:v 1 \
+            -c:v libwebp -quality 88 -compression_level 6 -preset picture \
+            "$GENERATED/$HD_POSTER"
+
+      - name: Validate and record payload
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          generated = Path(os.environ['GENERATED'])
+          video = generated / os.environ['HD_VIDEO']
+          probe = json.loads(subprocess.check_output([
+              'ffprobe','-v','error','-show_streams','-show_format','-of','json',str(video)
+          ]))
+          streams = probe['streams']
+          v = next(s for s in streams if s['codec_type'] == 'video')
+          a = next(s for s in streams if s['codec_type'] == 'audio')
+          assert v['codec_name'] == 'h264'
+          assert v['profile'] == 'High'
+          assert int(v['width']) == 1080 and int(v['height']) == 1234
+          assert v['pix_fmt'] == 'yuv420p'
+          assert v['r_frame_rate'] == '24/1'
+          assert a['codec_name'] == 'aac' and int(a['sample_rate']) == 48000
+          assert 14.9 <= float(probe['format']['duration']) <= 15.2
+          metadata = {
+              'release_id': 'global-protection-jungein-prologue-hd-audio-20260829-v2',
+              'source': 'current verified first-version production media',
+              'video': {
+                  'width': int(v['width']), 'height': int(v['height']),
+                  'codec': v['codec_name'], 'profile': v['profile'],
+                  'fps': v['r_frame_rate'], 'pixel_format': v['pix_fmt'],
+                  'duration': float(probe['format']['duration']),
+                  'bytes': int(probe['format']['size'])
+              },
+              'audio': {'codec': a['codec_name'], 'sample_rate': int(a['sample_rate'])}
+          }
+          (generated / 'BUILD_METADATA.json').write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + '\n')
+          PY
+          cd "$GENERATED"
+          sha256sum "$JS_NAME" "$CSS_NAME" "$HD_VIDEO" "$HD_POSTER" > MANIFEST.sha256
+          sha256sum -c MANIFEST.sha256
+          ls -lh "$JS_NAME" "$CSS_NAME" "$HD_VIDEO" "$HD_POSTER"
+          cat BUILD_METADATA.json
+
+      - name: Commit generated release payload
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$GENERATED"
+          git diff --cached --stat
+          git commit -m 'build: publish verified Jungein HD release payload [skip ci]'
+          git push origin HEAD:ops/jungein-hd-release-20260829-v2
+
+      - name: Upload audit artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jungein-hd-release-payload-20260829-v2
+          path: ${{ env.GENERATED }}
+          if-no-files-found: error
+          retention-days: 7
