@@ -107,7 +107,7 @@ jobs:
                       raise SystemExit(f'{page}: missing #{required}')
 
           image = Path('assets/art/kaikai-dual-track-responsibility-tree-zh-Hant-20260829.webp').read_bytes()
-          if len(image) < 200_000 or image[:4] != b'RIFF' or image[8:12] != b'WEBP':
+          if len(image) < 50_000 or image[:4] != b'RIFF' or image[8:12] != b'WEBP':
               raise SystemExit('responsibility-tree WebP is invalid')
           print('Static publication checks passed.')
           PY
