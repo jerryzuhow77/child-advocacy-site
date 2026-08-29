@@ -20,3 +20,39 @@ main{max-width:1240px;margin:0 auto;padding:0 1.25rem 4rem}
 @media(max-width:980px){.witness-hero{grid-template-columns:1fr}.witness-source-boundary{align-self:auto}.witness-quick-nav{grid-template-columns:repeat(7,1fr)}.method-panel ol{grid-template-columns:1fr 1fr}.method-panel li:nth-child(2){border-right:0}.method-panel li:nth-child(-n+2){border-bottom:1px solid var(--w-line)}.issue-row{grid-template-columns:1fr 1fr}.issue-row>header{grid-column:1/-1}.issue-row>header,.issue-row>section:nth-child(3){border-right:0}.issue-row .reading{grid-column:1/-1;border-top:1px solid var(--w-line)}.witness-summary-grid{grid-template-columns:1fr 1fr}.witness-summary-grid section:first-child{grid-column:1/-1;border-right:0;border-bottom:1px solid var(--w-line)}.official-sources>div{grid-template-columns:1fr}}
 @media(max-width:720px){:root{--w-anchor-offset:88px}.witness-top-actions a:first-child{display:none}.witness-top-actions button{display:inline-flex}.witness-breadcrumb{padding:.75rem 1rem;font-size:.72rem;overflow:auto;white-space:nowrap}main{padding:0 .65rem 2.5rem}.witness-hero{padding:1.25rem 0 1rem}.witness-hero-copy,.witness-source-boundary{border-radius:20px}.witness-hero-copy{padding:1.25rem}.witness-hero h1{font-size:2.4rem}.witness-controls{top:64px;display:block;margin-bottom:.65rem;border-radius:15px;padding:.75rem}.witness-controls>div{margin-top:.55rem;justify-content:flex-start}.witness-controls button{padding:.55rem .65rem}.witness-quick-nav{display:none;position:fixed;z-index:999;top:70px;right:.65rem;left:.65rem;max-height:60vh;overflow:auto;grid-template-columns:repeat(3,1fr);box-shadow:0 24px 70px rgba(0,0,0,.35)}.witness-quick-nav.is-open{display:grid}.method-panel,.evidence-calibration,.issue-matrix,.witness-records,.official-sources{border-radius:19px;margin:1rem 0}.method-panel>header,.evidence-calibration>header,.section-title,.official-sources>header{padding:1.25rem 1rem .8rem}.method-panel ol,.calibration-grid{grid-template-columns:1fr}.method-panel li{border-right:0;border-bottom:1px solid var(--w-line)}.calibration-grid{padding:0 1rem 1rem}.issue-row{display:block;margin:0 .55rem .65rem}.issue-row>header,.issue-row>section{border-right:0;border-bottom:1px solid var(--w-line)}.issue-row>section:last-child{border-bottom:0}.witness-card{margin:0 .55rem .8rem;border-radius:17px}.witness-card-head{grid-template-columns:auto 1fr;padding:1rem;gap:.7rem}.witness-number{width:2.55rem;height:2.55rem}.witness-status{grid-column:1/-1;justify-self:start}.witness-summary-grid{display:block}.witness-summary-grid section{border-right:0;border-bottom:1px solid var(--w-line);padding:1rem}.transcript-panel summary{display:block}.transcript-panel summary small{display:block;margin-top:.35rem}.transcript-toolbar{top:132px}.transcript-body{max-height:66vh;padding:.55rem}.transcript-line{grid-template-columns:2.2rem 1fr;gap:.45rem;font-size:.8rem}.transcript-line b{grid-column:2;white-space:normal}.transcript-line span:last-child{grid-column:2}.transcript-note,.transcript-meta{grid-template-columns:2.2rem 1fr}.official-sources>div{padding:0 1rem 1rem}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{scroll-behavior:auto!important}}
+
+/* WITNESS-CONTRAST-FIX-20260829
+   Keep the mobile hero cards opaque and raise all secondary-copy contrast. */
+.witness-hero-copy,.witness-source-boundary{
+  background:linear-gradient(145deg,rgba(7,42,59,.985),rgba(11,56,73,.985));
+  border-color:rgba(255,255,255,.34);
+  color:#fff;
+  backdrop-filter:none;
+}
+.witness-hero-copy>p:not(.eyebrow),.witness-source-boundary p{
+  color:#f3fbfc;
+  font-weight:600;
+  text-shadow:0 1px 1px rgba(0,0,0,.28);
+}
+.witness-card-head p,.official-sources aside{color:#f0f8f9}
+.hero-rule span{
+  background:rgba(0,0,0,.28);
+  border:1px solid rgba(255,255,255,.2);
+  color:#fff;
+}
+.section-title p,.method-panel span,.calibration-grid p,.issue-row section p,
+.witness-summary-grid p,.witness-summary-grid li{
+  color:#243f48;
+  font-weight:600;
+}
+.transcript-panel summary small,.transcript-note,.transcript-meta,
+.official-sources a span{color:#344c53}
+.transcript-line .line-no{color:#5a696d}
+.witness-quick-nav span{color:#754315}
+@media(max-width:720px){
+  .witness-hero-copy,.witness-source-boundary{
+    background:linear-gradient(150deg,#072a3b 0%,#0b394b 100%);
+    box-shadow:0 18px 42px rgba(0,0,0,.24);
+  }
+  .witness-hero-copy>p:not(.eyebrow),.witness-source-boundary p{color:#f7fcfd}
+}
