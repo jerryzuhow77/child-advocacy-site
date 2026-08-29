@@ -77,7 +77,7 @@ import{r as e}from"./rolldown-runtime-S-ySWqyJ.js";import{i as t,r as n}from"./f
 
     const setStatus = (text) => { status.textContent = text; };
     const syncSound = () => {
-      const muted = video.muted || video.volume === 0;
+      const muted = !score || score.paused || score.muted || score.volume === 0;
       soundButton.textContent = muted ? "聲音：關" : "聲音：開";
       soundButton.setAttribute("aria-pressed", String(muted));
     };
@@ -148,8 +148,13 @@ import{r as e}from"./rolldown-runtime-S-ySWqyJ.js";import{i as t,r as n}from"./f
     const enableSound = async () => {
       if (dismissed) return;
       userMuted = false;
-      video.muted = false;
-      video.volume = 1;
+      video.muted = true;
+      video.volume = 0;
+      if (score) {
+        score.muted = false;
+        if (score.paused) await score.play();
+        scoreStarted = true;
+      }
       syncSound();
       try {
         if (video.paused) await video.play();
@@ -163,10 +168,12 @@ import{r as e}from"./rolldown-runtime-S-ySWqyJ.js";import{i as t,r as n}from"./f
 
     const attemptPlayback = async () => {
       if (dismissed) return;
-      video.muted = false;
+      video.muted = true;
+      video.volume = 0;
       syncSound();
       try {
         await video.play();
+        await startPageScore(false);
         playbackStarted = true;
         hideStart();
         overlay.classList.add("is-playing");
@@ -190,7 +197,7 @@ import{r as e}from"./rolldown-runtime-S-ySWqyJ.js";import{i as t,r as n}from"./f
 
     const registerActivation = (event) => {
       if (event.type === "keydown" && ["Tab", "Shift", "Control", "Alt", "Meta"].includes(event.key)) return;
-      if (!dismissed && video.muted && !userMuted) void enableSound();
+      if (!dismissed && (!score || score.paused || score.muted) && !userMuted) void enableSound();
     };
     for (const type of ["pointerdown", "touchstart", "keydown"]) {
       document.addEventListener(type, registerActivation, {
@@ -201,9 +208,11 @@ import{r as e}from"./rolldown-runtime-S-ySWqyJ.js";import{i as t,r as n}from"./f
     skipButton.addEventListener("click", () => dismiss("skipped", true));
     startButton.addEventListener("click", () => void enableSound());
     soundButton.addEventListener("click", () => {
-      if (video.muted) void enableSound();
+      if (!score || score.paused || score.muted) void enableSound();
       else {
         userMuted = true;
+        score.muted = true;
+        score.pause();
         video.muted = true;
         overlay.classList.add("is-autoplay-muted");
         revealStart("畫面持續播放；點一下重新開啟聲音", "開啟聲音", "背景音樂目前靜音");
@@ -217,7 +226,7 @@ import{r as e}from"./rolldown-runtime-S-ySWqyJ.js";import{i as t,r as n}from"./f
     video.addEventListener("playing", () => {
       playbackStarted = true;
       overlay.classList.add("is-playing");
-      if (!video.muted) {
+      if (score && !score.paused && !score.muted) {
         hideStart();
         setStatus("高清序幕播放中・背景音樂已開啟");
       }
@@ -270,12 +279,14 @@ import{r as e}from"./rolldown-runtime-S-ySWqyJ.js";import{i as t,r as n}from"./f
     if (score) {
       score.preload = "auto";
       if (!score.paused) score.pause();
+      score.currentTime = 0;
+      score.muted = false;
     }
     if ("disablePictureInPicture" in video) video.disablePictureInPicture = true;
     video.controls = false;
     video.autoplay = true;
-    video.muted = false;
-    video.volume = 1;
+    video.muted = true;
+    video.volume = 0;
 
     if (pageMain) {
       previousMainInert = Boolean(pageMain.inert);
