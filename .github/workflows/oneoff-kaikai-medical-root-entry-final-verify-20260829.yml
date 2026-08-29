@@ -1,6 +1,6 @@
 name: Final verify Kaikai medical hub root entry
 
-# Verification revision 2: measure page overflow before QA-only menu rendering.
+# Verification revision 3: rerun against current main with baseline overflow measurement.
 on:
   push:
     branches: [main]
