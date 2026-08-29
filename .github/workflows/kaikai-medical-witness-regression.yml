@@ -78,6 +78,11 @@ jobs:
                 await page.waitForTimeout(1400);
                 item.status = response?.status() ?? null;
                 item.overflow = await page.evaluate(() => Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) - innerWidth);
+                item.widest = await page.evaluate(() => [...document.querySelectorAll('body *')].map((el, index) => {
+                  const r = el.getBoundingClientRect();
+                  const style = getComputedStyle(el);
+                  return { index, tag: el.tagName, id: el.id || '', cls: String(el.className || '').slice(0,90), left: Math.round(r.left), right: Math.round(r.right), width: Math.round(r.width), scrollWidth: el.scrollWidth, minWidth: style.minWidth, whiteSpace: style.whiteSpace, text: (el.textContent || '').trim().replace(/\s+/g,' ').slice(0,80) };
+                }).filter(x => x.right > innerWidth + 1 || x.left < -1 || x.scrollWidth > Math.ceil(x.width) + 2).sort((a,b) => Math.max(b.right-innerWidth,b.scrollWidth-b.width) - Math.max(a.right-innerWidth,a.scrollWidth-a.width)).slice(0,20));
                 item.broken = await page.locator('img').evaluateAll(images => images.filter(img => img.complete && img.naturalWidth === 0).map(img => img.currentSrc || img.src));
                 item.missingAnchors = await page.locator('a[href^="#"]').evaluateAll(links => [...new Set(links.map(a => a.getAttribute('href')).filter(h => h && h !== '#' && !document.querySelector(h)))]);
                 if (site.type === 'medical') {
