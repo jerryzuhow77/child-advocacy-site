@@ -36,12 +36,18 @@ jobs:
           parts = sorted(Path('.tmp').glob('kaikai-publish-xz.*.b64'))
           if not parts:
               raise SystemExit('No XZ publication chunks found')
-          text = ''.join(path.read_text(encoding='utf-8') for path in parts)
-          for escaped in ('\\n', '\\r', '\\t'):
-              text = text.replace(escaped, '')
           alphabet = frozenset('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=')
-          clean = ''.join(char for char in text if char in alphabet)
-          data = base64.b64decode(clean, validate=True)
+          blocks = []
+          for path in parts:
+              text = path.read_text(encoding='utf-8')
+              for escaped in ('\\n', '\\r', '\\t'):
+                  text = text.replace(escaped, '')
+              clean = ''.join(char for char in text if char in alphabet)
+              try:
+                  blocks.append(base64.b64decode(clean, validate=True))
+              except Exception as exc:
+                  raise SystemExit(f'{path}: invalid base64 chunk: {exc}') from exc
+          data = b''.join(blocks)
           output = Path('/tmp/kaikai-publish-compact.tar.xz')
           output.write_bytes(data)
           digest = hashlib.sha256(data).hexdigest()
