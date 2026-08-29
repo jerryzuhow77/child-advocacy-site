@@ -34,15 +34,21 @@ jobs:
           from pathlib import Path
 
           parts = sorted(Path('.tmp').glob('kaikai-publish-xz.*.b64'))
-          if not parts:
-              raise SystemExit('No XZ publication chunks found')
+          if len(parts) != 16:
+              raise SystemExit(f'Expected 16 XZ publication chunks, found {len(parts)}')
           alphabet = frozenset('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=')
           blocks = []
-          for path in parts:
+          for index, path in enumerate(parts):
               text = path.read_text(encoding='utf-8')
               for escaped in ('\\n', '\\r', '\\t'):
                   text = text.replace(escaped, '')
               clean = ''.join(char for char in text if char in alphabet)
+              expected_chars = 11944 if index == len(parts) - 1 else 17500
+              if len(clean) < expected_chars:
+                  raise SystemExit(f'{path}: expected at least {expected_chars} base64 chars, found {len(clean)}')
+              if len(clean) > expected_chars:
+                  print(f'{path}: trimming {len(clean) - expected_chars} duplicated carrier characters')
+              clean = clean[:expected_chars]
               try:
                   blocks.append(base64.b64decode(clean, validate=True))
               except Exception as exc:
