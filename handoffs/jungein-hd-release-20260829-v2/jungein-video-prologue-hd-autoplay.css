@@ -1,0 +1,41 @@
+/* global-protection-jungein-prologue-hd-audio-20260829 */
+.jungein-video-prologue.is-autoplay-muted .jungein-video-prologue__start {
+  min-width: 0;
+  min-height: 46px;
+  padding: 0 18px;
+  flex-direction: row;
+  gap: 9px;
+  top: auto;
+  bottom: max(92px, calc(env(safe-area-inset-bottom) + 82px));
+  animation: jungein-sound-prompt 1.8s ease-in-out infinite;
+}
+.jungein-video-prologue.is-autoplay-muted .jungein-video-prologue__start > span {
+  font-size: 19px;
+  transform: none;
+}
+.jungein-video-prologue.is-autoplay-muted .jungein-video-prologue__start small {
+  padding-left: 9px;
+  border-left: 1px solid rgba(247,240,226,.28);
+}
+#music-controls.autoplay-waiting .music-expand,
+#music-controls.autoplay-waiting .music-primary {
+  animation: jungein-sound-prompt 1.8s ease-in-out 3;
+}
+@keyframes jungein-sound-prompt {
+  0%, 100% { box-shadow: 0 8px 28px rgba(0,0,0,.34), 0 0 0 0 rgba(215,173,74,0); }
+  50% { box-shadow: 0 8px 28px rgba(0,0,0,.34), 0 0 0 7px rgba(215,173,74,.18); }
+}
+@media (max-width: 620px) {
+  .jungein-video-prologue.is-autoplay-muted .jungein-video-prologue__start {
+    max-width: calc(100vw - 28px);
+    min-height: 42px;
+    padding: 0 14px;
+    bottom: max(104px, calc(env(safe-area-inset-bottom) + 94px));
+  }
+  .jungein-video-prologue.is-autoplay-muted .jungein-video-prologue__start small { font-size: 9px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jungein-video-prologue.is-autoplay-muted .jungein-video-prologue__start,
+  #music-controls.autoplay-waiting .music-expand,
+  #music-controls.autoplay-waiting .music-primary { animation: none; }
+}
