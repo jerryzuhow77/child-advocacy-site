@@ -8,9 +8,7 @@
   const legacyMedicalHashRoutes = {
     'medical-special-topic': '',
     'dental-warning': 'dental-warning',
-    'medical-network-omissions': 'medical-network-omissions',
-    'medical-investigation-sources': 'medical-investigation-sources',
-    'death-temperature-evidence': 'death-temperature-evidence'
+    'medical-investigation-sources': 'medical-investigation-sources'
   };
   let legacyMedicalHash = '';
   try { legacyMedicalHash = decodeURIComponent(location.hash.slice(1)); }
