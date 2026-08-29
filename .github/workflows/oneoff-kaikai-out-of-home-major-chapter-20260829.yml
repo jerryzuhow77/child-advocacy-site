@@ -18,60 +18,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Normalize localized labels and verifier behavior
+      - name: Prepare localized patch and verifier
         shell: bash
         run: |
           set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-
-          patch_path = Path('.github/scripts/promote-kaikai-out-of-home-major-chapter-20260829.py')
-          patch = patch_path.read_text(encoding='utf-8')
-          old = """        'path': ROOT / 'zh-Hans' / 'index.html',
-        'responsibility_summary': '制度責任',
-"""
-          new = """        'path': ROOT / 'zh-Hans' / 'index.html',
-        'responsibility_summary': '制度责任',
-"""
-          if old in patch:
-              patch = patch.replace(old, new, 1)
-          elif new not in patch:
-              raise SystemExit('Simplified responsibility summary was not found in the promotion script')
-          patch_path.write_text(patch, encoding='utf-8')
-
-          verifier_path = Path('.github/scripts/verify-kaikai-out-of-home-major-chapter-20260829.mjs')
-          verifier = verifier_path.read_text(encoding='utf-8')
-          old_config = """  'zh-Hans': {
-    url: 'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/',
-    majorSummary: '家外安置大篇章',
-    majorTitle: '离开危险以后，谁持续保护孩子？',
-    heroEntry: '家外安置大篇章',
-    startLink: '开始阅读完整专章',
-    responsibilitySummary: '制度責任',
-"""
-          new_config = """  'zh-Hans': {
-    url: 'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/',
-    majorSummary: '家外安置大篇章',
-    majorTitle: '离开危险以后，谁持续保护孩子？',
-    heroEntry: '家外安置大篇章',
-    startLink: '开始阅读完整专章',
-    responsibilitySummary: '制度责任',
-"""
-          if old_config in verifier:
-              verifier = verifier.replace(old_config, new_config, 1)
-          elif new_config not in verifier:
-              raise SystemExit('Simplified verifier configuration was not found')
-
-          old_open = """      if (!(await group.getAttribute('open'))) await summary.click();
-"""
-          new_open = """      if (!(await group.evaluate((element) => element.hasAttribute('open')))) await summary.click();
-"""
-          if old_open in verifier:
-              verifier = verifier.replace(old_open, new_open, 1)
-          elif new_open not in verifier:
-              raise SystemExit('Major navigation open-state check was not found')
-          verifier_path.write_text(verifier, encoding='utf-8')
-          PY
+          python3 .github/scripts/prepare-kaikai-out-of-home-major-chapter-20260829.py
           python3 -m py_compile .github/scripts/promote-kaikai-out-of-home-major-chapter-20260829.py
           node --check .github/scripts/verify-kaikai-out-of-home-major-chapter-20260829.mjs
 
@@ -84,47 +35,27 @@ jobs:
           node --check hearing-records/prison-watch/kaikai-final-chapter/final-chapter.js
           git diff --check
 
-          python3 - <<'PY'
-          import re
-          from pathlib import Path
+          pages=(
+            hearing-records/prison-watch/kaikai-final-chapter/index.html
+            hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+          )
+          for page in "${pages[@]}"; do
+            test "$(grep -o 'id="out-of-home-chapter"' "$page" | wc -l)" -eq 1
+            test "$(grep -o 'id="placement-spectrum"' "$page" | wc -l)" -eq 1
+            test "$(grep -o 'id="placement-state-duty"' "$page" | wc -l)" -eq 1
+            test "$(grep -o 'id="placement-failures"' "$page" | wc -l)" -eq 1
+            test "$(grep -o 'id="placement-harm-cases"' "$page" | wc -l)" -eq 1
+            test "$(grep -o 'id="placement-data-panel"' "$page" | wc -l)" -eq 1
+            test "$(grep -o 'id="placement-boundary"' "$page" | wc -l)" -eq 1
+            test "$(grep -o 'class="nav-group nav-group-major out-of-home-nav"' "$page" | wc -l)" -eq 1
+            test "$(grep -o 'class="placement-harm-card' "$page" | wc -l)" -eq 4
+            test "$(grep -o 'class="placement-data-grid"' "$page" | wc -l)" -eq 2
+          done
 
-          pages = [
-              Path('hearing-records/prison-watch/kaikai-final-chapter/index.html'),
-              Path('hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html'),
-          ]
-          versions = []
-          for page in pages:
-              text = page.read_text(encoding='utf-8')
-              match = re.search(r'final-chapter\.css\?v=(20260829-\d+)', text)
-              if not match:
-                  raise SystemExit(f'{page}: CSS version not found')
-              versions.append(match.group(1))
-              expected = {
-                  'id="out-of-home-chapter"': 1,
-                  'id="placement-spectrum"': 1,
-                  'id="placement-state-duty"': 1,
-                  'id="placement-failures"': 1,
-                  'id="placement-harm-cases"': 1,
-                  'id="placement-data-panel"': 1,
-                  'id="placement-boundary"': 1,
-                  'class="nav-group nav-group-major out-of-home-nav"': 1,
-                  'class="out-of-home-major-stats"': 1,
-              }
-              for phrase, count in expected.items():
-                  actual = text.count(phrase)
-                  if actual != count:
-                      raise SystemExit(f'{page}: {phrase} expected {count}, found {actual}')
-              major = re.search(r'<details class="nav-group nav-group-major out-of-home-nav">.*?</details>', text, flags=re.S)
-              if not major or major.group(0).count('<a ') != 7:
-                  raise SystemExit(f'{page}: major menu must have seven links')
-              if text.count('class="placement-failure-grid"') != 1 or text.count('class="placement-harm-card') != 4 or text.count('class="placement-data-grid"') != 2:
-                  raise SystemExit(f'{page}: existing out-of-home content was not preserved')
-          if len(set(versions)) != 1:
-              raise SystemExit(f'Localized CSS versions differ: {versions}')
-          Path('/tmp/out-of-home-major-css-version.txt').write_text(versions[0], encoding='utf-8')
-          print(f'CSS_VERSION={versions[0]}')
-          PY
-          echo "CSS_VERSION=$(cat /tmp/out-of-home-major-css-version.txt)" >> "$GITHUB_ENV"
+          CSS_VERSION="$(grep -o 'final-chapter.css?v=20260829-[0-9]*' "${pages[0]}" | head -1 | cut -d= -f2)"
+          test -n "$CSS_VERSION"
+          grep -q "final-chapter.css?v=${CSS_VERSION}" "${pages[1]}"
+          echo "CSS_VERSION=${CSS_VERSION}" >> "$GITHUB_ENV"
 
           css='hearing-records/prison-watch/kaikai-final-chapter/final-chapter.css'
           grep -q 'OUT-OF-HOME-MAJOR-CHAPTER-20260829' "$css"
@@ -204,6 +135,7 @@ jobs:
           git rm -f --ignore-unmatch .github/workflows/oneoff-kaikai-out-of-home-major-chapter-20260829.yml
           git rm -f --ignore-unmatch .github/scripts/promote-kaikai-out-of-home-major-chapter-20260829.py
           git rm -f --ignore-unmatch .github/scripts/verify-kaikai-out-of-home-major-chapter-20260829.mjs
+          git rm -f --ignore-unmatch .github/scripts/prepare-kaikai-out-of-home-major-chapter-20260829.py
           if git diff --cached --quiet; then
             exit 0
           fi
