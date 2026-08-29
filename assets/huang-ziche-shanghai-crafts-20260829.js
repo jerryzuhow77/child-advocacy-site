@@ -158,43 +158,105 @@
         duration: 1.15,
         ease: 'power2.out'
       });
-      gsap.fromTo(openingStage.querySelectorAll('.tt-pose-actor'), {
-        opacity: 0,
-        yPercent: 5
-      }, {
-        opacity: 1,
-        yPercent: 0,
-        duration: 1.3,
-        stagger: .16,
-        ease: 'power2.out'
-      });
-
       const openingWoman = openingStage.querySelector('.tt-pose-actor--woman');
       const openingScribe = openingStage.querySelector('.tt-pose-actor--scribe');
       if (openingWoman && openingScribe) {
-        gsap.to(openingWoman, {
-          y: -5,
-          rotation: -.55,
-          duration: 2.35,
-          repeat: -1,
-          yoyo: true,
-          ease: 'sine.inOut'
+        const actors = [openingWoman, openingScribe];
+        const light = openingStage.querySelector('.tt-ronghua--opening');
+        let entrancePlayed = false;
+        let womanIdle;
+        let scribeIdle;
+
+        gsap.set(actors, { transformOrigin: '50% 94%', willChange: 'transform,opacity,filter' });
+
+        const startIdle = () => {
+          womanIdle?.kill();
+          scribeIdle?.kill();
+          womanIdle = gsap.to(openingWoman, {
+            y: mobile ? -5 : -9,
+            rotation: -1.15,
+            duration: 1.85,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut'
+          });
+          scribeIdle = gsap.to(openingScribe, {
+            y: mobile ? -4 : -7,
+            rotation: .95,
+            duration: 2.15,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut'
+          });
+        };
+
+        const playEntrance = () => {
+          womanIdle?.kill();
+          scribeIdle?.kill();
+          gsap.timeline({ defaults: { ease: 'power3.out' }, onComplete: startIdle })
+            .fromTo(openingWoman,
+              { autoAlpha: 0, xPercent: mobile ? -24 : -34, yPercent: 8, rotation: -4, scale: .92 },
+              { autoAlpha: 1, xPercent: 0, yPercent: 0, rotation: 0, scale: 1, duration: 1.25 }, 0)
+            .fromTo(openingScribe,
+              { autoAlpha: 0, xPercent: mobile ? 24 : 34, yPercent: 8, rotation: 4, scale: .92 },
+              { autoAlpha: 1, xPercent: 0, yPercent: 0, rotation: 0, scale: 1, duration: 1.25 }, .16);
+          if (light) gsap.fromTo(light,
+            { opacity: .12, scale: .82 },
+            { opacity: .78, scale: 1.06, duration: 1.55, ease: 'sine.out' });
+        };
+
+        const cueShadowScene = index => {
+          if (index === 0 && (!entrancePlayed || !document.body.classList.contains('tt-opening-active'))) {
+            entrancePlayed = true;
+            playEntrance();
+            return;
+          }
+          const womanSpeaks = index === 0 || index === 2;
+          const scribeSpeaks = index === 1 || index === 3;
+          womanIdle?.pause();
+          scribeIdle?.pause();
+          const amount = mobile ? 5 : 8;
+          const scene = gsap.timeline({
+            defaults: { overwrite: 'auto' },
+            onComplete: startIdle
+          });
+
+          if (index === 4) {
+            scene
+              .to(openingWoman, { xPercent: amount, y: -8, rotation: .7, duration: .65, ease: 'power2.out' }, 0)
+              .to(openingScribe, { xPercent: -amount, y: -7, rotation: -.65, duration: .65, ease: 'power2.out' }, 0)
+              .to(actors, { xPercent: 0, y: 0, rotation: 0, duration: .95, ease: 'sine.inOut' }, .8);
+          } else {
+            const speaker = womanSpeaks ? openingWoman : openingScribe;
+            const listener = womanSpeaks ? openingScribe : openingWoman;
+            scene
+              .to(speaker, {
+                xPercent: womanSpeaks ? amount : -amount,
+                y: mobile ? -7 : -11,
+                rotation: womanSpeaks ? 1.15 : -1.05,
+                scale: 1.025,
+                duration: .56,
+                ease: 'power2.out'
+              }, 0)
+              .to(listener, {
+                xPercent: womanSpeaks ? 1.5 : -1.5,
+                rotation: womanSpeaks ? .35 : -.35,
+                duration: .7,
+                ease: 'sine.out'
+              }, .08)
+              .to(speaker, { xPercent: 0, y: 0, rotation: 0, scale: 1, duration: .9, ease: 'sine.inOut' }, .72)
+              .to(listener, { xPercent: 0, rotation: 0, duration: .82, ease: 'sine.inOut' }, .82);
+          }
+          if (light) scene.to(light, { opacity: scribeSpeaks ? .58 : .82, duration: .45, yoyo: true, repeat: 1 }, 0);
+        };
+
+        document.addEventListener('tt:opening-scene', event => cueShadowScene(Number(event.detail?.index || 0)));
+        document.addEventListener('tt:opening-close', () => {
+          womanIdle?.pause();
+          scribeIdle?.pause();
+          entrancePlayed = false;
         });
-        gsap.to(openingScribe, {
-          y: -4,
-          rotation: .48,
-          duration: 2.7,
-          repeat: -1,
-          yoyo: true,
-          ease: 'sine.inOut'
-        });
-        document.addEventListener('tt:opening-scene', event => {
-          const index = Number(event.detail?.index || 0);
-          const speaker = index === 1 || index === 3 ? openingScribe : openingWoman;
-          gsap.timeline({ overwrite: 'auto' })
-            .to(speaker, { xPercent: speaker === openingWoman ? 3 : -3, duration: .42, ease: 'power2.out' })
-            .to(speaker, { xPercent: 0, duration: .7, ease: 'sine.inOut' });
-        });
+        cueShadowScene(0);
       }
     }
 
@@ -224,6 +286,18 @@
           ease: 'none',
           scrollTrigger: { trigger: stage, start: 'top 88%', end: 'center 42%', scrub: .55 }
         });
+        const woman = stage.querySelector('.tt-pose-actor--woman');
+        const scribe = stage.querySelector('.tt-pose-actor--scribe');
+        if (woman && scribe) {
+          gsap.fromTo(woman,
+            { autoAlpha: 0, xPercent: mobile ? -14 : -22, yPercent: 5, rotation: -2.5 },
+            { autoAlpha: 1, xPercent: 0, yPercent: 0, rotation: 0, duration: 1.05, ease: 'power3.out',
+              scrollTrigger: { trigger: stage, start: 'top 86%', once: true } });
+          gsap.fromTo(scribe,
+            { autoAlpha: 0, xPercent: mobile ? 14 : 22, yPercent: 5, rotation: 2.5 },
+            { autoAlpha: 1, xPercent: 0, yPercent: 0, rotation: 0, duration: 1.05, delay: .12, ease: 'power3.out',
+              scrollTrigger: { trigger: stage, start: 'top 86%', once: true } });
+        }
       });
 
       document.querySelectorAll('.hz-classical-echo').forEach((echo, index) => {
