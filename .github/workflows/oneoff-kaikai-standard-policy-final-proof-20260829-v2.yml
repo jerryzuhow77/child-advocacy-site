@@ -1,0 +1,58 @@
+name: Final Kaikai standard-policy browser proof v2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-kaikai-standard-policy-final-proof-20260829-v2.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  final-live-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Confirm corrected public revision
+        run: |
+          URL='https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/'
+          for attempt in $(seq 1 60); do
+            if curl -fsSL --retry 2 --retry-delay 1 "${URL}?revision-proof-v2=$(date +%s)-${attempt}" | grep -q 'final-chapter.js?v=20260829-33'; then
+              echo "Corrected live revision detected on attempt ${attempt}."
+              exit 0
+            fi
+            sleep 5
+          done
+          echo 'Timed out waiting for final-chapter.js?v=20260829-33' >&2
+          exit 1
+
+      - name: Install Playwright driver
+        run: npm install --no-save playwright-core@1.55.0
+
+      - name: Run definitive live Chrome proof without autoplay override
+        run: |
+          mkdir -p browser-proof
+          python <<'PY'
+          from pathlib import Path
+          import textwrap
+
+          workflow = Path('.github/workflows/oneoff-kaikai-prologue-dual-track-live-browser-20260829-v4.yml').read_text(encoding='utf-8')
+          marker = "          node --input-type=module <<'JS'\n"
+          start = workflow.index(marker) + len(marker)
+          end = workflow.index('\n          JS\n', start)
+          script = textwrap.dedent(workflow[start:end])
+          script = script.replace('final-chapter.js?v=20260829-32', 'final-chapter.js?v=20260829-33')
+          Path('.kaikai-final-proof.mjs').write_text(script, encoding='utf-8')
+          PY
+          node .kaikai-final-proof.mjs
+
+      - name: Upload final browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kaikai-standard-policy-final-browser-proof-v2
+          path: browser-proof
+          retention-days: 14
