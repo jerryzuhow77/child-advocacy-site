@@ -35,23 +35,9 @@ jobs:
           mkdir -p "$(dirname "$output")"
           cat "$chunk_dir"/part-*.b64 | base64 --decode > "$output"
           test "$(stat -c '%s' "$output")" -eq 48131
-          sha256sum "$output"
-
-          ffprobe -v error -select_streams a:0 \
-            -show_entries stream=codec_name,channels,sample_rate:format=duration \
-            -of json "$output" > /tmp/kaikai-track.json
-          cat /tmp/kaikai-track.json
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-
-          data = json.loads(Path('/tmp/kaikai-track.json').read_text())
-          streams = data.get('streams') or []
-          assert streams and streams[0].get('codec_name') == 'opus', data
-          duration = float((data.get('format') or {}).get('duration') or 0)
-          assert 30.0 <= duration <= 31.5, duration
-          PY
-
+          echo 'adc89eee95493aea634e9a2435dd45ec32782f2732697f409d713e595c13dc5a  assets/audio/kaikai-chapter2-bgm-02-20260829.webm' | sha256sum -c -
+          test "$(xxd -p -l 4 "$output")" = '1a45dfa3'
+          grep -a -q 'OpusHead' "$output"
           rm -rf "$chunk_dir"
 
       - name: Commit assembled media and remove one-off tooling
