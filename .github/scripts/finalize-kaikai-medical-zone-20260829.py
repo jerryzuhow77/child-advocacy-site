@@ -1,11 +1,55 @@
 from __future__ import annotations
 
-import subprocess
+import re
 from pathlib import Path
 
-subprocess.run(
-    ['python3', '.github/scripts/patch-kaikai-medical-responsibility-navigation-20260829.py'],
-    check=True,
+
+def ensure_witness_entry(path: Path, section_id: str, href: str, label: str) -> None:
+    text = path.read_text(encoding='utf-8')
+    marker = f'id="{section_id}"'
+    marker_at = text.find(marker)
+    if marker_at < 0:
+        raise SystemExit(f'{path}: official medical source section not found')
+    section_start = text.rfind('<aside', 0, marker_at)
+    section_end = text.find('</aside>', marker_at)
+    if section_start < 0 or section_end < 0:
+        raise SystemExit(f'{path}: official medical source aside could not be bounded')
+    section_end += len('</aside>')
+    section = text[section_start:section_end]
+
+    # Remove stale copies from earlier one-off attempts, then insert exactly one
+    # entry in the existing source-link row.
+    anchor_pattern = re.compile(r'<a\b[^>]*>.*?</a>', re.S)
+    section = anchor_pattern.sub(
+        lambda match: '' if label in match.group(0) or f'href="{href}"' in match.group(0) else match.group(0),
+        section,
+    )
+    links_open = '<div class="supplement-links">'
+    links_at = section.find(links_open)
+    if links_at < 0:
+        raise SystemExit(f'{path}: supplement-links container not found')
+    links_end = section.find('</div>', links_at)
+    if links_end < 0:
+        raise SystemExit(f'{path}: supplement-links closing tag not found')
+    entry = f'<a class="medical-zone-entry" href="{href}">{label}</a>'
+    section = section[:links_end] + entry + section[links_end:]
+    text = text[:section_start] + section + text[section_end:]
+    if text.count(label) != 1:
+        raise SystemExit(f'{path}: expected exactly one medical-zone entry label, found {text.count(label)}')
+    path.write_text('\n'.join(line.rstrip() for line in text.splitlines()) + '\n', encoding='utf-8')
+
+
+ensure_witness_entry(
+    Path('hearing-records/prison-watch/kaikai-final-chapter/witnesses/index.html'),
+    'witness-10-official-sources',
+    '../medical-responsibility/',
+    '進入醫療責任釐清專區',
+)
+ensure_witness_entry(
+    Path('hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/witnesses/index.html'),
+    'witness-10-official-sources',
+    '../../medical-responsibility/zh-Hans/',
+    '进入医疗责任厘清专区',
 )
 
 root = Path('hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility')
