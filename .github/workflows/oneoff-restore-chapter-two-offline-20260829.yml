@@ -32,29 +32,85 @@ jobs:
           git fetch origin main --prune
           git checkout -B main origin/main
 
-          removal_patch="$(mktemp)"
-          git diff 7c5d49fa7a329414487cc65b6a9691df34ffb1e5^ 7c5d49fa7a329414487cc65b6a9691df34ffb1e5 -- index.html > "$removal_patch"
-          test -s "$removal_patch"
-          if git apply --check "$removal_patch"; then
-            git apply "$removal_patch"
-          else
-            git apply --3way "$removal_patch"
-          fi
-
           python3 - <<'PY'
           from pathlib import Path
           import re
 
+          index_path = Path('index.html')
+          text = index_path.read_text(encoding='utf-8')
+          void_tags = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'}
+          opening_tag = re.compile(r'<(?P<tag>[A-Za-z][A-Za-z0-9:-]*)\b[^>]*>', re.S)
+
+          def remove_elements_containing(source: str, token: str) -> tuple[str, int]:
+              removed = 0
+              while True:
+                  hit = next((match for match in opening_tag.finditer(source) if token in match.group(0)), None)
+                  if hit is None:
+                      return source, removed
+                  tag = hit.group('tag')
+                  raw = hit.group(0)
+                  start = hit.start()
+                  end = hit.end()
+                  if tag.lower() not in void_tags and not raw.rstrip().endswith('/>'):
+                      pair = re.compile(rf'</?{re.escape(tag)}\b[^>]*>', re.I | re.S)
+                      depth = 1
+                      for candidate in pair.finditer(source, hit.end()):
+                          candidate_raw = candidate.group(0)
+                          if candidate_raw.startswith('</'):
+                              depth -= 1
+                          elif not candidate_raw.rstrip().endswith('/>'):
+                              depth += 1
+                          if depth == 0:
+                              end = candidate.end()
+                              break
+                      else:
+                          raise SystemExit(f'Could not find closing </{tag}> for token {token!r}')
+                  line_start = source.rfind('\n', 0, start) + 1
+                  if not source[line_start:start].strip():
+                      start = line_start
+                  if end < len(source) and source[end:end + 1] == '\n':
+                      end += 1
+                  source = source[:start] + source[end:]
+                  removed += 1
+
+          markers = [
+              'data-kaikai-chapter-two-root-entry',
+              'data-kaikai-medical-root-entry',
+              'data-kaikai-chapter-two-launch',
+              'data-kaikai-medical-launch',
+              'data-kaikai-chapter-two-card',
+              'data-kaikai-medical-card',
+              'data-kaikai-chapter-two-footer',
+              'data-kaikai-medical-footer',
+              'data-kaikai-chapter-two-quicklink',
+              'is-kaikai-chapter-two',
+              'is-kaikai-medical-responsibility',
+              'home-kaikai-chapter-two',
+              'home-kaikai-medical',
+              'home-kaikai-chapter-two-20260829',
+              'hearing-records/prison-watch/kaikai-final-chapter/',
+          ]
+          totals: dict[str, int] = {}
+          for marker in markers:
+              text, count = remove_elements_containing(text, marker)
+              if count:
+                  totals[marker] = count
+
+          text = re.sub(r'\s*<!--\s*KAIKAI-(?:CHAPTER-TWO|MEDICAL)[\s\S]*?-->\s*', '\n', text, flags=re.I)
+          text = re.sub(r'\n{3,}', '\n\n', text)
+          index_path.write_text(text, encoding='utf-8')
+          print('Removed public homepage elements:', totals)
+
           sitemap_path = Path('sitemap.xml')
           sitemap = sitemap_path.read_text(encoding='utf-8')
           block_re = re.compile(r'  <url>\n.*?  </url>\n?', re.S)
-          removed = 0
+          sitemap_removed = 0
 
           def keep_or_remove(match: re.Match[str]) -> str:
-              global removed
+              global sitemap_removed
               block = match.group(0)
               if '/hearing-records/prison-watch/kaikai-final-chapter/' in block:
-                  removed += 1
+                  sitemap_removed += 1
                   return ''
               return block
 
@@ -62,7 +118,7 @@ jobs:
           if '/hearing-records/prison-watch/kaikai-final-chapter/' in sitemap:
               raise SystemExit('Chapter 2 URL remains in sitemap.xml')
           sitemap_path.write_text(sitemap, encoding='utf-8')
-          print(f'Removed {removed} Chapter 2 sitemap URL blocks')
+          print(f'Removed {sitemap_removed} Chapter 2 sitemap URL blocks')
           PY
 
           cat > .github/scripts/verify-chapter-two-offline-policy.py <<'PY'
@@ -78,13 +134,27 @@ jobs:
               'data-kaikai-chapter-two-launch',
               'data-kaikai-medical-launch',
               'data-kaikai-chapter-two-card',
+              'data-kaikai-medical-card',
               'data-kaikai-chapter-two-footer',
+              'data-kaikai-medical-footer',
               'home-kaikai-chapter-two-20260829',
               'hearing-records/prison-watch/kaikai-final-chapter/',
+              'kaikai-chapter2-hero-',
+              '第二章｜沒人要的孩子',
+              '第二章｜没人要的孩子',
+              '孩子被選擇的人生',
+              '孩子被选择的人生',
+              '醫療責任釐清專區',
+              '医疗责任厘清专区',
           ]
           present = [token for token in forbidden_index if token in index]
           if present:
-              raise SystemExit(f'Public Chapter 2 homepage entries remain: {present}')
+              numbered = '\n'.join(
+                  f'{line_no}: {line[:360]}'
+                  for line_no, line in enumerate(index.splitlines(), 1)
+                  if any(token in line for token in present)
+              )
+              raise SystemExit(f'Public Chapter 2 homepage entries remain: {present}\n{numbered}')
 
           pinned_cards = re.findall(
               r'<a\b[^>]*class="[^"]*\bhome-pinned-report-card\b[^"]*"',
@@ -96,9 +166,9 @@ jobs:
 
           required_pinned_links = [
               'https://jerryzuhow77.github.io/Justice-For-Kaikai/',
-              'https://jerryzuhow77.github.io/Raise-Stone-Injustice/',
-              'trial-updates.html#hearing-2026-09-16',
-              'donate.html',
+              './cases/luo-brothers/',
+              './activity-records/20260820-taipei-station-advocacy/',
+              './activity-records/20260825-111-surplus-donation/',
           ]
           missing = [link for link in required_pinned_links if link not in index]
           if missing:
