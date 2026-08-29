@@ -61,6 +61,7 @@ for (const [language, site] of Object.entries(sites)) {
       timeout: 60000
     });
     await page.waitForSelector('#system .responsibility-tree-pair', { state: 'visible', timeout: 15000 });
+    await page.locator('#system .responsibility-tree-visual img').scrollIntoViewIfNeeded();
     await page.waitForFunction(() => {
       const image = document.querySelector('#system .responsibility-tree-visual img');
       return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0;
