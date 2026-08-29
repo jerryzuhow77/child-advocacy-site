@@ -1,5 +1,6 @@
 name: Publish and verify Kaikai prologue music and menu cleanup
 
+# Revision 2: resilient cache-key matching and localized skip-button replacement.
 on:
   push:
     branches: [main]
@@ -61,8 +62,6 @@ jobs:
           grep -q "prologueAudio.dataset.prologueAutoplay = 'playing'" "$js"
           grep -q "showProloguePlayPrompt({ audioBlocked: true })" "$js"
 
-          # The preparation helper intentionally edits the temporary patch script
-          # only in this checkout. Restore it before any rebase/push retry.
           git restore .github/scripts/patch-kaikai-prologue-audio-and-menu-20260829.py
 
           git config user.name 'github-actions[bot]'
