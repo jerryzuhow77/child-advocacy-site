@@ -915,3 +915,53 @@ html.tt-pose-ready body.hz-page .tt-stage{
  .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-sprite,
  .hz-page .tt-transition[data-shadow-scene] .tt-pose-sprite{filter:brightness(1.65) saturate(1.5) contrast(1.2) drop-shadow(0 7px 6px rgba(45,15,6,.4))!important}
 }
+
+/* Final carved-stage correction.
+   A previous background-size override enlarged the timber highlight stripe to
+   the full canvas, hiding the transparent carved artwork behind a brown panel.
+   Restore each background layer explicitly, then keep the Shanghai paper-cut
+   scrim inside the aperture and above the illuminated paper screen. */
+.hz-page .tt-stage .tt-carved-stage-frame--opening,
+.hz-page .tt-transition[data-shadow-scene] .tt-carved-stage-frame--transition,
+.hz-page .tt-ending-theatre-stage .tt-carved-stage-frame--ending{
+ background:
+  linear-gradient(180deg,rgba(57,29,16,.74),rgba(154,105,51,.72)) 50% 88.45%/71.8% .65% no-repeat,
+  url("./art/tian-tian-carved-wood-stage-frame-20260826.webp") center/100% 100% no-repeat!important;
+ filter:brightness(1.08) saturate(1.2) contrast(1.14) drop-shadow(0 13px 15px rgba(12,5,2,.72))!important;
+}
+.hz-page .tt-stage>.tt-pose-layer--opening,
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-layer{
+ --hz-stage-craft-glow:.6;
+ box-shadow:
+  inset 0 0 0 1px rgba(145,191,174,.24),
+  inset 0 0 30px rgba(35,106,98,.16)!important;
+}
+.hz-page .tt-stage>.tt-pose-layer--opening::before,
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-layer::before{
+ inset:2.5% 3.5% 1.5%!important;
+ opacity:var(--hz-stage-craft-glow)!important;
+ background-position:center!important;
+ background-size:100% 100%!important;
+ mix-blend-mode:normal!important;
+ filter:brightness(.92) saturate(1.08) contrast(1.04) drop-shadow(0 0 13px rgba(218,169,80,.3))!important;
+ transform:translate3d(var(--hz-stage-craft-x),0,0) scale(1.012)!important;
+}
+.hz-page .tt-stage>.tt-pose-layer--opening::after,
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-layer::after{
+ opacity:.94!important;
+ filter:blur(4px) saturate(1.08)!important;
+}
+@media(max-width:900px){
+ .hz-page .tt-stage .tt-carved-stage-frame--opening,
+ .hz-page .tt-transition[data-shadow-scene] .tt-carved-stage-frame--transition{
+  filter:brightness(1.14) saturate(1.24) contrast(1.13) drop-shadow(0 9px 10px rgba(12,5,2,.66))!important;
+ }
+ .hz-page .tt-stage>.tt-pose-layer--opening,
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-layer{--hz-stage-craft-glow:.64}
+ .hz-page .tt-stage>.tt-pose-layer--opening::before,
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-layer::before{
+  inset:2% 3% 1%!important;
+  background-size:100% 100%!important;
+  filter:brightness(.96) saturate(1.12) contrast(1.04) drop-shadow(0 0 10px rgba(218,169,80,.28))!important;
+ }
+}
