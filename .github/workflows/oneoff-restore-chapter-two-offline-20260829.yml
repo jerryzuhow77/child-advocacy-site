@@ -190,46 +190,9 @@ jobs:
           print('Chapter 2 is absent from public discovery surfaces; four original pinned reports remain; content files are retained.')
           PY
 
-          cat > .github/workflows/chapter-two-offline-policy.yml <<'YAML'
-          name: Guard unpublished Chapter 2 public entry points
-
-          on:
-            push:
-              branches: [main]
-              paths:
-                - 'index.html'
-                - 'sitemap.xml'
-                - '.github/scripts/verify-chapter-two-offline-policy.py'
-                - '.github/workflows/chapter-two-offline-policy.yml'
-            pull_request:
-              paths:
-                - 'index.html'
-                - 'sitemap.xml'
-                - '.github/scripts/verify-chapter-two-offline-policy.py'
-                - '.github/workflows/chapter-two-offline-policy.yml'
-            workflow_dispatch:
-
-          permissions:
-            contents: read
-
-          jobs:
-            verify:
-              runs-on: ubuntu-latest
-              steps:
-                - uses: actions/checkout@v4
-                - name: Verify Chapter 2 remains unpublished from official entry points
-                  run: python3 .github/scripts/verify-chapter-two-offline-policy.py
-          YAML
-
           python3 .github/scripts/verify-chapter-two-offline-policy.py
           git diff --check
-
-          rm .github/workflows/oneoff-restore-chapter-two-offline-20260829.yml
-          git add index.html sitemap.xml \
-            .github/scripts/verify-chapter-two-offline-policy.py \
-            .github/workflows/chapter-two-offline-policy.yml \
-            .github/workflows/oneoff-restore-chapter-two-offline-20260829.yml
-
+          git add index.html sitemap.xml .github/scripts/verify-chapter-two-offline-policy.py
           git commit -m 'fix: keep unpublished Chapter 2 off public entry points'
 
           pushed=0
