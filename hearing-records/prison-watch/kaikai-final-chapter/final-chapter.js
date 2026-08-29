@@ -180,7 +180,7 @@ const audioDirectory = originalAudioSources[0]
   : new URL('../../../assets/audio/', document.baseURI);
 const audioTracks = [
   {
-    title: locale === 'zh-Hans' ? '第二章主题配乐' : '第二章主題配樂',
+    title: locale === 'zh-Hans' ? '岁月深处的告白' : '歲月深處的告白',
     sources: originalAudioSources
   },
   {
@@ -189,6 +189,10 @@ const audioTracks = [
       {
         src: new URL('kaikai-chapter2-bgm-02-20260829.webm', audioDirectory).href,
         type: 'audio/webm; codecs="opus"'
+      },
+      {
+        src: new URL('kaikai-chapter2-bgm-02-20260829.m4a', audioDirectory).href,
+        type: 'audio/mp4'
       }
     ]
   }
