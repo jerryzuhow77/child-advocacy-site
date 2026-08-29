@@ -1,0 +1,30 @@
+name: One-off Jungein HD deployer check v3
+
+on:
+  push:
+    branches:
+      - ops/jungein-hd-release-20260829-v3
+    paths:
+      - .github/workflows/oneoff-jungein-hd-deployer-check-v3.yml
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate guarded deployer
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          script=handoffs/jungein-hd-release-20260829-v3/deploy-current-production.sh
+          bash -n "$script"
+          grep -Fq '8402771625c14254fb67a18ec4c8e9bf1d411192' "$script"
+          grep -Fq 'Unexpected current JS; refusing overwrite' "$script"
+          grep -Fq 'Unexpected current CSS; refusing overwrite' "$script"
+          grep -Fq 'Failure detected; restoring' "$script"
+          grep -Fq 'JUNGEIN_HD_RELEASE_SUCCEEDED' "$script"
+          echo 'Guarded deployer validation passed.'
