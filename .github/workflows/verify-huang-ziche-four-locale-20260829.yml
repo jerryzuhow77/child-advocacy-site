@@ -88,8 +88,8 @@ jobs:
                       return {
                         lang: document.documentElement.lang,
                         canonical: document.querySelector('link[rel="canonical"]')?.href,
-                        hasCss: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.css?v=10')),
-                        hasJs: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.js?v=6')),
+                        hasCss: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.css?v=11')),
+                        hasJs: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.js?v=7')),
                         hasRail: Boolean(document.querySelector('.hz-lantern-rail')),
                         hasBackTop: Boolean(document.querySelector('.hz-back-top')),
                         hasMobileSummary: Boolean(document.querySelector('.hz-mobile-summary')),
@@ -101,6 +101,14 @@ jobs:
                         precedentSources: document.querySelectorAll('#precedents a[href^="https://www.court.gov.cn/"]').length,
                         precedentAxes: document.querySelectorAll('#precedents .hz-law-axis article').length,
                         precedentQuote: Boolean(document.querySelector('#precedents .hz-classical-echo')),
+                        matrixRows: document.querySelectorAll('#precedents .hz-compare-matrix tbody tr').length,
+                        filterButtons: document.querySelectorAll('#precedents [data-hz-case-filter]').length,
+                        sourceButtons: document.querySelectorAll('#precedents [data-hz-source-open]').length,
+                        hasSourceDrawer: Boolean(document.querySelector('[data-hz-source-drawer]')),
+                        intentSteps: document.querySelectorAll('#verdict .hz-intent-scale article').length,
+                        evidenceGates: document.querySelectorAll('#father .hz-evidence-tree li').length,
+                        interventionSteps: document.querySelectorAll('#protection .hz-intervention-path li').length,
+                        railLinks: document.querySelectorAll('.hz-lantern-rail .hz-rail-link').length,
                         protectionNumber: document.querySelector('#protection .tt-chapter-mark b')?.textContent.trim(),
                         verdictCards: document.querySelectorAll('#verdict .tt-action-grid article').length,
                         fatherCards: document.querySelectorAll('#father .tt-action-grid article').length,
@@ -109,6 +117,16 @@ jobs:
                         overflow: Math.max(0, document.documentElement.scrollWidth - innerWidth),
                       };
                     }, { locale: item.locale, canonical: url, verdict: item.verdict, father: item.father, precedent: item.precedent });
+                    await page.click('#precedents [data-hz-case-filter="homicide"]');
+                    await page.waitForTimeout(120);
+                    const filtered = await page.evaluate(() => ({
+                      cards: document.querySelectorAll('#precedents .hz-case-card:not([hidden])').length,
+                      rows: document.querySelectorAll('#precedents .hz-compare-matrix tbody tr:not([hidden])').length,
+                    }));
+                    await page.click('#precedents .hz-case-card:not([hidden]) [data-hz-source-open]');
+                    await page.waitForTimeout(120);
+                    const drawerOpen = await page.evaluate(() => Boolean(document.querySelector('[data-hz-source-drawer][open]')));
+                    await page.keyboard.press('Escape');
                     const mismatches = [];
                     if (result.lang !== item.locale) mismatches.push('lang=' + result.lang);
                     if (result.canonical !== url) mismatches.push('canonical=' + result.canonical);
@@ -122,6 +140,16 @@ jobs:
                     if (result.precedentSources !== 4) mismatches.push('precedentSources=' + result.precedentSources);
                     if (result.precedentAxes !== 4) mismatches.push('precedentAxes=' + result.precedentAxes);
                     if (!result.precedentQuote) mismatches.push('precedentQuote=false');
+                    if (result.matrixRows !== 4) mismatches.push('matrixRows=' + result.matrixRows);
+                    if (result.filterButtons !== 6) mismatches.push('filterButtons=' + result.filterButtons);
+                    if (result.sourceButtons !== 5) mismatches.push('sourceButtons=' + result.sourceButtons);
+                    if (!result.hasSourceDrawer) mismatches.push('sourceDrawer=false');
+                    if (result.intentSteps !== 3) mismatches.push('intentSteps=' + result.intentSteps);
+                    if (result.evidenceGates !== 6) mismatches.push('evidenceGates=' + result.evidenceGates);
+                    if (result.interventionSteps !== 5) mismatches.push('interventionSteps=' + result.interventionSteps);
+                    if (result.railLinks !== 10) mismatches.push('railLinks=' + result.railLinks);
+                    if (filtered.cards !== 1 || filtered.rows !== 1) mismatches.push('filter interaction=' + JSON.stringify(filtered));
+                    if (!drawerOpen) mismatches.push('source drawer did not open');
                     if (result.protectionNumber !== '09') mismatches.push('protectionNumber=' + result.protectionNumber);
                     if (result.verdictCards !== 4) mismatches.push('verdictCards=' + result.verdictCards);
                     if (result.fatherCards !== 5) mismatches.push('fatherCards=' + result.fatherCards);
