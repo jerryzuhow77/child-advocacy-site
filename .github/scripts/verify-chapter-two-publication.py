@@ -38,7 +38,8 @@ for section in ('pinned', 'items'):
     if len(matches) != 1:
         raise SystemExit(f'Chapter 2 must appear exactly once in {section}; found {len(matches)}')
     item = matches[0]
-    if item.get('urlByLocale') != LOCALE_URLS:
+    locale_routes = item.get('urlByLocale') or item.get('url')
+    if locale_routes != LOCALE_URLS:
         raise SystemExit(f'Chapter 2 locale routes are incomplete in {section}')
     images = item.get('imageByLocale', {})
     if images.get('en') != NEUTRAL_IMAGE or images.get('ja') != NEUTRAL_IMAGE:
