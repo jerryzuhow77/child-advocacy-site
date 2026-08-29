@@ -65,6 +65,20 @@ button,input{font:inherit}
 .content-warning p{margin:0}
 .content-warning a{color:var(--red-dark);font-weight:800;text-underline-offset:3px}
 
+/* PROLOGUE-VIDEO-20260829 */
+.prologue-film-section{scroll-margin-top:90px;padding-top:clamp(72px,8vw,108px);padding-bottom:clamp(62px,7vw,94px);background:radial-gradient(circle at 17% 13%,rgba(210,160,82,.18),transparent 28%),linear-gradient(145deg,#071e2e,#103c4b);color:#fff}
+.prologue-film-section .section-head small{color:#efc77d}
+.prologue-film-section .section-head h2{color:#fff}
+.prologue-film-section .section-head p{color:#d5e1dd}
+.prologue-film-frame{max-width:1220px;margin:0 auto;overflow:hidden;background:#020b11;border:1px solid rgba(255,255,255,.18);box-shadow:0 26px 74px rgba(0,0,0,.34)}
+.prologue-film-frame video{display:block;width:100%;aspect-ratio:16/9;background:#020b11;object-fit:cover}
+.prologue-film-caption{display:flex;align-items:center;justify-content:space-between;gap:22px;padding:17px 20px;background:#061e2b;color:#cbd8d4;font-size:12px;line-height:1.65}
+.prologue-film-caption span{display:flex;gap:9px;align-items:baseline}
+.prologue-film-caption b{flex:0 0 auto;color:#efc77d;letter-spacing:.05em}
+.prologue-film-caption a{flex:0 0 auto;padding:9px 14px;border:1px solid rgba(255,255,255,.45);border-radius:999px;color:#fff;text-decoration:none;font-weight:900}
+.prologue-film-caption a:hover,.prologue-film-caption a:focus-visible{background:#fff;color:var(--navy);outline:3px solid rgba(210,160,82,.38);outline-offset:3px}
+.chapter-after-prologue-anchor{height:0;scroll-margin-top:90px;outline:none}
+
 .section{padding:clamp(76px,9vw,128px) clamp(18px,5vw,76px)}
 .section>*{max-width:1220px;margin-inline:auto}
 .section-head{display:grid;gap:9px;margin-bottom:44px}
@@ -488,6 +502,7 @@ footer small{display:block;margin-top:9px;color:#c2d0ca}
   html{scroll-padding-top:72px}.topbar{min-height:68px;padding:8px 13px}.topbar nav{top:68px}.brand span{font-size:13px}.brand small{font-size:7px}.brand img{width:38px;height:38px}
   .hero-art{aspect-ratio:16/9}.hero-copy{width:auto;min-height:auto;padding:32px 19px 76px}.hero h1{font-size:50px}.hero-lead{font-size:15px}.hero blockquote{font-size:17px}.hero-actions{display:grid}.button{width:100%}.hero-caption{padding:10px 16px;font-size:9px;text-align:left}
   .content-warning{grid-template-columns:1fr;margin:-18px 12px 0;padding:18px 19px}.section{padding:70px 15px}.section-head{margin-bottom:30px}.section-head h2{font-size:35px}
+  .prologue-film-section{padding:58px 12px}.prologue-film-caption{align-items:stretch;flex-direction:column;padding:14px}.prologue-film-caption span{display:block}.prologue-film-caption b{display:block;margin-bottom:4px}.prologue-film-caption a{text-align:center}
   .evidence-legend{grid-template-columns:1fr}.evidence-legend article{min-height:auto;padding:20px}.method-note{padding:22px 19px}
   .journey-tools{position:static;grid-template-columns:1fr;padding:15px}.journey-tools p{margin:0}
   .life-timeline:before{left:66px}.life-event{grid-template-columns:48px 1fr;gap:34px;padding-bottom:22px}.life-event:after{left:59px}.life-event time{font-size:11px;writing-mode:vertical-rl;text-orientation:mixed}.life-event time small{display:none}.life-event article{padding:19px 17px}.life-event h3{font-size:20px}.life-event p{font-size:14px}.source-chips a{width:100%;justify-content:center;text-align:center}
@@ -511,7 +526,7 @@ footer small{display:block;margin-top:9px;color:#c2d0ca}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.js-ready .reveal{opacity:1;transform:none}.button{transition:none}}
 
 @media print{
-  .topbar,.hero-actions,.language-switcher,.journey-tools,.reading-depth-controls{display:none!important}
+  .topbar,.hero-actions,.language-switcher,.journey-tools,.reading-depth-controls,.prologue-film-section{display:none!important}
   .hero{background:#fff;color:#111}.hero-art{height:auto;aspect-ratio:16/9}.hero-copy{width:auto;padding:28px}.hero h1,.hero-lead,.hero blockquote{color:#111;text-shadow:none}.hero-caption{padding:8px 28px;background:#fff;color:#444;border-color:#999}
   .content-warning{margin:0;box-shadow:none}.section{padding:35px 20px}.reveal,.js-ready .reveal{opacity:1;transform:none}.js-ready #ten-days .mode-guided,.js-ready #ten-days .mode-full{display:block!important}.life-event article,.day-card,.responsibility-card,.chen-dialogue,.temple-case,.state-card,.phase-card,.cross-issue,.witness-proof,.blood-note-figure,.corroboration-row,.tree-node{break-inside:avoid;box-shadow:none}.day-card{break-inside:avoid}.day-card:not([open])>*:not(summary),.cross-issue:not([open])>*:not(summary){display:block}.dialogue-pairs,.responsibility-grid,.source-columns{grid-template-columns:1fr 1fr}.gap-grid{grid-template-columns:repeat(2,1fr)}.case-network{background:#fff;color:#111;border-color:#777}.case-network figcaption>b,.case-network figcaption p{color:#111}.network-gap-row{border-color:#777;color:#111}.responsibility-tree-panel{background:#fff;border-color:#777;box-shadow:none}.relation-ledger{box-shadow:none}
 }

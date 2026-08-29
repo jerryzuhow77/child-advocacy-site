@@ -41,6 +41,11 @@
   const lifeStatus = document.querySelector('#lifeStatus');
   const lifeEvents = [...document.querySelectorAll('#lifeTimeline .life-event')];
   const locale = document.documentElement.lang === 'zh-Hans' ? 'zh-Hans' : 'zh-Hant';
+  // PROLOGUE-VIDEO-20260829
+  const prologueVideo = document.querySelector('[data-prologue-video]');
+  const prologueSkip = document.querySelector('[data-prologue-skip]');
+  prologueSkip?.addEventListener('click', () => prologueVideo?.pause());
+
   const totalLabel = locale === 'zh-Hans' ? '个生命节点' : '個生命節點';
   const resultLabel = locale === 'zh-Hans' ? '个相符节点' : '個相符節點';
 
