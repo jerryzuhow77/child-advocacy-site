@@ -197,6 +197,52 @@
           scrollTrigger: { trigger: stage, start: 'top 88%', end: 'center 42%', scrub: .55 }
         });
       });
+
+      document.querySelectorAll('.hz-classical-echo').forEach((echo, index) => {
+        const quote = echo.querySelector('p');
+        const explanation = echo.querySelector('span');
+        const source = echo.querySelector('cite');
+        gsap.fromTo(echo, {
+          opacity: 0,
+          x: index % 2 ? 18 : -18
+        }, {
+          opacity: 1,
+          x: 0,
+          duration: .9,
+          ease: 'power2.out',
+          scrollTrigger: { trigger: echo, start: 'top 88%', once: true }
+        });
+        gsap.fromTo([quote, source, explanation], {
+          opacity: 0,
+          y: 10
+        }, {
+          opacity: 1,
+          y: 0,
+          duration: .7,
+          stagger: .12,
+          ease: 'power2.out',
+          scrollTrigger: { trigger: echo, start: 'top 84%', once: true }
+        });
+      });
+
+      const socialPoster = document.querySelector('.hz-social-poster');
+      const socialPosterImage = socialPoster?.querySelector('img');
+      if (socialPoster && socialPosterImage) {
+        gsap.fromTo(socialPosterImage, {
+          opacity: .18,
+          y: 30,
+          rotate: .8,
+          scale: .975
+        }, {
+          opacity: 1,
+          y: 0,
+          rotate: 0,
+          scale: 1,
+          duration: 1.25,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: socialPoster, start: 'top 82%', once: true }
+        });
+      }
     }
   }
 
