@@ -90,7 +90,7 @@ jobs:
                       return {
                         lang: document.documentElement.lang,
                         canonical: document.querySelector('link[rel="canonical"]')?.href,
-                        hasCss: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.css?v=15')),
+                        hasCss: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.css?v=16')),
                         hasJs: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.js?v=11')),
                         puppetScenes: document.querySelectorAll('.tt-stage > .tt-pose-layer--opening, .tt-transition[data-shadow-scene] .tt-pose-layer').length,
                         puppetCraftLayers: document.querySelectorAll('.hz-puppet-craft-layer').length,
