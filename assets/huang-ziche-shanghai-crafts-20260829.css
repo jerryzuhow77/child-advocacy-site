@@ -1432,3 +1432,48 @@ html.tt-pose-ready body.hz-page .tt-stage{
  .hz-page .hz-stage-guxiu-thread,.hz-page .hz-ending-jade-arch,.hz-page .hz-ending-paper-canopy,
  .hz-page .hz-ending-lantern-node,.hz-page .hz-ending-guxiu-vine{opacity:.78!important;transform:none!important}
 }
+
+
+/* v13 — readable hero art, jade/paper puppet ornaments, ambient Haipai craft corners */
+.hz-page .hz-ambient-crafts{position:fixed;z-index:0;inset:0;overflow:hidden;pointer-events:none}
+.hz-page .hz-ambient-craft{position:absolute;display:block;background-repeat:no-repeat;background-size:cover;opacity:.2;filter:saturate(.86) contrast(1.04)}
+.hz-page .hz-ambient-craft--guxiu{left:-5rem;top:10%;width:min(34vw,430px);aspect-ratio:1;background-image:linear-gradient(90deg,transparent 8%,rgba(245,235,211,.05)),url("./art/huang-ziche-haipai-shadow-stage-concept-20260830.webp");background-position:12% 48%;clip-path:ellipse(43% 46% at 45% 50%)}
+.hz-page .hz-ambient-craft--rongxiu{right:-8rem;top:34%;width:min(40vw,520px);aspect-ratio:1;background-image:linear-gradient(rgba(6,31,41,.08),rgba(6,31,41,.08)),url("./art/huang-ziche-haipai-shadow-stage-concept-20260830.webp");background-position:86% 72%;clip-path:ellipse(47% 42% at 52% 50%);filter:saturate(.8) contrast(1.08) blur(.2px)}
+.hz-page .hz-ambient-craft--jade{left:-7rem;bottom:13%;width:min(38vw,470px);aspect-ratio:1;background-image:url("./art/huang-ziche-haipai-shadow-stage-concept-20260830.webp");background-position:35% 48%;clip-path:ellipse(36% 49% at 50% 50%);filter:hue-rotate(10deg) saturate(.66) brightness(1.08);opacity:.18}
+.hz-page .hz-ambient-craft--lantern{right:1.5%;bottom:5%;width:min(22vw,250px);aspect-ratio:1;background-image:url("./art/huang-ziche-haipai-shadow-stage-concept-20260830.webp");background-position:63% 41%;clip-path:circle(37% at 50% 50%);filter:saturate(1.08) brightness(1.08);opacity:.22}
+.hz-page>main,.hz-page>.tt-opening,.hz-page>.tt-topbar,.hz-page>.hz-lantern-rail{position:relative;z-index:1}
+
+.hz-page .hz-stage-paper-wing{position:absolute;z-index:3;top:0;width:33%;height:24%;background:url("./art/huang-ziche-shanghai-papercut-curtain-20260829.png") center top/cover no-repeat;opacity:.72;filter:saturate(.78) brightness(.95);transform-origin:top center}
+.hz-page .hz-stage-paper-wing--left{left:0}
+.hz-page .hz-stage-paper-wing--right{right:0;transform:scaleX(-1)}
+.hz-page .hz-stage-jade-medallion{position:absolute;z-index:4;top:12%;width:clamp(22px,3.6vw,48px);aspect-ratio:1;border:2px double rgba(214,237,220,.72);border-radius:48% 52% 46% 54%;background:radial-gradient(circle at 35% 28%,rgba(244,251,232,.72),rgba(105,171,151,.46) 42%,rgba(24,77,74,.2) 70%);box-shadow:inset 0 0 12px rgba(242,252,231,.5),0 0 18px rgba(141,211,185,.22)}
+.hz-page .hz-stage-jade-medallion::after{content:"";position:absolute;inset:24%;border:1px solid rgba(236,244,214,.7);border-radius:50%;box-shadow:0 0 8px rgba(232,246,219,.4)}
+.hz-page .hz-stage-jade-medallion--left{left:7%}
+.hz-page .hz-stage-jade-medallion--right{right:7%}
+
+.hz-page .hz-social-poster figure{display:block!important;width:min(100%,36rem)!important;aspect-ratio:3/2!important;min-height:clamp(210px,58vw,390px)!important;overflow:hidden!important;background:#071c26!important;border:1px solid rgba(213,164,79,.42)!important}
+.hz-page .hz-social-poster figure img{display:block!important;width:100%!important;height:100%!important;min-height:100%!important;object-fit:cover!important;object-position:center!important;opacity:1!important;visibility:visible!important}
+
+.hz-page .tt-ending-theatre{isolation:isolate}
+.hz-page .hz-ending-reveal{position:absolute!important;z-index:8!important;inset:0!important;width:100%!important;height:100%!important;min-height:100%!important;margin:0!important;overflow:hidden!important;background:#071c26!important}
+.hz-page .hz-ending-reveal img{display:block!important;width:100%!important;height:100%!important;max-width:none!important;object-fit:cover!important;object-position:center 45%!important;opacity:.58!important;visibility:visible!important}
+.hz-page .tt-ending-copy{position:relative;isolation:isolate;overflow:hidden}
+.hz-page .tt-ending-copy::before{content:"";position:absolute;z-index:-2;inset:-1rem;background:linear-gradient(90deg,rgba(3,20,28,.9),rgba(3,20,28,.48) 52%,rgba(3,20,28,.82)),url("./art/huang-ziche-haipai-shadow-stage-concept-20260830.webp") center 42%/cover no-repeat;opacity:.42;filter:saturate(.82) contrast(1.06)}
+.hz-page .tt-ending-copy::after{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(180deg,rgba(3,20,28,.28),rgba(3,20,28,.72))}
+.hz-page .tt-ending-copy>*{position:relative;z-index:1}
+
+@media(max-width:900px){
+ .hz-page .hz-ambient-craft{opacity:.16}
+ .hz-page .hz-ambient-craft--guxiu{left:-8rem;top:12%;width:78vw}
+ .hz-page .hz-ambient-craft--rongxiu{right:-10rem;top:42%;width:88vw}
+ .hz-page .hz-ambient-craft--jade{left:-9rem;bottom:19%;width:82vw}
+ .hz-page .hz-ambient-craft--lantern{right:-2rem;bottom:4%;width:48vw;opacity:.2}
+ .hz-page .hz-stage-paper-wing{width:38%;height:22%}
+ .hz-page .hz-stage-jade-medallion{top:11%;width:26px}
+ .hz-page .hz-social-poster figure{min-height:230px!important;aspect-ratio:3/2!important}
+ .hz-page .tt-ending-copy::before{inset:0;background-position:58% center;opacity:.5}
+ .hz-page .hz-ending-reveal img{object-position:center!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .hz-page .hz-stage-paper-wing,.hz-page .hz-stage-jade-medallion{opacity:.74!important;transform:none!important;filter:none!important}
+}
