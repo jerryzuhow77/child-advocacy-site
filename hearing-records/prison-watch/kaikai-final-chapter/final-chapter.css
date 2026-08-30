@@ -1424,3 +1424,6 @@ body #chen-final-statement-20260226>.record-boundary p,body #chen-final-statemen
 body :where(#chapter-brief,#method,#people-network,#institutional-failures,#gaps,#reform,#sources,#unresolved,#voices,#evidence-atlas,#closed-loop,#ten-days) :where(p,li,dd){color:#443d3a}
 main>.section.reveal,.section.reveal{opacity:1!important;visibility:visible!important;transform:none!important}
 @media(max-width:720px){body #chapter-brief,body #method,body #people-network,body #institutional-failures,body #gaps,body #reform,body #sources,body #unresolved,body #voices,body #evidence-atlas,body #closed-loop,body #ten-days,body #adoption-bridge,body #medical-network-omissions,body #emergency{background-size:auto 100%;background-position:66% center}}
+
+/* Final poster reveal fallback */
+#people-network.reveal{opacity:1!important;visibility:visible!important;transform:none!important}body #people-network>figcaption,body #people-network>p{color:#443d3a}
