@@ -966,7 +966,7 @@ const applyReadingDepth = (scrollToHash = false) => {
     URL.revokeObjectURL(href);
     notify(copy.exportDone);
   });
-}
+
   // 12-witness poster: restrained paper-depth reveal and pointer parallax.
   const witnessPoster = document.querySelector('.chen-witness-entry-card');
   if (witnessPoster && window.gsap && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
