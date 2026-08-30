@@ -78,6 +78,7 @@
   const audio = document.querySelector('[data-hz-audio]');
   const audioButton = document.querySelector('[data-hz-audio-toggle]');
   const audioLabel = audioButton?.querySelector('[data-hz-audio-label]');
+  const openingAudioButton = document.querySelector('[data-hz-opening-audio]');
   const storageKey = 'huang-ziche-background-music-paused';
   let wantsPlayback = true;
   let unlockBound = false;
@@ -102,6 +103,13 @@
     audioButton.setAttribute('aria-pressed', playing ? 'true' : 'false');
     audioButton.setAttribute('aria-label', label);
     if (audioLabel) audioLabel.textContent = label;
+    if (openingAudioButton) {
+      openingAudioButton.setAttribute('aria-pressed', playing ? 'true' : 'false');
+      const openingLabel = playing ? openingAudioButton.dataset.labelPause : openingAudioButton.dataset.labelPlay;
+      openingAudioButton.setAttribute('aria-label', openingLabel || label);
+      const span = openingAudioButton.querySelector('span');
+      if (span) span.textContent = openingLabel || label;
+    }
   };
 
   const removeUnlock = () => {
@@ -170,6 +178,12 @@
   replayOpening?.addEventListener('pointerdown', startOpeningScore, { capture: true });
   addEventListener('pageshow', () => { if (opening && !opening.hidden) playAudio().then(started => { if (!started) bindUnlock(); }); }, { once: true });
 
+  openingAudioButton?.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopPropagation();
+    audioButton?.click();
+  });
+
   audioButton?.addEventListener('click', async () => {
     if (!audio) return;
     if (audio.paused) {
@@ -199,6 +213,7 @@
       const paperWings = craft.querySelectorAll('.hz-stage-paper-wing');
       const jadeMedallions = craft.querySelectorAll('.hz-stage-jade-medallion');
       const trigger = craft.closest('.tt-opening, .tt-transition') || craft;
+      const puppetActors = trigger.querySelectorAll('.tt-pose-actor, .tt-ending-theatre-puppet');
       const timeline = gsap.timeline({
         scrollTrigger: trigger.classList.contains('tt-opening') ? undefined : {
           trigger,
@@ -218,6 +233,10 @@
       gsap.to(orbit, { rotation: 360, duration: 13 + index, repeat: -1, ease: 'none' });
       gsap.to(paperWings, { filter: 'brightness(1.16) saturate(1.08)', duration: 3.2 + index * .1, repeat: -1, yoyo: true, stagger: .2, ease: 'sine.inOut' });
       gsap.to(jadeMedallions, { rotation: index % 2 ? 4 : -4, scale: 1.035, duration: 3.6, repeat: -1, yoyo: true, stagger: .25, ease: 'sine.inOut' });
+      if (puppetActors.length) {
+        gsap.fromTo(puppetActors, { opacity: 0, y: 14, rotation: index % 2 ? 1.2 : -1.2 }, { opacity: 1, y: 0, rotation: 0, duration: 1.1, stagger: .18, ease: 'power2.out', scrollTrigger: trigger.classList.contains('tt-opening') ? undefined : { trigger, start: 'top 84%', once: true } });
+        puppetActors.forEach((actor, actorIndex) => gsap.to(actor, { y: actorIndex % 2 ? -3 : 3, rotation: actorIndex % 2 ? -.45 : .45, duration: 3.8 + actorIndex * .45 + index * .08, repeat: -1, yoyo: true, ease: 'sine.inOut', transformOrigin: '50% 100%' }));
+      }
       gsap.to(threads, { '--hz-thread-shimmer': '1', duration: 2.8 + index * .12, repeat: -1, yoyo: true, stagger: .18, ease: 'sine.inOut' });
     });
 
