@@ -17,6 +17,12 @@ EXCLUDED_PARTS = {
     "child-advocacy-site", "child-advocacy-site-main",
     "draft", "drafts", "test", "tests", "admin", "scripts",
 }
+EXCLUDED_PATHS = {
+    # Retained source pages that publication policy deliberately keeps out of
+    # discovery until their public entry points are approved.
+    Path("hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/index.html"),
+    Path("hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/zh-Hans/index.html"),
+}
 NOINDEX_RE = re.compile(
     r'<meta\b[^>]*\bname=["\']robots["\'][^>]*\bcontent=["\'][^"\']*noindex|'
     r'<meta\b[^>]*\bcontent=["\'][^"\']*noindex[^"\']*["\'][^>]*\bname=["\']robots["\']',
@@ -39,7 +45,7 @@ def last_modified(path: Path) -> str:
 
 def is_public_page(path: Path) -> bool:
     rel = path.relative_to(ROOT)
-    if any(part in EXCLUDED_PARTS for part in rel.parts):
+    if any(part in EXCLUDED_PARTS for part in rel.parts) or rel in EXCLUDED_PATHS:
         return False
     try:
         head = path.read_text(encoding="utf-8", errors="ignore")[:65536]
