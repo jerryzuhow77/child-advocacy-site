@@ -24,11 +24,35 @@
     layer.append(craft);
   };
 
-  const puppetLayers = [
+  const getPuppetLayers = () => [
     document.querySelector('.tt-stage > .tt-pose-layer--opening'),
     ...document.querySelectorAll('.tt-transition[data-shadow-scene] .tt-pose-layer')
   ].filter(Boolean);
-  puppetLayers.forEach(decoratePuppetLayer);
+
+  const decorateAllPuppetLayers = () => {
+    const layers = getPuppetLayers();
+    layers.forEach(decoratePuppetLayer);
+    document.documentElement.classList.toggle(
+      'hz-puppet-craft-ready',
+      layers.length > 0 && layers.every(layer => layer.querySelector('.hz-puppet-craft-layer'))
+    );
+    return layers.length;
+  };
+
+  decorateAllPuppetLayers();
+  requestAnimationFrame(() => requestAnimationFrame(decorateAllPuppetLayers));
+  addEventListener('load', decorateAllPuppetLayers, { once: true });
+
+  const craftObserver = new MutationObserver(() => {
+    const layers = getPuppetLayers();
+    const mounted = document.querySelectorAll('.hz-puppet-craft-layer').length;
+    if (layers.length && mounted < layers.length) decorateAllPuppetLayers();
+  });
+  craftObserver.observe(page, { childList: true, subtree: true });
+  setTimeout(() => {
+    decorateAllPuppetLayers();
+    craftObserver.disconnect();
+  }, 5000);
 
   if (!page.querySelector('.hz-ambient-crafts')) {
     const ambientCrafts = document.createElement('div');
