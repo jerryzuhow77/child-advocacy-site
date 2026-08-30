@@ -20,7 +20,7 @@
     craft.className = 'hz-puppet-craft-layer';
     craft.setAttribute('aria-hidden', 'true');
     craft.dataset.craftIndex = String(index);
-    craft.innerHTML = '<i class="hz-stage-jade-aura"></i><i class="hz-stage-lantern-core"></i><i class="hz-stage-lantern-orbit"></i><i class="hz-stage-guxiu-thread hz-stage-guxiu-thread--one"></i><i class="hz-stage-guxiu-thread hz-stage-guxiu-thread--two"></i><i class="hz-stage-guxiu-thread hz-stage-guxiu-thread--three"></i>';
+    craft.innerHTML = '<i class="hz-stage-paper-wing hz-stage-paper-wing--left"></i><i class="hz-stage-paper-wing hz-stage-paper-wing--right"></i><i class="hz-stage-jade-aura"></i><i class="hz-stage-jade-medallion hz-stage-jade-medallion--left"></i><i class="hz-stage-jade-medallion hz-stage-jade-medallion--right"></i><i class="hz-stage-lantern-core"></i><i class="hz-stage-lantern-orbit"></i><i class="hz-stage-guxiu-thread hz-stage-guxiu-thread--one"></i><i class="hz-stage-guxiu-thread hz-stage-guxiu-thread--two"></i><i class="hz-stage-guxiu-thread hz-stage-guxiu-thread--three"></i>';
     layer.append(craft);
   };
 
@@ -30,6 +30,13 @@
   ].filter(Boolean);
   puppetLayers.forEach(decoratePuppetLayer);
 
+  if (!page.querySelector('.hz-ambient-crafts')) {
+    const ambientCrafts = document.createElement('div');
+    ambientCrafts.className = 'hz-ambient-crafts';
+    ambientCrafts.setAttribute('aria-hidden', 'true');
+    ambientCrafts.innerHTML = '<i class="hz-ambient-craft hz-ambient-craft--guxiu"></i><i class="hz-ambient-craft hz-ambient-craft--rongxiu"></i><i class="hz-ambient-craft hz-ambient-craft--jade"></i><i class="hz-ambient-craft hz-ambient-craft--lantern"></i>';
+    page.prepend(ambientCrafts);
+  }
 
   sections.forEach((section, index) => {
     section.dataset.hzCraft = craftCycle[index % craftCycle.length];
@@ -130,6 +137,10 @@
     document.addEventListener('keydown', unlockAudio, true);
   };
 
+  const opening = document.querySelector('[data-tt-opening]');
+  const replayOpening = document.querySelector('[data-tt-replay]');
+  if (opening) wantsPlayback = true;
+
   if (audio) {
     audio.volume = .28;
     audio.addEventListener('play', updateAudioControl);
@@ -147,6 +158,17 @@
       });
     }
   }
+
+  const startOpeningScore = () => {
+    wantsPlayback = true;
+    if (audio) {
+      audio.currentTime = audio.currentTime || 0;
+      playAudio().then(started => { if (!started) bindUnlock(); });
+    }
+  };
+  opening?.addEventListener('pointerdown', startOpeningScore, { capture: true });
+  replayOpening?.addEventListener('pointerdown', startOpeningScore, { capture: true });
+  addEventListener('pageshow', () => { if (opening && !opening.hidden) playAudio().then(started => { if (!started) bindUnlock(); }); }, { once: true });
 
   audioButton?.addEventListener('click', async () => {
     if (!audio) return;
@@ -174,6 +196,8 @@
       const lantern = craft.querySelector('.hz-stage-lantern-core');
       const orbit = craft.querySelector('.hz-stage-lantern-orbit');
       const threads = craft.querySelectorAll('.hz-stage-guxiu-thread');
+      const paperWings = craft.querySelectorAll('.hz-stage-paper-wing');
+      const jadeMedallions = craft.querySelectorAll('.hz-stage-jade-medallion');
       const trigger = craft.closest('.tt-opening, .tt-transition') || craft;
       const timeline = gsap.timeline({
         scrollTrigger: trigger.classList.contains('tt-opening') ? undefined : {
@@ -187,9 +211,13 @@
         .fromTo(jade, { opacity: 0, scale: .86 }, { opacity: .66, scale: 1, duration: 1.15 }, 0)
         .fromTo(lantern, { opacity: 0, y: -14, scale: .6 }, { opacity: .92, y: 0, scale: 1, duration: .9 }, .18)
         .fromTo(orbit, { opacity: 0, rotation: -28, scale: .72 }, { opacity: .72, rotation: 0, scale: 1, duration: 1.2 }, .25)
+        .fromTo(paperWings, { opacity: 0, scaleX: .72 }, { opacity: .72, scaleX: 1, stagger: .1, duration: 1.05 }, .1)
+        .fromTo(jadeMedallions, { opacity: 0, scale: .55, rotation: -12 }, { opacity: .82, scale: 1, rotation: 0, stagger: .12, duration: .95 }, .22)
         .fromTo(threads, { opacity: 0, scaleX: 0 }, { opacity: .8, scaleX: 1, stagger: .14, duration: 1.15 }, .4);
       gsap.to(lantern, { y: index % 2 ? 5 : -5, rotation: index % 2 ? 2 : -2, duration: 2.2 + index * .08, repeat: -1, yoyo: true, ease: 'sine.inOut' });
       gsap.to(orbit, { rotation: 360, duration: 13 + index, repeat: -1, ease: 'none' });
+      gsap.to(paperWings, { filter: 'brightness(1.16) saturate(1.08)', duration: 3.2 + index * .1, repeat: -1, yoyo: true, stagger: .2, ease: 'sine.inOut' });
+      gsap.to(jadeMedallions, { rotation: index % 2 ? 4 : -4, scale: 1.035, duration: 3.6, repeat: -1, yoyo: true, stagger: .25, ease: 'sine.inOut' });
       gsap.to(threads, { '--hz-thread-shimmer': '1', duration: 2.8 + index * .12, repeat: -1, yoyo: true, stagger: .18, ease: 'sine.inOut' });
     });
 
