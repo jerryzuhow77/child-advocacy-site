@@ -1427,3 +1427,9 @@ main>.section.reveal,.section.reveal{opacity:1!important;visibility:visible!impo
 
 /* Final poster reveal fallback */
 #people-network.reveal{opacity:1!important;visibility:visible!important;transform:none!important}body #people-network>figcaption,body #people-network>p{color:#443d3a}
+
+
+/* Poster concept card contrast correction */
+body #people-network .poster-concept-grid li,
+body #people-network .poster-concept-grid li>div{color:#e7efec}
+body #people-network .poster-concept-grid li>div>small{color:#f4d9c3}
