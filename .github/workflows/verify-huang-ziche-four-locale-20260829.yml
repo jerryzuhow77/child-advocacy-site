@@ -76,7 +76,7 @@ jobs:
                         ...[...document.scripts].map(node => node.src).filter(Boolean),
                       ];
                       return assets.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.css?v=18'))
-                        && assets.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.js?v=12'))
+                        && assets.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.js?v=13'))
                         && document.querySelector('.hz-case-key-visual img')?.src.includes('huang-ziche-main-visual-hant-20260830.webp');
                     });
                   } catch (_) {
@@ -124,7 +124,7 @@ jobs:
                         lang: document.documentElement.lang,
                         canonical: document.querySelector('link[rel="canonical"]')?.href,
                         hasCss: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.css?v=18')),
-                        hasJs: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.js?v=12')),
+                        hasJs: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.js?v=13')),
                         puppetScenes: document.querySelectorAll('.tt-stage > .tt-pose-layer--opening, .tt-transition[data-shadow-scene] .tt-pose-layer').length,
                         puppetCraftLayers: document.querySelectorAll('.hz-puppet-craft-layer').length,
                         puppetCraftReady: document.documentElement.classList.contains('hz-puppet-craft-ready'),
@@ -227,9 +227,19 @@ jobs:
                     routePage.click('.tt-language a[title="zh-Hant"]'),
                   ]);
                   await routePage.waitForTimeout(1000);
-                  const returnedLang = await routePage.evaluate(() => document.documentElement.lang);
-                  if (returnedLang !== 'zh-Hant') failures.push(viewport.name + ' route zh-Hans→zh-Hant: lang=' + returnedLang);
-                  else console.log('PASS', viewport.name, 'route zh-Hans→zh-Hant');
+                  const returnedState = await routePage.evaluate(() => ({
+                    lang: document.documentElement.lang,
+                    poster: document.querySelector('.hz-case-key-visual img')?.src || ''
+                  }));
+                  if (returnedState.lang !== 'zh-Hant') failures.push(viewport.name + ' route zh-Hans→zh-Hant: lang=' + returnedState.lang);
+                  else if (!returnedState.poster.includes('huang-ziche-main-visual-hant-20260830.webp')) failures.push(viewport.name + ' route zh-Hans→zh-Hant: poster=' + returnedState.poster);
+                  else {
+                    await routePage.evaluate(() => { document.documentElement.lang = 'zh-Hans'; });
+                    await routePage.waitForTimeout(120);
+                    const convertedPoster = await routePage.evaluate(() => document.querySelector('.hz-case-key-visual img')?.src || '');
+                    if (!convertedPoster.includes('huang-ziche-main-visual-20260830.jpg')) failures.push(viewport.name + ' dynamic zh-Hans poster=' + convertedPoster);
+                    else console.log('PASS', viewport.name, 'route and dynamic poster pairing');
+                  }
                 } catch (error) {
                   failures.push(viewport.name + ' route zh-Hans→zh-Hant: ' + error.message);
                 } finally {
