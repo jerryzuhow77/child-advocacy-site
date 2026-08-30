@@ -75,7 +75,7 @@ jobs:
                         ...[...document.querySelectorAll('link[rel="stylesheet"]')].map(node => node.href),
                         ...[...document.scripts].map(node => node.src).filter(Boolean),
                       ];
-                      return assets.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.css?v=21'))
+                      return assets.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.css?v=23'))
                         && assets.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.js?v=13'))
                         && document.querySelector('.hz-case-key-visual img')?.src.includes('huang-ziche-main-visual-hant-20260830.webp');
                     });
@@ -123,7 +123,7 @@ jobs:
                       return {
                         lang: document.documentElement.lang,
                         canonical: document.querySelector('link[rel="canonical"]')?.href,
-                        hasCss: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.css?v=21')),
+                        hasCss: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.css?v=23')),
                         hasJs: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.js?v=13')),
                         puppetScenes: document.querySelectorAll('.tt-stage > .tt-pose-layer--opening, .tt-transition[data-shadow-scene] .tt-pose-layer').length,
                         puppetCraftLayers: document.querySelectorAll('.hz-puppet-craft-layer').length,
@@ -133,7 +133,7 @@ jobs:
                         hasMobileSummary: Boolean(document.querySelector('.hz-mobile-summary')),
                         traditionalColours: document.querySelectorAll('.hz-traditional-palette span').length,
                         shanghaiLandmarks: document.querySelectorAll('.hz-landmark-grid article').length,
-                        inkLandmarkCards: [...document.querySelectorAll('.hz-landmark-grid article')].filter(card => getComputedStyle(card, '::before').backgroundImage.includes('huang-ziche-shanghai-ten-landmarks-pastel-ink-20260830.webp')).length,
+                        inkLandmarkCards: [...document.querySelectorAll('.hz-landmark-grid article')].filter(card => getComputedStyle(card, '::before').backgroundImage.includes('huang-ziche-shanghai-landmarks-cards-20260830/')).length,
                         hasEnding: Boolean(document.querySelector('[data-hz-ending]')),
                         keyPosterMatchesLocale: document.querySelector('.hz-case-key-visual img')?.src.includes(poster),
                         endingPosterMatchesLocale: document.querySelector('.hz-ending-reveal img:not(.hz-ending-reveal-backdrop)')?.src.includes(poster),
