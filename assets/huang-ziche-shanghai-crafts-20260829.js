@@ -17,10 +17,10 @@
   const decoratePuppetLayer = (layer, index) => {
     if (!layer || layer.querySelector('.hz-puppet-craft-layer')) return;
     const craft = document.createElement('div');
-    craft.className = 'hz-puppet-craft-layer';
+    craft.className = `hz-puppet-craft-layer hz-craft-scene-${index % 6}`;
     craft.setAttribute('aria-hidden', 'true');
     craft.dataset.craftIndex = String(index);
-    craft.innerHTML = '<i class="hz-stage-paper-wing hz-stage-paper-wing--left"></i><i class="hz-stage-paper-wing hz-stage-paper-wing--right"></i><i class="hz-stage-jade-aura"></i><i class="hz-stage-jade-medallion hz-stage-jade-medallion--left"></i><i class="hz-stage-jade-medallion hz-stage-jade-medallion--right"></i><i class="hz-stage-lantern-core"></i><i class="hz-stage-lantern-orbit"></i><i class="hz-stage-guxiu-thread hz-stage-guxiu-thread--one"></i><i class="hz-stage-guxiu-thread hz-stage-guxiu-thread--two"></i><i class="hz-stage-guxiu-thread hz-stage-guxiu-thread--three"></i>';
+    craft.innerHTML = '<i class="hz-stage-guxiu-art"></i><i class="hz-stage-paper-filigree"></i><i class="hz-stage-paper-wing hz-stage-paper-wing--left"></i><i class="hz-stage-paper-wing hz-stage-paper-wing--right"></i><i class="hz-stage-jade-aura"></i><i class="hz-stage-jade-medallion hz-stage-jade-medallion--left"></i><i class="hz-stage-jade-medallion hz-stage-jade-medallion--right"></i><i class="hz-stage-lantern-core"></i><i class="hz-stage-lantern-orbit"></i><span class="hz-stage-lantern-beads"><i></i><i></i><i></i></span><i class="hz-stage-guxiu-thread hz-stage-guxiu-thread--one"></i><i class="hz-stage-guxiu-thread hz-stage-guxiu-thread--two"></i><i class="hz-stage-guxiu-thread hz-stage-guxiu-thread--three"></i>';
     layer.append(craft);
   };
 
@@ -60,6 +60,15 @@
     ambientCrafts.setAttribute('aria-hidden', 'true');
     ambientCrafts.innerHTML = '<i class="hz-ambient-craft hz-ambient-craft--guxiu"></i><i class="hz-ambient-craft hz-ambient-craft--rongxiu"></i><i class="hz-ambient-craft hz-ambient-craft--jade"></i><i class="hz-ambient-craft hz-ambient-craft--lantern"></i>';
     page.prepend(ambientCrafts);
+  }
+
+  const endingCopy = document.querySelector('.tt-ending-copy');
+  if (endingCopy && !endingCopy.querySelector('.hz-ending-guxiu-overlay')) {
+    const guxiuOverlay = document.createElement('div');
+    guxiuOverlay.className = 'hz-ending-guxiu-overlay';
+    guxiuOverlay.setAttribute('aria-hidden', 'true');
+    guxiuOverlay.innerHTML = '<i class="hz-ending-guxiu-art hz-ending-guxiu-art--magnolia"></i><i class="hz-ending-guxiu-art hz-ending-guxiu-art--birds"></i><i class="hz-ending-guxiu-threadwork"></i>';
+    endingCopy.prepend(guxiuOverlay);
   }
 
   sections.forEach((section, index) => {
@@ -229,6 +238,15 @@
   if (!reduce && window.gsap) {
     if (window.ScrollTrigger) window.gsap.registerPlugin(window.ScrollTrigger);
 
+    const sceneProfiles = [
+      { jade:.82, lanternX:0, lanternY:-7, orbit:16, actorX:34, actorY:8, paper:.78, thread:3.4 },
+      { jade:.58, lanternX:18, lanternY:4, orbit:-19, actorX:48, actorY:-3, paper:.9, thread:4.1 },
+      { jade:.9, lanternX:-22, lanternY:-2, orbit:12, actorX:26, actorY:12, paper:.62, thread:2.9 },
+      { jade:.68, lanternX:28, lanternY:7, orbit:-15, actorX:54, actorY:4, paper:.84, thread:4.6 },
+      { jade:.74, lanternX:-27, lanternY:-5, orbit:21, actorX:40, actorY:-6, paper:.7, thread:3.2 },
+      { jade:.94, lanternX:0, lanternY:-10, orbit:-24, actorX:30, actorY:10, paper:.92, thread:3.8 }
+    ];
+
     document.querySelectorAll('.hz-puppet-craft-layer').forEach((craft, index) => {
       const jade = craft.querySelector('.hz-stage-jade-aura');
       const lantern = craft.querySelector('.hz-stage-lantern-core');
@@ -236,6 +254,10 @@
       const threads = craft.querySelectorAll('.hz-stage-guxiu-thread');
       const paperWings = craft.querySelectorAll('.hz-stage-paper-wing');
       const jadeMedallions = craft.querySelectorAll('.hz-stage-jade-medallion');
+      const filigree = craft.querySelector('.hz-stage-paper-filigree');
+      const guxiuArt = craft.querySelector('.hz-stage-guxiu-art');
+      const lanternBeads = craft.querySelectorAll('.hz-stage-lantern-beads i');
+      const profile = sceneProfiles[index % sceneProfiles.length];
       const trigger = craft.closest('.tt-opening, .tt-transition') || craft;
       const puppetActors = trigger.querySelectorAll('.tt-pose-actor, .tt-ending-theatre-puppet');
       const timeline = gsap.timeline({
@@ -247,18 +269,24 @@
         defaults: { ease: 'power2.out' }
       });
       timeline
-        .fromTo(jade, { opacity: 0, scale: .86 }, { opacity: .66, scale: 1, duration: 1.15 }, 0)
-        .fromTo(lantern, { opacity: 0, y: -14, scale: .6 }, { opacity: .92, y: 0, scale: 1, duration: .9 }, .18)
-        .fromTo(orbit, { opacity: 0, rotation: -28, scale: .72 }, { opacity: .72, rotation: 0, scale: 1, duration: 1.2 }, .25)
-        .fromTo(paperWings, { opacity: 0, scaleX: .72 }, { opacity: .72, scaleX: 1, stagger: .1, duration: 1.05 }, .1)
-        .fromTo(jadeMedallions, { opacity: 0, scale: .55, rotation: -12 }, { opacity: .82, scale: 1, rotation: 0, stagger: .12, duration: .95 }, .22)
-        .fromTo(threads, { opacity: 0, scaleX: 0 }, { opacity: .8, scaleX: 1, stagger: .14, duration: 1.15 }, .4);
-      gsap.to(lantern, { y: index % 2 ? 5 : -5, rotation: index % 2 ? 2 : -2, duration: 2.2 + index * .08, repeat: -1, yoyo: true, ease: 'sine.inOut' });
-      gsap.to(orbit, { rotation: 360, duration: 13 + index, repeat: -1, ease: 'none' });
+        .fromTo(jade, { opacity: 0, scale: .78, rotation: profile.orbit * .18 }, { opacity: profile.jade, scale: 1, rotation: 0, duration: 1.28 }, 0)
+        .fromTo(lantern, { opacity: 0, x: profile.lanternX * -.45, y: -18, scale: .48 }, { opacity: .94, x: profile.lanternX, y: profile.lanternY, scale: 1, duration: 1.05 }, .16)
+        .fromTo(orbit, { opacity: 0, rotation: profile.orbit, scale: .62 }, { opacity: .74, rotation: 0, scale: 1, duration: 1.32 }, .24)
+        .fromTo(paperWings, { opacity: 0, scaleX: .54, y: -10 }, { opacity: profile.paper, scaleX: 1, y: 0, stagger: .14, duration: 1.2 }, .08)
+        .fromTo(jadeMedallions, { opacity: 0, scale: .42, rotation: profile.orbit }, { opacity: .86, scale: 1, rotation: 0, stagger: .16, duration: 1.08 }, .2)
+        .fromTo(filigree, { opacity: 0, scale: .72, rotation: profile.orbit * .3 }, { opacity: .76, scale: 1, rotation: 0, duration: 1.16 }, .3)
+        .fromTo(guxiuArt, { opacity: 0, scale: 1.08 }, { opacity: .64, scale: 1, duration: 1.45 }, .32)
+        .fromTo(lanternBeads, { opacity: 0, y: -12, scale: .4 }, { opacity: .86, y: 0, scale: 1, stagger: .12, duration: .86 }, .38)
+        .fromTo(threads, { opacity: 0, scaleX: 0 }, { opacity: .82, scaleX: 1, stagger: .16, duration: 1.25 }, .42);
+      gsap.to(lantern, { x: profile.lanternX + (index % 2 ? -5 : 5), y: profile.lanternY + (index % 3 - 1) * 5, rotation: index % 2 ? 2.5 : -2.5, duration: 2.5 + index * .16, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+      gsap.to(orbit, { rotation: index % 2 ? -360 : 360, duration: 12 + index * 1.35, repeat: -1, ease: 'none' });
+      gsap.to(filigree, { rotation: index % 2 ? -2.4 : 2.4, scale: 1.025, duration: 4.2 + index * .2, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+      gsap.to(guxiuArt, { backgroundPositionX: index % 2 ? '58%' : '42%', opacity: .78, duration: 5.4 + index * .25, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+      gsap.to(lanternBeads, { y: i => (i + 1) * (index % 2 ? 2 : -2), opacity: .54, duration: 1.8 + index * .12, repeat: -1, yoyo: true, stagger: .18, ease: 'sine.inOut' });
       gsap.to(paperWings, { filter: 'brightness(1.16) saturate(1.08)', duration: 3.2 + index * .1, repeat: -1, yoyo: true, stagger: .2, ease: 'sine.inOut' });
       gsap.to(jadeMedallions, { rotation: index % 2 ? 4 : -4, scale: 1.035, duration: 3.6, repeat: -1, yoyo: true, stagger: .25, ease: 'sine.inOut' });
       if (puppetActors.length) {
-        gsap.fromTo(puppetActors, { opacity: 0, y: 14, rotation: index % 2 ? 1.2 : -1.2 }, { opacity: 1, y: 0, rotation: 0, duration: 1.1, stagger: .18, ease: 'power2.out', scrollTrigger: trigger.classList.contains('tt-opening') ? undefined : { trigger, start: 'top 84%', once: true } });
+        gsap.fromTo(puppetActors, { opacity: 0, x: i => i % 2 ? profile.actorX : -profile.actorX, y: profile.actorY + 12, rotation: i => i % 2 ? 2.4 : -2.4, scale: .94 }, { opacity: 1, x: 0, y: 0, rotation: 0, scale: 1, duration: 1.28 + index * .06, stagger: .22, ease: index % 2 ? 'power3.out' : 'back.out(1.15)', scrollTrigger: trigger.classList.contains('tt-opening') ? undefined : { trigger, start: 'top 84%', once: true } });
         puppetActors.forEach((actor, actorIndex) => gsap.to(actor, { y: actorIndex % 2 ? -3 : 3, rotation: actorIndex % 2 ? -.45 : .45, duration: 3.8 + actorIndex * .45 + index * .08, repeat: -1, yoyo: true, ease: 'sine.inOut', transformOrigin: '50% 100%' }));
       }
       gsap.to(threads, { '--hz-thread-shimmer': '1', duration: 2.8 + index * .12, repeat: -1, yoyo: true, stagger: .18, ease: 'sine.inOut' });
