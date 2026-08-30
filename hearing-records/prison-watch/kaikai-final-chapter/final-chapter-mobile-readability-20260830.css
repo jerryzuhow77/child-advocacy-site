@@ -35,6 +35,27 @@ body #chen-final-statement-20260226 > .record-boundary p {
   color: #fff5ee;
 }
 
+/* The reconstructed final-statement cards sit on a dark red field.
+ * Keep their main copy light while preserving dark text inside cream asides. */
+#chen-final-statement-20260226 .final-statement-record > section > div,
+#chen-final-statement-20260226 .final-statement-record > section > div h5,
+#chen-final-statement-20260226 .final-statement-record > section > div p {
+  color: #fff8ee !important;
+}
+
+#chen-final-statement-20260226 .final-statement-record > section > aside,
+#chen-final-statement-20260226 .final-statement-record > section > aside b,
+#chen-final-statement-20260226 .final-statement-record > section > aside p {
+  color: #48372e !important;
+}
+
+/* The compact descriptor on transcript summaries must not disappear into
+ * either the navy or maroon header. */
+.full-transcript > summary small {
+  color: #ffe8bd !important;
+  background: rgba(255, 255, 255, .08);
+}
+
 @media (max-width: 720px) {
   .section.chen-accountability-chapter {
     padding-right: 6px;
