@@ -1435,3 +1435,19 @@ body #people-network .poster-concept-grid li>div{color:#e7efec}
 body #people-network .poster-concept-grid li>div>small{color:#f4d9c3}
 
 body #people-network .poster-design-concept .poster-concept-grid li p{color:#e7efec}
+
+/* Collapsible hearing records and stronger paragraph separation */
+.dialogue-collapsible,.argument-collapsible{margin:0;border:1px solid rgba(104,82,74,.2);border-radius:18px;background:rgba(255,251,247,.88);box-shadow:0 10px 26px rgba(60,52,48,.09);overflow:hidden;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+.dialogue-collapsible+ .dialogue-collapsible,.argument-collapsible+ .argument-collapsible{margin-top:12px}
+.dialogue-collapsible>summary,.argument-collapsible>summary{display:grid;grid-template-columns:42px minmax(0,1fr) auto;align-items:center;gap:12px;min-height:70px;padding:12px 16px;cursor:pointer;list-style:none;color:#443b38;background:linear-gradient(105deg,rgba(244,230,218,.94),rgba(222,234,228,.9));transition:background .2s ease,color .2s ease}
+.dialogue-collapsible>summary::-webkit-details-marker,.argument-collapsible>summary::-webkit-details-marker{display:none}
+.dialogue-collapsible>summary>span,.argument-collapsible>summary>span{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;color:#fff;background:#728a83;font-size:12px;font-weight:950}
+.dialogue-collapsible>summary>strong,.argument-collapsible>summary>strong{font-size:16px;line-height:1.45}.dialogue-collapsible>summary>small,.argument-collapsible>summary>small{color:#79635d;font-size:11px;font-weight:850;white-space:nowrap}
+.dialogue-collapsible>summary::after,.argument-collapsible>summary::after{content:"＋";grid-column:3;grid-row:1;color:#87635c;font-size:22px;font-weight:500}.dialogue-collapsible>summary>small,.argument-collapsible>summary>small{grid-column:3;grid-row:2;text-align:right}
+.dialogue-collapsible[open]>summary,.argument-collapsible[open]>summary{background:linear-gradient(105deg,#5f7772,#7d5d57);color:#fff}.dialogue-collapsible[open]>summary>span,.argument-collapsible[open]>summary>span{color:#55443f;background:#f0d3bd}.dialogue-collapsible[open]>summary>small,.argument-collapsible[open]>summary>small{color:#f4dfd0}.dialogue-collapsible[open]>summary::after,.argument-collapsible[open]>summary::after{content:"−";color:#fff}
+.dialogue-collapsible>.dialogue-round{margin:0;border:0;border-top:1px solid rgba(105,82,74,.15);border-radius:0;background:rgba(255,253,250,.94);box-shadow:none}
+.argument-collapsible>article{margin:0;padding:18px;border-top:1px solid rgba(105,82,74,.15);background:rgba(255,253,250,.94)}
+.argument-collapsible>article>span[aria-hidden]{display:none}
+.hearing-dialogue{gap:12px}.transcript-turn{margin:0 0 12px;border-left:4px solid #7e938d!important;border-radius:12px;background:rgba(255,252,248,.92)!important;box-shadow:0 7px 20px rgba(59,51,47,.07)}.transcript-turn.speaker-chen{border-left-color:#9b6d65!important}.transcript-turn header{padding-bottom:8px;border-bottom:1px solid rgba(107,84,75,.13)}.transcript-turn p{padding-top:3px;line-height:1.86}
+.hearing-day>header{margin-bottom:16px}.hearing-day>.record-boundary{margin-bottom:16px}.hearing-focus-map{margin-bottom:24px}
+@media(max-width:720px){.dialogue-collapsible>summary,.argument-collapsible>summary{grid-template-columns:38px minmax(0,1fr);gap:10px;padding:11px 12px}.dialogue-collapsible>summary>small,.argument-collapsible>summary>small{display:none}.dialogue-collapsible>summary::after,.argument-collapsible>summary::after{grid-column:2;grid-row:2;justify-self:end;margin-top:-8px}.dialogue-collapsible>.dialogue-round{display:block;padding:14px}.dialogue-collapsible>.dialogue-round>header{display:none}.dialogue-collapsible>.dialogue-round>.dialogue-main,.dialogue-collapsible>.dialogue-round>aside{margin-top:10px;padding:13px;border-radius:12px}.argument-collapsible>article{padding:14px}.transcript-turn{margin-bottom:10px}}
