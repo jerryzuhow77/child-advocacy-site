@@ -1437,10 +1437,10 @@ html.tt-pose-ready body.hz-page .tt-stage{
 /* v13 — readable hero art, jade/paper puppet ornaments, ambient Haipai craft corners */
 .hz-page .hz-ambient-crafts{position:fixed;z-index:0;inset:0;overflow:hidden;pointer-events:none}
 .hz-page .hz-ambient-craft{position:absolute;display:block;background-repeat:no-repeat;background-size:cover;opacity:.2;filter:saturate(.86) contrast(1.04)}
-.hz-page .hz-ambient-craft--guxiu{left:-5rem;top:10%;width:min(34vw,430px);aspect-ratio:1;background-image:linear-gradient(90deg,transparent 8%,rgba(245,235,211,.05)),url("./art/huang-ziche-haipai-shadow-stage-concept-20260830.webp");background-position:12% 48%;clip-path:ellipse(43% 46% at 45% 50%)}
-.hz-page .hz-ambient-craft--rongxiu{right:-8rem;top:34%;width:min(40vw,520px);aspect-ratio:1;background-image:linear-gradient(rgba(6,31,41,.08),rgba(6,31,41,.08)),url("./art/huang-ziche-haipai-shadow-stage-concept-20260830.webp");background-position:86% 72%;clip-path:ellipse(47% 42% at 52% 50%);filter:saturate(.8) contrast(1.08) blur(.2px)}
-.hz-page .hz-ambient-craft--jade{left:-7rem;bottom:13%;width:min(38vw,470px);aspect-ratio:1;background-image:url("./art/huang-ziche-haipai-shadow-stage-concept-20260830.webp");background-position:35% 48%;clip-path:ellipse(36% 49% at 50% 50%);filter:hue-rotate(10deg) saturate(.66) brightness(1.08);opacity:.18}
-.hz-page .hz-ambient-craft--lantern{right:1.5%;bottom:5%;width:min(22vw,250px);aspect-ratio:1;background-image:url("./art/huang-ziche-haipai-shadow-stage-concept-20260830.webp");background-position:63% 41%;clip-path:circle(37% at 50% 50%);filter:saturate(1.08) brightness(1.08);opacity:.22}
+.hz-page .hz-ambient-craft--guxiu{left:-5rem;top:10%;width:min(34vw,430px);aspect-ratio:1;background-image:linear-gradient(90deg,transparent 8%,rgba(245,235,211,.05)),url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp");background-position:12% 48%;clip-path:ellipse(43% 46% at 45% 50%)}
+.hz-page .hz-ambient-craft--rongxiu{right:-8rem;top:34%;width:min(40vw,520px);aspect-ratio:1;background-image:linear-gradient(rgba(6,31,41,.08),rgba(6,31,41,.08)),url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp");background-position:86% 72%;clip-path:ellipse(47% 42% at 52% 50%);filter:saturate(.8) contrast(1.08) blur(.2px)}
+.hz-page .hz-ambient-craft--jade{left:-7rem;bottom:13%;width:min(38vw,470px);aspect-ratio:1;background-image:url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp");background-position:35% 48%;clip-path:ellipse(36% 49% at 50% 50%);filter:hue-rotate(10deg) saturate(.66) brightness(1.08);opacity:.18}
+.hz-page .hz-ambient-craft--lantern{right:1.5%;bottom:5%;width:min(22vw,250px);aspect-ratio:1;background-image:url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp");background-position:63% 41%;clip-path:circle(37% at 50% 50%);filter:saturate(1.08) brightness(1.08);opacity:.22}
 .hz-page>main,.hz-page>.tt-opening,.hz-page>.tt-topbar,.hz-page>.hz-lantern-rail{position:relative;z-index:1}
 
 .hz-page .hz-stage-paper-wing{position:absolute;z-index:3;top:0;width:33%;height:24%;background:url("./art/huang-ziche-shanghai-papercut-curtain-20260829.png") center top/cover no-repeat;opacity:.72;filter:saturate(.78) brightness(.95);transform-origin:top center}
@@ -1458,7 +1458,7 @@ html.tt-pose-ready body.hz-page .tt-stage{
 .hz-page .hz-ending-reveal{position:absolute!important;z-index:8!important;inset:0!important;width:100%!important;height:100%!important;min-height:100%!important;margin:0!important;overflow:hidden!important;background:#071c26!important}
 .hz-page .hz-ending-reveal img{display:block!important;width:100%!important;height:100%!important;max-width:none!important;object-fit:cover!important;object-position:center 45%!important;opacity:.58!important;visibility:visible!important}
 .hz-page .tt-ending-copy{position:relative;isolation:isolate;overflow:hidden}
-.hz-page .tt-ending-copy::before{content:"";position:absolute;z-index:-2;inset:-1rem;background:linear-gradient(90deg,rgba(3,20,28,.9),rgba(3,20,28,.48) 52%,rgba(3,20,28,.82)),url("./art/huang-ziche-haipai-shadow-stage-concept-20260830.webp") center 42%/cover no-repeat;opacity:.42;filter:saturate(.82) contrast(1.06)}
+.hz-page .tt-ending-copy::before{content:"";position:absolute;z-index:-2;inset:-1rem;background:linear-gradient(90deg,rgba(3,20,28,.9),rgba(3,20,28,.48) 52%,rgba(3,20,28,.82)),url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp") center 42%/cover no-repeat;opacity:.42;filter:saturate(.82) contrast(1.06)}
 .hz-page .tt-ending-copy::after{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(180deg,rgba(3,20,28,.28),rgba(3,20,28,.72))}
 .hz-page .tt-ending-copy>*{position:relative;z-index:1}
 
@@ -1481,7 +1481,7 @@ html.tt-pose-ready body.hz-page .tt-stage{
 
 /* v14 — supplied Huang Ziche key visual, opening audio control and refined theatre motion */
 .hz-page .hz-case-key-visual{position:relative;padding:clamp(2.2rem,6vw,6rem) 0;background:linear-gradient(180deg,#061b25,#0b3038);overflow:hidden;isolation:isolate}
-.hz-page .hz-case-key-visual::before{content:"";position:absolute;z-index:-2;inset:-12%;background:linear-gradient(90deg,rgba(3,22,30,.92),rgba(3,22,30,.55),rgba(3,22,30,.9)),url("./art/huang-ziche-haipai-shadow-stage-concept-20260830.webp") center 52%/cover no-repeat;filter:blur(8px) saturate(.84);opacity:.48;transform:scale(1.05)}
+.hz-page .hz-case-key-visual::before{content:"";position:absolute;z-index:-2;inset:-12%;background:linear-gradient(90deg,rgba(3,22,30,.92),rgba(3,22,30,.55),rgba(3,22,30,.9)),url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp") center 52%/cover no-repeat;filter:blur(8px) saturate(.84);opacity:.48;transform:scale(1.05)}
 .hz-page .hz-case-key-visual-grid{display:grid;grid-template-columns:minmax(280px,.72fr) minmax(0,1fr);align-items:center;gap:clamp(2rem,7vw,7rem)}
 .hz-page .hz-case-key-visual figure{margin:0;max-width:36rem;justify-self:center;filter:drop-shadow(0 28px 55px rgba(0,0,0,.42))}
 .hz-page .hz-case-key-visual img{display:block;width:100%;height:auto;aspect-ratio:1229/1536;object-fit:cover;border:1px solid rgba(216,172,93,.46);background:#051d27}
@@ -1494,7 +1494,7 @@ html.tt-pose-ready body.hz-page .tt-stage{
 .hz-page .hz-opening-audio::before{content:"♫";color:#e2b35f;font-size:1.1rem}
 .hz-page .hz-opening-audio[aria-pressed="true"]{box-shadow:0 0 22px rgba(226,179,95,.24);background:rgba(37,83,79,.88)!important}
 
-.hz-page .tt-ending-copy::before{background-image:linear-gradient(90deg,rgba(3,20,28,.88),rgba(3,20,28,.44) 52%,rgba(3,20,28,.82)),url("./art/huang-ziche-haipai-shadow-stage-concept-20260830.webp")!important;background-position:center 52%!important;background-size:cover!important;opacity:.58!important;filter:saturate(.82) contrast(1.08)!important}
+.hz-page .tt-ending-copy::before{background-image:linear-gradient(90deg,rgba(3,20,28,.88),rgba(3,20,28,.44) 52%,rgba(3,20,28,.82)),url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp")!important;background-position:center 52%!important;background-size:cover!important;opacity:.58!important;filter:saturate(.82) contrast(1.08)!important}
 .hz-page .tt-ending-copy::after{background:linear-gradient(180deg,rgba(3,20,28,.28),rgba(3,20,28,.64))!important}
 .hz-page .hz-ending-reveal img{object-position:center 52%!important}
 .hz-page .hz-ambient-craft{will-change:transform,opacity}
@@ -1514,7 +1514,7 @@ html.tt-pose-ready body.hz-page .tt-stage{
 
 
 /* v15 — six distinct Haipai puppet plays and a visible Gu-embroidery ending layer */
-.hz-page .hz-stage-guxiu-art{position:absolute;z-index:0;inset:4% 3%;background-image:linear-gradient(rgba(6,27,36,.25),rgba(6,27,36,.44)),url("./art/huang-ziche-haipai-shadow-stage-concept-20260830.webp");background-size:cover;background-repeat:no-repeat;opacity:.6;filter:saturate(.76) contrast(1.08)}
+.hz-page .hz-stage-guxiu-art{position:absolute;z-index:0;inset:4% 3%;background-image:linear-gradient(rgba(6,27,36,.25),rgba(6,27,36,.44)),url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp");background-size:cover;background-repeat:no-repeat;opacity:.6;filter:saturate(.76) contrast(1.08)}
 .hz-page .hz-stage-paper-filigree{position:absolute;z-index:3;left:50%;top:3%;width:38%;height:22%;transform:translateX(-50%);background:url("./art/huang-ziche-shanghai-papercut-curtain-20260829.png") center top/cover no-repeat;opacity:.74;filter:sepia(.2) saturate(.72) brightness(1.08);transform-origin:50% 0}
 .hz-page .hz-stage-lantern-beads{position:absolute;z-index:5;left:50%;top:23%;display:flex;gap:clamp(8px,1.6vw,22px);transform:translateX(-50%)}
 .hz-page .hz-stage-lantern-beads i{display:block;width:clamp(7px,1vw,13px);aspect-ratio:1;border:1px solid rgba(237,195,111,.68);border-radius:50%;background:radial-gradient(circle,#fff1bd 0 12%,#d9a14d 28%,rgba(154,79,35,.4) 62%,transparent 65%);box-shadow:0 0 10px rgba(227,168,75,.48)}
@@ -1567,7 +1567,7 @@ html.tt-pose-ready body.hz-page .tt-stage{
 .hz-page .hz-craft-scene-5 .hz-stage-lantern-beads{top:19%}
 
 .hz-page .hz-ending-guxiu-overlay{position:absolute;z-index:0;inset:0;overflow:hidden;pointer-events:none;opacity:.88}
-.hz-page .hz-ending-guxiu-art{position:absolute;display:block;background-image:url("./art/huang-ziche-haipai-shadow-stage-concept-20260830.webp");background-size:clamp(560px,92vw,1120px) auto;background-repeat:no-repeat;mix-blend-mode:screen;filter:saturate(.68) brightness(1.18) contrast(1.08)}
+.hz-page .hz-ending-guxiu-art{position:absolute;display:block;background-image:url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp");background-size:clamp(560px,92vw,1120px) auto;background-repeat:no-repeat;mix-blend-mode:screen;filter:saturate(.68) brightness(1.18) contrast(1.08)}
 .hz-page .hz-ending-guxiu-art--magnolia{left:-7%;bottom:-5%;width:48%;height:58%;background-position:left bottom;opacity:.7}
 .hz-page .hz-ending-guxiu-art--birds{right:-8%;top:2%;width:46%;height:43%;background-position:right top;opacity:.62}
 .hz-page .hz-ending-guxiu-threadwork{position:absolute;left:2%;right:2%;bottom:8%;height:22%;border-bottom:2px solid rgba(224,197,139,.32);border-radius:50%;box-shadow:0 10px 24px rgba(219,173,89,.1);transform:rotate(-2deg)}
@@ -1595,10 +1595,40 @@ html.tt-pose-ready body.hz-page .tt-stage{
 .hz-page .hz-ending-guxiu-art,
 .hz-page .hz-ambient-craft,
 .hz-page .tt-ending-copy::before,
-.hz-page .hz-case-key-visual::before{background-image:linear-gradient(rgba(4,25,33,.12),rgba(4,25,33,.32)),url("./art/huang-ziche-haipai-shadow-stage-concept-20260830.webp")!important}
+.hz-page .hz-case-key-visual::before{background-image:linear-gradient(rgba(4,25,33,.12),rgba(4,25,33,.32)),url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp")!important}
 .hz-page .hz-stage-guxiu-art{background-size:cover!important}
-.hz-page .tt-ending-copy::before{background-image:linear-gradient(90deg,rgba(3,20,28,.86),rgba(3,20,28,.43) 52%,rgba(3,20,28,.8)),url("./art/huang-ziche-haipai-shadow-stage-concept-20260830.webp")!important;background-position:center 52%!important}
-.hz-page .hz-ending-guxiu-art{background-image:url("./art/huang-ziche-haipai-shadow-stage-concept-20260830.webp")!important;background-size:clamp(650px,100vw,1280px) auto!important}
+.hz-page .tt-ending-copy::before{background-image:linear-gradient(90deg,rgba(3,20,28,.86),rgba(3,20,28,.43) 52%,rgba(3,20,28,.8)),url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp")!important;background-position:center 52%!important}
+.hz-page .hz-ending-guxiu-art{background-image:url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp")!important;background-size:clamp(650px,100vw,1280px) auto!important}
 .hz-page .hz-ending-guxiu-art--magnolia{background-position:left bottom!important}
 .hz-page .hz-ending-guxiu-art--birds{background-position:right top!important}
 .hz-page .hz-case-key-visual::before{background-size:cover!important;background-position:center!important}
+
+
+/* v17 — remove synthetic geometry; use photographed-material Haipai stage art */
+.hz-page .hz-stage-jade-medallion,
+.hz-page .hz-stage-lantern-orbit,
+.hz-page .hz-stage-lantern-beads,
+.hz-page .hz-stage-lantern-core{display:none!important}
+.hz-page .hz-stage-jade-aura{border:0!important;background:radial-gradient(ellipse at 50% 46%,rgba(225,239,214,.16),rgba(129,176,157,.07) 44%,transparent 72%)!important;box-shadow:none!important;filter:none!important;opacity:.26!important}
+.hz-page .hz-stage-paper-wing{opacity:.42!important;filter:sepia(.18) saturate(.58) brightness(.88)!important;mix-blend-mode:screen}
+.hz-page .hz-stage-paper-filigree{opacity:.34!important;filter:sepia(.22) saturate(.52) brightness(.92)!important;mix-blend-mode:screen}
+.hz-page .hz-stage-guxiu-art{inset:0!important;background-image:linear-gradient(180deg,rgba(4,21,28,.05),rgba(4,21,28,.22)),url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp")!important;background-size:cover!important;background-position:center!important;opacity:.9!important;mix-blend-mode:normal!important;filter:saturate(.88) contrast(1.03) brightness(.9)!important}
+.hz-page .hz-puppet-craft-layer::after{border:0!important;box-shadow:inset 0 0 54px rgba(3,18,25,.48)!important}
+.hz-page .hz-stage-guxiu-thread{opacity:.28!important;filter:none!important}
+.hz-page .hz-craft-scene-0 .hz-stage-guxiu-art{background-position:center 46%!important}
+.hz-page .hz-craft-scene-1 .hz-stage-guxiu-art{background-position:38% 52%!important}
+.hz-page .hz-craft-scene-2 .hz-stage-guxiu-art{background-position:62% 48%!important}
+.hz-page .hz-craft-scene-3 .hz-stage-guxiu-art{background-position:44% 58%!important}
+.hz-page .hz-craft-scene-4 .hz-stage-guxiu-art{background-position:57% 43%!important}
+.hz-page .hz-craft-scene-5 .hz-stage-guxiu-art{background-position:center 54%!important}
+.hz-page .hz-ending-guxiu-art,
+.hz-page .hz-ambient-craft,
+.hz-page .tt-ending-copy::before,
+.hz-page .hz-case-key-visual::before{background-image:linear-gradient(rgba(4,25,33,.12),rgba(4,25,33,.32)),url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp")!important}
+.hz-page .hz-ending-guxiu-art{background-image:url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp")!important}
+@media(max-width:900px){
+ .hz-page .hz-stage-paper-wing{opacity:.34!important}
+ .hz-page .hz-stage-paper-filigree{opacity:.28!important}
+ .hz-page .hz-stage-jade-aura{opacity:.2!important}
+ .hz-page .hz-stage-guxiu-thread{opacity:.22!important}
+}
