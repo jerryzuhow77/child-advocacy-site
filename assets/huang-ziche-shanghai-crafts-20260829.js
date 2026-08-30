@@ -12,6 +12,25 @@
   const sections = ids.map(id => document.getElementById(id)).filter(Boolean);
   const craftCycle = ['rongxiu', 'jade', 'guxiu', 'lantern'];
 
+  /* v8 stage craft system: every puppet scene shares Gu-embroidery thread,
+     translucent jade light and Shanghai lantern motion. */
+  const decoratePuppetLayer = (layer, index) => {
+    if (!layer || layer.querySelector('.hz-puppet-craft-layer')) return;
+    const craft = document.createElement('div');
+    craft.className = 'hz-puppet-craft-layer';
+    craft.setAttribute('aria-hidden', 'true');
+    craft.dataset.craftIndex = String(index);
+    craft.innerHTML = '<i class="hz-stage-jade-aura"></i><i class="hz-stage-lantern-core"></i><i class="hz-stage-lantern-orbit"></i><i class="hz-stage-guxiu-thread hz-stage-guxiu-thread--one"></i><i class="hz-stage-guxiu-thread hz-stage-guxiu-thread--two"></i><i class="hz-stage-guxiu-thread hz-stage-guxiu-thread--three"></i>';
+    layer.append(craft);
+  };
+
+  const puppetLayers = [
+    document.querySelector('.tt-stage > .tt-pose-layer--opening'),
+    ...document.querySelectorAll('.tt-transition[data-shadow-scene] .tt-pose-layer')
+  ].filter(Boolean);
+  puppetLayers.forEach(decoratePuppetLayer);
+
+
   sections.forEach((section, index) => {
     section.dataset.hzCraft = craftCycle[index % craftCycle.length];
   });
@@ -149,6 +168,31 @@
      lantern navigation and a restrained proscenium entrance. */
   if (!reduce && window.gsap) {
     if (window.ScrollTrigger) window.gsap.registerPlugin(window.ScrollTrigger);
+
+    document.querySelectorAll('.hz-puppet-craft-layer').forEach((craft, index) => {
+      const jade = craft.querySelector('.hz-stage-jade-aura');
+      const lantern = craft.querySelector('.hz-stage-lantern-core');
+      const orbit = craft.querySelector('.hz-stage-lantern-orbit');
+      const threads = craft.querySelectorAll('.hz-stage-guxiu-thread');
+      const trigger = craft.closest('.tt-opening, .tt-transition') || craft;
+      const timeline = gsap.timeline({
+        scrollTrigger: trigger.classList.contains('tt-opening') ? undefined : {
+          trigger,
+          start: 'top 82%',
+          once: true
+        },
+        defaults: { ease: 'power2.out' }
+      });
+      timeline
+        .fromTo(jade, { opacity: 0, scale: .86 }, { opacity: .66, scale: 1, duration: 1.15 }, 0)
+        .fromTo(lantern, { opacity: 0, y: -14, scale: .6 }, { opacity: .92, y: 0, scale: 1, duration: .9 }, .18)
+        .fromTo(orbit, { opacity: 0, rotation: -28, scale: .72 }, { opacity: .72, rotation: 0, scale: 1, duration: 1.2 }, .25)
+        .fromTo(threads, { opacity: 0, scaleX: 0 }, { opacity: .8, scaleX: 1, stagger: .14, duration: 1.15 }, .4);
+      gsap.to(lantern, { y: index % 2 ? 5 : -5, rotation: index % 2 ? 2 : -2, duration: 2.2 + index * .08, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+      gsap.to(orbit, { rotation: 360, duration: 13 + index, repeat: -1, ease: 'none' });
+      gsap.to(threads, { '--hz-thread-shimmer': '1', duration: 2.8 + index * .12, repeat: -1, yoyo: true, stagger: .18, ease: 'sine.inOut' });
+    });
+
 
     const openingStage = document.querySelector('.tt-opening .tt-stage');
     if (openingStage) {
@@ -366,6 +410,16 @@
     }
   }
 
+
+  const endingStage = document.querySelector('.tt-ending-theatre-stage');
+  if (endingStage && !endingStage.querySelector('.hz-ending-master-craft')) {
+    const masterCraft = document.createElement('div');
+    masterCraft.className = 'hz-ending-master-craft';
+    masterCraft.setAttribute('aria-hidden', 'true');
+    masterCraft.innerHTML = '<i class="hz-ending-jade-arch"></i><i class="hz-ending-paper-canopy"></i><span class="hz-ending-lantern-node hz-ending-lantern-node--one"></span><span class="hz-ending-lantern-node hz-ending-lantern-node--two"></span><span class="hz-ending-lantern-node hz-ending-lantern-node--three"></span><span class="hz-ending-guxiu-vine hz-ending-guxiu-vine--one"></span><span class="hz-ending-guxiu-vine hz-ending-guxiu-vine--two"></span>';
+    endingStage.prepend(masterCraft);
+  }
+
   const ending = document.querySelector('.tt-ending');
   if (!ending) return;
 
@@ -376,6 +430,11 @@
   const finalReveal = ending.querySelector('.hz-ending-reveal');
   const finalRevealImage = finalReveal?.querySelector('img');
   const scriptLines = [...ending.querySelectorAll('.tt-ending-theatre-script p')];
+  const masterCraft = ending.querySelector('.hz-ending-master-craft');
+  const jadeArch = ending.querySelector('.hz-ending-jade-arch');
+  const paperCanopy = ending.querySelector('.hz-ending-paper-canopy');
+  const lanternNodes = [...ending.querySelectorAll('.hz-ending-lantern-node')];
+  const guxiuVines = [...ending.querySelectorAll('.hz-ending-guxiu-vine')];
   let played = false;
   let finaleTimeline = null;
 
@@ -391,6 +450,11 @@
       element.style.transform = 'none';
     });
     curtains.forEach(element => { element.style.transform = 'scaleX(1)'; });
+    if (masterCraft) masterCraft.style.opacity = '1';
+    if (jadeArch) jadeArch.style.opacity = '.82';
+    if (paperCanopy) paperCanopy.style.opacity = '.9';
+    lanternNodes.forEach(element => { element.style.opacity = '1'; });
+    guxiuVines.forEach(element => { element.style.opacity = '.86'; element.style.transform = 'scaleX(1)'; });
     if (finalReveal) finalReveal.style.opacity = '1';
     if (finalRevealImage) finalRevealImage.style.transform = 'scale(1)';
     if (finalCopy) {
@@ -417,12 +481,20 @@
     const revealAt = mobile ? 10.65 : 15.95;
     const finalAt = mobile ? 11.35 : 17.05;
 
+    gsap.set(masterCraft, { opacity: 1 });
+    gsap.set(guxiuVines, { transformOrigin: 'center center' });
+
     const timeline = finaleTimeline = gsap.timeline({
       defaults: { ease: 'power2.out' },
       onComplete: () => ending.classList.add('is-haipai-complete')
     });
 
     timeline
+      .fromTo(masterCraft, { opacity: 0 }, { opacity: 1, duration: .65 }, 0)
+      .fromTo(paperCanopy, { opacity: 0, yPercent: -18 }, { opacity: .9, yPercent: 0, duration: 1.35 }, .1)
+      .fromTo(jadeArch, { opacity: 0, scale: .82, filter: 'brightness(.55)' }, { opacity: .82, scale: 1, filter: 'brightness(1.18)', duration: 2.1 }, .35)
+      .fromTo(lanternNodes, { opacity: 0, y: -15, scale: .45 }, { opacity: 1, y: 0, scale: 1, stagger: .18, duration: .8 }, .75)
+      .fromTo(guxiuVines, { opacity: 0, scaleX: 0 }, { opacity: .86, scaleX: 1, stagger: .25, duration: 2.2, ease: 'power1.inOut' }, 1.15)
       .fromTo(water, { opacity: .15, yPercent: 22 }, { opacity: .7, yPercent: 0, duration: 2.1 })
       .fromTo(lantern, { opacity: 0, scale: .42, rotation: -6 }, {
         opacity: 1,
@@ -446,7 +518,7 @@
       .to(paths, { strokeDashoffset: 0, stagger: .24, duration: 2.8, ease: 'none' }, mobile ? 4.8 : 5.2)
       .to(puppets, {
         xPercent: index => index === 0 ? -18 : 18,
-        opacity: .28,
+        opacity: .58,
         duration: 1.5
       }, mobile ? 7.9 : 11.7)
       .to(curtains, { scaleX: 1, duration: mobile ? 1.65 : 2.15, ease: 'power1.inOut' }, curtainAt)
