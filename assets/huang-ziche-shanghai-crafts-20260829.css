@@ -1632,3 +1632,189 @@ html.tt-pose-ready body.hz-page .tt-stage{
  .hz-page .hz-stage-jade-aura{opacity:.2!important}
  .hz-page .hz-stage-guxiu-thread{opacity:.22!important}
 }
+
+
+/* v18 — locale-matched poster finale with a visibly new, material-led GSAP sequence */
+.hz-page .hz-ending-master-craft{
+ inset:0!important;
+ z-index:12!important;
+ overflow:hidden!important;
+ background:#061923;
+}
+.hz-page .hz-ending-stage-backdrop{
+ position:absolute;
+ z-index:0;
+ inset:0;
+ display:block;
+ background:
+  linear-gradient(180deg,rgba(4,19,26,.1),rgba(4,19,26,.34)),
+  url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp") center/cover no-repeat;
+ opacity:0;
+ transform:scale(1.08);
+ filter:saturate(.88) brightness(.82) contrast(1.06);
+}
+.hz-page .hz-ending-jade-arch{
+ z-index:2!important;
+ left:50%!important;
+ top:13%!important;
+ width:49%!important;
+ height:70%!important;
+ border:0!important;
+ border-radius:48% 48% 8% 8%/22% 22% 7% 7%!important;
+ background:radial-gradient(ellipse at 50% 49%,rgba(255,241,184,.32),rgba(206,232,211,.14) 42%,transparent 70%)!important;
+ box-shadow:0 0 62px rgba(180,221,199,.12)!important;
+ mix-blend-mode:screen;
+ filter:blur(.2px);
+}
+.hz-page .hz-ending-paper-canopy{
+ z-index:5!important;
+ inset:-2% 10% auto!important;
+ height:31%!important;
+ background:
+  linear-gradient(180deg,rgba(85,18,24,.38),transparent 91%),
+  url("./art/huang-ziche-shanghai-papercut-curtain-20260829.png") center top/100% 100% no-repeat!important;
+ opacity:0;
+ filter:sepia(.18) saturate(.68) brightness(.88) drop-shadow(0 10px 13px rgba(16,5,8,.42))!important;
+}
+.hz-page .hz-ending-paper-panel{
+ position:absolute;
+ z-index:4;
+ top:0;
+ bottom:0;
+ width:38%;
+ display:block;
+ background:
+  linear-gradient(90deg,rgba(74,20,28,.18),transparent),
+  url("./art/huang-ziche-shanghai-papercut-curtain-20260829.png") center/cover no-repeat;
+ opacity:0;
+ filter:sepia(.2) saturate(.62) brightness(.8) drop-shadow(0 0 18px rgba(11,4,6,.42));
+ mix-blend-mode:screen;
+}
+.hz-page .hz-ending-paper-panel--left{left:-5%;transform-origin:0 50%;clip-path:polygon(0 0,100% 0,79% 100%,0 100%)}
+.hz-page .hz-ending-paper-panel--right{right:-5%;transform-origin:100% 50%;transform:scaleX(-1);clip-path:polygon(0 0,100% 0,100% 100%,21% 100%)}
+.hz-page .hz-ending-lantern-node{
+ z-index:6!important;
+ width:clamp(44px,6.4vw,86px)!important;
+ border:0!important;
+ border-radius:50%!important;
+ background:radial-gradient(circle,rgba(255,232,169,.42) 0 9%,rgba(222,163,78,.16) 31%,transparent 69%)!important;
+ box-shadow:0 0 28px rgba(231,177,83,.18)!important;
+ mix-blend-mode:screen;
+}
+.hz-page .hz-ending-lantern-node::before{display:none!important}
+.hz-page .hz-ending-lantern-node--one{left:1.6%!important;top:18%!important}
+.hz-page .hz-ending-lantern-node--two{left:auto!important;right:1.6%!important;top:18%!important;transform:none!important}
+.hz-page .hz-ending-lantern-node--three{left:1.6%!important;top:55%!important}
+.hz-page .hz-ending-lantern-node--four{right:1.6%!important;top:55%!important}
+.hz-page .hz-ending-guxiu-vine{
+ z-index:3!important;
+ bottom:0!important;
+ width:43%!important;
+ height:64%!important;
+ background-image:url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp")!important;
+ background-size:233% auto!important;
+ background-repeat:no-repeat!important;
+ box-shadow:none!important;
+ opacity:0;
+ -webkit-mask-image:linear-gradient(90deg,#000 0 70%,transparent 100%);
+ mask-image:linear-gradient(90deg,#000 0 70%,transparent 100%);
+}
+.hz-page .hz-ending-guxiu-vine::before,
+.hz-page .hz-ending-guxiu-vine::after{display:none!important}
+.hz-page .hz-ending-guxiu-vine--one{left:0!important;background-position:left bottom!important;transform:none!important;transform-origin:0 70%!important}
+.hz-page .hz-ending-guxiu-vine--two{right:0!important;background-position:right bottom!important;transform:scaleX(-1)!important;transform-origin:100% 70%!important}
+.hz-page .tt-ending-theatre-puppet{z-index:13!important}
+.hz-page .hz-ending-curtain{z-index:16!important}
+.hz-page .hz-ending-reveal{
+ z-index:17!important;
+ display:grid!important;
+ place-items:center!important;
+ background:#061923!important;
+}
+.hz-page .hz-ending-reveal img{
+ position:absolute!important;
+ inset:0!important;
+ width:100%!important;
+ height:100%!important;
+ max-width:none!important;
+ visibility:visible!important;
+}
+.hz-page .hz-ending-reveal .hz-ending-reveal-backdrop{
+ z-index:0!important;
+ object-fit:cover!important;
+ object-position:center!important;
+ opacity:.28!important;
+ filter:blur(16px) saturate(.72) brightness(.7)!important;
+ transform:scale(1.13);
+}
+.hz-page .hz-ending-reveal .hz-ending-reveal-poster{
+ z-index:1!important;
+ object-fit:contain!important;
+ object-position:center!important;
+ opacity:.78!important;
+ filter:saturate(.88) contrast(1.04) brightness(.92) drop-shadow(0 0 34px rgba(0,0,0,.46))!important;
+ transform:scale(1.08);
+}
+.hz-page .hz-ending-reveal::after{
+ z-index:2!important;
+ background:
+  radial-gradient(ellipse at 50% 50%,transparent 28%,rgba(4,19,26,.26) 76%,rgba(4,19,26,.72)),
+  linear-gradient(180deg,rgba(4,19,26,.04),rgba(4,19,26,.34))!important;
+}
+.hz-page .hz-ending-final{z-index:18!important}
+.hz-page .hz-ending-copy-poster{
+ position:absolute!important;
+ z-index:0!important;
+ inset:0!important;
+ margin:0!important;
+ display:grid!important;
+ place-items:center!important;
+ overflow:hidden!important;
+ pointer-events:none!important;
+ opacity:.2!important;
+}
+.hz-page .hz-ending-copy-poster img{
+ display:block;
+ width:100%;
+ height:100%;
+ object-fit:contain;
+ object-position:center;
+ filter:saturate(.68) brightness(.68) contrast(1.06);
+}
+.hz-page .tt-ending-copy>.hz-ending-guxiu-overlay{z-index:1!important}
+.hz-page .tt-ending-copy>*:not(.hz-ending-guxiu-overlay):not(.hz-ending-copy-poster){
+ position:relative!important;
+ z-index:3!important;
+}
+.hz-page .tt-ending-copy::before{opacity:.32!important}
+.hz-page .tt-ending-copy::after{z-index:2!important;background:linear-gradient(90deg,rgba(3,20,28,.78),rgba(3,20,28,.52) 52%,rgba(3,20,28,.76))!important}
+
+@media(max-width:900px){
+ .hz-page .hz-ending-stage-backdrop{background-position:center!important}
+ .hz-page .hz-ending-jade-arch{top:14%!important;width:57%!important;height:68%!important}
+ .hz-page .hz-ending-paper-canopy{inset:-2% 3% auto!important;height:29%!important}
+ .hz-page .hz-ending-paper-panel{width:48%}
+ .hz-page .hz-ending-lantern-node{width:48px!important}
+ .hz-page .hz-ending-lantern-node--one,.hz-page .hz-ending-lantern-node--three{left:.5%!important}
+ .hz-page .hz-ending-lantern-node--two,.hz-page .hz-ending-lantern-node--four{right:.5%!important}
+ .hz-page .hz-ending-guxiu-vine{width:51%!important;height:57%!important}
+ .hz-page .hz-ending-reveal .hz-ending-reveal-poster{opacity:.84!important}
+ .hz-page .hz-ending-copy-poster{opacity:.16!important}
+ .hz-page .hz-ending-copy-poster img{object-fit:cover;object-position:center}
+}
+@media(prefers-reduced-motion:reduce){
+ .hz-page .hz-ending-stage-backdrop,
+ .hz-page .hz-ending-paper-canopy,
+ .hz-page .hz-ending-paper-panel,
+ .hz-page .hz-ending-jade-arch,
+ .hz-page .hz-ending-lantern-node,
+ .hz-page .hz-ending-guxiu-vine,
+ .hz-page .hz-ending-reveal,
+ .hz-page .hz-ending-final{opacity:1!important;transform:none!important}
+ .hz-page .hz-ending-reveal .hz-ending-reveal-poster{transform:none!important}
+}
+
+.hz-page .hz-case-key-visual img{height:auto!important;aspect-ratio:auto!important;object-fit:contain!important}
+.hz-page .hz-case-key-visual img.hz-key-visual--textless{aspect-ratio:16/9!important;object-fit:cover!important}
+.hz-page .hz-social-poster figure{aspect-ratio:auto!important;min-height:0!important;overflow:visible!important;background:transparent!important}
+.hz-page .hz-social-poster figure img{height:auto!important;min-height:0!important;object-fit:contain!important}

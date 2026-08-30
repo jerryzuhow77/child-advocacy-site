@@ -515,7 +515,7 @@
     const masterCraft = document.createElement('div');
     masterCraft.className = 'hz-ending-master-craft';
     masterCraft.setAttribute('aria-hidden', 'true');
-    masterCraft.innerHTML = '<i class="hz-ending-jade-arch"></i><i class="hz-ending-paper-canopy"></i><span class="hz-ending-lantern-node hz-ending-lantern-node--one"></span><span class="hz-ending-lantern-node hz-ending-lantern-node--two"></span><span class="hz-ending-lantern-node hz-ending-lantern-node--three"></span><span class="hz-ending-guxiu-vine hz-ending-guxiu-vine--one"></span><span class="hz-ending-guxiu-vine hz-ending-guxiu-vine--two"></span>';
+    masterCraft.innerHTML = '<i class="hz-ending-stage-backdrop"></i><i class="hz-ending-jade-arch"></i><i class="hz-ending-paper-canopy"></i><i class="hz-ending-paper-panel hz-ending-paper-panel--left"></i><i class="hz-ending-paper-panel hz-ending-paper-panel--right"></i><span class="hz-ending-lantern-node hz-ending-lantern-node--one"></span><span class="hz-ending-lantern-node hz-ending-lantern-node--two"></span><span class="hz-ending-lantern-node hz-ending-lantern-node--three"></span><span class="hz-ending-lantern-node hz-ending-lantern-node--four"></span><span class="hz-ending-guxiu-vine hz-ending-guxiu-vine--one"></span><span class="hz-ending-guxiu-vine hz-ending-guxiu-vine--two"></span>';
     endingStage.prepend(masterCraft);
   }
 
@@ -528,10 +528,33 @@
   const finalCopy = ending.querySelector('.hz-ending-final');
   const finalReveal = ending.querySelector('.hz-ending-reveal');
   const finalRevealImage = finalReveal?.querySelector('img');
+  let finalRevealBackdrop = null;
+  if (finalReveal && finalRevealImage && !finalReveal.querySelector('.hz-ending-reveal-backdrop')) {
+    finalRevealImage.classList.add('hz-ending-reveal-poster');
+    finalRevealBackdrop = finalRevealImage.cloneNode(true);
+    finalRevealBackdrop.className = 'hz-ending-reveal-backdrop';
+    finalRevealBackdrop.setAttribute('aria-hidden', 'true');
+    finalReveal.prepend(finalRevealBackdrop);
+  }
+
+  let endingCopyPoster = endingCopy?.querySelector('.hz-ending-copy-poster');
+  if (endingCopy && finalRevealImage && !endingCopyPoster) {
+    endingCopyPoster = document.createElement('figure');
+    endingCopyPoster.className = 'hz-ending-copy-poster';
+    endingCopyPoster.setAttribute('aria-hidden', 'true');
+    const endingCopyPosterImage = finalRevealImage.cloneNode(true);
+    endingCopyPosterImage.removeAttribute('class');
+    endingCopyPosterImage.alt = '';
+    endingCopyPoster.append(endingCopyPosterImage);
+    endingCopy.prepend(endingCopyPoster);
+  }
+
   const scriptLines = [...ending.querySelectorAll('.tt-ending-theatre-script p')];
   const masterCraft = ending.querySelector('.hz-ending-master-craft');
+  const stageBackdrop = ending.querySelector('.hz-ending-stage-backdrop');
   const jadeArch = ending.querySelector('.hz-ending-jade-arch');
   const paperCanopy = ending.querySelector('.hz-ending-paper-canopy');
+  const paperPanels = [...ending.querySelectorAll('.hz-ending-paper-panel')];
   const lanternNodes = [...ending.querySelectorAll('.hz-ending-lantern-node')];
   const guxiuVines = [...ending.querySelectorAll('.hz-ending-guxiu-vine')];
   let played = false;
@@ -550,12 +573,15 @@
     });
     curtains.forEach(element => { element.style.transform = 'scaleX(1)'; });
     if (masterCraft) masterCraft.style.opacity = '1';
-    if (jadeArch) jadeArch.style.opacity = '.82';
-    if (paperCanopy) paperCanopy.style.opacity = '.9';
-    lanternNodes.forEach(element => { element.style.opacity = '1'; });
-    guxiuVines.forEach(element => { element.style.opacity = '.86'; element.style.transform = 'scaleX(1)'; });
+    if (stageBackdrop) { stageBackdrop.style.opacity = '.94'; stageBackdrop.style.transform = 'scale(1)'; }
+    if (jadeArch) { jadeArch.style.opacity = '.78'; jadeArch.style.transform = 'translateX(-50%) scale(1)'; }
+    if (paperCanopy) { paperCanopy.style.opacity = '.86'; paperCanopy.style.transform = 'translateY(58%)'; }
+    paperPanels.forEach(element => { element.style.opacity = '.7'; element.style.transform = element.classList.contains('hz-ending-paper-panel--right') ? 'scaleX(-1)' : 'none'; });
+    lanternNodes.forEach(element => { element.style.opacity = '.82'; });
+    guxiuVines.forEach(element => { element.style.opacity = '.78'; element.style.transform = element.classList.contains('hz-ending-guxiu-vine--two') ? 'scaleX(-1)' : 'none'; });
     if (finalReveal) finalReveal.style.opacity = '1';
-    if (finalRevealImage) finalRevealImage.style.transform = 'scale(1)';
+    if (finalRevealBackdrop) finalRevealBackdrop.style.transform = 'scale(1.03)';
+    if (finalRevealImage) { finalRevealImage.style.opacity = '.78'; finalRevealImage.style.transform = 'scale(1)'; }
     if (finalCopy) {
       finalCopy.style.opacity = '1';
       finalCopy.style.transform = 'none';
@@ -575,13 +601,22 @@
     const lantern = ending.querySelector('.hz-carousel-lantern');
     const door = ending.querySelector('.hz-jade-door');
     const water = ending.querySelector('.hz-wool-water');
-    const puppets = ending.querySelectorAll('.tt-ending-theatre-puppet');
-    const curtainAt = mobile ? 9.2 : 13.8;
-    const revealAt = mobile ? 10.65 : 15.95;
-    const finalAt = mobile ? 11.35 : 17.05;
+    const puppets = [...ending.querySelectorAll('.tt-ending-theatre-puppet')];
+    const dialogueAt = mobile ? 2.45 : 3.25;
+    const embroideryAt = mobile ? 4.7 : 6.15;
+    const bowAt = mobile ? 7.55 : 10.45;
+    const paperDropAt = mobile ? 8.55 : 11.95;
+    const curtainAt = mobile ? 9.65 : 13.45;
+    const revealAt = mobile ? 11.2 : 15.55;
+    const finalAt = mobile ? 12.25 : 17.05;
 
     gsap.set(masterCraft, { opacity: 1 });
+    gsap.set(stageBackdrop, { opacity: 0, scale: 1.08 });
     gsap.set(guxiuVines, { transformOrigin: 'center center' });
+    gsap.set(paperPanels, { opacity: 0 });
+    gsap.set(curtains, { scaleX: 0 });
+    gsap.set(finalReveal, { opacity: 0 });
+    gsap.set(finalCopy, { opacity: 0, y: 12 });
 
     const timeline = finaleTimeline = gsap.timeline({
       defaults: { ease: 'power2.out' },
@@ -589,46 +624,83 @@
     });
 
     timeline
-      .fromTo(masterCraft, { opacity: 0 }, { opacity: 1, duration: .65 }, 0)
-      .fromTo(paperCanopy, { opacity: 0, yPercent: -18 }, { opacity: .9, yPercent: 0, duration: 1.35 }, .1)
-      .fromTo(jadeArch, { opacity: 0, scale: .82, filter: 'brightness(.55)' }, { opacity: .82, scale: 1, filter: 'brightness(1.18)', duration: 2.1 }, .35)
-      .fromTo(lanternNodes, { opacity: 0, y: -15, scale: .45 }, { opacity: 1, y: 0, scale: 1, stagger: .18, duration: .8 }, .75)
-      .fromTo(guxiuVines, { opacity: 0, scaleX: 0 }, { opacity: .86, scaleX: 1, stagger: .25, duration: 2.2, ease: 'power1.inOut' }, 1.15)
-      .fromTo(water, { opacity: .15, yPercent: 22 }, { opacity: .7, yPercent: 0, duration: 2.1 })
-      .fromTo(lantern, { opacity: 0, scale: .42, rotation: -6 }, {
-        opacity: 1,
-        scale: mobile ? .68 : .9,
-        rotation: 0,
-        duration: 1.8
-      }, .35)
-      .to(lantern, { rotation: 360, duration: mobile ? 4.8 : 7.2, ease: 'none' }, 1.15)
-      .fromTo(door, { opacity: .1, filter: 'brightness(.52)' }, {
-        opacity: .88,
-        filter: 'brightness(1.15)',
-        duration: 2.8
-      }, 1)
-      .to(words, { opacity: 1, y: 0, stagger: mobile ? .55 : .8, duration: .7 }, 2)
-      .fromTo(scriptLines, { opacity: 0, y: 10 }, {
-        opacity: 1,
-        y: 0,
-        stagger: mobile ? .75 : 1.05,
-        duration: .58
-      }, mobile ? 3 : 3.35)
-      .to(paths, { strokeDashoffset: 0, stagger: .24, duration: 2.8, ease: 'none' }, mobile ? 4.8 : 5.2)
+      .fromTo(masterCraft, { opacity: 0 }, { opacity: 1, duration: .55 }, 0)
+      .fromTo(stageBackdrop,
+        { opacity: 0, scale: 1.08, filter: 'saturate(.7) brightness(.48) contrast(1.06)' },
+        { opacity: .94, scale: 1, filter: 'saturate(.88) brightness(.82) contrast(1.06)', duration: 1.65, ease: 'power2.inOut' }, 0)
+      .fromTo(paperCanopy,
+        { opacity: 0, yPercent: -115 },
+        { opacity: .82, yPercent: 0, duration: 1.4, ease: 'power3.out' }, .18)
+      .fromTo(paperPanels,
+        { opacity: 0, xPercent: index => index ? 28 : -28 },
+        { opacity: .58, xPercent: 0, stagger: .14, duration: 1.35, ease: 'power3.out' }, .28)
+      .fromTo(jadeArch,
+        { opacity: 0, scale: .86, filter: 'brightness(.45)' },
+        { opacity: .78, scale: 1, filter: 'brightness(1.24)', duration: 1.9, ease: 'sine.out' }, .55)
+      .fromTo(lanternNodes,
+        { opacity: 0, scale: .45 },
+        { opacity: .82, scale: 1, stagger: .16, duration: .9, ease: 'sine.out' }, .85)
+      .fromTo(guxiuVines,
+        { opacity: 0, scaleX: 0 },
+        { opacity: .78, scaleX: index => index ? -1 : 1, stagger: .22, duration: 1.9, ease: 'power1.inOut' }, 1.15)
+      .fromTo(water,
+        { opacity: .08, yPercent: 28 },
+        { opacity: .62, yPercent: 0, duration: 2.15, ease: 'sine.out' }, .25)
+      .fromTo(lantern,
+        { opacity: 0, scale: .45, rotation: -8 },
+        { opacity: .86, scale: mobile ? .68 : .9, rotation: 0, duration: 1.45 }, .5)
+      .to(lantern, { rotation: 360, duration: mobile ? 4.6 : 6.8, ease: 'none' }, 1.15)
+      .fromTo(door,
+        { opacity: .08, filter: 'brightness(.48)' },
+        { opacity: .8, filter: 'brightness(1.18)', duration: 2.35, ease: 'sine.out' }, .7)
+      .fromTo(puppets,
+        { opacity: 0, xPercent: index => index ? 26 : -26, yPercent: 6, rotation: index => index ? 3 : -3 },
+        { opacity: .96, xPercent: 0, yPercent: 0, rotation: 0, stagger: .18, duration: 1.35, ease: 'power3.out' }, 1)
+      .to(words, { opacity: 1, y: 0, stagger: mobile ? .48 : .68, duration: .62 }, 1.85)
+      .fromTo(scriptLines,
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, stagger: mobile ? .66 : .9, duration: .54, ease: 'power2.out' }, dialogueAt)
+      .to(paths, { strokeDashoffset: 0, stagger: .22, duration: 2.45, ease: 'none' }, embroideryAt)
       .to(puppets, {
-        xPercent: index => index === 0 ? -18 : 18,
-        opacity: .58,
-        duration: 1.5
-      }, mobile ? 7.9 : 11.7)
-      .to(curtains, { scaleX: 1, duration: mobile ? 1.65 : 2.15, ease: 'power1.inOut' }, curtainAt)
-      .fromTo(finalReveal, { opacity: 0 }, { opacity: 1, duration: 1.2 }, revealAt)
-      .fromTo(finalRevealImage, { scale: 1.045 }, { scale: 1, duration: mobile ? 2.5 : 3.6, ease: 'power1.out' }, revealAt)
-      .to(finalCopy, { opacity: 1, y: 0, duration: 1.15 }, finalAt);
+        y: index => index ? 3 : -3,
+        rotation: index => index ? .5 : -.5,
+        duration: 1.15,
+        repeat: 2,
+        yoyo: true,
+        ease: 'sine.inOut',
+        transformOrigin: '50% 100%'
+      }, dialogueAt + .25)
+      .to(puppets, {
+        yPercent: 8,
+        rotation: index => index ? -7 : 7,
+        duration: .9,
+        ease: 'power2.inOut',
+        transformOrigin: '50% 100%'
+      }, bowAt)
+      .to(jadeArch, { opacity: 1, filter: 'brightness(1.52)', duration: 1.05, yoyo: true, repeat: 1, ease: 'sine.inOut' }, bowAt)
+      .to(paperCanopy, { yPercent: 58, opacity: .92, duration: 1.35, ease: 'power2.inOut' }, paperDropAt)
+      .to(paperPanels, {
+        xPercent: index => index ? -8 : 8,
+        opacity: .82,
+        duration: 1.25,
+        ease: 'power2.inOut'
+      }, paperDropAt + .18)
+      .to(puppets, {
+        xPercent: index => index ? 18 : -18,
+        opacity: .34,
+        duration: 1.05,
+        ease: 'power2.in'
+      }, paperDropAt + .35)
+      .to(curtains, { scaleX: 1, duration: mobile ? 1.55 : 1.95, ease: 'power2.inOut' }, curtainAt)
+      .fromTo(finalReveal, { opacity: 0 }, { opacity: 1, duration: 1.15, ease: 'power1.out' }, revealAt)
+      .fromTo(finalRevealBackdrop, { opacity: 0, scale: 1.16 }, { opacity: .28, scale: 1.03, duration: mobile ? 2.2 : 3.2, ease: 'power1.out' }, revealAt)
+      .fromTo(finalRevealImage, { opacity: 0, scale: 1.1 }, { opacity: .78, scale: 1, duration: mobile ? 2.35 : 3.4, ease: 'power2.out' }, revealAt + .08)
+      .to(finalCopy, { opacity: 1, y: 0, duration: 1.05 }, finalAt);
 
     if (audio && !audio.paused) {
       timeline
-        .to(audio, { volume: .16, duration: 1.1 }, curtainAt)
-        .to(audio, { volume: .26, duration: 1.4 }, finalAt + .35);
+        .to(audio, { volume: .14, duration: 1.05 }, curtainAt)
+        .to(audio, { volume: .26, duration: 1.35 }, finalAt + .3);
     }
   };
 
