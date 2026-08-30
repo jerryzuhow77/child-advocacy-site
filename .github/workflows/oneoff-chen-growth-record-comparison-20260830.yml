@@ -25,36 +25,36 @@ jobs:
               {
                   "path": Path("hearing-records/prison-watch/kaikai-final-chapter/index.html"),
                   "nav_text": "同案成長紀錄對照",
-                  "article": '''
-      <article id="chen-growth-record-comparison" class="growth-record-comparison">
-        <span>同一社工・不同個案</span>
-        <h5>另一名兒童有完整成長紀錄，為什麼剴剴沒有？</h5>
-        <p><b>庭上對照：</b>檢方先追問陳尚潔如何替劉童進行寶寶成長評估；受命法官隨後提示她為另一名服務兒童製作的成長日誌，內容涵蓋出生、飲食、排便、睡眠及身心發展，並確認確由陳尚潔撰寫，再直接追問：「為什麼他有寫，劉童沒寫？」</p>
-        <p><b>責任判讀：</b>這項對照顯示，陳尚潔知道如何製作具體、細緻的兒童成長紀錄，也曾實際完成；因此剴剴案的問題較難只歸因於不熟悉表格或不知道怎麼記，而必須回答：為何同一社工在不同個案間出現明顯的追蹤與紀錄落差？但這仍是庭審質疑與證據評價線索，不能單憑一份紀錄斷言另一名兒童獲得完整保護，也不等於法院已就「差別對待」作成獨立法律認定。</p>
-        <a href="#chen-growth-record-source-note">查看旁聽筆記中的回答與來源界線</a>
-      </article>
-''',
-                  "note": '''
-<aside class="record-boundary growth-record-source-note" id="chen-growth-record-source-note"><b>旁聽筆記對照</b><p>另一份2月23日旁聽筆記記載，受命法官問「為什麼他有寫，劉童沒寫？」陳尚潔回答「因為他媒合到收養」。目前頁面的公開轉錄版本把法官的追問與其後留職停薪問題合併呈現，未單列這句回答；因此在此補上來源差異，正式內容仍以法院筆錄為準。</p></aside>
-''',
+                  "article": (
+                      '      <article id="chen-growth-record-comparison" class="growth-record-comparison">\n'
+                      '        <span>同一社工・不同個案</span>\n'
+                      '        <h5>另一名兒童有完整成長紀錄，為什麼剴剴沒有？</h5>\n'
+                      '        <p><b>庭上對照：</b>檢方先追問陳尚潔如何替劉童進行寶寶成長評估；受命法官隨後提示她為另一名服務兒童製作的成長日誌，內容涵蓋出生、飲食、排便、睡眠及身心發展，並確認確由陳尚潔撰寫，再直接追問：「為什麼他有寫，劉童沒寫？」</p>\n'
+                      '        <p><b>責任判讀：</b>這項對照顯示，陳尚潔知道如何製作具體、細緻的兒童成長紀錄，也曾實際完成；因此剴剴案的問題較難只歸因於不熟悉表格或不知道怎麼記，而必須回答：為何同一社工在不同個案間出現明顯的追蹤與紀錄落差？但這仍是庭審質疑與證據評價線索，不能單憑一份紀錄斷言另一名兒童獲得完整保護，也不等於法院已就「差別對待」作成獨立法律認定。</p>\n'
+                      '        <a href="#chen-growth-record-source-note">查看旁聽筆記中的回答與來源界線</a>\n'
+                      '      </article>\n'
+                  ),
+                  "note": (
+                      '<aside class="record-boundary growth-record-source-note" id="chen-growth-record-source-note"><b>旁聽筆記對照</b><p>另一份2月23日旁聽筆記記載，受命法官問「為什麼他有寫，劉童沒寫？」陳尚潔回答「因為他媒合到收養」。目前頁面的公開轉錄版本把法官的追問與其後留職停薪問題合併呈現，未單列這句回答；因此在此補上來源差異，正式內容仍以法院筆錄為準。</p></aside>\n'
+                  ),
                   "modified_old": '<meta property="article:modified_time" content="2026-08-29">',
                   "modified_new": '<meta property="article:modified_time" content="2026-08-30">',
               },
               {
                   "path": Path("hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html"),
                   "nav_text": "同案成长纪录对照",
-                  "article": '''
-      <article id="chen-growth-record-comparison" class="growth-record-comparison">
-        <span>同一社工・不同个案</span>
-        <h5>另一名儿童有完整成长纪录，为什么剀剀没有？</h5>
-        <p><b>庭上对照：</b>检方先追问陈尚洁如何替刘童进行宝宝成长评估；受命法官随后提示她为另一名服务儿童制作的成长日志，内容涵盖出生、饮食、排便、睡眠及身心发展，并确认确由陈尚洁撰写，再直接追问：“为什么他有写，刘童没写？”</p>
-        <p><b>责任判读：</b>这项对照显示，陈尚洁知道如何制作具体、细致的儿童成长纪录，也曾实际完成；因此剀剀案的问题较难只归因于不熟悉表格或不知道怎么记，而必须回答：为何同一社工在不同个案间出现明显的追踪与纪录落差？但这仍是庭审质疑与证据评价线索，不能单凭一份纪录断言另一名儿童获得完整保护，也不等于法院已就“差别对待”作成独立法律认定。</p>
-        <a href="#chen-growth-record-source-note">查看旁听笔记中的回答与来源界线</a>
-      </article>
-''',
-                  "note": '''
-<aside class="record-boundary growth-record-source-note" id="chen-growth-record-source-note"><b>旁听笔记对照</b><p>另一份2月23日旁听笔记记载，受命法官问“为什么他有写，刘童没写？”陈尚洁回答“因为他媒合到收养”。目前页面的公开转录版本把法官的追问与其后留职停薪问题合并呈现，未单列这句回答；因此在此补上来源差异，正式内容仍以法院笔录为准。</p></aside>
-''',
+                  "article": (
+                      '      <article id="chen-growth-record-comparison" class="growth-record-comparison">\n'
+                      '        <span>同一社工・不同个案</span>\n'
+                      '        <h5>另一名儿童有完整成长纪录，为什么剀剀没有？</h5>\n'
+                      '        <p><b>庭上对照：</b>检方先追问陈尚洁如何替刘童进行宝宝成长评估；受命法官随后提示她为另一名服务儿童制作的成长日志，内容涵盖出生、饮食、排便、睡眠及身心发展，并确认确由陈尚洁撰写，再直接追问：“为什么他有写，刘童没写？”</p>\n'
+                      '        <p><b>责任判读：</b>这项对照显示，陈尚洁知道如何制作具体、细致的儿童成长纪录，也曾实际完成；因此剀剀案的问题较难只归因于不熟悉表格或不知道怎么记，而必须回答：为何同一社工在不同个案间出现明显的追踪与纪录落差？但这仍是庭审质疑与证据评价线索，不能单凭一份纪录断言另一名儿童获得完整保护，也不等于法院已就“差别对待”作成独立法律认定。</p>\n'
+                      '        <a href="#chen-growth-record-source-note">查看旁听笔记中的回答与来源界线</a>\n'
+                      '      </article>\n'
+                  ),
+                  "note": (
+                      '<aside class="record-boundary growth-record-source-note" id="chen-growth-record-source-note"><b>旁听笔记对照</b><p>另一份2月23日旁听笔记记载，受命法官问“为什么他有写，刘童没写？”陈尚洁回答“因为他媒合到收养”。目前页面的公开转录版本把法官的追问与其后留职停薪问题合并呈现，未单列这句回答；因此在此补上来源差异，正式内容仍以法院笔录为准。</p></aside>\n'
+                  ),
                   "modified_old": '<meta property="article:modified_time" content="2026-08-29">',
                   "modified_new": '<meta property="article:modified_time" content="2026-08-30">',
               },
