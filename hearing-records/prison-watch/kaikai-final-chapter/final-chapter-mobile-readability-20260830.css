@@ -1,0 +1,171 @@
+/*
+ * Chen accountability mobile readability patch · 2026-08-30
+ * Shared by Traditional and Simplified Chinese Chapter 2 pages.
+ */
+
+#chen-questioning-20260223 > .record-boundary,
+#chen-final-statement-20260226 > .record-boundary {
+  background: rgba(255, 250, 241, .97);
+  color: #332a27;
+  border-color: rgba(118, 62, 49, .32);
+  box-shadow: 0 10px 28px rgba(48, 27, 22, .13);
+}
+
+#chen-questioning-20260223 > .record-boundary b,
+#chen-final-statement-20260226 > .record-boundary b {
+  color: #7a3128;
+}
+
+body #chen-questioning-20260223 > .record-boundary p,
+body #chen-final-statement-20260226 > .record-boundary p {
+  color: #403633 !important;
+}
+
+/* Keep the first-instance guarantor-status boundary visually prominent. */
+#chen-judgment-accountability > .nonfinal-banner {
+  border-left: 7px solid #efc77d;
+  box-shadow: 0 16px 38px rgba(71, 30, 25, .22);
+}
+
+#chen-judgment-accountability > .nonfinal-banner b {
+  color: #fff4cf;
+}
+
+#chen-judgment-accountability > .nonfinal-banner p {
+  color: #fff5ee;
+}
+
+@media (max-width: 720px) {
+  .section.chen-accountability-chapter {
+    padding-right: 6px;
+    padding-left: 6px;
+    border-radius: 22px;
+  }
+
+  .chen-accountability-chapter > .section-head {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .chen-accountability-chapter > .nonfinal-banner {
+    margin-right: 4px;
+    margin-left: 4px;
+    padding: 18px 15px;
+  }
+
+  .chen-hearing-record {
+    margin-right: 0;
+    margin-left: 0;
+    padding: 8px;
+    border-radius: 18px;
+  }
+
+  .hearing-day {
+    padding: 9px 7px;
+    border-radius: 17px;
+  }
+
+  .hearing-day > header {
+    padding-right: 4px;
+    padding-left: 4px;
+  }
+
+  .hearing-day > .record-boundary,
+  .hearing-focus-map,
+  .hearing-dialogue,
+  .closing-argument-record,
+  .final-statement-record {
+    width: 100%;
+    max-width: none;
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .dialogue-collapsible,
+  .argument-collapsible {
+    width: 100%;
+    max-width: none;
+  }
+
+  .dialogue-collapsible > .dialogue-round {
+    padding: 10px;
+  }
+
+  .dialogue-collapsible > .dialogue-round > .dialogue-main,
+  .dialogue-collapsible > .dialogue-round > aside {
+    padding: 12px;
+  }
+
+  .full-transcript {
+    width: auto;
+    max-width: none;
+    margin-right: -2px;
+    margin-left: -2px;
+    border-radius: 15px;
+  }
+
+  .full-transcript > summary {
+    padding: 14px 12px;
+  }
+
+  .transcript-disclaimer {
+    margin: 8px 6px;
+    padding: 12px 13px;
+  }
+
+  .transcript-toolbar {
+    padding-right: 6px;
+    padding-left: 6px;
+  }
+
+  .transcript-stream {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+
+  .transcript-turn {
+    width: 100%;
+    max-width: none;
+  }
+
+  .transcript-turn header {
+    padding: 9px 11px;
+  }
+
+  .transcript-turn p {
+    padding: 12px;
+    font-size: 15px;
+    line-height: 1.86;
+  }
+
+  .final-statement-record > section {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .section.chen-accountability-chapter {
+    padding-right: 4px;
+    padding-left: 4px;
+  }
+
+  .chen-hearing-record {
+    padding-right: 6px;
+    padding-left: 6px;
+  }
+
+  .hearing-day {
+    padding-right: 6px;
+    padding-left: 6px;
+  }
+
+  .transcript-stream {
+    padding-right: 3px;
+    padding-left: 3px;
+  }
+
+  .transcript-turn p {
+    padding-right: 11px;
+    padding-left: 11px;
+  }
+}
