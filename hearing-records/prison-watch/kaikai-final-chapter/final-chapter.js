@@ -966,4 +966,26 @@ const applyReadingDepth = (scrollToHash = false) => {
     URL.revokeObjectURL(href);
     notify(copy.exportDone);
   });
+}
+  // 12-witness poster: restrained paper-depth reveal and pointer parallax.
+  const witnessPoster = document.querySelector('.chen-witness-entry-card');
+  if (witnessPoster && window.gsap && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const posterArt = witnessPoster.querySelector('.witness-poster-art');
+    const posterItems = witnessPoster.querySelectorAll('.witness-poster-copy > *');
+    const revealPoster = () => {
+      gsap.timeline({ defaults: { ease: 'power3.out' } })
+        .fromTo(witnessPoster, { y: 34, opacity: 0, rotateX: 2 }, { y: 0, opacity: 1, rotateX: 0, duration: .9 })
+        .fromTo(posterArt, { scale: 1.12, xPercent: 2 }, { scale: 1.035, xPercent: 0, duration: 1.4 }, 0)
+        .fromTo(posterItems, { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: .62, stagger: .08 }, .2);
+    };
+    const posterObserver = new IntersectionObserver((entries, observer) => {
+      if (entries.some((entry) => entry.isIntersecting)) { revealPoster(); observer.disconnect(); }
+    }, { threshold: .22 });
+    posterObserver.observe(witnessPoster);
+    witnessPoster.addEventListener('pointermove', (event) => {
+      const rect = witnessPoster.getBoundingClientRect();
+      gsap.to(posterArt, { x: ((event.clientX - rect.left) / rect.width - .5) * 10, y: ((event.clientY - rect.top) / rect.height - .5) * 7, duration: .7, ease: 'power2.out' });
+    });
+    witnessPoster.addEventListener('pointerleave', () => gsap.to(posterArt, { x: 0, y: 0, duration: .8, ease: 'power2.out' }));
+  }
 })();
