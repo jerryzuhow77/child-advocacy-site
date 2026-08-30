@@ -58,6 +58,37 @@ jobs:
             const browser = await chromium.launch({ headless: true });
             const failures = [];
             try {
+              // GitHub Pages deploys in a separate workflow. Wait for this commit's
+              // versioned HTML before testing the live URL, so the verifier never
+              // mistakes the preceding deployment for a product regression.
+              const readinessPage = await browser.newPage();
+              let deploymentReady = false;
+              try {
+                for (let attempt = 0; attempt < 36 && !deploymentReady; attempt += 1) {
+                  try {
+                    await readinessPage.goto(
+                      process.env.BASE_URL + pages[0].path + '?deployment=' + Date.now(),
+                      { waitUntil: 'domcontentloaded', timeout: 30000 }
+                    );
+                    deploymentReady = await readinessPage.evaluate(() => {
+                      const assets = [
+                        ...[...document.querySelectorAll('link[rel="stylesheet"]')].map(node => node.href),
+                        ...[...document.scripts].map(node => node.src).filter(Boolean),
+                      ];
+                      return assets.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.css?v=18'))
+                        && assets.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.js?v=12'))
+                        && document.querySelector('.hz-case-key-visual img')?.src.includes('huang-ziche-main-visual-hant-20260830.webp');
+                    });
+                  } catch (_) {
+                    deploymentReady = false;
+                  }
+                  if (!deploymentReady) await readinessPage.waitForTimeout(5000);
+                }
+              } finally {
+                await readinessPage.close();
+              }
+              if (!deploymentReady) throw new Error('GitHub Pages did not publish the expected Huang Ziche asset versions in time');
+
               for (const viewport of viewports) {
                 const context = await browser.newContext({ viewport });
                 for (const item of pages) {
