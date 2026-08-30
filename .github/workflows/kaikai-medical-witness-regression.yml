@@ -30,7 +30,8 @@ jobs:
             witness_html="$(curl -fsSL --connect-timeout 15 --max-time 30 "${witness}?qa=${token}" || true)"
             if grep -q 'id="page-top"' <<<"$medical_html" \
               && grep -q 'id="witness-10-video-review"' <<<"$medical_html" \
-              && grep -q '../medical-responsibility/#witness-10-role-gap' <<<"$witness_html"; then
+              && grep -q 'id="witness-09"' <<<"$witness_html" \
+              && ! grep -q 'medical-responsibility' <<<"$witness_html"; then
               echo 'Corrected public pages detected.'
               exit 0
             fi
@@ -101,8 +102,10 @@ jobs:
                 } else {
                   const cards = await page.locator('[data-witness-card]').count();
                   if (cards !== 12) item.fatal.push('witness card count ' + cards);
-                  const movedHref = await page.locator('.moved-witness-card a').getAttribute('href');
-                  if (!movedHref || !movedHref.includes('medical-responsibility')) item.fatal.push('moved witness link invalid');
+                  const medicalLinks = await page.locator('a[href*="medical-responsibility"]').count();
+                  if (medicalLinks !== 0) item.fatal.push('unpublished medical link count ' + medicalLinks);
+                  const movedCards = await page.locator('.moved-witness-card').count();
+                  if (movedCards !== 0) item.fatal.push('moved witness card is still public');
                 }
                 if (item.status !== 200) item.fatal.push('HTTP ' + item.status);
                 if (item.overflow > 2) item.fatal.push('horizontal overflow ' + item.overflow + 'px');

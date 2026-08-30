@@ -110,10 +110,38 @@ for url in LOCALE_URLS.values():
 
 required_related_routes = [
     f'{BASE}/hearing-records/prison-watch/kaikai-final-chapter/witnesses/',
-    f'{BASE}/hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/',
 ]
 missing_related = [url for url in required_related_routes if locations.count(url) != 1]
 if missing_related:
     raise SystemExit(f'Published Chapter 2 related routes are missing or duplicated: {missing_related}')
 
-print('Chapter 2 four-locale routes, neutral images, Day 10 entries, five pinned reports, and sitemap discovery are complete.')
+medical_routes = [
+    f'{BASE}/hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/',
+    f'{BASE}/hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/zh-Hans/',
+]
+leaked_medical_routes = [url for url in medical_routes if url in locations]
+if leaked_medical_routes:
+    raise SystemExit(f'Unpublished medical subpages must not appear in sitemap.xml: {leaked_medical_routes}')
+
+medical_files = [
+    ROOT / 'hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/index.html',
+    ROOT / 'hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/zh-Hans/index.html',
+]
+for path in medical_files:
+    source = path.read_text(encoding='utf-8')
+    for token in ('id="clinics"', 'id="cai-hanyu"'):
+        if token not in source:
+            raise SystemExit(f'Retained medical testimony is incomplete in {path}: missing {token}')
+
+medical_entry_surfaces = [
+    ROOT / 'index.html',
+    ROOT / 'hearing-records/prison-watch/kaikai-final-chapter/index.html',
+    ROOT / 'hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html',
+    ROOT / 'hearing-records/prison-watch/kaikai-final-chapter/witnesses/index.html',
+    ROOT / 'hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/witnesses/index.html',
+]
+for path in medical_entry_surfaces:
+    if 'medical-responsibility' in path.read_text(encoding='utf-8'):
+        raise SystemExit(f'Unpublished medical subpage is still linked from {path}')
+
+print('Chapter 2 publication is complete; medical testimony is retained without public Chapter 2 entry points.')
