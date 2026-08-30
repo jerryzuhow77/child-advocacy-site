@@ -1,0 +1,258 @@
+name: Verify Chen mobile readability live
+
+on:
+  push:
+    branches:
+      - 'verify/chen-mobile-browser-20260830'
+    paths:
+      - '.github/workflows/verify-chen-mobile-browser-20260830.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  browser-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Install Playwright driver
+        run: npm install --no-save playwright-core@1.55.0
+
+      - name: Verify live desktop and mobile rendering
+        run: |
+          mkdir -p browser-proof
+          node --input-type=module <<'JS'
+          import { chromium } from 'playwright-core';
+          import fs from 'node:fs';
+
+          const output = 'browser-proof';
+          const sites = {
+            'zh-Hans': 'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/',
+            'zh-Hant': 'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/'
+          };
+          const viewports = {
+            desktop: { width: 1440, height: 1000 },
+            mobile360: { width: 360, height: 800 },
+            mobile390: { width: 390, height: 844 },
+            mobile412: { width: 412, height: 915 }
+          };
+
+          const parseRgb = (value) => {
+            const match = value.match(/rgba?\((\d+)[, ]+(\d+)[, ]+(\d+)(?:[, /]+([\d.]+))?\)/);
+            if (!match) return null;
+            return [Number(match[1]), Number(match[2]), Number(match[3]), match[4] == null ? 1 : Number(match[4])];
+          };
+          const luminance = ([r, g, b]) => {
+            const c = [r, g, b].map((v) => {
+              const s = v / 255;
+              return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+            });
+            return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+          };
+          const contrast = (foreground, background) => {
+            const fg = parseRgb(foreground);
+            const bg = parseRgb(background);
+            if (!fg || !bg || fg[3] < 0.99 || bg[3] < 0.99) return null;
+            const a = luminance(fg);
+            const b = luminance(bg);
+            return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+          };
+
+          const browser = await chromium.launch({
+            headless: true,
+            executablePath: '/usr/bin/google-chrome',
+            args: ['--no-sandbox', '--disable-dev-shm-usage']
+          });
+          const results = [];
+
+          for (const [locale, baseUrl] of Object.entries(sites)) {
+            for (const [viewportName, viewport] of Object.entries(viewports)) {
+              const context = await browser.newContext({ viewport, locale: locale === 'zh-Hans' ? 'zh-CN' : 'zh-TW' });
+              const page = await context.newPage();
+              const result = {
+                locale,
+                viewportName,
+                viewport,
+                status: null,
+                overflow: null,
+                fullRatio: null,
+                streamRatio: null,
+                turnRatio: null,
+                warningRatio: null,
+                contrast: {},
+                styles: {},
+                content: {},
+                pageErrors: [],
+                sameOriginErrors: [],
+                fatal: []
+              };
+              results.push(result);
+
+              page.on('pageerror', (error) => result.pageErrors.push(String(error)));
+              page.on('response', (response) => {
+                try {
+                  const url = new URL(response.url());
+                  if (url.hostname === 'jerryzuhow77.github.io' && response.status() >= 400) {
+                    result.sameOriginErrors.push({ url: response.url(), status: response.status() });
+                  }
+                } catch {}
+              });
+
+              try {
+                const url = `${baseUrl}?browser-proof=${Date.now()}-${locale}-${viewportName}#chen-226-full`;
+                const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+                result.status = response?.status() ?? null;
+                await page.waitForTimeout(1800);
+
+                const skip = page.locator('[data-prologue-skip]');
+                if (await skip.count()) {
+                  if (await skip.isVisible().catch(() => false)) await skip.click({ timeout: 5000 }).catch(() => {});
+                }
+                await page.evaluate(() => {
+                  document.body.classList.remove('prologue-active');
+                  const overlay = document.querySelector('[data-entry-prologue]');
+                  if (overlay) overlay.setAttribute('hidden', '');
+                });
+
+                const transcript = page.locator('#chen-226-full');
+                await transcript.waitFor({ state: 'attached', timeout: 15000 });
+                await transcript.evaluate((el) => { el.open = true; el.scrollIntoView({ block: 'start' }); });
+                await page.waitForTimeout(650);
+
+                result.content = await page.evaluate(() => {
+                  const judgment = document.querySelector('#chen-judgment-accountability')?.textContent || '';
+                  const pageText = document.documentElement.textContent || '';
+                  return {
+                    transcript226: document.querySelectorAll('#chen-226-full').length,
+                    transcript223: document.querySelectorAll('#chen-223-full').length,
+                    judgment: document.querySelectorAll('#chen-judgment-accountability').length,
+                    guarantorTerm: judgment.includes('保證人地位') || judgment.includes('保证人地位'),
+                    individualFinding: /個案|个案/.test(judgment),
+                    firstInstance: /一審|一审|臺北地院|台北地院/.test(judgment),
+                    replacementGlyphs: (pageText.match(/\uFFFD/g) || []).length
+                  };
+                });
+
+                const metrics = await page.evaluate(() => {
+                  const get = (selector) => {
+                    const el = document.querySelector(selector);
+                    if (!el) return null;
+                    const rect = el.getBoundingClientRect();
+                    const style = getComputedStyle(el);
+                    return {
+                      left: rect.left,
+                      right: rect.right,
+                      top: rect.top,
+                      bottom: rect.bottom,
+                      width: rect.width,
+                      height: rect.height,
+                      color: style.color,
+                      backgroundColor: style.backgroundColor,
+                      marginLeft: style.marginLeft,
+                      marginRight: style.marginRight,
+                      paddingLeft: style.paddingLeft,
+                      paddingRight: style.paddingRight,
+                      lineHeight: style.lineHeight,
+                      fontSize: style.fontSize
+                    };
+                  };
+                  return {
+                    viewportWidth: innerWidth,
+                    overflow: Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) - innerWidth,
+                    full: get('#chen-226-full'),
+                    stream: get('#chen-226-full .transcript-stream'),
+                    turn: get('#chen-226-full .transcript-turn'),
+                    warning: get('#chen-226-full .transcript-disclaimer.warning'),
+                    warningText: get('#chen-226-full .transcript-disclaimer.warning p'),
+                    turnText: get('#chen-226-full .transcript-turn p')
+                  };
+                });
+
+                result.overflow = Math.round(metrics.overflow * 100) / 100;
+                result.fullRatio = metrics.full ? metrics.full.width / metrics.viewportWidth : null;
+                result.streamRatio = metrics.stream ? metrics.stream.width / metrics.viewportWidth : null;
+                result.turnRatio = metrics.turn ? metrics.turn.width / metrics.viewportWidth : null;
+                result.warningRatio = metrics.warning ? metrics.warning.width / metrics.viewportWidth : null;
+                result.styles = {
+                  fullMarginLeft: metrics.full?.marginLeft ?? null,
+                  streamPaddingLeft: metrics.stream?.paddingLeft ?? null,
+                  warningBackground: metrics.warning?.backgroundColor ?? null,
+                  warningColor: metrics.warningText?.color ?? null,
+                  warningLineHeight: metrics.warningText?.lineHeight ?? null,
+                  turnColor: metrics.turnText?.color ?? null,
+                  turnBackground: metrics.turn?.backgroundColor ?? null,
+                  turnLineHeight: metrics.turnText?.lineHeight ?? null
+                };
+                result.contrast.warning = metrics.warning && metrics.warningText ? contrast(metrics.warningText.color, metrics.warning.backgroundColor) : null;
+                result.contrast.turn = metrics.turn && metrics.turnText ? contrast(metrics.turnText.color, metrics.turn.backgroundColor) : null;
+
+                await page.screenshot({ path: `${output}/${locale}_${viewportName}_chen-226.png`, fullPage: false });
+                await page.locator('#chen-226-full .transcript-disclaimer.warning').screenshot({ path: `${output}/${locale}_${viewportName}_warning.png` }).catch(() => {});
+
+                const judgment = page.locator('#chen-judgment-accountability');
+                await judgment.evaluate((el) => el.scrollIntoView({ block: 'start' }));
+                await page.waitForTimeout(500);
+                await page.screenshot({ path: `${output}/${locale}_${viewportName}_guarantor.png`, fullPage: false });
+
+                const transcript223 = page.locator('#chen-223-full');
+                await transcript223.evaluate((el) => { el.open = true; el.scrollIntoView({ block: 'start' }); });
+                await page.waitForTimeout(450);
+                const ratio223 = await transcript223.evaluate((el) => el.getBoundingClientRect().width / innerWidth);
+                result.transcript223Ratio = ratio223;
+                await page.screenshot({ path: `${output}/${locale}_${viewportName}_chen-223.png`, fullPage: false });
+
+                if (result.status !== 200) result.fatal.push(`HTTP ${result.status}`);
+                if (result.overflow > 2) result.fatal.push(`horizontal overflow ${result.overflow}px`);
+                if (result.content.transcript226 !== 1 || result.content.transcript223 !== 1 || result.content.judgment !== 1) result.fatal.push('required section count failed');
+                if (!result.content.guarantorTerm || !result.content.individualFinding || !result.content.firstInstance) result.fatal.push('guarantor-status legal label incomplete');
+                if (result.content.replacementGlyphs) result.fatal.push(`replacement glyphs ${result.content.replacementGlyphs}`);
+                if (result.pageErrors.length) result.fatal.push(`${result.pageErrors.length} page error(s)`);
+                if (result.sameOriginErrors.length) result.fatal.push(`${result.sameOriginErrors.length} same-origin HTTP error(s)`);
+
+                if (viewport.width <= 640) {
+                  if ((result.fullRatio ?? 0) < 0.86) result.fatal.push(`226 outer card too narrow ${(result.fullRatio ?? 0).toFixed(3)}`);
+                  if ((result.turnRatio ?? 0) < 0.80) result.fatal.push(`226 dialogue too narrow ${(result.turnRatio ?? 0).toFixed(3)}`);
+                  if ((result.transcript223Ratio ?? 0) < 0.86) result.fatal.push(`223 outer card too narrow ${(result.transcript223Ratio ?? 0).toFixed(3)}`);
+                  if ((result.contrast.warning ?? 0) < 4.5) result.fatal.push(`warning contrast ${(result.contrast.warning ?? 0).toFixed(2)}`);
+                  if ((result.contrast.turn ?? 0) < 4.5) result.fatal.push(`dialogue contrast ${(result.contrast.turn ?? 0).toFixed(2)}`);
+                  if (result.styles.fullMarginLeft !== '-6px') result.fatal.push(`mobile widening rule missing: margin ${result.styles.fullMarginLeft}`);
+                  if (result.styles.streamPaddingLeft !== '8px') result.fatal.push(`mobile stream padding rule missing: ${result.styles.streamPaddingLeft}`);
+                  if (result.styles.warningBackground !== 'rgb(255, 243, 236)') result.fatal.push(`warning background rule missing: ${result.styles.warningBackground}`);
+                }
+              } catch (error) {
+                result.fatal.push(`exception: ${error?.message || error}`);
+                result.exception = String(error?.stack || error);
+                await page.screenshot({ path: `${output}/${locale}_${viewportName}_exception.png`, fullPage: false }).catch(() => {});
+              }
+              await context.close();
+            }
+          }
+
+          await browser.close();
+          fs.writeFileSync(`${output}/report.json`, JSON.stringify({ generatedAt: new Date().toISOString(), results }, null, 2));
+          const lines = ['# Chen mobile readability browser proof', ''];
+          for (const r of results) {
+            lines.push(`## ${r.locale} · ${r.viewportName} (${r.viewport.width}×${r.viewport.height})`);
+            lines.push(`- HTTP: ${r.status}; horizontal overflow: ${r.overflow}px`);
+            lines.push(`- Width ratios: 226=${r.fullRatio?.toFixed(3)}, dialogue=${r.turnRatio?.toFixed(3)}, 223=${r.transcript223Ratio?.toFixed(3)}`);
+            lines.push(`- Contrast ratios: warning=${r.contrast.warning?.toFixed(2)}, dialogue=${r.contrast.turn?.toFixed(2)}`);
+            lines.push(`- Mobile styles: margin=${r.styles.fullMarginLeft}, stream padding=${r.styles.streamPaddingLeft}, warning bg=${r.styles.warningBackground}`);
+            lines.push(`- Legal label: guarantor=${r.content.guarantorTerm}, individual=${r.content.individualFinding}, first-instance=${r.content.firstInstance}`);
+            lines.push(`- Browser errors: page=${r.pageErrors.length}, same-origin HTTP=${r.sameOriginErrors.length}`);
+            lines.push(`- Fatal: ${r.fatal.length ? r.fatal.join(' | ') : 'none'}`);
+            lines.push('');
+          }
+          const fatalCount = results.reduce((sum, result) => sum + result.fatal.length, 0);
+          lines.push(`**Total fatal checks: ${fatalCount}**`);
+          fs.writeFileSync(`${output}/summary.md`, lines.join('\n'));
+          console.log(lines.join('\n'));
+          if (fatalCount) process.exit(1);
+          JS
+
+      - name: Upload browser proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chen-mobile-browser-proof-20260830
+          path: browser-proof
+          retention-days: 14
