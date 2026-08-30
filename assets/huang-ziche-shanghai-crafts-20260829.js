@@ -12,7 +12,7 @@
     ? new URL('.', craftScript.src)
     : new URL('/child-advocacy-site/assets/', location.origin);
   const localePosterSpecs = {
-    'zh-hant': { file: 'huang-ziche-main-visual-hant-20260830.webp', width: 992, height: 1586 },
+    'zh-hant': { file: 'huang-ziche-main-visual-hant-20260830.webp', width: 1122, height: 1402, version: '2' },
     'zh-hans': { file: 'huang-ziche-main-visual-20260830.jpg', width: 1229, height: 1536 },
     en: { file: 'huang-ziche-haipai-stage-backdrop-clean-20260830.webp', width: 1672, height: 941 },
     ja: { file: 'huang-ziche-haipai-stage-backdrop-clean-20260830.webp', width: 1672, height: 941 }
@@ -24,7 +24,9 @@
       : lang.startsWith('zh-hant') ? 'zh-hant'
         : lang.startsWith('ja') ? 'ja' : 'en';
     const spec = localePosterSpecs[key];
-    const posterUrl = new URL(`art/${spec.file}`, assetsRoot).href;
+    const posterAsset = new URL(`art/${spec.file}`, assetsRoot);
+    if (spec.version) posterAsset.searchParams.set('v', spec.version);
+    const posterUrl = posterAsset.href;
 
     document.querySelectorAll([
       '.hz-case-key-visual img',
