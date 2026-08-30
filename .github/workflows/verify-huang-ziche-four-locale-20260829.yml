@@ -10,6 +10,7 @@ on:
       - "assets/huang-ziche-shanghai-crafts-20260829.*"
       - "assets/art/huang-ziche-haipai-shadow-stage-concept-20260830.webp"
       - "assets/art/huang-ziche-main-visual-20260830.jpg"
+      - "assets/art/huang-ziche-main-visual-hant-20260830.webp"
       - "assets/art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp"
       - ".github/workflows/verify-huang-ziche-four-locale-20260829.yml"
   workflow_dispatch:
@@ -42,10 +43,10 @@ jobs:
           const { chromium } = require('playwright');
 
           const pages = [
-            { locale: 'zh-Hant', path: '/historical-cases/regions/mainland-china/huang-ziche/', verdict: '判決與法律觀點', father: '生父刑責爭點', precedent: '案例與裁判規則對照' },
-            { locale: 'zh-Hans', path: '/historical-cases/regions/mainland-china/huang-ziche/zh-Hans/', verdict: '判决与法律观点', father: '生父刑责争点', precedent: '案例与裁判规则对照' },
-            { locale: 'en', path: '/en/historical-cases/regions/mainland-china/huang-ziche/', verdict: 'Judgment and legal analysis', father: 'potential criminal liability', precedent: 'Comparative cases' },
-            { locale: 'ja', path: '/ja/historical-cases/regions/mainland-china/huang-ziche/', verdict: '判決と法的観点', father: '実父の刑事責任の争点', precedent: '類似事件と裁判規則の比較' },
+            { locale: 'zh-Hant', path: '/historical-cases/regions/mainland-china/huang-ziche/', verdict: '判決與法律觀點', father: '生父刑責爭點', precedent: '案例與裁判規則對照', poster: 'huang-ziche-main-visual-hant-20260830.webp' },
+            { locale: 'zh-Hans', path: '/historical-cases/regions/mainland-china/huang-ziche/zh-Hans/', verdict: '判决与法律观点', father: '生父刑责争点', precedent: '案例与裁判规则对照', poster: 'huang-ziche-main-visual-20260830.jpg' },
+            { locale: 'en', path: '/en/historical-cases/regions/mainland-china/huang-ziche/', verdict: 'Judgment and legal analysis', father: 'potential criminal liability', precedent: 'Comparative cases', poster: 'huang-ziche-haipai-stage-backdrop-clean-20260830.webp' },
+            { locale: 'ja', path: '/ja/historical-cases/regions/mainland-china/huang-ziche/', verdict: '判決と法的観点', father: '実父の刑事責任の争点', precedent: '類似事件と裁判規則の比較', poster: 'huang-ziche-haipai-stage-backdrop-clean-20260830.webp' },
           ];
           const viewports = [
             { name: 'desktop', width: 1440, height: 1000 },
@@ -75,7 +76,7 @@ jobs:
                     const response = await page.goto(url, { waitUntil: 'load', timeout: 60000 });
                     if (!response || response.status() !== 200) throw new Error('HTTP ' + (response?.status() ?? 'no response'));
                     await page.waitForTimeout(2500);
-                    const result = await page.evaluate(({ locale, canonical, verdict, father, precedent }) => {
+                    const result = await page.evaluate(({ locale, canonical, verdict, father, precedent, poster }) => {
                       const ids = new Set([...document.querySelectorAll('[id]')].map(node => node.id));
                       const missingAnchors = [...document.querySelectorAll('a[href^="#"]')]
                         .map(link => link.getAttribute('href').slice(1))
@@ -91,8 +92,8 @@ jobs:
                       return {
                         lang: document.documentElement.lang,
                         canonical: document.querySelector('link[rel="canonical"]')?.href,
-                        hasCss: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.css?v=17')),
-                        hasJs: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.js?v=11')),
+                        hasCss: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.css?v=18')),
+                        hasJs: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.js?v=12')),
                         puppetScenes: document.querySelectorAll('.tt-stage > .tt-pose-layer--opening, .tt-transition[data-shadow-scene] .tt-pose-layer').length,
                         puppetCraftLayers: document.querySelectorAll('.hz-puppet-craft-layer').length,
                         puppetCraftReady: document.documentElement.classList.contains('hz-puppet-craft-ready'),
@@ -100,6 +101,16 @@ jobs:
                         hasBackTop: Boolean(document.querySelector('.hz-back-top')),
                         hasMobileSummary: Boolean(document.querySelector('.hz-mobile-summary')),
                         hasEnding: Boolean(document.querySelector('[data-hz-ending]')),
+                        keyPosterMatchesLocale: document.querySelector('.hz-case-key-visual img')?.src.includes(poster),
+                        endingPosterMatchesLocale: document.querySelector('.hz-ending-reveal img:not(.hz-ending-reveal-backdrop)')?.src.includes(poster),
+                        hasEndingStageBackdrop: Boolean(document.querySelector('.hz-ending-stage-backdrop')),
+                        endingPaperPanels: document.querySelectorAll('.hz-ending-paper-panel').length,
+                        hasEndingCopyPoster: Boolean(document.querySelector('.hz-ending-copy-poster img')),
+                        chineseEndingScriptMatches: locale === 'zh-Hant'
+                          ? document.querySelector('.tt-ending-copy')?.textContent.includes('願你被世界記得')
+                          : locale === 'zh-Hans'
+                            ? document.querySelector('.tt-ending-copy')?.textContent.includes('愿你被世界记得')
+                            : true,
                         hasVerdictTranslation: document.querySelector('#verdict')?.textContent.includes(verdict),
                         hasFatherTranslation: document.querySelector('#father')?.textContent.includes(father),
                         hasPrecedentTranslation: document.querySelector('#precedents')?.textContent.includes(precedent),
@@ -122,7 +133,7 @@ jobs:
                         brokenImages,
                         overflow: Math.max(0, document.documentElement.scrollWidth - innerWidth),
                       };
-                    }, { locale: item.locale, canonical: url, verdict: item.verdict, father: item.father, precedent: item.precedent });
+                    }, { locale: item.locale, canonical: url, verdict: item.verdict, father: item.father, precedent: item.precedent, poster: item.poster });
                     await page.evaluate(() => document.querySelector('#precedents [data-hz-case-filter="homicide"]')?.click());
                     await page.waitForTimeout(120);
                     const filtered = await page.evaluate(() => ({
@@ -136,9 +147,10 @@ jobs:
                     const mismatches = [];
                     if (result.lang !== item.locale) mismatches.push('lang=' + result.lang);
                     if (result.canonical !== url) mismatches.push('canonical=' + result.canonical);
-                    for (const key of ['hasCss','hasJs','hasRail','hasBackTop','hasMobileSummary','hasEnding']) {
+                    for (const key of ['hasCss','hasJs','hasRail','hasBackTop','hasMobileSummary','hasEnding','keyPosterMatchesLocale','endingPosterMatchesLocale','hasEndingStageBackdrop','hasEndingCopyPoster','chineseEndingScriptMatches']) {
                       if (!result[key]) mismatches.push(key + '=false');
                     }
+                    if (result.endingPaperPanels !== 2) mismatches.push('endingPaperPanels=' + result.endingPaperPanels);
                     if (result.puppetScenes < 1) mismatches.push('puppetScenes=' + result.puppetScenes);
                     if (result.puppetCraftLayers !== result.puppetScenes) mismatches.push('puppetCraftLayers=' + result.puppetCraftLayers + '/' + result.puppetScenes);
                     if (!result.puppetCraftReady) mismatches.push('puppetCraftReady=false');
