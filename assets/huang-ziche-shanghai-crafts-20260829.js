@@ -4,6 +4,56 @@
   const page = document.querySelector('.hz-page');
   if (!page) return;
 
+  /* v13: the site's converter can change <html lang> after navigation.
+     Keep every poster surface paired with the language the visitor is
+     actually reading, including remembered language preferences. */
+  const craftScript = document.currentScript;
+  const assetsRoot = craftScript?.src
+    ? new URL('.', craftScript.src)
+    : new URL('/child-advocacy-site/assets/', location.origin);
+  const localePosterSpecs = {
+    'zh-hant': { file: 'huang-ziche-main-visual-hant-20260830.webp', width: 992, height: 1586 },
+    'zh-hans': { file: 'huang-ziche-main-visual-20260830.jpg', width: 1229, height: 1536 },
+    en: { file: 'huang-ziche-haipai-stage-backdrop-clean-20260830.webp', width: 1672, height: 941 },
+    ja: { file: 'huang-ziche-haipai-stage-backdrop-clean-20260830.webp', width: 1672, height: 941 }
+  };
+
+  const syncLocalePosters = () => {
+    const lang = document.documentElement.lang.toLowerCase();
+    const key = lang.startsWith('zh-hans') ? 'zh-hans'
+      : lang.startsWith('zh-hant') ? 'zh-hant'
+        : lang.startsWith('ja') ? 'ja' : 'en';
+    const spec = localePosterSpecs[key];
+    const posterUrl = new URL(`art/${spec.file}`, assetsRoot).href;
+
+    document.querySelectorAll([
+      '.hz-case-key-visual img',
+      '.hz-social-poster img',
+      '.hz-ending-reveal img',
+      '.hz-ending-copy-poster img'
+    ].join(',')).forEach(image => {
+      if (image.src !== posterUrl) image.src = posterUrl;
+      image.width = spec.width;
+      image.height = spec.height;
+    });
+
+    document.querySelectorAll('.hz-social-poster a[download]').forEach(link => {
+      link.href = posterUrl;
+    });
+    const ogImage = document.querySelector('meta[property="og:image"]');
+    if (ogImage) ogImage.content = posterUrl;
+    page.dataset.hzPosterLocale = key;
+  };
+
+  syncLocalePosters();
+  requestAnimationFrame(syncLocalePosters);
+  setTimeout(syncLocalePosters, 650);
+  addEventListener('pageshow', syncLocalePosters);
+  new MutationObserver(syncLocalePosters).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['lang']
+  });
+
   const ids = ['before', 'taken', 'unseen', 'abuse', 'last-day', 'hospital', 'verdict', 'father', 'precedents', 'protection'];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mobile = matchMedia('(max-width: 900px)').matches;
@@ -548,6 +598,7 @@
     endingCopyPoster.append(endingCopyPosterImage);
     endingCopy.prepend(endingCopyPoster);
   }
+  syncLocalePosters();
 
   const scriptLines = [...ending.querySelectorAll('.tt-ending-theatre-script p')];
   const masterCraft = ending.querySelector('.hz-ending-master-craft');
