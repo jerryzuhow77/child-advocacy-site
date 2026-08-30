@@ -1433,3 +1433,5 @@ main>.section.reveal,.section.reveal{opacity:1!important;visibility:visible!impo
 body #people-network .poster-concept-grid li,
 body #people-network .poster-concept-grid li>div{color:#e7efec}
 body #people-network .poster-concept-grid li>div>small{color:#f4d9c3}
+
+body #people-network .poster-design-concept .poster-concept-grid li p{color:#e7efec}
