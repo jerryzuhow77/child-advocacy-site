@@ -91,7 +91,10 @@ jobs:
                         lang: document.documentElement.lang,
                         canonical: document.querySelector('link[rel="canonical"]')?.href,
                         hasCss: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.css?v=14')),
-                        hasJs: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.js?v=10')),
+                        hasJs: assetUrls.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.js?v=11')),
+                        puppetScenes: document.querySelectorAll('.tt-stage > .tt-pose-layer--opening, .tt-transition[data-shadow-scene] .tt-pose-layer').length,
+                        puppetCraftLayers: document.querySelectorAll('.hz-puppet-craft-layer').length,
+                        puppetCraftReady: document.documentElement.classList.contains('hz-puppet-craft-ready'),
                         hasRail: Boolean(document.querySelector('.hz-lantern-rail')),
                         hasBackTop: Boolean(document.querySelector('.hz-back-top')),
                         hasMobileSummary: Boolean(document.querySelector('.hz-mobile-summary')),
@@ -135,6 +138,9 @@ jobs:
                     for (const key of ['hasCss','hasJs','hasRail','hasBackTop','hasMobileSummary','hasEnding']) {
                       if (!result[key]) mismatches.push(key + '=false');
                     }
+                    if (result.puppetScenes < 1) mismatches.push('puppetScenes=' + result.puppetScenes);
+                    if (result.puppetCraftLayers !== result.puppetScenes) mismatches.push('puppetCraftLayers=' + result.puppetCraftLayers + '/' + result.puppetScenes);
+                    if (!result.puppetCraftReady) mismatches.push('puppetCraftReady=false');
                     if (!result.hasVerdictTranslation) mismatches.push('verdict translation missing');
                     if (!result.hasFatherTranslation) mismatches.push('father translation missing');
                     if (!result.hasPrecedentTranslation) mismatches.push('precedent translation missing');
