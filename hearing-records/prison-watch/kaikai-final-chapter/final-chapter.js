@@ -326,26 +326,10 @@ const originalAudioSources = audio
       type: source.type
     }))
   : [];
-const audioDirectory = originalAudioSources[0]
-  ? new URL('.', originalAudioSources[0].src)
-  : new URL('../../../assets/audio/', document.baseURI);
 const audioTracks = [
   {
-    title: locale === 'zh-Hans' ? '岁月深处的告白' : '歲月深處的告白',
+    title: locale === 'zh-Hans' ? '未说出口的音符' : '未說出口的音符',
     sources: originalAudioSources
-  },
-  {
-    title: '退潮的街',
-    sources: [
-      {
-        src: new URL('kaikai-chapter2-bgm-02-20260829.webm', audioDirectory).href,
-        type: 'audio/webm; codecs="opus"'
-      },
-      {
-        src: new URL('kaikai-chapter2-bgm-02-20260829.m4a', audioDirectory).href,
-        type: 'audio/mp4'
-      }
-    ]
   }
 ].filter((track) => track.sources.length);
 let audioTrackIndex = 0;
