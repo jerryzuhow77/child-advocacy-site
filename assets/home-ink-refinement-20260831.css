@@ -194,6 +194,41 @@ body.art-site{
   opacity:.17!important;
 }
 .home-art-footer::before{opacity:.46!important}
+
+/* V9 — gold paper-cut guardian eye */
+.premium-hero-art{
+  min-width:0;
+  overflow:visible;
+}
+.premium-art-card{
+  width:min(560px,100%)!important;
+  padding:clamp(18px,2.4vw,28px) clamp(16px,2.6vw,30px) 92px!important;
+  border-radius:42% 42% 28px 28px / 25% 25% 28px 28px!important;
+  background:linear-gradient(145deg,rgba(255,253,244,.78),rgba(244,235,216,.58))!important;
+  border:1px solid rgba(186,139,67,.3)!important;
+  box-shadow:0 24px 64px rgba(65,69,52,.13),0 0 0 10px rgba(255,249,232,.38)!important;
+  backdrop-filter:blur(8px);
+}
+.premium-art-card img{
+  width:100%!important;
+  height:auto!important;
+  aspect-ratio:1942/809!important;
+  object-fit:contain!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  filter:drop-shadow(0 13px 18px rgba(116,77,25,.2)) saturate(.96) contrast(1.025);
+}
+.premium-art-glow{
+  width:min(520px,92%)!important;
+  height:330px!important;
+  border-radius:50%!important;
+  background:radial-gradient(ellipse,rgba(241,207,132,.52),rgba(213,166,82,.18) 44%,transparent 72%)!important;
+}
+.premium-art-label{
+  background:linear-gradient(135deg,rgba(45,70,67,.96),rgba(73,88,74,.94))!important;
+  border:1px solid rgba(226,193,126,.45);
+}
 @media(max-width:700px){
   .premium-home-hero{
     background:linear-gradient(180deg,#fbf6ed 0%,#f4e3e1 52%,#e3eee9 100%)!important;
@@ -209,6 +244,11 @@ body.art-site{
   }
   .premium-art-glow,.premium-art-orbit,.premium-floating-tag{display:none!important}
   .home-priority-strip::after{display:none!important}
+  .premium-art-card{
+    width:min(520px,92vw)!important;
+    padding:16px 14px 78px!important;
+    border-radius:34% 34% 24px 24px / 18% 18% 24px 24px!important;
+  }
 }
 
 

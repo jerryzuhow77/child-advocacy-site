@@ -1,0 +1,114 @@
+/* Guarantor-status refinement · guohua atmosphere and full-width comparison tables */
+body::before{
+  content:"";
+  position:fixed;
+  z-index:0;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(255,250,241,.28),rgba(255,250,241,.78)),
+    url("./art/chen-guarantor-hero.jpg") center 14%/cover no-repeat;
+  opacity:.105;
+  mix-blend-mode:multiply;
+  -webkit-mask-image:linear-gradient(180deg,#000 0 84%,transparent 100%);
+  mask-image:linear-gradient(180deg,#000 0 84%,transparent 100%);
+}
+body>.top,
+body>main,
+body>.footer,
+body>.shell{position:relative;z-index:1}
+
+.hero-art{opacity:.7!important;filter:saturate(.88) contrast(1.025)}
+.hero::after{
+  content:"";
+  position:absolute;
+  z-index:1;
+  inset:auto 0 0;
+  height:118px;
+  pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(255,250,241,.92));
+}
+.hero-copy{z-index:3!important}
+
+.section{isolation:isolate}
+.section::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  right:calc(-1 * clamp(20px,8vw,120px));
+  bottom:14px;
+  width:min(590px,58vw);
+  aspect-ratio:16/9;
+  pointer-events:none;
+  background:url("./art/chen-guarantor-hero.jpg") 88% 66%/175% auto no-repeat;
+  opacity:.105;
+  mix-blend-mode:multiply;
+  filter:saturate(.72) contrast(1.04);
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 35% 78%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 35% 78%,transparent 100%);
+}
+.section:nth-of-type(2n)::after{
+  right:auto;
+  left:calc(-1 * clamp(20px,8vw,120px));
+  background-position:12% 63%;
+  transform:scaleX(-1);
+}
+.section:nth-of-type(3n)::after{
+  bottom:auto;
+  top:18%;
+  opacity:.075;
+  background-position:53% 45%;
+}
+.section>.card,
+.section>.grid,
+.section>.split,
+.section>.compare,
+.section>.boundary,
+.section>.testimony-guide,
+.section>.transcript-panel,
+.section>.reading-order,
+.section>.judgment-clarity{position:relative;z-index:1}
+
+/* Fill the available reading width on desktop; retain safe horizontal reading below it. */
+#compare .compare{width:100%;max-width:100%}
+#compare .compare table{
+  width:100%!important;
+  min-width:900px!important;
+  table-layout:fixed!important;
+}
+#compare .compare th,
+#compare .compare td{
+  width:33.333333%!important;
+  min-width:300px!important;
+  max-width:none!important;
+}
+#response-map .response-table-scroll{width:100%;max-width:100%}
+#response-map table.response-table{
+  width:max(100%,1120px)!important;
+  min-width:1120px!important;
+}
+
+.compare{
+  background:rgba(255,253,249,.94)!important;
+  box-shadow:0 18px 52px rgba(48,70,72,.09),inset 0 1px rgba(255,255,255,.7)!important;
+}
+.compare th{background:rgba(228,235,228,.96)!important}
+.compare td{background:rgba(255,253,249,.82)}
+
+@media(max-width:760px){
+  body::before{opacity:.075;background-position:62% top}
+  .hero-art{opacity:.58!important;object-position:62% center}
+  .section::after{
+    width:92vw;
+    right:-42vw;
+    opacity:.07;
+  }
+  .section:nth-of-type(2n)::after{left:-42vw}
+  #compare .compare table{min-width:900px!important}
+  #compare .compare th,
+  #compare .compare td{min-width:300px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  body::before,.section::after{background-attachment:scroll}
+}
