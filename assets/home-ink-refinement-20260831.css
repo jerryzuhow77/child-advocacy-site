@@ -461,8 +461,8 @@ body.art-site{
   position:absolute;
   z-index:2;
   left:50%;
-  top:clamp(-122px,-10.5vw,-84px);
-  width:clamp(92px,11vw,136px);
+  top:clamp(-154px,-12vw,-108px);
+  width:clamp(126px,14vw,174px);
   aspect-ratio:1;
   transform:translateX(-50%);
   border:3px solid rgba(255,250,240,.98);
@@ -476,11 +476,11 @@ body.art-site{
 }
 @media(max-width:700px){
   .premium-art-card{
-    margin-top:62px!important;
+    margin-top:86px!important;
   }
   .premium-art-card::before{
-    top:-102px;
-    width:clamp(88px,28vw,118px);
+    top:-132px;
+    width:clamp(118px,34vw,148px);
     border-width:2px;
     box-shadow:0 8px 20px rgba(102,68,32,.18),0 0 0 1px rgba(188,137,78,.42);
   }
