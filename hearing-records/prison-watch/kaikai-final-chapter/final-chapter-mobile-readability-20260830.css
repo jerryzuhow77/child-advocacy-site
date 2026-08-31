@@ -190,3 +190,40 @@ body #chen-final-statement-20260226 > .record-boundary p {
     padding-left: 11px;
   }
 }
+
+/* 2026-08-31 · Chapter 2 evidence cards: enforce readable text contrast. */
+.chen-accountability-chapter .witness-rebuttal-grid article{
+  background:#fffdf8;
+  border-color:rgba(91,57,38,.28);
+}
+.chen-accountability-chapter .witness-rebuttal-grid h5{
+  color:#3b241d !important;
+  font-weight:900;
+  text-shadow:none;
+}
+.chen-accountability-chapter .witness-rebuttal-grid p{
+  color:#302722 !important;
+  font-weight:600;
+  text-shadow:none;
+}
+.chen-accountability-chapter .witness-rebuttal-grid article > span{
+  color:#4a271c;
+  background:#ead4b5;
+}
+.chen-accountability-chapter .witness-rebuttal-grid .prosecution-check{
+  background:#fff1e9;
+  border-color:#ad533b;
+}
+.chen-accountability-chapter .witness-rebuttal-grid .court-check{
+  background:#edf5ef;
+  border-color:#557764;
+}
+.chen-accountability-chapter .witness-rebuttal-grid .prosecution-check > span,
+.chen-accountability-chapter .witness-rebuttal-grid .court-check > span{
+  color:#fffdf8;
+}
+@media (max-width:640px){
+  .chen-accountability-chapter .witness-rebuttal-grid article{padding:18px 17px;}
+  .chen-accountability-chapter .witness-rebuttal-grid h5{font-size:18px;line-height:1.45;}
+  .chen-accountability-chapter .witness-rebuttal-grid p{font-size:16px;line-height:1.85;}
+}
