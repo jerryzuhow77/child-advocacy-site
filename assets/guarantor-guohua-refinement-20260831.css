@@ -18,7 +18,16 @@ body>main,
 body>.footer,
 body>.shell{position:relative;z-index:1}
 
-.hero-art{opacity:.7!important;filter:saturate(.88) contrast(1.025)}
+.hero-art{opacity:.26!important;filter:saturate(.72) contrast(1.02) brightness(1.07)}
+.hero-guardian-eye{
+  display:block;
+  width:min(560px,72vw);
+  max-width:100%;
+  height:auto;
+  margin:-12px auto 2px;
+  pointer-events:none;
+  filter:drop-shadow(0 16px 20px rgba(92,61,26,.2));
+}
 .hero::after{
   content:"";
   position:absolute;
@@ -114,7 +123,8 @@ body>.shell{position:relative;z-index:1}
 
 @media(max-width:760px){
   body::before{opacity:.075;background-position:62% top}
-  .hero-art{opacity:.58!important;object-position:62% center}
+  .hero-art{opacity:.2!important;object-position:62% center}
+  .hero-guardian-eye{width:min(520px,94vw);margin:-4px auto 5px;filter:drop-shadow(0 10px 14px rgba(92,61,26,.18))}
   .ending{background-position:50% center!important}
   .ending::before{background:rgba(6,36,46,.48)!important}
   .section::after{
