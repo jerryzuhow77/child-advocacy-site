@@ -86,7 +86,7 @@ jobs:
           assert '9月16日の控訴審を前に' in hearing
           assert '2026-09-16T14:30' in hearing
           assert "const mainlandWallBase='https://cn.globalprotectionwall.com/'" in portal
-          assert "const VERSION = '2026-08-26-pwa-resilient-v1'" in sw
+          assert "const VERSION = '2026-08-31-home-avatar-repair-v2'" in sw
           assert "const closing=group.classList.contains('is-expanded');" in base
           assert "group.matches(':hover')" not in base, 'A hovered nested menu must still open on its first click.'
           feed_sections = {
