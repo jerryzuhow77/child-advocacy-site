@@ -448,9 +448,9 @@ body.art-site{
   }
 }
 
-/* V10 — keep the Alliance portrait visibly above the guardian eye. */
+/* V12 — triple-scale Alliance portrait, staged above the guardian eye. */
 .premium-art-card{
-  margin-top:clamp(58px,6vw,86px);
+  margin-top:clamp(228px,18vw,286px);
 }
 .premium-art-card>img{
   position:relative;
@@ -461,8 +461,8 @@ body.art-site{
   position:absolute;
   z-index:2;
   left:50%;
-  top:clamp(-154px,-12vw,-108px);
-  width:clamp(126px,14vw,174px);
+  top:clamp(-456px,-38vw,-318px);
+  width:clamp(378px,42vw,522px);
   aspect-ratio:1;
   transform:translateX(-50%);
   border:3px solid rgba(255,250,240,.98);
@@ -476,11 +476,11 @@ body.art-site{
 }
 @media(max-width:700px){
   .premium-art-card{
-    margin-top:86px!important;
+    margin-top:270px!important;
   }
   .premium-art-card::before{
-    top:-132px;
-    width:clamp(118px,34vw,148px);
+    top:-396px;
+    width:min(102vw,444px);
     border-width:2px;
     box-shadow:0 8px 20px rgba(102,68,32,.18),0 0 0 1px rgba(188,137,78,.42);
   }
