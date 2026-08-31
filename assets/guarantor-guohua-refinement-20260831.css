@@ -30,6 +30,23 @@ body>.shell{position:relative;z-index:1}
 }
 .hero-copy{z-index:3!important}
 
+/* The closing statement keeps its calm reading surface while carrying a restrained Gu-embroidery frame. */
+.ending{
+  background:
+    linear-gradient(180deg,rgba(20,54,65,.78),rgba(25,66,76,.86)),
+    url("./art/gu-embroidery-ending-20260831.webp") center center/cover no-repeat!important;
+  isolation:isolate;
+}
+.ending::before{
+  z-index:-1!important;
+  background:
+    linear-gradient(90deg,rgba(8,35,45,.28),transparent 38%,transparent 62%,rgba(8,35,45,.3)),
+    radial-gradient(circle at 50% 48%,rgba(21,64,75,.14),rgba(7,37,47,.42))!important;
+}
+.ending .wrap{max-width:780px}
+.ending h2,.ending p{position:relative;text-shadow:0 2px 12px rgba(4,28,36,.46)}
+.ending .kicker{text-shadow:0 1px 8px rgba(4,28,36,.58)}
+
 .section{isolation:isolate}
 .section::after{
   content:"";
@@ -98,6 +115,8 @@ body>.shell{position:relative;z-index:1}
 @media(max-width:760px){
   body::before{opacity:.075;background-position:62% top}
   .hero-art{opacity:.58!important;object-position:62% center}
+  .ending{background-position:50% center!important}
+  .ending::before{background:rgba(6,36,46,.48)!important}
   .section::after{
     width:92vw;
     right:-42vw;
