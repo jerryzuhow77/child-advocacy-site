@@ -1473,3 +1473,22 @@ body #people-network .poster-design-concept .poster-concept-grid li p{color:#e7e
 .final-statement .closing-argument-grid aside :where(b,p){color:#5c372f}
 .hearing-day:first-of-type .dialogue-round mark,
 .final-statement .final-statement-record mark{background:#ffe2a6;color:#382d27}
+
+
+/* Post-death timeline contrast · 2026-08-31
+ * Final-result cards used a dark navy surface while later paragraph rules could
+ * reduce copy contrast. Keep every time-line final card opaque and legible. */
+:where(#life,#after-life) .life-event.final>article{
+  background:#fffaf3!important;
+  color:#3b302b!important;
+  border-color:#d7b998;
+  border-left:7px solid #934139;
+  box-shadow:0 12px 30px rgba(76,45,32,.10);
+}
+:where(#life,#after-life) .life-event.final>article :where(h3,p){color:#3b302b!important}
+:where(#life,#after-life) .life-event.final .source-chips{border-color:#dcc6ad}
+:where(#life,#after-life) .life-event.final .source-chips a{
+  background:#fffdf9;
+  color:#5b372f;
+  border-color:#a97a63;
+}
