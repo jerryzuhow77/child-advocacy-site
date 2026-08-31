@@ -82,6 +82,45 @@
   #response-map table.response-table th,
   #response-map table.response-table td{scroll-snap-align:start}
 }
+
+
+/* 2026-08-31 · final table alignment repair */
+.compare th{
+  position:static!important;
+  top:auto!important;
+  transform:none!important;
+}
+#response-map table.response-table thead,
+#response-map table.response-table tbody,
+#response-map table.response-table tr{
+  position:static!important;
+  transform:none!important;
+}
+#response-map table.response-table th{
+  background:#e9ede7!important;
+  color:#243f42!important;
+  vertical-align:top!important;
+}
+#response-map table.response-table th:first-child{
+  background:#e9ede7!important;
+  color:#8f4039!important;
+}
+#response-map table.response-table td:first-child{
+  background:#fffdf9!important;
+}
+#compare .compare table{
+  width:900px!important;
+  min-width:900px!important;
+  table-layout:fixed!important;
+}
+#compare .compare th,
+#compare .compare td{
+  width:300px!important;
+  min-width:300px!important;
+  max-width:300px!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+}
 </style>
 </head>
 <body>
