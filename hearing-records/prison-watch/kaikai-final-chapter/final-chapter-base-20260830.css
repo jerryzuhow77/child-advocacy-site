@@ -1494,7 +1494,7 @@ body #people-network .poster-design-concept .poster-concept-grid li p{color:#e7e
 }
 
 
-/* Dialogue panel contrast guard · 2026-08-31 */
+/* Dialogue panel contrast guard · 2026-08-31
  * Reading cards always use a light opaque surface. Dark section artwork may
  * remain decorative, but it must never reduce the contrast of dialogue copy. */
 .dialogue-round,
