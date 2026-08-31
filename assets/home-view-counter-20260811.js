@@ -1,6 +1,9 @@
 /* Shared Cloudflare KV view counters for homepage and feature widgets. */
 (() => {
   'use strict';
+  // Embedded readers are references to a chapter, not independent chapter visits.
+  // Do not let an iframe increment or live-poll the shared page counter.
+  if (window.top !== window.self) return;
   if (window.__cpaHomeViewCounterWorker) return;
   window.__cpaHomeViewCounterWorker = true;
 
