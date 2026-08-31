@@ -210,3 +210,74 @@ body.art-site{
   .premium-art-glow,.premium-art-orbit,.premium-floating-tag{display:none!important}
   .home-priority-strip::after{display:none!important}
 }
+
+
+/* V5 — hard reset of legacy circular pseudo-elements */
+.premium-home-hero::before{
+  content:""!important;
+  position:absolute!important;
+  z-index:0!important;
+  top:70px!important;
+  right:-3%!important;
+  bottom:auto!important;
+  left:-3%!important;
+  width:auto!important;
+  max-width:none!important;
+  height:min(50vw,650px)!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  filter:saturate(.88) contrast(1.06)!important;
+  transform:none!important;
+  background:var(--ink-header-art) center 18%/cover no-repeat!important;
+}
+.premium-home-hero::after{
+  content:""!important;
+  position:absolute!important;
+  z-index:1!important;
+  top:auto!important;
+  right:0!important;
+  bottom:0!important;
+  left:0!important;
+  width:auto!important;
+  max-width:none!important;
+  height:118px!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+  transform:none!important;
+  background:linear-gradient(180deg,transparent 0%,rgba(248,244,235,.52) 58%,#f8f4eb 100%)!important;
+}
+.premium-art-orbit,
+.orbit-one,
+.orbit-two,
+.premium-floating-tag,
+.tag-top,
+.tag-bottom{display:none!important}
+@media(max-width:700px){
+  .premium-home-hero::before{
+    top:76px!important;
+    right:-42%!important;
+    bottom:auto!important;
+    left:24%!important;
+    width:auto!important;
+    height:280px!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    background:var(--ink-header-art) right top/auto 100% no-repeat!important;
+  }
+  .premium-home-hero::after{
+    top:auto!important;
+    right:0!important;
+    bottom:0!important;
+    left:0!important;
+    width:auto!important;
+    height:48px!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    background:linear-gradient(180deg,transparent,#f8f4eb)!important;
+  }
+}
