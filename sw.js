@@ -1,6 +1,8 @@
 'use strict';
 
-const VERSION = '2026-08-26-pwa-resilient-v1';
+// A new cache namespace is intentional: it retires the previous home document
+// and lets the revised paper-cut/embroidery art replace an already-installed PWA.
+const VERSION = '2026-08-31-guohua-cache-refresh-v1';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -22,7 +24,6 @@ const REQUIRED_SHELL = [
 // These improve the first offline launch, but are warmed opportunistically so
 // a later page rename or a temporary network error cannot block activation.
 const OPTIONAL_SHELL = [
-  './',
   './assets/site.css',
   './assets/site.js',
   './assets/site-base-20260823.js',
