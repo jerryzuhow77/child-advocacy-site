@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;800;900&amp;family=Noto+Serif+SC:wght@600;700;900&amp;display=swap">  <!-- ENTRY-PROLOGUE-PRELOAD-20260829 -->
   <link rel="preload" as="image" href="../assets/kaikai-final-chapter-prologue-poster.jpg" fetchpriority="high">
 
-  <link rel="stylesheet" href="../final-chapter.css?v=20260831-morandi-legal-1">
+  <link rel="stylesheet" href="../final-chapter.css?v=20260831-chapter-search-1">
   <link rel="stylesheet" href="../../../../assets/home-view-counter-20260811.css?v=2">
   <style id="zh-hans-font-stack">
     html[lang="zh-Hans"] {
@@ -74,6 +74,18 @@
     <img src="../../../../assets/brand/primary-logo-03-thumb.jpg" width="44" height="44" alt="">
     <span>护童行动联盟<small>CHILD PROTECTION ACTION ALLIANCE</small></span>
   </a>
+  <div class="chapter-search" data-page-search>
+    <button class="chapter-search-toggle" type="button" aria-expanded="false" aria-controls="chapterSearchPanel"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><span>搜索关键字</span></button>
+    <div class="chapter-search-panel" id="chapterSearchPanel" hidden>
+      <form class="chapter-search-form" role="search" aria-label="搜索第二章全文">
+        <input class="chapter-search-input" type="search" enterkeyhint="search" autocomplete="off" placeholder="输入人物、日期、证据或法律关键字" aria-label="搜索第二章全文">
+        <button class="chapter-search-action" type="submit" aria-label="搜索">搜索</button>
+        <button class="chapter-search-action" type="button" data-search-prev aria-label="上一条搜索结果" title="上一条">↑</button>
+        <button class="chapter-search-action" type="button" data-search-next aria-label="下一条搜索结果" title="下一条">↓</button>
+        <p class="chapter-search-status" role="status" aria-live="polite">输入关键字，即可搜索第二章全部正文与折叠记录。</p>
+      </form>
+    </div>
+  </div>
   <button id="menuButton" type="button" aria-controls="siteNav" aria-expanded="false">章节</button>
   <nav id="siteNav" aria-label="第二章导览">
     <details class="nav-group"><summary>先读懂</summary><div class="nav-submenu"><a href="#control-yuan">监察院官方主轴</a><a href="#prologue-film">序幕动画</a><a href="#chapter-brief">5分钟摘要</a><a href="#method">阅读方法</a><a href="#puppet-theatre">布袋戏序幕</a></div></details>
@@ -1523,6 +1535,6 @@
 <footer><p>悲剧不忘，不是让伤痛停在记忆里。</p><small>把每一个可被修补的缝隙，变成下一个孩子的安全网。</small></footer>
 <script src="../../../../assets/vendor/gsap-3.15.0.min.js" defer></script>
 <script src="../../../../assets/home-view-counter-20260811.js?v=7-live-sync-no-cache"></script>
-<script src="../final-chapter.js?v=20260830-unspoken-note-1" defer></script>
+<script src="../final-chapter.js?v=20260831-chapter-search-1" defer></script>
 </body>
 </html>

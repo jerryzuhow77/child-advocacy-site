@@ -22,6 +22,136 @@
     if (event.key === 'Escape') setMenu(false);
   });
 
+  // CHAPTER-WIDE-KEYWORD-SEARCH-20260831
+  const pageSearch = document.querySelector('[data-page-search]');
+  const searchToggle = pageSearch?.querySelector('.chapter-search-toggle');
+  const searchPanel = pageSearch?.querySelector('.chapter-search-panel');
+  const searchForm = pageSearch?.querySelector('.chapter-search-form');
+  const searchInput = pageSearch?.querySelector('.chapter-search-input');
+  const searchStatus = pageSearch?.querySelector('.chapter-search-status');
+  const searchPrev = pageSearch?.querySelector('[data-search-prev]');
+  const searchNext = pageSearch?.querySelector('[data-search-next]');
+  const searchLocale = document.documentElement.lang === 'zh-Hans' ? 'zh-Hans' : 'zh-Hant';
+  const searchCopy = searchLocale === 'zh-Hans'
+    ? { idle: '输入关键字，即可搜索第二章全部正文与折叠记录。', none: '找不到“{query}”', count: '找到 <strong>{count}</strong> 条“{query}”，当前第 <strong>{current}</strong> 条。', capped: '结果超过 500 条，请输入更具体的关键字。' }
+    : { idle: '輸入關鍵字，即可搜尋第二章全部正文與收合紀錄。', none: '找不到「{query}」', count: '找到 <strong>{count}</strong> 筆「{query}」，目前第 <strong>{current}</strong> 筆。', capped: '結果超過 500 筆，請輸入更具體的關鍵字。' };
+  let searchMarks = [];
+  let searchCurrent = -1;
+  let searchTimer = 0;
+
+  const setSearchPanel = (open) => {
+    if (!searchPanel || !searchToggle) return;
+    searchPanel.hidden = !open;
+    searchToggle.setAttribute('aria-expanded', String(open));
+    if (open) window.setTimeout(() => searchInput?.focus(), 0);
+  };
+
+  const clearSearchMarks = () => {
+    document.querySelectorAll('mark.page-search-mark').forEach((mark) => {
+      const parent = mark.parentNode;
+      mark.replaceWith(document.createTextNode(mark.textContent || ''));
+      parent?.normalize();
+    });
+    searchMarks = [];
+    searchCurrent = -1;
+    document.body.classList.remove('page-search-active');
+    searchPrev?.setAttribute('disabled', '');
+    searchNext?.setAttribute('disabled', '');
+  };
+
+  const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+  const revealSearchResult = (mark, index) => {
+    if (!mark) return;
+    searchMarks.forEach((item) => item.removeAttribute('data-current'));
+    mark.setAttribute('data-current', 'true');
+    mark.closest('details')?.setAttribute('open', '');
+    let ancestor = mark.parentElement?.closest('details');
+    while (ancestor) {
+      ancestor.open = true;
+      ancestor = ancestor.parentElement?.closest('details');
+    }
+    searchCurrent = index;
+    const query = (searchInput?.value || '').trim();
+    if (searchStatus) searchStatus.innerHTML = searchCopy.count.replace('{count}', String(searchMarks.length)).replace('{query}', query).replace('{current}', String(index + 1));
+    mark.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+  };
+
+  const moveSearchResult = (step) => {
+    if (!searchMarks.length) return;
+    const nextIndex = (searchCurrent + step + searchMarks.length) % searchMarks.length;
+    revealSearchResult(searchMarks[nextIndex], nextIndex);
+  };
+
+  const runPageSearch = () => {
+    clearSearchMarks();
+    const query = (searchInput?.value || '').trim();
+    if (!query) {
+      if (searchStatus) searchStatus.textContent = searchCopy.idle;
+      return;
+    }
+    const main = document.querySelector('#main');
+    if (!main) return;
+    const pattern = new RegExp(escapeRegExp(query), 'giu');
+    const walker = document.createTreeWalker(main, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        if (!node.nodeValue?.trim()) return NodeFilter.FILTER_REJECT;
+        const parent = node.parentElement;
+        if (!parent || parent.closest('script,style,noscript,template,[aria-hidden="true"]')) return NodeFilter.FILTER_REJECT;
+        pattern.lastIndex = 0;
+        return pattern.test(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      }
+    });
+    const nodes = [];
+    while (walker.nextNode() && nodes.length < 500) nodes.push(walker.currentNode);
+    nodes.forEach((node) => {
+      const text = node.nodeValue || '';
+      const fragment = document.createDocumentFragment();
+      let cursor = 0;
+      pattern.lastIndex = 0;
+      for (const match of text.matchAll(pattern)) {
+        fragment.append(document.createTextNode(text.slice(cursor, match.index)));
+        const mark = document.createElement('mark');
+        mark.className = 'page-search-mark';
+        mark.textContent = match[0];
+        fragment.append(mark);
+        cursor = match.index + match[0].length;
+      }
+      fragment.append(document.createTextNode(text.slice(cursor)));
+      node.replaceWith(fragment);
+    });
+    searchMarks = [...main.querySelectorAll('mark.page-search-mark')].slice(0, 500);
+    if (!searchMarks.length) {
+      if (searchStatus) searchStatus.textContent = searchCopy.none.replace('{query}', query);
+      return;
+    }
+    document.body.classList.add('page-search-active');
+    searchPrev?.removeAttribute('disabled');
+    searchNext?.removeAttribute('disabled');
+    if (searchMarks.length >= 500 && searchStatus) searchStatus.textContent = searchCopy.capped;
+    revealSearchResult(searchMarks[0], 0);
+  };
+
+  searchToggle?.addEventListener('click', () => setSearchPanel(searchToggle.getAttribute('aria-expanded') !== 'true'));
+  searchForm?.addEventListener('submit', (event) => { event.preventDefault(); runPageSearch(); });
+  searchInput?.addEventListener('input', () => {
+    window.clearTimeout(searchTimer);
+    searchTimer = window.setTimeout(runPageSearch, 220);
+  });
+  searchPrev?.addEventListener('click', () => moveSearchResult(-1));
+  searchNext?.addEventListener('click', () => moveSearchResult(1));
+  searchPrev?.setAttribute('disabled', '');
+  searchNext?.setAttribute('disabled', '');
+  document.addEventListener('click', (event) => {
+    if (pageSearch && !pageSearch.contains(event.target)) setSearchPanel(false);
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && searchToggle?.getAttribute('aria-expanded') === 'true') {
+      setSearchPanel(false);
+      searchToggle.focus();
+    }
+  });
+
   const revealItems = [...document.querySelectorAll('.reveal')];
   if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const observer = new IntersectionObserver((entries) => {
