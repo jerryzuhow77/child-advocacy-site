@@ -1,0 +1,131 @@
+/* Ten-day evidence chapter: Morandi palette + original Impressionist artwork. */
+#ten-days.ten-days-section {
+  --td-ink: #343a38;
+  --td-muted: #5d6662;
+  --td-paper: #ece9df;
+  --td-ivory: #f6f2e8;
+  --td-sage: #879186;
+  --td-blue: #7c8798;
+  --td-rose: #aa8884;
+  --td-taupe: #9b8f83;
+  --td-ochre: #a88a57;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: var(--td-ink);
+  background:
+    linear-gradient(180deg, rgba(246,242,232,.97), rgba(229,226,216,.98) 38%, rgba(236,233,223,.98));
+  border-color: rgba(93,102,98,.34);
+}
+
+#ten-days.ten-days-section::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -2;
+  height: min(34rem, 48vw);
+  background:
+    linear-gradient(180deg, rgba(246,242,232,.22), rgba(246,242,232,.9)),
+    url("../../../assets/art/kaikai-ten-days-morandi-impressionist-20260831.webp") center top / cover no-repeat;
+  opacity: .78;
+}
+
+#ten-days.ten-days-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 8% 22%, rgba(170,136,132,.13), transparent 19rem),
+    radial-gradient(circle at 91% 56%, rgba(124,135,152,.14), transparent 22rem);
+}
+
+#ten-days > .section-head {
+  max-width: 66rem;
+  padding: clamp(1.25rem, 3vw, 2.4rem);
+  background: rgba(246,242,232,.88);
+  border: 1px solid rgba(93,102,98,.32);
+  box-shadow: 0 1.1rem 3rem rgba(52,58,56,.12);
+  backdrop-filter: blur(8px);
+}
+
+#ten-days .section-head :is(h2, p),
+#ten-days .subsection-head :is(h3, p),
+#ten-days .legal-explainer :is(h3, h4, p, li) { color: var(--td-ink); }
+#ten-days .section-head small,
+#ten-days .subsection-head small { color: #59645f; }
+
+.legal-explainer {
+  margin: clamp(1.5rem, 4vw, 3rem) 0;
+  padding: clamp(1.1rem, 3vw, 2rem);
+  border: 1px solid rgba(93,102,98,.34);
+  border-radius: 1.35rem;
+  background: rgba(246,242,232,.94);
+  box-shadow: 0 1rem 2.6rem rgba(52,58,56,.1);
+}
+
+.legal-explainer-head { max-width: 64rem; }
+.legal-explainer-head > span {
+  display: inline-block;
+  margin-bottom: .55rem;
+  padding: .32rem .68rem;
+  color: #f8f4e9;
+  background: #59645f;
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+.legal-explainer-head h3 { margin: 0 0 .55rem; }
+.legal-explainer-head p { color: var(--td-muted); }
+
+.legal-explainer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+.legal-card {
+  padding: 1.15rem;
+  border: 1px solid rgba(93,102,98,.25);
+  border-top: .3rem solid var(--card-accent, var(--td-sage));
+  border-radius: 1rem;
+  background: rgba(255,253,247,.9);
+}
+.legal-card:nth-child(2) { --card-accent: var(--td-blue); }
+.legal-card:nth-child(3) { --card-accent: var(--td-rose); }
+.legal-card:nth-child(4) { --card-accent: var(--td-ochre); }
+.legal-card small { color: #59645f; font-weight: 800; letter-spacing: .05em; }
+.legal-card h4 { margin: .38rem 0 .55rem; }
+.legal-card p { margin: .35rem 0; }
+.legal-card .ten-days-application {
+  margin-top: .7rem;
+  padding-top: .7rem;
+  border-top: 1px solid rgba(93,102,98,.2);
+  color: #4b5551;
+}
+.legal-source-note {
+  margin: 1rem 0 0;
+  padding: .8rem 1rem;
+  color: #424b48;
+  background: rgba(135,145,134,.14);
+  border-left: .3rem solid var(--td-sage);
+}
+.legal-source-note a { color: #3d5350; font-weight: 800; text-underline-offset: .18em; }
+
+#ten-days :is(.state-card, .phase-card, .cross-issue, .day-card, .wording-principles) {
+  border-color: rgba(93,102,98,.27);
+  box-shadow: 0 .55rem 1.5rem rgba(52,58,56,.07);
+}
+
+@media (max-width: 760px) {
+  #ten-days.ten-days-section::before { height: 25rem; background-position: 61% top; opacity: .58; }
+  #ten-days > .section-head { padding: 1.1rem; backdrop-filter: none; }
+  .legal-explainer { padding: 1rem; border-radius: 1rem; }
+  .legal-explainer-grid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  #ten-days > .section-head { background: var(--td-ivory); backdrop-filter: none; }
+}
