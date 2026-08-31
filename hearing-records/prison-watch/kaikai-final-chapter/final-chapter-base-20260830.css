@@ -1492,3 +1492,55 @@ body #people-network .poster-design-concept .poster-concept-grid li p{color:#e7e
   color:#5b372f;
   border-color:#a97a63;
 }
+
+
+/* Dialogue panel contrast guard · 2026-08-31 */
+ * Reading cards always use a light opaque surface. Dark section artwork may
+ * remain decorative, but it must never reduce the contrast of dialogue copy. */
+.dialogue-round,
+.argument-collapsible>article,
+.transcript-turn,
+.hearing-day>.record-boundary,
+.final-statement>.record-boundary,
+.final-statement .final-statement-record>section,
+.final-statement .closing-argument-record,
+.final-statement .closing-argument-grid article{
+  background:#fffdf9!important;
+  color:#382f2b!important;
+  border-color:#d8bca4!important;
+}
+.dialogue-round :where(h3,h4,h5,h6,p,li,dd,b,strong,small),
+.argument-collapsible>article :where(h3,h4,h5,h6,p,li,dd,b,strong,small),
+.transcript-turn :where(h3,h4,h5,h6,p,li,dd,b,strong,small),
+.hearing-day>.record-boundary :where(h3,h4,h5,h6,p,li,dd,b,strong,small),
+.final-statement :where(.record-boundary,.final-statement-record>section,.closing-argument-record,.closing-argument-grid article) :where(h3,h4,h5,h6,p,li,dd,b,strong,small){
+  color:#382f2b!important;
+}
+.dialogue-round aside,
+.final-statement .final-statement-record aside,
+.final-statement .closing-argument-grid aside{
+  background:#fff1df!important;
+  color:#4a302b!important;
+  border-color:#dfc49d!important;
+}
+.dialogue-round aside :where(h3,h4,h5,h6,p,li,b,strong,small),
+.final-statement :where(.final-statement-record aside,.closing-argument-grid aside) :where(h3,h4,h5,h6,p,li,b,strong,small){
+  color:#4a302b!important;
+}
+.dialogue-collapsible[open]>summary,
+.argument-collapsible[open]>summary{
+  background:linear-gradient(105deg,#3f5e5a,#6e4e48)!important;
+  color:#fffdf6!important;
+}
+.dialogue-collapsible[open]>summary>strong,
+.argument-collapsible[open]>summary>strong,
+.dialogue-collapsible[open]>summary::after,
+.argument-collapsible[open]>summary::after{color:#fffdf6!important}
+.dialogue-collapsible[open]>summary>small,
+.argument-collapsible[open]>summary>small{color:#ffe1c9!important}
+.hearing-day>header,
+.chen-trial-timeline>header{background:#314d4a!important}
+.hearing-day>header :where(h2,h3,h4,h5,p,b,strong),
+.chen-trial-timeline>header :where(h2,h3,h4,h5,p,b,strong){color:#fffdf6!important}
+.hearing-day>header :where(small,span),
+.chen-trial-timeline>header :where(small,span){color:#ffe1c9!important}
