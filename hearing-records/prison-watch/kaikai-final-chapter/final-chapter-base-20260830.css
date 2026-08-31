@@ -1451,3 +1451,25 @@ body #people-network .poster-design-concept .poster-concept-grid li p{color:#e7e
 .hearing-dialogue{gap:12px}.transcript-turn{margin:0 0 12px;border-left:4px solid #7e938d!important;border-radius:12px;background:rgba(255,252,248,.92)!important;box-shadow:0 7px 20px rgba(59,51,47,.07)}.transcript-turn.speaker-chen{border-left-color:#9b6d65!important}.transcript-turn header{padding-bottom:8px;border-bottom:1px solid rgba(107,84,75,.13)}.transcript-turn p{padding-top:3px;line-height:1.86}
 .hearing-day>header{margin-bottom:16px}.hearing-day>.record-boundary{margin-bottom:16px}.hearing-focus-map{margin-bottom:24px}
 @media(max-width:720px){.dialogue-collapsible>summary,.argument-collapsible>summary{grid-template-columns:38px minmax(0,1fr);gap:10px;padding:11px 12px}.dialogue-collapsible>summary>small,.argument-collapsible>summary>small{display:none}.dialogue-collapsible>summary::after,.argument-collapsible>summary::after{grid-column:2;grid-row:2;justify-self:end;margin-top:-8px}.dialogue-collapsible>.dialogue-round{display:block;padding:14px}.dialogue-collapsible>.dialogue-round>header{display:none}.dialogue-collapsible>.dialogue-round>.dialogue-main,.dialogue-collapsible>.dialogue-round>aside{margin-top:10px;padding:13px;border-radius:12px}.argument-collapsible>article{padding:14px}.transcript-turn{margin-bottom:10px}}
+
+/* Contrast safety: dialogue copy must never sit as dark text on translucent cards over dark stages. */
+.hearing-day:first-of-type>.record-boundary,
+.hearing-day:first-of-type .dialogue-round,
+.final-statement>.record-boundary,
+.final-statement .final-statement-record>section,
+.final-statement .closing-argument-record,
+.final-statement .closing-argument-grid article{background:#fffaf2;border-color:#d8baa0;color:#3d342f}
+.hearing-day:first-of-type>.record-boundary :where(b,p),
+.hearing-day:first-of-type .dialogue-round :where(h5,p),
+.final-statement>.record-boundary :where(b,p),
+.final-statement .final-statement-record>section :where(h5,p),
+.final-statement .closing-argument-record :where(h5,p),
+.final-statement .closing-argument-grid article :where(h6,p){color:#3d342f}
+.hearing-day:first-of-type .dialogue-round aside,
+.final-statement .final-statement-record aside,
+.final-statement .closing-argument-grid aside{background:#fff1dc;color:#3d342f;border:1px solid #dfc49d}
+.hearing-day:first-of-type .dialogue-round aside :where(b,p),
+.final-statement .final-statement-record aside :where(b,p),
+.final-statement .closing-argument-grid aside :where(b,p){color:#5c372f}
+.hearing-day:first-of-type .dialogue-round mark,
+.final-statement .final-statement-record mark{background:#ffe2a6;color:#382d27}
