@@ -353,3 +353,37 @@ body.art-site{
   .home-priority-strip::before,.home-activity-records::before,.home-hearing-zone::before,.home-social-cases-section::before{left:auto;width:62%;height:145px;background-position:right bottom;background-size:auto 100%;opacity:.11}
   .home-pinned-report-card::after,.home-document-disc-card::after,.home-news-card::after,.home-hearing-compact-card::after,.home-crafted-card::after,.home-case-reel-card::after,.home-historical-card::after{right:-23px!important;bottom:-27px!important;width:108px!important;height:112px!important;opacity:.065!important}
 }
+
+
+/* V7 — embroidery spacing correction: remove stacked horizontal art bands */
+.premium-home-hero::before{
+  opacity:.23!important;
+  background-position:72% 14%!important;
+  filter:saturate(.78) contrast(1.02)!important;
+}
+.premium-home-hero::after{
+  top:auto!important;
+  right:0!important;
+  bottom:0!important;
+  left:auto!important;
+  width:min(29vw,430px)!important;
+  height:min(29vw,430px)!important;
+  background:var(--su-embroidery-corner) right bottom/contain no-repeat!important;
+  opacity:.14!important;
+  filter:saturate(.78)!important;
+}
+.home-priority-strip::before,
+.home-activity-records::before,
+.home-hearing-zone::before,
+.home-social-cases-section::before{
+  left:auto!important;
+  width:min(22vw,330px)!important;
+  height:min(22vw,330px)!important;
+  background:var(--su-embroidery-corner) right bottom/contain no-repeat!important;
+  opacity:.085!important;
+}
+@media(max-width:700px){
+  .premium-home-hero::before{opacity:.14!important;background-position:right top!important}
+  .premium-home-hero::after{width:145px!important;height:150px!important;opacity:.1!important}
+  .home-priority-strip::before,.home-activity-records::before,.home-hearing-zone::before,.home-social-cases-section::before{width:108px!important;height:112px!important;opacity:.06!important}
+}
