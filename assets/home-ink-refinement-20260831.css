@@ -447,3 +447,41 @@ body.art-site{
     opacity:.22!important;
   }
 }
+
+/* V10 — keep the Alliance portrait visibly above the guardian eye. */
+.premium-art-card{
+  margin-top:clamp(58px,6vw,86px);
+}
+.premium-art-card>img{
+  position:relative;
+  z-index:1;
+}
+.premium-art-card::before{
+  content:"";
+  position:absolute;
+  z-index:2;
+  left:50%;
+  top:clamp(-122px,-10.5vw,-84px);
+  width:clamp(92px,11vw,136px);
+  aspect-ratio:1;
+  transform:translateX(-50%);
+  border:3px solid rgba(255,250,240,.98);
+  border-radius:50%;
+  background:#fffaf3 url("./brand/home-guardian-avatar-20260831.jpg") center/cover no-repeat;
+  box-shadow:0 10px 25px rgba(102,68,32,.2),0 0 0 1px rgba(188,137,78,.48);
+  pointer-events:none;
+}
+.premium-art-label{
+  z-index:3;
+}
+@media(max-width:700px){
+  .premium-art-card{
+    margin-top:62px!important;
+  }
+  .premium-art-card::before{
+    top:-102px;
+    width:clamp(88px,28vw,118px);
+    border-width:2px;
+    box-shadow:0 8px 20px rgba(102,68,32,.18),0 0 0 1px rgba(188,137,78,.42);
+  }
+}

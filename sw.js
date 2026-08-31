@@ -2,7 +2,7 @@
 
 // A new cache namespace is intentional: it retires the previous home document
 // and lets the revised paper-cut/embroidery art replace an already-installed PWA.
-const VERSION = '2026-08-31-guohua-cache-refresh-v1';
+const VERSION = '2026-08-31-home-avatar-repair-v2';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;

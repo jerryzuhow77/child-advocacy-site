@@ -157,7 +157,7 @@
         reloadingForUpdate = true;
         window.location.reload();
       });
-      navigator.serviceWorker.register(new URL('sw.js?v=20260831-guohua-cache-refresh-v1', siteBase).href, {
+      navigator.serviceWorker.register(new URL('sw.js?v=20260831-home-avatar-repair-v2', siteBase).href, {
         scope: siteBase.pathname,
         updateViaCache: 'none'
       })
