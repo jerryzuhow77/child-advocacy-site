@@ -191,14 +191,17 @@ async function sharedCount(element){
   var increment=true;
   try{if(sessionStorage.getItem(seen))increment=false;}catch(_){}
   var endpoint=config.endpoint.replace(/\/$/,'');
-  var url=endpoint+(endpoint.indexOf('?')>=0?'&':'?')+'page='+encodeURIComponent(name)+'&path='+encodeURIComponent(contentPath())+'&increment='+(increment?'1':'0');
+  var canonical=/\/api\/public\/view-count(?:$|\?)/.test(endpoint);
+  var url=canonical?endpoint:endpoint+(endpoint.indexOf('?')>=0?'&':'?')+'page='+encodeURIComponent(name)+'&path='+encodeURIComponent(contentPath())+'&increment='+(increment?'1':'0');
   var controller=typeof AbortController==='function'?new AbortController():null;
   var timeout=window.setTimeout(function(){if(controller)controller.abort();},7000);
   try{
-    var response=await fetch(url,{method:'GET',mode:'cors',cache:'no-store',credentials:'omit',headers:{Accept:'application/json'},signal:controller?controller.signal:undefined});
+    var clientId='';
+    try{clientId=localStorage.getItem('cpa_engagement_client_v1')||crypto.randomUUID();localStorage.setItem('cpa_engagement_client_v1',clientId);}catch(_){}
+    var response=await fetch(url,{method:canonical?'POST':'GET',mode:'cors',cache:'no-store',credentials:'omit',headers:canonical?{Accept:'application/json','content-type':'application/json'}:{Accept:'application/json'},body:canonical?JSON.stringify({channel:'official-article',articleKey:'official-'+name.replace(/^page-/,''),action:increment?'view':'read',clientId:clientId}):undefined,signal:controller?controller.signal:undefined});
     if(!response.ok)throw new Error('counter '+response.status);
     var data=await response.json();
-    var count=Number(data.count!=null?data.count:(data.data&&data.data.count));
+    var count=Number(data.viewCount!=null?data.viewCount:(data.value!=null?data.value:(data.count!=null?data.count:(data.data&&data.data.count))));
     if(!Number.isFinite(count))throw new Error('invalid count');
     if(increment)try{sessionStorage.setItem(seen,'1');}catch(_){}
     var text=copy();

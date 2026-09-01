@@ -3,7 +3,7 @@
   if(window.__cpaSiteQaLoader)return;
   window.__cpaSiteQaLoader=true;
 
-  var counterEndpoint='https://sweet-art-bed8child-advocacy-page-views.jerryzuhow77.workers.dev/views';
+  var counterEndpoint='https://global-protection.jerryzuhow77.chatgpt.site/api/public/view-count';
   window.CPA_VIEW_COUNTER=window.CPA_VIEW_COUNTER||{};
   if(!window.CPA_VIEW_COUNTER.endpoint){
     window.CPA_VIEW_COUNTER.endpoint=counterEndpoint;

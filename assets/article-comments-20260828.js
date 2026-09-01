@@ -40,7 +40,12 @@
   }
 
   function request(payload = { action: "read" }) {
-    return fetch(API, { method: "POST", cache: "no-store", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...payload, channel: "official-article", articleKey: item.key }) })
+    let viewClientId = "";
+    try {
+      viewClientId = localStorage.getItem("cpa_engagement_client_v1") || crypto.randomUUID();
+      localStorage.setItem("cpa_engagement_client_v1", viewClientId);
+    } catch (_) {}
+    return fetch(API, { method: "POST", cache: "no-store", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...payload, clientId: payload.clientId || viewClientId, channel: "official-article", articleKey: item.key }) })
       .then(async response => {
         const result = await response.json();
         if (!response.ok) throw new Error(result.error || words.error);
@@ -55,7 +60,12 @@
       if (sessionStorage.getItem(seenKey)) return;
     } catch (_) { /* Count the view when session storage is unavailable. */ }
 
-    const payload = JSON.stringify({ action: "view", channel: "official-article", articleKey: item.key });
+    let viewClientId = "";
+    try {
+      viewClientId = localStorage.getItem("cpa_engagement_client_v1") || crypto.randomUUID();
+      localStorage.setItem("cpa_engagement_client_v1", viewClientId);
+    } catch (_) {}
+    const payload = JSON.stringify({ action: "view", clientId: viewClientId, channel: "official-article", articleKey: item.key });
     try { sessionStorage.setItem(seenKey, "pending"); } catch (_) {}
     fetch(API, {
       method: "POST",

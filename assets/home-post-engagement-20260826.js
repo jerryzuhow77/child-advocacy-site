@@ -557,7 +557,7 @@
       // Official article pages record the confirmed arrival themselves. This
       // avoids counting one navigation both here and again on the destination.
       if (item.countsOnArrival) return;
-      const payload = JSON.stringify({ channel: "official-article", articleKey: item.key, action: "view" });
+      const payload = JSON.stringify({ channel: "official-article", articleKey: item.key, action: "view", clientId: clientId() });
       try {
         if (!navigator.sendBeacon(API, new Blob([payload], { type: "application/json" }))) {
           fetch(API, { method: "POST", headers: { "content-type": "application/json" }, body: payload, keepalive: true });

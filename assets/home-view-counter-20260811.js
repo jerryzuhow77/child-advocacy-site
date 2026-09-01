@@ -7,7 +7,8 @@
   if (window.__cpaHomeViewCounterWorker) return;
   window.__cpaHomeViewCounterWorker = true;
 
-  const DEFAULT_ENDPOINT = 'https://sweet-art-bed8child-advocacy-page-views.jerryzuhow77.workers.dev/views';
+  const DEFAULT_ENDPOINT = 'https://global-protection.jerryzuhow77.chatgpt.site/api/public/view-count';
+  const CLIENT_KEY = 'cpa_engagement_client_v1';
   /*
    * IMPORTANT: homepage-all-languages-v1 is the original production KV key.
    * Keep every historical/home alias pointed at that key so redesigns,
@@ -28,6 +29,19 @@
   const READ_SYNC_INTERVAL_MS = 60000;
   const sharedRequests = new Map();
   const liveSyncs = new WeakMap();
+
+  function clientId() {
+    try {
+      let value = localStorage.getItem(CLIENT_KEY);
+      if (!value) {
+        value = crypto.randomUUID();
+        localStorage.setItem(CLIENT_KEY, value);
+      }
+      return value;
+    } catch (_) {
+      return '';
+    }
+  }
 
   function endpoint() {
     const config = window.CPA_VIEW_COUNTER || {};
@@ -110,23 +124,25 @@
 
   async function fetchCount(key, increment) {
     const base = endpoint().replace(/\/$/, '');
+    const canonical = /\/api\/public\/view-count(?:$|\?)/.test(base);
     // A unique read URL prevents intermediary/CDN caches from returning a
     // previous total even when the browser requests no-store.
-    const url = `${base}${base.includes('?') ? '&' : '?'}page=${encodeURIComponent(key)}&increment=${increment ? '1' : '0'}&ts=${Date.now()}`;
+    const url = canonical ? base : `${base}${base.includes('?') ? '&' : '?'}page=${encodeURIComponent(key)}&increment=${increment ? '1' : '0'}&ts=${Date.now()}`;
     const controller = typeof AbortController === 'function' ? new AbortController() : null;
     const timer = window.setTimeout(() => controller && controller.abort(), TIMEOUT_MS);
     try {
       const response = await fetch(url, {
-        method: 'GET',
+        method: canonical ? 'POST' : 'GET',
         mode: 'cors',
         cache: 'no-store',
         credentials: 'omit',
-        headers: { Accept: 'application/json' },
+        headers: canonical ? { Accept: 'application/json', 'content-type': 'application/json' } : { Accept: 'application/json' },
+        body: canonical ? JSON.stringify({ action: increment ? 'view' : 'read', clientId: clientId() }) : undefined,
         signal: controller ? controller.signal : undefined
       });
       if (!response.ok) throw new Error(`Counter ${response.status}`);
       const data = await response.json();
-      const value = Number(data && data.count);
+      const value = Number(data && (data.value ?? data.count));
       if (!Number.isFinite(value) || value < 0) throw new Error('Invalid counter value');
       if (increment) markSeen(key);
       return { value, shared: true };

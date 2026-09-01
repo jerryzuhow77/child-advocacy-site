@@ -1019,7 +1019,21 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
   const VIEW_COOLDOWN_MS = 30 * 60 * 1000;
   const API_TIMEOUT_MS = 6500;
   const STORAGE_PREFIX = 'cpa-viewed-v2:'; // v2 resets stale cooldowns from the earlier broken counter.
+  const CLIENT_KEY = 'cpa_engagement_client_v1';
   const readCache = new Map();
+
+  function viewClientId() {
+    try {
+      let value = localStorage.getItem(CLIENT_KEY);
+      if (!value) {
+        value = crypto.randomUUID();
+        localStorage.setItem(CLIENT_KEY, value);
+      }
+      return value;
+    } catch (_) {
+      return '';
+    }
+  }
 
   function routeFromUrl(input) {
     let url;
@@ -1136,7 +1150,8 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
       body: JSON.stringify({
         channel: 'official-article',
         articleKey: key,
-        action: readOnly ? 'read' : 'view'
+        action: readOnly ? 'read' : 'view',
+        clientId: viewClientId()
       })
     }).then(async response => {
       const data = await response.json();

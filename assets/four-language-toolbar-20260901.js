@@ -17,6 +17,19 @@
     ja: { brand: "子ども保護行動連盟", official: "公式サイト", views: "閲覧", unavailable: "この言語版はまだ公開されていません", aria: "4言語トップツールバー" },
   };
 
+  function clientId() {
+    try {
+      let value = localStorage.getItem("cpa_engagement_client_v1");
+      if (!value) {
+        value = crypto.randomUUID();
+        localStorage.setItem("cpa_engagement_client_v1", value);
+      }
+      return value;
+    } catch (_) {
+      return "";
+    }
+  }
+
   function locale() {
     const requested = new URLSearchParams(location.search).get("lang")?.trim().toLowerCase();
     if (requested === "zh-hans" || requested === "zh-cn") return "zh-Hans";
@@ -57,7 +70,7 @@
     const seenKey = `cpa_article_viewed_${key}`;
     let increment = true;
     try { increment = !sessionStorage.getItem(seenKey); } catch (_) {}
-    const payload = { channel: "official-article", articleKey: key, action: increment ? "view" : "read" };
+    const payload = { channel: "official-article", articleKey: key, action: increment ? "view" : "read", clientId: clientId() };
     try {
       if (increment) sessionStorage.setItem(seenKey, "pending");
       const response = await fetch(ENGAGEMENT_API, { method: "POST", cache: "no-store", credentials: "omit", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) });
