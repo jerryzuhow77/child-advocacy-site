@@ -7,7 +7,7 @@
   if (window.__cpaHomeViewCounterWorker) return;
   window.__cpaHomeViewCounterWorker = true;
 
-  const DEFAULT_ENDPOINT = 'https://global-protection.jerryzuhow77.chatgpt.site/api/public/view-count';
+  const DEFAULT_ENDPOINT = 'https://sweet-art-bed8child-advocacy-page-views.jerryzuhow77.workers.dev/views';
   const CLIENT_KEY = 'cpa_engagement_client_v1';
   /*
    * IMPORTANT: homepage-all-languages-v1 is the original production KV key.
