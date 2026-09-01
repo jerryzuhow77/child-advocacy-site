@@ -2,7 +2,7 @@
 
 // A new cache namespace is intentional: it retires the previous home document
 // and lets the revised paper-cut/embroidery art replace an already-installed PWA.
-const VERSION = '20260831-home-recovery-v3';
+const VERSION = '20260901-four-language-sync-v1';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -29,6 +29,9 @@ const OPTIONAL_SHELL = [
   './assets/site-base-20260823.js',
   './assets/site-four-language-qa-20260823.js',
   './assets/mobile-nav-view-counter-20260823.js',
+  './assets/four-language-toolbar-20260901.css',
+  './assets/four-language-toolbar-20260901.js',
+  './data/four-language-routes.json',
   './assets/home-gsap.css',
   './assets/home-gsap.js',
   './assets/vendor/gsap-3.13.0.min.js',
@@ -193,6 +196,9 @@ self.addEventListener('fetch', event => {
     url.pathname.endsWith('/assets/site-base-20260823.js') ||
     url.pathname.endsWith('/assets/site-four-language-qa-20260823.js') ||
     url.pathname.endsWith('/assets/mobile-nav-view-counter-20260823.js') ||
+    url.pathname.endsWith('/assets/four-language-toolbar-20260901.css') ||
+    url.pathname.endsWith('/assets/four-language-toolbar-20260901.js') ||
+    url.pathname.endsWith('/data/four-language-routes.json') ||
     url.pathname.endsWith('/assets/home-gsap.js') ||
     url.pathname.endsWith('/assets/home-gsap-map-20260824.js') ||
     url.pathname.endsWith('/assets/home-gsap-base-20260823.js') ||

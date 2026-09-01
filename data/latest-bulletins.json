@@ -1,127 +1,519 @@
 {
-  "version": 8,
-  "generatedAt": "2026-08-30T00:50:00+08:00",
+  "version": 9,
+  "generatedAt": "2026-09-01T00:00:00Z",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
-    {"id":"kaikai-chapter-two-20260829","publishedAt":"2026-08-29","title":{"zh-Hant":"第二章｜沒人要的孩子？","zh-Hans":"第二章｜没人要的孩子？","en":"Chapter Two | The Unwanted Child?","ja":"第2章｜望まれなかった子ども？"},"summary":{"zh-Hant":"孩子被選擇的人生・115天生命紀錄 × 法院與監察院認定 × 制度責任","zh-Hans":"孩子被选择的人生・115天生命纪录 × 法院与监察院认定 × 制度责任","en":"A Life Chosen by Others: 115 days, judicial and Control Yuan findings, and institutional accountability.","ja":"選ばれる人生：115日間の記録、司法・監察院の認定、制度責任。"},"url":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/","urlByLocale":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/","en":"https://jerryzuhow77.github.io/child-advocacy-site/en/hearing-records/prison-watch/kaikai-final-chapter/","ja":"https://jerryzuhow77.github.io/child-advocacy-site/ja/hearing-records/prison-watch/kaikai-final-chapter/"},"image":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter2-hero-zh-Hant-20260828-v3.jpg","imageByLocale":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter2-hero-zh-Hant-20260828-v3.jpg","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter2-hero-zh-Hans-20260828-v3.jpg","en":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-puppet-stage-20260828.webp","ja":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-puppet-stage-20260828.webp"}},
-    {"id":"kaikai-chapter-one-20260828","publishedAt":"2026-08-28","title":{"zh-Hant":"第一章｜沒有父母的孤兒","zh-Hans":"第一章｜没有父母的孤儿","en":"Chapter One | A Child Without Parents","ja":"第1章｜親のいない孤児"},"summary":{"zh-Hant":"從椅仔姑傳說走入剴剴案・二十四篇動畫長卷 × 八篇完整正文","zh-Hans":"从椅仔姑传说走入剀剀案・二十四篇动画长卷 × 八篇完整正文","en":"From an old chair-maiden legend to the Kaikai case: 24 animations and eight complete chapters.","ja":"椅仔姑の伝承からカイカイ事件へ。24本のアニメーションと8篇の全文。"},"url":"https://jerryzuhow77.github.io/Justice-For-Kaikai/","urlByLocale":{"zh-Hant":"https://jerryzuhow77.github.io/Justice-For-Kaikai/","zh-Hans":"https://jerryzuhow77.github.io/Justice-For-Kaikai/story-zh-hans.html","en":"https://jerryzuhow77.github.io/Justice-For-Kaikai/","ja":"https://jerryzuhow77.github.io/Justice-For-Kaikai/"},"image":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter-one-thumbnail-zh-Hant-20260828.webp","imageByLocale":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter-one-thumbnail-zh-Hant-20260828.webp","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter-one-thumbnail-zh-Hans-20260828.webp","en":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-professional-network-poster-20260828.webp","ja":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-professional-network-poster-20260828.webp"}},
-    {"id":"luo-brothers-retrial","publishedAt":"2026-08-26","title":{"zh-Hant":"羅氏兄弟冤案更審","zh-Hans":"罗氏兄弟冤案更审","en":"Luo Brothers Miscarriage-of-Justice Retrial","ja":"羅兄弟冤罪事件の再審理"},"summary":{"zh-Hant":"最新進度、案件脈絡與完整文件","zh-Hans":"最新进度、案件脉络与完整文件","en":"Latest developments, case background, and complete documents","ja":"最新動向、事件の経緯、関連資料"},"url":"https://jerryzuhow77.github.io/child-advocacy-site/cases/luo-brothers/","image":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/luo-brothers-hearing-poster.webp"},
-    {"id":"chen-shangjie-courtroom-change-20260827","publishedAt":"2026-08-27","title":{"zh-Hant":"9/16二審改至專一法庭","zh-Hans":"9月16日二审改至专一法庭","en":"Sep 16 Appeal Moved to Special Courtroom 1","ja":"9月16日の控訴審は専一法廷へ変更"},"summary":{"zh-Hant":"原第14法庭變更；14:30開庭，邀請民眾到場旁聽","zh-Hans":"原第14法庭变更；14:30开庭，邀请民众到场旁听","en":"Moved from Courtroom 14; the hearing begins at 2:30 p.m. and the public is invited to attend","ja":"第14法廷から変更。14:30開廷、傍聴への参加を呼びかけます"},"url":"https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260820-taipei-station-advocacy/","image":"https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260820-taipei-station-advocacy/images/courtroom-change-20260827.webp"},
-    {"id":"charity-surplus-donation-20260825","publishedAt":"2026-08-25","title":{"zh-Hant":"把共同的支持，延續成另一份守護","zh-Hans":"把共同的支持，延续成另一份守护","en":"Continuing Our Shared Support as Another Act of Care","ja":"皆さまの支援を、次の守りへ"},"summary":{"zh-Hant":"1月11日反廢死護兒少大遊行｜活動公費結餘 27,128 元已全數捐贈公益","zh-Hans":"1月11日反废死护儿童大游行｜活动公费结余27,128元已全数捐赠公益","en":"Jan 11 child-protection march: the remaining NT$27,128 in public activity funds was donated in full","ja":"1月11日の児童保護デモ：活動公費の残額27,128元を全額寄付"},"url":"https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260825-111-surplus-donation/","image":"https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260825-111-surplus-donation/images/charity-paper-clay-thumbnail-v3.webp?v=20260828-thumb-restore-2"}
+    {
+      "id": "kaikai-chapter-one-20260828",
+      "publishedAt": "2026-08-28",
+      "title": {
+        "zh-Hant": "第一章｜沒有父母的孤兒",
+        "zh-Hans": "第一章｜没有父母的孤儿",
+        "en": "Chapter One | A Child Without Parents",
+        "ja": "第1章｜親のいない孤児"
+      },
+      "summary": {
+        "zh-Hant": "從椅仔姑傳說走入剴剴案・二十四篇動畫長卷 × 八篇完整正文",
+        "zh-Hans": "从椅仔姑传说走入剀剀案・二十四篇动画长卷 × 八篇完整正文",
+        "en": "From an old chair-maiden legend to the Kaikai case: 24 animations and eight complete chapters.",
+        "ja": "椅仔姑の伝承からカイカイ事件へ。24本のアニメーションと8篇の全文。"
+      },
+      "url": "https://jerryzuhow77.github.io/Justice-For-Kaikai/",
+      "urlByLocale": {
+        "zh-Hant": "https://jerryzuhow77.github.io/Justice-For-Kaikai/",
+        "zh-Hans": "https://jerryzuhow77.github.io/Justice-For-Kaikai/story-zh-hans.html",
+        "en": "https://jerryzuhow77.github.io/Justice-For-Kaikai/",
+        "ja": "https://jerryzuhow77.github.io/Justice-For-Kaikai/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter-one-thumbnail-zh-Hant-20260828.webp",
+      "imageByLocale": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter-one-thumbnail-zh-Hant-20260828.webp",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter-one-thumbnail-zh-Hans-20260828.webp",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-professional-network-poster-20260828.webp",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-professional-network-poster-20260828.webp"
+      }
+    },
+    {
+      "id": "luo-brothers-retrial",
+      "publishedAt": "2026-08-26",
+      "title": {
+        "zh-Hant": "羅氏兄弟冤案更審",
+        "zh-Hans": "罗氏兄弟冤案更审",
+        "en": "Luo Brothers Miscarriage-of-Justice Retrial",
+        "ja": "羅兄弟冤罪事件の再審理"
+      },
+      "summary": {
+        "zh-Hant": "最新進度、案件脈絡與完整文件",
+        "zh-Hans": "最新进度、案件脉络与完整文件",
+        "en": "Latest developments, case background, and complete documents",
+        "ja": "最新動向、事件の経緯、関連資料"
+      },
+      "url": "https://jerryzuhow77.github.io/child-advocacy-site/cases/luo-brothers/",
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/luo-brothers-hearing-poster.webp"
+    },
+    {
+      "id": "chen-shangjie-courtroom-change-20260827",
+      "publishedAt": "2026-08-27",
+      "title": {
+        "zh-Hant": "9/16二審改至專一法庭",
+        "zh-Hans": "9月16日二审改至专一法庭",
+        "en": "Sep 16 Appeal Moved to Special Courtroom 1",
+        "ja": "9月16日の控訴審は専一法廷へ変更"
+      },
+      "summary": {
+        "zh-Hant": "原第14法庭變更；14:30開庭，邀請民眾到場旁聽",
+        "zh-Hans": "原第14法庭变更；14:30开庭，邀请民众到场旁听",
+        "en": "Moved from Courtroom 14; the hearing begins at 2:30 p.m. and the public is invited to attend",
+        "ja": "第14法廷から変更。14:30開廷、傍聴への参加を呼びかけます"
+      },
+      "url": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260820-taipei-station-advocacy/",
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260820-taipei-station-advocacy/images/courtroom-change-20260827.webp"
+    },
+    {
+      "id": "charity-surplus-donation-20260825",
+      "publishedAt": "2026-08-25",
+      "title": {
+        "zh-Hant": "把共同的支持，延續成另一份守護",
+        "zh-Hans": "把共同的支持，延续成另一份守护",
+        "en": "Continuing Our Shared Support as Another Act of Care",
+        "ja": "皆さまの支援を、次の守りへ"
+      },
+      "summary": {
+        "zh-Hant": "1月11日反廢死護兒少大遊行｜活動公費結餘 27,128 元已全數捐贈公益",
+        "zh-Hans": "1月11日反废死护儿童大游行｜活动公费结余27,128元已全数捐赠公益",
+        "en": "Jan 11 child-protection march: the remaining NT$27,128 in public activity funds was donated in full",
+        "ja": "1月11日の児童保護デモ：活動公費の残額27,128元を全額寄付"
+      },
+      "url": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260825-111-surplus-donation/",
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260825-111-surplus-donation/images/charity-paper-clay-thumbnail-v3.webp?v=20260828-thumb-restore-2"
+    }
   ],
   "items": [
     {
-      "id":"kaikai-chapter-two-20260829","publishedAt":"2026-08-29","tag":"SPECIAL FEATURE","className":"is-kaikai-chapter-two",
-      "badge":{"zh-Hant":"剴剴案特定專題文章","zh-Hans":"剀剀案特定专题文章","en":"Kaikai case special feature","ja":"カイカイ事件特別企画"},
-      "title":{"zh-Hant":"第二章｜沒人要的孩子？","zh-Hans":"第二章｜没人要的孩子？","en":"Chapter Two | The Unwanted Child?","ja":"第2章｜望まれなかった子ども？"},
-      "summary":{"zh-Hant":"孩子被選擇的人生・115天生命紀錄 × 法院與監察院認定 × 制度責任。","zh-Hans":"孩子被选择的人生・115天生命纪录 × 法院与监察院认定 × 制度责任。","en":"A Life Chosen by Others: 115 days, judicial and Control Yuan findings, and institutional accountability.","ja":"選ばれる人生：115日間の記録、司法・監察院の認定、制度責任。"},
-      "url":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/","en":"https://jerryzuhow77.github.io/child-advocacy-site/en/hearing-records/prison-watch/kaikai-final-chapter/","ja":"https://jerryzuhow77.github.io/child-advocacy-site/ja/hearing-records/prison-watch/kaikai-final-chapter/"},
-      "image":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter2-hero-zh-Hant-20260828-v3.jpg",
-      "imageByLocale":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter2-hero-zh-Hant-20260828-v3.jpg","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter2-hero-zh-Hans-20260828-v3.jpg","en":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-puppet-stage-20260828.webp","ja":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-puppet-stage-20260828.webp"},
-      "imageAlt":{"zh-Hant":"剴剴案第二章沒人要的孩子主視覺海報","zh-Hans":"剀剀案第二章没人要的孩子主视觉海报","en":"A language-neutral puppet theatre for Kaikai Chapter Two","ja":"カイカイ事件第2章の言語共通ビジュアルとなる人形劇舞台"}
+      "id": "kaikai-chapter-one-20260828",
+      "publishedAt": "2026-08-28",
+      "tag": "SPECIAL FEATURE",
+      "className": "is-kaikai-chapter-one",
+      "badge": {
+        "zh-Hant": "剴剴案特定專題文章",
+        "zh-Hans": "剀剀案特定专题文章",
+        "en": "Kaikai case special feature",
+        "ja": "カイカイ事件特別企画"
+      },
+      "title": {
+        "zh-Hant": "第一章｜沒有父母的孤兒",
+        "zh-Hans": "第一章｜没有父母的孤儿",
+        "en": "Chapter One | A Child Without Parents",
+        "ja": "第1章｜親のいない孤児"
+      },
+      "summary": {
+        "zh-Hant": "從椅仔姑傳說走入剴剴案・二十四篇動畫長卷 × 八篇完整正文。",
+        "zh-Hans": "从椅仔姑传说走入剀剀案・二十四篇动画长卷 × 八篇完整正文。",
+        "en": "From an old chair-maiden legend to the Kaikai case: 24 animations and eight complete chapters.",
+        "ja": "椅仔姑の伝承からカイカイ事件へ。24本のアニメーションと8篇の全文。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/Justice-For-Kaikai/",
+        "zh-Hans": "https://jerryzuhow77.github.io/Justice-For-Kaikai/story-zh-hans.html",
+        "en": "https://jerryzuhow77.github.io/Justice-For-Kaikai/",
+        "ja": "https://jerryzuhow77.github.io/Justice-For-Kaikai/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter-one-thumbnail-zh-Hant-20260828.webp",
+      "imageByLocale": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter-one-thumbnail-zh-Hant-20260828.webp",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter-one-thumbnail-zh-Hans-20260828.webp",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-professional-network-poster-20260828.webp",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-professional-network-poster-20260828.webp"
+      },
+      "imageAlt": {
+        "zh-Hant": "剴剴案第一章沒有父母的孤兒主視覺海報",
+        "zh-Hans": "剀剀案第一章没有父母的孤儿主视觉海报",
+        "en": "Poster for Kaikai Chapter One, A Child Without Parents",
+        "ja": "カイカイ事件第1章「親のいない孤児」のメインポスター"
+      }
     },
     {
-      "id":"kaikai-chapter-one-20260828","publishedAt":"2026-08-28","tag":"SPECIAL FEATURE","className":"is-kaikai-chapter-one",
-      "badge":{"zh-Hant":"剴剴案特定專題文章","zh-Hans":"剀剀案特定专题文章","en":"Kaikai case special feature","ja":"カイカイ事件特別企画"},
-      "title":{"zh-Hant":"第一章｜沒有父母的孤兒","zh-Hans":"第一章｜没有父母的孤儿","en":"Chapter One | A Child Without Parents","ja":"第1章｜親のいない孤児"},
-      "summary":{"zh-Hant":"從椅仔姑傳說走入剴剴案・二十四篇動畫長卷 × 八篇完整正文。","zh-Hans":"从椅仔姑传说走入剀剀案・二十四篇动画长卷 × 八篇完整正文。","en":"From an old chair-maiden legend to the Kaikai case: 24 animations and eight complete chapters.","ja":"椅仔姑の伝承からカイカイ事件へ。24本のアニメーションと8篇の全文。"},
-      "url":{"zh-Hant":"https://jerryzuhow77.github.io/Justice-For-Kaikai/","zh-Hans":"https://jerryzuhow77.github.io/Justice-For-Kaikai/story-zh-hans.html","en":"https://jerryzuhow77.github.io/Justice-For-Kaikai/","ja":"https://jerryzuhow77.github.io/Justice-For-Kaikai/"},
-      "image":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter-one-thumbnail-zh-Hant-20260828.webp",
-      "imageByLocale":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter-one-thumbnail-zh-Hant-20260828.webp","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter-one-thumbnail-zh-Hans-20260828.webp","en":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-professional-network-poster-20260828.webp","ja":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-professional-network-poster-20260828.webp"},
-      "imageAlt":{"zh-Hant":"剴剴案第一章沒有父母的孤兒主視覺海報","zh-Hans":"剀剀案第一章没有父母的孤儿主视觉海报","en":"Poster for Kaikai Chapter One, A Child Without Parents","ja":"カイカイ事件第1章「親のいない孤児」のメインポスター"}
+      "id": "kaikai-day10-20250507",
+      "publishedAt": "2026-08-27",
+      "tag": "COURT RECORD",
+      "className": "is-day10",
+      "badge": {
+        "zh-Hant": "最新旁聽紀錄",
+        "zh-Hans": "最新旁听记录",
+        "en": "Latest court record",
+        "ja": "最新傍聴記録"
+      },
+      "title": {
+        "zh-Hant": "第十次審判期日",
+        "zh-Hans": "第十次审判期日",
+        "en": "Tenth Trial Date",
+        "ja": "第10回公判期日"
+      },
+      "summary": {
+        "zh-Hant": "科刑辯論與兩名被告責任對照。",
+        "zh-Hans": "科刑辩论与两名被告责任对照。",
+        "en": "Sentencing arguments and a comparison of responsibility between the two defendants.",
+        "ja": "量刑に関する弁論と2人の責任を比較。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day10-20250507/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day10-20250507/zh-Hans/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/hearing-records/prison-watch/kaikai-day10-20250507/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/hearing-records/prison-watch/kaikai-day10-20250507/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day10-kaikai-sentencing-hero-zh-Hant-20260827.webp",
+      "imageByLocale": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day10-kaikai-sentencing-hero-zh-Hant-20260827.webp",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day10-kaikai-sentencing-hero-zh-Hans-20260827.webp",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day10-kaikai-sentencing-poster-en-20260827.svg",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day10-kaikai-sentencing-poster-ja-20260827.svg"
+      },
+      "imageAlt": {
+        "zh-Hant": "悲劇不忘：第十次審判期日科刑辯論與兩名被告責任對照主視覺",
+        "zh-Hans": "悲剧不忘：第十次审判期日科刑辩论与两名被告责任对照主视觉",
+        "en": "Cover artwork for the tenth trial date, sentencing arguments, and the responsibility of two defendants",
+        "ja": "第10回公判期日の量刑弁論と被告2人の責任を扱うメインビジュアル"
+      }
     },
     {
-      "id":"kaikai-day10-20250507","publishedAt":"2026-08-27","tag":"COURT RECORD","className":"is-day10",
-      "badge":{"zh-Hant":"最新旁聽紀錄","zh-Hans":"最新旁听记录","en":"Latest court record","ja":"最新傍聴記録"},
-      "title":{"zh-Hant":"第十次審判期日","zh-Hans":"第十次审判期日","en":"Tenth Trial Date","ja":"第10回公判期日"},
-      "summary":{"zh-Hant":"科刑辯論與兩名被告責任對照。","zh-Hans":"科刑辩论与两名被告责任对照。","en":"Sentencing arguments and a comparison of responsibility between the two defendants.","ja":"量刑に関する弁論と2人の責任を比較。"},
-      "url":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day10-20250507/","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day10-20250507/zh-Hans/","en":"https://jerryzuhow77.github.io/child-advocacy-site/en/hearing-records/prison-watch/kaikai-day10-20250507/","ja":"https://jerryzuhow77.github.io/child-advocacy-site/ja/hearing-records/prison-watch/kaikai-day10-20250507/"},
-      "image":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day10-kaikai-sentencing-hero-zh-Hant-20260827.webp",
-      "imageByLocale":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day10-kaikai-sentencing-hero-zh-Hant-20260827.webp","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day10-kaikai-sentencing-hero-zh-Hans-20260827.webp","en":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day10-kaikai-sentencing-poster-en-20260827.svg","ja":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day10-kaikai-sentencing-poster-ja-20260827.svg"},
-      "imageAlt":{"zh-Hant":"悲劇不忘：第十次審判期日科刑辯論與兩名被告責任對照主視覺","zh-Hans":"悲剧不忘：第十次审判期日科刑辩论与两名被告责任对照主视觉","en":"Cover artwork for the tenth trial date, sentencing arguments, and the responsibility of two defendants","ja":"第10回公判期日の量刑弁論と被告2人の責任を扱うメインビジュアル"}
+      "id": "korea-jungein-memory-door-2020",
+      "publishedAt": "2026-08-26",
+      "tag": "HISTORICAL CASE",
+      "className": "is-jungein-korea",
+      "badge": {
+        "zh-Hant": "韓國歷史案件新作",
+        "zh-Hans": "韩国历史案件新作",
+        "en": "New Korean historical case",
+        "ja": "韓国の歴史的事件・新着"
+      },
+      "title": {
+        "zh-Hant": "韓國鄭仁案｜門沒有打開",
+        "zh-Hans": "韩国郑仁案｜门没有打开",
+        "en": "The Jeong-in Case | The Door Did Not Open",
+        "ja": "韓国チョンイン事件｜扉は開かなかった"
+      },
+      "summary": {
+        "zh-Hant": "三次通報，沒有形成安全出口。",
+        "zh-Hans": "三次通报，没有形成安全出口。",
+        "en": "Three reports did not become a path to safety.",
+        "ja": "3度の通報は安全への出口にならなかった。"
+      },
+      "url": {
+        "zh-Hant": "https://cn.globalprotectionwall.com/historical-cases/korea/jungein",
+        "zh-Hans": "https://cn.globalprotectionwall.com/historical-cases/korea/jungein",
+        "en": "https://cn.globalprotectionwall.com/historical-cases/korea/jungein",
+        "ja": "https://cn.globalprotectionwall.com/historical-cases/korea/jungein"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/jungein-memory-door-home-20260826.webp",
+      "imageAlt": {
+        "zh-Hant": "韓國鄭仁案韓紙紙雕主視覺，半開紙門前放著白瓷碗、黃銅匙、褓布與童襪，不呈現傷勢",
+        "zh-Hans": "韩国郑仁案韩纸纸雕主视觉，半开纸门前放着白瓷碗、黄铜匙、褓布与童袜，不呈现伤势",
+        "en": "Hanji paper-cut artwork with a half-open paper door, porcelain bowl, brass spoon, wrapping cloth and child socks; no injuries are depicted",
+        "ja": "半開きの韓紙の扉、白磁の器、真鍮の匙、ポジャギ、子どもの靴下で構成した事件特集ビジュアル。傷害表現はありません"
+      }
     },
     {
-      "id":"korea-jungein-memory-door-2020","publishedAt":"2026-08-26","tag":"HISTORICAL CASE","className":"is-jungein-korea",
-      "badge":{"zh-Hant":"韓國歷史案件新作","zh-Hans":"韩国历史案件新作","en":"New Korean historical case","ja":"韓国の歴史的事件・新着"},
-      "title":{"zh-Hant":"韓國鄭仁案｜門沒有打開","zh-Hans":"韩国郑仁案｜门没有打开","en":"The Jeong-in Case | The Door Did Not Open","ja":"韓国チョンイン事件｜扉は開かなかった"},
-      "summary":{"zh-Hant":"三次通報，沒有形成安全出口。","zh-Hans":"三次通报，没有形成安全出口。","en":"Three reports did not become a path to safety.","ja":"3度の通報は安全への出口にならなかった。"},
-      "url":{"zh-Hant":"https://cn.globalprotectionwall.com/historical-cases/korea/jungein","zh-Hans":"https://cn.globalprotectionwall.com/historical-cases/korea/jungein","en":"https://cn.globalprotectionwall.com/historical-cases/korea/jungein","ja":"https://cn.globalprotectionwall.com/historical-cases/korea/jungein"},
-      "image":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/jungein-memory-door-home-20260826.webp",
-      "imageAlt":{"zh-Hant":"韓國鄭仁案韓紙紙雕主視覺，半開紙門前放著白瓷碗、黃銅匙、褓布與童襪，不呈現傷勢","zh-Hans":"韩国郑仁案韩纸纸雕主视觉，半开纸门前放着白瓷碗、黄铜匙、褓布与童袜，不呈现伤势","en":"Hanji paper-cut artwork with a half-open paper door, porcelain bowl, brass spoon, wrapping cloth and child socks; no injuries are depicted","ja":"半開きの韓紙の扉、白磁の器、真鍮の匙、ポジャギ、子どもの靴下で構成した事件特集ビジュアル。傷害表現はありません"}
+      "id": "kaikai-day8-20250505",
+      "publishedAt": "2026-08-26",
+      "tag": "COURT RECORD",
+      "badge": {
+        "zh-Hant": "最新旁聽紀錄",
+        "zh-Hans": "最新旁听记录",
+        "en": "Latest court record",
+        "ja": "最新傍聴記録"
+      },
+      "title": {
+        "zh-Hant": "第八次審判期日",
+        "zh-Hans": "第八次审判期日",
+        "en": "Eighth Trial Date",
+        "ja": "第8回公判期日"
+      },
+      "summary": {
+        "zh-Hant": "證據調查、論告與量刑文件整理。",
+        "zh-Hans": "证据调查、论告与量刑文件整理。",
+        "en": "Evidence review, closing arguments, and sentencing documents.",
+        "ja": "証拠調べ、論告、量刑資料の整理。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day8-20250505/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day8-20250505/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day8-20250505/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day8-20250505/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day8-kaikai-evidence-poster-zh-Hant-20260826.webp",
+      "imageByLocale": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day8-kaikai-evidence-poster-zh-Hant-20260826.webp",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day8-kaikai-evidence-poster-zh-Hans-20260826.webp",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day8-kaikai-evidence-poster-en-20260827.svg",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day8-kaikai-evidence-poster-ja-20260827.svg"
+      },
+      "imageAlt": {
+        "zh-Hant": "剴剴案第八次審判期日完整旁聽紀錄主視覺",
+        "zh-Hans": "剀剀案第八次审判期日完整旁听记录主视觉",
+        "en": "Cover artwork for the complete court record from the eighth trial date",
+        "ja": "第8回公判期日の完全傍聴記録メインビジュアル"
+      }
     },
     {
-      "id":"kaikai-day8-20250505","publishedAt":"2026-08-26","tag":"COURT RECORD",
-      "badge":{"zh-Hant":"最新旁聽紀錄","zh-Hans":"最新旁听记录","en":"Latest court record","ja":"最新傍聴記録"},
-      "title":{"zh-Hant":"第八次審判期日","zh-Hans":"第八次审判期日","en":"Eighth Trial Date","ja":"第8回公判期日"},
-      "summary":{"zh-Hant":"證據調查、論告與量刑文件整理。","zh-Hans":"证据调查、论告与量刑文件整理。","en":"Evidence review, closing arguments, and sentencing documents.","ja":"証拠調べ、論告、量刑資料の整理。"},
-      "url":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day8-20250505/","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day8-20250505/","en":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day8-20250505/","ja":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day8-20250505/"},
-      "image":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day8-kaikai-evidence-poster-zh-Hant-20260826.webp",
-      "imageByLocale":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day8-kaikai-evidence-poster-zh-Hant-20260826.webp","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day8-kaikai-evidence-poster-zh-Hans-20260826.webp","en":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day8-kaikai-evidence-poster-en-20260827.svg","ja":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day8-kaikai-evidence-poster-ja-20260827.svg"},
-      "imageAlt":{"zh-Hant":"剴剴案第八次審判期日完整旁聽紀錄主視覺","zh-Hans":"剀剀案第八次审判期日完整旁听记录主视觉","en":"Cover artwork for the complete court record from the eighth trial date","ja":"第8回公判期日の完全傍聴記録メインビジュアル"}
+      "id": "tainan-tom-bear-case-2012",
+      "publishedAt": "2026-08-25",
+      "tag": "HISTORICAL CASE",
+      "badge": {
+        "zh-Hant": "台灣歷史案件新作",
+        "zh-Hans": "台湾历史案件新作",
+        "en": "New Taiwan historical case",
+        "ja": "台湾の歴史的事件・新着"
+      },
+      "title": {
+        "zh-Hant": "台南湯姆熊男童命案",
+        "zh-Hans": "台南汤姆熊男童命案",
+        "en": "The Tainan Tom’s World Case",
+        "ja": "台南トムズ・ワールド男児殺害事件"
+      },
+      "summary": {
+        "zh-Hant": "他說不會判死，後來真的沒有判死。",
+        "zh-Hans": "他说不会判死，后来真的没有判死。",
+        "en": "He said there would be no death sentence—and there was not.",
+        "ja": "「死刑にはならない」と語り、実際に死刑にはならなかった。"
+      },
+      "url": {
+        "zh-Hant": "https://tainan-tom-bear-case.jerryzuhow77.chatgpt.site/",
+        "zh-Hans": "https://tainan-tom-bear-case.jerryzuhow77.chatgpt.site/",
+        "en": "https://tainan-tom-bear-case.jerryzuhow77.chatgpt.site/",
+        "ja": "https://tainan-tom-bear-case.jerryzuhow77.chatgpt.site/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/tainan-tom-bear-home-hero-20260825.webp",
+      "imageAlt": {
+        "zh-Hant": "台南湯姆熊男童命案紙雕專題主視覺",
+        "zh-Hans": "台南汤姆熊男童命案纸雕专题主视觉",
+        "en": "Paper-cut feature artwork for the Tainan Tom’s World case",
+        "ja": "台南トムズ・ワールド男児殺害事件の切り絵特集ビジュアル"
+      }
     },
     {
-      "id":"tainan-tom-bear-case-2012","publishedAt":"2026-08-25","tag":"HISTORICAL CASE",
-      "badge":{"zh-Hant":"台灣歷史案件新作","zh-Hans":"台湾历史案件新作","en":"New Taiwan historical case","ja":"台湾の歴史的事件・新着"},
-      "title":{"zh-Hant":"台南湯姆熊男童命案","zh-Hans":"台南汤姆熊男童命案","en":"The Tainan Tom’s World Case","ja":"台南トムズ・ワールド男児殺害事件"},
-      "summary":{"zh-Hant":"他說不會判死，後來真的沒有判死。","zh-Hans":"他说不会判死，后来真的没有判死。","en":"He said there would be no death sentence—and there was not.","ja":"「死刑にはならない」と語り、実際に死刑にはならなかった。"},
-      "url":{"zh-Hant":"https://tainan-tom-bear-case.jerryzuhow77.chatgpt.site/","zh-Hans":"https://tainan-tom-bear-case.jerryzuhow77.chatgpt.site/","en":"https://tainan-tom-bear-case.jerryzuhow77.chatgpt.site/","ja":"https://tainan-tom-bear-case.jerryzuhow77.chatgpt.site/"},
-      "image":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/tainan-tom-bear-home-hero-20260825.webp",
-      "imageAlt":{"zh-Hant":"台南湯姆熊男童命案紙雕專題主視覺","zh-Hans":"台南汤姆熊男童命案纸雕专题主视觉","en":"Paper-cut feature artwork for the Tainan Tom’s World case","ja":"台南トムズ・ワールド男児殺害事件の切り絵特集ビジュアル"}
+      "id": "tucheng-domestic-violence-hearing-20260821",
+      "publishedAt": "2026-08-23",
+      "tag": "COURT RECORD",
+      "className": "is-tucheng-domestic-hearing",
+      "badge": {
+        "zh-Hant": "最新旁聽紀錄",
+        "zh-Hans": "最新旁听记录",
+        "en": "Latest court record",
+        "ja": "最新傍聴記録"
+      },
+      "title": {
+        "zh-Hant": "土城家暴雙屍案",
+        "zh-Hans": "土城家暴双尸案",
+        "en": "Tucheng Domestic-Violence Double Homicide",
+        "ja": "土城DV二人死亡事件"
+      },
+      "summary": {
+        "zh-Hant": "一審宣判、量刑攻防與完整旁聽整理。",
+        "zh-Hans": "一审宣判、量刑攻防与完整旁听整理。",
+        "en": "First-instance judgment, sentencing arguments, and full court notes.",
+        "ja": "一審判決、量刑をめぐる攻防、完全傍聴記録。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/tucheng-domestic-violence-double-homicide-20260821/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/tucheng-domestic-violence-double-homicide-20260821/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/tucheng-domestic-violence-double-homicide-20260821/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/tucheng-domestic-violence-double-homicide-20260821/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/images/tucheng-hearing-20260821-hero.jpg",
+      "imageAlt": {
+        "zh-Hant": "土城家暴雙屍案2026年8月21日完整旁聽筆記主視覺",
+        "zh-Hans": "土城家暴双尸案2026年8月21日完整旁听笔记主视觉",
+        "en": "Cover artwork for the complete August 21, 2026 Tucheng court notes",
+        "ja": "2026年8月21日の土城事件完全傍聴記録のメインビジュアル"
+      }
     },
     {
-      "id":"tucheng-domestic-violence-hearing-20260821","publishedAt":"2026-08-23","tag":"COURT RECORD","className":"is-tucheng-domestic-hearing",
-      "badge":{"zh-Hant":"最新旁聽紀錄","zh-Hans":"最新旁听记录","en":"Latest court record","ja":"最新傍聴記録"},
-      "title":{"zh-Hant":"土城家暴雙屍案","zh-Hans":"土城家暴双尸案","en":"Tucheng Domestic-Violence Double Homicide","ja":"土城DV二人死亡事件"},
-      "summary":{"zh-Hant":"一審宣判、量刑攻防與完整旁聽整理。","zh-Hans":"一审宣判、量刑攻防与完整旁听整理。","en":"First-instance judgment, sentencing arguments, and full court notes.","ja":"一審判決、量刑をめぐる攻防、完全傍聴記録。"},
-      "url":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/tucheng-domestic-violence-double-homicide-20260821/","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/tucheng-domestic-violence-double-homicide-20260821/","en":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/tucheng-domestic-violence-double-homicide-20260821/","ja":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/tucheng-domestic-violence-double-homicide-20260821/"},
-      "image":"https://jerryzuhow77.github.io/child-advocacy-site/assets/images/tucheng-hearing-20260821-hero.jpg",
-      "imageAlt":{"zh-Hant":"土城家暴雙屍案2026年8月21日完整旁聽筆記主視覺","zh-Hans":"土城家暴双尸案2026年8月21日完整旁听笔记主视觉","en":"Cover artwork for the complete August 21, 2026 Tucheng court notes","ja":"2026年8月21日の土城事件完全傍聴記録のメインビジュアル"}
+      "id": "tucheng-domestic-violence-case-feature-20260823",
+      "publishedAt": "2026-08-23",
+      "tag": "CASE FEATURE",
+      "className": "is-tucheng-domestic-case",
+      "badge": {
+        "zh-Hant": "社會案件專題",
+        "zh-Hans": "社会案件专题",
+        "en": "Case feature",
+        "ja": "社会事件特集"
+      },
+      "title": {
+        "zh-Hant": "裂痕之前",
+        "zh-Hans": "裂痕之前",
+        "en": "Before the Fracture",
+        "ja": "亀裂の前に"
+      },
+      "summary": {
+        "zh-Hant": "一個家庭的沉默與崩解。",
+        "zh-Hans": "一个家庭的沉默与崩解。",
+        "en": "A family’s silence and collapse.",
+        "ja": "ある家族の沈黙と崩壊。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/cases/tucheng-domestic-violence-double-homicide/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/cases/tucheng-domestic-violence-double-homicide/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/cases/tucheng-domestic-violence-double-homicide/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/cases/tucheng-domestic-violence-double-homicide/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/images/tucheng-family-feature-20260823.jpg",
+      "imageAlt": {
+        "zh-Hant": "裂痕之前：土城家暴雙屍案家庭悲劇與制度反思主視覺",
+        "zh-Hans": "裂痕之前：土城家暴双尸案家庭悲剧与制度反思主视觉",
+        "en": "Cover artwork for the Tucheng family tragedy and institutional reflection feature",
+        "ja": "土城事件の家族悲劇と制度的省察を描く特集ビジュアル"
+      }
     },
     {
-      "id":"tucheng-domestic-violence-case-feature-20260823","publishedAt":"2026-08-23","tag":"CASE FEATURE","className":"is-tucheng-domestic-case",
-      "badge":{"zh-Hant":"社會案件專題","zh-Hans":"社会案件专题","en":"Case feature","ja":"社会事件特集"},
-      "title":{"zh-Hant":"裂痕之前","zh-Hans":"裂痕之前","en":"Before the Fracture","ja":"亀裂の前に"},
-      "summary":{"zh-Hant":"一個家庭的沉默與崩解。","zh-Hans":"一个家庭的沉默与崩解。","en":"A family’s silence and collapse.","ja":"ある家族の沈黙と崩壊。"},
-      "url":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/cases/tucheng-domestic-violence-double-homicide/","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/cases/tucheng-domestic-violence-double-homicide/","en":"https://jerryzuhow77.github.io/child-advocacy-site/cases/tucheng-domestic-violence-double-homicide/","ja":"https://jerryzuhow77.github.io/child-advocacy-site/cases/tucheng-domestic-violence-double-homicide/"},
-      "image":"https://jerryzuhow77.github.io/child-advocacy-site/assets/images/tucheng-family-feature-20260823.jpg",
-      "imageAlt":{"zh-Hant":"裂痕之前：土城家暴雙屍案家庭悲劇與制度反思主視覺","zh-Hans":"裂痕之前：土城家暴双尸案家庭悲剧与制度反思主视觉","en":"Cover artwork for the Tucheng family tragedy and institutional reflection feature","ja":"土城事件の家族悲劇と制度的省察を描く特集ビジュアル"}
+      "id": "kaikai-day5-20250429",
+      "publishedAt": "2026-08-22",
+      "tag": "COURT RECORD",
+      "badge": {
+        "zh-Hant": "旁聽紀錄",
+        "zh-Hans": "旁听记录",
+        "en": "Court record",
+        "ja": "傍聴記録"
+      },
+      "title": {
+        "zh-Hant": "第五次審判期日",
+        "zh-Hans": "第五次审判期日",
+        "en": "Fifth Trial Date",
+        "ja": "第5回公判期日"
+      },
+      "summary": {
+        "zh-Hant": "兩位醫師證詞與醫學證據對照。",
+        "zh-Hans": "两位医师证词与医学证据对照。",
+        "en": "Two physicians’ testimony and the medical evidence compared.",
+        "ja": "2人の医師の証言と医学証拠を比較。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day5-20250429/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day5-20250429/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/hearing-records/prison-watch/kaikai-day5-20250429/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/hearing-records/prison-watch/kaikai-day5-20250429/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp",
+      "imageByLocale": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day5-forensic-zh-hans-20260822.webp",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day5-forensic-en-20260827.svg",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day5-forensic-ja-20260827.svg"
+      },
+      "imageAlt": {
+        "zh-Hant": "第五次審判期日醫學證據與完整旁聽紀錄主視覺",
+        "zh-Hans": "第五次审判期日医学证据与完整旁听记录主视觉",
+        "en": "Cover artwork for the fifth trial date medical evidence and complete court record",
+        "ja": "第5回公判期日の医学証拠と完全傍聴記録のメインビジュアル"
+      }
     },
     {
-      "id":"kaikai-day5-20250429","publishedAt":"2026-08-22","tag":"COURT RECORD",
-      "badge":{"zh-Hant":"旁聽紀錄","zh-Hans":"旁听记录","en":"Court record","ja":"傍聴記録"},
-      "title":{"zh-Hant":"第五次審判期日","zh-Hans":"第五次审判期日","en":"Fifth Trial Date","ja":"第5回公判期日"},
-      "summary":{"zh-Hant":"兩位醫師證詞與醫學證據對照。","zh-Hans":"两位医师证词与医学证据对照。","en":"Two physicians’ testimony and the medical evidence compared.","ja":"2人の医師の証言と医学証拠を比較。"},
-      "url":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day5-20250429/","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day5-20250429/","en":"https://jerryzuhow77.github.io/child-advocacy-site/en/hearing-records/prison-watch/kaikai-day5-20250429/","ja":"https://jerryzuhow77.github.io/child-advocacy-site/ja/hearing-records/prison-watch/kaikai-day5-20250429/"},
-      "image":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp",
-      "imageByLocale":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day5-forensic-zh-hant-20260822.webp","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day5-forensic-zh-hans-20260822.webp","en":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day5-forensic-en-20260827.svg","ja":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day5-forensic-ja-20260827.svg"},
-      "imageAlt":{"zh-Hant":"第五次審判期日醫學證據與完整旁聽紀錄主視覺","zh-Hans":"第五次审判期日医学证据与完整旁听记录主视觉","en":"Cover artwork for the fifth trial date medical evidence and complete court record","ja":"第5回公判期日の医学証拠と完全傍聴記録のメインビジュアル"}
+      "id": "kaikai-day4-20250428",
+      "publishedAt": "2026-08-21",
+      "tag": "COURT RECORD",
+      "badge": {
+        "zh-Hant": "旁聽紀錄",
+        "zh-Hans": "旁听记录",
+        "en": "Court record",
+        "ja": "傍聴記録"
+      },
+      "title": {
+        "zh-Hant": "第四次審判期日",
+        "zh-Hans": "第四次审判期日",
+        "en": "Fourth Trial Date",
+        "ja": "第4回公判期日"
+      },
+      "summary": {
+        "zh-Hant": "兩位證人、三處動線與傷勢通報。",
+        "zh-Hans": "两位证人、三处动线与伤势通报。",
+        "en": "Two witnesses, three movement routes, and injury reporting.",
+        "ja": "2人の証人、3つの動線、傷害の通報。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day4-20250428/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day4-20250428/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/hearing-records/prison-watch/kaikai-day4-20250428/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/hearing-records/prison-watch/kaikai-day4-20250428/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day4-hearing-poster-clay-20260821-v2.webp",
+      "imageAlt": {
+        "zh-Hant": "第四日第四次審判期日重製編輯筆記主視覺",
+        "zh-Hans": "第四日第四次审判期日重制编辑笔记主视觉",
+        "en": "Cover artwork for reconstructed editorial notes from the fourth trial date",
+        "ja": "第4回公判期日の再構成編集記録メインビジュアル"
+      }
     },
     {
-      "id":"kaikai-day4-20250428","publishedAt":"2026-08-21","tag":"COURT RECORD",
-      "badge":{"zh-Hant":"旁聽紀錄","zh-Hans":"旁听记录","en":"Court record","ja":"傍聴記録"},
-      "title":{"zh-Hant":"第四次審判期日","zh-Hans":"第四次审判期日","en":"Fourth Trial Date","ja":"第4回公判期日"},
-      "summary":{"zh-Hant":"兩位證人、三處動線與傷勢通報。","zh-Hans":"两位证人、三处动线与伤势通报。","en":"Two witnesses, three movement routes, and injury reporting.","ja":"2人の証人、3つの動線、傷害の通報。"},
-      "url":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day4-20250428/","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-day4-20250428/","en":"https://jerryzuhow77.github.io/child-advocacy-site/en/hearing-records/prison-watch/kaikai-day4-20250428/","ja":"https://jerryzuhow77.github.io/child-advocacy-site/ja/hearing-records/prison-watch/kaikai-day4-20250428/"},
-      "image":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/prison-watch-day4-hearing-poster-clay-20260821-v2.webp",
-      "imageAlt":{"zh-Hant":"第四日第四次審判期日重製編輯筆記主視覺","zh-Hans":"第四日第四次审判期日重制编辑笔记主视觉","en":"Cover artwork for reconstructed editorial notes from the fourth trial date","ja":"第4回公判期日の再構成編集記録メインビジュアル"}
+      "id": "kaikai-story-collection-20260820",
+      "publishedAt": "2026-08-20",
+      "tag": "PUBLIC ACTION",
+      "className": "is-story-collection",
+      "badge": {
+        "zh-Hant": "9/16 開庭前行動",
+        "zh-Hans": "9/16 开庭前行动",
+        "en": "Action before the 9/16 hearing",
+        "ja": "9/16公判前の行動"
+      },
+      "title": {
+        "zh-Hant": "一起寫下剴剴的故事",
+        "zh-Hans": "一起写下剀剀的故事",
+        "en": "Let Us Write Kai-Kai’s Story Together",
+        "ja": "一緒にカイカイの物語を書き残そう"
+      },
+      "summary": {
+        "zh-Hant": "留下感受、疑問與改變期待。",
+        "zh-Hans": "留下感受、疑问与改变期待。",
+        "en": "Share your feelings, questions, and hopes for change.",
+        "ja": "感じたこと、疑問、変化への願いをお寄せください。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260820-kaikai-story-collection/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260820-kaikai-story-collection/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/activity-records/20260820-kaikai-story-collection/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/activity-records/20260820-kaikai-story-collection/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260820-kaikai-story-collection/images/kaikai-story-collection-hero.webp",
+      "imageAlt": {
+        "zh-Hant": "讓我們一起寫下剴剴的故事心得募集紙雕陶土主視覺",
+        "zh-Hans": "让我们一起写下剀剀的故事心得征集纸雕陶土主视觉",
+        "en": "Paper-cut and clay campaign artwork inviting the public to write Kai-Kai’s story",
+        "ja": "カイカイの物語を共に書き残す紙彫刻と陶土の投稿企画ビジュアル"
+      }
     },
     {
-      "id":"kaikai-story-collection-20260820","publishedAt":"2026-08-20","tag":"PUBLIC ACTION","className":"is-story-collection",
-      "badge":{"zh-Hant":"9/16 開庭前行動","zh-Hans":"9/16 开庭前行动","en":"Action before the 9/16 hearing","ja":"9/16公判前の行動"},
-      "title":{"zh-Hant":"一起寫下剴剴的故事","zh-Hans":"一起写下剀剀的故事","en":"Let Us Write Kai-Kai’s Story Together","ja":"一緒にカイカイの物語を書き残そう"},
-      "summary":{"zh-Hant":"留下感受、疑問與改變期待。","zh-Hans":"留下感受、疑问与改变期待。","en":"Share your feelings, questions, and hopes for change.","ja":"感じたこと、疑問、変化への願いをお寄せください。"},
-      "url":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260820-kaikai-story-collection/","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260820-kaikai-story-collection/","en":"https://jerryzuhow77.github.io/child-advocacy-site/en/activity-records/20260820-kaikai-story-collection/","ja":"https://jerryzuhow77.github.io/child-advocacy-site/ja/activity-records/20260820-kaikai-story-collection/"},
-      "image":"https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260820-kaikai-story-collection/images/kaikai-story-collection-hero.webp",
-      "imageAlt":{"zh-Hant":"讓我們一起寫下剴剴的故事心得募集紙雕陶土主視覺","zh-Hans":"让我们一起写下剀剀的故事心得征集纸雕陶土主视觉","en":"Paper-cut and clay campaign artwork inviting the public to write Kai-Kai’s story","ja":"カイカイの物語を共に書き残す紙彫刻と陶土の投稿企画ビジュアル"}
-    },
-    {
-      "id":"ketagalan-rally-20260801","publishedAt":"2026-08-20","tag":"ACTIVITY RECORD",
-      "badge":{"zh-Hant":"活動紀錄更新","zh-Hans":"活动记录更新","en":"Activity record update","ja":"活動記録更新"},
-      "title":{"zh-Hant":"反毒駕、反酒駕．凱道大遊行","zh-Hans":"反毒驾、反酒驾．凯道大游行","en":"Rally Against Drugged and Drunk Driving","ja":"薬物・飲酒運転に反対する大行進"},
-      "summary":{"zh-Hant":"被害者家屬支持與兒少保護倡議。","zh-Hans":"受害者家属支持与儿童保护倡议。","en":"Support for victims’ families and child-protection advocacy.","ja":"被害者家族への支援と子どもの保護を訴える活動。"},
-      "url":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260801-ketagal-rally/","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260801-ketagal-rally/","en":"https://jerryzuhow77.github.io/child-advocacy-site/en/activity-records/20260801-ketagal-rally/","ja":"https://jerryzuhow77.github.io/child-advocacy-site/ja/activity-records/20260801-ketagal-rally/"},
-      "image":"https://jerryzuhow77.github.io/child-advocacy-site/assets/art/rally-20260801-ai-poster.jpg",
-      "imageAlt":{"zh-Hant":"2026年8月1日反毒駕、反酒駕凱道大遊行現場紀錄","zh-Hans":"2026年8月1日反毒驾、反酒驾凯道大游行现场记录","en":"Record of the August 1, 2026 Ketagalan Boulevard rally against drugged and drunk driving","ja":"2026年8月1日の薬物・飲酒運転反対ケタガラン大通り集会の記録"}
+      "id": "ketagalan-rally-20260801",
+      "publishedAt": "2026-08-20",
+      "tag": "ACTIVITY RECORD",
+      "badge": {
+        "zh-Hant": "活動紀錄更新",
+        "zh-Hans": "活动记录更新",
+        "en": "Activity record update",
+        "ja": "活動記録更新"
+      },
+      "title": {
+        "zh-Hant": "反毒駕、反酒駕．凱道大遊行",
+        "zh-Hans": "反毒驾、反酒驾．凯道大游行",
+        "en": "Rally Against Drugged and Drunk Driving",
+        "ja": "薬物・飲酒運転に反対する大行進"
+      },
+      "summary": {
+        "zh-Hant": "被害者家屬支持與兒少保護倡議。",
+        "zh-Hans": "受害者家属支持与儿童保护倡议。",
+        "en": "Support for victims’ families and child-protection advocacy.",
+        "ja": "被害者家族への支援と子どもの保護を訴える活動。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260801-ketagal-rally/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260801-ketagal-rally/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/activity-records/20260801-ketagal-rally/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/activity-records/20260801-ketagal-rally/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/rally-20260801-ai-poster.jpg",
+      "imageAlt": {
+        "zh-Hant": "2026年8月1日反毒駕、反酒駕凱道大遊行現場紀錄",
+        "zh-Hans": "2026年8月1日反毒驾、反酒驾凯道大游行现场记录",
+        "en": "Record of the August 1, 2026 Ketagalan Boulevard rally against drugged and drunk driving",
+        "ja": "2026年8月1日の薬物・飲酒運転反対ケタガラン大通り集会の記録"
+      }
     }
   ]
 }

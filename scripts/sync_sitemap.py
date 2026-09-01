@@ -45,6 +45,8 @@ def last_modified(path: Path) -> str:
 
 def is_public_page(path: Path) -> bool:
     rel = path.relative_to(ROOT)
+    if "kaikai-final-chapter" in rel.parts:
+        return False
     if any(part in EXCLUDED_PARTS for part in rel.parts) or rel in EXCLUDED_PATHS:
         return False
     try:

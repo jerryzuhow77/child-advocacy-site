@@ -12,6 +12,9 @@ var css=`
 #cpa-page-views[data-state="error"]{opacity:.82}
 @media(max-width:820px){
   body{padding-top:calc(58px + env(safe-area-inset-top,0px))!important}
+  html.cpa-four-language-toolbar-active body{padding-top:calc(106px + env(safe-area-inset-top,0px))!important}
+  html.cpa-four-language-toolbar-active #cpa-mobile-bar{top:48px}
+  html.cpa-four-language-toolbar-active #cpa-mobile-menu{top:calc(106px + env(safe-area-inset-top,0px));max-height:calc(100dvh - 106px - env(safe-area-inset-top,0px))}
   html.cpa-menu-open,html.cpa-menu-open body{overflow:hidden!important}
   #cpa-mobile-bar{display:flex!important;position:fixed;z-index:2147483000;left:0;right:0;top:0;min-height:58px;height:calc(58px + env(safe-area-inset-top,0px));align-items:flex-end;gap:10px;padding:env(safe-area-inset-top,0px) 12px 8px;background:rgba(249,247,241,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(65,83,80,.16);box-shadow:0 3px 18px rgba(28,45,43,.1)}
   #cpa-mobile-bar .brand{font:800 17px/1.1 system-ui,-apple-system,sans-serif;color:#253c3a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;text-decoration:none;padding-bottom:12px}
@@ -209,6 +212,7 @@ async function sharedCount(element){
 }
 
 function addViews(){
+  if(window.__cpaFourLanguageToolbar)return;
   if(document.getElementById('cpa-page-views'))return;
   if(document.querySelector('[data-home-view-counter]'))return;
   var text=copy();

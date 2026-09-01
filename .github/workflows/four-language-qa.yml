@@ -5,9 +5,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'index.html'
-      - 'en/index.html'
-      - 'ja/index.html'
+      - '**/*.html'
       - 'en/hearing-records/index.html'
       - 'ja/hearing-records/index.html'
       - 'en/hearing-records/prison-watch/kaikai-final-chapter/**'
@@ -20,7 +18,14 @@ on:
       - 'ja/hearing-records/prison-watch/kaikai-day10-20250507/index.html'
       - 'sitemap.xml'
       - '.github/scripts/verify-chapter-two-publication.py'
+      - '.github/scripts/protect-chapter-two-hold.py'
+      - '.github/scripts/sync-four-language-toolbar.py'
       - 'data/latest-bulletins.json'
+      - 'data/four-language-routes.json'
+      - 'assets/four-language-toolbar-20260901.css'
+      - 'assets/four-language-toolbar-20260901.js'
+      - 'assets/article-comments-20260828.js'
+      - 'assets/home-view-counter-20260811.js'
       - 'assets/home-latest-i18n-20260826.js'
       - 'activity-records/20260820-taipei-station-advocacy/**'
       - 'en/activity-records/20260820-taipei-station-advocacy/**'
@@ -57,6 +62,10 @@ jobs:
           node --check assets/home-ia-hearing-campaign-20260823.js
           node --check assets/home-ia-bootstrap-20260823.js
           node --check assets/global-protection-wall-portal.js
+          node --check assets/four-language-toolbar-20260901.js
+          node --check assets/article-comments-20260828.js
+          node --check assets/home-view-counter-20260811.js
+          node --check assets/mobile-nav-view-counter-20260823.js
           node --check sw.js
 
       - name: Static synchronization assertions
@@ -72,6 +81,8 @@ jobs:
           qa = (root / 'assets/site-four-language-qa-20260823.js').read_text(encoding='utf-8')
           hearing = (root / 'assets/home-ia-hearing-campaign-20260823.js').read_text(encoding='utf-8')
           portal = (root / 'assets/global-protection-wall-portal.js').read_text(encoding='utf-8')
+          toolbar = (root / 'assets/four-language-toolbar-20260901.js').read_text(encoding='utf-8')
+          routes = json.loads((root / 'data/four-language-routes.json').read_text(encoding='utf-8'))
           sw = (root / 'sw.js').read_text(encoding='utf-8')
           pwa_install = (root / 'assets/pwa-install.js').read_text(encoding='utf-8')
           bulletin = json.loads((root / 'data/latest-bulletins.json').read_text(encoding='utf-8'))
@@ -87,6 +98,12 @@ jobs:
           assert '9月16日の控訴審を前に' in hearing
           assert '2026-09-16T14:30' in hearing
           assert "const mainlandWallBase='https://cn.globalprotectionwall.com/'" in portal
+          assert "const wallBase='https://global-protection.jerryzuhow77.chatgpt.site/'" in portal
+          canonical_wall_api = 'https://global-protection.jerryzuhow77.chatgpt.site/api/public/view-count'
+          for asset in ('assets/four-language-toolbar-20260901.js', 'assets/article-comments-20260828.js', 'assets/home-post-engagement-20260826.js', 'assets/site-base-20260823.js'):
+              assert canonical_wall_api in (root / asset).read_text(encoding='utf-8'), f'Canonical wall API missing from {asset}'
+          assert 'cpa-four-language-toolbar' in toolbar
+          assert set(routes['routes']['']) == {'zh-Hant', 'zh-Hans', 'en', 'ja'}
           import re
           cache_version = re.search(r"const VERSION = '([^']+)';", sw)
           assert cache_version, 'Service worker cache version is missing.'
@@ -99,11 +116,16 @@ jobs:
           }
           for name, feed_ids in feed_sections.items():
               assert feed_ids.count('kaikai-chapter-one-20260828') == 1, f'Chapter One must appear exactly once in {name}.'
-              assert feed_ids.count('kaikai-chapter-two-20260829') == 1, f'Chapter Two must appear exactly once in {name}.'
+              assert feed_ids.count('kaikai-chapter-two-20260829') == 0, f'Chapter Two must remain unpublished in {name}.'
           print('Static synchronization assertions passed.')
           PY
 
-      - name: Chapter Two publication contract
+      - name: Four-language toolbar synchronization
+        run: |
+          python3 .github/scripts/sync-four-language-toolbar.py
+          git diff --exit-code
+
+      - name: Chapter Two publication hold contract
         run: python3 .github/scripts/verify-chapter-two-publication.py
 
       - name: Browser-level homepage and campaign checks
@@ -133,6 +155,7 @@ jobs:
           }
 
           dump_dom 'http://127.0.0.1:8765/?qa=916-hant' > /tmp/home-hant.html
+          grep -F 'id="cpa-four-language-toolbar"' /tmp/home-hant.html
           grep -F 'data-qa916-card="true"' /tmp/home-hant.html
           grep -F '9/16 開庭前，留下你想說的話' /tmp/home-hant.html
 
@@ -142,12 +165,7 @@ jobs:
 
           dump_dom 'http://127.0.0.1:8765/en/?qa=916-en' > /tmp/home-en.html
           grep -F 'Before the September 16 appeal hearing' /tmp/home-en.html
-          dump_dom 'http://127.0.0.1:8765/en/hearing-records/prison-watch/kaikai-final-chapter/' > /tmp/chapter-two-en.html
-          grep -F 'Translation status' /tmp/chapter-two-en.html
-          grep -F 'Traditional Chinese complete edition' /tmp/chapter-two-en.html
-          dump_dom 'http://127.0.0.1:8765/ja/hearing-records/prison-watch/kaikai-final-chapter/' > /tmp/chapter-two-ja.html
-          grep -F '翻訳の公開状況' /tmp/chapter-two-ja.html
-          grep -F '繁体字中国語・完全版' /tmp/chapter-two-ja.html
+          grep -F 'id="cpa-four-language-toolbar"' /tmp/home-en.html
           if grep -F 'Mainland China' /tmp/home-en.html; then
             echo 'English UI still contains the deprecated Mainland China label.' >&2
             exit 1

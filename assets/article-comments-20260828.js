@@ -3,7 +3,7 @@
   if (window.__cpaArticleComments) return;
   window.__cpaArticleComments = true;
 
-  const API = "https://wall.globalprotectionwall.com/api/public/view-count";
+  const API = "https://global-protection.jerryzuhow77.chatgpt.site/api/public/view-count";
   const path = location.pathname.replace(/^\/child-advocacy-site\/?/, "").replace(/index\.html$/, "").replace(/^\/+|\/+$/g, "");
   const neutralPath = path.replace(/^(?:en|ja)\//, "");
   const indexRoutes = new Set(["", "about", "social", "cases", "hearing-records", "activity-records", "activity-records/albums", "court-comics", "global-protection-wall"]);
@@ -49,6 +49,7 @@
   }
 
   function recordView() {
+    if (window.__cpaFourLanguageToolbar) return;
     const seenKey = `cpa_article_viewed_${item.key}`;
     try {
       if (sessionStorage.getItem(seenKey)) return;

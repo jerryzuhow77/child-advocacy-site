@@ -110,6 +110,10 @@
     const badge = $('[data-km-view-counter]');
     const number = $('[data-km-view-number]');
     if (!badge || !number) return;
+    if (window.__cpaFourLanguageToolbar) {
+      badge.remove();
+      return;
+    }
 
     const namespace = 'jerryzuhow77.github.io-child-advocacy-site';
     const key = 'historical-kurihara-mia-shared';

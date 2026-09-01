@@ -1041,50 +1041,16 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
   }
 
   function keyFromRoute(route) {
-    const contentRoute = route.replace(/^(?:en|ja)(?:\/|$)/, '');
-    // The three language editions of this feature share one public count.
-    if (contentRoute === 'features/social-observation/see-hear-after') {
-      return 'feature-see-hear-after-shared';
-    }
-    // Keep homepage cards, case directories and all four language editions
-    // aligned with the dedicated Lin Hsin-Tzu feature counter.
-    if (contentRoute === 'cases/lin-xinci/features/missing-four-days') {
-      return 'case-lin-xinci-missing-four-days-shared';
-    }
-    if (contentRoute === 'historical-cases/regions/japan/kurihara-mia') {
-      return 'historical-kurihara-mia-shared';
-    }
-    // The Fujian Qiqi feature and every localized homepage entry use one
-    // stable public count across Traditional Chinese, English and Japanese.
-    if (contentRoute === 'historical-cases/regions/mainland-china/fujian-qiqi') {
-      return 'historical-fujian-qiqi-shared';
-    }
-    // The Traditional/Simplified, English and Japanese Tian Tian features,
-    // plus every homepage card that links to them, use one public count.
-    if (contentRoute === 'historical-cases/regions/mainland-china/tian-tian') {
-      return 'historical-tian-tian-shared';
-    }
-    // Xuanxuan is an independent editorial longform page with its own
-    // explicit counter widget. Keep its widget and all homepage/directory
-    // cards on one stable key across Traditional, Simplified, English and
-    // Japanese.
-    if (contentRoute === 'cases/xuanxuan') {
-      return 'case-xuanxuan-shared';
-    }
-    // Wang Hao is filed as a Taiwan historical case.  Its homepage feature
-    // card and all four language editions use one stable public count.
-    if (contentRoute === 'historical-cases/regions/taiwan/wanghao') {
-      return 'historical-wanghao-shared';
-    }
-    // The Fu / Little Fu feature uses the same stable public count on the
-    // Traditional/Simplified article, EN/JA editions, homepage cards, and
-    // Taiwan historical-case directory links.
-    if (contentRoute === 'historical-cases/regions/taiwan/fu-junxiang') {
-      return 'historical-fu-junxiang-shared';
-    }
-    // All translated editions of the same route share a public count.  This
-    // keeps a homepage card, its article page, and the EN/JA editions in sync.
-    return contentRoute.replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
+    const contentRoute = route
+      .replace(/^(?:en|ja|zh-hans|zh-hant)(?:\/|$)/i, '')
+      .replace(/\/(?:en|ja|zh-hans)$/i, '')
+      .replace(/\/zh-hans\//ig, '/');
+    const slug = contentRoute
+      .replace(/[^a-zA-Z0-9_-]+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .toLowerCase();
+    return slug ? `official-${slug}` : '';
   }
 
   // Important: increment requests deliberately OMIT readOnly=false.
@@ -1161,13 +1127,24 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     const cacheKey = `${key}:${readOnly ? 'r' : 'i'}`;
     if (readOnly && readCache.has(cacheKey)) return readCache.get(cacheKey);
 
-    const task = (async () => {
-      try {
-        return await fetchCounter(key, readOnly);
-      } catch (_) {
-        return await jsonpCounter(key, readOnly);
-      }
-    })();
+    const task = fetch('https://global-protection.jerryzuhow77.chatgpt.site/api/public/view-count', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-store',
+      credentials: 'omit',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        channel: 'official-article',
+        articleKey: key,
+        action: readOnly ? 'read' : 'view'
+      })
+    }).then(async response => {
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || `counter ${response.status}`);
+      const value = Number(data.viewCount);
+      if (!Number.isFinite(value) || value < 0) throw new Error('invalid counter');
+      return value;
+    });
 
     if (readOnly) readCache.set(cacheKey, task);
     try {
@@ -1245,6 +1222,7 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
   }
 
   async function initArticleCounter() {
+    if (window.__cpaFourLanguageToolbar) return;
     const route = routeFromUrl(window.location.href);
     if (!isTrackableRoute(route)) return;
     const key = keyFromRoute(route);
@@ -1294,7 +1272,7 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
     const route = routeFromUrl(anchor.href || anchor.getAttribute('href'));
     if (!isTrackableRoute(route)) return;
     anchor.dataset.viewCounterReady = '1';
-    const key = anchor.dataset.viewCounterKey || keyFromRoute(route);
+    const key = keyFromRoute(route);
     const target = cardTargetFor(anchor);
     const badge = makeBadge('card');
     target.appendChild(badge);

@@ -61,6 +61,10 @@
 
   const counter = document.querySelector('[data-lx-counter]');
   if (!counter) return;
+  if (window.__cpaFourLanguageToolbar) {
+    counter.remove();
+    return;
+  }
   const number = counter.querySelector('[data-lx-count]');
   const key = 'case-lin-xinci-missing-four-days-shared';
   const namespace = 'jerryzuhow77.github.io-child-advocacy-site';

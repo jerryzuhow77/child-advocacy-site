@@ -25,7 +25,7 @@
   ]);
   const TIMEOUT_MS = 7000;
   const READ_SYNC_DELAY_MS = 1000;
-  const READ_SYNC_INTERVAL_MS = 3000;
+  const READ_SYNC_INTERVAL_MS = 60000;
   const sharedRequests = new Map();
   const liveSyncs = new WeakMap();
 

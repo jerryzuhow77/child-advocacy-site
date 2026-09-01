@@ -3,7 +3,7 @@
   if (window.__cpaPostEngagement) return;
   window.__cpaPostEngagement = true;
 
-  const API = "https://wall.globalprotectionwall.com/api/public/view-count";
+  const API = "https://global-protection.jerryzuhow77.chatgpt.site/api/public/view-count";
   const CLIENT_KEY = "cpa_engagement_client_v1";
   const LIKED_KEY = "cpa_engagement_liked_v1";
   const readCache = new Map();

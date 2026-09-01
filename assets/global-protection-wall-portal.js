@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  const wallBase='https://wall.globalprotectionwall.com/';
+  const wallBase='https://global-protection.jerryzuhow77.chatgpt.site/';
   const mainlandWallBase='https://cn.globalprotectionwall.com/';
   const supported=['zh-Hant','zh-Hans','en','ja'];
   const sections=['home','bulletins','guest-message','member-submit','guidelines'];
