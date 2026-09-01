@@ -160,6 +160,16 @@
     } catch (_) { /* The server still keeps the like even when storage is unavailable. */ }
   }
 
+  function cleanArticleKey(value) {
+    return String(value || "")
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9:_./-]+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 120);
+  }
+
   function article(link, host) {
     const url = new URL(link.href, location.href);
     const isOfficialSite = url.origin === location.origin;
@@ -191,7 +201,9 @@
     return {
       key: isKaikaiChapterOne
         ? "official--justice-for-kaikai"
-        : `${articleHost}-${sharedPath.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-")}`,
+        : (isOfficialFeature && link.dataset.viewCounterKey
+          ? cleanArticleKey(link.dataset.viewCounterKey)
+          : `${articleHost}-${sharedPath.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-")}`),
       legacyViewKey: isKaikaiChapterTwo ? "kaikai-special-chapter-02-shared" : link.dataset.viewCounterKey || legacyViewKey(url),
       legacyViewMode: isKaikaiChapterTwo ? "add" : "maximum",
       countsOnArrival,
