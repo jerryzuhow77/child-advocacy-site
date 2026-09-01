@@ -28,6 +28,7 @@
     load('site-four-language-qa-20260823.js','four-language-qa',function(){
       load('mobile-nav-view-counter-20260823.js','mobile-nav-views');
       load('article-comments-20260828.js','article-comments');
+      load('legal-notice.js','legal-notice');
     });
   });
 })();
