@@ -23,12 +23,14 @@
     viewport.setAttribute('aria-label', labels.region);
     var controls = document.createElement('div');
     controls.className = 'home-pinned-controls';
-    controls.innerHTML = '<button class="home-pinned-arrow is-previous" type="button" aria-label="' + labels.previous + '">‹</button><div class="home-pinned-dots" role="group"></div><button class="home-pinned-arrow is-next" type="button" aria-label="' + labels.next + '">›</button>';
+    controls.innerHTML = '<button class="home-pinned-arrow is-previous" type="button" aria-label="' + labels.previous + '">‹</button><div class="home-pinned-dots" role="group"></div><button class="home-pinned-arrow is-next" type="button" aria-label="' + labels.next + '">›</button><span class="home-pinned-progress" aria-hidden="true"><i></i></span>';
     section.appendChild(controls);
     var previous = controls.querySelector('.is-previous');
     var next = controls.querySelector('.is-next');
     var dotsHost = controls.querySelector('.home-pinned-dots');
+    var progress = controls.querySelector('.home-pinned-progress i');
     var active = 0, timer = 0, scrollTimer = 0, dragging = false, dragged = false, startX = 0, startScroll = 0, suppressUntil = 0;
+    var progressTween = null;
     var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var dots = cards.map(function (_, index) {
       var dot = document.createElement('button');
@@ -58,12 +60,32 @@
     function show(index, manual) {
       updateControls(index);
       viewport.scrollTo({ left: cards[active].offsetLeft, behavior: reduceMotion ? 'auto' : 'smooth' });
+      if (!reduceMotion && window.gsap) {
+        window.gsap.killTweensOf(cards[active]);
+        window.gsap.fromTo(cards[active], { y: 12, scale: .985, boxShadow: '0 8px 18px rgba(70,52,47,.08)' }, { y: 0, scale: 1, boxShadow: '0 18px 34px rgba(70,52,47,.16)', duration: .65, ease: 'power3.out', clearProps: 'transform,boxShadow' });
+        window.gsap.fromTo(dots[active], { scale: .72 }, { scale: 1, duration: .42, ease: 'back.out(2.2)', clearProps: 'transform' });
+      }
       if (manual) restart();
     }
-    function stop() { window.clearInterval(timer); timer = 0; }
+    function stop() {
+      window.clearInterval(timer); timer = 0;
+      if (progressTween) { progressTween.kill(); progressTween = null; }
+    }
     function restart() {
       stop();
-      if (!reduceMotion && !document.hidden) timer = window.setInterval(function () { show(active + 1, false); }, 5500);
+      if (!reduceMotion && !document.hidden) {
+        if (window.gsap && progress) {
+          window.gsap.set(progress, { scaleX: 0, transformOrigin: 'left center' });
+          progressTween = window.gsap.to(progress, { scaleX: 1, duration: 5.5, ease: 'none' });
+        }
+        timer = window.setInterval(function () {
+          show(active + 1, false);
+          if (window.gsap && progress) {
+            window.gsap.set(progress, { scaleX: 0 });
+            progressTween = window.gsap.to(progress, { scaleX: 1, duration: 5.5, ease: 'none' });
+          }
+        }, 5500);
+      }
     }
     previous.addEventListener('click', function () { show(active - 1, true); });
     next.addEventListener('click', function () { show(active + 1, true); });
