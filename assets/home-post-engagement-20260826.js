@@ -250,6 +250,24 @@
     }
   }
 
+  async function fetchCounterApiView(key) {
+    const controller = typeof AbortController === "function" ? new AbortController() : null;
+    const timer = window.setTimeout(() => controller?.abort(), 6500);
+    try {
+      const response = await fetch(counterApiUrl(key), {
+        method: "GET", mode: "cors", cache: "no-store", credentials: "omit",
+        headers: { Accept: "application/json" }, signal: controller?.signal,
+      });
+      if (!response.ok) throw new Error(`CounterAPI ${response.status}`);
+      const result = await response.json();
+      const value = Number(result?.value);
+      if (!Number.isFinite(value) || value < 0) throw new Error("Invalid CounterAPI value");
+      return value;
+    } finally {
+      window.clearTimeout(timer);
+    }
+  }
+
   function jsonpLegacyView(key) {
     return new Promise((resolve, reject) => {
       const callbackName = `__cpaLegacyView_${Date.now()}_${Math.random().toString(36).slice(2)}`;
@@ -276,7 +294,17 @@
   function initialLegacyView(item) {
     if (!item.legacyViewKey) return Promise.resolve(null);
     if (!legacyViewCache.has(item.legacyViewKey)) {
-      legacyViewCache.set(item.legacyViewKey, fetchLegacyView(item.legacyViewKey).catch(() => jsonpLegacyView(item.legacyViewKey)).catch(() => null));
+      // Read both historical stores. Several early articles still have their
+      // largest verified total in CounterAPI, while later pages used the
+      // Cloudflare Worker. Taking the maximum restores history without adding
+      // overlapping generations twice.
+      legacyViewCache.set(item.legacyViewKey, Promise.all([
+        fetchLegacyView(item.legacyViewKey).catch(() => null),
+        fetchCounterApiView(item.legacyViewKey).catch(() => jsonpLegacyView(item.legacyViewKey)).catch(() => null),
+      ]).then((values) => {
+        const confirmed = values.map(Number).filter((value) => Number.isFinite(value) && value >= 0);
+        return confirmed.length ? Math.max(...confirmed) : null;
+      }));
     }
     return legacyViewCache.get(item.legacyViewKey);
   }
