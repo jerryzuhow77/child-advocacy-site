@@ -251,7 +251,6 @@ body.art-site{
   }
 }
 
-
 /* V5 — hard reset of legacy circular pseudo-elements */
 .premium-home-hero::before{
   content:""!important;
@@ -321,7 +320,6 @@ body.art-site{
     background:linear-gradient(180deg,transparent,#f8f4eb)!important;
   }
 }
-
 
 /* V6 — Su embroidery and Song-brocade refinement */
 :root{
@@ -394,7 +392,6 @@ body.art-site{
   .home-pinned-report-card::after,.home-document-disc-card::after,.home-news-card::after,.home-hearing-compact-card::after,.home-crafted-card::after,.home-case-reel-card::after,.home-historical-card::after{right:-23px!important;bottom:-27px!important;width:108px!important;height:112px!important;opacity:.065!important}
 }
 
-
 /* V7 — embroidery spacing correction: remove stacked horizontal art bands */
 .premium-home-hero::before{
   opacity:.23!important;
@@ -427,7 +424,6 @@ body.art-site{
   .premium-home-hero::after{width:145px!important;height:150px!important;opacity:.1!important}
   .home-priority-strip::before,.home-activity-records::before,.home-hearing-zone::before,.home-social-cases-section::before{width:108px!important;height:112px!important;opacity:.06!important}
 }
-
 
 /* V8 — replace the oversized ink eye with refined Su embroidery */
 .premium-home-hero::before{
@@ -483,5 +479,25 @@ body.art-site{
     width:min(102vw,444px);
     border-width:2px;
     box-shadow:0 8px 20px rgba(102,68,32,.18),0 0 0 1px rgba(188,137,78,.42);
+  }
+}
+
+/* V13 — keep Alliance portrait inside the hero layout. */
+.premium-art-card{
+  margin-top:clamp(190px,15vw,235px);
+}
+.premium-art-card::before{
+  top:clamp(-350px,-27vw,-260px);
+  width:min(76%,420px);
+  max-width:calc(100% - 32px);
+}
+@media(max-width:700px){
+  .premium-art-card{
+    margin-top:205px!important;
+  }
+  .premium-art-card::before{
+    top:-255px;
+    width:min(82%,320px);
+    max-width:calc(100% - 28px);
   }
 }
