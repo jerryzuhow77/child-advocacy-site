@@ -1141,6 +1141,7 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
   function cardTargetFor(anchor) {
     if (anchor.classList.contains('home-news-card')) return anchor.querySelector('.home-news-card-copy') || anchor;
     if (anchor.classList.contains('home-case-reel-card')) return anchor.querySelector('.home-case-reel-copy') || anchor;
+    if (anchor.classList.contains('home-pinned-report-card')) return anchor.querySelector('span') || anchor;
     if (anchor.classList.contains('home-progress-card')) return anchor;
     return anchor;
   }
@@ -1148,9 +1149,10 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
   async function addReadOnlyBadge(anchor) {
     if (!anchor || anchor.dataset.viewCounterReady === '1') return;
     const route = routeFromUrl(anchor.href || anchor.getAttribute('href'));
-    if (!isTrackableRoute(route)) return;
+    const explicitKey = (anchor.dataset.viewCounterKey || '').trim();
+    if (!explicitKey && !isTrackableRoute(route)) return;
     anchor.dataset.viewCounterReady = '1';
-    const key = keyFromRoute(route);
+    const key = explicitKey || keyFromRoute(route);
     const target = cardTargetFor(anchor);
     const badge = makeBadge('card');
     target.appendChild(badge);
@@ -1164,7 +1166,23 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
   }
 
   function initHomepageCardCounters() {
-    document.querySelectorAll('a.home-news-card[href], a.home-progress-card[href], a.home-case-reel-card[href]').forEach(addReadOnlyBadge);
+    document.querySelectorAll('a.home-news-card[href], a.home-progress-card[href], a.home-case-reel-card[href], a.home-pinned-report-card[href]').forEach(anchor => {
+      addReadOnlyBadge(anchor);
+      const explicitKey = (anchor.dataset.viewCounterKey || '').trim();
+      if (!explicitKey || anchor.dataset.viewCounterClickReady === '1') return;
+      anchor.dataset.viewCounterClickReady = '1';
+      anchor.addEventListener('click', () => {
+        if (hasRecentView(explicitKey)) return;
+        markViewed(explicitKey);
+        fetch(counterUrl(explicitKey, false), {
+          method: 'GET',
+          mode: 'no-cors',
+          cache: 'no-store',
+          credentials: 'omit',
+          keepalive: true
+        }).catch(() => {});
+      });
+    });
   }
 
   function initCaseDirectoryCounters() {
