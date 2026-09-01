@@ -12,6 +12,7 @@
   const metricObservers = new WeakMap();
   const LEGACY_COUNTER_NS = "jerryzuhow77.github.io-child-advocacy-site";
   const LEGACY_COUNTER_ACTION = "view";
+  const HISTORICAL_VIEW_API = "https://sweet-art-bed8child-advocacy-page-views.jerryzuhow77.workers.dev/views";
 
   const targetDefinitions = [
     { selector: ".home-priority-links a.is-hearing", layout: "priority" },
@@ -182,9 +183,17 @@
       : isGuardianWallFeature
         ? "global-protection-wall"
         : url.hostname.replace(/\.jerryzuhow77\.chatgpt\.site$/, "");
+    // Keep the already-published Chapter 1 key as its canonical key. This
+    // preserves the existing total while every card and the sibling project
+    // now read and write the same record.
+    const isKaikaiChapterOne = isOfficialSite && /^\/Justice-For-Kaikai(?:\/|$)/i.test(url.pathname);
+    const isKaikaiChapterTwo = isOfficialSite && /^\/child-advocacy-site\/hearing-records\/prison-watch\/kaikai-final-chapter(?:\/|$)/i.test(url.pathname);
     return {
-      key: `${articleHost}-${sharedPath.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-")}`,
-      legacyViewKey: link.dataset.viewCounterKey || legacyViewKey(url),
+      key: isKaikaiChapterOne
+        ? "official--justice-for-kaikai"
+        : `${articleHost}-${sharedPath.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-")}`,
+      legacyViewKey: isKaikaiChapterTwo ? "kaikai-special-chapter-02-shared" : link.dataset.viewCounterKey || legacyViewKey(url),
+      legacyViewMode: isKaikaiChapterTwo ? "add" : "maximum",
       countsOnArrival,
       title,
       url: url.href,
@@ -211,7 +220,12 @@
     return sharedKeys[route] || route.replace(/[^a-zA-Z0-9_-]+/g, "-").replace(/^-+|-+$/g, "").toLowerCase();
   }
 
-  function legacyCounterUrl(key, callbackName = "") {
+  function legacyCounterUrl(key) {
+    const params = new URLSearchParams({ page: key, increment: "0", ts: String(Date.now()) });
+    return `${HISTORICAL_VIEW_API}?${params}`;
+  }
+
+  function counterApiUrl(key, callbackName = "") {
     const base = `https://counterapi.com/api/${encodeURIComponent(LEGACY_COUNTER_NS)}/${encodeURIComponent(LEGACY_COUNTER_ACTION)}/${encodeURIComponent(key)}`;
     const params = new URLSearchParams({ readOnly: "true" });
     if (callbackName) params.set("callback", callbackName);
@@ -228,7 +242,7 @@
       });
       if (!response.ok) throw new Error(`Legacy counter ${response.status}`);
       const result = await response.json();
-      const value = Number(result?.value);
+      const value = Number(result?.value ?? result?.count);
       if (!Number.isFinite(value) || value < 0) throw new Error("Invalid legacy counter value");
       return value;
     } finally {
@@ -252,7 +266,7 @@
         else reject(new Error("Invalid legacy counter value"));
       };
       script.async = true;
-      script.src = legacyCounterUrl(key, callbackName);
+      script.src = counterApiUrl(key, callbackName);
       script.onerror = () => { cleanup(); reject(new Error("Legacy counter JSONP failed")); };
       const timer = window.setTimeout(() => { cleanup(); reject(new Error("Legacy counter timeout")); }, 6500);
       document.head.appendChild(script);
@@ -494,10 +508,16 @@
         // only a background migration source and must never keep new articles
         // stuck on the loading placeholder after a reload.
         initialLegacyView(item).then((legacyView) => {
-          const confirmedViews = [legacyView, data.viewCount]
-            .map(Number)
-            .filter((value) => Number.isFinite(value) && value >= 0);
-          if (confirmedViews.length) updateMetric(item, "view", Math.max(...confirmedViews));
+          const confirmedViews = [legacyView, data.viewCount].map(Number);
+          const validViews = confirmedViews.filter((value) => Number.isFinite(value) && value >= 0);
+          if (validViews.length) {
+            // Chapter 2 moved from the historical Worker when the new article
+            // counter was still zero, so its 81-view baseline is additive.
+            const migratedTotal = item.legacyViewMode === "add" && validViews.length === 2
+              ? validViews[0] + validViews[1]
+              : Math.max(...validViews);
+            updateMetric(item, "view", migratedTotal);
+          }
         }).catch(() => { /* Keep the live engagement total visible. */ });
       }).catch(() => {
         bar.querySelectorAll("b").forEach((field) => { field.textContent = "—"; });
@@ -587,3 +607,4 @@
 
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", start, { once: true }) : start();
 })();
+
