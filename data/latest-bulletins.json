@@ -1,8 +1,99 @@
 {
-  "version": 9,
-  "generatedAt": "2026-09-01T00:00:00Z",
+  "version": 10,
+  "generatedAt": "2026-09-01T15:55:00Z",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
+    {
+      "id": "kaikai-court-observation-20260901",
+      "publishedAt": "2026-09-01",
+      "title": {
+        "zh-Hant": "《多到抄不完的傷》",
+        "zh-Hans": "《多到抄不完的伤》",
+        "en": "Too Many Injuries to Finish Recording",
+        "ja": "『書ききれないほどの傷』"
+      },
+      "summary": {
+        "zh-Hant": "旁聽者記下傷勢分布圖的鑑定說明；四語整理庭訊觀察與公開開庭資訊。",
+        "zh-Hans": "旁听者记录伤势分布图的鉴定说明；四语整理庭审观察与公开开庭信息。",
+        "en": "A court observer records the expert explanation of the injury-distribution chart, with hearing observations and public hearing information in four languages.",
+        "ja": "傍聴者が傷害分布図の鑑定説明を記録し、法廷観察と公開期日情報を4言語で整理。"
+      },
+      "url": {
+        "zh-Hant": "https://cn.globalprotectionwall.com/kaikai-court-observation?lang=zh-Hant",
+        "zh-Hans": "https://cn.globalprotectionwall.com/kaikai-court-observation?lang=zh-Hans",
+        "en": "https://cn.globalprotectionwall.com/kaikai-court-observation?lang=en",
+        "ja": "https://cn.globalprotectionwall.com/kaikai-court-observation?lang=ja"
+      },
+      "image": "https://cn.globalprotectionwall.com/kaikai-court/paper-clay-hero.png",
+      "imageAlt": {
+        "zh-Hant": "《多到抄不完的傷》旁聽紀錄紙雕陶土主視覺",
+        "zh-Hans": "《多到抄不完的伤》旁听记录纸雕陶土主视觉",
+        "en": "Paper-and-clay artwork for the court-observation report Too Many Injuries to Finish Recording",
+        "ja": "傍聴記録『書ききれないほどの傷』の紙彫刻と陶土のメインビジュアル"
+      }
+    },
+    {
+      "id": "guarantor-status-20260831",
+      "publishedAt": "2026-08-31",
+      "title": {
+        "zh-Hant": "保證人地位｜誰有義務把孩子接住？",
+        "zh-Hans": "保证人地位｜谁有义务接住孩子？",
+        "en": "Guarantor Status | Who Has a Duty to Protect the Child?",
+        "ja": "保障人的地位｜誰に子どもを守る義務があるのか"
+      },
+      "summary": {
+        "zh-Hant": "從剴剴案理解保護義務、作為與不作為的法律界線",
+        "zh-Hans": "从剀剀案理解保护义务、作为与不作为的法律界限",
+        "en": "Understanding duties of protection and the legal boundary between action and omission through the Kaikai case.",
+        "ja": "カイカイ事件から、保護義務と作為・不作為の法的境界を考える。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/features/social-observation/guarantor-status/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/features/social-observation/guarantor-status/?lang=zh-Hans",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/features/social-observation/guarantor-status/?lang=en",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/features/social-observation/guarantor-status/?lang=ja"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/chen-guarantor-hero.jpg",
+      "imageAlt": {
+        "zh-Hant": "保證人地位專題主視覺，以金色顧繡眼睛象徵看見與保護義務",
+        "zh-Hans": "保证人地位专题主视觉，以金色顾绣眼睛象征看见与保护义务",
+        "en": "Golden embroidered eye artwork symbolising awareness and the duty to protect",
+        "ja": "金色の刺繍の眼で、気づきと保護義務を象徴するメインビジュアル"
+      }
+    },
+    {
+      "id": "kaikai-chapter-two-20260829",
+      "publishedAt": "2026-08-29",
+      "title": {
+        "zh-Hant": "第二章｜沒人要的孩子",
+        "zh-Hans": "第二章｜没人要的孩子",
+        "en": "Chapter Two | The Child Nobody Wanted",
+        "ja": "第2章｜誰にも望まれなかった子"
+      },
+      "summary": {
+        "zh-Hant": "孩子被選擇的人生・收出養、照顧交接與制度責任的完整追問",
+        "zh-Hans": "孩子被选择的人生・收出养、照顾交接与制度责任的完整追问",
+        "en": "A full inquiry into adoption placement, care handovers, and institutional responsibility.",
+        "ja": "養子縁組、ケアの引き継ぎ、制度責任を問い直す。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/?lang=zh-Hans",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/?lang=en",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/?lang=ja"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter2-hero-zh-Hant-20260828-v3-640.webp",
+      "imageByLocale": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter2-hero-zh-Hant-20260828-v3-640.webp",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-chapter2-hero-zh-Hans-20260828-v3-640.webp"
+      },
+      "imageAlt": {
+        "zh-Hant": "剴剴案第二章沒人要的孩子主視覺",
+        "zh-Hans": "剀剀案第二章没人要的孩子主视觉",
+        "en": "Main artwork for Kaikai Chapter Two, The Child Nobody Wanted",
+        "ja": "カイカイ事件第2章「誰にも望まれなかった子」のメインビジュアル"
+      }
+    },
     {
       "id": "kaikai-chapter-one-20260828",
       "publishedAt": "2026-08-28",
