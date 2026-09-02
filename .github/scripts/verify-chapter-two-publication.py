@@ -33,8 +33,10 @@ homepage = (ROOT / "index.html").read_text(encoding="utf-8")
 if CHAPTER_TOKEN not in homepage:
     raise SystemExit("Chapter Two public entry is missing from index.html")
 
-if CHAPTER_TOKEN not in (ROOT / "sitemap.xml").read_text(encoding="utf-8"):
-    raise SystemExit("Chapter Two public entry is missing from sitemap.xml")
+# Chapter Two is publicly reachable from the homepage but intentionally noindex;
+# sitemap generation must therefore continue to omit it.
+if CHAPTER_TOKEN in (ROOT / "sitemap.xml").read_text(encoding="utf-8"):
+    raise SystemExit("Noindex Chapter Two must not appear in sitemap.xml")
 
 medical = ROOT / "hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/index.html"
 medical_source = medical.read_text(encoding="utf-8")
