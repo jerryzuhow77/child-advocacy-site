@@ -3,6 +3,7 @@
 
 from pathlib import Path
 import json
+import re
 
 ROOT = Path(".")
 CHAPTER_TOKEN = "kaikai-final-chapter"
@@ -17,6 +18,10 @@ localized_pages = [
 for path in localized_pages:
     if not path.is_file():
         raise SystemExit(f"Published Chapter Two source is missing: {path}")
+    source = path.read_text(encoding="utf-8")
+    robots = re.search(r'<meta\\s+name=["\\\']robots["\\\']\\s+content=["\\\']([^"\\\']+)', source, re.I)
+    if "data-cpa-chapter-two-hold" not in source or not robots or "noindex" not in robots.group(1).lower():
+        raise SystemExit(f"Chapter Two must remain noindex: {path}")
 
 bulletins = json.loads((ROOT / "data/latest-bulletins.json").read_text(encoding="utf-8"))
 pinned_ids = [item.get("id") for item in bulletins.get("pinned", [])]
