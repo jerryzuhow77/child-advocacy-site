@@ -19,7 +19,7 @@
 
   var sharedPinned = [
     { className: 'is-luo-brothers', href: local('cases/luo-brothers/'), image: local('assets/art/luo-brothers-hearing-poster.webp') },
-    { className: 'is-hearing-update', href: local('activity-records/20260820-taipei-station-advocacy/'), image: local('activity-records/20260820-taipei-station-advocacy/images/courtroom-change-20260827.webp') },
+    { className: 'is-hearing-update', href: local('activity-records/20260820-taipei-station-advocacy/'), imageByLocale: { en: local('assets/art/chen-shangjie-hearing-20260916-guohua-en.svg'), ja: local('assets/art/chen-shangjie-hearing-20260916-guohua-ja.svg') } },
     { className: 'is-charity-donation', href: local('activity-records/20260825-111-surplus-donation/'), image: local('activity-records/20260825-111-surplus-donation/images/charity-paper-clay-thumbnail-v3.webp?v=20260828-thumb-restore-2') }
   ];
   var sharedItems = [
@@ -111,7 +111,7 @@
   sharedPinned.forEach(function (item, index) {
     var text = copy.pinnedItems[index];
     var card = node('a', 'home-pinned-report-card ' + item.className); card.href = item.href;
-    var image = node('img'); image.src = item.image; image.alt = text.alt; image.loading = 'eager'; image.decoding = 'async';
+    var image = node('img'); image.src = item.imageByLocale ? item.imageByLocale[locale] : item.image; image.alt = text.alt; image.loading = 'eager'; image.decoding = 'async';
     if (text.thumbLabel) {
       var thumbCopy = node('span', 'home-pinned-thumb-copy'); thumbCopy.setAttribute('aria-hidden', 'true');
       thumbCopy.appendChild(node('small', '', text.thumbLabel)); thumbCopy.appendChild(node('strong', '', text.thumbAmount)); thumbCopy.appendChild(node('em', '', text.thumbNote)); card.appendChild(thumbCopy);

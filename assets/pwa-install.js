@@ -157,7 +157,7 @@
         reloadingForUpdate = true;
         window.location.reload();
       });
-      navigator.serviceWorker.register(new URL('sw.js?v=20260901-four-language-sync-v1', siteBase).href, {
+      navigator.serviceWorker.register(new URL('sw.js?v=20260902-pinned-hearing-poster-v1', siteBase).href, {
         scope: siteBase.pathname,
         updateViaCache: 'none'
       })
