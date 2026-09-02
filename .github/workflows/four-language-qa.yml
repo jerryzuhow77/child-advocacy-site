@@ -107,8 +107,8 @@ jobs:
           import re
           cache_version = re.search(r"const VERSION = '([^']+)';", sw)
           assert cache_version, 'Service worker cache version is missing.'
-          pwa_registration = re.search(r'''sw\\.js\\?v=[^'"]+''', pwa_install)
-          assert pwa_registration, 'PWA registration must use a nonempty cache-busted service-worker URL.'
+          registration_tail = pwa_install.split('sw.js?v=', 1)[1] if 'sw.js?v=' in pwa_install else ''
+          assert registration_tail.split("'", 1)[0], 'PWA registration must use a nonempty cache-busted service-worker URL.'
           assert "const closing=group.classList.contains('is-expanded');" in base
           assert "group.matches(':hover')" not in base, 'A hovered nested menu must still open on its first click.'
           feed_sections = {
