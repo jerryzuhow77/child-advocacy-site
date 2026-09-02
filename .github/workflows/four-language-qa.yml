@@ -159,15 +159,17 @@ jobs:
           dump_dom 'http://127.0.0.1:8765/?qa=916-hant' > /tmp/home-hant.html
           grep -F 'id="cpa-four-language-toolbar"' /tmp/home-hant.html
           grep -F 'data-qa916-card="true"' /tmp/home-hant.html
-          grep -F '9/16 開庭前，留下你想說的話' /tmp/home-hant.html
+          grep -F '一起寫下剴剴的故事' /tmp/home-hant.html
 
           dump_dom 'http://127.0.0.1:8765/?lang=zh-Hans&qa=916-hans' > /tmp/home-hans.html
-          grep -F '9/16 开庭前，留下你想说的话' /tmp/home-hans.html
+          grep -F 'id="cpa-four-language-toolbar"' /tmp/home-hans.html
+          grep -F 'data-qa916-card="true"' /tmp/home-hans.html
           grep -F '一起写下剀剀的故事' /tmp/home-hans.html
 
           dump_dom 'http://127.0.0.1:8765/en/?qa=916-en' > /tmp/home-en.html
-          grep -F 'Before the September 16 appeal hearing' /tmp/home-en.html
           grep -F 'id="cpa-four-language-toolbar"' /tmp/home-en.html
+          grep -F 'data-qa916-card="true"' /tmp/home-en.html
+          grep -F 'Let Us Write Kai-Kai’s Story Together' /tmp/home-en.html
           if grep -F 'Mainland China' /tmp/home-en.html; then
             echo 'English UI still contains the deprecated Mainland China label.' >&2
             exit 1
