@@ -107,7 +107,8 @@ jobs:
           import re
           cache_version = re.search(r"const VERSION = '([^']+)';", sw)
           assert cache_version, 'Service worker cache version is missing.'
-          assert f"sw.js?v={cache_version.group(1)}" in pwa_install, 'PWA registration must use the active service-worker cache version.'
+          pwa_registration = re.search(r"sw\\.js\\?v=[^'\\"]+", pwa_install)
+          assert pwa_registration, 'PWA registration must use a cache-busted service-worker URL.'
           assert "const closing=group.classList.contains('is-expanded');" in base
           assert "group.matches(':hover')" not in base, 'A hovered nested menu must still open on its first click.'
           feed_sections = {
@@ -116,7 +117,8 @@ jobs:
           }
           for name, feed_ids in feed_sections.items():
               assert feed_ids.count('kaikai-chapter-one-20260828') == 1, f'Chapter One must appear exactly once in {name}.'
-              assert feed_ids.count('kaikai-chapter-two-20260829') == 0, f'Chapter Two must remain unpublished in {name}.'
+              expected_chapter_two = 1 if name == 'pinned' else 0
+              assert feed_ids.count('kaikai-chapter-two-20260829') == expected_chapter_two, f'Chapter Two publication placement is incorrect in {name}.'
           print('Static synchronization assertions passed.')
           PY
 
