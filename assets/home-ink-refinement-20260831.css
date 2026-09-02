@@ -501,3 +501,10 @@ body.art-site{
     max-width:calc(100% - 28px);
   }
 }
+
+
+/* V14 — remove the broken oversized eye artwork and reclaim its layout space. */
+.premium-hero-art{display:none!important}
+.premium-hero-grid{grid-template-columns:minmax(0,1fr)!important}
+.premium-hero-copy{width:100%;max-width:none}
+@media(max-width:700px){.premium-hero-grid{display:block!important}.premium-home-hero{min-height:0!important}}
