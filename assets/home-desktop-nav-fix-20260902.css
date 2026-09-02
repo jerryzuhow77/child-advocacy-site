@@ -1,0 +1,243 @@
+/*
+ * Homepage header navigation repair — 2026-09-02
+ * Restores the layered dropdown behavior that was lost from the split site stylesheet.
+ */
+
+.art-header .social-case-nav{
+  position:relative;
+  align-items:center;
+}
+
+.art-header .social-case-nav-menu{
+  display:none!important;
+}
+
+.art-header .social-case-nav.is-open > .social-case-nav-menu{
+  display:grid!important;
+}
+
+.art-header .social-case-tier-toggle,
+.art-header .historical-region-root-toggle{
+  appearance:none;
+  position:relative;
+  display:grid;
+  width:100%;
+  min-height:0;
+  padding:10px 12px;
+  border:0;
+  border-radius:13px;
+  background:transparent;
+  color:#193951;
+  font:inherit;
+  text-align:left;
+  cursor:pointer;
+}
+
+.art-header .social-case-tier-toggle:hover,
+.art-header .social-case-tier-toggle:focus-visible,
+.art-header .historical-region-root-toggle:hover,
+.art-header .historical-region-root-toggle:focus-visible,
+.art-header .social-case-tier.is-expanded > .social-case-tier-toggle,
+.art-header .historical-case-nav .social-case-menu-column.is-expanded > .historical-region-root-toggle{
+  background:#fff4dc;
+}
+
+.art-header .social-case-tier-toggle small,
+.art-header .historical-region-root-toggle small{
+  display:block;
+  color:#a4751d;
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.14em;
+}
+
+.art-header .social-case-tier-toggle strong,
+.art-header .historical-region-root-toggle strong{
+  display:block;
+  margin:2px 0;
+  color:#0b3150;
+  font-size:18px;
+}
+
+.art-header .social-case-tier-toggle span,
+.art-header .historical-region-root-toggle span{
+  display:block;
+  color:#768087;
+  font-size:11px;
+  line-height:1.55;
+}
+
+.art-header .social-case-tier-toggle > i,
+.art-header .historical-region-root-toggle > i{
+  position:absolute;
+  top:50%;
+  right:12px;
+  font-style:normal;
+  transform:translateY(-50%);
+}
+
+.art-header .social-case-tier-children,
+.art-header .historical-region-list,
+.art-header .historical-region-children{
+  display:none;
+}
+
+.art-header .social-case-tier.is-expanded > .social-case-tier-children{
+  display:block;
+}
+
+.art-header .historical-case-nav .social-case-menu-column.is-expanded > .historical-region-list{
+  display:grid;
+  gap:6px;
+}
+
+.art-header .historical-case-nav .social-case-menu-column.is-expanded > .historical-region-note{
+  display:block;
+}
+
+.art-header .historical-region-group.is-expanded > .historical-region-children{
+  display:block;
+}
+
+.art-header .historical-region-group{
+  position:relative;
+}
+
+.art-header .historical-region-static,
+.art-header .historical-region-toggle{
+  display:flex;
+  align-items:center;
+  width:100%;
+  min-height:42px;
+  padding:9px 12px;
+  border:1px solid #e9decd;
+  border-radius:12px;
+  background:#fff;
+  color:#385565;
+  font:800 13px/1.3 inherit;
+  text-align:left;
+}
+
+.art-header .historical-region-toggle{
+  appearance:none;
+  justify-content:space-between;
+  border-color:#d8c59e;
+  background:#fff9ea;
+  cursor:pointer;
+}
+
+.art-header .historical-region-toggle:hover,
+.art-header .historical-region-toggle:focus-visible,
+.art-header .historical-region-group.is-expanded > .historical-region-toggle{
+  color:#8c6024;
+  border-color:#c8a86a;
+  background:#fff3d5;
+}
+
+.art-header .historical-region-children{
+  padding:6px 0 2px 13px;
+}
+
+.art-header .historical-region-note{
+  display:none;
+  padding:8px 10px 2px;
+  color:#918a7f;
+  font-size:10px;
+  line-height:1.5;
+}
+
+@media (min-width:801px){
+  .art-header .social-case-nav{
+    display:flex!important;
+    width:auto!important;
+  }
+
+  .art-header .social-case-nav-menu{
+    position:absolute!important;
+    z-index:1400!important;
+    top:calc(100% + 10px)!important;
+    left:50%!important;
+    width:min(680px,calc(100vw - 32px))!important;
+    max-width:calc(100vw - 32px)!important;
+    margin:0!important;
+    padding:12px!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:0!important;
+    border:1px solid #e4d6bd!important;
+    border-radius:22px!important;
+    background:rgba(255,253,248,.99)!important;
+    box-shadow:0 24px 60px rgba(8,35,63,.20)!important;
+    transform:translateX(-50%)!important;
+    backdrop-filter:blur(14px);
+  }
+
+  .art-header .social-case-nav-menu::before{
+    display:block!important;
+    content:"";
+    position:absolute;
+    top:-7px;
+    left:50%;
+    width:14px;
+    height:14px;
+    border-top:1px solid #e4d6bd;
+    border-left:1px solid #e4d6bd;
+    background:#fffdf8;
+    transform:translateX(-50%) rotate(45deg);
+  }
+
+  .art-header .historical-case-nav > .social-case-nav-menu{
+    width:min(480px,calc(100vw - 32px))!important;
+    grid-template-columns:1fr!important;
+  }
+
+  .art-header .social-case-tier:hover > .social-case-tier-children,
+  .art-header .social-case-tier:focus-within > .social-case-tier-children{
+    display:block;
+  }
+
+  .art-header .historical-case-nav .social-case-menu-column:hover > .historical-region-list,
+  .art-header .historical-case-nav .social-case-menu-column:focus-within > .historical-region-list{
+    display:grid;
+    gap:6px;
+  }
+
+  .art-header .historical-region-group:hover > .historical-region-children,
+  .art-header .historical-region-group:focus-within > .historical-region-children{
+    display:block;
+  }
+}
+
+@media (min-width:801px) and (max-width:1440px){
+  .art-header .social-case-nav{
+    display:block!important;
+    width:100%!important;
+  }
+
+  .art-header .social-case-nav-menu{
+    position:static!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:5px 0 7px!important;
+    grid-template-columns:1fr!important;
+    border-radius:14px!important;
+    box-shadow:none!important;
+    transform:none!important;
+  }
+
+  .art-header .social-case-nav-menu::before{
+    display:none!important;
+  }
+}
+
+@media (max-width:800px){
+  .art-header .social-case-nav-menu{
+    position:static!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:5px 0 7px!important;
+    grid-template-columns:1fr!important;
+    border-radius:14px!important;
+    box-shadow:none!important;
+    transform:none!important;
+  }
+}
