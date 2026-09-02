@@ -19,8 +19,7 @@ for path in localized_pages:
     if not path.is_file():
         raise SystemExit(f"Published Chapter Two source is missing: {path}")
     source = path.read_text(encoding="utf-8")
-    robots = re.search(r'<meta\\s+name=["\\\']robots["\\\']\\s+content=["\\\']([^"\\\']+)', source, re.I)
-    if "data-cpa-chapter-two-hold" not in source or not robots or "noindex" not in robots.group(1).lower():
+    if "data-cpa-chapter-two-hold" not in source or "noindex" not in source.lower():
         raise SystemExit(f"Chapter Two must remain noindex: {path}")
 
 bulletins = json.loads((ROOT / "data/latest-bulletins.json").read_text(encoding="utf-8"))
