@@ -140,7 +140,7 @@ jobs:
             exit 0
           fi
 
-          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/child-site-http.log 2>&1 &
+          python3 -m http.server 8765 --bind 127.0.0.1 --directory .. >/tmp/child-site-http.log 2>&1 &
           SERVER_PID=$!
           trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
           sleep 2
@@ -156,17 +156,17 @@ jobs:
               --dump-dom "$1"
           }
 
-          dump_dom 'http://127.0.0.1:8765/?qa=916-hant' > /tmp/home-hant.html
+          dump_dom 'http://127.0.0.1:8765/child-advocacy-site/?qa=916-hant' > /tmp/home-hant.html
           grep -F 'id="cpa-four-language-toolbar"' /tmp/home-hant.html
           grep -F 'data-qa916-card="true"' /tmp/home-hant.html
           grep -F '一起寫下剴剴的故事' /tmp/home-hant.html
 
-          dump_dom 'http://127.0.0.1:8765/?lang=zh-Hans&qa=916-hans' > /tmp/home-hans.html
+          dump_dom 'http://127.0.0.1:8765/child-advocacy-site/?lang=zh-Hans&qa=916-hans' > /tmp/home-hans.html
           grep -F 'id="cpa-four-language-toolbar"' /tmp/home-hans.html
           grep -F 'data-qa916-card="true"' /tmp/home-hans.html
           grep -F '一起写下剀剀的故事' /tmp/home-hans.html
 
-          dump_dom 'http://127.0.0.1:8765/en/?qa=916-en' > /tmp/home-en.html
+          dump_dom 'http://127.0.0.1:8765/child-advocacy-site/en/?qa=916-en' > /tmp/home-en.html
           grep -F 'id="cpa-four-language-toolbar"' /tmp/home-en.html
           grep -F 'data-qa916-card="true"' /tmp/home-en.html
           grep -F 'Let Us Write Kai-Kai’s Story Together' /tmp/home-en.html
@@ -175,7 +175,7 @@ jobs:
             exit 1
           fi
 
-          dump_dom 'http://127.0.0.1:8765/ja/activity-records/20260820-kaikai-story-collection/?qa=916-ja' > /tmp/story-ja.html
+          dump_dom 'http://127.0.0.1:8765/child-advocacy-site/ja/activity-records/20260820-kaikai-story-collection/?qa=916-ja' > /tmp/story-ja.html
           grep -F '控訴審準備手続' /tmp/story-ja.html
           grep -F '思いを投稿する' /tmp/story-ja.html
           if grep -E '治験|二次試験' /tmp/story-ja.html; then
