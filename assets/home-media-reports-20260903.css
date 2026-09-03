@@ -44,3 +44,7 @@
 }
 @media(max-width:420px){.home-media-report-card{grid-template-columns:116px minmax(0,1fr)}.home-media-pastel-art{object-position:82% center}.home-media-real-photo{width:50%;right:5px;bottom:7px}.home-media-report-copy{padding:17px 13px}.home-media-report-copy>p{display:none}.home-media-report-source{white-space:normal;line-height:1.3}}
 @media(prefers-reduced-motion:reduce){.home-media-report-card,.home-media-all-link{transition:none}.home-media-report-card:hover,.home-media-all-link:hover{transform:none}}
+
+/* 2026-09-03: Lin Xinci entry card uses the paper-cut + clay artwork without a real-photo overlay. */
+#home-media-reports .home-media-real-photo{display:none!important}
+#home-media-reports .home-media-pastel-art{object-position:center!important;transform:scale(1.01)}
