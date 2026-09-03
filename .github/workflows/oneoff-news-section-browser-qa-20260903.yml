@@ -1,0 +1,114 @@
+name: Verify merged media reports section
+
+on:
+  push:
+    branches:
+      - feat/news-section-lin-xinci-20260903
+    paths:
+      - '.github/workflows/oneoff-news-section-browser-qa-20260903.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: oneoff-news-section-browser-qa-20260903
+  cancel-in-progress: false
+
+jobs:
+  browser-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/news-section-lin-xinci-20260903
+          fetch-depth: 0
+
+      - name: Merge latest main and run browser regression checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git fetch origin main --prune
+          git merge --no-edit origin/main
+
+          node --check assets/home-media-reports-20260903.js
+          node --check assets/home-history-anchor-stability-20260825.js
+          python3 .github/scripts/sync-four-language-toolbar.py
+          python3 scripts/sync_sitemap.py
+          python3 .github/scripts/verify-chapter-two-publication.py
+          git diff --exit-code
+
+          BROWSER="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          test -n "$BROWSER"
+          rm -rf /tmp/news-qa-root
+          mkdir -p /tmp/news-qa-root
+          ln -s "$GITHUB_WORKSPACE" /tmp/news-qa-root/child-advocacy-site
+          python3 -m http.server 8765 --bind 127.0.0.1 --directory /tmp/news-qa-root >/tmp/news-qa-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          sleep 2
+
+          dump_dom() {
+            "$BROWSER" \
+              --headless=new \
+              --no-sandbox \
+              --disable-gpu \
+              --disable-dev-shm-usage \
+              --disable-background-networking \
+              --virtual-time-budget=14000 \
+              --dump-dom "$1"
+          }
+
+          dump_dom 'http://127.0.0.1:8765/child-advocacy-site/?qa=media-hant' > /tmp/home-hant.html
+          grep -F 'id="home-media-reports"' /tmp/home-hant.html
+          grep -F '林心慈案首度開庭' /tmp/home-hant.html
+          grep -F 'news/lin-xinci-nexttv-20260902/' /tmp/home-hant.html
+
+          dump_dom 'http://127.0.0.1:8765/child-advocacy-site/?lang=zh-Hans&qa=media-hans' > /tmp/home-hans.html
+          grep -F '林心慈案首次开庭' /tmp/home-hans.html
+          grep -F 'news/lin-xinci-nexttv-20260902/zh-Hans/' /tmp/home-hans.html
+
+          dump_dom 'http://127.0.0.1:8765/child-advocacy-site/en/?qa=media-en' > /tmp/home-en.html
+          grep -F 'First hearing in the Lin Hsin-tzu case' /tmp/home-en.html
+          grep -F 'en/news/lin-xinci-nexttv-20260902/' /tmp/home-en.html
+
+          dump_dom 'http://127.0.0.1:8765/child-advocacy-site/ja/?qa=media-ja' > /tmp/home-ja.html
+          grep -F '林心慈事件、初公判' /tmp/home-ja.html
+          grep -F 'ja/news/lin-xinci-nexttv-20260902/' /tmp/home-ja.html
+
+          python3 - <<'PY'
+          from pathlib import Path
+          for locale in ('hant', 'hans', 'en', 'ja'):
+              text = Path(f'/tmp/home-{locale}.html').read_text(encoding='utf-8')
+              assert text.index('id="news-flash"') < text.index('id="home-media-reports"'), locale
+              assert text.count('id="home-media-reports"') == 1, locale
+          PY
+
+          for page in \
+            news/lin-xinci-nexttv-20260902/ \
+            news/lin-xinci-nexttv-20260902/zh-Hans/ \
+            en/news/lin-xinci-nexttv-20260902/ \
+            ja/news/lin-xinci-nexttv-20260902/
+          do
+            curl -fsS "http://127.0.0.1:8765/child-advocacy-site/$page" > /tmp/article.html
+            grep -F 'data-cpa-four-language-toolbar-script' /tmp/article.html
+            grep -F 'media-report-paper-clay-20260903.css' /tmp/article.html
+            grep -F 'https://www.nexttv.com.tw/NextTV/News/Home/Society/m/2026-09-02/2455025.html' /tmp/article.html
+          done
+
+      - name: Remove one-off workflow and publish updated branch
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/oneoff-news-section-browser-qa-20260903.yml
+          git add -A
+          git diff --cached --check
+          if ! git diff --cached --quiet; then
+            git commit -m 'chore: finish merged browser QA for news section'
+          fi
+          git push origin HEAD:feat/news-section-lin-xinci-20260903
