@@ -157,7 +157,7 @@
         reloadingForUpdate = true;
         window.location.reload();
       });
-      navigator.serviceWorker.register(new URL('sw.js?v=20260902-guohua-kai-poster-v3', siteBase).href, {
+      navigator.serviceWorker.register(new URL('sw.js?v=20260903-comments-toolbar-v1', siteBase).href, {
         scope: siteBase.pathname,
         updateViaCache: 'none'
       })
