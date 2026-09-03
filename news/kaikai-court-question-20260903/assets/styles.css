@@ -461,13 +461,14 @@ main {
 
 .court-figure {
   width: min(960px, calc(100vw - 2rem));
-  margin: 4rem 50%;
+  margin: 4rem 0 4rem 50%;
   overflow: hidden;
   border: 9px solid rgba(250, 247, 243, 0.92);
   border-radius: 18px 25px 20px 28px;
   background: white;
   box-shadow: 13px 16px 0 rgba(170, 180, 161, 0.24), var(--shadow);
-  transform: translateX(-50%) rotate(-0.55deg);
+  translate: -50% 0;
+  rotate: -0.55deg;
 }
 
 .court-figure img {
@@ -478,7 +479,7 @@ main {
 .soul-question {
   position: relative;
   width: min(980px, calc(100vw - 2rem));
-  margin: 5rem 50%;
+  margin: 5rem 0 5rem 50%;
   padding: clamp(3rem, 6vw, 5.5rem) clamp(1.5rem, 7vw, 6rem);
   color: #f8f3ef;
   border-radius: 38px 24px 43px 28px;
@@ -486,7 +487,7 @@ main {
     radial-gradient(circle at 80% 20%, rgba(197, 163, 160, 0.26), transparent 18rem),
     linear-gradient(145deg, #596873, #3f4b53);
   box-shadow: 17px 19px 0 rgba(197, 163, 160, 0.24), 0 32px 70px rgba(58, 65, 70, 0.2);
-  transform: translateX(-50%);
+  translate: -50% 0;
 }
 
 .soul-question p {
