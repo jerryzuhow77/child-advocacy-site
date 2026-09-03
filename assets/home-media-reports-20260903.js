@@ -23,7 +23,7 @@
       date: '2026.09.02', publisher: '壹電視', headline: '剴剴案後續｜林心慈訪視紀錄案',
       summary: '一個出養安置案，為何接連出現第一線失職與偽造紀錄？回顧訪視日期、紀錄與安全網責任。',
       source: '新聞來源｜壹電視 Next TV', photo: '資料照片：林心慈出庭；照片來源：太報／攝影：呂志明', action: '閱讀完整整理',
-      art: '精緻紙雕層景、訪視紀錄與象徵剴剴的陶土孩童藝術意象，搭配林心慈出庭資料照片',
+      art: '中國傳統水墨山景、訪視紀錄與穿深藍及淺藍條紋衣的剴剴背影意象，搭配林心慈出庭資料照片',
       note: '本區使用摘要與來源連結；真人照片為外部來源資料照片，著作權屬原媒體、攝影者或其他權利人。',
       article: `${ROOT}news/lin-xinci-nexttv-20260902/`, index: `${ROOT}news/`
     },
@@ -31,7 +31,7 @@
       eyebrow: 'MEDIA REPORTS · 新闻专区', title: '新闻专区', description: '重要媒体报道依日期由新到旧整理，并清楚标示报道、照片与摄影来源。', nav: '新闻专区', all: '查看全部新闻',
       date: '2026.09.02', publisher: '壹电视', headline: '林心慈案首次开庭', summary: '从访视记录与日期登记争议出发，整理媒体报道、检方指控、辩方主张及尚待法院审酌的事项。',
       source: '新闻来源｜壹电视 Next TV', photo: '资料照片：林心慈出庭；照片来源：太报／摄影：吕志明', action: '阅读完整整理',
-      art: '精致纸雕层景、访视记录与陶土儿童艺术意象，搭配林心慈出庭资料照片',
+      art: '中国传统水墨山景、访视记录与穿深蓝及浅蓝条纹衣的剀剀背影意象，搭配林心慈出庭资料照片',
       note: '本区使用摘要与来源链接；真人照片为外部来源资料照片，著作权属于原媒体、摄影者或其他权利人。',
       article: `${ROOT}news/lin-xinci-nexttv-20260902/zh-Hans/`, index: `${ROOT}news/zh-Hans/`
     },
@@ -57,7 +57,7 @@
 
   function assetRoot() {
     const script = document.currentScript && document.currentScript.src ? document.currentScript.src : new URL('assets/home-media-reports-20260903.js', document.baseURI).href;
-    return { css: new URL('home-media-reports-20260903.css?v=20260903-paper-clay-home-6', script).href, art: new URL('images/lin-xinci-paper-clay-card-20260903.svg?v=20260903-paper-clay-home-6', script).href };
+    return { css: new URL('home-media-reports-20260903.css?v=20260903-inkwash-home-1', script).href, art: new URL('images/lin-xinci-inkwash-card-20260903.png?v=20260903-inkwash-home-1', script).href };
   }
   function addStylesheet(href) { if (document.getElementById('home-media-reports-20260903-style')) return; const link=document.createElement('link'); link.id='home-media-reports-20260903-style'; link.rel='stylesheet'; link.href=href; document.head.appendChild(link); }
   function injectNewsNav(text) { const navigation=document.querySelector('.art-header .container.nav > nav'); if(!navigation||navigation.querySelector('[data-cpa-news-nav]')) return; const link=document.createElement('a'); link.href=text.index; link.className='cpa-news-nav-link'; link.dataset.cpaNewsNav='true'; link.textContent=text.nav; link.setAttribute('aria-label',text.nav); const firstMenu=navigation.querySelector('.social-case-nav'); if(firstMenu) navigation.insertBefore(link,firstMenu); else navigation.appendChild(link); }
