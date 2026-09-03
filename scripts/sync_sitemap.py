@@ -23,6 +23,12 @@ EXCLUDED_PATHS = {
     Path("hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/index.html"),
     Path("hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/zh-Hans/index.html"),
 }
+CHAPTER_TWO_PUBLIC_PATHS = {
+    Path("hearing-records/prison-watch/kaikai-final-chapter/index.html"),
+    Path("hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html"),
+    Path("en/hearing-records/prison-watch/kaikai-final-chapter/index.html"),
+    Path("ja/hearing-records/prison-watch/kaikai-final-chapter/index.html"),
+}
 NOINDEX_RE = re.compile(
     r'<meta\b[^>]*\bname=["\']robots["\'][^>]*\bcontent=["\'][^"\']*noindex|'
     r'<meta\b[^>]*\bcontent=["\'][^"\']*noindex[^"\']*["\'][^>]*\bname=["\']robots["\']',
@@ -45,7 +51,7 @@ def last_modified(path: Path) -> str:
 
 def is_public_page(path: Path) -> bool:
     rel = path.relative_to(ROOT)
-    if "kaikai-final-chapter" in rel.parts:
+    if "kaikai-final-chapter" in rel.parts and rel not in CHAPTER_TWO_PUBLIC_PATHS:
         return False
     if any(part in EXCLUDED_PARTS for part in rel.parts) or rel in EXCLUDED_PATHS:
         return False
