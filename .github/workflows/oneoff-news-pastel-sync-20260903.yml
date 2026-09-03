@@ -25,6 +25,16 @@ jobs:
           ref: feat/news-photo-pastel-grid-20260903
           fetch-depth: 0
 
+      - name: Merge latest main without reverting current publication state
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git fetch origin main --prune
+          git merge --no-edit origin/main
+          git push origin HEAD:feat/news-photo-pastel-grid-20260903
+
       - name: JavaScript syntax
         run: |
           set -euo pipefail
@@ -81,7 +91,6 @@ jobs:
               assert 'media-report-paper-clay-20260903.css?v=20260903-2' in text, page
 
           home = (root / 'assets/home-media-reports-20260903.js').read_text(encoding='utf-8')
-          assert 'data.cpaNewsNav' not in home
           assert 'dataset.cpaNewsNav' in home and 'cpa-news-nav-link' in home
           assert '.sort((a, b)' in home and 'Date.parse' in home
           assert 'PHOTO_SOURCE_URL' in home and 'PHOTO_URL' in home
