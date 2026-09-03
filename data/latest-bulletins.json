@@ -1,8 +1,37 @@
 {
-  "version": 10,
-  "generatedAt": "2026-09-01T15:55:00Z",
+  "version": 11,
+  "generatedAt": "2026-09-03T03:20:01Z",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
+    {
+      "id": "kaikai-court-question-20260903",
+      "publishedAt": "2026-09-03",
+      "title": {
+        "zh-Hant": "《那一聲質問，落在每一個大人的心上》",
+        "zh-Hans": "《那一声质问，落在每一个大人的心上》",
+        "en": "That Question Fell on Every Adult's Heart",
+        "ja": "あの問いは、すべての大人の心に落ちた"
+      },
+      "summary": {
+        "zh-Hant": "法官的質問越過法庭，落向台灣社會每一個看見兒少警訊的大人。",
+        "zh-Hans": "法官的质问越过法庭，落向台湾社会每一个看见儿童警讯的大人。",
+        "en": "The judge's question reaches beyond the courtroom to every adult who may see a child in danger.",
+        "ja": "裁判官の問いは法廷を越え、子どもの危険信号を見るかもしれないすべての大人へ向けられます。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/?lang=zh-Hans",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/assets/kaikai-paper-clay.webp",
+      "imageAlt": {
+        "zh-Hant": "《那一聲質問，落在每一個大人的心上》莫蘭迪紙雕陶土主視覺",
+        "zh-Hans": "《那一声质问，落在每一个大人的心上》莫兰迪纸雕陶土主视觉",
+        "en": "Morandi paper-cut and clay artwork for That Question Fell on Every Adult's Heart",
+        "ja": "『あの問いは、すべての大人の心に落ちた』のモランディ調切り絵・クレイアート"
+      }
+    },
     {
       "id": "kaikai-court-observation-20260901",
       "publishedAt": "2026-09-01",
@@ -125,24 +154,6 @@
       }
     },
     {
-      "id": "luo-brothers-retrial",
-      "publishedAt": "2026-08-26",
-      "title": {
-        "zh-Hant": "羅氏兄弟冤案更審",
-        "zh-Hans": "罗氏兄弟冤案更审",
-        "en": "Luo Brothers Miscarriage-of-Justice Retrial",
-        "ja": "羅兄弟冤罪事件の再審理"
-      },
-      "summary": {
-        "zh-Hant": "最新進度、案件脈絡與完整文件",
-        "zh-Hans": "最新进度、案件脉络与完整文件",
-        "en": "Latest developments, case background, and complete documents",
-        "ja": "最新動向、事件の経緯、関連資料"
-      },
-      "url": "https://jerryzuhow77.github.io/child-advocacy-site/cases/luo-brothers/",
-      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/luo-brothers-hearing-poster.webp"
-    },
-    {
       "id": "chen-shangjie-courtroom-change-20260827",
       "publishedAt": "2026-08-27",
       "title": {
@@ -159,6 +170,24 @@
       },
       "url": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260820-taipei-station-advocacy/",
       "image": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260820-taipei-station-advocacy/images/courtroom-change-20260827.webp"
+    },
+    {
+      "id": "luo-brothers-retrial",
+      "publishedAt": "2026-08-26",
+      "title": {
+        "zh-Hant": "羅氏兄弟冤案更審",
+        "zh-Hans": "罗氏兄弟冤案更审",
+        "en": "Luo Brothers Miscarriage-of-Justice Retrial",
+        "ja": "羅兄弟冤罪事件の再審理"
+      },
+      "summary": {
+        "zh-Hant": "最新進度、案件脈絡與完整文件",
+        "zh-Hans": "最新进度、案件脉络与完整文件",
+        "en": "Latest developments, case background, and complete documents",
+        "ja": "最新動向、事件の経緯、関連資料"
+      },
+      "url": "https://jerryzuhow77.github.io/child-advocacy-site/cases/luo-brothers/",
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/luo-brothers-hearing-poster.webp"
     },
     {
       "id": "charity-surplus-donation-20260825",
@@ -180,6 +209,43 @@
     }
   ],
   "items": [
+    {
+      "id": "kaikai-court-question-20260903",
+      "publishedAt": "2026-09-03",
+      "tag": "COURT OBSERVATION",
+      "className": "is-kaikai-court-question",
+      "badge": {
+        "zh-Hant": "法院旁聽・責任通報",
+        "zh-Hans": "法院旁听・责任通报",
+        "en": "Court observation · Mandatory reporting",
+        "ja": "裁判傍聴・通告義務"
+      },
+      "title": {
+        "zh-Hant": "《那一聲質問，落在每一個大人的心上》",
+        "zh-Hans": "《那一声质问，落在每一个大人的心上》",
+        "en": "That Question Fell on Every Adult's Heart",
+        "ja": "あの問いは、すべての大人の心に落ちた"
+      },
+      "summary": {
+        "zh-Hant": "從三顆掉落的乳牙與法官的追問，釐清責任通報的法律界限。",
+        "zh-Hans": "从三颗掉落的乳牙与法官的追问，厘清责任通报的法律界限。",
+        "en": "Three lost baby teeth, the judge's question, and the legal boundary of mandatory reporting.",
+        "ja": "三本の乳歯、裁判官の問い、そして通告義務の法的境界を整理します。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/?lang=zh-Hans",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/assets/kaikai-paper-clay.webp",
+      "imageAlt": {
+        "zh-Hant": "《那一聲質問，落在每一個大人的心上》莫蘭迪紙雕陶土主視覺",
+        "zh-Hans": "《那一声质问，落在每一个大人的心上》莫兰迪纸雕陶土主视觉",
+        "en": "Morandi paper-cut and clay artwork for That Question Fell on Every Adult's Heart",
+        "ja": "『あの問いは、すべての大人の心に落ちた』のモランディ調切り絵・クレイアート"
+      }
+    },
     {
       "id": "kaikai-chapter-one-20260828",
       "publishedAt": "2026-08-28",
@@ -531,79 +597,6 @@
         "zh-Hans": "第四日第四次审判期日重制编辑笔记主视觉",
         "en": "Cover artwork for reconstructed editorial notes from the fourth trial date",
         "ja": "第4回公判期日の再構成編集記録メインビジュアル"
-      }
-    },
-    {
-      "id": "kaikai-story-collection-20260820",
-      "publishedAt": "2026-08-20",
-      "tag": "PUBLIC ACTION",
-      "className": "is-story-collection",
-      "badge": {
-        "zh-Hant": "9/16 開庭前行動",
-        "zh-Hans": "9/16 开庭前行动",
-        "en": "Action before the 9/16 hearing",
-        "ja": "9/16公判前の行動"
-      },
-      "title": {
-        "zh-Hant": "一起寫下剴剴的故事",
-        "zh-Hans": "一起写下剀剀的故事",
-        "en": "Let Us Write Kai-Kai’s Story Together",
-        "ja": "一緒にカイカイの物語を書き残そう"
-      },
-      "summary": {
-        "zh-Hant": "留下感受、疑問與改變期待。",
-        "zh-Hans": "留下感受、疑问与改变期待。",
-        "en": "Share your feelings, questions, and hopes for change.",
-        "ja": "感じたこと、疑問、変化への願いをお寄せください。"
-      },
-      "url": {
-        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260820-kaikai-story-collection/",
-        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260820-kaikai-story-collection/",
-        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/activity-records/20260820-kaikai-story-collection/",
-        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/activity-records/20260820-kaikai-story-collection/"
-      },
-      "image": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260820-kaikai-story-collection/images/kaikai-story-collection-hero.webp",
-      "imageAlt": {
-        "zh-Hant": "讓我們一起寫下剴剴的故事心得募集紙雕陶土主視覺",
-        "zh-Hans": "让我们一起写下剀剀的故事心得征集纸雕陶土主视觉",
-        "en": "Paper-cut and clay campaign artwork inviting the public to write Kai-Kai’s story",
-        "ja": "カイカイの物語を共に書き残す紙彫刻と陶土の投稿企画ビジュアル"
-      }
-    },
-    {
-      "id": "ketagalan-rally-20260801",
-      "publishedAt": "2026-08-20",
-      "tag": "ACTIVITY RECORD",
-      "badge": {
-        "zh-Hant": "活動紀錄更新",
-        "zh-Hans": "活动记录更新",
-        "en": "Activity record update",
-        "ja": "活動記録更新"
-      },
-      "title": {
-        "zh-Hant": "反毒駕、反酒駕．凱道大遊行",
-        "zh-Hans": "反毒驾、反酒驾．凯道大游行",
-        "en": "Rally Against Drugged and Drunk Driving",
-        "ja": "薬物・飲酒運転に反対する大行進"
-      },
-      "summary": {
-        "zh-Hant": "被害者家屬支持與兒少保護倡議。",
-        "zh-Hans": "受害者家属支持与儿童保护倡议。",
-        "en": "Support for victims’ families and child-protection advocacy.",
-        "ja": "被害者家族への支援と子どもの保護を訴える活動。"
-      },
-      "url": {
-        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260801-ketagal-rally/",
-        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/activity-records/20260801-ketagal-rally/",
-        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/activity-records/20260801-ketagal-rally/",
-        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/activity-records/20260801-ketagal-rally/"
-      },
-      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/rally-20260801-ai-poster.jpg",
-      "imageAlt": {
-        "zh-Hant": "2026年8月1日反毒駕、反酒駕凱道大遊行現場紀錄",
-        "zh-Hans": "2026年8月1日反毒驾、反酒驾凯道大游行现场记录",
-        "en": "Record of the August 1, 2026 Ketagalan Boulevard rally against drugged and drunk driving",
-        "ja": "2026年8月1日の薬物・飲酒運転反対ケタガラン大通り集会の記録"
       }
     }
   ]
