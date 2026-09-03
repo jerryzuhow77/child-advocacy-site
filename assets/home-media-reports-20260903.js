@@ -57,7 +57,7 @@
 
   function assetRoot() {
     const script = document.currentScript && document.currentScript.src ? document.currentScript.src : new URL('assets/home-media-reports-20260903.js', document.baseURI).href;
-    return { css: new URL('home-media-reports-20260903.css?v=20260903-paper-clay-home-2', script).href, art: new URL('images/news-desk-paper-clay-hero-20260903.svg?v=20260903-paper-clay-home-2', script).href };
+    return { css: new URL('home-media-reports-20260903.css?v=20260903-paper-clay-home-4', script).href, art: new URL('images/news-desk-paper-clay-hero-20260903.svg?v=20260903-paper-clay-home-4', script).href };
   }
   function addStylesheet(href) { if (document.getElementById('home-media-reports-20260903-style')) return; const link=document.createElement('link'); link.id='home-media-reports-20260903-style'; link.rel='stylesheet'; link.href=href; document.head.appendChild(link); }
   function injectNewsNav(text) { const navigation=document.querySelector('.art-header .container.nav > nav'); if(!navigation||navigation.querySelector('[data-cpa-news-nav]')) return; const link=document.createElement('a'); link.href=text.index; link.className='cpa-news-nav-link'; link.dataset.cpaNewsNav='true'; link.textContent=text.nav; link.setAttribute('aria-label',text.nav); const firstMenu=navigation.querySelector('.social-case-nav'); if(firstMenu) navigation.insertBefore(link,firstMenu); else navigation.appendChild(link); }
