@@ -9,124 +9,39 @@
   const ROUTES_URL = `${ROOT}data/four-language-routes.json?v=20260901-1`;
   const ENGAGEMENT_API = "https://global-protection.jerryzuhow77.chatgpt.site/api/public/view-count";
   const WORKER_API = "https://sweet-art-bed8child-advocacy-page-views.jerryzuhow77.workers.dev/views";
+  const BOOKMARK_KEY = "cpa_article_bookmarks_v1";
+  const LIKED_KEY = "cpa_engagement_liked_v1";
   const localeNames = { "zh-Hant": "繁中", "zh-Hans": "简中", en: "EN", ja: "日本語" };
   const copy = {
-    "zh-Hant": { brand: "護童行動聯盟", official: "官方網站", views: "瀏覽", unavailable: "尚未提供此語言版本", aria: "四語頂端工具列" },
-    "zh-Hans": { brand: "护童行动联盟", official: "官方网站", views: "浏览", unavailable: "尚未提供此语言版本", aria: "四语顶端工具栏" },
-    en: { brand: "Child Protection Action Alliance", official: "Official Site", views: "Views", unavailable: "This language edition is not available yet", aria: "Four-language top toolbar" },
-    ja: { brand: "子ども保護行動連盟", official: "公式サイト", views: "閲覧", unavailable: "この言語版はまだ公開されていません", aria: "4言語トップツールバー" },
+    "zh-Hant": { brand:"護童行動聯盟",official:"官方網站",views:"瀏覽",unavailable:"尚未提供此語言版本",aria:"四語頂端工具列",like:"按讚",comment:"留言",bookmark:"收藏",bookmarked:"已收藏" },
+    "zh-Hans": { brand:"护童行动联盟",official:"官方网站",views:"浏览",unavailable:"尚未提供此语言版本",aria:"四语顶端工具栏",like:"点赞",comment:"留言",bookmark:"收藏",bookmarked:"已收藏" },
+    en: { brand:"Child Protection Action Alliance",official:"Official Site",views:"Views",unavailable:"This language edition is not available yet",aria:"Four-language top toolbar",like:"Like",comment:"Comments",bookmark:"Save",bookmarked:"Saved" },
+    ja: { brand:"子ども保護行動連盟",official:"公式サイト",views:"閲覧",unavailable:"この言語版はまだ公開されていません",aria:"4言語トップツールバー",like:"いいね",comment:"コメント",bookmark:"保存",bookmarked:"保存済み" },
   };
 
-  function clientId() {
-    try {
-      let value = localStorage.getItem("cpa_engagement_client_v1");
-      if (!value) {
-        value = crypto.randomUUID();
-        localStorage.setItem("cpa_engagement_client_v1", value);
-      }
-      return value;
-    } catch (_) {
-      return "";
-    }
+  function clientId(){try{let v=localStorage.getItem("cpa_engagement_client_v1");if(!v){v=crypto.randomUUID();localStorage.setItem("cpa_engagement_client_v1",v)}return v}catch(_){return ""}}
+  function locale(){const q=new URLSearchParams(location.search).get("lang")?.trim().toLowerCase();if(q==="zh-hans"||q==="zh-cn")return"zh-Hans";if(q==="zh-hant"||q==="zh-tw")return"zh-Hant";if(q==="en")return"en";if(q==="ja")return"ja";const v=(document.documentElement.lang||"zh-Hant").toLowerCase();if(v.startsWith("zh-hans")||v==="zh-cn")return"zh-Hans";if(v.startsWith("en"))return"en";if(v.startsWith("ja"))return"ja";return"zh-Hant"}
+  function neutralRoute(){let p=location.pathname.replace(/^\/child-advocacy-site\/?/i,"").replace(/index\.html$/i,"").replace(/^\/+|\/+$/g,"");const parts=p.split("/").filter(Boolean);if(/^(?:en|ja|zh-hans|zh-hant)$/i.test(parts[0]||""))parts.shift();const l=locale();if((l==="en"||l==="ja")&&parts[parts.length-1]?.toLowerCase()===l)parts.pop();p=parts.filter(x=>!/^zh-hans$/i.test(x)).join("/");return p?`${p}/`:""}
+  function articleKey(route){const slug=route.replace(/\/+$/g,"").toLowerCase().replace(/[^a-z0-9_-]+/g,"-").replace(/-+/g,"-").replace(/^-|-$/g,"");return slug?`official-${slug}`:"homepage-all-languages-v1"}
+  function format(value){const l=locale(),tag=l==="zh-Hans"?"zh-CN":l==="zh-Hant"?"zh-TW":l;try{return new Intl.NumberFormat(tag).format(value)}catch(_){return String(value)}}
+  async function request(key,payload={action:"read"}){const r=await fetch(ENGAGEMENT_API,{method:"POST",cache:"no-store",credentials:"omit",headers:{"content-type":"application/json"},body:JSON.stringify({...payload,channel:"official-article",articleKey:key})});if(!r.ok)throw new Error(`engagement ${r.status}`);return r.json()}
+  async function recordOrReadView(route,element){if(!route||document.querySelector("[data-home-view-counter]"))return null;const key=articleKey(route),seen=`cpa_article_viewed_${key}`;let inc=true;try{inc=!sessionStorage.getItem(seen)}catch(_){};try{if(inc)sessionStorage.setItem(seen,"pending");const data=await request(key,{action:inc?"view":"read",clientId:clientId()});const value=Number(data.viewCount);if(!Number.isFinite(value)||value<0)throw new Error("invalid counter");if(inc)sessionStorage.setItem(seen,"1");element.querySelector("b").textContent=format(value);element.hidden=false;return data}catch(_){try{if(inc)sessionStorage.removeItem(seen)}catch(_){}}try{const slug=key.replace(/^official-/,"");const r=await fetch(`${WORKER_API}?page=${encodeURIComponent(`page-${slug}`)}&increment=0&ts=${Date.now()}`,{cache:"no-store",credentials:"omit"});const d=await r.json(),value=Number(d.count);if(r.ok&&Number.isFinite(value)&&value>=0){element.querySelector("b").textContent=format(value);element.hidden=false}}catch(_){}return null}
+  function setFromStorage(name,key,value=true){try{const set=new Set(JSON.parse(localStorage.getItem(name)||"[]"));value?set.add(key):set.delete(key);localStorage.setItem(name,JSON.stringify([...set].slice(-300)));return set.has(key)}catch(_){return false}}
+  function hasStored(name,key){try{return new Set(JSON.parse(localStorage.getItem(name)||"[]")).has(key)}catch(_){return false}}
+  function isArticle(){return !!document.querySelector('meta[property="og:type"][content="article"]')}
+  function ensureComments(){if(document.querySelector('script[data-cpa-site-layer="article-comments"]'))return;const s=document.createElement("script");s.src=`${ROOT}assets/article-comments-20260828.js?v=20260903-actions`;s.defer=true;s.dataset.cpaSiteLayer="article-comments";document.head.appendChild(s)}
+  function renderEngagement(route,initial){if(!route||!isArticle()||document.querySelector(".cpa-article-engagement"))return;const words=copy[locale()],key=articleKey(route),bar=document.createElement("section");bar.className="cpa-article-engagement";bar.setAttribute("aria-label",`${words.like}、${words.comment}、${words.bookmark}、${words.views}`);bar.innerHTML=`<button type="button" class="is-like" aria-pressed="false"><span>♡</span><b>${words.like}</b><em>—</em></button><button type="button" class="is-comment"><span>💬</span><b>${words.comment}</b><em>—</em></button><button type="button" class="is-bookmark" aria-pressed="false"><span>☆</span><b>${words.bookmark}</b></button><span class="is-view"><span>◉</span><b>${words.views}</b><em>—</em></span>`;
+    const main=document.querySelector("main")||document.body,anchor=main.querySelector("article,.report-wrap")||main.firstElementChild;anchor?anchor.before(bar):main.prepend(bar);
+    const like=bar.querySelector(".is-like"),comment=bar.querySelector(".is-comment"),bookmark=bar.querySelector(".is-bookmark"),view=bar.querySelector(".is-view em");
+    const liked=hasStored(LIKED_KEY,key);like.setAttribute("aria-pressed",String(liked));if(liked)like.classList.add("is-active");
+    const saved=hasStored(BOOKMARK_KEY,key);bookmark.setAttribute("aria-pressed",String(saved));bookmark.classList.toggle("is-active",saved);bookmark.querySelector("span").textContent=saved?"★":"☆";bookmark.querySelector("b").textContent=saved?words.bookmarked:words.bookmark;
+    function paint(data){if(data){bar.querySelector(".is-like em").textContent=format(Number(data.likeCount)||0);bar.querySelector(".is-comment em").textContent=format(Number(data.commentCount)||0);view.textContent=format(Number(data.viewCount)||0)}}paint(initial);if(!initial)request(key).then(paint).catch(()=>{});
+    like.addEventListener("click",async()=>{if(like.getAttribute("aria-busy")==="true"||like.getAttribute("aria-pressed")==="true")return;like.setAttribute("aria-busy","true");try{const data=await request(key,{action:"like",clientId:clientId()});setFromStorage(LIKED_KEY,key,true);like.setAttribute("aria-pressed","true");like.classList.add("is-active");like.querySelector("em").textContent=format(Number(data.likeCount)||0)}catch(_){}finally{like.removeAttribute("aria-busy")}});
+    bookmark.addEventListener("click",()=>{const next=bookmark.getAttribute("aria-pressed")!=="true";setFromStorage(BOOKMARK_KEY,key,next);bookmark.setAttribute("aria-pressed",String(next));bookmark.classList.toggle("is-active",next);bookmark.querySelector("span").textContent=next?"★":"☆";bookmark.querySelector("b").textContent=next?words.bookmarked:words.bookmark});
+    comment.addEventListener("click",()=>{ensureComments();const go=()=>{const target=document.querySelector("[data-article-comments]");if(target)target.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});else setTimeout(go,120)};go()});
+    ensureComments();
   }
-
-  function locale() {
-    const requested = new URLSearchParams(location.search).get("lang")?.trim().toLowerCase();
-    if (requested === "zh-hans" || requested === "zh-cn") return "zh-Hans";
-    if (requested === "zh-hant" || requested === "zh-tw") return "zh-Hant";
-    if (requested === "en") return "en";
-    if (requested === "ja") return "ja";
-    const value = (document.documentElement.lang || "zh-Hant").toLowerCase();
-    if (value.startsWith("zh-hans") || value === "zh-cn") return "zh-Hans";
-    if (value.startsWith("en")) return "en";
-    if (value.startsWith("ja")) return "ja";
-    return "zh-Hant";
-  }
-
-  function neutralRoute() {
-    let path = location.pathname.replace(/^\/child-advocacy-site\/?/i, "").replace(/index\.html$/i, "").replace(/^\/+|\/+$/g, "");
-    const parts = path.split("/").filter(Boolean);
-    if (/^(?:en|ja|zh-hans|zh-hant)$/i.test(parts[0] || "")) parts.shift();
-    const language = locale();
-    if ((language === "en" || language === "ja") && parts[parts.length - 1]?.toLowerCase() === language) parts.pop();
-    path = parts.filter((part) => !/^zh-hans$/i.test(part)).join("/");
-    return path ? `${path}/` : "";
-  }
-
-  function articleKey(route) {
-    const slug = route.replace(/\/+$/g, "").toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
-    return slug ? `official-${slug}` : "homepage-all-languages-v1";
-  }
-
-  function format(value) {
-    const language = locale();
-    const tag = language === "zh-Hans" ? "zh-CN" : language === "zh-Hant" ? "zh-TW" : language;
-    try { return new Intl.NumberFormat(tag).format(value); } catch (_) { return String(value); }
-  }
-
-  async function recordOrReadView(route, element) {
-    if (!route || document.querySelector("[data-home-view-counter]")) return;
-    const key = articleKey(route);
-    const seenKey = `cpa_article_viewed_${key}`;
-    let increment = true;
-    try { increment = !sessionStorage.getItem(seenKey); } catch (_) {}
-    const payload = { channel: "official-article", articleKey: key, action: increment ? "view" : "read", clientId: clientId() };
-    try {
-      if (increment) sessionStorage.setItem(seenKey, "pending");
-      const response = await fetch(ENGAGEMENT_API, { method: "POST", cache: "no-store", credentials: "omit", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) });
-      if (!response.ok) throw new Error(`counter ${response.status}`);
-      const data = await response.json();
-      const value = Number(data.viewCount);
-      if (!Number.isFinite(value) || value < 0) throw new Error("invalid counter");
-      if (increment) sessionStorage.setItem(seenKey, "1");
-      element.querySelector("b").textContent = format(value);
-      element.hidden = false;
-      return;
-    } catch (_) {
-      try { if (increment) sessionStorage.removeItem(seenKey); } catch (_) {}
-    }
-
-    try {
-      const slug = key.replace(/^official-/, "");
-      const url = `${WORKER_API}?page=${encodeURIComponent(`page-${slug}`)}&increment=0&ts=${Date.now()}`;
-      const response = await fetch(url, { cache: "no-store", credentials: "omit" });
-      const data = await response.json();
-      const value = Number(data.count);
-      if (!response.ok || !Number.isFinite(value) || value < 0) return;
-      element.querySelector("b").textContent = format(value);
-      element.hidden = false;
-    } catch (_) {}
-  }
-
-  function render(manifest) {
-    if (document.getElementById("cpa-four-language-toolbar")) return;
-    const language = locale();
-    const words = copy[language];
-    const route = neutralRoute();
-    const routes = manifest?.routes?.[route] || {};
-    const toolbar = document.createElement("aside");
-    toolbar.id = "cpa-four-language-toolbar";
-    toolbar.setAttribute("aria-label", words.aria);
-    const navigation = Object.keys(localeNames).map((key) => {
-      const href = routes[key];
-      if (!href) return `<span aria-disabled="true" title="${words.unavailable}">${localeNames[key]}</span>`;
-      return `<a href="${href}" hreflang="${key}"${language === key ? ' aria-current="page"' : ""}>${localeNames[key]}</a>`;
-    }).join("");
-    toolbar.innerHTML = `<a class="cpa-four-language-brand" href="${ROOT}"><span aria-hidden="true">♥</span><b>${words.brand}</b><small>${words.official}</small></a><div class="cpa-four-language-actions"><span class="cpa-four-language-views" hidden aria-live="polite"><span>◉ ${words.views}</span><b>—</b></span><nav class="cpa-four-language-nav" aria-label="${words.aria}">${navigation}</nav></div>`;
-    document.body.prepend(toolbar);
-    document.querySelectorAll(".public-view-count-article,#cpa-page-views,[data-lx-counter],[data-km-view-counter]").forEach((node) => node.remove());
-    recordOrReadView(route, toolbar.querySelector(".cpa-four-language-views"));
-  }
-
-  async function init() {
-    let manifest = null;
-    try {
-      const response = await fetch(ROUTES_URL, { cache: "no-store" });
-      if (response.ok) manifest = await response.json();
-    } catch (_) {}
-    render(manifest);
-  }
-
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
-  else init();
+  function render(manifest){if(document.getElementById("cpa-four-language-toolbar"))return;const language=locale(),words=copy[language],route=neutralRoute(),routes=manifest?.routes?.[route]||{},toolbar=document.createElement("aside");toolbar.id="cpa-four-language-toolbar";toolbar.setAttribute("aria-label",words.aria);const navigation=Object.keys(localeNames).map(k=>{const href=routes[k];if(!href)return`<span aria-disabled="true" title="${words.unavailable}">${localeNames[k]}</span>`;return`<a href="${href}" hreflang="${k}"${language===k?' aria-current="page"':''}>${localeNames[k]}</a>`}).join("");toolbar.innerHTML=`<a class="cpa-four-language-brand" href="${ROOT}"><span aria-hidden="true">♥</span><b>${words.brand}</b><small>${words.official}</small></a><div class="cpa-four-language-actions"><span class="cpa-four-language-views" hidden aria-live="polite"><span>◉ ${words.views}</span><b>—</b></span><nav class="cpa-four-language-nav" aria-label="${words.aria}">${navigation}</nav></div>`;document.body.prepend(toolbar);document.querySelectorAll(".public-view-count-article,#cpa-page-views,[data-lx-counter],[data-km-view-counter]").forEach(n=>n.remove());recordOrReadView(route,toolbar.querySelector(".cpa-four-language-views")).then(data=>renderEngagement(route,data))}
+  async function init(){let manifest=null;try{const r=await fetch(ROUTES_URL,{cache:"no-store"});if(r.ok)manifest=await r.json()}catch(_){}render(manifest)}
+  document.readyState==="loading"?document.addEventListener("DOMContentLoaded",init,{once:true}):init();
 })();
