@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = "/child-advocacy-site/"
-VERSION = "20260901-1"
+VERSION = "20260903-2"
 EXCLUDED_ROOTS = {"child-advocacy-site", "child-advocacy-site-main", "source", "handoffs", "global-protection-wall"}
 EXCLUDED_FILES = {"offline.html", "google5c94bbe55c53b683.html"}
 CSS_MARKER = "data-cpa-four-language-toolbar-style"
@@ -30,6 +30,16 @@ def active_html_files() -> list[Path]:
             continue
         files.append(path)
     return sorted(files)
+
+
+def read_html(path: Path) -> str:
+    with path.open("r", encoding="utf-8", newline="") as handle:
+        return handle.read()
+
+
+def write_html(path: Path, text: str) -> None:
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        handle.write(text)
 
 
 def html_locale(path: Path, text: str) -> str:
@@ -66,11 +76,15 @@ def public_url(path: Path, locale: str) -> str:
 
 
 def inject(path: Path, text: str) -> str:
-    if CSS_MARKER not in text and re.search(r"</head>", text, re.I):
+    if CSS_MARKER in text:
+        text = re.sub(rf'<link\b(?=[^>]*{re.escape(CSS_MARKER)})[^>]*>', CSS_TAG, text, count=1, flags=re.I)
+    elif re.search(r"</head>", text, re.I):
         text = re.sub(r"</head>", CSS_TAG + "\n</head>", text, count=1, flags=re.I)
     if FLAG_MARKER not in text and re.search(r"</head>", text, re.I):
         text = re.sub(r"</head>", FLAG_TAG + "\n</head>", text, count=1, flags=re.I)
-    if JS_MARKER not in text and re.search(r"</body>", text, re.I):
+    if JS_MARKER in text:
+        text = re.sub(rf'<script\b(?=[^>]*{re.escape(JS_MARKER)})[^>]*>.*?</script>', JS_TAG, text, count=1, flags=re.I | re.S)
+    elif re.search(r"</body>", text, re.I):
         text = re.sub(r"</body>", JS_TAG + "\n</body>", text, count=1, flags=re.I)
     return text
 
@@ -80,7 +94,7 @@ def main() -> None:
     source: dict[tuple[str, str], tuple[Path, str]] = {}
     files = active_html_files()
     for path in files:
-        text = path.read_text(encoding="utf-8")
+        text = read_html(path)
         locale = html_locale(path, text)
         route = neutral_route(path, locale)
         source[(route, locale)] = (path, text)
@@ -97,10 +111,10 @@ def main() -> None:
 
     changed = 0
     for path in files:
-        original = path.read_text(encoding="utf-8")
+        original = read_html(path)
         updated = inject(path, original)
         if updated != original:
-            path.write_text(updated, encoding="utf-8")
+            write_html(path, updated)
             changed += 1
     print(f"toolbar_routes={len(routes)} html_files={len(files)} changed={changed}")
 

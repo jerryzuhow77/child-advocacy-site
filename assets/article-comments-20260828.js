@@ -4,15 +4,18 @@
   window.__cpaArticleComments = true;
 
   const API = "https://global-protection.jerryzuhow77.chatgpt.site/api/public/view-count";
-  const path = location.pathname.replace(/^\/child-advocacy-site\/?/, "").replace(/index\.html$/, "").replace(/^\/+|\/+$/g, "");
-  const neutralPath = path.replace(/^(?:en|ja)\//, "");
+  const language = (document.documentElement.lang || "zh-Hant").toLowerCase();
+  const locale = language.startsWith("zh-hans") || language.startsWith("zh-cn") ? "zh-Hans" : language.startsWith("en") ? "en" : language.startsWith("ja") ? "ja" : "zh-Hant";
+  const path = location.pathname.replace(/^\/child-advocacy-site\/?/i, "").replace(/index\.html$/i, "").replace(/^\/+|\/+$/g, "");
+  const parts = path.split("/").filter(Boolean);
+  if (/^(?:en|ja|zh-hans|zh-hant)$/i.test(parts[0] || "")) parts.shift();
+  if ((locale === "en" || locale === "ja") && parts[parts.length - 1]?.toLowerCase() === locale) parts.pop();
+  const neutralPath = parts.filter(part => part.toLowerCase() !== "zh-hans").join("/");
   const indexRoutes = new Set(["", "about", "social", "cases", "hearing-records", "activity-records", "activity-records/albums", "court-comics", "global-protection-wall"]);
   const articleRoute = /^(?:cases|hearing-records|activity-records|features|historical-cases)\//.test(neutralPath);
   const articleMetadata = document.querySelector('meta[property="og:type"][content="article"],script[type="application/ld+json"]');
   if (indexRoutes.has(neutralPath) || (!articleRoute && !articleMetadata)) return;
 
-  const language = (document.documentElement.lang || "zh-Hant").toLowerCase();
-  const locale = language.startsWith("zh-hans") || language.startsWith("zh-cn") ? "zh-Hans" : language.startsWith("en") ? "en" : language.startsWith("ja") ? "ja" : "zh-Hant";
   const words = {
     "zh-Hant": { eyebrow: "ARTICLE COMMENTS · 文章留言", title: "留下你的想法", intro: "歡迎留下祝福、觀點或制度建議。為保護當事人與兒少隱私，留言經人工審核後公開。", list: "已公開留言", loading: "讀取留言中…", empty: "目前尚無公開留言，歡迎留下第一則訊息。", unavailable: "留言暫時無法讀取，請稍後再試。", name: "顯示名稱", visitor: "訪客", content: "留言內容", placeholder: "請輸入想留下的話……", note: "請勿留下電話、地址、兒少姓名等敏感個資。", submit: "送交審核", submitting: "送出中…", success: "已送交審核；通過後會顯示在本頁。", error: "目前暫時無法送出，請稍後再試。" },
     "zh-Hans": { eyebrow: "ARTICLE COMMENTS · 文章留言", title: "留下你的想法", intro: "欢迎留下祝福、观点或制度建议。为保护当事人与儿童隐私，留言经人工审核后公开。", list: "已公开留言", loading: "读取留言中…", empty: "目前尚无公开留言，欢迎留下第一条信息。", unavailable: "留言暂时无法读取，请稍后再试。", name: "显示名称", visitor: "访客", content: "留言内容", placeholder: "请输入想留下的话……", note: "请勿留下电话、地址、儿童姓名等敏感个人信息。", submit: "送交审核", submitting: "提交中…", success: "已送交审核；通过后会显示在本页。", error: "目前暂时无法提交，请稍后再试。" },

@@ -82,6 +82,7 @@ jobs:
           hearing = (root / 'assets/home-ia-hearing-campaign-20260823.js').read_text(encoding='utf-8')
           portal = (root / 'assets/global-protection-wall-portal.js').read_text(encoding='utf-8')
           toolbar = (root / 'assets/four-language-toolbar-20260901.js').read_text(encoding='utf-8')
+          comments = (root / 'assets/article-comments-20260828.js').read_text(encoding='utf-8')
           routes = json.loads((root / 'data/four-language-routes.json').read_text(encoding='utf-8'))
           sw = (root / 'sw.js').read_text(encoding='utf-8')
           pwa_install = (root / 'assets/pwa-install.js').read_text(encoding='utf-8')
@@ -103,12 +104,35 @@ jobs:
           for asset in ('assets/four-language-toolbar-20260901.js', 'assets/article-comments-20260828.js', 'assets/home-post-engagement-20260826.js', 'assets/site-base-20260823.js'):
               assert canonical_wall_api in (root / asset).read_text(encoding='utf-8'), f'Canonical wall API missing from {asset}'
           assert 'cpa-four-language-toolbar' in toolbar
+          assert 'four-language-routes.json?v=20260903-2' in toolbar, 'The toolbar and generated route manifest must share a fresh cache key.'
+          assert 'parts.filter(part => part.toLowerCase() !== "zh-hans")' in comments, 'Comment keys must ignore physical locale route segments.'
+          assert 'COMMENT_INDEX_ROUTES' in toolbar and 'attempts++<40' in toolbar, 'Unsupported comment pages must not poll indefinitely.'
+          assert 'else setTimeout(go,120)' not in toolbar, 'The comment scroll retry must stay bounded.'
+          comment_version = '20260903-comment-key-2'
+          assert comment_version in toolbar and comment_version in loader, 'Toolbar and site loaders must request the fresh comments bundle.'
+          excluded_roots = {'child-advocacy-site', 'child-advocacy-site-main', 'source', 'handoffs', 'global-protection-wall'}
+          active_html = [path for path in root.rglob('*.html') if not any(part in excluded_roots or part.startswith('.') for part in path.relative_to(root).parts)]
+          direct_comment_pages = [path for path in active_html if 'article-comments-20260828.js' in path.read_text(encoding='utf-8')]
+          assert direct_comment_pages and all(f'article-comments-20260828.js?v={comment_version}' in path.read_text(encoding='utf-8') for path in direct_comment_pages), 'Every direct comments loader must use the fresh bundle version.'
+          site_loader_pages = [path for path in active_html if 'site.js' in path.read_text(encoding='utf-8')]
+          assert site_loader_pages and all(f'site.js?v={comment_version}' in path.read_text(encoding='utf-8') for path in site_loader_pages), 'Every site loader must deploy the comments-loader cache key.'
+          lin_report = (root / 'news/lin-xinci-nexttv-20260902/index.html').read_text(encoding='utf-8')
+          assert '辯方怎麼說' in lin_report and '日期登載錯誤' in lin_report, 'The attributed substantive defense position must remain in the report.'
+          localized_art = '\n'.join((root / path).read_text(encoding='utf-8') for path in (
+              'news/zh-Hans/index.html', 'en/news/index.html', 'ja/news/index.html',
+              'news/lin-xinci-nexttv-20260902/zh-Hans/index.html',
+              'en/news/lin-xinci-nexttv-20260902/index.html', 'ja/news/lin-xinci-nexttv-20260902/index.html'))
+          assert all(term in localized_art for term in ('纸雕与黏土', 'paper-cut and clay', '紙彫刻と粘土造形')), 'Localized artwork descriptions must match the paper-cut and clay replacement.'
+          assert routes['version'] == '20260903-2'
           assert set(routes['routes']['']) == {'zh-Hant', 'zh-Hans', 'en', 'ja'}
           import re
           cache_version = re.search(r"const VERSION = '([^']+)';", sw)
           assert cache_version, 'Service worker cache version is missing.'
           registration_tail = pwa_install.split('sw.js?v=', 1)[1] if 'sw.js?v=' in pwa_install else ''
-          assert registration_tail.split("'", 1)[0], 'PWA registration must use a nonempty cache-busted service-worker URL.'
+          registration_version = registration_tail.split("'", 1)[0]
+          assert registration_version == cache_version.group(1), 'PWA registration and service-worker cache namespace must use the same fresh version.'
+          pwa_loader_pages = [path for path in active_html if 'pwa-install.js' in path.read_text(encoding='utf-8')]
+          assert pwa_loader_pages and all(f'pwa-install.js?v={registration_version}' in path.read_text(encoding='utf-8') for path in pwa_loader_pages), 'Every PWA loader must deploy the matching service-worker namespace.'
           assert "const closing=group.classList.contains('is-expanded');" in base
           assert "group.matches(':hover')" not in base, 'A hovered nested menu must still open on its first click.'
           feed_sections = {

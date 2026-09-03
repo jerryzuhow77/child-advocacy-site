@@ -13,11 +13,12 @@
   var current=document.currentScript&&document.currentScript.src?document.currentScript.src:'';
   var base=current?current.slice(0,current.lastIndexOf('/')+1):'./assets/';
   var version='20260828-layered-toolbar-first-click-1';
-  function load(name,marker,done){
+  var commentVersion='20260903-comment-key-2';
+  function load(name,marker,done,assetVersion){
     var existing=document.querySelector('script[data-cpa-site-layer="'+marker+'"]');
     if(existing){if(done)done();return;}
     var script=document.createElement('script');
-    script.src=base+name+'?v='+version;
+    script.src=base+name+'?v='+(assetVersion||version);
     script.async=false;
     script.dataset.cpaSiteLayer=marker;
     script.onload=function(){if(done)done();};
@@ -27,7 +28,7 @@
   load('site-base-20260823.js','base',function(){
     load('site-four-language-qa-20260823.js','four-language-qa',function(){
       load('mobile-nav-view-counter-20260823.js','mobile-nav-views');
-      load('article-comments-20260828.js','article-comments');
+      load('article-comments-20260828.js','article-comments',null,commentVersion);
       load('legal-notice.js','legal-notice');
     });
   });
