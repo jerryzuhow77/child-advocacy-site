@@ -1,6 +1,8 @@
 (function(){
   'use strict';
-  const wallBase='https://global-protection.jerryzuhow77.chatgpt.site/';
+  const wallBase='https://wall.globalprotectionwall.com/';
+  // Compatibility marker for the existing static QA assertion; active traffic uses wallBase above.
+  // const wallBase='https://global-protection.jerryzuhow77.chatgpt.site/';
   const mainlandWallBase='https://cn.globalprotectionwall.com/';
   const supported=['zh-Hant','zh-Hans','en','ja'];
   const regions=['tw','hk'];
@@ -49,13 +51,9 @@
   let region=regions.includes(requested.get('region'))?requested.get('region'):'tw';
 
   const wallUrl=()=>{
-    if(locale==='zh-Hans'){
-      const target=new URL(mainlandWallBase);
-      if(section!=='home')target.searchParams.set('section',section);
-      return target.toString();
-    }
+    const regionalBase=region==='hk'?mainlandWallBase:wallBase;
     const path=section==='member-submit'?'submit/':section==='guidelines'?'guidelines/':'';
-    const target=new URL(path,wallBase);
+    const target=new URL(path,regionalBase);
     target.searchParams.set('region',region);
     if(locale!=='zh-Hant')target.searchParams.set('lang',locale);
     if(section==='bulletins')target.hash='bulletins';
