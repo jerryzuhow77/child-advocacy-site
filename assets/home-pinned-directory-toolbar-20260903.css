@@ -84,3 +84,4 @@
 @media(prefers-reduced-motion:reduce){
   .pinned-directory-toolbar-link{transition:none}
 }
+.pinned-directory-toolbar{display:none!important}
