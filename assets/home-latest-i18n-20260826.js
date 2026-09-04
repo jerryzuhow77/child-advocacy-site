@@ -44,7 +44,7 @@
       previous: 'Previous report', next: 'Next report', help: 'The wheel turns slowly. Hover, touch, or drag to pause, then select a carriage to read the full article.',
       pinnedItems: [
         { meta: '08.26 · LATEST REPORT · PINNED', title: 'Luo Brothers Miscarriage-of-Justice Retrial', summary: 'Latest developments, case background, and complete documents', alt: 'Key visual for the Luo brothers miscarriage-of-justice retrial' },
-        { meta: '09.16 · APPEAL HEARING · PINNED', title: 'Chen Shangjie Case Appeal Hearing', summary: '2:30 p.m. · Taiwan High Court Special Courtroom', alt: 'Ink-wash mountains with a small symbolic child in navy and pale-blue stripes facing sunlight, representing care and hope' },
+        { meta: '09.16 · APPEAL PREPARATORY PROCEEDING · PINNED', title: 'Chen Shangjie Case Appeal Preparatory Proceeding', summary: '2:30 p.m. · Taiwan High Court Special Courtroom', alt: 'Ink-wash mountains with a small symbolic child in navy and pale-blue stripes facing sunlight, representing care and hope' },
         { meta: '08.25 · DONATION NOTICE · PINNED', title: 'Continuing Our Shared Support as Another Act of Care', summary: 'Jan 11 child-protection march: the remaining NT$27,128 in public activity funds was donated in full', alt: 'Public notice confirming the full donation of NT$27,128 remaining from the January 11 child-protection march', thumbLabel: 'DONATION', thumbAmount: 'NT$27,128', thumbNote: 'DONATED IN FULL' }
       ],
       items: [
@@ -68,7 +68,7 @@
       previous: '前の速報', next: '次の速報', help: '観覧車はゆっくり回転します。マウスを重ねる、触れる、またはドラッグすると停止し、ゴンドラを選ぶと記事全文を読めます。',
       pinnedItems: [
         { meta: '08.26・最新速報・固定', title: '羅兄弟冤罪事件の再審理', summary: '最新動向、事件の経緯、関連資料', alt: '羅兄弟冤罪事件の再審理を伝えるメインビジュアル' },
-        { meta: '09.16・第二審開廷・固定', title: '陳尚潔事件・第二審開廷', summary: '午後2時30分・台湾高等法院 専一法廷', alt: '水墨の山並みの中、紺と淡い青の縞模様の服を着た象徴的な小さな子どもが光へ向かう、見守りと希望を表す主ビジュアル' },
+        { meta: '09.16・第二審準備手続・固定', title: '陳尚潔事件・第二審準備手続', summary: '午後2時30分・台湾高等法院 専一法廷', alt: '水墨の山並みの中、紺と淡い青の縞模様の服を着た象徴的な小さな子どもが光へ向かう、見守りと希望を表す主ビジュアル' },
         { meta: '08.25・寄付公告・固定', title: '皆さまの支援を、次の守りへ', summary: '1月11日の児童保護デモ：活動公費の残額27,128元を全額寄付', alt: '1月11日の児童保護デモの残額27,128元を全額寄付したことを知らせる公告', thumbLabel: '寄付公告', thumbAmount: '27,128元', thumbNote: '全額寄付' }
       ],
       items: [
