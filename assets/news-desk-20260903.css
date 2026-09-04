@@ -30,4 +30,5 @@ a{color:inherit}.news-skip{position:fixed;z-index:99;top:8px;left:8px;transform:
 
 /* 2026-09-03: Lin Xinci grid thumbnail uses the crafted paper-cut + clay artwork, while the real-person photo remains inside the article with source credit. */
 .news-card-media{background-image:url('/child-advocacy-site/assets/images/lin-xinci-inkwash-hero-20260903.png?v=20260903-inkwash-1')!important;background-position:center!important}
-.news-card-media>img,.news-card-media>.news-photo-credit{display:none!important}
+.news-card-media{background-image:none!important}
+.news-card-media>img{display:block!important}.news-card-media>.news-photo-credit{display:block!important}
