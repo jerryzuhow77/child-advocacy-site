@@ -1,8 +1,37 @@
 {
-  "version": 11,
-  "generatedAt": "2026-09-03T03:20:01Z",
+  "version": 12,
+  "generatedAt": "2026-09-04T11:00:00Z",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
+    {
+      "id": "critical-seventeen-days-20260904",
+      "publishedAt": "2026-09-04",
+      "title": {
+        "zh-Hant": "《關鍵的倒數十七天》",
+        "zh-Hans": "《关键的倒数十七天》",
+        "en": "The Critical Seventeen-Day Countdown",
+        "ja": "決定的な17日間"
+      },
+      "summary": {
+        "zh-Hant": "得知第四顆牙掉落後，持續追蹤的是單據，還是孩子？把判決書所載LINE對話放回12月7日至24日的時間線。",
+        "zh-Hans": "得知第四颗牙掉落后，持续追踪的是单据，还是孩子？把判决书所载LINE对话放回12月7日至24日的时间线。",
+        "en": "After the fourth tooth was reported missing, what was followed up—the paperwork, or the child?",
+        "ja": "4本目の歯が抜けた後、追跡されたのは書類か、子どもか。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/critical-seventeen-days-20260904/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/news/critical-seventeen-days-20260904/zh-Hans/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/news/critical-seventeen-days-20260904/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/news/critical-seventeen-days-20260904/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/images/critical-seventeen-days-20260904.webp",
+      "imageAlt": {
+        "zh-Hant": "《關鍵的倒數十七天》政治諷刺漫畫主視覺與判決書對話摘錄",
+        "zh-Hans": "《关键的倒数十七天》政治讽刺漫画主视觉与判决书对话摘录",
+        "en": "Political-satire artwork and judgment excerpt for The Critical Seventeen-Day Countdown",
+        "ja": "『決定的な17日間』の政治風刺漫画と判決書抜粋"
+      }
+    },
     {
       "id": "kaikai-court-question-20260903",
       "publishedAt": "2026-09-03",

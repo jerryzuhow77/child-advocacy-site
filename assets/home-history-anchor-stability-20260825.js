@@ -103,7 +103,7 @@
     ? document.currentScript.src
     : new URL('./assets/home-history-anchor-stability-20260825.js', document.baseURI).href;
   const script = document.createElement('script');
-  script.src = new URL('home-media-reports-20260903.js?v=20260904-policy-2', current).href;
+  script.src = new URL('home-media-reports-20260903.js?v=20260904-critical-17-1', current).href;
   script.defer = true;
   script.dataset.homeMediaReportsLoader = 'true';
   document.head.appendChild(script);
