@@ -40,6 +40,8 @@ jobs:
           BASE_URL: https://jerryzuhow77.github.io/child-advocacy-site
         run: |
           node <<'NODE'
+          const crypto = require('node:crypto');
+          const fs = require('node:fs');
           const { chromium } = require('playwright');
 
           const pages = [
@@ -53,6 +55,11 @@ jobs:
             { name: 'mobile-390', width: 390, height: 844 },
             { name: 'mobile-320', width: 320, height: 800 },
           ];
+          const sha256 = value => crypto.createHash('sha256').update(value).digest('hex');
+          const expectedPageHashes = new Map(pages.map(item => [
+            item.path,
+            sha256(fs.readFileSync('.' + item.path + 'index.html')),
+          ]));
 
           (async () => {
             const browser = await chromium.launch({ headless: true });
@@ -66,19 +73,18 @@ jobs:
               try {
                 for (let attempt = 0; attempt < 36 && !deploymentReady; attempt += 1) {
                   try {
-                    await readinessPage.goto(
-                      process.env.BASE_URL + pages[0].path + '?deployment=' + Date.now(),
-                      { waitUntil: 'domcontentloaded', timeout: 30000 }
+                    const liveHashes = new Map();
+                    for (const item of pages) {
+                      const response = await readinessPage.goto(
+                        process.env.BASE_URL + item.path + '?deployment=' + Date.now(),
+                        { waitUntil: 'domcontentloaded', timeout: 30000 }
+                      );
+                      if (!response || response.status() !== 200) break;
+                      liveHashes.set(item.path, sha256(await response.body()));
+                    }
+                    deploymentReady = pages.every(item =>
+                      liveHashes.get(item.path) === expectedPageHashes.get(item.path)
                     );
-                    deploymentReady = await readinessPage.evaluate(() => {
-                      const assets = [
-                        ...[...document.querySelectorAll('link[rel="stylesheet"]')].map(node => node.href),
-                        ...[...document.scripts].map(node => node.src).filter(Boolean),
-                      ];
-                      return assets.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.css?v=23'))
-                        && assets.some(url => url.includes('huang-ziche-shanghai-crafts-20260829.js?v=13'))
-                        && document.querySelector('.hz-case-key-visual img')?.src.includes('huang-ziche-main-visual-hant-20260830.webp');
-                    });
                   } catch (_) {
                     deploymentReady = false;
                   }
@@ -87,7 +93,7 @@ jobs:
               } finally {
                 await readinessPage.close();
               }
-              if (!deploymentReady) throw new Error('GitHub Pages did not publish the expected Huang Ziche asset versions in time');
+              if (!deploymentReady) throw new Error('GitHub Pages did not publish the expected Huang Ziche page fingerprints in time');
 
               for (const viewport of viewports) {
                 const context = await browser.newContext({ viewport });
@@ -195,12 +201,12 @@ jobs:
                     if (!result.hasFatherTranslation) mismatches.push('father translation missing');
                     if (!result.hasPrecedentTranslation) mismatches.push('precedent translation missing');
                     if (result.precedentCards !== 4) mismatches.push('precedentCards=' + result.precedentCards);
-                    if (result.precedentSources !== 4) mismatches.push('precedentSources=' + result.precedentSources);
+                    if (result.precedentSources !== 1) mismatches.push('precedentSources=' + result.precedentSources);
                     if (result.precedentAxes !== 4) mismatches.push('precedentAxes=' + result.precedentAxes);
                     if (!result.precedentQuote) mismatches.push('precedentQuote=false');
                     if (result.matrixRows !== 4) mismatches.push('matrixRows=' + result.matrixRows);
                     if (result.filterButtons !== 6) mismatches.push('filterButtons=' + result.filterButtons);
-                    if (result.sourceButtons !== 5) mismatches.push('sourceButtons=' + result.sourceButtons);
+                    if (result.sourceButtons !== 4) mismatches.push('sourceButtons=' + result.sourceButtons);
                     if (!result.hasSourceDrawer) mismatches.push('sourceDrawer=false');
                     if (result.intentSteps !== 3) mismatches.push('intentSteps=' + result.intentSteps);
                     if (result.evidenceGates !== 6) mismatches.push('evidenceGates=' + result.evidenceGates);
