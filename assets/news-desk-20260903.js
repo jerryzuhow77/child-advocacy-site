@@ -14,25 +14,25 @@
       source: '原始資料',
       read: '閱讀本站整理',
       original: '原始報導',
-      unavailable: '圖片暫時無法載入。', items: Object.values(reports)
+      unavailable: '圖片暫時無法載入。', articleLanguage: '繁體中文', items: Object.values(reports)
     },
     'zh-Hans': {
       source: '原始资料',
       read: '阅读本站整理',
       original: '原始报道',
-      unavailable: '图片暂时无法载入。', items: Object.values(reports)
+      unavailable: '图片暂时无法载入。', articleLanguage: '繁體中文', items: Object.values(reports)
     },
     en: {
       source: 'Original source',
       read: 'Read our brief',
       original: 'Original report',
-      unavailable: 'The image is temporarily unavailable.', items: Object.values(reports)
+      unavailable: 'The image is temporarily unavailable.', articleLanguage: 'Traditional Chinese', items: Object.values(reports)
     },
     ja: {
       source: '原資料',
       read: '本サイトの整理を読む',
       original: '元の報道',
-      unavailable: '画像を読み込めません。', items: Object.values(reports)
+      unavailable: '画像を読み込めません。', articleLanguage: '繁体字中国語', items: Object.values(reports)
     }
   };
 
@@ -102,7 +102,10 @@
 
     const title = document.createElement('h3');
     const articleUrl = typeof item.article === 'string' ? item.article : item.article[language];
-    const titleLink = makeLink('', articleUrl, item.title[language]);
+    const chineseOnly = typeof item.article === 'string' && language !== 'zh-Hant';
+    const languageNote = chineseOnly ? ` · ${words.articleLanguage}` : '';
+    const titleLink = makeLink('', articleUrl, `${item.title[language]}${languageNote}`);
+    if (chineseOnly) titleLink.hreflang = 'zh-Hant';
     title.appendChild(titleLink);
     const summary = document.createElement('p');
     summary.textContent = item.summary[language];
@@ -110,7 +113,7 @@
     const actions = document.createElement('div');
     actions.className = 'news-card-actions';
     actions.append(
-      makeLink('news-read-link', articleUrl, `${words.read} →`),
+      makeLink('news-read-link', articleUrl, `${words.read}${languageNote} →`),
       makeLink('news-source-link', item.source, `${words.original} ↗`, true)
     );
 
