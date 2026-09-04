@@ -91,13 +91,13 @@
   };
 
   const loadWall=()=>{
-    document.body.classList.remove('portal-ready');
-    loader.classList.remove('is-complete');
     const target=wallUrl();
-    frame.src=target;
     external.href=target;
     renderCopy();
     syncParentUrl();
+    // Use one top-level application shell for Taiwan and Hong Kong. This also
+    // avoids leaving visitors in an iframe loader when embedding is blocked.
+    window.location.replace(target);
   };
 
   frame.addEventListener('load',()=>{
