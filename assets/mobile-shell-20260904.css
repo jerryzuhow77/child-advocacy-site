@@ -57,9 +57,20 @@
   .art-header .nav > .home-brand-safe small,
   .art-header .site-qr-trigger,
   .art-header .pwa-mobile-header-install,
-  .art-header .nav > nav > .pwa-nav-install,
-  .pwa-install-launcher {
+  .pwa-install-launcher,
+  .home-footer-install {
     display: none !important;
+  }
+
+  .art-header .nav > nav > .pwa-nav-install {
+    order: 95 !important;
+    display: inline-flex !important;
+    width: 100% !important;
+    min-height: 48px !important;
+    margin: 2px 0 !important;
+    padding: 9px 12px !important;
+    justify-content: flex-start !important;
+    border-radius: 12px !important;
   }
 
   .art-header .mobile-menu-toggle {
