@@ -104,7 +104,7 @@ jobs:
           for asset in ('assets/four-language-toolbar-20260901.js', 'assets/article-comments-20260828.js', 'assets/home-post-engagement-20260826.js', 'assets/site-base-20260823.js'):
               assert canonical_wall_api in (root / asset).read_text(encoding='utf-8'), f'Canonical wall API missing from {asset}'
           assert 'cpa-four-language-toolbar' in toolbar
-          assert 'four-language-routes.json?v=20260903-2' in toolbar, 'The toolbar and generated route manifest must share a fresh cache key.'
+          assert 'four-language-routes.json?v=20260904-sports-1' in toolbar, 'The toolbar and generated route manifest must share a fresh cache key.'
           assert 'parts.filter(part => part.toLowerCase() !== "zh-hans")' in comments, 'Comment keys must ignore physical locale route segments.'
           assert 'COMMENT_INDEX_ROUTES' in toolbar and 'attempts++<40' in toolbar, 'Unsupported comment pages must not poll indefinitely.'
           assert 'else setTimeout(go,120)' not in toolbar, 'The comment scroll retry must stay bounded.'
@@ -123,7 +123,7 @@ jobs:
               'news/lin-xinci-nexttv-20260902/zh-Hans/index.html',
               'en/news/lin-xinci-nexttv-20260902/index.html', 'ja/news/lin-xinci-nexttv-20260902/index.html'))
           assert all(term in localized_art for term in ('纸雕与黏土', 'paper-cut and clay', '紙彫刻と粘土造形')), 'Localized artwork descriptions must match the paper-cut and clay replacement.'
-          assert routes['version'] == '20260903-2'
+          assert routes['version'] == '20260904-sports-1'
           assert set(routes['routes']['']) == {'zh-Hant', 'zh-Hans', 'en', 'ja'}
           import re
           cache_version = re.search(r"const VERSION = '([^']+)';", sw)
