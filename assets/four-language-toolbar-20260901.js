@@ -6,7 +6,7 @@
   document.documentElement.classList.add("cpa-four-language-toolbar-active");
 
   const ROOT = "/child-advocacy-site/";
-  const ROUTES_URL = `${ROOT}data/four-language-routes.json?v=20260903-2`;
+  const ROUTES_URL = `${ROOT}data/four-language-routes.json?v=20260904-sports-1`;
   const ENGAGEMENT_API = "https://global-protection.jerryzuhow77.chatgpt.site/api/public/view-count";
   const WORKER_API = "https://sweet-art-bed8child-advocacy-page-views.jerryzuhow77.workers.dev/views";
   const BOOKMARK_KEY = "cpa_article_bookmarks_v1";
