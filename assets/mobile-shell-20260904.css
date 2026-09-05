@@ -62,7 +62,7 @@
     display: none !important;
   }
 
-  .art-header .nav > nav > .pwa-nav-install {
+  .art-header .nav > nav > .pwa-nav-install:not([hidden]) {
     order: 95 !important;
     display: inline-flex !important;
     width: 100% !important;
@@ -83,8 +83,8 @@
   }
 
   .art-header .nav > nav {
-    top: 58px !important;
-    max-height: calc(100dvh - 58px - env(safe-area-inset-bottom)) !important;
+    top: calc(58px + env(safe-area-inset-top, 0px)) !important;
+    max-height: calc(100dvh - 58px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom)) !important;
   }
 
   .art-header nav > .language-switcher {
