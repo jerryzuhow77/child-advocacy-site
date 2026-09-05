@@ -31,6 +31,8 @@ const OPTIONAL_SHELL = [
   './assets/mobile-nav-view-counter-20260823.js',
   './assets/four-language-toolbar-20260901.css',
   './assets/four-language-toolbar-20260901.js',
+  './assets/home-bundle-zh-20260905.css',
+  './assets/home-bundle-intl-20260905.css',
   './data/four-language-routes.json',
   './assets/home-gsap.css',
   './assets/home-gsap.js',
