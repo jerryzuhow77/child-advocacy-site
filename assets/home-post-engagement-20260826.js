@@ -170,6 +170,13 @@
       .slice(0, 120);
   }
 
+  function localeNeutralPath(path) {
+    const parts = String(path || "").split("/").filter(Boolean);
+    if (/^(?:en|ja|zh-hant|zh-hans)$/i.test(parts[0] || "")) parts.shift();
+    if (/^(?:en|ja|zh-hant|zh-hans)$/i.test(parts[parts.length - 1] || "")) parts.pop();
+    return parts.filter((part) => !/^(?:zh-hant|zh-hans)$/i.test(part)).join("/") || "home";
+  }
+
   function article(link, host) {
     const url = new URL(link.href, location.href);
     const isOfficialSite = url.origin === location.origin;
@@ -183,7 +190,7 @@
     const path = url.pathname.replace(/^\/child-advocacy-site\/?/, "").replace(/\/$/, "") || "home";
     // The translated pages are alternate presentations of the same article.
     // Keep their engagement and view totals on the canonical, locale-neutral key.
-    const sharedPath = isOfficialSite ? path.replace(/^(?:en|ja|zh-hant|zh-hans)(?:\/|$)/, "") || "home" : path;
+    const sharedPath = isOfficialSite ? localeNeutralPath(path) : path;
     const titleSource = link.querySelector("[data-engagement-title-source],strong,h3,h2")
       || host?.querySelector("[data-engagement-title-source],h2,h3,strong")
       || link;
