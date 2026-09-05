@@ -34,7 +34,7 @@ jobs:
           find . -maxdepth 1 -type f \
             ! -name '*.md' ! -name '*.yml' ! -name '*.yaml' \
             ! -name '.gitignore' -exec cp -a {} "$root/" \;
-          for dir in about activity-records art assets audio cases court-comics data en features hearing-records historical-cases ja news social zh-Hans zh-hans; do
+          for dir in about activity-records art assets audio cases court-comics data en features global-protection-wall hearing-records historical-cases ja news social zh-Hans zh-hans; do
             test ! -d "$dir" || rsync -a \
               --exclude '__pycache__/' --exclude '*.pyc' \
               "$dir/" "$root/$dir/"
