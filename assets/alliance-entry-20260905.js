@@ -1,5 +1,5 @@
 (()=>{
-const url='https://chen-witness-evidence-timeline.jerryzuhow77.chatgpt.site/alliance-dialogues';
+const url='https://cn.globalprotectionwall.com/alliance-dialogues';
 const image='https://chen-witness-evidence-timeline.jerryzuhow77.chatgpt.site/shuimo-embroidery-mobile.png';
 const lang=document.documentElement.lang||'zh-Hant';
 const texts=lang.startsWith('ja')?['児童福祉連盟の内部で何が語られたか','多角的考察｜中国語原文','内部メッセージ・法廷での説明・被告人の供述を時系列で照合。']:lang.startsWith('en')?['What did CWLF staff say?','Multiple Perspectives · Chinese source text','Internal messages, courtroom explanations and defendant statements in chronological order.']:lang==='zh-Hans'?['儿盟内部人员说了什么？','多元观察','内部讯息、庭上勘验与被告陈述，依时间轴交叉核对。']:['兒盟內部人員說了什麼？','多元觀察','內部訊息、庭上勘驗與被告陳述，依時間軸交叉核對。'];
