@@ -1,0 +1,248 @@
+name: Deploy Hong Kong child advocacy mirror
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-hk-site-mirror.yml'
+      - 'assets/site.js'
+      - 'assets/legal-notice.js'
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hong-kong-child-advocacy-mirror
+  cancel-in-progress: false
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build public mirror package
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          root="mirror/child-advocacy-site"
+          mkdir -p "$root"
+          find . -maxdepth 1 -type f \
+            ! -name '*.md' ! -name '*.yml' ! -name '*.yaml' \
+            ! -name '.gitignore' -exec cp -a {} "$root/" \;
+          for dir in about activity-records art assets audio cases court-comics data en features hearing-records historical-cases ja news social zh-Hans zh-hans; do
+            test ! -d "$dir" || rsync -a \
+              --exclude '__pycache__/' --exclude '*.pyc' \
+              "$dir/" "$root/$dir/"
+          done
+          tar -C mirror -czf hk-child-advocacy-site.tgz child-advocacy-site
+
+      - name: Validate published routes and redirect coverage
+        shell: python
+        run: |
+          from pathlib import Path
+          from urllib.parse import urlparse
+          import xml.etree.ElementTree as ET
+
+          root = Path("mirror/child-advocacy-site")
+          required = [
+              root / "index.html",
+              root / "en/index.html",
+              root / "ja/index.html",
+              root / "news/index.html",
+              root / "hearing-records/prison-watch/kaikai-day6-20250430/index.html",
+              root / "assets/legal-notice.js",
+          ]
+          missing = [str(path) for path in required if not path.is_file()]
+          assert not missing, "Missing required mirror files: " + ", ".join(missing)
+
+          sitemap = ET.parse(root / "sitemap.xml")
+          namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+          missing_routes = []
+          for node in sitemap.findall(".//sm:loc", namespace):
+              path = urlparse(node.text.strip()).path
+              prefix = "/child-advocacy-site/"
+              if not path.startswith(prefix):
+                  continue
+              relative = path[len(prefix):]
+              candidate = root / relative
+              if path.endswith("/"):
+                  candidate = candidate / "index.html"
+              if not candidate.is_file():
+                  missing_routes.append(path)
+          assert not missing_routes, "Sitemap routes missing from mirror: " + ", ".join(missing_routes[:20])
+
+          uncovered = []
+          for path in root.rglob("*.html"):
+              text = path.read_text(encoding="utf-8", errors="ignore")
+              if "assets/legal-notice.js" not in text and "assets/site.js" not in text:
+                  continue
+              # Pages using site.js load legal-notice.js through the shared loader.
+          samples = [
+              root / "index.html",
+              root / "news/index.html",
+              root / "hearing-records/prison-watch/kaikai-day6-20250430/index.html",
+          ]
+          for path in samples:
+              text = path.read_text(encoding="utf-8", errors="ignore")
+              if "assets/legal-notice.js" not in text and "assets/site.js" not in text:
+                  uncovered.append(str(path))
+          assert not uncovered, "Redirect layer missing from sampled entry points: " + ", ".join(uncovered)
+
+          redirect = (root / "assets/legal-notice.js").read_text(encoding="utf-8")
+          assert "https://cn.globalprotectionwall.com/child-advocacy-site" in redirect
+          assert "window.location.search+window.location.hash" in redirect
+          print(f"Validated {len(list(root.rglob('*.html')))} HTML files and all sitemap routes.")
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hk-child-advocacy-site
+          path: hk-child-advocacy-site.tgz
+          retention-days: 7
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: package
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      HK_HOST: ${{ secrets.TENCENT_SSH_HOST }}
+      HK_USER: ${{ secrets.TENCENT_SSH_USER }}
+      HK_PORT: ${{ secrets.TENCENT_SSH_PORT }}
+      HK_KEY_A: ${{ secrets.TENCENT_SSH_PRIVATE_KEY }}
+      HK_KEY_B: ${{ secrets.TENCENT_CVM_SSH_KEY }}
+      HK_KEY_C: ${{ secrets.SSH_PRIVATE_KEY }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: hk-child-advocacy-site
+
+      - name: Configure SSH
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          host="${HK_HOST:-150.109.69.104}"
+          user="${HK_USER:-ubuntu}"
+          port="${HK_PORT:-22}"
+          key="${HK_KEY_A:-${HK_KEY_B:-${HK_KEY_C:-}}}"
+          test -n "$key"
+          mkdir -p ~/.ssh
+          printf '%s\n' "$key" > ~/.ssh/hk_key
+          chmod 600 ~/.ssh/hk_key
+          ssh-keyscan -p "$port" "$host" > ~/.ssh/known_hosts
+          printf 'HOST=%s\nUSER=%s\nPORT=%s\n' "$host" "$user" "$port" >> "$GITHUB_ENV"
+
+      - name: Upload versioned mirror release
+        shell: bash
+        env:
+          RELEASE_SHA: ${{ github.sha }}
+        run: |
+          set -Eeuo pipefail
+          cat hk-child-advocacy-site.tgz | ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" \
+            "sudo RELEASE_SHA='$RELEASE_SHA' bash -s" <<'REMOTE'
+          set -Eeuo pipefail
+          base=/srv/child-advocacy-site
+          release="$base/releases/$RELEASE_SHA"
+          staging="$base/releases/$RELEASE_SHA.staging"
+          if [ ! -d "$release" ]; then
+            rm -rf "$staging"
+            mkdir -p "$staging"
+            tar -xzf - -C "$staging"
+            test -s "$staging/child-advocacy-site/index.html"
+            mv "$staging" "$release"
+          else
+            cat >/dev/null
+          fi
+          ln -sfn "$release" "$base/current.next"
+          mv -Tf "$base/current.next" "$base/current"
+          REMOTE
+
+      - name: Install isolated nginx mirror route
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'sudo python3 -' <<'PY'
+          from pathlib import Path
+          import shutil, subprocess, time
+
+          domain = "cn.globalprotectionwall.com"
+          marker = "# child-advocacy-full-mirror"
+          candidates = []
+          for root in (Path("/etc/nginx/sites-enabled"), Path("/etc/nginx/conf.d")):
+              if root.exists():
+                  candidates.extend(path for path in root.iterdir() if path.is_file() or path.is_symlink())
+
+          target = text = None
+          for path in candidates:
+              try:
+                  body = path.read_text()
+              except Exception:
+                  continue
+              if domain in body and "server_name" in body:
+                  target, text = path.resolve(), body
+                  break
+          if target is None:
+              raise SystemExit("No nginx server block found for " + domain)
+
+          if marker not in text:
+              domain_pos = text.find(domain)
+              server_pos = text.rfind("server", 0, domain_pos)
+              brace = text.find("{", server_pos)
+              depth = 0
+              end = None
+              for index in range(brace, len(text)):
+                  if text[index] == "{":
+                      depth += 1
+                  elif text[index] == "}":
+                      depth -= 1
+                      if depth == 0:
+                          end = index
+                          break
+              if end is None:
+                  raise SystemExit("Could not locate nginx server block boundary")
+              snippet = """
+              # child-advocacy-full-mirror
+              location = /child-advocacy-site {
+                  return 301 /child-advocacy-site/;
+              }
+              location ^~ /child-advocacy-site/ {
+                  root /srv/child-advocacy-site/current;
+                  try_files $uri $uri/ $uri/index.html =404;
+                  add_header X-Robots-Tag "noindex, nofollow" always;
+              }
+              """
+              backup = target.with_name(target.name + ".bak-" + time.strftime("%Y%m%d%H%M%S"))
+              shutil.copy2(target, backup)
+              target.write_text(text[:end] + snippet + text[end:])
+          subprocess.run(["nginx", "-t"], check=True)
+          subprocess.run(["systemctl", "reload", "nginx"], check=True)
+          PY
+
+      - name: Verify Hong Kong mirror
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          paths=(
+            /child-advocacy-site/
+            /child-advocacy-site/en/
+            /child-advocacy-site/ja/
+            /child-advocacy-site/news/
+            /child-advocacy-site/hearing-records/prison-watch/kaikai-day6-20250430/
+          )
+          for path in "${paths[@]}"; do
+            ok=
+            for attempt in 1 2 3 4 5; do
+              code="$(curl --connect-timeout 10 --max-time 25 -sS -o /tmp/page.html -w '%{http_code}' "https://cn.globalprotectionwall.com$path" || true)"
+              if [ "$code" = 200 ] && [ "$(wc -c < /tmp/page.html)" -gt 1000 ]; then
+                ok=1
+                break
+              fi
+              sleep 4
+            done
+            test -n "$ok" || { echo "Mirror verification failed: $path status=${code:-none}"; exit 1; }
+          done
