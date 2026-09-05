@@ -1,0 +1,77 @@
+name: Public wall read-only snapshot
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
+  pull_request:
+    paths:
+      - '.github/workflows/public-wall-snapshot.yml'
+permissions:
+  contents: read
+concurrency:
+  group: public-wall-snapshot-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Collect sanitized public signals
+        shell: python
+        run: |
+          import urllib.request, urllib.error, json, hashlib, time, os
+          from datetime import datetime, timezone
+          hosts = {
+              "shared": "https://global-protection.jerryzuhow77.chatgpt.site",
+              "hk": "https://cn.globalprotectionwall.com",
+              "legacy_tw": "https://wall.globalprotectionwall.com",
+          }
+          result = {"checked_at": datetime.now(timezone.utc).isoformat(), "mode": "GET-only", "signals": {}}
+          paths = ["/api/public/submission-stats", "/api/health", "/api/public/messages"]
+          allowed = ["scope", "total", "pending", "published", "status", "dataPrimary",
+                     "publicMessages", "checkedImages", "missingImages", "invalidImageMetadata"]
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, *args, **kwargs):
+                  return None
+          opener = urllib.request.build_opener(NoRedirect)
+          for region, host in hosts.items():
+              result["signals"][region] = {}
+              for path in paths:
+                  entry = {}
+                  for attempt in range(2):
+                      try:
+                          req = urllib.request.Request(host + path, headers={"User-Agent": "PublicWallReadOnlyMonitor/1", "Accept": "application/json"})
+                          with opener.open(req, timeout=15) as response:
+                              body = response.read(4000001)
+                              entry = {"http": response.status}
+                          if len(body) > 4000000:
+                              entry["error"] = "response_too_large"
+                              break
+                          data = json.loads(body)
+                          entry["sha256"] = hashlib.sha256(body).hexdigest()
+                          if path != "/api/public/messages" and isinstance(data, dict):
+                              entry["counts"] = {k: data[k] for k in allowed if k in data and isinstance(data[k], (str, int, float, bool, type(None)))}
+                              entry["sha256"] = hashlib.sha256(json.dumps(entry["counts"], sort_keys=True).encode()).hexdigest()
+                          break
+                      except urllib.error.HTTPError as exc:
+                          entry = {"http": exc.code}
+                          if exc.code < 500:
+                              break
+                      except Exception as exc:
+                          entry = {"error": type(exc).__name__}
+                      if attempt == 0:
+                          time.sleep(2)
+                  result["signals"][region][path] = entry
+          os.makedirs("snapshot", exist_ok=True)
+          with open("snapshot/public-wall.json", "w") as f:
+              json.dump(result, f, indent=2)
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f:
+              f.write("## Public wall snapshot\n\nGET-only; no admin credentials or production writes.\n")
+              f.write("Public message bodies are discarded; only fingerprints are retained.\n")
+              f.write("Collection completion is not a health verdict. Compare with prior evidence before alerting.\n\n")
+              f.write("\u0060\u0060\u0060json\n" + json.dumps(result, indent=2) + "\n\u0060\u0060\u0060\n")
+      - uses: actions/upload-artifact@v4
+        with:
+          name: public-wall-snapshot
+          path: snapshot/public-wall.json
+          retention-days: 14
