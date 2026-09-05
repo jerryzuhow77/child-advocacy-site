@@ -322,6 +322,7 @@ main {
 
 .art-frame img {
   width: 100%;
+  height: auto;
   aspect-ratio: 3 / 2;
   object-fit: cover;
 }
@@ -1036,6 +1037,32 @@ footer a {
 @media (max-width: 820px) {
   html.cpa-four-language-toolbar-active .topbar {
     top: 52px;
+  }
+
+  html body #cpa-four-language-toolbar {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  #cpa-four-language-toolbar .cpa-four-language-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  #cpa-four-language-toolbar .cpa-chapter-select {
+    width: 64px;
+    max-width: none;
+  }
+
+  #cpa-four-language-toolbar .cpa-four-language-nav {
+    position: relative;
+    z-index: 2;
+  }
+
+  html #cpa-four-language-toolbar .cpa-four-language-nav a,
+  html #cpa-four-language-toolbar .cpa-four-language-nav span {
+    min-width: 44px;
+    min-height: 44px;
+    touch-action: manipulation;
   }
 }
 

@@ -133,10 +133,17 @@ jobs:
               'en': root / 'en/news/kaikai-court-question-20260903/index.html',
               'ja': root / 'ja/news/kaikai-court-question-20260903/index.html',
           }
+          question_styles = (root / 'news/kaikai-court-question-20260903/assets/styles.css').read_text(encoding='utf-8')
+          question_script = (root / 'news/kaikai-court-question-20260903/assets/page.js').read_text(encoding='utf-8')
+          assert '.art-frame img' in question_styles and 'height: auto;' in question_styles, 'The courtroom-question hero image must not retain its 1024px HTML height.'
+          assert 'min-width: 44px;' in question_styles and 'min-height: 44px;' in question_styles, 'The courtroom-question language controls must keep phone-sized touch targets.'
+          assert '#cpa-four-language-toolbar a[hreflang]' in question_script and 'localStorage.setItem("siteLang"' in question_script, 'The courtroom-question toolbar must persist the selected physical language before navigation.'
+          assert "else localStorage.setItem('siteLang','zh-Hant')" in question_pages['zh-Hant'].read_text(encoding='utf-8'), 'The physical Traditional Chinese edition must override a stale Simplified Chinese preference.'
           for language, path in question_pages.items():
               source = path.read_text(encoding='utf-8')
               assert source.count('class="exchange') == 74, f'{language} courtroom-question edition must preserve all 74 speaker turns.'
               assert source.count('<details class="record-details') == 2, f'{language} courtroom-question edition must preserve both testimony sections.'
+              assert '20260905-mobile-1' in source, f'{language} courtroom-question edition must request the mobile-fix assets.'
               for hreflang in ('zh-Hant', 'zh-Hans', 'en', 'ja'):
                   assert f'hreflang="{hreflang}"' in source, f'{language} courtroom-question edition is missing {hreflang} alternate.'
           assert 'not an official verbatim transcript released by the court' in question_pages['en'].read_text(encoding='utf-8')

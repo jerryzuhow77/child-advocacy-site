@@ -1,5 +1,20 @@
 document.documentElement.classList.add("js");
 
+// Persist the language chosen in the shared toolbar before navigation. Without
+// this, a previously stored Simplified Chinese preference can immediately
+// convert the physical Traditional Chinese page back to Simplified Chinese.
+document.addEventListener(
+  "click",
+  (event) => {
+    const link = event.target.closest("#cpa-four-language-toolbar a[hreflang]");
+    if (!link) return;
+    try {
+      localStorage.setItem("siteLang", link.getAttribute("hreflang"));
+    } catch (_) {}
+  },
+  { capture: true },
+);
+
 const progressBar = document.querySelector(".reading-progress span");
 
 function updateProgress() {
