@@ -24,10 +24,10 @@ main{max-width:1120px;margin:auto;padding:4rem 1rem}.lead{font-size:1.25rem;max-
 .windows{display:grid;gap:1rem}.window{display:grid;grid-template-columns:150px 1fr;gap:1.4rem;padding:1.35rem;background:rgba(239,231,214,.95);color:#182526;border-left:4px solid var(--cinnabar);border-radius:4px 16px 16px 4px;box-shadow:0 12px 30px rgba(0,0,0,.2)}
 .when{color:#7a2e28;font-weight:700}.window h3{margin:0 0 .35rem;font-size:1.3rem}.window p{margin:.35rem 0}.tags{display:flex;flex-wrap:wrap;gap:.35rem}.tags span{border:1px solid #8e7750;border-radius:999px;padding:.08rem .55rem;font-size:.8rem}.testimony{margin-top:1rem;padding-top:.9rem;border-top:1px solid rgba(116,48,41,.25)}.testimony h4{margin:0 0 .55rem;color:#743029}.excerpt{margin:.45rem 0;padding:.7rem .85rem;background:#fffaf0;border-left:3px solid var(--gold)}.excerpt b{color:#61332d}.excerpt small{display:block;color:#655f55}.crosscheck{margin-top:.65rem;padding:.7rem .85rem;background:#e4eee8;border-radius:8px}.crosscheck b{color:#204b45}.responsibility{margin-top:.65rem;padding:.8rem .9rem;color:#fff8e9;background:#743029;border-radius:8px}.responsibility b{color:#f1d38c}
 .chain{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}.chain article{padding:1.4rem;border-top:3px solid var(--gold);background:rgba(17,42,43,.82)}.chain h3{color:#e9cf91}
-.roster{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}.person{padding:1rem;background:rgba(236,226,205,.96);color:#1d2928;border-radius:12px}.person b{display:block;color:#743029}.person a{color:#5d4823}
+.witness-picker{position:sticky;top:4.2rem;z-index:8;display:flex;align-items:center;gap:.8rem;margin:0 0 1.4rem;padding:.9rem 1rem;background:rgba(17,42,43,.96);border:1px solid var(--line);border-radius:12px;backdrop-filter:blur(12px)}.witness-picker label{color:#efd28e;font-weight:700}.witness-picker select{flex:1;min-width:0;padding:.6rem .75rem;color:var(--paper);background:#16292b;border:1px solid var(--gold);border-radius:8px;font:inherit}.roster{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}.person{scroll-margin-top:9rem;padding:1rem;background:rgba(236,226,205,.96);color:#1d2928;border:2px solid transparent;border-radius:12px;transition:.25s}.person b{display:block;color:#743029}.person a{color:#5d4823}.witness-highlight{display:block;margin-top:.65rem;padding:.65rem .7rem;background:#fff8e8;border-left:3px solid var(--gold);line-height:1.65}.witness-highlight mark{color:#682a24;background:linear-gradient(transparent 58%,#efd27a 58%);font-weight:700}.person.is-focus{border-color:#a63b32;box-shadow:0 0 0 4px rgba(184,149,82,.3),0 12px 30px rgba(0,0,0,.28);transform:translateY(-2px)}
 .sources li{margin:.8rem 0}.legal{margin-top:5rem;border:1px solid #895149;background:rgba(72,27,25,.55);padding:1.4rem;border-radius:16px}
 footer{text-align:center;color:var(--muted);padding:3rem 1rem;border-top:1px solid var(--line)}
-@media(max-width:760px){.top .lang{display:none}.hero{min-height:70vh;background-position:62% center}.window{grid-template-columns:1fr}.chain,.roster{grid-template-columns:1fr}.hero h1{font-size:3rem}}
+@media(max-width:760px){.top .lang{display:none}.hero{min-height:70vh;background-position:62% center}.window{grid-template-columns:1fr}.chain,.roster{grid-template-columns:1fr}.hero h1{font-size:3rem}.witness-picker{top:3.7rem;align-items:stretch;flex-direction:column}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
@@ -61,7 +61,8 @@ footer{text-align:center;color:var(--muted);padding:3rem 1rem;border-top:1px sol
 </div><div class="finding"><b>本站判讀：</b>目前證據較能支持「資訊控制＋未獨立查證＋責任分散」形成救援阻斷鏈；是否具有共同掩飾、包庇或主觀故意，不能僅憑現有旁聽整理下結論。</div></section>
 
 <section id="witnesses"><header class="section-head"><small>ALL COURT WITNESSES</small><h2>兩案證人，不是彼此孤立的聲音</h2></header>
-<h3>陳尚潔案一審｜12名證人</h3><div class="roster">
+<div class="witness-picker"><label for="witnessSelect">選擇證人、畫出重點</label><select id="witnessSelect"><option value="">顯示全部證人</option></select></div>
+<h3>陳尚潔案一審｜13名證人</h3><div class="roster">
 <div class="person"><b>01 徐珮華</b>社福與轉介鏈<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/witnesses/#witness-01">查看完整旁聽整理</a></div>
 <div class="person"><b>02 施盈如</b>政府端主責與轉托<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/witnesses/#witness-02">查看完整旁聽整理</a></div>
 <div class="person"><b>03 丁雁琪</b>家屬／照顧安排<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/witnesses/#witness-03">查看完整旁聽整理</a></div>
@@ -71,25 +72,27 @@ footer{text-align:center;color:var(--muted);padding:3rem 1rem;border-top:1px sol
 <div class="person"><b>07 白麗芳</b>前執行長與責任分工<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/witnesses/#witness-07">查看完整旁聽整理</a></div>
 <div class="person"><b>08 葉亭希</b>工作紀錄形成<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/witnesses/#witness-08">查看完整旁聽整理</a></div>
 <div class="person"><b>09 葉詩宇</b>案後紀錄與證據保存<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/witnesses/#witness-09">查看完整旁聽整理</a></div>
-<div class="person"><b>10 林心慈</b>照片、回報與資訊斷鏈<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/witnesses/#witness-11">查看完整旁聽整理</a></div>
-<div class="person"><b>11 黃玲芳</b>主管知情與通報門檻<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/witnesses/#witness-12">查看完整旁聽整理</a></div>
-<div class="person"><b>12 粘羽涵</b>居托制度、無預警訪視<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/witnesses/#witness-13">查看完整旁聽整理</a></div>
+<div class="person"><b>10 蔡函妤</b>牙科診療、三顆乳牙脫落與轉診建議<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/witnesses/#witness-10">查看完整旁聽整理</a></div>
+<div class="person"><b>11 林心慈</b>照片、回報與資訊斷鏈<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/witnesses/#witness-11">查看完整旁聽整理</a></div>
+<div class="person"><b>12 黃玲芳</b>主管知情與通報門檻<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/witnesses/#witness-12">查看完整旁聽整理</a></div>
+<div class="person"><b>13 粘羽涵</b>居托制度、無預警訪視<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/witnesses/#witness-13">查看完整旁聽整理</a></div>
 </div>
 <h3>劉彩萱、劉若琳主案｜庭上證人與專業證據</h3><div class="roster">
 <div class="person"><b>Mira</b>外傭；照顧現場與孩子狀態<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-day2-20250423/">第二日</a></div>
-<div class="person"><b>兩名前保母</b>轉托前狀態、交接與照顧差異<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-day3-20250425/">第三日</a></div>
-<div class="person"><b>劉彩萱之子</b>住所內照顧情形<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-day3-20250425/">第三日</a></div>
-<div class="person"><b>劉若琳、劉彩萱</b>彼此作證、被告訊問與責任說法<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-day4-20250428/">第四日</a>／<a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-day9-20250506/">第九日</a></div>
+<div class="person"><b>周○｜前保母</b>轉托前生活、發展與交接基準<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-day3-20250425/#day3-chapter-02">第三日</a></div>
+<div class="person"><b>蕭○香｜前保母</b>嬰兒期照顧、緊繃反應與醫療建議<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-day3-20250425/#day3-chapter-05">第三日</a></div>
+<div class="person"><b>王○弘（王凱弘）</b>住所內觀察、要求通知社工／更換照顧者、浴巾包裹、頭套與抽菸環境<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-day3-20250425/#day3-chapter-06">第三日</a></div>
+<div class="person"><b>劉若琳</b>被告作證與責任說法<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-day4-20250428/">第四日</a>／<a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-day9-20250506/">第九日</a></div>
+<div class="person"><b>劉彩萱</b>被告作證、照顧與最後一夜說法<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-day4-20250428/">第四日</a>／<a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-day9-20250506/">第九日</a></div>
 <div class="person"><b>許倬憲法醫師</b>死因、傷勢與營養狀態<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-day5-20250429/">第五日</a></div>
 <div class="person"><b>呂立醫師</b>兒少保護醫療鑑定<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-day5-20250429/">第五日</a></div>
 <div class="person"><b>丘彥南醫師</b>兒童精神與創傷鑑定<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-day6-20250430/">第六日</a></div>
 <div class="person"><b>A童外婆</b>家屬觀察與量刑階段證述<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-day8-20250505/">第八日</a></div>
 <div class="person"><b>徐堅棋醫師</b>量刑鑑定與復歸評估<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-day8-20250505/">第八日</a></div>
-<div class="person"><b>王○弘（王凱弘）</b>住所內觀察、要求通知社工／更換照顧者、浴巾包裹、頭套與抽菸環境<br><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-day3-20250425/#day3-chapter-06">第三日重點證詞</a></div>
 </div></section>
 
 <section id="sources"><header class="section-head"><small>SOURCES & LIMITS</small><h2>來源與法律界線</h2></header><ul class="sources">
-<li><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/witnesses/">陳尚潔案12名證人全文與矛盾爭點</a>：2025.11.27—2026.01.29旁聽整理。</li>
+<li><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/witnesses/">陳尚潔案13名證人整理與矛盾爭點</a>：2025.11.27—2026.01.29旁聽整理。</li>
 <li><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-day1-20250422/">劉彩萱、劉若琳案十日庭審紀錄</a>：由第一日頁面可依頂端導覽逐日閱讀。</li>
 <li><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/">醫療責任與救援節點</a>：牙科、急診、兒保與法醫證據交叉整理。</li>
 <li>旁聽紀錄不是法院核發的官方逐字稿；說話者、語句、順序及聽不清楚處，應以正式筆錄與判決原文為準。</li>
@@ -116,8 +119,55 @@ document.querySelectorAll(".window").forEach((door,i)=>{
  if(!data)return;
  const box=document.createElement("section");
  box.className="testimony";
- box.innerHTML='<h4>兩案證詞重點摘錄 × 本門勾稽</h4>'+data.x.map(v=>'<div class="excerpt"><b>'+v[0]+'</b><small>'+v[1]+'</small></div>').join("")+'<div class="crosscheck"><b>本門勾稽</b><br>'+data.c+'</div><div class="responsibility"><b>陳尚潔應負責之處</b><br>'+data.r+'</div>';
+ box.innerHTML='<h4>兩案證詞重點摘錄 × 本門勾稽</h4>'+data.x.map(v=>'<div class="excerpt"><b>'+v[0]+'</b><small>'+v[1]+'</small></div>').join("")+'<div class="crosscheck"><b>本門勾稽</b><br>'+data.c+'</div><div class="responsibility"><b>兒福聯盟陳尚潔應負責之處</b><br>'+data.r+'</div>';
  door.lastElementChild.appendChild(box);
+});
+const witnessHighlights={
+"徐珮華":"<mark>社福轉介與跨機構協作</mark>的分工，須與兒盟實際掌握的保母及兒況資訊一起檢視。",
+"施盈如":"政府端社工被指為主責，但證詞亦涉及其<mark>未掌握合作保母姓名與地址</mark>，呈現責任與資訊分離。",
+"丁雁琪":"家屬聯繫、照顧安排與探視資訊，原可成為<mark>主要照顧者之外的查核來源</mark>。",
+"黃聖心":"急診所見涉及到院狀態、體重、傷勢與掉牙解釋；<mark>多顆牙齒脫落不能只以磨牙帶過</mark>。",
+"李芳玲":"證詞涉及陳尚潔的個案角色、主管督導與制度分工；重點在<mark>誰應把警訊升級</mark>。",
+"江怡韻":"就主責歸屬、紀錄與督導提出說明；須與<mark>兒盟實際掌握資訊及可採措施</mark>對照。",
+"白麗芳":"主張兒盟主要是媒合與付款中介；庭上追問聚焦<mark>巨大兒況落差何時構成疑似受虐通報</mark>。",
+"葉亭希":"工作紀錄如何形成、何時完成，關係到<mark>異常能否在孩子生前被累積辨識</mark>。",
+"葉詩宇":"案後紀錄整理與證據保存須和原始版本核對；<mark>事後補充不當然等於偽造</mark>。",
+"蔡函妤":"牙科診療所見顯示，<mark>一夜脫落三顆乳牙難以用單純磨牙解釋</mark>，並涉及轉診醫學中心的建議。",
+"林心慈":"照片、回報與內部資訊傳遞顯示，<mark>影像被看見不等於風險已被查證</mark>。",
+"黃玲芳":"主管知情範圍與通報門檻，關係到<mark>承辦人是否獲得督導與升級指示</mark>。",
+"粘羽涵":"居托制度可以無預警訪視，拒訪或異常得升級；<mark>預約訪視不是唯一工具</mark>。",
+"Mira":"從住所內實際照顧與孩子反應提供旁證，凸顯<mark>現場狀況不能只聽主要照顧者說明</mark>。",
+"周○":"描述轉托前會走、會玩、牙齒與口腔狀況及交接，提供<mark>前後兒況比較基準</mark>。",
+"蕭○香":"描述嬰兒期緊繃、哭泣、按摩與就醫建議；<mark>早期證言不能直接替代後期狀態</mark>。",
+"王○弘":"稱曾要求通知社工或更換照顧者，也提及浴巾包裹、磨牙、頭套及抽菸；<mark>日期、光線與親見範圍仍須核對</mark>。",
+"劉若琳":"庭上說法涉及分工、知情與照顧責任；須與<mark>通訊、動線、照片及其他證人</mark>逐項比對。",
+"劉彩萱":"庭上說法涉及日常照顧、傷勢解釋與最後一夜；須與<mark>牙科、急診、法醫及119時間線</mark>交叉驗證。",
+"許倬憲":"法醫證詞聚焦死因、傷勢分布與營養狀態，提供<mark>身體證據的整體時間軸</mark>。",
+"呂立":"兒少保護醫療鑑定強調傷勢機轉與整體兒況，不能只用<mark>單一跌撞說法</mark>解釋。",
+"丘彥南":"兒童精神與創傷鑑定協助理解行為反應；<mark>精神鑑定不能取代身體與現場證據</mark>。",
+"A童外婆":"家屬觀察與照顧安排提供外部視角；<mark>探視與直接看見孩子</mark>本可形成獨立查核。",
+"徐堅棋":"量刑鑑定與復歸評估屬科刑資料，<mark>不直接替代犯罪事實與救援時點認定</mark>。"
+};
+const witnessCards=[...document.querySelectorAll("#witnesses .person")];
+const witnessSelect=document.getElementById("witnessSelect");
+witnessCards.forEach((card,i)=>{
+ const name=card.querySelector("b").textContent.replace(/^\d+\s*/,"").split("｜")[0].trim();
+ const key=Object.keys(witnessHighlights).find(k=>name.includes(k));
+ card.id="witness-card-"+(i+1);
+ if(key){
+  const note=document.createElement("small");
+  note.className="witness-highlight";
+  note.innerHTML="<b>證詞重點摘錄</b><br>"+witnessHighlights[key];
+  card.appendChild(note);
+ }
+ const option=document.createElement("option");
+ option.value=card.id;
+ option.textContent=name;
+ witnessSelect.appendChild(option);
+});
+witnessSelect.addEventListener("change",e=>{
+ witnessCards.forEach(card=>card.classList.toggle("is-focus",card.id===e.target.value));
+ if(e.target.value)document.getElementById(e.target.value)?.scrollIntoView({behavior:"smooth",block:"center"});
 });
 document.getElementById("jump").addEventListener("change",e=>{if(e.target.value)document.getElementById(e.target.value)?.scrollIntoView()});
 </script>
