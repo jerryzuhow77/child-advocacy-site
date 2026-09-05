@@ -561,3 +561,67 @@ body.art-site{
     padding:10px 10px 82px!important;
   }
 }
+
+/* V17 — locally hosted, colorful Chinese ink-wash background.
+   The paper veil keeps long-form cards readable; mobile receives a quieter crop. */
+:root{
+  --home-colorful-ink:url("./art/home-colorful-chinese-ink-background-20260905.webp");
+  --ink-header-art:var(--home-colorful-ink);
+}
+body.art-site{
+  position:relative;
+  isolation:isolate;
+  background-color:#f8f1e5;
+  background-image:
+    linear-gradient(rgba(255,250,242,.74),rgba(248,244,235,.79)),
+    var(--home-colorful-ink);
+  background-position:center top,center top;
+  background-size:auto,cover;
+  background-repeat:no-repeat;
+  background-attachment:scroll,fixed;
+}
+body.art-site::before{
+  content:"";
+  position:fixed;
+  z-index:-1;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(255,250,242,.08),rgba(255,250,242,.28)),
+    var(--home-colorful-ink) center/cover no-repeat;
+  opacity:.38;
+}
+.premium-home-hero{
+  background:
+    linear-gradient(105deg,rgba(251,246,237,.92) 0%,rgba(255,250,242,.78) 49%,rgba(226,238,233,.76) 100%),
+    var(--home-colorful-ink) center/cover no-repeat!important;
+}
+.premium-home-hero::before{
+  background:var(--home-colorful-ink) center/cover no-repeat!important;
+  opacity:.42!important;
+  filter:saturate(.96) contrast(1.02)!important;
+}
+@media(max-width:700px){
+  body.art-site{
+    background-image:
+      linear-gradient(rgba(255,250,242,.86),rgba(248,244,235,.9)),
+      var(--home-colorful-ink);
+    background-position:center top,62% top;
+    background-size:auto,auto 54rem;
+    background-attachment:scroll;
+  }
+  body.art-site::before{
+    background-position:62% top;
+    background-size:auto 54rem;
+    opacity:.18;
+  }
+  .premium-home-hero{
+    background:
+      linear-gradient(180deg,rgba(251,246,237,.94),rgba(244,227,225,.88) 52%,rgba(227,238,233,.9)),
+      var(--home-colorful-ink) 62% top/auto 100% no-repeat!important;
+  }
+  .premium-home-hero::before{
+    background:var(--home-colorful-ink) 68% top/auto 100% no-repeat!important;
+    opacity:.22!important;
+  }
+}
