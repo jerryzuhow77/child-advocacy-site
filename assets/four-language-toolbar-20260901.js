@@ -6,7 +6,7 @@
   document.documentElement.classList.add("cpa-four-language-toolbar-active");
 
   const ROOT = "/child-advocacy-site/";
-  const ROUTES_URL = `${ROOT}data/four-language-routes.json?v=20260903-2`;
+  const ROUTES_URL = `${ROOT}data/four-language-routes.json?v=20260904-3`;
   const ENGAGEMENT_API = "https://global-protection.jerryzuhow77.chatgpt.site/api/public/view-count";
   const WORKER_API = "https://sweet-art-bed8child-advocacy-page-views.jerryzuhow77.workers.dev/views";
   const BOOKMARK_KEY = "cpa_article_bookmarks_v1";
@@ -42,8 +42,51 @@
     bookmark.addEventListener("click",()=>{const next=bookmark.getAttribute("aria-pressed")!=="true";setFromStorage(BOOKMARK_KEY,key,next);bookmark.setAttribute("aria-pressed",String(next));bookmark.classList.toggle("is-active",next);bookmark.querySelector("span").textContent=next?"★":"☆";bookmark.querySelector("b").textContent=next?words.bookmarked:words.bookmark});
     comment.addEventListener("click",()=>{ensureComments();let attempts=0;const go=()=>{const target=document.querySelector("[data-article-comments]");if(target)target.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});else if(attempts++<40)setTimeout(go,120)};go()});
     ensureComments();
+    addShare(bar);
+  }
+  const navigationCopy = {
+    'zh-Hant': ['回首頁','章節','分享','連結已複製','請複製連結'],
+    'zh-Hans': ['回首页','章节','分享','链接已复制','请复制链接'],
+    en: ['Home','Sections','Share','Link copied','Copy this link'],
+    ja: ['ホーム','目次','共有','リンクをコピーしました','リンクをコピー']
+  };
+  function addShare(bar) {
+    const words=navigationCopy[locale()],button=document.createElement('button');
+    button.type='button';button.className='is-share';button.textContent=words[2];
+    bar.querySelector('.is-bookmark').before(button);
+    const status=document.createElement('output');status.setAttribute('aria-live','polite');bar.append(status);
+    button.addEventListener('click',async()=>{
+      const url=new URL(location.href);url.hash='';
+      try {if(navigator.share){await navigator.share({title:document.title,url:url.href});return;}
+        await navigator.clipboard.writeText(url.href);status.textContent=words[3];
+      } catch(error) {if(error.name!=='AbortError')window.prompt(words[4],url.href);}
+    });
+  }
+  function addNavigation() {
+    const toolbar=document.getElementById('cpa-four-language-toolbar');if(!toolbar)return;
+    const words=navigationCopy[locale()],home=toolbar.querySelector('.cpa-four-language-brand');
+    home.setAttribute('aria-label',words[0]);home.title=words[0];
+    home.querySelector('span').textContent='⌂';home.querySelector('b').textContent=words[0];
+    if(!neutralRoute())return;
+    const main=document.querySelector('main')||document.body;
+    const headings=[...main.querySelectorAll('h2,h3')].filter(h=>!h.closest('nav,aside,footer,[data-article-comments]'));
+    if(!headings.length)return;
+    const select=document.createElement('select');select.className='cpa-chapter-select';select.setAttribute('aria-label',words[1]);
+    select.add(new Option(words[1],''));
+    const targets=[];
+    for(const heading of headings){
+      const label=heading.textContent.trim().replace(/\s+/g,' ');if(!label)continue;
+      if(!heading.id){let n=targets.length+1;while(document.getElementById('cpa-section-'+n))n++;heading.id='cpa-section-'+n;}
+      select.add(new Option(label,heading.id));targets.push(heading);
+    }
+    select.addEventListener('change',()=>{const target=document.getElementById(select.value);if(!target)return;
+      for(let parent=target.parentElement;parent;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;
+      target.style.scrollMarginTop=(toolbar.getBoundingClientRect().height+16)+'px';
+      target.scrollIntoView({block:'start',behavior:'auto'});history.replaceState(null,'','#'+encodeURIComponent(target.id));
+    });
+    toolbar.querySelector('.cpa-four-language-actions').prepend(select);
   }
   function render(manifest){if(document.getElementById("cpa-four-language-toolbar"))return;const language=locale(),words=copy[language],route=neutralRoute(),routes=manifest?.routes?.[route]||{},toolbar=document.createElement("aside");toolbar.id="cpa-four-language-toolbar";toolbar.setAttribute("aria-label",words.aria);const navigation=Object.keys(localeNames).map(k=>{const href=routes[k];if(!href)return`<span aria-disabled="true" title="${words.unavailable}">${localeNames[k]}</span>`;return`<a href="${href}" hreflang="${k}"${language===k?' aria-current="page"':''}>${localeNames[k]}</a>`}).join("");toolbar.innerHTML=`<a class="cpa-four-language-brand" href="${ROOT}"><span aria-hidden="true">♥</span><b>${words.brand}</b><small>${words.official}</small></a><div class="cpa-four-language-actions"><span class="cpa-four-language-views" hidden aria-live="polite"><span>◉ ${words.views}</span><b>—</b></span><nav class="cpa-four-language-nav" aria-label="${words.aria}">${navigation}</nav></div>`;document.body.prepend(toolbar);document.querySelectorAll(".public-view-count-article,#cpa-page-views,[data-lx-counter],[data-km-view-counter]").forEach(n=>n.remove());recordOrReadView(route,toolbar.querySelector(".cpa-four-language-views")).then(data=>renderEngagement(route,data))}
-  async function init(){let manifest=null;try{const r=await fetch(ROUTES_URL,{cache:"no-store"});if(r.ok)manifest=await r.json()}catch(_){}render(manifest)}
+  async function init(){let manifest=null;try{const r=await fetch(ROUTES_URL,{cache:"no-store"});if(r.ok)manifest=await r.json()}catch(_){}render(manifest);addNavigation()}
   document.readyState==="loading"?document.addEventListener("DOMContentLoaded",init,{once:true}):init();
 })();

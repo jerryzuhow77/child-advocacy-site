@@ -1,8 +1,37 @@
 {
-  "version": 11,
-  "generatedAt": "2026-09-03T03:20:01Z",
+  "version": 13,
+  "generatedAt": "2026-09-04T23:55:00Z",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
+    {
+      "id": "critical-seventeen-days-20260904",
+      "publishedAt": "2026-09-04",
+      "title": {
+        "zh-Hant": "《關鍵的倒數十七天》",
+        "zh-Hans": "《关键的倒数十七天》",
+        "en": "The Critical Seventeen-Day Countdown",
+        "ja": "決定的な17日間"
+      },
+      "summary": {
+        "zh-Hant": "得知第四顆牙掉落後，持續追蹤的是單據，還是孩子？把判決書所載LINE對話放回12月7日至24日的時間線。",
+        "zh-Hans": "得知第四颗牙掉落后，持续追踪的是单据，还是孩子？把判决书所载LINE对话放回12月7日至24日的时间线。",
+        "en": "After the fourth tooth was reported missing, what was followed up—the paperwork, or the child?",
+        "ja": "4本目の歯が抜けた後、追跡されたのは書類か、子どもか。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/features/social-observation/critical-seventeen-days-20260904/",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/features/social-observation/critical-seventeen-days-20260904/zh-Hans/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/features/social-observation/critical-seventeen-days-20260904/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/features/social-observation/critical-seventeen-days-20260904/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/critical-seventeen-days-threads-zh-Hant-20260904.webp",
+      "imageAlt": {
+        "zh-Hant": "《關鍵的倒數十七天》多元觀察主視覺：第四顆牙、單據與孩子安全的證詞比對",
+        "zh-Hans": "《关键的倒数十七天》多元观察主视觉：第四颗牙、单据与儿童安全的证词比对",
+        "en": "Multiple Perspectives artwork comparing testimony about the fourth tooth, paperwork, and the child's safety",
+        "ja": "4本目の歯、書類、子どもの安全に関する証言を照合する『決定的な17日間』のメインビジュアル"
+      }
+    },
     {
       "id": "kaikai-court-question-20260903",
       "publishedAt": "2026-09-03",

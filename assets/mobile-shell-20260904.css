@@ -84,7 +84,7 @@
 
   .art-header .nav > nav {
     top: calc(58px + env(safe-area-inset-top, 0px)) !important;
-    max-height: calc(100dvh - 58px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) !important;
+    max-height: calc(100dvh - 58px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom)) !important;
   }
 
   .art-header nav > .language-switcher {
