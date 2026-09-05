@@ -1,6 +1,9 @@
 name: Deploy Hong Kong alliance-dialogues route
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - ops/hk-alliance-dialogues-proxy-20260905
