@@ -9,6 +9,9 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 BASE = '/child-advocacy-site/'
 LOCALES = {'zh-Hant', 'zh-Hans', 'en', 'ja'}
+MONOLINGUAL_ROUTES = {
+    'cases/kaikai/features/rescue-windows/': {'zh-Hant'},
+}
 routes = json.loads((ROOT / 'data/four-language-routes.json').read_text())['routes']
 errors = []
 physical = set()
@@ -31,8 +34,9 @@ def read(url):
     return path, path.read_text(encoding='utf-8')
 
 for route, editions in routes.items():
-    if set(editions) != LOCALES:
-        errors.append(f'{route}: missing locales {LOCALES-set(editions)}')
+    expected_locales = MONOLINGUAL_ROUTES.get(route, LOCALES)
+    if set(editions) != expected_locales:
+        errors.append(f'{route}: missing locales {expected_locales-set(editions)}')
     for locale, url in editions.items():
         path, text = read(url)
         physical.add(path)
@@ -44,7 +48,7 @@ for route, editions in routes.items():
         for marker in ('data-cpa-four-language-toolbar-style', 'data-cpa-four-language-toolbar-flag', 'data-cpa-four-language-toolbar-script'):
             if marker not in text:
                 errors.append(f'{path.relative_to(ROOT)}: missing {marker}')
-        for alternate in LOCALES:
+        for alternate in expected_locales:
             if f'hreflang="{alternate}"' not in text:
                 errors.append(f'{path.relative_to(ROOT)}: missing alternate {alternate}')
 
