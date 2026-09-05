@@ -9,7 +9,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ARTICLE_ROUTE = "news/kaikai-court-question-20260903/";
 const BASE = "https://jerryzuhow77.github.io/child-advocacy-site/";
 const PUBLIC_ROOT = "/child-advocacy-site/";
-const VERSION = "20260905-1";
+const VERSION = "20260905-4";
 const SOURCE_PATH = path.join(ROOT, ARTICLE_ROUTE, "index.html");
 
 const editions = {
