@@ -37,13 +37,13 @@ jobs:
           for region, host in hosts.items():
               result["signals"][region] = {}
               for path in paths:
-                  entry = {}
                   for attempt in range(2):
+                      entry = {}
                       try:
                           req = urllib.request.Request(host + path, headers={"User-Agent": "PublicWallReadOnlyMonitor/1", "Accept": "application/json"})
                           with opener.open(req, timeout=15) as response:
-                              body = response.read(4000001)
                               entry = {"http": response.status}
+                              body = response.read(4000001)
                           if len(body) > 4000000:
                               entry["error"] = "response_too_large"
                               break
@@ -58,7 +58,7 @@ jobs:
                           if exc.code < 500:
                               break
                       except Exception as exc:
-                          entry = {"error": type(exc).__name__}
+                          entry["error"] = type(exc).__name__
                       if attempt == 0:
                           time.sleep(2)
                   result["signals"][region][path] = entry
