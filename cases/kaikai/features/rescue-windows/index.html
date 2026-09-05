@@ -24,7 +24,7 @@ main{max-width:1120px;margin:auto;padding:4rem 1rem}.lead{font-size:1.25rem;max-
 .windows{display:grid;gap:1rem}.window{display:grid;grid-template-columns:150px 1fr;gap:1.4rem;padding:1.35rem;background:rgba(239,231,214,.95);color:#182526;border-left:4px solid var(--cinnabar);border-radius:4px 16px 16px 4px;box-shadow:0 12px 30px rgba(0,0,0,.2)}
 .when{color:#7a2e28;font-weight:700}.window h3{margin:0 0 .35rem;font-size:1.3rem}.window p{margin:.35rem 0}.tags{display:flex;flex-wrap:wrap;gap:.35rem}.tags span{border:1px solid #8e7750;border-radius:999px;padding:.08rem .55rem;font-size:.8rem}.testimony{margin-top:1rem;padding-top:.9rem;border-top:1px solid rgba(116,48,41,.25)}.testimony h4{margin:0 0 .55rem;color:#743029}.excerpt{margin:.45rem 0;padding:.7rem .85rem;background:#fffaf0;border-left:3px solid var(--gold)}.excerpt b{color:#61332d}.excerpt small{display:block;color:#655f55}.crosscheck{margin-top:.65rem;padding:.7rem .85rem;background:#e4eee8;border-radius:8px}.crosscheck b{color:#204b45}.responsibility{margin-top:.65rem;padding:.85rem .95rem;color:#fff8e9;background:#743029;border-radius:8px}.responsibility>b{display:block;margin-bottom:.35rem;color:#f1d38c}.responsibility span{display:block;margin-top:.3rem}.responsibility strong{color:#ffe29a}
 .chain{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}.chain article{padding:1.4rem;border-top:3px solid var(--gold);background:rgba(17,42,43,.82)}.chain h3{color:#e9cf91}
-.witness-picker{position:sticky;top:4.2rem;z-index:8;display:flex;align-items:center;gap:.8rem;margin:0 0 1.4rem;padding:.9rem 1rem;background:rgba(17,42,43,.96);border:1px solid var(--line);border-radius:12px;backdrop-filter:blur(12px)}.witness-picker label{color:#efd28e;font-weight:700}.witness-picker select{flex:1;min-width:0;padding:.6rem .75rem;color:var(--paper);background:#16292b;border:1px solid var(--gold);border-radius:8px;font:inherit}.roster{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}.person{scroll-margin-top:9rem;padding:1rem;background:rgba(236,226,205,.96);color:#1d2928;border:2px solid transparent;border-radius:12px;transition:.25s}.person b{display:block;color:#743029}.person a{color:#5d4823}.witness-highlight{display:block;margin-top:.65rem;padding:.65rem .7rem;background:#fff8e8;border-left:3px solid var(--gold);line-height:1.65}.witness-highlight mark{color:#682a24;background:linear-gradient(transparent 58%,#efd27a 58%);font-weight:700}.qa-line{display:block;margin-top:.45rem}.qa-line strong{display:inline;color:#743029}.person.is-focus{border-color:#a63b32;box-shadow:0 0 0 4px rgba(184,149,82,.3),0 12px 30px rgba(0,0,0,.28);transform:translateY(-2px)}
+.witness-picker{position:sticky;top:4.2rem;z-index:8;display:flex;align-items:center;gap:.8rem;margin:0;padding:.9rem 1rem;background:rgba(17,42,43,.96);border:1px solid var(--line);border-radius:12px 12px 0 0;backdrop-filter:blur(12px)}.witness-picker label{color:#efd28e;font-weight:700}.witness-picker select{flex:1;min-width:0;padding:.6rem .75rem;color:var(--paper);background:#16292b;border:1px solid var(--gold);border-radius:8px;font:inherit}.witness-dialogue-panel{margin:0 0 1.5rem;padding:1.1rem 1.2rem;color:#192827;background:rgba(244,236,218,.98);border:1px solid var(--line);border-top:0;border-radius:0 0 14px 14px;box-shadow:0 14px 28px rgba(0,0,0,.2)}.witness-dialogue-panel h3{margin:0;color:#743029}.witness-dialogue-panel p{margin:.55rem 0}.witness-dialogue-panel .dialogue-label{display:inline-block;margin-right:.45rem;padding:.05rem .45rem;color:#fff8e9;background:#743029;border-radius:4px;font-weight:700}.witness-dialogue-panel mark{color:#682a24;background:linear-gradient(transparent 58%,#efd27a 58%);font-weight:700}.roster{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}.person{scroll-margin-top:9rem;padding:1rem;background:rgba(236,226,205,.96);color:#1d2928;border:2px solid transparent;border-radius:12px;transition:.25s}.person b{display:block;color:#743029}.person a{color:#5d4823}.witness-highlight{display:block;margin-top:.65rem;padding:.65rem .7rem;background:#fff8e8;border-left:3px solid var(--gold);line-height:1.65}.witness-highlight mark{color:#682a24;background:linear-gradient(transparent 58%,#efd27a 58%);font-weight:700}.qa-line{display:block;margin-top:.45rem}.qa-line strong{display:inline;color:#743029}.person.is-focus{border-color:#a63b32;box-shadow:0 0 0 4px rgba(184,149,82,.3),0 12px 30px rgba(0,0,0,.28);transform:translateY(-2px)}
 .sources li{margin:.8rem 0}.legal{margin-top:5rem;border:1px solid #895149;background:rgba(72,27,25,.55);padding:1.4rem;border-radius:16px}
 footer{text-align:center;color:var(--muted);padding:3rem 1rem;border-top:1px solid var(--line)}
 @media(max-width:760px){.top .lang{display:none}.hero{min-height:70vh;background-position:62% center}.window{grid-template-columns:1fr}.chain,.roster{grid-template-columns:1fr}.hero h1{font-size:3rem}.witness-picker{top:3.7rem;align-items:stretch;flex-direction:column}}
@@ -61,7 +61,8 @@ footer{text-align:center;color:var(--muted);padding:3rem 1rem;border-top:1px sol
 </div><div class="finding"><b>本站判讀：</b>目前證據較能支持「資訊控制＋未獨立查證＋責任分散」形成救援阻斷鏈；是否具有共同掩飾、包庇或主觀故意，不能僅憑現有旁聽整理下結論。</div></section>
 
 <section id="witnesses"><header class="section-head"><small>ALL COURT WITNESSES</small><h2>兩案證人，不是彼此孤立的聲音</h2></header>
-<div class="witness-picker"><label for="witnessSelect">選擇證人、畫出重點</label><select id="witnessSelect"><option value="">顯示全部證人</option></select></div>
+<div class="witness-picker"><label for="witnessSelect">24名證人及被告重要說法</label><select id="witnessSelect"><option value="">請選擇姓名</option></select></div>
+<section class="witness-dialogue-panel" id="witnessDialoguePanel" aria-live="polite"><h3>從下拉選單選擇一人</h3><p>選取後，這裡會直接呈現重要提問與庭上說法摘錄要旨，不必開啟完整證詞。</p></section>
 <h3>陳尚潔案一審｜13名證人</h3><div class="roster">
 <div class="person"><b>01 徐珮華</b>社福與轉介鏈</div>
 <div class="person"><b>02 施盈如</b>政府端主責與轉托</div>
@@ -168,6 +169,7 @@ const witnessQuestions={
 };
 const witnessCards=[...document.querySelectorAll("#witnesses .person")];
 const witnessSelect=document.getElementById("witnessSelect");
+const witnessDialoguePanel=document.getElementById("witnessDialoguePanel");
 witnessCards.forEach((card,i)=>{
  const name=card.querySelector("b").textContent.replace(/^\d+\s*/,"").split("｜")[0].trim();
  const key=Object.keys(witnessHighlights).find(k=>name.includes(k));
@@ -186,7 +188,15 @@ witnessCards.forEach((card,i)=>{
 });
 witnessSelect.addEventListener("change",e=>{
  witnessCards.forEach(card=>card.classList.toggle("is-focus",card.id===e.target.value));
- if(e.target.value)document.getElementById(e.target.value)?.scrollIntoView({behavior:"smooth",block:"center"});
+ const card=document.getElementById(e.target.value);
+ if(!card){
+  witnessDialoguePanel.innerHTML="<h3>從下拉選單選擇一人</h3><p>選取後，這裡會直接呈現重要提問與庭上說法摘錄要旨，不必開啟完整證詞。</p>";
+  return;
+ }
+ const name=card.querySelector("b").textContent.replace(/^\d+\s*/,"").split("｜")[0].trim();
+ const key=Object.keys(witnessHighlights).find(k=>name.includes(k));
+ witnessDialoguePanel.innerHTML='<h3>'+name+'</h3><p><span class="dialogue-label">問</span>'+witnessQuestions[key]+'</p><p><span class="dialogue-label">答</span>'+witnessHighlights[key]+'</p><small>摘錄要旨依官網旁聽整理編寫；不是法院核發的逐字稿，證明力仍由法院判斷。</small>';
+ witnessDialoguePanel.scrollIntoView({behavior:"smooth",block:"center"});
 });
 document.getElementById("jump").addEventListener("change",e=>{if(e.target.value)document.getElementById(e.target.value)?.scrollIntoView()});
 </script>
