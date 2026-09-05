@@ -1,5 +1,39 @@
 (function(){
   'use strict';
+
+  // GitHub Pages cannot redirect by request country at the edge. Resolve only
+  // the visitor's country code, then preserve the locale/deep link when a
+  // mainland visitor should use the Hong Kong mirror.
+  (function redirectMainlandVisitor(){
+    var mainHost='jerryzuhow77.github.io';
+    var mainPrefix='/child-advocacy-site';
+    var hongKongOrigin='https://cn.globalprotectionwall.com';
+    if(window.location.hostname!==mainHost)return;
+    if(window.location.pathname!==mainPrefix&&window.location.pathname.indexOf(mainPrefix+'/')!==0)return;
+
+    var controller=typeof AbortController==='function'?new AbortController():null;
+    var timeout=window.setTimeout(function(){if(controller)controller.abort();},3500);
+    fetch('https://api.country.is/',{
+      method:'GET',
+      mode:'cors',
+      credentials:'omit',
+      cache:'no-store',
+      signal:controller?controller.signal:undefined
+    }).then(function(response){
+      if(!response.ok)throw new Error('country lookup failed');
+      return response.json();
+    }).then(function(result){
+      if(String(result&&result.country||'').toUpperCase()!=='CN')return;
+      var mirrorPath=window.location.pathname.slice(mainPrefix.length)||'/';
+      if(mirrorPath.charAt(0)!=='/')mirrorPath='/'+mirrorPath;
+      window.location.replace(hongKongOrigin+mirrorPath+window.location.search+window.location.hash);
+    }).catch(function(){
+      // Keep the primary site usable when country lookup is unavailable.
+    }).then(function(){
+      window.clearTimeout(timeout);
+    });
+  })();
+
   if(window.__cpaSiteQaLoader)return;
   window.__cpaSiteQaLoader=true;
 
