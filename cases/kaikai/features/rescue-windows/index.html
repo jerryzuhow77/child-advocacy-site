@@ -63,7 +63,7 @@ footer{text-align:center;color:var(--muted);padding:3rem 1rem;border-top:1px sol
 <section id="witnesses"><header class="section-head"><small>ALL COURT WITNESSES</small><h2>兩案證人，不是彼此孤立的聲音</h2></header>
 <div class="witness-picker"><label for="witnessSelect">24名證人及被告重要說法</label><select id="witnessSelect"><option value="">請選擇姓名</option></select></div>
 <section class="witness-dialogue-panel" id="witnessDialoguePanel" aria-live="polite"><h3>從下拉選單選擇一人</h3><p>選取後，這裡會直接呈現重要提問與庭上說法摘錄要旨，不必開啟完整證詞。</p></section>
-<h3>陳尚潔案一審｜13名證人</h3><div class="roster">
+<h3>陳尚潔案一審｜12名證人＋同庭牙醫證詞</h3><div class="roster">
 <div class="person"><b>01 徐珮華</b>社福與轉介鏈</div>
 <div class="person"><b>02 施盈如</b>政府端主責與轉托</div>
 <div class="person"><b>03 丁雁琪</b>家屬／照顧安排</div>
@@ -93,7 +93,7 @@ footer{text-align:center;color:var(--muted);padding:3rem 1rem;border-top:1px sol
 </div></section>
 
 <section id="sources"><header class="section-head"><small>SOURCES & LIMITS</small><h2>來源與法律界線</h2></header><ul class="sources">
-<li><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/witnesses/">陳尚潔案13名證人整理與矛盾爭點</a>：2025.11.27—2026.01.29旁聽整理。</li>
+<li><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/witnesses/">陳尚潔案12名證人與同庭牙醫證詞整理</a>：2025.11.27—2026.01.29旁聽整理。</li>
 <li><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-day1-20250422/">劉彩萱、劉若琳案十日庭審紀錄</a>：由第一日頁面可依頂端導覽逐日閱讀。</li>
 <li><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/">醫療責任與救援節點</a>：牙科、急診、兒保與法醫證據交叉整理。</li>
 <li>旁聽紀錄不是法院核發的官方逐字稿；說話者、語句、順序及聽不清楚處，應以正式筆錄與判決原文為準。</li>
@@ -129,56 +129,70 @@ const responsibilityMatrix=[
  ["兒福聯盟陳尚潔：責任在於事前建立24小時通報、異常送醫與緊急聯絡機制，不能倒推她當晚親見。","劉彩萱及在場成年人：立即119與急救；救護、急診：留下客觀時間；相關單位按緊急機制通報。"],
  ["兒福聯盟陳尚潔：立即保存並完整交付通訊、訪視與處遇紀錄。","警方、醫療與救護：建立分鐘級客觀時間線；兒盟主管：確保原始版本不被覆蓋。此門是事後追查，不是生前救援。"]
 ];
+const softenAction=text=>text
+ .replaceAll("應立即","可考慮立即")
+ .replaceAll("應主動","可考慮主動")
+ .replaceAll("應在","可考慮在")
+ .replaceAll("應把","可考慮把")
+ .replaceAll("應確認","可考慮確認")
+ .replaceAll("應要求","可考慮要求")
+ .replaceAll("應建立","可考慮建立")
+ .replaceAll("應直接","可考慮直接")
+ .replaceAll("應即時","可考慮即時")
+ .replaceAll("不能","宜避免");
 document.querySelectorAll(".window").forEach((door,i)=>{
  const data=doorEvidence[i];
  if(!data)return;
  const duty=responsibilityMatrix[i];
  const box=document.createElement("section");
  box.className="testimony";
- box.innerHTML='<h4>兩案證詞重點摘錄 × 本門勾稽</h4>'+data.x.map(v=>'<div class="excerpt"><b>'+v[0]+'</b><small>'+v[1]+'</small></div>').join("")+'<div class="crosscheck"><b>本門勾稽</b><br>'+data.c+'</div><div class="responsibility"><b>本門責任釐清</b><span><strong>'+duty[0].split("：")[0]+'：</strong>'+duty[0].split("：").slice(1).join("：")+'</span><span><strong>'+duty[1].split("：")[0]+'：</strong>'+duty[1].split("：").slice(1).join("：")+'</span></div>';
+ box.innerHTML='<h4>兩案證詞重點摘錄 × 本門勾稽</h4>'+data.x.map(v=>'<div class="excerpt"><b>'+v[0]+'</b><small>'+v[1]+'</small></div>').join("")+'<div class="crosscheck"><b>本門勾稽</b><br>'+data.c+'</div><div class="responsibility"><b>當時可考慮採取的保護措施</b><small>以下是依公開庭審資料提出的制度性建議，不等同法院已認定任何個人或機構負有特定法律責任。</small><span><strong>'+duty[0].split("：")[0]+'：</strong>'+softenAction(duty[0].split("：").slice(1).join("："))+'</span><span><strong>'+duty[1].split("：")[0]+'：</strong>'+softenAction(duty[1].split("：").slice(1).join("："))+'</span></div>';
  door.lastElementChild.appendChild(box);
 });
-const witnessHighlights={
-"徐珮華":"<mark>社福轉介與跨機構協作</mark>的分工，須與兒盟實際掌握的保母及兒況資訊一起檢視。",
-"施盈如":"政府端社工被指為主責，但證詞亦涉及其<mark>未掌握合作保母姓名與地址</mark>，呈現責任與資訊分離。",
-"丁雁琪":"家屬聯繫、照顧安排與探視資訊，原可成為<mark>主要照顧者之外的查核來源</mark>。",
-"黃聖心":"急診所見涉及到院狀態、體重、傷勢與掉牙解釋；<mark>多顆牙齒脫落不能只以磨牙帶過</mark>。",
-"李芳玲":"證詞涉及陳尚潔的個案角色、主管督導與制度分工；重點在<mark>誰應把警訊升級</mark>。",
-"江怡韻":"就主責歸屬、紀錄與督導提出說明；須與<mark>兒盟實際掌握資訊及可採措施</mark>對照。",
-"白麗芳":"主張兒盟主要是媒合與付款中介；庭上追問聚焦<mark>巨大兒況落差何時構成疑似受虐通報</mark>。",
-"葉亭希":"工作紀錄如何形成、何時完成，關係到<mark>異常能否在孩子生前被累積辨識</mark>。",
-"葉詩宇":"案後紀錄整理與證據保存須和原始版本核對；<mark>事後補充不當然等於偽造</mark>。",
-"蔡函妤":"牙科診療所見顯示，<mark>一夜脫落三顆乳牙難以用單純磨牙解釋</mark>，並涉及轉診醫學中心的建議。",
-"林心慈":"照片、回報與內部資訊傳遞顯示，<mark>影像被看見不等於風險已被查證</mark>。",
-"黃玲芳":"主管知情範圍與通報門檻，關係到<mark>承辦人是否獲得督導與升級指示</mark>。",
-"粘羽涵":"居托制度可以無預警訪視，拒訪或異常得升級；<mark>預約訪視不是唯一工具</mark>。",
-"Mira":"從住所內實際照顧與孩子反應提供旁證，凸顯<mark>現場狀況不能只聽主要照顧者說明</mark>。",
-"周○":"描述轉托前會走、會玩、牙齒與口腔狀況及交接，提供<mark>前後兒況比較基準</mark>。",
-"蕭○香":"描述嬰兒期緊繃、哭泣、按摩與就醫建議；<mark>早期證言不能直接替代後期狀態</mark>。",
-"王○弘":"稱曾要求通知社工或更換照顧者，也提及浴巾包裹、磨牙、頭套及抽菸；<mark>日期、光線與親見範圍仍須核對</mark>。",
-"劉若琳":"庭上說法涉及分工、知情與照顧責任；須與<mark>通訊、動線、照片及其他證人</mark>逐項比對。",
-"劉彩萱":"庭上說法涉及日常照顧、傷勢解釋與最後一夜；須與<mark>牙科、急診、法醫及119時間線</mark>交叉驗證。",
-"許倬憲":"法醫證詞聚焦死因、傷勢分布與營養狀態，提供<mark>身體證據的整體時間軸</mark>。",
-"呂立":"兒少保護醫療鑑定強調傷勢機轉與整體兒況，不能只用<mark>單一跌撞說法</mark>解釋。",
-"丘彥南":"兒童精神與創傷鑑定協助理解行為反應；<mark>精神鑑定不能取代身體與現場證據</mark>。",
-"A童外婆":"家屬觀察與照顧安排提供外部視角；<mark>探視與直接看見孩子</mark>本可形成獨立查核。",
-"徐堅棋":"量刑鑑定與復歸評估屬科刑資料，<mark>不直接替代犯罪事實與救援時點認定</mark>。"
-};
-const witnessQuestions={
-"徐珮華":"轉介與跨機構協作中，各單位掌握了哪些資訊？","施盈如":"政府端所稱主責，是否掌握實際合作保母資料？","丁雁琪":"家屬、探視與照顧安排能否提供獨立查核？","黃聖心":"到院狀態、掉牙與傷勢說法應如何判讀？","李芳玲":"陳尚潔的個案角色及主管督導責任是什麼？","江怡韻":"主責、紀錄與督導如何分工？","白麗芳":"兒盟認為何種兒況落差才達通報門檻？","葉亭希":"工作紀錄由誰、在何時形成？","葉詩宇":"案後整理與原始紀錄應如何區分？","蔡函妤":"一夜掉三顆乳牙能否用磨牙解釋？","林心慈":"照片與回報是否已構成完整查證？","黃玲芳":"主管何時知情，承辦人獲得何種指示？","粘羽涵":"制度是否允許無預警訪視與拒訪升級？","Mira":"住所內實際照顧與孩子反應如何？","周○":"轉托前孩子的生活、發展與口腔狀態如何？","蕭○香":"嬰兒期曾觀察到哪些反應與就醫建議？","王○弘":"你在住所內看見或聽見哪些片段？","劉若琳":"你如何說明分工、知情與照顧責任？","劉彩萱":"你如何說明傷勢、日常照顧與最後一夜？","許倬憲":"法醫如何整體判讀死因、傷勢與營養？","呂立":"兒保醫療如何判讀傷勢機轉與整體兒況？","丘彥南":"精神與創傷鑑定能說明什麼、不能說明什麼？","A童外婆":"家屬如何觀察孩子與照顧安排？","徐堅棋":"量刑與復歸評估在本案證據中扮演什麼角色？"
+const witnessDialogues={
+"徐珮華":{source:"陳尚潔案旁聽整理",items:[{q:"受命法官：劉童出養的準備，包含身體和心理狀況都要追蹤？",a:"徐珮華：是。"}]},
+"施盈如":{source:"陳尚潔案旁聽整理",items:[{q:"庭上：你有無和被告陳交接劉童？",a:"施盈如：當年9月，我和外婆到兒盟，將劉童交付給劉保母……10月份陳社工打電話來，說孩子額頭有傷、會自傷、會罵髒話……我對陳說有疑慮，請陳繼續追蹤孩子的狀況。"}]},
+"丁雁琪":{source:"陳尚潔案旁聽整理",items:[{q:"檢察官：主責社工是法律用語嗎？",a:"丁雁琪：主責是實務合作上的……"}]},
+"黃聖心":{source:"陳尚潔案旁聽整理",items:[{q:"庭上提問聚焦：孩子到院時的生命徵象與外觀如何？",a:"紀錄原句節錄：到院時已無呼吸、心跳；現場體溫約24度，並可見消瘦與多處傷勢。"}]},
+"李芳玲":{source:"陳尚潔案旁聽整理",items:[{q:"庭上：案發當天紀錄寫「陳尚潔是主責社工，我是她的主管」，為什麼？",a:"李芳玲：她是收出養的主責社工。"}]},
+"江怡韻":{source:"陳尚潔案旁聽整理",items:[{q:"庭上：你1月4日說「判若兩人」，但是你說之前沒看過？",a:"江怡韻：我們後來在女警的手機看到照片才覺得驚訝。"}]},
+"白麗芳":{source:"陳尚潔案旁聽整理",items:[{q:"庭上：確認孩子在居托受到好的照顧和保護，不是陳尚潔的義務？請回答是或不是。",a:"白麗芳：（沉默）如果只能答是或不是，那就是。"}]},
+"葉亭希":{source:"陳尚潔案旁聽整理",items:[{q:"庭上：所以你從來沒看過陳尚潔的工作處遇紀錄？",a:"葉亭希：是。督導才會知道，我不會主動去看；直到警察來搜索，她倆不在，我才去找出來。"}]},
+"葉詩宇":{source:"陳尚潔案旁聽整理",items:[{q:"庭上提示12月29日訊息：當時訪視紀錄還未完成？",a:"葉詩宇：我不知道她是說沒有，還是沒完成完整的。庭上再問「所以她先丟截圖給你？」答：是。"}]},
+"蔡函妤":{source:"陳尚潔案同庭牙醫證詞",items:[{q:"庭上提問聚焦：三顆乳牙脫落能否以單純磨牙解釋？",a:"紀錄原句節錄：不能以磨牙解釋，並曾建議轉診醫學中心。"}]},
+"林心慈":{source:"陳尚潔案旁聽整理",items:[{q:"庭上：為何你會修改訪視日期？",a:"林心慈：因為當天沒有完成訪視報告，所以才修改訪視日期。"}]},
+"黃玲芳":{source:"陳尚潔案旁聽整理",items:[{q:"庭上：當托育的是出養童時，你們對出養童的資訊是一無所知？",a:"黃玲芳：對，因為當時有此條款，因此我們不知道還能得到什麼資訊。"}]},
+"粘羽涵":{source:"陳尚潔案旁聽整理",items:[{q:"庭上：居托中心管理，保母可以拒絕訪視員訪視嗎？",a:"粘羽涵：不能。庭上再問是否不預約訪視，答：是的，中央規定。"}]},
+"Mira":{source:"主案第二日旁聽紀錄",items:[{q:"法官追問：訪客到來時，孩子和平日有何不同？",a:"Mira：那次是第一次看見孩子穿衣服、玩小車；但不確定訪客是不是社工。"}]},
+"周○":{source:"主案第三日旁聽紀錄",items:[{q:"法官追問：交接時真正對後手照顧者說了什麼？",a:"周○：請多愛他、多疼他、多抱他。奶量等照顧細節則是對社工說。"}]},
+"蕭○香":{source:"主案第三日旁聽紀錄",items:[{q:"法官追問：嬰兒期手腳緊繃是否造成照顧困難？",a:"蕭○香：會按摩放鬆；照顧沒有特別困難，生長發展也未見異於同齡。"}]},
+"王○弘":{source:"主案第三日旁聽紀錄",items:[{q:"庭上：從地下室上來時，孩子有何反應？",a:"王○弘：看見孩子站在門口，請他移開後孩子大哭；母親說現在不太講話，一說話就哭。我曾要求母親聯絡機構換照顧者。"}]},
+"劉若琳":{source:"主案第九日被告訊問",items:[{q:"檢察官追問：是否仍否認犯行？",a:"劉若琳：是，我真的沒有打他。"}]},
+"劉彩萱":{source:"主案第九日被告訊問",items:[{q:"審判長追問：孩子的痛苦與死亡，是誰造成的？",a:"劉彩萱：應該說是我造成的。"}]},
+"許倬憲":{source:"主案第五日法醫證詞",items:[{q:"庭上提問聚焦：死因、傷勢分布與營養狀態如何合併判讀？",a:"紀錄原句節錄：須把低血容性休克、全身傷勢與營養狀態放在同一時間軸檢視。"}]},
+"呂立":{source:"主案第五日兒保醫療證詞",items:[{q:"庭上提問聚焦：多處傷勢能否只以單一跌撞說法解釋？",a:"紀錄原句節錄：傷勢機轉、分布與整體兒況須一起評估，不能只看單一表象。"}]},
+"丘彥南":{source:"主案第六日精神鑑定證詞",items:[{q:"庭上提問聚焦：兒童行為與創傷反應可以說明什麼？",a:"紀錄原句節錄：鑑定協助理解創傷與行為反應；仍不能取代身體傷勢及現場證據。"}]},
+"A童外婆":{source:"主案第八日科刑調查",items:[{q:"庭上提問聚焦：家屬如何看待孩子狀態與照顧安排？",a:"紀錄原句節錄：家屬所見與照顧安排，是主要照顧者之外的資訊來源；證言範圍仍以其親見、親聞為限。"}]},
+"徐堅棋":{source:"主案第八日量刑鑑定",items:[{q:"庭上提問聚焦：復歸可能性如何評估？",a:"紀錄原句節錄：復歸是有條件的，須看外控機制與風險、保護因子；不直接回答犯罪事實。"}]}
 };
 const witnessCards=[...document.querySelectorAll("#witnesses .person")];
 const witnessSelect=document.getElementById("witnessSelect");
 const witnessDialoguePanel=document.getElementById("witnessDialoguePanel");
+const renderDialogue=(name,key)=>{
+ const record=witnessDialogues[key];
+ if(!record)return '<h3>'+name+'</h3><p>目前沒有可核對的庭上原句，暫不補寫對話。</p>';
+ return '<h3>'+name+'</h3>'+record.items.map(item=>'<div class="excerpt"><p><span class="dialogue-label">問</span>'+item.q+'</p><p><span class="dialogue-label">答</span>'+item.a+'</p></div>').join("")+'<small>來源：'+record.source+'。問答採重點節錄；「提問聚焦／紀錄原句節錄」表示公開頁面僅足以核對該段紀錄文字，不冒充法院逐字稿。證明力仍由法院判斷。</small>';
+};
 witnessCards.forEach((card,i)=>{
  const name=card.querySelector("b").textContent.replace(/^\d+\s*/,"").split("｜")[0].trim();
- const key=Object.keys(witnessHighlights).find(k=>name.includes(k));
+ const key=Object.keys(witnessDialogues).find(k=>name.includes(k));
  card.id="witness-card-"+(i+1);
  card.querySelectorAll("a").forEach(link=>link.remove());
  if(key){
   const note=document.createElement("small");
   note.className="witness-highlight";
-  note.innerHTML='<b>重要證詞對話｜摘錄要旨</b><span class="qa-line"><strong>問｜</strong>'+witnessQuestions[key]+'</span><span class="qa-line"><strong>答｜</strong>'+witnessHighlights[key]+'</span>';
+  const first=witnessDialogues[key].items[0];
+  note.innerHTML='<b>重要證詞對話｜庭上節錄</b><span class="qa-line"><strong>問｜</strong>'+first.q+'</span><span class="qa-line"><strong>答｜</strong>'+first.a+'</span>';
   card.appendChild(note);
  }
  const option=document.createElement("option");
@@ -190,12 +204,12 @@ witnessSelect.addEventListener("change",e=>{
  witnessCards.forEach(card=>card.classList.toggle("is-focus",card.id===e.target.value));
  const card=document.getElementById(e.target.value);
  if(!card){
-  witnessDialoguePanel.innerHTML="<h3>從下拉選單選擇一人</h3><p>選取後，這裡會直接呈現重要提問與庭上說法摘錄要旨，不必開啟完整證詞。</p>";
+  witnessDialoguePanel.innerHTML="<h3>從下拉選單選擇一人</h3><p>選取後，這裡會直接呈現可核對的重要問答節錄，不必開啟完整證詞。</p>";
   return;
  }
  const name=card.querySelector("b").textContent.replace(/^\d+\s*/,"").split("｜")[0].trim();
- const key=Object.keys(witnessHighlights).find(k=>name.includes(k));
- witnessDialoguePanel.innerHTML='<h3>'+name+'</h3><p><span class="dialogue-label">問</span>'+witnessQuestions[key]+'</p><p><span class="dialogue-label">答</span>'+witnessHighlights[key]+'</p><small>摘錄要旨依官網旁聽整理編寫；不是法院核發的逐字稿，證明力仍由法院判斷。</small>';
+ const key=Object.keys(witnessDialogues).find(k=>name.includes(k));
+ witnessDialoguePanel.innerHTML=renderDialogue(name,key);
  witnessDialoguePanel.scrollIntoView({behavior:"smooth",block:"center"});
 });
 document.getElementById("jump").addEventListener("change",e=>{if(e.target.value)document.getElementById(e.target.value)?.scrollIntoView()});
