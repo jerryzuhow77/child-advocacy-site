@@ -35,7 +35,7 @@
     var previousOverflow = '';
 
     try { shownBefore = window.localStorage.getItem(promptSeenKey) === '1'; } catch (error) { /* Keep the first-visit reminder available without storage. */ }
-    if ((directToForm || shownBefore) && !forcePrompt) return;
+    if (!forcePrompt || directToForm || shownBefore) return;
 
     function rememberPrompt() {
       if (forcePrompt) return;
