@@ -6,6 +6,7 @@ on:
       - main
   push:
     branches:
+      - main
       - ops/hk-alliance-dialogues-proxy-20260905
     paths:
       - .github/workflows/deploy-hk-alliance-dialogues.yml
