@@ -143,8 +143,10 @@ jobs:
           RELEASE_SHA: ${{ github.sha }}
         run: |
           set -Eeuo pipefail
-          cat hk-child-advocacy-site.tgz | ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" \
-            "sudo RELEASE_SHA='$RELEASE_SHA' bash -s" <<'REMOTE'
+          archive="/tmp/hk-child-advocacy-site-$RELEASE_SHA.tgz"
+          scp -i ~/.ssh/hk_key -P "$PORT" hk-child-advocacy-site.tgz "$USER@$HOST:$archive"
+          ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" \
+            "sudo RELEASE_SHA='$RELEASE_SHA' ARCHIVE='$archive' bash -s" <<'REMOTE'
           set -Eeuo pipefail
           base=/srv/child-advocacy-site
           release="$base/releases/$RELEASE_SHA"
@@ -152,12 +154,11 @@ jobs:
           if [ ! -d "$release" ]; then
             rm -rf "$staging"
             mkdir -p "$staging"
-            tar -xzf - -C "$staging"
+            tar -xzf "$ARCHIVE" -C "$staging"
             test -s "$staging/child-advocacy-site/index.html"
             mv "$staging" "$release"
-          else
-            cat >/dev/null
           fi
+          rm -f "$ARCHIVE"
           ln -sfn "$release" "$base/current.next"
           mv -Tf "$base/current.next" "$base/current"
           REMOTE
