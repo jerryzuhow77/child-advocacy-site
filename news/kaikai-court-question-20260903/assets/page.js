@@ -9,7 +9,7 @@ const readingLabels = {
 };
 const readingLanguage = new URLSearchParams(location.search).get('lang') === 'zh-Hans' ? 'zh-Hans' : document.documentElement.lang;
 const readingTurns = [...document.querySelectorAll('.exchange')];
-[0,20,26,46,54,64].forEach((index, group) => {
+[0,20,26,45,53,63].forEach((index, group) => {
   if (!readingTurns[index]) return;
   const heading = document.createElement('h3');
   heading.className = 'testimony-topic';
