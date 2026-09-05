@@ -444,7 +444,7 @@ main {
   margin: 0 auto;
   font-family: var(--serif);
   font-size: clamp(1.08rem, 1.4vw, 1.22rem);
-  line-height: 2.08;
+  line-height: 1.9;
 }
 
 .essay-body > p {
@@ -763,7 +763,7 @@ main {
   align-self: start;
   padding: 0.35rem 0.65rem;
   border-radius: 13px 10px 15px 11px;
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   font-weight: 850;
   text-align: center;
 }
@@ -1199,6 +1199,26 @@ footer a {
     opacity: 1;
     transform: none;
   }
+}
+
+.testimony-topic { margin: 2rem 0 0; padding: 1rem 0; border-bottom: 2px solid var(--blue); font-size: 1.2rem; line-height: 1.6; color: var(--ink); }
+.exchange:has(.speaker.witness) { border-left: 3px solid var(--rose); padding-left: 1rem; }
+.exchange:has(.speaker.judge), .exchange:has(.speaker.associate), .exchange:has(.speaker.chief) { border-left: 3px solid var(--blue); padding-left: 1rem; }
+.exchange:has(.speaker.prosecutor) { border-left: 3px solid var(--sage); padding-left: 1rem; }
+.exchange:has(.speaker.defense) { border-left: 3px solid var(--clay); padding-left: 1rem; }
+.testimony-annotation { display: block; margin: .4rem 0; color: var(--ink-soft); font-size: .9rem; font-weight: 400; }
+.turning-point .testimony-annotation { color: #fff; }
+@media (max-width: 640px) {
+  .hero { display: flex; flex-direction: column; align-items: stretch; gap: 2rem; padding: 2rem 1rem 3rem; }
+  .hero-copy { order: 0; opacity: 1; transform: none; }
+  .hero-art { order: 1; width: 100%; }
+  .hero h1 { font-size: clamp(2rem, 8.5vw, 2.8rem); line-height: 1.35; letter-spacing: -.035em; }
+  .hero-lede { margin-top: 1.25rem; font-size: 1.125rem; }
+  .hero-actions { margin-top: 1.5rem; }
+  .essay-body, .exchange p { font-size: 1.125rem; line-height: 1.9; }
+  .essay-body > p { margin-bottom: 1.4em; }
+  .dropcap::first-letter { float: none; margin: 0; font: inherit; color: inherit; }
+  .record-details summary strong { font-size: 1.05rem; line-height: 1.6; }
 }
 
 @media print {

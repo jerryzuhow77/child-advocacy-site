@@ -143,7 +143,7 @@ jobs:
               source = path.read_text(encoding='utf-8')
               assert source.count('class="exchange') == 74, f'{language} courtroom-question edition must preserve all 74 speaker turns.'
               assert source.count('<details class="record-details') == 2, f'{language} courtroom-question edition must preserve both testimony sections.'
-              assert '20260905-mobile-1' in source, f'{language} courtroom-question edition must request the mobile-fix assets.'
+              assert '20260905-reading-1' in source, f'{language} courtroom-question edition must request the mobile-fix assets.'
               for hreflang in ('zh-Hant', 'zh-Hans', 'en', 'ja'):
                   assert f'hreflang="{hreflang}"' in source, f'{language} courtroom-question edition is missing {hreflang} alternate.'
           assert 'not an official verbatim transcript released by the court' in question_pages['en'].read_text(encoding='utf-8')
