@@ -1,6 +1,47 @@
 /* Shared legal and source-context notice for article pages. */
 (function(){
   'use strict';
+
+  // Route mainland visitors to the complete Hong Kong advocacy mirror. This
+  // shared layer is loaded by home, index and article entry points.
+  (function redirectMainlandVisitor(){
+    if(window.__cpaMainlandMirrorRedirectLoaded)return;
+    window.__cpaMainlandMirrorRedirectLoaded=true;
+    var mainHost='jerryzuhow77.github.io';
+    var mainPrefix='/child-advocacy-site';
+    var hongKongBase='https://cn.globalprotectionwall.com/child-advocacy-site';
+    if(window.location.hostname!==mainHost)return;
+    if(window.location.pathname!==mainPrefix&&window.location.pathname.indexOf(mainPrefix+'/')!==0)return;
+
+    function redirectIfMainland(country){
+      if(String(country||'').toUpperCase()!=='CN')return;
+      var mirrorPath=window.location.pathname.slice(mainPrefix.length)||'/';
+      if(mirrorPath.charAt(0)!=='/')mirrorPath='/'+mirrorPath;
+      window.location.replace(hongKongBase+mirrorPath+window.location.search+window.location.hash);
+    }
+
+    var cacheKey='cpa-country-code-v1';
+    try{
+      var cached=window.sessionStorage.getItem(cacheKey);
+      if(cached){redirectIfMainland(cached);return;}
+    }catch(ignore){}
+
+    var controller=typeof AbortController==='function'?new AbortController():null;
+    var timeout=window.setTimeout(function(){if(controller)controller.abort();},3500);
+    fetch('https://api.country.is/',{
+      method:'GET',mode:'cors',credentials:'omit',cache:'no-store',
+      signal:controller?controller.signal:undefined
+    }).then(function(response){
+      if(!response.ok)throw new Error('country lookup failed');
+      return response.json();
+    }).then(function(result){
+      var country=String(result&&result.country||'').toUpperCase();
+      try{if(country)window.sessionStorage.setItem(cacheKey,country);}catch(ignore){}
+      redirectIfMainland(country);
+    }).catch(function(){
+      // Keep the primary site usable when country lookup is unavailable.
+    }).then(function(){window.clearTimeout(timeout);});
+  })();
   if(window.__cpaLegalNoticeLoaded)return;
   window.__cpaLegalNoticeLoaded=true;
   var path=location.pathname.toLowerCase(),lang=(document.documentElement.lang||'').toLowerCase();
