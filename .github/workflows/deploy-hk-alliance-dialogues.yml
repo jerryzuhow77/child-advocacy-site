@@ -12,6 +12,7 @@ on:
       - .github/workflows/deploy-hk-alliance-dialogues.yml
 
 permissions:
+  # Retry route deployment and expose its PR check status.
   contents: read
 
 jobs:
