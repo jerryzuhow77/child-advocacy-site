@@ -1,8 +1,37 @@
 {
-  "version": 14,
+  "version": 15,
   "generatedAt": "2026-09-05T01:45:00Z",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
+    {
+      "id": "alliance-dialogues-20260905",
+      "publishedAt": "2026-09-05",
+      "title": {
+        "zh-Hant": "兒盟內部人員說了什麼？",
+        "zh-Hans": "儿盟内部人员说了什么？",
+        "en": "What did CWLF staff say? (Chinese source text)",
+        "ja": "児童福祉連盟の内部で何が語られたか（中国語原文）"
+      },
+      "summary": {
+        "zh-Hant": "多元觀察｜內部訊息、庭上勘驗與被告陳述的時間軸勾稽。",
+        "zh-Hans": "多元观察｜内部讯息、庭上勘验与被告陈述的时间轴勾稽。",
+        "en": "Multiple Perspectives: a timeline comparing internal messages and courtroom accounts.",
+        "ja": "多角的考察：内部メッセージと法廷での説明を時系列で照合。"
+      },
+      "url": {
+        "zh-Hant": "https://chen-witness-evidence-timeline.jerryzuhow77.chatgpt.site/alliance-dialogues",
+        "zh-Hans": "https://chen-witness-evidence-timeline.jerryzuhow77.chatgpt.site/alliance-dialogues",
+        "en": "https://chen-witness-evidence-timeline.jerryzuhow77.chatgpt.site/alliance-dialogues",
+        "ja": "https://chen-witness-evidence-timeline.jerryzuhow77.chatgpt.site/alliance-dialogues"
+      },
+      "image": "https://chen-witness-evidence-timeline.jerryzuhow77.chatgpt.site/shuimo-embroidery-mobile.png",
+      "imageAlt": {
+        "zh-Hant": "Ink wash and embroidery",
+        "zh-Hans": "Ink wash and embroidery",
+        "en": "Ink wash and embroidery",
+        "ja": "Ink wash and embroidery"
+      }
+    },
     {
       "id": "critical-seventeen-days-20260904",
       "publishedAt": "2026-09-04",
@@ -53,12 +82,12 @@
         "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/news/kaikai-court-question-20260903/",
         "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/news/kaikai-court-question-20260903/"
       },
-      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/guardian-clay-symbols-20260905.webp",
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/assets/kaikai-paper-clay-striped-v2.webp",
       "imageAlt": {
-        "zh-Hant": "陶土愛心、星光與守護符號",
-        "zh-Hans": "陶土爱心、星光与守护符号",
-        "en": "Clay hearts, stars and symbols of protection",
-        "ja": "粘土のハートと星、見守りを表すモチーフ"
+        "zh-Hant": "《那一聲質問，落在每一個大人的心上》莫蘭迪紙雕陶土主視覺",
+        "zh-Hans": "《那一声质问，落在每一个大人的心上》莫兰迪纸雕陶土主视觉",
+        "en": "Morandi paper-cut and clay artwork for The Question That Landed in Every Adult's Heart",
+        "ja": "『あの問いは、すべての大人の心に落ちた』のモランディ調切り絵・クレイアート"
       }
     },
     {
@@ -267,12 +296,12 @@
         "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/news/kaikai-court-question-20260903/",
         "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/news/kaikai-court-question-20260903/"
       },
-      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/guardian-clay-symbols-20260905.webp",
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/assets/kaikai-paper-clay-striped-v2.webp",
       "imageAlt": {
-        "zh-Hant": "陶土愛心、星光與守護符號",
-        "zh-Hans": "陶土爱心、星光与守护符号",
-        "en": "Clay hearts, stars and symbols of protection",
-        "ja": "粘土のハートと星、見守りを表すモチーフ"
+        "zh-Hant": "《那一聲質問，落在每一個大人的心上》莫蘭迪紙雕陶土主視覺",
+        "zh-Hans": "《那一声质问，落在每一个大人的心上》莫兰迪纸雕陶土主视觉",
+        "en": "Morandi paper-cut and clay artwork for The Question That Landed in Every Adult's Heart",
+        "ja": "『あの問いは、すべての大人の心に落ちた』のモランディ調切り絵・クレイアート"
       }
     },
     {
