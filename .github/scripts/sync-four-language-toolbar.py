@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = "/child-advocacy-site/"
-VERSION = "20260904-3"
+VERSION = "20260905-1"
 EXCLUDED_ROOTS = {"child-advocacy-site", "child-advocacy-site-main", "source", "handoffs", "global-protection-wall"}
 EXCLUDED_FILES = {"offline.html", "google5c94bbe55c53b683.html"}
 CSS_MARKER = "data-cpa-four-language-toolbar-style"

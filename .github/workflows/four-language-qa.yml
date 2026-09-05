@@ -104,7 +104,7 @@ jobs:
           for asset in ('assets/four-language-toolbar-20260901.js', 'assets/article-comments-20260828.js', 'assets/home-post-engagement-20260826.js', 'assets/site-base-20260823.js'):
               assert canonical_wall_api in (root / asset).read_text(encoding='utf-8'), f'Canonical wall API missing from {asset}'
           assert 'cpa-four-language-toolbar' in toolbar
-          assert 'four-language-routes.json?v=20260904-3' in toolbar, 'The toolbar and generated route manifest must share a fresh cache key.'
+          assert 'four-language-routes.json?v=20260905-1' in toolbar, 'The toolbar and generated route manifest must share a fresh cache key.'
           assert 'parts.filter(part => part.toLowerCase() !== "zh-hans")' in comments, 'Comment keys must ignore physical locale route segments.'
           assert 'COMMENT_INDEX_ROUTES' in toolbar and 'attempts++<40' in toolbar, 'Unsupported comment pages must not poll indefinitely.'
           assert 'else setTimeout(go,120)' not in toolbar, 'The comment scroll retry must stay bounded.'
@@ -123,8 +123,25 @@ jobs:
               'news/lin-xinci-nexttv-20260902/zh-Hans/index.html',
               'en/news/lin-xinci-nexttv-20260902/index.html', 'ja/news/lin-xinci-nexttv-20260902/index.html'))
           assert all(term in localized_art for term in ('纸雕与黏土', 'paper-cut and clay', '紙彫刻と粘土造形')), 'Localized artwork descriptions must match the paper-cut and clay replacement.'
-          assert routes['version'] == '20260904-3'
+          assert routes['version'] == '20260905-1'
           assert set(routes['routes']['']) == {'zh-Hant', 'zh-Hans', 'en', 'ja'}
+          question_route = routes['routes']['news/kaikai-court-question-20260903/']
+          assert set(question_route) == {'zh-Hant', 'zh-Hans', 'en', 'ja'}, 'The courtroom-question article must have four physical language editions.'
+          question_pages = {
+              'zh-Hant': root / 'news/kaikai-court-question-20260903/index.html',
+              'zh-Hans': root / 'news/kaikai-court-question-20260903/zh-Hans/index.html',
+              'en': root / 'en/news/kaikai-court-question-20260903/index.html',
+              'ja': root / 'ja/news/kaikai-court-question-20260903/index.html',
+          }
+          for language, path in question_pages.items():
+              source = path.read_text(encoding='utf-8')
+              assert source.count('class="exchange') == 74, f'{language} courtroom-question edition must preserve all 74 speaker turns.'
+              assert source.count('<details class="record-details') == 2, f'{language} courtroom-question edition must preserve both testimony sections.'
+              for hreflang in ('zh-Hant', 'zh-Hans', 'en', 'ja'):
+                  assert f'hreflang="{hreflang}"' in source, f'{language} courtroom-question edition is missing {hreflang} alternate.'
+          assert 'not an official verbatim transcript released by the court' in question_pages['en'].read_text(encoding='utf-8')
+          assert '裁判所が公表した公式逐語録でも、裁判所の認定でもありません' in question_pages['ja'].read_text(encoding='utf-8')
+          assert '不是法院公布的官方逐字稿，也不是法院认定' in question_pages['zh-Hans'].read_text(encoding='utf-8')
           import re
           cache_version = re.search(r"const VERSION = '([^']+)';", sw)
           assert cache_version, 'Service worker cache version is missing.'

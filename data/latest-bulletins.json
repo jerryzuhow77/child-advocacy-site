@@ -1,6 +1,6 @@
 {
-  "version": 13,
-  "generatedAt": "2026-09-04T23:55:00Z",
+  "version": 14,
+  "generatedAt": "2026-09-05T01:45:00Z",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
     {
@@ -38,26 +38,26 @@
       "title": {
         "zh-Hant": "《那一聲質問，落在每一個大人的心上》",
         "zh-Hans": "《那一声质问，落在每一个大人的心上》",
-        "en": "That Question Fell on Every Adult's Heart",
+        "en": "The Question That Landed in Every Adult's Heart",
         "ja": "あの問いは、すべての大人の心に落ちた"
       },
       "summary": {
         "zh-Hant": "法官的質問越過法庭，落向台灣社會每一個看見兒少警訊的大人。",
         "zh-Hans": "法官的质问越过法庭，落向台湾社会每一个看见儿童警讯的大人。",
-        "en": "The judge's question reaches beyond the courtroom to every adult who may see a child in danger.",
-        "ja": "裁判官の問いは法廷を越え、子どもの危険信号を見るかもしれないすべての大人へ向けられます。"
+        "en": "The complete translated sequence in which Bai Lifang was repeatedly questioned about recognizing abuse, reporting suspicion, visits, and protective responsibility.",
+        "ja": "虐待の認識、疑いの通報、訪問、保護責任について白麗芳が繰り返し問われた質疑を、傍聴メモから全編翻訳。"
       },
       "url": {
         "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/",
-        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/?lang=zh-Hans",
-        "en": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/",
-        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/"
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/zh-Hans/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/news/kaikai-court-question-20260903/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/news/kaikai-court-question-20260903/"
       },
       "image": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/assets/kaikai-paper-clay-striped-v2.webp",
       "imageAlt": {
         "zh-Hant": "《那一聲質問，落在每一個大人的心上》莫蘭迪紙雕陶土主視覺",
         "zh-Hans": "《那一声质问，落在每一个大人的心上》莫兰迪纸雕陶土主视觉",
-        "en": "Morandi paper-cut and clay artwork for That Question Fell on Every Adult's Heart",
+        "en": "Morandi paper-cut and clay artwork for The Question That Landed in Every Adult's Heart",
         "ja": "『あの問いは、すべての大人の心に落ちた』のモランディ調切り絵・クレイアート"
       }
     },
@@ -241,37 +241,37 @@
     {
       "id": "kaikai-court-question-20260903",
       "publishedAt": "2026-09-03",
-      "tag": "COURT OBSERVATION",
+      "tag": "MULTIPLE PERSPECTIVES",
       "className": "is-kaikai-court-question",
       "badge": {
-        "zh-Hant": "法院旁聽・責任通報",
-        "zh-Hans": "法院旁听・责任通报",
-        "en": "Court observation · Mandatory reporting",
-        "ja": "裁判傍聴・通告義務"
+        "zh-Hant": "多元觀察・責任通報",
+        "zh-Hans": "多元观察・责任通报",
+        "en": "Multiple Perspectives · Mandatory reporting",
+        "ja": "多角的考察・義務通報"
       },
       "title": {
         "zh-Hant": "《那一聲質問，落在每一個大人的心上》",
         "zh-Hans": "《那一声质问，落在每一个大人的心上》",
-        "en": "That Question Fell on Every Adult's Heart",
+        "en": "The Question That Landed in Every Adult's Heart",
         "ja": "あの問いは、すべての大人の心に落ちた"
       },
       "summary": {
         "zh-Hant": "從三顆掉落的乳牙與法官的追問，釐清責任通報的法律界限。",
         "zh-Hans": "从三颗掉落的乳牙与法官的追问，厘清责任通报的法律界限。",
-        "en": "Three lost baby teeth, the judge's question, and the legal boundary of mandatory reporting.",
-        "ja": "三本の乳歯、裁判官の問い、そして通告義務の法的境界を整理します。"
+        "en": "The complete translated questioning about recognizing abuse, reporting suspicion, visits, and protective responsibility.",
+        "ja": "虐待の認識、疑いの通報、訪問、保護責任をめぐる質疑の全編翻訳。"
       },
       "url": {
         "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/",
-        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/?lang=zh-Hans",
-        "en": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/",
-        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/"
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/zh-Hans/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/news/kaikai-court-question-20260903/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/news/kaikai-court-question-20260903/"
       },
       "image": "https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/assets/kaikai-paper-clay-striped-v2.webp",
       "imageAlt": {
         "zh-Hant": "《那一聲質問，落在每一個大人的心上》莫蘭迪紙雕陶土主視覺",
         "zh-Hans": "《那一声质问，落在每一个大人的心上》莫兰迪纸雕陶土主视觉",
-        "en": "Morandi paper-cut and clay artwork for That Question Fell on Every Adult's Heart",
+        "en": "Morandi paper-cut and clay artwork for The Question That Landed in Every Adult's Heart",
         "ja": "『あの問いは、すべての大人の心に落ちた』のモランディ調切り絵・クレイアート"
       }
     },
