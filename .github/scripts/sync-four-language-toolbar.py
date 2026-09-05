@@ -5,11 +5,14 @@ from __future__ import annotations
 
 import json
 import re
+import html
 from pathlib import Path
+from urllib.parse import urljoin, urlsplit, parse_qsl, urlencode
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = "/child-advocacy-site/"
-VERSION = "20260905-1"
+VERSION = "20260905-4"
+COMMENT_VERSION = "20260905-comment-key-3"
 EXCLUDED_ROOTS = {"child-advocacy-site", "child-advocacy-site-main", "source", "handoffs", "global-protection-wall"}
 EXCLUDED_FILES = {"offline.html", "google5c94bbe55c53b683.html"}
 CSS_MARKER = "data-cpa-four-language-toolbar-style"
@@ -18,6 +21,7 @@ JS_MARKER = "data-cpa-four-language-toolbar-script"
 CSS_TAG = f'<link {CSS_MARKER} rel="stylesheet" href="{BASE}assets/four-language-toolbar-20260901.css?v={VERSION}">'
 FLAG_TAG = f'<script {FLAG_MARKER}>window.__cpaFourLanguageToolbar=true;</script>'
 JS_TAG = f'<script {JS_MARKER} src="{BASE}assets/four-language-toolbar-20260901.js?v={VERSION}"></script>'
+LEGAL_TAG = f'<script data-cpa-legal-notice-script src="{BASE}assets/legal-notice.js?v=20260905-footer-1"></script>'
 
 
 def active_html_files() -> list[Path]:
@@ -81,6 +85,8 @@ def is_noindex(text: str) -> bool:
 
 
 def inject(path: Path, text: str) -> str:
+    text = re.sub(r'<link\b[^>]*' + CSS_MARKER + r'[^>]*>', lambda _: CSS_TAG, text, flags=re.I)
+    text = re.sub(r'<script\b[^>]*' + JS_MARKER + r'[^>]*>\s*</script>', lambda _: JS_TAG, text, flags=re.I)
     if CSS_MARKER not in text and re.search(r"</head>", text, re.I):
         text = re.sub(r"</head>", CSS_TAG + "\n</head>", text, count=1, flags=re.I)
     if FLAG_MARKER not in text and re.search(r"</head>", text, re.I):
@@ -88,6 +94,49 @@ def inject(path: Path, text: str) -> str:
     if JS_MARKER not in text and re.search(r"</body>", text, re.I):
         text = re.sub(r"</body>", JS_TAG + "\n</body>", text, count=1, flags=re.I)
     return text
+
+
+def sync_legal_note(text: str) -> str:
+    pattern = r'<script\b[^>]*data-cpa-legal-notice-script[^>]*>\s*</script>'
+    if re.search(pattern, text, re.I):
+        return re.sub(pattern, lambda _: LEGAL_TAG, text, flags=re.I)
+    return re.sub(r'</body>', lambda _: LEGAL_TAG + '\n</body>', text, count=1, flags=re.I)
+
+
+def localize_links(path: Path, text: str, routes: dict) -> str:
+    locale = html_locale(path, text)
+    if locale == 'zh-Hant':
+        return text
+    reverse = {urlsplit(url).path: route for route, editions in routes.items() for url in editions.values()}
+    base = 'https://jerryzuhow77.github.io' + public_url(path, locale)
+    def anchor(match):
+        opening, label, ending = match.groups()
+        if re.search(r'\b(?:hreflang|lang|data-language|data-hans|data-hant)\b', opening):
+            return match.group()
+        if re.sub('<[^>]+>', '', label).strip() in {'繁', '简', '繁中', '简中', 'EN', '日本語'}:
+            return match.group()
+        href = re.search(r'\bhref=(["\'])([^"\']*)\1', opening)
+        if not href or href.group(2).startswith('#'):
+            return match.group()
+        url = urlsplit(urljoin(base, html.unescape(href.group(2))))
+        if url.netloc != 'jerryzuhow77.github.io':
+            return match.group()
+        route = reverse.get(re.sub(r'index\.html$', '', url.path))
+        fragment = url.fragment
+        if route == '' and fragment == 'news-hearing-notes':
+            route, fragment = 'hearing-records/', ''
+        target = routes.get(route, {}).get(locale)
+        if not target:
+            return match.group()
+        target_url = urlsplit(target)
+        query = dict(parse_qsl(url.query)); query.pop('lang', None)
+        query.update(dict(parse_qsl(target_url.query)))
+        target = target_url.path + ('?' + urlencode(query) if query else '') + ('#' + fragment if fragment else '')
+        if target == url.path + ('?' + url.query if url.query else '') + ('#' + url.fragment if url.fragment else ''):
+            return match.group()
+        opening = opening[:href.start(2)] + html.escape(target, quote=True) + opening[href.end(2):]
+        return opening + label + ending
+    return re.sub(r'(<a\b[^>]*>)([\s\S]*?)(</a>)', anchor, text, flags=re.I)
 
 
 def main() -> None:
@@ -116,8 +165,17 @@ def main() -> None:
     for path in files:
         original = read_html(path)
         if is_noindex(original):
+            refreshed = sync_legal_note(original).replace('20260903-comment-key-2', COMMENT_VERSION)
+            if refreshed != original:
+                write_html(path, refreshed)
+                changed += 1
             continue
-        updated = inject(path, original)
+        updated = sync_legal_note(localize_links(path, inject(path, original), routes)).replace('20260903-comment-key-2', COMMENT_VERSION)
+        route = neutral_route(path, html_locale(path, original))
+        if route in routes:
+            updated = re.sub(r'<link\b(?=[^>]*rel=["\']alternate["\'])(?=[^>]*hreflang=)[^>]*>\s*', '', updated, flags=re.I)
+            alternates = '\n'.join(f'<link rel="alternate" hreflang="{locale}" href="https://jerryzuhow77.github.io{url}">' for locale, url in sorted(routes[route].items()))
+            updated = re.sub(r'</head>', lambda _: alternates + '\n</head>', updated, count=1, flags=re.I)
         if updated != original:
             write_html(path, updated)
             changed += 1

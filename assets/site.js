@@ -12,8 +12,8 @@
 
   var current=document.currentScript&&document.currentScript.src?document.currentScript.src:'';
   var base=current?current.slice(0,current.lastIndexOf('/')+1):'./assets/';
-  var version='20260828-layered-toolbar-first-click-1';
-  var commentVersion='20260903-comment-key-2';
+  var version='20260905-language-ready-1';
+  var commentVersion='20260905-comment-key-3';
   function load(name,marker,done,assetVersion){
     var existing=document.querySelector('script[data-cpa-site-layer="'+marker+'"]');
     if(existing){if(done)done();return;}

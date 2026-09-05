@@ -6,12 +6,17 @@
   document.documentElement.classList.add("cpa-four-language-toolbar-active");
 
   const ROOT = "/child-advocacy-site/";
-  const ROUTES_URL = `${ROOT}data/four-language-routes.json?v=20260905-1`;
+  const ROUTES_URL = `${ROOT}data/four-language-routes.json?v=20260905-4`;
   const ENGAGEMENT_API = "https://global-protection.jerryzuhow77.chatgpt.site/api/public/view-count";
   const WORKER_API = "https://sweet-art-bed8child-advocacy-page-views.jerryzuhow77.workers.dev/views";
   const BOOKMARK_KEY = "cpa_article_bookmarks_v1";
   const LIKED_KEY = "cpa_engagement_liked_v1";
-  const COMMENT_INDEX_ROUTES = new Set(["", "about", "social", "cases", "hearing-records", "activity-records", "activity-records/albums", "court-comics", "global-protection-wall"]);
+  const COMMENT_INDEX_ROUTES = new Set(["", "about", "social", "news", "cases", "hearing-records", "activity-records", "activity-records/albums", "court-comics", "global-protection-wall"]);
+  function boundedFetch(url, options = {}) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 12000);
+    return fetch(url, {...options, signal: controller.signal}).finally(() => clearTimeout(timer));
+  }
   const localeNames = { "zh-Hant": "繁中", "zh-Hans": "简中", en: "EN", ja: "日本語" };
   const copy = {
     "zh-Hant": { brand:"護童行動聯盟",official:"官方網站",views:"瀏覽",unavailable:"尚未提供此語言版本",aria:"四語頂端工具列",like:"按讚",comment:"留言",bookmark:"收藏",bookmarked:"已收藏" },
@@ -25,30 +30,30 @@
   function neutralRoute(){let p=location.pathname.replace(/^\/child-advocacy-site\/?/i,"").replace(/index\.html$/i,"").replace(/^\/+|\/+$/g,"");const parts=p.split("/").filter(Boolean);if(/^(?:en|ja|zh-hans|zh-hant)$/i.test(parts[0]||""))parts.shift();const l=locale();if((l==="en"||l==="ja")&&parts[parts.length-1]?.toLowerCase()===l)parts.pop();p=parts.filter(x=>!/^zh-hans$/i.test(x)).join("/");return p?`${p}/`:""}
   function articleKey(route){const slug=route.replace(/\/+$/g,"").toLowerCase().replace(/[^a-z0-9_-]+/g,"-").replace(/-+/g,"-").replace(/^-|-$/g,"");return slug?`official-${slug}`:"homepage-all-languages-v1"}
   function format(value){const l=locale(),tag=l==="zh-Hans"?"zh-CN":l==="zh-Hant"?"zh-TW":l;try{return new Intl.NumberFormat(tag).format(value)}catch(_){return String(value)}}
-  async function request(key,payload={action:"read"}){const r=await fetch(ENGAGEMENT_API,{method:"POST",cache:"no-store",credentials:"omit",headers:{"content-type":"application/json"},body:JSON.stringify({...payload,channel:"official-article",articleKey:key})});if(!r.ok)throw new Error(`engagement ${r.status}`);return r.json()}
-  async function recordOrReadView(route,element){if(!route||document.querySelector("[data-home-view-counter]"))return null;const key=articleKey(route),seen=`cpa_article_viewed_${key}`;let inc=true;try{inc=!sessionStorage.getItem(seen)}catch(_){};try{if(inc)sessionStorage.setItem(seen,"pending");const data=await request(key,{action:inc?"view":"read",clientId:clientId()});const value=Number(data.viewCount);if(!Number.isFinite(value)||value<0)throw new Error("invalid counter");if(inc)sessionStorage.setItem(seen,"1");element.querySelector("b").textContent=format(value);element.hidden=false;return data}catch(_){try{if(inc)sessionStorage.removeItem(seen)}catch(_){}}try{const slug=key.replace(/^official-/,"");const r=await fetch(`${WORKER_API}?page=${encodeURIComponent(`page-${slug}`)}&increment=0&ts=${Date.now()}`,{cache:"no-store",credentials:"omit"});const d=await r.json(),value=Number(d.count);if(r.ok&&Number.isFinite(value)&&value>=0){element.querySelector("b").textContent=format(value);element.hidden=false}}catch(_){}return null}
+  async function request(key,payload={action:"read"}){const r=await boundedFetch(ENGAGEMENT_API,{method:"POST",cache:"no-store",credentials:"omit",headers:{"content-type":"application/json"},body:JSON.stringify({...payload,channel:"official-article",articleKey:key})});if(!r.ok)throw new Error(`engagement ${r.status}`);return r.json()}
+  async function recordOrReadView(route,element){if(!route||document.querySelector("[data-home-view-counter]"))return null;const key=articleKey(route),seen=`cpa_article_viewed_${key}`;let inc=true;try{inc=!sessionStorage.getItem(seen)}catch(_){};try{if(inc)sessionStorage.setItem(seen,"pending");const data=await request(key,{action:inc?"view":"read",clientId:clientId()});const value=Number(data.viewCount);if(!Number.isFinite(value)||value<0)throw new Error("invalid counter");if(inc)sessionStorage.setItem(seen,"1");element.querySelector("b").textContent=format(value);element.hidden=false;return data}catch(_){try{if(inc)sessionStorage.removeItem(seen)}catch(_){}}try{const slug=key.replace(/^official-/,"");const r=await boundedFetch(`${WORKER_API}?page=${encodeURIComponent(`page-${slug}`)}&increment=0&ts=${Date.now()}`,{cache:"no-store",credentials:"omit"});const d=await r.json(),value=Number(d.count);if(r.ok&&Number.isFinite(value)&&value>=0){element.querySelector("b").textContent=format(value);element.hidden=false}}catch(_){}return null}
   function setFromStorage(name,key,value=true){try{const set=new Set(JSON.parse(localStorage.getItem(name)||"[]"));value?set.add(key):set.delete(key);localStorage.setItem(name,JSON.stringify([...set].slice(-300)));return set.has(key)}catch(_){return false}}
   function hasStored(name,key){try{return new Set(JSON.parse(localStorage.getItem(name)||"[]")).has(key)}catch(_){return false}}
-  function isArticle(){return !!document.querySelector('meta[property="og:type"][content="article"]')}
-  function supportsComments(route){const path=route.replace(/\/+$/g,"");const articleRoute=/^(?:cases|hearing-records|activity-records|features|historical-cases)\//.test(path);const articleMetadata=!!document.querySelector('meta[property="og:type"][content="article"],script[type="application/ld+json"]');return !COMMENT_INDEX_ROUTES.has(path)&&(articleRoute||articleMetadata)}
-  function ensureComments(){if(document.querySelector('script[data-cpa-site-layer="article-comments"]'))return;const s=document.createElement("script");s.src=`${ROOT}assets/article-comments-20260828.js?v=20260903-comment-key-2`;s.defer=true;s.dataset.cpaSiteLayer="article-comments";document.head.appendChild(s)}
+  function isArticle(){return supportsComments(neutralRoute())}
+  function supportsComments(route){const path=route.replace(/\/+$/g,"");const articleRoute=/^(?:cases|hearing-records|activity-records|features|historical-cases|news|court-comics)\//.test(path);const articleMetadata=!!document.querySelector('meta[property="og:type"][content="article"],script[type="application/ld+json"]');return !COMMENT_INDEX_ROUTES.has(path)&&(articleRoute||articleMetadata)}
+  function ensureComments(){if(document.querySelector('script[data-cpa-site-layer="article-comments"]'))return;const s=document.createElement("script");s.src=`${ROOT}assets/article-comments-20260828.js?v=20260905-comment-key-3`;s.defer=true;s.dataset.cpaSiteLayer="article-comments";document.head.appendChild(s)}
   function renderEngagement(route,initial){if(!route||!isArticle()||!supportsComments(route)||document.querySelector(".cpa-article-engagement"))return;const words=copy[locale()],key=articleKey(route),bar=document.createElement("section");bar.className="cpa-article-engagement";bar.setAttribute("aria-label",`${words.like}、${words.comment}、${words.bookmark}、${words.views}`);bar.innerHTML=`<button type="button" class="is-like" aria-pressed="false"><span>♡</span><b>${words.like}</b><em>—</em></button><button type="button" class="is-comment"><span>💬</span><b>${words.comment}</b><em>—</em></button><button type="button" class="is-bookmark" aria-pressed="false"><span>☆</span><b>${words.bookmark}</b></button><span class="is-view"><span>◉</span><b>${words.views}</b><em>—</em></span>`;
     const main=document.querySelector("main")||document.body,anchor=main.querySelector("article,.report-wrap")||main.firstElementChild;anchor?anchor.before(bar):main.prepend(bar);
     const like=bar.querySelector(".is-like"),comment=bar.querySelector(".is-comment"),bookmark=bar.querySelector(".is-bookmark"),view=bar.querySelector(".is-view em");
     const liked=hasStored(LIKED_KEY,key);like.setAttribute("aria-pressed",String(liked));if(liked)like.classList.add("is-active");
     const saved=hasStored(BOOKMARK_KEY,key);bookmark.setAttribute("aria-pressed",String(saved));bookmark.classList.toggle("is-active",saved);bookmark.querySelector("span").textContent=saved?"★":"☆";bookmark.querySelector("b").textContent=saved?words.bookmarked:words.bookmark;
     function paint(data){if(data){bar.querySelector(".is-like em").textContent=format(Number(data.likeCount)||0);bar.querySelector(".is-comment em").textContent=format(Number(data.commentCount)||0);view.textContent=format(Number(data.viewCount)||0)}}paint(initial);if(!initial)request(key).then(paint).catch(()=>{});
-    like.addEventListener("click",async()=>{if(like.getAttribute("aria-busy")==="true"||like.getAttribute("aria-pressed")==="true")return;like.setAttribute("aria-busy","true");try{const data=await request(key,{action:"like",clientId:clientId()});setFromStorage(LIKED_KEY,key,true);like.setAttribute("aria-pressed","true");like.classList.add("is-active");like.querySelector("em").textContent=format(Number(data.likeCount)||0)}catch(_){}finally{like.removeAttribute("aria-busy")}});
+    like.addEventListener("click",async()=>{if(like.getAttribute("aria-busy")==="true"||like.getAttribute("aria-pressed")==="true")return;like.setAttribute("aria-busy","true");try{const data=await request(key,{action:"like",clientId:clientId()});setFromStorage(LIKED_KEY,key,true);like.setAttribute("aria-pressed","true");like.classList.add("is-active");like.querySelector("em").textContent=format(Number(data.likeCount)||0)}catch(_){const status=bar.querySelector("output");if(status)status.textContent=navigationCopy[locale()][5]}finally{like.removeAttribute("aria-busy")}});
     bookmark.addEventListener("click",()=>{const next=bookmark.getAttribute("aria-pressed")!=="true";setFromStorage(BOOKMARK_KEY,key,next);bookmark.setAttribute("aria-pressed",String(next));bookmark.classList.toggle("is-active",next);bookmark.querySelector("span").textContent=next?"★":"☆";bookmark.querySelector("b").textContent=next?words.bookmarked:words.bookmark});
     comment.addEventListener("click",()=>{ensureComments();let attempts=0;const go=()=>{const target=document.querySelector("[data-article-comments]");if(target)target.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});else if(attempts++<40)setTimeout(go,120)};go()});
     ensureComments();
     addShare(bar);
   }
   const navigationCopy = {
-    'zh-Hant': ['回首頁','章節','分享','連結已複製','請複製連結'],
-    'zh-Hans': ['回首页','章节','分享','链接已复制','请复制链接'],
-    en: ['Home','Sections','Share','Link copied','Copy this link'],
-    ja: ['ホーム','目次','共有','リンクをコピーしました','リンクをコピー']
+    'zh-Hant': ['回首頁','章節','分享','連結已複製','請複製連結','目前無法按讚，請稍後再試。'],
+    'zh-Hans': ['回首页','章节','分享','链接已复制','请复制链接','目前无法点赞，请稍后再试。'],
+    en: ['Home','Sections','Share','Link copied','Copy this link','Unable to like right now. Please try again.'],
+    ja: ['ホーム','目次','共有','リンクをコピーしました','リンクをコピー','現在いいねを送信できません。後でもう一度お試しください。']
   };
   function addShare(bar) {
     const words=navigationCopy[locale()],button=document.createElement('button');
@@ -66,10 +71,23 @@
     const toolbar=document.getElementById('cpa-four-language-toolbar');if(!toolbar)return;
     const words=navigationCopy[locale()],home=toolbar.querySelector('.cpa-four-language-brand');
     home.setAttribute('aria-label',words[0]);home.title=words[0];
+    home.href=locale()==='en'||locale()==='ja'?ROOT+locale()+'/':ROOT+(locale()==='zh-Hans'?'?lang=zh-Hans':'');
     home.querySelector('span').textContent='⌂';home.querySelector('b').textContent=words[0];
+    if(!toolbar.dataset.languagePreferenceBound){
+      toolbar.dataset.languagePreferenceBound='true';
+      toolbar.addEventListener('click',event=>{
+        const link=event.target.closest('a[hreflang]');
+        if(link)try{localStorage.setItem('siteLang',link.hreflang)}catch(_){}
+      });
+    }
     if(!neutralRoute())return;
     const main=document.querySelector('main')||document.body;
-    const headings=[...main.querySelectorAll('h2,h3')].filter(h=>!h.closest('nav,aside,footer,[data-article-comments]'));
+    let headings=[...main.querySelectorAll('h2,h3')].filter(h=>!h.closest('nav,aside,footer,[data-article-comments]'));
+    if(headings.length>40&&headings.some(h=>h.tagName==='H2'))headings=headings.filter(h=>h.tagName==='H2');
+    const signature=headings.map(h=>h.textContent.trim()).join('\n');
+    if(toolbar.dataset.chapterSignature===signature)return;
+    toolbar.dataset.chapterSignature=signature;
+    toolbar.querySelector('.cpa-chapter-select')?.remove();
     if(!headings.length)return;
     const select=document.createElement('select');select.className='cpa-chapter-select';select.setAttribute('aria-label',words[1]);
     select.add(new Option(words[1],''));
@@ -85,8 +103,9 @@
       target.scrollIntoView({block:'start',behavior:'auto'});history.replaceState(null,'','#'+encodeURIComponent(target.id));
     });
     toolbar.querySelector('.cpa-four-language-actions').prepend(select);
+    if(location.hash)select.value=decodeURIComponent(location.hash.slice(1));
   }
-  function render(manifest){if(document.getElementById("cpa-four-language-toolbar"))return;const language=locale(),words=copy[language],route=neutralRoute(),routes=manifest?.routes?.[route]||{},toolbar=document.createElement("aside");toolbar.id="cpa-four-language-toolbar";toolbar.setAttribute("aria-label",words.aria);const navigation=Object.keys(localeNames).map(k=>{const href=routes[k];if(!href)return`<span aria-disabled="true" title="${words.unavailable}">${localeNames[k]}</span>`;return`<a href="${href}" hreflang="${k}"${language===k?' aria-current="page"':''}>${localeNames[k]}</a>`}).join("");toolbar.innerHTML=`<a class="cpa-four-language-brand" href="${ROOT}"><span aria-hidden="true">♥</span><b>${words.brand}</b><small>${words.official}</small></a><div class="cpa-four-language-actions"><span class="cpa-four-language-views" hidden aria-live="polite"><span>◉ ${words.views}</span><b>—</b></span><nav class="cpa-four-language-nav" aria-label="${words.aria}">${navigation}</nav></div>`;document.body.prepend(toolbar);document.querySelectorAll(".public-view-count-article,#cpa-page-views,[data-lx-counter],[data-km-view-counter]").forEach(n=>n.remove());recordOrReadView(route,toolbar.querySelector(".cpa-four-language-views")).then(data=>renderEngagement(route,data))}
-  async function init(){let manifest=null;try{const r=await fetch(ROUTES_URL,{cache:"no-store"});if(r.ok)manifest=await r.json()}catch(_){}render(manifest);addNavigation()}
+  function render(manifest){if(document.getElementById("cpa-four-language-toolbar"))return;const language=locale(),words=copy[language],route=neutralRoute(),routes=manifest?.routes?.[route]||{},toolbar=document.createElement("aside");toolbar.id="cpa-four-language-toolbar";toolbar.setAttribute("aria-label",words.aria);const navigation=Object.keys(localeNames).map(k=>{const href=routes[k];if(!href)return`<span aria-disabled="true" title="${words.unavailable}">${localeNames[k]}</span>`;return`<a href="${href}" hreflang="${k}"${language===k?' aria-current="page"':''}>${localeNames[k]}</a>`}).join("");toolbar.innerHTML=`<a class="cpa-four-language-brand" href="${ROOT}"><span aria-hidden="true">♥</span><b>${words.brand}</b><small>${words.official}</small></a><div class="cpa-four-language-actions"><span class="cpa-four-language-views" hidden aria-live="polite"><span>◉ ${words.views}</span><b>—</b></span><nav class="cpa-four-language-nav" aria-label="${words.aria}">${navigation}</nav></div>`;document.body.prepend(toolbar);document.querySelectorAll(".public-view-count-article,#cpa-page-views,[data-lx-counter],[data-km-view-counter]").forEach(n=>n.remove());renderEngagement(route,null);recordOrReadView(route,toolbar.querySelector(".cpa-four-language-views")).then(data=>{if(data){const count=document.querySelector(".cpa-article-engagement .is-view em");if(count)count.textContent=format(data.viewCount)}})}
+  async function init(){let manifest=null;try{const r=await boundedFetch(ROUTES_URL,{cache:"no-store"});if(r.ok)manifest=await r.json()}catch(_){}render(manifest);addNavigation();let pending=false;new MutationObserver(()=>{if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;addNavigation()})}).observe(document.querySelector("main")||document.body,{childList:true,subtree:true})}
   document.readyState==="loading"?document.addEventListener("DOMContentLoaded",init,{once:true}):init();
 })();

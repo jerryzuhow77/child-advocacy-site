@@ -28,6 +28,10 @@ CHAPTER_TWO_PUBLIC_PATHS = {
     Path("hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html"),
     Path("en/hearing-records/prison-watch/kaikai-final-chapter/index.html"),
     Path("ja/hearing-records/prison-watch/kaikai-final-chapter/index.html"),
+    Path("hearing-records/prison-watch/kaikai-final-chapter/witnesses/index.html"),
+    Path("hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/witnesses/index.html"),
+    Path("en/hearing-records/prison-watch/kaikai-final-chapter/witnesses/index.html"),
+    Path("ja/hearing-records/prison-watch/kaikai-final-chapter/witnesses/index.html"),
 }
 NOINDEX_RE = re.compile(
     r'<meta\b[^>]*\bname=["\']robots["\'][^>]*\bcontent=["\'][^"\']*noindex|'

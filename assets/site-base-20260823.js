@@ -167,14 +167,14 @@ document.addEventListener('cpa-language-change',event=>{
   if(next==='zh-Hans'||next==='zh-Hant') setLang(next);
 });
 
-document.addEventListener('DOMContentLoaded',()=>{
+function initPageLanguage(){
   const staticPageLang=document.documentElement.lang;
   if(staticPageLang==='en'||staticPageLang==='ja'){
     localStorage.setItem('siteLang',staticPageLang);
     syncLanguageSwitcher(staticPageLang);
   } else {
     const requestedLang=new URLSearchParams(window.location.search).get('lang');
-    const activeLang=requestedLang==='zh-Hans'?'zh-Hans':(localStorage.getItem('siteLang')==='zh-Hans'?'zh-Hans':'zh-Hant');
+    const activeLang=requestedLang==='zh-Hans'||requestedLang==='zh-Hant'?requestedLang:(staticPageLang==='zh-Hans'?'zh-Hans':(localStorage.getItem('siteLang')==='zh-Hans'?'zh-Hans':'zh-Hant'));
     setLang(activeLang);
   }
 
@@ -200,7 +200,10 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
   });
   observer.observe(document.body,{childList:true,subtree:true});
-});
+}
+document.readyState==='loading'
+  ? document.addEventListener('DOMContentLoaded',initPageLanguage,{once:true})
+  : initPageLanguage();
 
 // Standalone editorial pages can reuse the complete Traditional/Simplified
 // converter without activating the main site's navigation and card modules.

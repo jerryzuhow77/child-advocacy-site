@@ -26,3 +26,6 @@
 .cpa-article-engagement .is-view{margin-left:auto;cursor:default;background:#f7f4ec}
 @media(max-width:820px){#cpa-four-language-toolbar{position:fixed;left:0;right:0;min-height:52px;padding:4px max(6px,env(safe-area-inset-right)) 4px max(6px,env(safe-area-inset-left));gap:4px}body{padding-top:52px!important}.cpa-four-language-brand{gap:4px}.cpa-four-language-brand>span{width:36px;height:36px;flex-basis:36px}.cpa-four-language-brand b,.cpa-four-language-brand small,.cpa-four-language-views>span{display:none}.cpa-four-language-actions{min-width:0;gap:3px}.cpa-four-language-views{min-height:40px;padding:4px 7px}.cpa-four-language-nav{min-width:0;gap:1px}.cpa-four-language-nav a,.cpa-four-language-nav span{min-width:38px;min-height:40px;padding:5px 6px;font-size:11px}.cpa-article-engagement{gap:6px;width:calc(100% - 20px);margin:14px auto 10px;padding:8px;border-radius:18px}.cpa-article-engagement button,.cpa-article-engagement .is-view{flex:1 1 calc(50% - 6px);min-height:44px;padding:8px 9px}.cpa-article-engagement .is-view{margin-left:0}}
 @media print{#cpa-four-language-toolbar,.cpa-article-engagement{display:none!important}body{padding-top:0!important}}
+.cpa-chapter-select{font-size:14px}
+.cpa-four-language-nav a,.cpa-four-language-nav span{font-size:14px;min-height:44px}
+.cpa-article-engagement{font-size:14px}

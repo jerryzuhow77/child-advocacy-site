@@ -4,15 +4,15 @@
   window.__cpaArticleComments = true;
 
   const API = "https://global-protection.jerryzuhow77.chatgpt.site/api/public/view-count";
-  const language = (document.documentElement.lang || "zh-Hant").toLowerCase();
+  const language = (new URLSearchParams(location.search).get('lang') || document.documentElement.lang || "zh-Hant").toLowerCase();
   const locale = language.startsWith("zh-hans") || language.startsWith("zh-cn") ? "zh-Hans" : language.startsWith("en") ? "en" : language.startsWith("ja") ? "ja" : "zh-Hant";
   const path = location.pathname.replace(/^\/child-advocacy-site\/?/i, "").replace(/index\.html$/i, "").replace(/^\/+|\/+$/g, "");
   const parts = path.split("/").filter(Boolean);
   if (/^(?:en|ja|zh-hans|zh-hant)$/i.test(parts[0] || "")) parts.shift();
   if ((locale === "en" || locale === "ja") && parts[parts.length - 1]?.toLowerCase() === locale) parts.pop();
   const neutralPath = parts.filter(part => part.toLowerCase() !== "zh-hans").join("/");
-  const indexRoutes = new Set(["", "about", "social", "cases", "hearing-records", "activity-records", "activity-records/albums", "court-comics", "global-protection-wall"]);
-  const articleRoute = /^(?:cases|hearing-records|activity-records|features|historical-cases)\//.test(neutralPath);
+  const indexRoutes = new Set(["", "about", "social", "news", "cases", "hearing-records", "activity-records", "activity-records/albums", "court-comics", "global-protection-wall"]);
+  const articleRoute = /^(?:cases|hearing-records|activity-records|features|historical-cases|news|court-comics)\//.test(neutralPath);
   const articleMetadata = document.querySelector('meta[property="og:type"][content="article"],script[type="application/ld+json"]');
   if (indexRoutes.has(neutralPath) || (!articleRoute && !articleMetadata)) return;
 
