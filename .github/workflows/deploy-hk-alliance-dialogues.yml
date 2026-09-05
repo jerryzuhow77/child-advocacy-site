@@ -1,0 +1,121 @@
+name: Deploy Hong Kong alliance-dialogues route
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+      - ops/hk-alliance-dialogues-proxy-20260905
+    paths:
+      - .github/workflows/deploy-hk-alliance-dialogues.yml
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      HK_HOST: ${{ secrets.TENCENT_SSH_HOST }}
+      HK_USER: ${{ secrets.TENCENT_SSH_USER }}
+      HK_PORT: ${{ secrets.TENCENT_SSH_PORT }}
+      HK_KEY_A: ${{ secrets.TENCENT_SSH_PRIVATE_KEY }}
+      HK_KEY_B: ${{ secrets.TENCENT_CVM_SSH_KEY }}
+      HK_KEY_C: ${{ secrets.SSH_PRIVATE_KEY }}
+    steps:
+      - name: Configure SSH
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          host="${HK_HOST:-150.109.69.104}"
+          user="${HK_USER:-ubuntu}"
+          port="${HK_PORT:-22}"
+          key="${HK_KEY_A:-${HK_KEY_B:-${HK_KEY_C:-}}}"
+          test -n "$key"
+          mkdir -p ~/.ssh
+          printf '%s\n' "$key" > ~/.ssh/hk_key
+          chmod 600 ~/.ssh/hk_key
+          ssh-keyscan -p "$port" "$host" > ~/.ssh/known_hosts
+          printf 'HOST=%s\nUSER=%s\nPORT=%s\n' "$host" "$user" "$port" >> "$GITHUB_ENV"
+
+      - name: Install Hong Kong reverse proxy route
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'sudo python3 -' <<'PY'
+          from pathlib import Path
+          import shutil, subprocess, time
+
+          domain = "cn.globalprotectionwall.com"
+          origin = "chen-witness-evidence-timeline.jerryzuhow77.chatgpt.site"
+          candidates = []
+          for root in (Path("/etc/nginx/sites-enabled"), Path("/etc/nginx/conf.d")):
+              if root.exists():
+                  candidates.extend(p for p in root.iterdir() if p.is_file() or p.is_symlink())
+
+          target = None
+          text = None
+          for path in candidates:
+              try:
+                  body = path.read_text()
+              except Exception:
+                  continue
+              if domain in body and "server_name" in body:
+                  target, text = path.resolve(), body
+                  break
+          if target is None:
+              raise SystemExit("No nginx server block found for " + domain)
+
+          marker = "# codex-alliance-dialogues-hk"
+          if marker not in text:
+              domain_pos = text.find(domain)
+              server_pos = text.rfind("server", 0, domain_pos)
+              brace = text.find("{", server_pos)
+              depth = 0
+              end = None
+              for i in range(brace, len(text)):
+                  if text[i] == "{":
+                      depth += 1
+                  elif text[i] == "}":
+                      depth -= 1
+                      if depth == 0:
+                          end = i
+                          break
+              if end is None:
+                  raise SystemExit("Could not locate nginx server block boundary")
+              snippet = f"""
+              {marker}
+              location = /alliance-dialogues {{
+                  proxy_ssl_server_name on;
+                  proxy_set_header Host {origin};
+                  proxy_pass https://{origin}/alliance-dialogues;
+                  proxy_redirect https://{origin}/ https://{domain}/;
+                  sub_filter_once off;
+                  sub_filter 'https://{origin}' 'https://{domain}';
+              }}
+              """
+              backup = target.with_name(target.name + ".bak-" + time.strftime("%Y%m%d%H%M%S"))
+              shutil.copy2(target, backup)
+              target.write_text(text[:end] + snippet + text[end:])
+          subprocess.run(["nginx", "-t"], check=True)
+          subprocess.run(["systemctl", "reload", "nginx"], check=True)
+          PY
+
+      - name: Verify Hong Kong route
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          for attempt in 1 2 3 4 5; do
+            code="$(curl --connect-timeout 10 --max-time 25 -sS -o /tmp/page.html -w '%{http_code}' https://cn.globalprotectionwall.com/alliance-dialogues || true)"
+            if [ "$code" = 200 ] && [ "$(wc -c < /tmp/page.html)" -gt 1000 ]; then
+              grep -Eiq '兒盟|alliance|dialogue|對話' /tmp/page.html
+              exit 0
+            fi
+            sleep 4
+          done
+          printf 'Hong Kong route verification failed; status=%s bytes=%s\n' "${code:-none}" "$(wc -c < /tmp/page.html 2>/dev/null || echo 0)"
+          exit 1
