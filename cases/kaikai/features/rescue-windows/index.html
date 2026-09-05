@@ -29,6 +29,8 @@ main{max-width:1120px;margin:auto;padding:4rem 1rem}.lead{font-size:1.25rem;max-
 footer{text-align:center;color:var(--muted);padding:3rem 1rem;border-top:1px solid var(--line)}
 @media(max-width:760px){.top .lang{display:none}.hero{min-height:70vh;background-position:62% center}.window{grid-template-columns:1fr}.chain,.roster{grid-template-columns:1fr}.hero h1{font-size:3rem}.witness-picker{top:3.7rem;align-items:stretch;flex-direction:column}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.witness-dialogue-panel{margin:0 0 1.5rem;padding:1rem;color:#f8f2ea;background:#262634;border-color:rgba(238,191,209,.25);box-shadow:0 14px 28px rgba(0,0,0,.24)}.witness-dialogue-panel>h3{margin:.2rem .35rem;color:#f6c3d4}.testimony-dossier{border:1px solid rgba(238,191,209,.24);border-radius:18px;background:#2d2d3a;overflow:hidden}.testimony-dossier>summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.35rem;color:#fff;font-size:1.28rem;font-weight:800;border-bottom:1px solid rgba(255,255,255,.08)}.testimony-dossier>summary::-webkit-details-marker{display:none}.testimony-dossier>summary:after{content:"＋";color:#efb8cb;font-size:1.5rem}.testimony-dossier[open]>summary:after{content:"－"}.testimony-list{padding:1.3rem}.testimony-item{margin:0 0 1.55rem}.testimony-item:last-child{margin-bottom:.25rem}.testimony-topic{margin:0 0 .55rem;color:#f4b8cd;font-size:1.12rem;font-weight:800;line-height:1.5}.testimony-quote{margin:0;padding:1rem 1.15rem 1.05rem;color:#fff;background:#3a3a47;border-left:4px solid #d57498;border-radius:0 14px 14px 0;box-shadow:inset 0 1px rgba(255,255,255,.03)}.testimony-quote p{margin:0;font-size:1.04rem;line-height:1.95}.testimony-quote p+p{margin-top:.6rem}.testimony-quote .speaker{color:#f4c3d3;font-weight:800}.testimony-meta{display:block;margin-top:.7rem;color:#d6d0d8;font-size:.9rem;line-height:1.65}.testimony-source{display:block;padding:0 1.3rem 1.25rem;color:#bdb7c2;font-size:.86rem}.witness-highlight{background:#343440;color:#fff;border-left:4px solid #d57498;border-radius:0 10px 10px 0}.witness-highlight>b,.qa-line strong{color:#f4b8cd}
+@media(max-width:760px){.witness-dialogue-panel{padding:.75rem}.testimony-dossier>summary{padding:1rem;font-size:1.12rem}.testimony-list{padding:1rem .8rem}.testimony-topic{font-size:1.05rem}.testimony-quote{padding:.9rem 1rem}.testimony-quote p{font-size:1rem;line-height:1.85}.testimony-meta{font-size:.84rem}}
 </style>
 </head>
 <body>
@@ -277,10 +279,14 @@ Object.entries(additionalDialogues).forEach(([name,items])=>{if(witnessDialogues
 const witnessCards=[...document.querySelectorAll("#witnesses .person")];
 const witnessSelect=document.getElementById("witnessSelect");
 const witnessDialoguePanel=document.getElementById("witnessDialoguePanel");
+const witnessMeta={
+"徐珮華":["2025/11/27","witness-01"],"施盈如":["2025/11/27","witness-02"],"丁雁琪":["2025/11/27","witness-03"],"黃聖心":["2025/12/11","witness-04"],"李芳玲":["2025/12/11","witness-05"],"江怡韻":["2025/12/11","witness-06"],"白麗芳":["2025/12/18","witness-07"],"葉亭希":["2025/12/18","witness-08"],"葉詩宇":["2025/12/18","witness-09"],"蔡函妤":["2026/01/22","medical-witness"],"林心慈":["2026/01/29","witness-10"],"黃玲芳":["2026/01/29","witness-11"],"粘羽涵":["2026/01/29","witness-12"],"Mira":["2025/04/23","DAY2"],"周○":["2025/04/25","DAY3"],"蕭○香":["2025/04/25","DAY3"],"王○弘":["2025/04/25","DAY3"],"劉若琳":["2025/05/06","DAY9"],"劉彩萱":["2025/05/06","DAY9"],"許倬憲":["2025/04/29","DAY5"],"呂立":["2025/04/29","DAY5"],"丘彥南":["2025/04/30","DAY6"],"A童外婆":["2025/05/05","DAY8"],"徐堅棋":["2025/05/05","DAY8"]};
+const cleanSpeaker=text=>text.replace(/^【[^】]+】/,"").trim();
 const renderDialogue=(name,key)=>{
  const record=witnessDialogues[key];
  if(!record)return '<h3>'+name+'</h3><p>目前沒有可核對的庭上原句，暫不補寫對話。</p>';
- return '<h3>'+name+'</h3><p><b>重要問答原句｜共 '+record.items.length+' 組</b></p>'+record.items.map(item=>'<div class="excerpt"><p><span class="dialogue-label">問</span>'+item.q+'</p><p><span class="dialogue-label">答</span>'+item.a+'</p></div>').join("")+'<small>來源：'+record.source+'。完整保留所選問答的句子；原檔若有「略／待補充／未完整」亦照錄。這不是該人全部證詞，也不是法院核發的逐字稿。</small>';
+ const meta=witnessMeta[key]||["日期待核","witness"];
+ return '<h3>'+name+'</h3><details class="testimony-dossier" open><summary>重要證詞摘錄</summary><div class="testimony-list">'+record.items.map((item,index)=>'<article class="testimony-item"><h4 class="testimony-topic">'+cleanSpeaker(item.q)+'</h4><blockquote class="testimony-quote"><p><span class="speaker">問｜</span>'+item.q+'</p><p><span class="speaker">答｜</span>'+item.a+'</p><small class="testimony-meta">'+meta[0]+' ・ '+meta[1]+' ｜摘錄 '+String(index+1).padStart(2,"0")+'</small></blockquote></article>').join("")+'</div><small class="testimony-source">來源：'+record.source+'。完整保留所選問答；原檔若有「略／待補充／未完整」亦照錄。</small></details>';
 };
 witnessCards.forEach((card,i)=>{
  const name=card.querySelector("b").textContent.replace(/^\d+\s*/,"").split("｜")[0].trim();
@@ -291,7 +297,7 @@ witnessCards.forEach((card,i)=>{
   const note=document.createElement("small");
   note.className="witness-highlight";
   const first=witnessDialogues[key].items[0];
-  note.innerHTML='<b>重要證詞對話｜庭上節錄</b><span class="qa-line"><strong>問｜</strong>'+first.q+'</span><span class="qa-line"><strong>答｜</strong>'+first.a+'</span>';
+  note.innerHTML='<b>重要證詞摘錄</b><span class="qa-line">'+first.a+'</span>';
   card.appendChild(note);
  }
  const option=document.createElement("option");
