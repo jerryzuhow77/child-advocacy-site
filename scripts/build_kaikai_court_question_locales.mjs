@@ -500,6 +500,43 @@ function ensureDirectory(filePath) {
   fs.mkdirSync(path.dirname(filePath), {recursive: true});
 }
 
+enPairs.push(
+  ["關鍵質問與完整回應","The key question and the full response"],
+  ["以下整段節錄自12月18日旁聽筆記；現場中斷與證人其後的回答一併保留。","The following passage is excerpted in full from the December 18 courtroom notes, including the interruption and the witness’s subsequent response."],
+  ["如果在9月第一次訪視、10月再次訪視，到11月出現這麼巨大的落差，社工是否可以認定小朋友沒有受到妥善照顧？","If the first visit was in September, another in October, and such a drastic deterioration appeared by November, could the social worker conclude that the child was not receiving proper care?"],
+  ["我沒有參與這個個案，也沒有看過完整紀錄，所以沒有辦法直接做出推論。但我相信當下的決定一定有很多考量。我只能說，一般情況下，當孩子出現狀況時，社工會希望孩子先就醫，例如看小兒科或牙醫，也希望透過醫療專業來協助判斷。另一方面，在出養的經驗中，孩子在轉換照顧環境時，常常會出現適應問題，所以當時團隊的討論，可能會先朝「適應困難」的方向來理解。","I was not involved in this case and have not seen the complete records, so I cannot draw a direct conclusion. But I believe many considerations informed the decision at the time. Generally, when a child develops problems, social workers want the child to see a doctor first, such as a pediatrician or dentist, and seek medical expertise to help assess the situation. In adoption work, children often have adjustment difficulties when their care environment changes, so the team may initially have understood the situation as an adjustment problem."],
+  ["依你的認知，社工在面對這麼大的落差時，應該要做什麼？","In your understanding, what should a social worker do when faced with such a drastic change?"],
+  ["應該要進行討論。討論之後，可能還需要時間蒐集更多資訊；如果認為現有資料仍不足以判斷，也可能會決定先讓孩子去看醫生。","There should be a discussion. After that, more time may be needed to gather information. If the available information is still considered insufficient to make a judgment, they may decide to have the child see a doctor first."],
+  ["所以社工要做的，就只是讓他去看醫生？","So all the social worker should do is have him see a doctor?"],
+  ["事後回頭看，會覺得也許還應該再多做一些。但因為我沒有實際參與這個案子，只能說，每一個判斷，都是基於當下所掌握的資訊、諮詢結果，以及過往的經驗與專業知識所做出的。","Looking back, one may feel that more should have been done. But I was not actually involved in this case. All I can say is that each judgment was based on the information available at the time, consultation results, and past experience and professional knowledge."],
+  ["那到底要到什麼樣的情況，兒盟才會認為有通報義務需要通報？一定要打到全身是傷、斷手斷腳才算嗎？","Then what exactly would it take for the Child Welfare League Foundation to consider itself obligated to report? Must a child be beaten until their whole body is covered in injuries, with broken arms and legs, before it counts?"],
+  ["（旁聽民眾情緒激動哭泣，現場一度中斷）","(People in the public gallery cried in distress, and proceedings were briefly interrupted.)"],
+  ["我沒有辦法直接回答當時的具體狀況。但依照我們以往的管理經驗，如果有明確的證據認為孩子可能遭受虐待，就應該要通報。不過，法律上所謂的責任通報，其實是「疑似」受虐或不當對待，就有通報義務。","I cannot directly answer about the specific situation at the time. But based on our past management experience, if there is clear evidence suggesting that a child may have been abused, it should be reported. However, the legal duty to report actually arises when abuse or mistreatment is suspected."],
+  ["我也曾向檢察官解釋過，檢察官的提問往往是複合式的，例如先播放影片請我判斷是否為受虐，我回答無法判斷；接著談到責任通報，我又說疑似就應該通報；後面又連結到通報之後是否會進行緊急安置。這些不是一句話可以簡單說明清楚的。","I also explained to the prosecutor that the questions often combine several issues. For example, a video is shown and I am asked whether it depicts abuse; I answer that I cannot determine that. Then the question turns to mandatory reporting, and I say that suspicion should be reported. This is then linked to whether emergency placement would follow a report. These issues cannot be explained clearly in a single sentence."],
+  ["查看白麗芳證人旁聽紀錄","Read the courtroom notes for witness Bai Lifang"],
+  ["那句話落下，旁聽民眾情緒激動哭泣，現場一度中斷。白麗芳未直接回答當時的具體狀況，其後先提到「明確證據」，再說明「疑似」受虐或不當對待就有通報義務。","After that question, people in the public gallery cried in distress and proceedings were briefly interrupted. Bai Lifang did not directly address the specific circumstances at the time. She subsequently referred first to “clear evidence,” then explained that suspected abuse or mistreatment triggers the duty to report."],
+  ["白麗芳","Bai Lifang"]
+);
+jaPairs.push(
+  ["關鍵質問與完整回應","核心となる問いと、その後の応答"],
+  ["以下整段節錄自12月18日旁聽筆記；現場中斷與證人其後的回答一併保留。","以下は12月18日の傍聴メモからの一連の抜粋です。中断と、その後の証人の回答も残しています。"],
+  ["如果在9月第一次訪視、10月再次訪視，到11月出現這麼巨大的落差，社工是否可以認定小朋友沒有受到妥善照顧？","9月の初回訪問、10月の再訪問から、11月にはこれほど大きな変化が出ていたなら、ソーシャルワーカーは子どもが適切に養育されていないと判断できるのではありませんか。"],
+  ["我沒有參與這個個案，也沒有看過完整紀錄，所以沒有辦法直接做出推論。但我相信當下的決定一定有很多考量。我只能說，一般情況下，當孩子出現狀況時，社工會希望孩子先就醫，例如看小兒科或牙醫，也希望透過醫療專業來協助判斷。另一方面，在出養的經驗中，孩子在轉換照顧環境時，常常會出現適應問題，所以當時團隊的討論，可能會先朝「適應困難」的方向來理解。","私はこのケースに関与しておらず、記録全体も見ていないため、直接推論することはできません。ただ、当時の判断には多くの考慮があったと思います。一般に子どもに異変があれば、まず小児科や歯科などを受診し、医療の専門性を通じて判断を助けてもらいたいと考えます。また、養子縁組支援では、養育環境が変わると子どもに適応上の問題がよく起きます。そのため当時のチームも、まず「適応の困難」として理解しようとした可能性があります。"],
+  ["依你的認知，社工在面對這麼大的落差時，應該要做什麼？","あなたの認識では、これほど大きな変化に直面したとき、ソーシャルワーカーは何をすべきですか。"],
+  ["應該要進行討論。討論之後，可能還需要時間蒐集更多資訊；如果認為現有資料仍不足以判斷，也可能會決定先讓孩子去看醫生。","話し合うべきです。その後、さらに情報を集める時間が必要かもしれません。現状の資料では判断できないと考えれば、まず子どもを受診させるという決定もあり得ます。"],
+  ["所以社工要做的，就只是讓他去看醫生？","では、ソーシャルワーカーがすべきことは、受診させるだけなのですか。"],
+  ["事後回頭看，會覺得也許還應該再多做一些。但因為我沒有實際參與這個案子，只能說，每一個判斷，都是基於當下所掌握的資訊、諮詢結果，以及過往的經驗與專業知識所做出的。","振り返れば、もっとすべきことがあったと思うかもしれません。ただ、私は実際に関与していません。言えるのは、一つ一つの判断は、当時把握していた情報、相談の結果、過去の経験と専門知識に基づいていたということです。"],
+  ["那到底要到什麼樣的情況，兒盟才會認為有通報義務需要通報？一定要打到全身是傷、斷手斷腳才算嗎？","では、一体どのような状況になれば、児童福祉連盟は通報義務があり、通報すべきだと考えるのですか。全身が傷だらけになり、手足の骨が折れるまで殴られなければ、該当しないのですか。"],
+  ["（旁聽民眾情緒激動哭泣，現場一度中斷）","（傍聴人が感情を抑えきれず泣き、審理は一時中断した）"],
+  ["我沒有辦法直接回答當時的具體狀況。但依照我們以往的管理經驗，如果有明確的證據認為孩子可能遭受虐待，就應該要通報。不過，法律上所謂的責任通報，其實是「疑似」受虐或不當對待，就有通報義務。","当時の具体的な状況について直接答えることはできません。ただ、これまでの管理経験では、子どもが虐待された可能性を示す明確な証拠があれば、通報すべきです。ただし、法律上の通報義務は、実際には虐待や不適切な扱いの「疑い」があれば生じます。"],
+  ["我也曾向檢察官解釋過，檢察官的提問往往是複合式的，例如先播放影片請我判斷是否為受虐，我回答無法判斷；接著談到責任通報，我又說疑似就應該通報；後面又連結到通報之後是否會進行緊急安置。這些不是一句話可以簡單說明清楚的。","検察官にも説明しましたが、質問には複数の論点が含まれることが多いのです。例えば映像を見せられ、虐待かどうかを判断するよう求められると、判断できないと答えます。次に通報義務について聞かれると、疑いがあれば通報すべきだと答えます。さらに、通報後の緊急保護につながるかという話になります。これらは一言で簡単に説明しきれるものではありません。"],
+  ["查看白麗芳證人旁聽紀錄","白麗芳証人の傍聴記録を読む"],
+  ["那句話落下，旁聽民眾情緒激動哭泣，現場一度中斷。白麗芳未直接回答當時的具體狀況，其後先提到「明確證據」，再說明「疑似」受虐或不當對待就有通報義務。","その問いの後、傍聴人が泣き、審理は一時中断した。白麗芳は当時の具体的な状況には直接答えず、その後まず「明確な証拠」に言及し、続けて虐待や不適切な扱いの「疑い」があれば通報義務があると説明した。"],
+  ["白麗芳","白麗芳"]
+);
+
+enPairs.push(["法官", "Judge"]);
+jaPairs.push(["法官", "裁判官"]);
 const source = fs.readFileSync(SOURCE_PATH, "utf8");
 const convertForBuild = getConverter();
 

@@ -710,6 +710,11 @@ main {
   transform: translate(-50%, -50%) rotate(0deg);
 }
 
+.key-dialogue { margin: 2rem 0; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.45); }
+.key-dialogue blockquote { margin: 1.5rem 0; padding-left: 1rem; border-left: 3px solid var(--blue-deep); }
+.key-dialogue blockquote p { margin: .5rem 0; line-height: 1.9; overflow-wrap: anywhere; }
+.key-dialogue blockquote strong { color: var(--blue-deep); }
+
 .transcript {
   padding: clamp(1.25rem, 4vw, 3.4rem);
 }
