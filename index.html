@@ -2,13 +2,10 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<script id="hk-zh-hans-entry">
+<script id="hk-query-locale">
 (function(){
-  var params=new URLSearchParams(window.location.search);
-  if(params.get('lang')!=='zh-Hans'||window.location.hostname!=='cn.globalprotectionwall.com')return;
-  params.delete('lang');
-  var query=params.toString();
-  window.location.replace('/child-advocacy-site/zh-Hans/'+(query?'?'+query:'')+window.location.hash);
+  var locale=new URLSearchParams(window.location.search).get('lang');
+  if(locale==='zh-Hans')document.documentElement.lang='zh-Hans';
 }());
 </script>
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport">
