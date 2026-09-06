@@ -86,7 +86,6 @@
 }
 .pinned-directory-toolbar{display:none!important}
 /* Morandi and traditional Chinese craft art direction */
-.visitor-submit-dialog{display:none!important}
 body{--morandi-rose:#d8b8ba;--morandi-blue:#9eafb4;--morandi-green:#aeb9aa;--china-cinnabar:#b45d54;--china-indigo:#405f6a;--china-jade:#769087;--china-gold:#bd9555;background:linear-gradient(135deg,#f8eee9 0 48%,#edf1eb 52% 100%)}
 .premium-home-hero,.home-priority-strip,.home-latest-flash,.home-policy-news,.home-activity-stream,.home-hearing-zone,.home-feature-stream{position:relative;isolation:isolate}
 .premium-home-hero{background-image:url('./art/gu-embroidery-ending-20260831.webp'),linear-gradient(120deg,rgba(216,184,186,.38),rgba(248,238,228,.88) 50%,rgba(64,95,106,.2));background-position:right center,center;background-size:min(48vw,680px) auto,auto;background-repeat:no-repeat}
