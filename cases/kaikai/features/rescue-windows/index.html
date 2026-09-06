@@ -19,6 +19,7 @@ a{color:#e6c781}.top{position:sticky;top:0;z-index:20;display:flex;gap:.6rem;ali
 .hero{min-height:76vh;display:grid;align-items:end;background:linear-gradient(90deg,rgba(7,17,18,.97) 0%,rgba(7,17,18,.68) 48%,rgba(7,17,18,.08)),url("/child-advocacy-site/assets/art/kaikai-rescue-windows-ink-20260905.jpg") center/cover;padding:clamp(4rem,8vw,8rem) max(1.2rem,calc((100vw - 1120px)/2))}
 .hero-copy{max-width:720px}.eyebrow{color:#e1c482;letter-spacing:.18em;font-size:.8rem}.hero h1{font-size:clamp(2.6rem,7vw,5.8rem);line-height:1.03;margin:.4rem 0 1rem;text-wrap:balance}.dek{font-size:clamp(1.05rem,2vw,1.35rem);color:#e8dfcf}
 .stamp{display:inline-block;margin-top:1rem;padding:.2rem .7rem;color:#f0d9c5;border:1px solid #c05a4d;background:rgba(156,55,45,.35);transform:rotate(-2deg)}
+.evidence-count{margin:.9rem 0 0;color:#f1d38c;font-weight:800;letter-spacing:.08em}
 main{max-width:1120px;margin:auto;padding:4rem 1rem}.lead{font-size:1.25rem;max-width:820px;margin:0 auto 4rem;color:#efe5d3}
 .boundary,.finding{border:1px solid var(--line);background:rgba(25,47,48,.74);padding:1.2rem 1.4rem;border-radius:18px;margin:1.5rem 0}.boundary b{color:#e5c57a}.section-head{margin:5rem 0 1.5rem}.section-head small{color:#d0ac62;letter-spacing:.14em}.section-head h2{font-size:clamp(2rem,5vw,3.5rem);line-height:1.15;margin:.3rem 0}
 .windows{display:grid;gap:1rem}.window{display:grid;grid-template-columns:150px 1fr;gap:1.4rem;padding:1.35rem;background:rgba(239,231,214,.95);color:#182526;border-left:4px solid var(--cinnabar);border-radius:4px 16px 16px 4px;box-shadow:0 12px 30px rgba(0,0,0,.2)}
@@ -31,14 +32,16 @@ footer{text-align:center;color:var(--muted);padding:3rem 1rem;border-top:1px sol
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 .witness-dialogue-panel{margin:0 0 1.5rem;padding:1rem;color:#f8f2ea;background:#262634;border-color:rgba(238,191,209,.25);box-shadow:0 14px 28px rgba(0,0,0,.24)}.witness-dialogue-panel>h3{margin:.2rem .35rem;color:#f6c3d4}.testimony-dossier{border:1px solid rgba(238,191,209,.24);border-radius:18px;background:#2d2d3a;overflow:hidden}.testimony-dossier>summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.35rem;color:#fff;font-size:1.28rem;font-weight:800;border-bottom:1px solid rgba(255,255,255,.08)}.testimony-dossier>summary::-webkit-details-marker{display:none}.testimony-dossier>summary:after{content:"＋";color:#efb8cb;font-size:1.5rem}.testimony-dossier[open]>summary:after{content:"－"}.testimony-list{padding:1.3rem}.testimony-item{margin:0 0 1.55rem}.testimony-item:last-child{margin-bottom:.25rem}.testimony-topic{margin:0 0 .55rem;color:#f4b8cd;font-size:1.12rem;font-weight:800;line-height:1.5}.testimony-quote{margin:0;padding:1rem 1.15rem 1.05rem;color:#fff;background:#3a3a47;border-left:4px solid #d57498;border-radius:0 14px 14px 0;box-shadow:inset 0 1px rgba(255,255,255,.03)}.testimony-quote p{margin:0;font-size:1.04rem;line-height:1.95}.testimony-quote p+p{margin-top:.6rem}.testimony-quote .speaker{color:#f4c3d3;font-weight:800}.testimony-meta{display:block;margin-top:.7rem;color:#d6d0d8;font-size:.9rem;line-height:1.65}.testimony-source{display:block;padding:0 1.3rem 1.25rem;color:#bdb7c2;font-size:.86rem}.witness-highlight{background:#343440;color:#fff;border-left:4px solid #d57498;border-radius:0 10px 10px 0}.witness-highlight>b,.qa-line strong{color:#f4b8cd}
 @media(max-width:760px){.witness-dialogue-panel{padding:.75rem}.testimony-dossier>summary{padding:1rem;font-size:1.12rem}.testimony-list{padding:1rem .8rem}.testimony-topic{font-size:1.05rem}.testimony-quote{padding:.9rem 1rem}.testimony-quote p{font-size:1rem;line-height:1.85}.testimony-meta{font-size:.84rem}}
+.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem;margin-top:.75rem}.audit-field{padding:.65rem .75rem;background:#f8f1e2;border:1px solid rgba(116,48,41,.16);border-radius:8px}.audit-field:last-child{grid-column:1/-1}.audit-field b{display:block;color:#743029;font-size:.88rem}.door-people,.person-doors{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem}.person-link,.door-link{border:1px solid #8e7750;border-radius:999px;padding:.18rem .6rem;color:#51352f;background:#fff8e8;font:inherit;font-size:.82rem;cursor:pointer;text-decoration:none}.protection-layers{display:grid;gap:.55rem;margin-top:.65rem}.protection-layer{padding:.65rem .75rem;background:rgba(255,255,255,.09);border-radius:7px}.protection-layer strong{display:block;color:#ffe29a}.evidence-badge{display:inline-block;margin:0 0 .55rem;padding:.12rem .55rem;border:1px solid currentColor;border-radius:999px;color:#f4c3d3;font-size:.78rem;font-weight:800}.testimony-item{border:1px solid rgba(238,191,209,.18);border-radius:12px;overflow:hidden}.testimony-item>summary{cursor:pointer;list-style:none;padding:.85rem 1rem;margin:0;background:#343440}.testimony-item>summary::-webkit-details-marker{display:none}.testimony-item>summary:after{content:"＋";float:right}.testimony-item[open]>summary:after{content:"－"}.testimony-item .testimony-quote{border-radius:0;border-left:4px solid #d57498}.testimony-note{padding:1rem 1.15rem;color:#fff;background:#3a3a47;border-left:4px solid #c6a45b;line-height:1.85}.more-excerpts{margin-top:.7rem}.more-excerpts>summary{cursor:pointer;color:#f4c3d3;font-weight:800}.testimony-filters{display:flex;flex-wrap:wrap;gap:.45rem;padding:.75rem 1rem;background:#1b3031;border-inline:1px solid var(--line)}.testimony-filters button{padding:.35rem .7rem;border:1px solid var(--gold);border-radius:999px;color:var(--paper);background:transparent;cursor:pointer}.testimony-filters button.is-active{color:#172526;background:#e5c57a}.witness-role{color:#bdb7c2;font-size:.9rem}.difference-panel{margin:.85rem 0;padding:.8rem;border:1px solid #d57498;border-radius:10px;background:#33333f}.difference-panel b{color:#f4c3d3}.filter-empty{padding:1rem;color:#d6d0d8}.testimony-dossier:not([open]) .testimony-list{display:none}
+@media(max-width:760px){.audit-grid{grid-template-columns:1fr}.audit-field:last-child{grid-column:auto}.witness-picker{position:sticky}.testimony-filters{position:sticky;top:10.6rem;z-index:7;overflow-x:auto;flex-wrap:nowrap}.testimony-filters button{white-space:nowrap}.window{scroll-margin-top:5rem}}
 </style>
 </head>
 <body>
 <nav class="top" aria-label="頁面工具列"><a class="home" href="/child-advocacy-site/">← 回首頁</a><label for="jump">跳到章節</label><select id="jump"><option value="">請選擇</option><option value="windows">十二個救援窗口</option><option value="chain">十二道門如何失效</option><option value="witnesses">兩案問答交叉索引</option><option value="sources">資料來源</option><option value="legal-boundary">法律界限</option></select><span class="lang">繁中｜简中｜EN｜日本語</span></nav>
-<header class="hero"><div class="hero-copy"><p class="eyebrow">KAIKAI · RESCUE WINDOWS · EVIDENCE MAP</p><h1>剴剴曾經<br>可以獲救</h1><p class="dek">從交接、訪視、瘀傷、三顆乳牙，到送醫前夕：每一個異常，本來都可能成為孩子離開危險照顧環境的出口。</p><span class="stamp">被關上的十二道門</span></div></header>
+<header class="hero"><div class="hero-copy"><p class="eyebrow">KAIKAI · RESCUE WINDOWS · EVIDENCE MAP</p><h1>剴剴曾經<br>可以獲救</h1><p class="dek">從交接、訪視、瘀傷、三顆乳牙，到送醫前夕：每一個異常，本來都可能成為孩子離開危險照顧環境的出口。</p><span class="stamp">被關上的十二道門</span><p class="evidence-count">12道門・24人・48組以上問答</p></div></header>
 <main>
-<p class="lead">「一手遮天」不是本頁先下的法律結論。本頁要追問的是：當劉彩萱掌握孩子的日常、照片、就醫說法與外界接觸，陳尚潔又高度依賴保母回報時，原本分散在家屬、醫療、居托中心與兒盟內部的警訊，為何沒有匯成一次有效的保護行動？</p>
-<aside class="boundary"><b>閱讀標記</b>　「法院認定」只指裁判已明確認定的部分；「證人證述」是旁聽整理；「本站勾稽」是依多份資料作出的分析；「待確認」表示仍需正式筆錄、原始檔或終局判決補強。</aside>
+<p class="lead">本頁沿著十二個可能介入的時間點，對照兩案庭上問答、醫療資料與工作紀錄，檢視警訊由誰取得、是否被查證，以及哪些保護措施可能在當時啟動。這是一份證據勾稽與制度檢視，不是對未經裁判認定事項作成結論。</p>
+<aside class="boundary"><b>閱讀標記</b>　「旁聽原問原答」保留資料所載問答與原有缺漏；「庭審紀錄摘述」及「媒體庭審報導」不以引號呈現，也不視為證人逐字原話；「本站勾稽」是跨資料分析；「待確認」表示仍需正式筆錄、原始檔或終局裁判補強。</aside>
 
 <section id="windows"><header class="section-head"><small>12 RESCUE WINDOWS</small><h2>十二次，可能把門打開的機會</h2></header><div class="windows">
 <article class="window"><div class="when">01｜2023.08.30–31</div><div><h3>轉托交接：第一道安全檢查</h3><p>孩子離開周姓保母照顧處所。前保母、外婆與承辦端原可把生活狀態、照顧需求、探視方式與新照顧者條件一次說清楚。</p><p><strong>斷點：</strong>證詞顯示兒盟能篩選合作保母，但政府、兒盟與居托中心對「誰是主責」的理解分裂。</p><div class="tags"><span>交接日期待確認</span><span>前保母證詞</span><span>施盈如</span><span>徐珮華</span></div></div></article>
@@ -60,11 +63,12 @@ footer{text-align:center;color:var(--muted);padding:3rem 1rem;border-top:1px sol
 <article><h3>陳尚潔端：獨立查證是否充分</h3><p>法院已就過失致死部分作出裁判，偽造文書部分無罪；後續法律狀態仍以司法機關公告為準。本頁依證詞檢視：她所取得的保母回報、孩子照片與其他資訊，是否曾充分向醫療端、原照顧者或其他單位交叉確認。</p></article>
 <article><h3>制度端：資訊與權責分散</h3><p>兒盟、居托中心與政府社工分別具有不同功能及可使用的工具。問題不只在名義上誰是主責，而在警訊出現時，資訊是否送達能夠查證、加訪、通報或調整照顧安排的角色。</p></article>
 <article><h3>結果：不同角色分別掌握部分資訊</h3><p>前保母掌握轉托前狀況，牙醫看到掉牙情形，醫療端檢視身體狀態，社工取得照片與回報，主管接觸工作紀錄；這些資訊是否及時被整合，正是本頁要追問的制度缺口。</p></article>
-</div><div class="finding"><b>本站判讀：</b>公開資料呈現「第一手資訊集中、獨立查證是否充分及跨單位資訊分散」等問題；是否涉及共同掩飾、包庇或主觀故意，不能僅憑現有旁聽整理下結論。</div></section>
+</div><div class="finding"><b>證據勾稽：</b>公開資料顯示，第一手資訊集中、跨單位資訊分散及獨立查證是否充分，是理解十二道救援窗口為何失效的三個核心問題。</div></section>
 
-<section id="witnesses"><header class="section-head"><small>COURT TESTIMONY INDEX</small><h2>兩案庭上問答交叉索引</h2><p>依案件與身分選擇人物，直接閱讀重要問答原句節錄。</p></header>
+<section id="witnesses"><header class="section-head"><small>COURT TESTIMONY INDEX</small><h2>兩案庭上證詞交叉索引</h2><p>依證據類型區分原問原答、庭審紀錄摘述與媒體庭審報導；未取得逐字資料者不以引號呈現。</p></header>
 <div class="witness-picker"><label for="witnessSelect">選擇證人、鑑定人或被告</label><select id="witnessSelect"><option value="">請選擇姓名</option></select></div>
-<section class="witness-dialogue-panel" id="witnessDialoguePanel" aria-live="polite"><h3>從下拉選單選擇一人</h3><p>選取後，這裡會呈現多組重要問答原句節錄。</p></section>
+<div class="testimony-filters" role="group" aria-label="證詞篩選"><button type="button" class="is-active" data-filter="all">全部</button><button type="button" data-filter="verbatim">只看原問原答</button><button type="button" data-filter="difference">只看前後差異</button><button type="button" data-filter="medical">只看醫療證詞</button></div>
+<section class="witness-dialogue-panel" id="witnessDialoguePanel" aria-live="polite"><h3>從下拉選單選擇一人</h3><p>選取後，可依資料類型閱讀重要問答或紀錄摘述。</p></section>
 </section>
 
 <section id="sources"><header class="section-head"><small>SOURCES</small><h2>資料來源</h2></header><ul class="sources">
@@ -73,7 +77,7 @@ footer{text-align:center;color:var(--muted);padding:3rem 1rem;border-top:1px sol
 <li><a href="/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/medical-responsibility/">醫療責任與救援節點</a>：牙科、急診、兒保與法醫證據交叉整理。</li>
 <li>旁聽紀錄不是法院核發的官方逐字稿；說話者、語句、順序及聽不清楚處，應以正式筆錄與判決原文為準。</li>
 </ul></section>
-<section class="legal" id="legal-boundary"><b>法律界限｜請在引用前閱讀</b><p>本頁所稱「重要問答原句節錄」，是完整保留被選入的單組或多組問答，不代表刊載該證人的全部證詞。內容來源為監所關注小組及本站保存的旁聽整理，並非法院核發的官方逐字稿；原檔中的「略」、「待補充」、「聽不清楚」或「旁聽整理未完整」均照原樣保留。</p><p>證人證述、被告陳述、檢辯提問及法官追問，均不當然等於法院已採信或已認定的事實。說法不同不等於已證明虛偽；案後補寫不當然等於偽造；法官追問也不等於定罪。</p><p>「十二道門」與「可考慮採取的保護措施」是本站依公開資料所作的制度分析，不是新增的法律責任判決。本頁不對未經判決認定的共謀、包庇、偽造、滅證、串證或主觀故意作結論。陳尚潔偽造文書部分的無罪判決及各案後續法律狀態，仍應以最新裁判與司法機關公開資料為準。</p></section>
+<section class="legal" id="legal-boundary"><b>法律界限｜請在引用前閱讀</b><p>本頁將材料分為「旁聽原問原答」、「庭審紀錄摘述」與「媒體庭審報導」。只有第一類以問答及引號式版面呈現；後兩類為整理或報導內容，不是證人的逐字原話。任何節錄都不代表刊載該人的完整證詞；旁聽資料也不是法院核發的官方逐字稿，原檔中的「略」、「待補充」、「聽不清楚」或「旁聽整理未完整」均照原樣保留。</p><p>證人證述、被告陳述、檢辯提問及法官追問，均不當然等於法院已採信或已認定的事實。說法不同不等於已證明虛偽；案後補寫不當然等於偽造；法官追問也不等於定罪。</p><p>「十二道門」、「證詞勾稽結果」與三層「可能採取的保護措施」是本站依公開資料所作的制度分析，不是新增的法律責任判決。本頁不把全部責任預先歸於陳尚潔、兒福聯盟或任何單一人員、機構；亦不對未經判決認定的共謀、包庇、偽造、滅證、串證或主觀故意作結論。相關裁判與各案後續法律狀態，仍以最新裁判及司法機關公開資料為準。</p></section>
 </main>
 <footer>願下一個孩子，在傷害發生以前，就有人伸手接住。<br>護童行動聯盟 · 多元觀察</footer>
 <script>
@@ -116,13 +120,43 @@ const softenAction=text=>text
  .replaceAll("應直接","可考慮直接")
  .replaceAll("應即時","可考慮即時")
  .replaceAll("不能","宜避免");
+const doorAudit=[
+ ["轉托前後需要建立可比較的兒況基準","前保母、家屬、政府社工與兒盟承辦端分別掌握部分資訊","承辦社工、兒盟督導與政府社工","完整書面交接、主責窗口及照顧地確認","8月30日或31日的原始交接文件與聯繫紀錄"],
+ ["24小時托育開始，照顧住所與同住者成為新的風險環境","實際照顧者、媒合及轉介單位","陳尚潔、兒盟媒合／督導、居托中心與政府社工","資格、實際托育地、同住者、抽菸及照顧容量查核","契約、保母資格、戶內成員及訪查原始紀錄"],
+ ["奶量、哭鬧與行為在轉托初期出現變化","主要照顧者及收到訊息的承辦端","陳尚潔、兒盟督導與政府社工","與轉托前基準比對及第三方親見","完整通訊、照片原檔與初期訪視紀錄"],
+ ["轉托適應期需要直接確認孩子安全","實際照顧者與承辦端","陳尚潔、兒盟督導、居托中心及政府社工","不預約親見、居住環境及作息查驗","最初數日的訪視排程、紀錄及影像中繼資料"],
+ ["115天僅三次訪視，且資訊仰賴預約、照片與轉述","陳尚潔、督導及居托端各自掌握部分紀錄","承辦端、兒盟督導、居托中心與主管機關","逐次量化比較與無預警查核","訪視原稿、照片原檔、督導簽核及版本紀錄"],
+ ["反覆瘀傷、照片與跌撞解釋","照顧者、陳尚潔及接觸紀錄的主管端","陳尚潔、兒盟督導、醫療、居托與政府社工","親見孩子、醫療核實及兒保風險評估","照片原檔、完整通訊、病歷及通報判斷紀錄"],
+ ["一次脫落三顆乳牙、解釋變動與轉診建議","照顧者、牙醫；訊息是否到達承辦與督導端待核","陳尚潔、兒盟督導、牙醫、政府與居托端","直接確認診斷、轉診結果與加訪","原始牙科病歷、影像、轉診單與訊息收受時間"],
+ ["體重、營養與外觀持續變化","照顧者掌握日常；醫療端其後掌握客觀身體資料","陳尚潔、兒盟督導、兒科／兒保醫療與政府社工","連續量測、成長曲線及兒科評估","托育期間體重、就醫、飲食與成長紀錄"],
+ ["家屬、前保母及同住者可能看見與過去不同的兒況","家屬、前保母、王○弘與承辦端分別掌握片段","陳尚潔、兒盟督導與政府社工","不受主要照顧者控制的接觸及換照顧者追蹤","探視請求、拒絕理由、通聯與轉達紀錄"],
+ ["工作紀錄不完整、資訊未及時累積與升級","陳尚潔、督導、主管、政府及居托端各握部分資料","兒盟承辦／督導／主管、政府與居托中心","即時紀錄、共同風險評估與決策軌跡","原始版本、系統稽核、會議與通報流程紀錄"],
+ ["最後一夜的進食、呼吸與身體異常","在場成年人直接知情；其他單位多在送醫後知情","在場成年人、119、救護與急診；事前制度由相關單位建立","異常出現的精確時間與立即送醫處置","119、救護、急診、監視器、手機及通聯紀錄"],
+ ["00:46急診訊息與00:55警方通知","急診、警方及其後接獲通知者","警方、醫療、救護及保存紀錄的相關機構","此時已無生前保護窗口，重點轉為保存與核對","分鐘級時間線、原始手機、救護、急診及警詢資料"]
+];
+const protectionLayers=[
+ ["核對轉托前兒況、健康與生活基準，完成交接紀錄。","由督導確認保母媒合、住所、聯絡與主責窗口。","政府社工確認轉介、補助與照顧安排資訊已送達。"],
+ ["全日托開始後親見孩子並追蹤適應。","審查合作保母資格、照顧容量與實際托育地。","居托中心查核同住者與環境風險；政府掌握去向。"],
+ ["比對奶量、哭鬧、行為與轉托前基準。","初期異常時要求加訪與書面回報。","政府社工接收風險資訊，必要時共同訪視。"],
+ ["直接親見孩子，必要時提出不預約訪視或換照顧者。","支援加訪、停派或改換合作保母。","居托中心無預警查核；政府在拒訪或重大異常時介入。"],
+ ["將三次訪視作成可比較的兒況紀錄。","逐次審閱紀錄、照片與處置結果。","居托中心運用無預警訪視；主管機關處理異常。"],
+ ["收到傷勢照片後親見孩子，向醫療端核實機轉。","要求前後照片比對並評估通報。","照顧者即時就醫；醫療、居托及政府交換必要資訊。"],
+ ["取得牙科診斷、確認轉診結果並加訪。","將多顆牙齒脫落列為重大異常，召集跨單位評估。","照顧者完成轉診；醫療記錄，政府／居托評估保護。"],
+ ["要求可驗證的體重、成長曲線與就醫資料。","比對連續照片、體重與訪視紀錄。","兒科評估營養與傷勢；政府彙整跨單位風險。"],
+ ["安排不受主要照顧者控制的家屬或原照顧者接觸。","追蹤探視未成及換保母訊號，評估停派或改換。","家屬／前保母回報觀察；政府處理照顧安排。"],
+ ["即時記錄異常、查證、決策與處置結果。","定期審閱並保留版本與決策軌跡。","政府與居托交換必要安全資訊並跨單位討論。"],
+ ["事前建立24小時緊急通報與送醫聯絡機制。","確認合作保母知悉立即119、送醫及回報流程。","在場成年人立即119與急救；救護／急診留下客觀時間。"],
+ ["保存並完整交付原始通訊、訪視與處遇紀錄。","封存原始版本，避免覆寫並配合調查。","警方、救護與醫療建立分鐘級時間線；本門屬事後追查。"]
+];
+const doorWitnessMap={1:["周○","施盈如","徐珮華"],2:["施盈如","王○弘"],3:["周○","施盈如"],4:["粘羽涵","Mira","王○弘"],5:["粘羽涵","葉亭希","葉詩宇"],6:["林心慈","呂立","許倬憲","王○弘"],7:["蔡函妤","黃聖心"],8:["黃聖心","許倬憲","呂立","王○弘"],9:["A童外婆","丁雁琪","周○","王○弘"],10:["葉亭希","葉詩宇","江怡韻","白麗芳","李芳玲","黃玲芳"],11:["黃聖心","劉彩萱","王○弘"],12:["黃聖心","劉彩萱","王○弘"]};
 document.querySelectorAll(".window").forEach((door,i)=>{
  const data=doorEvidence[i];
  if(!data)return;
- const duty=responsibilityMatrix[i];
+ const audit=doorAudit[i], layers=protectionLayers[i], doorNo=i+1;
+ door.id="door-"+doorNo;
  const box=document.createElement("section");
  box.className="testimony";
- box.innerHTML='<h4>兩案證詞重點摘錄 × 本門勾稽</h4>'+data.x.map(v=>'<div class="excerpt"><b>'+v[0]+'</b><small>'+v[1]+'</small></div>').join("")+'<div class="crosscheck"><b>本門勾稽</b><br>'+data.c+'</div><div class="responsibility"><b>當時可考慮採取的保護措施</b><small>以下是依公開庭審資料提出的制度性建議，不等同法院已認定任何個人或機構負有特定法律責任。</small><span><strong>'+duty[0].split("：")[0]+'：</strong>'+softenAction(duty[0].split("：").slice(1).join("："))+'</span><span><strong>'+duty[1].split("：")[0]+'：</strong>'+softenAction(duty[1].split("：").slice(1).join("："))+'</span></div>';
+ box.innerHTML='<h4>兩案證詞重點摘錄 × 本門勾稽</h4>'+data.x.map(v=>'<div class="excerpt"><b>'+v[0]+'</b><small>'+v[1]+'</small></div>').join("")+'<div class="crosscheck"><b>證詞勾稽結果</b><div class="audit-grid">'+["當時出現的警訊","誰已經知道","誰可能採取行動","實際缺少的查證","仍待補強的證據"].map((label,j)=>'<div class="audit-field"><b>'+label+'</b>'+audit[j]+'</div>').join("")+'</div><div class="door-people" aria-label="涉及人物">'+doorWitnessMap[doorNo].map(name=>'<button type="button" class="person-link" data-person="'+name+'">'+name+'</button>').join("")+'</div></div><div class="responsibility"><b>當時可能採取的保護措施</b><small>以下是制度性建議，不等同法院已認定特定個人或機構負有法律責任。</small><div class="protection-layers">'+["陳尚潔承辦端可能採取","兒福聯盟督導／機構端可能採取","政府、居托或醫療端可能採取"].map((label,j)=>'<div class="protection-layer"><strong>'+label+'</strong>'+layers[j]+'</div>').join("")+'</div></div>';
  door.lastElementChild.appendChild(box);
 });
 const witnessDialogues={
@@ -217,8 +251,11 @@ const additionalDialogues={
  {q:"【法官】這有造成照顧困難嗎？",a:"【蕭○香】照顧沒有特別困難，生長發展也沒有看到異於同齡。"}
 ],
 "王○弘":[
- {q:"【庭上】你有沒有要求母親處理孩子的照顧安排？",a:"【王○弘】我有要求母親聯絡機構換照顧者。"},
- {q:"【庭上】半夜看到孩子時，是什麼情況？",a:"【王○弘】我看到孩子被浴巾包裹，在電腦房的軟墊上。（日期、光線及親見範圍仍依原紀錄接受詰問）"}
+ {type:"record",tag:"firsthand",title:"親眼看見｜庭上說法",text:"王○弘在庭上表示，曾要求母親聯絡機構更換照顧者；另稱曾看見孩子被浴巾包裹，位於電腦房軟墊上。日期、光線與親見範圍仍須依正式紀錄核對。"},
+ {type:"media",tag:"difference",title:"返家時間｜媒體庭審報導",text:"媒體庭審報導記載，王凱弘稱12月25日凌晨3時許才返家。此項是媒體對庭上說法的摘述，不是本站取得的官方逐字稿。"},
+ {type:"media",tag:"difference",title:"父親告知內容｜媒體庭審報導",text:"媒體庭審報導記載，其父親告知孩子是吐奶噎死，母親已被帶至警局。這是他所述的轉述來源，不是他親眼看見的死亡經過。"},
+ {type:"record",tag:"difference",title:"日期或內容差異",text:"案發日、返家日與凌晨3時的指涉，以及『出事了』、『吐奶噎死』等轉述內容，應分開核對，不宜合併成一段親見陳述。"},
+ {type:"record",tag:"difference",title:"尚待核對",text:"仍待正式筆錄、手機資料、通聯紀錄、監視器與返家動線核對。"}
 ],
 "劉若琳":[
  {q:"【庭上】LINE對話是誰刪除的？",a:"【劉若琳】是我刪除的。"},
@@ -253,12 +290,21 @@ const witnessSelect=document.getElementById("witnessSelect");
 const witnessDialoguePanel=document.getElementById("witnessDialoguePanel");
 const witnessMeta={
 "徐珮華":["2025/11/27","witness-01"],"施盈如":["2025/11/27","witness-02"],"丁雁琪":["2025/11/27","witness-03"],"黃聖心":["2025/12/11","witness-04"],"李芳玲":["2025/12/11","witness-05"],"江怡韻":["2025/12/11","witness-06"],"白麗芳":["2025/12/18","witness-07"],"葉亭希":["2025/12/18","witness-08"],"葉詩宇":["2025/12/18","witness-09"],"蔡函妤":["2026/01/22","medical-witness"],"林心慈":["2026/01/29","witness-10"],"黃玲芳":["2026/01/29","witness-11"],"粘羽涵":["2026/01/29","witness-12"],"Mira":["2025/04/23","DAY2"],"周○":["2025/04/25","DAY3"],"蕭○香":["2025/04/25","DAY3"],"王○弘":["2025/04/25","DAY3"],"劉若琳":["2025/05/06","DAY9"],"劉彩萱":["2025/05/06","DAY9"],"許倬憲":["2025/04/29","DAY5"],"呂立":["2025/04/29","DAY5"],"丘彥南":["2025/04/30","DAY6"],"A童外婆":["2025/05/05","DAY8"],"徐堅棋":["2025/05/05","DAY8"]};
+const witnessRoles={"徐珮華":"政府社工","施盈如":"政府社工","丁雁琪":"中央主管機關人員","黃聖心":"急診醫師","李芳玲":"兒盟主管","江怡韻":"兒盟主管","白麗芳":"兒盟主管","葉亭希":"兒盟同仁","葉詩宇":"兒盟督導","蔡函妤":"牙醫師","林心慈":"居托訪視員","黃玲芳":"居托中心人員","粘羽涵":"居托中心人員","Mira":"同住證人","周○":"前保母","蕭○香":"前保母","王○弘":"家屬證人","劉若琳":"被告","劉彩萱":"被告","許倬憲":"法醫","呂立":"兒保醫師","丘彥南":"精神鑑定人","A童外婆":"家屬證人","徐堅棋":"量刑鑑定人"};
+const medicalWitnesses=new Set(["黃聖心","蔡函妤","許倬憲","呂立","丘彥南"]);
+const chenVerbatim=new Set(["徐珮華","施盈如","丁雁琪","黃聖心","李芳玲","江怡韻","白麗芳","葉亭希","葉詩宇","林心慈","黃玲芳","粘羽涵"]);
 const cleanSpeaker=text=>text.replace(/^【[^】]+】/,"").trim();
+const evidenceType=(key,item)=>item.type||(chenVerbatim.has(key)?"verbatim":"record");
+const evidenceLabel={verbatim:"旁聽原問原答",record:"庭審紀錄摘述",media:"媒體庭審報導"};
+let activeFilter="all";
 const renderDialogue=(name,key)=>{
  const record=witnessDialogues[key];
- if(!record)return '<h3>'+name+'</h3><p>目前沒有可核對的庭上原句，暫不補寫對話。</p>';
+ if(!record)return '<h3>'+name+'</h3><p>目前沒有可核對的庭上資料，暫不補寫內容。</p>';
  const meta=witnessMeta[key]||["日期待核","witness"];
- return '<h3>'+name+'</h3><details class="testimony-dossier" open><summary>重要證詞摘錄</summary><div class="testimony-list">'+record.items.map((item,index)=>'<article class="testimony-item"><h4 class="testimony-topic">'+cleanSpeaker(item.q)+'</h4><blockquote class="testimony-quote"><p><span class="speaker">問｜</span>'+item.q+'</p><p><span class="speaker">答｜</span>'+item.a+'</p><small class="testimony-meta">'+meta[0]+' ・ '+meta[1]+' ｜摘錄 '+String(index+1).padStart(2,"0")+'</small></blockquote></article>').join("")+'</div><small class="testimony-source">來源：'+record.source+'。完整保留所選問答；原檔若有「略／待補充／未完整」亦照錄。</small></details>';
+ const doors=Object.entries(doorWitnessMap).filter(([,names])=>names.includes(key)).map(([n])=>n);
+ const card=(item,index)=>{const kind=evidenceType(key,item),isMedical=medicalWitnesses.has(key),title=item.title||cleanSpeaker(item.q||"庭審資料摘述"),content=kind==="verbatim"?'<blockquote class="testimony-quote"><p><span class="speaker">問｜</span>'+item.q+'</p><p><span class="speaker">答｜</span>'+item.a+'</p><small class="testimony-meta">'+meta[0]+' ・ '+meta[1]+' ｜摘錄 '+String(index+1).padStart(2,"0")+'</small></blockquote>':'<div class="testimony-note">'+(item.text||cleanSpeaker(item.q)+" "+cleanSpeaker(item.a))+'<small class="testimony-meta">'+meta[0]+' ・ '+meta[1]+' ｜摘述 '+String(index+1).padStart(2,"0")+'</small></div>';return '<details class="testimony-item" '+(index===0?'open ':'')+'data-kind="'+kind+'" data-difference="'+(item.tag==="difference")+'" data-medical="'+isMedical+'"><summary class="testimony-topic">'+title+'</summary><div><span class="evidence-badge">'+evidenceLabel[kind]+'</span>'+content+'</div></details>';};
+ const first=record.items.slice(0,3).map(card).join(""),rest=record.items.slice(3).map((item,i)=>card(item,i+3)).join("");
+ return '<h3>'+name+' <span class="witness-role">｜'+(witnessRoles[key]||"身分待核")+'</span></h3><nav class="person-doors" aria-label="涉及的十二道門">'+doors.map(n=>'<a class="door-link" href="#door-'+n+'">涉及第'+n+'道門</a>').join("")+'</nav>'+(key==="王○弘"?'<div class="difference-panel"><b>王凱弘說法分層</b><br>親見、家人轉述與媒體庭審報導已分開呈現；日期與內容差異不合併推定。</div>':'')+'<details class="testimony-dossier"><summary>重要證詞摘錄</summary><div class="testimony-list">'+first+(rest?'<details class="more-excerpts"><summary>顯示其餘摘錄</summary>'+rest+'</details>':'')+'<p class="filter-empty" hidden>目前人物沒有符合此篩選的摘錄。</p></div><small class="testimony-source">來源：'+record.source+'。原問原答保留原檔缺漏；摘述與媒體報導不作逐字引述。</small></details>';
 };
 const witnessGroups=[
  {label:"陳尚潔案｜12名證人",names:["徐珮華","施盈如","丁雁琪","黃聖心","李芳玲","江怡韻","白麗芳","葉亭希","葉詩宇","林心慈","黃玲芳","粘羽涵"]},
@@ -271,7 +317,8 @@ witnessGroups.forEach(group=>{
  group.names.forEach(name=>{
   const option=document.createElement("option");
   option.value=name;
-  option.textContent=name==="王○弘"?"王○弘（王凱弘）":name;
+  const displayName=name==="王○弘"?"王○弘（王凱弘）":name;
+  option.textContent=displayName+"｜"+(witnessRoles[name]||"身分待核");
   optgroup.appendChild(option);
  });
  witnessSelect.appendChild(optgroup);
@@ -279,13 +326,21 @@ witnessGroups.forEach(group=>{
 witnessSelect.addEventListener("change",e=>{
  const key=e.target.value;
  if(!key){
-  witnessDialoguePanel.innerHTML="<h3>從下拉選單選擇一人</h3><p>選取後，這裡會呈現多組重要問答原句節錄。</p>";
+  witnessDialoguePanel.innerHTML="<h3>從下拉選單選擇一人</h3><p>選取後，可依資料類型閱讀重要問答或紀錄摘述。</p>";
   return;
  }
  const displayName=key==="王○弘"?"王○弘（王凱弘）":key;
  witnessDialoguePanel.innerHTML=renderDialogue(displayName,key);
- witnessDialoguePanel.scrollIntoView({behavior:"smooth",block:"center"});
+ applyFilter();
 });
+const applyFilter=()=>{
+ const items=[...witnessDialoguePanel.querySelectorAll(".testimony-item")];
+ let visible=0;
+ items.forEach(item=>{const show=activeFilter==="all"||(activeFilter==="verbatim"&&item.dataset.kind==="verbatim")||(activeFilter==="difference"&&item.dataset.difference==="true")||(activeFilter==="medical"&&item.dataset.medical==="true");item.hidden=!show;if(show)visible++;});
+ const empty=witnessDialoguePanel.querySelector(".filter-empty");if(empty)empty.hidden=visible>0;
+};
+document.querySelectorAll(".testimony-filters button").forEach(button=>button.addEventListener("click",()=>{activeFilter=button.dataset.filter;document.querySelectorAll(".testimony-filters button").forEach(b=>b.classList.toggle("is-active",b===button));applyFilter();}));
+document.addEventListener("click",event=>{const button=event.target.closest(".person-link");if(!button)return;witnessSelect.value=button.dataset.person;witnessSelect.dispatchEvent(new Event("change"));document.getElementById("witnesses").scrollIntoView({behavior:"smooth",block:"start"});});
 document.getElementById("jump").addEventListener("change",e=>{if(e.target.value)document.getElementById(e.target.value)?.scrollIntoView()});
 </script>
 </body></html>
