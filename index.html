@@ -2,9 +2,19 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
+<script id="hk-zh-hans-entry">
+(function(){
+  var params=new URLSearchParams(window.location.search);
+  if(params.get('lang')!=='zh-Hans'||window.location.hostname!=='cn.globalprotectionwall.com')return;
+  params.delete('lang');
+  var query=params.toString();
+  window.location.replace('/child-advocacy-site/zh-Hans/'+(query?'?'+query:'')+window.location.hash);
+}());
+</script>
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport">
 <title>護童行動聯盟｜官方網站・兒少保護・法院旁聽・案件追蹤</title>
 <link href="./assets/home-bundle-zh-20260905.css?v=1" rel="stylesheet">
+<link href="./assets/home-hk-layout-20260906.css?v=1" rel="stylesheet">
 <link href="./assets/brand/favicon.jpg" rel="icon">
 <link href="./manifest.webmanifest?v=20260820-bg-2" rel="manifest">
 <link href="./assets/icons/apple-touch-icon-180.png" rel="apple-touch-icon" sizes="180x180">
