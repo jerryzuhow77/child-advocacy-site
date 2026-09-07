@@ -169,7 +169,7 @@ jobs:
           set -Eeuo pipefail
           ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'sudo python3 -' <<'PY'
           from pathlib import Path
-          import shutil, subprocess, time
+          import re, shutil, subprocess, time
 
           domain = "cn.globalprotectionwall.com"
           marker = "# child-advocacy-full-mirror"
@@ -178,14 +178,21 @@ jobs:
               if root.exists():
                   candidates.extend(path for path in root.iterdir() if path.is_file() or path.is_symlink())
 
-          target = text = None
+          def server_name_position(body):
+              for match in re.finditer(r"(?m)^\\s*server_name\\s+([^;]+);", body):
+                  if domain in match.group(1).split():
+                      return match.start()
+              return None
+
+          target = text = domain_pos = None
           for path in candidates:
               try:
                   body = path.read_text()
               except Exception:
                   continue
-              if domain in body and "server_name" in body:
-                  target, text = path.resolve(), body
+              position = server_name_position(body)
+              if position is not None:
+                  target, text, domain_pos = path.resolve(), body, position
                   break
           if target is None:
               raise SystemExit("No nginx server block found for " + domain)
@@ -229,7 +236,9 @@ jobs:
           ):
               text = remove_location_blocks(text, declaration)
 
-          domain_pos = text.find(domain)
+          domain_pos = server_name_position(text)
+          if domain_pos is None:
+              raise SystemExit("Target server_name disappeared while normalizing nginx config")
           server_pos = text.rfind("server", 0, domain_pos)
           brace = text.find("{", server_pos)
           depth = 0
