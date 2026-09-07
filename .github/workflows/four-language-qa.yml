@@ -43,7 +43,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   qa:
@@ -175,9 +175,16 @@ jobs:
 
       - name: Four-language toolbar synchronization
         run: |
+          set -euo pipefail
           python3 scripts/verify-four-language-completeness.py
           python3 .github/scripts/sync-four-language-toolbar.py
-          git diff --exit-code
+          if ! git diff --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -- '*.html' data/four-language-routes.json
+            git commit -m "Sync four-language dropdown across article pages"
+            git push
+          fi
 
       - name: Chapter Two publication hold contract
         run: python3 .github/scripts/verify-chapter-two-publication.py
