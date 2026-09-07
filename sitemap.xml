@@ -298,11 +298,15 @@
   </url>
   <url>
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/en/news/</loc>
-    <lastmod>2026-09-05</lastmod>
+    <lastmod>2026-09-07</lastmod>
   </url>
   <url>
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/en/news/child-protection-oversight-202608/</loc>
     <lastmod>2026-09-05</lastmod>
+  </url>
+  <url>
+    <loc>https://jerryzuhow77.github.io/child-advocacy-site/en/news/daily-child-protection-brief-20260907/</loc>
+    <lastmod>2026-09-07</lastmod>
   </url>
   <url>
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/en/news/kaikai-court-question-20260903/</loc>
@@ -658,11 +662,15 @@
   </url>
   <url>
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/ja/news/</loc>
-    <lastmod>2026-09-05</lastmod>
+    <lastmod>2026-09-07</lastmod>
   </url>
   <url>
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/ja/news/child-protection-oversight-202608/</loc>
     <lastmod>2026-09-05</lastmod>
+  </url>
+  <url>
+    <loc>https://jerryzuhow77.github.io/child-advocacy-site/ja/news/daily-child-protection-brief-20260907/</loc>
+    <lastmod>2026-09-07</lastmod>
   </url>
   <url>
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/ja/news/kaikai-court-question-20260903/</loc>
@@ -690,11 +698,19 @@
   </url>
   <url>
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/news/</loc>
-    <lastmod>2026-09-05</lastmod>
+    <lastmod>2026-09-07</lastmod>
   </url>
   <url>
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/news/child-protection-oversight-202608/</loc>
     <lastmod>2026-09-05</lastmod>
+  </url>
+  <url>
+    <loc>https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260907/</loc>
+    <lastmod>2026-09-07</lastmod>
+  </url>
+  <url>
+    <loc>https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260907/zh-Hans/</loc>
+    <lastmod>2026-09-07</lastmod>
   </url>
   <url>
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/</loc>
@@ -730,7 +746,7 @@
   </url>
   <url>
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/news/zh-Hans/</loc>
-    <lastmod>2026-09-05</lastmod>
+    <lastmod>2026-09-07</lastmod>
   </url>
   <url>
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/social/</loc>
@@ -768,8 +784,4 @@
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/zh-hans/historical-cases/regions/mainland-china/fujian-qiqi/</loc>
     <lastmod>2026-09-05</lastmod>
   </url>
-  <url><loc>https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260907/</loc><lastmod>2026-09-07</lastmod></url>
-  <url><loc>https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260907/zh-Hans/</loc><lastmod>2026-09-07</lastmod></url>
-  <url><loc>https://jerryzuhow77.github.io/child-advocacy-site/en/news/daily-child-protection-brief-20260907/</loc><lastmod>2026-09-07</lastmod></url>
-  <url><loc>https://jerryzuhow77.github.io/child-advocacy-site/ja/news/daily-child-protection-brief-20260907/</loc><lastmod>2026-09-07</lastmod></url>
 </urlset>
