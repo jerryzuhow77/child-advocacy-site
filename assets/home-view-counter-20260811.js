@@ -15,6 +15,8 @@
    * language switches and newer page-home naming never reset the total.
    */
   const HOMEPAGE_CANONICAL_KEY = 'homepage-all-languages-v1';
+  // 590 legacy CounterAPI views plus 17 visits collected under page-home.
+  const HOMEPAGE_HISTORICAL_BASELINE = 607;
   const HOMEPAGE_KEYS = new Set([
     'homepage-all-languages-v1',
     'homepage-zh-hant',
@@ -190,7 +192,10 @@
       if (reading || document.visibilityState === 'hidden') return;
       reading = true;
       try {
-        renderCounter(widget, await fetchCount(key, false));
+        const current = await fetchCount(key, false);
+        renderCounter(widget, key === HOMEPAGE_CANONICAL_KEY
+          ? { ...current, value: current.value + HOMEPAGE_HISTORICAL_BASELINE }
+          : current);
       } catch (_) {
         // Preserve the last confirmed shared value during a transient read failure.
       } finally {
@@ -223,7 +228,10 @@
     widget.setAttribute('aria-busy', 'true');
 
     try {
-      const result = await requestCount(key);
+      const current = await requestCount(key);
+      const result = key === HOMEPAGE_CANONICAL_KEY
+        ? { ...current, value: current.value + HOMEPAGE_HISTORICAL_BASELINE }
+        : current;
       renderCounter(widget, result);
       startLiveSync(widget, key);
     } catch (_) {
