@@ -2,7 +2,7 @@
   'use strict';
   var current=document.currentScript&&document.currentScript.src?document.currentScript.src:'';
   var basePath=current?current.slice(0,current.lastIndexOf('/')+1):'./assets/';
-  var version='20260829-mobile-layout-stability-1';
+  var version='20260907-mobile-freeze-guard-1';
   var balancedArtwork=basePath+'art/east-asia-case-memory-map-paper-clay-20260824.webp?v='+version;
   function sameArtwork(source,target){
     try{return new URL(source,document.baseURI).pathname===new URL(target,document.baseURI).pathname;}

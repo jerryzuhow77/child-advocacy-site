@@ -69,6 +69,10 @@
     var coral = ambient.querySelector('.is-coral');
     var gold = ambient.querySelector('.is-gold');
     var blue = ambient.querySelector('.is-blue');
+    if (liteMotion) {
+      ambient.classList.add('is-static');
+      return;
+    }
     gsap.to(coral, { xPercent: 20, yPercent: 12, scale: 1.12, duration: 8, repeat: -1, yoyo: true, ease: 'sine.inOut' });
     gsap.to(gold, { xPercent: -18, yPercent: -10, scale: 1.16, duration: 10, repeat: -1, yoyo: true, ease: 'sine.inOut' });
     gsap.to(blue, { xPercent: 15, yPercent: 18, scale: 0.92, duration: 7, repeat: -1, yoyo: true, ease: 'sine.inOut' });
@@ -93,17 +97,19 @@
       .fromTo(art, { x: 72, rotateY: -9, scale: 0.94, autoAlpha: 0 }, { x: 0, rotateY: 0, scale: 1, autoAlpha: 1, duration: 1.05, clearProps: 'opacity,visibility' }, '-=0.72')
       .fromTo(bottomline, { scaleX: 0.76, autoAlpha: 0 }, { scaleX: 1, autoAlpha: 1, duration: 0.8, clearProps: 'transform,opacity,visibility' }, '-=0.45');
 
-    all('.premium-art-orbit', hero).forEach(function (orbit, index) {
-      gsap.to(orbit, { rotate: index % 2 ? -360 : 360, duration: index % 2 ? 26 : 21, repeat: -1, ease: 'none' });
-    });
-    all('.premium-floating-tag', hero).forEach(function (tag, index) {
-      gsap.to(tag, { y: index % 2 ? 8 : -9, rotate: index % 2 ? -1.4 : 1.2, duration: 2.4 + index * 0.45, repeat: -1, yoyo: true, ease: 'sine.inOut' });
-    });
-    var glow = hero.querySelector('.premium-art-glow');
-    if (glow) gsap.to(glow, { scale: 1.1, opacity: 0.82, duration: 3.2, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+    if (!liteMotion) {
+      all('.premium-art-orbit', hero).forEach(function (orbit, index) {
+        gsap.to(orbit, { rotate: index % 2 ? -360 : 360, duration: index % 2 ? 26 : 21, repeat: -1, ease: 'none' });
+      });
+      all('.premium-floating-tag', hero).forEach(function (tag, index) {
+        gsap.to(tag, { y: index % 2 ? 8 : -9, rotate: index % 2 ? -1.4 : 1.2, duration: 2.4 + index * 0.45, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+      });
+      var glow = hero.querySelector('.premium-art-glow');
+      if (glow) gsap.to(glow, { scale: 1.1, opacity: 0.82, duration: 3.2, repeat: -1, yoyo: true, ease: 'sine.inOut' });
 
-    var heart = hero.querySelector('.premium-kicker span');
-    if (heart) gsap.to(heart, { scale: 1.12, duration: 0.8, repeat: -1, yoyo: true, ease: 'sine.inOut', repeatDelay: 1.1 });
+      var heart = hero.querySelector('.premium-kicker span');
+      if (heart) gsap.to(heart, { scale: 1.12, duration: 0.8, repeat: -1, yoyo: true, ease: 'sine.inOut', repeatDelay: 1.1 });
+    }
   }
 
   function revealHeaders() {
@@ -432,7 +438,7 @@
 
     shell.insertBefore(layer, shell.firstChild);
 
-    if (reduceMotion) {
+    if (liteMotion) {
       layer.classList.add('is-static');
       return;
     }
@@ -570,7 +576,10 @@
     var step = 360 / cards.length;
     var phase = { rotation: 0 };
     var autoTween;
-    var motionPaused = reduceMotion;
+    // Phones keep the complete Ferris-wheel layout and manual controls, but
+    // start paused so several decorative infinite timelines cannot saturate
+    // the main thread on a long homepage.
+    var motionPaused = liteMotion;
     var dragging = false;
     var pointerInside = false;
     var startX = 0;
