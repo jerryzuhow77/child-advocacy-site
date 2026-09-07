@@ -305,3 +305,11 @@
     -webkit-overflow-scrolling:touch;
   }
 }
+
+
+/* Cache-busted final authority: the shared mobile sheet now loads after toolbar CSS. */
+@media(max-width:900px){
+  html body #cpa-four-language-toolbar{display:none!important;height:0!important;min-height:0!important}
+  html body .art-header{top:0!important}
+  html body .art-header .container.nav{display:flex!important;flex-wrap:nowrap!important;height:58px!important;min-height:58px!important}
+}

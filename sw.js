@@ -2,7 +2,7 @@
 
 // A new cache namespace is intentional: it retires the previous home document
 // and lets the revised paper-cut/embroidery art replace an already-installed PWA.
-const VERSION = '20260903-comments-toolbar-v1';
+const VERSION = '20260907-mobile-toolbar-v2';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -33,6 +33,7 @@ const OPTIONAL_SHELL = [
   './assets/four-language-toolbar-20260901.js',
   './assets/home-bundle-zh-20260905.css',
   './assets/home-bundle-intl-20260905.css',
+  './assets/home-mobile-polish-20260907.css',
   './data/four-language-routes.json',
   './assets/home-gsap.css',
   './assets/home-gsap.js',
