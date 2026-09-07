@@ -190,7 +190,8 @@ jobs:
           if target is None:
               raise SystemExit("No nginx server block found for " + domain)
 
-          if marker not in text:
+          legacy_marker = "# legacy-child-advocacy-cases-route"
+          if marker not in text or legacy_marker not in text:
               domain_pos = text.find(domain)
               server_pos = text.rfind("server", 0, domain_pos)
               brace = text.find("{", server_pos)
@@ -215,6 +216,11 @@ jobs:
                   root /srv/child-advocacy-site/current;
                   try_files $uri $uri/ $uri/index.html =404;
                   add_header X-Robots-Tag "noindex, nofollow" always;
+              }
+
+              # legacy-child-advocacy-cases-route
+              location ^~ /cases/ {
+                  return 308 /child-advocacy-site$request_uri;
               }
               """
               backup = target.with_name(target.name + ".bak-" + time.strftime("%Y%m%d%H%M%S"))
