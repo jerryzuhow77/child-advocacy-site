@@ -1,6 +1,6 @@
 {
-  "version": 17,
-  "generatedAt": "2026-09-07T11:12:46Z",
+  "version": 18,
+  "generatedAt": "2026-09-07T11:56:00Z",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
     {
@@ -20,14 +20,14 @@
       },
       "url": {
         "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/cases/kaikai/features/guardian-duty-rebuttal/",
-        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/cases/kaikai/features/guardian-duty-rebuttal/zh-Hans/",
+        "zh-Hans": "https://cn.globalprotectionwall.com/cases/kaikai/features/guardian-duty-rebuttal/zh-Hans/",
         "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/cases/kaikai/features/guardian-duty-rebuttal/",
         "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/cases/kaikai/features/guardian-duty-rebuttal/"
       },
       "image": "https://jerryzuhow77.github.io/child-advocacy-site/cases/kaikai/features/guardian-duty-rebuttal/hero.webp",
       "imageByLocale": {
         "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/cases/kaikai/features/guardian-duty-rebuttal/hero.webp",
-        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/cases/kaikai/features/guardian-duty-rebuttal/hero.webp",
+        "zh-Hans": "https://cn.globalprotectionwall.com/cases/kaikai/features/guardian-duty-rebuttal/hero.webp",
         "en": "https://jerryzuhow77.github.io/child-advocacy-site/cases/kaikai/features/guardian-duty-rebuttal/hero.webp",
         "ja": "https://jerryzuhow77.github.io/child-advocacy-site/cases/kaikai/features/guardian-duty-rebuttal/hero.webp"
       },
