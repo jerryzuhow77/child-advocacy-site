@@ -17,6 +17,16 @@
   const HOMEPAGE_CANONICAL_KEY = 'homepage-all-languages-v1';
   // 590 legacy CounterAPI views plus 17 visits collected under page-home.
   const HOMEPAGE_HISTORICAL_BASELINE = 607;
+  const ARTICLE_HISTORICAL_FLOORS = Object.freeze({
+    'case-xuanxuan-shared': 46,
+    'feature-see-hear-after-shared': 53,
+    'historical-fu-junxiang-shared': 51,
+    'historical-fujian-qiqi-shared': 36,
+    'historical-tian-tian-shared': 64,
+    'historical-wanghao-shared': 70,
+    'case-lin-xinci-missing-four-days-shared': 33,
+    'historical-kurihara-mia-shared': 39
+  });
   const HOMEPAGE_KEYS = new Set([
     'homepage-all-languages-v1',
     'homepage-zh-hant',
@@ -184,6 +194,14 @@
       : `${localizedData(widget, 'counterError') || fallbackLabel()}: ${formatted} ${unitCopy}`.trim();
   }
 
+  function restoreHistoricalCount(key, current) {
+    if (key === HOMEPAGE_CANONICAL_KEY) {
+      return { ...current, value: current.value + HOMEPAGE_HISTORICAL_BASELINE };
+    }
+    const floor = ARTICLE_HISTORICAL_FLOORS[key] || 0;
+    return { ...current, value: Math.max(current.value, floor) };
+  }
+
   function startLiveSync(widget, key) {
     if (liveSyncs.has(widget)) return;
     let reading = false;
@@ -193,9 +211,7 @@
       reading = true;
       try {
         const current = await fetchCount(key, false);
-        renderCounter(widget, key === HOMEPAGE_CANONICAL_KEY
-          ? { ...current, value: current.value + HOMEPAGE_HISTORICAL_BASELINE }
-          : current);
+        renderCounter(widget, restoreHistoricalCount(key, current));
       } catch (_) {
         // Preserve the last confirmed shared value during a transient read failure.
       } finally {
@@ -229,9 +245,7 @@
 
     try {
       const current = await requestCount(key);
-      const result = key === HOMEPAGE_CANONICAL_KEY
-        ? { ...current, value: current.value + HOMEPAGE_HISTORICAL_BASELINE }
-        : current;
+      const result = restoreHistoricalCount(key, current);
       renderCounter(widget, result);
       startLiveSync(widget, key);
     } catch (_) {
