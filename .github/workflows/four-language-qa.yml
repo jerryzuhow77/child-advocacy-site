@@ -105,6 +105,8 @@ jobs:
           for asset in ('assets/four-language-toolbar-20260901.js', 'assets/article-comments-20260828.js', 'assets/home-post-engagement-20260826.js', 'assets/site-base-20260823.js'):
               assert canonical_wall_api in (root / asset).read_text(encoding='utf-8'), f'Canonical wall API missing from {asset}'
           assert 'cpa-four-language-toolbar' in toolbar
+          assert 'cpa-language-select' in toolbar and 'languageUrl' in toolbar, 'Every article toolbar must expose the shared four-language dropdown.'
+          assert 'https://cn.globalprotectionwall.com/' in toolbar and '簡中' in toolbar, 'Simplified Chinese must keep the short label and target the Hong Kong mirror.'
           assert 'four-language-routes.json?v=20260905-4' in toolbar, 'The toolbar and generated route manifest must share a fresh cache key.'
           assert 'parts.filter(part => part.toLowerCase() !== "zh-hans")' in comments, 'Comment keys must ignore physical locale route segments.'
           assert 'COMMENT_INDEX_ROUTES' in toolbar and 'attempts++<40' in toolbar, 'Unsupported comment pages must not poll indefinitely.'
