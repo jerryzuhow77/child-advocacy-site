@@ -252,3 +252,56 @@
   .home-mobile-quick-languages span{display:none}
   .premium-home-hero .premium-hero-art{width:min(64vw,205px)!important}
 }
+
+
+/* Unified one-row mobile header and two-axis touch navigation. */
+@media(max-width:900px){
+  #cpa-four-language-toolbar{display:none!important}
+  html body{padding-top:0!important}
+  .art-header{top:0!important}
+  .art-header .container.nav,.art-header.is-toolbar-compact .container.nav{
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    align-items:center!important;
+    min-height:58px!important;
+    height:58px!important;
+    gap:8px!important;
+    padding-block:5px!important;
+  }
+  .art-header .nav>.brand-lockup{
+    flex:1 1 auto!important;
+    min-width:0!important;
+    max-width:calc(100% - 52px)!important;
+  }
+  .art-header .site-qr-trigger,.art-header .pwa-mobile-header-install{display:none!important}
+  .art-header .mobile-menu-toggle{
+    display:inline-flex!important;
+    flex:0 0 44px!important;
+    width:44px!important;
+    height:44px!important;
+    min-width:44px!important;
+    margin-left:auto!important;
+  }
+  .art-header .nav>nav,.art-header header .nav>nav{
+    top:58px!important;
+    max-height:calc(100dvh - 58px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))!important;
+  }
+  .home-pinned-reports-viewport,
+  .home-special-grid,
+  .activity-impact-track,
+  .home-case-reel-viewport,
+  .home-document-disc-shell{
+    touch-action:pan-x pan-y!important;
+    overscroll-behavior-x:contain;
+    -webkit-overflow-scrolling:touch;
+  }
+  .home-pinned-reports-viewport,
+  .home-special-grid,
+  .activity-impact-track,
+  .home-case-reel-viewport{overflow-x:auto!important}
+  .home-activity-scroll{
+    touch-action:pan-x pan-y!important;
+    overscroll-behavior-y:contain;
+    -webkit-overflow-scrolling:touch;
+  }
+}
