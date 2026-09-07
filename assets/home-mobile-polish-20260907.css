@@ -313,3 +313,123 @@
   html body .art-header{top:0!important}
   html body .art-header .container.nav{display:flex!important;flex-wrap:nowrap!important;height:58px!important;min-height:58px!important}
 }
+
+/* 2026-09-07 v5: complete Samsung-first mobile homepage pass. */
+@media(max-width:900px){
+  html{scroll-padding-top:calc(66px + env(safe-area-inset-top,0px));overscroll-behavior-x:none}
+  html,body{max-width:100%;overflow-x:clip!important}
+  body{padding-top:0!important;padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))!important}
+  img,svg,video,canvas,iframe,table{max-width:100%}
+  a,button,summary,select{touch-action:manipulation}
+
+  /* One compact sticky row: identity plus one menu trigger. */
+  .art-header{position:sticky!important;z-index:2147482000!important;padding-top:env(safe-area-inset-top,0px)!important}
+  .art-header .container.nav{width:100%!important;max-width:none!important}
+  .art-header .nav>.brand-lockup small,
+  .art-header .container.nav:not(.menu-open)>nav{display:none!important}
+  .art-header .container.nav.menu-open>nav{display:flex!important}
+  .art-header .mobile-menu-toggle{border-radius:12px!important}
+
+  /* Shorter first screen and immediately reachable primary actions. */
+  .premium-home-hero{min-height:0!important;padding-block:12px 18px!important}
+  .premium-home-hero .premium-hero-grid{gap:10px!important;min-height:0!important}
+  .premium-home-hero .premium-hero-copy{padding:14px 14px 8px!important}
+  .premium-home-hero .premium-hero-copy h1{margin-block:4px 8px!important;font-size:clamp(30px,9.3vw,44px)!important;line-height:1.08!important}
+  .premium-home-hero .premium-hero-copy p{margin-block:7px!important;line-height:1.58!important}
+  .premium-home-hero .premium-hero-actions{gap:8px!important;margin-top:10px!important}
+  .premium-home-hero .premium-hero-actions a{display:flex!important;align-items:center;justify-content:center;min-height:46px!important;padding:9px 10px!important}
+  .premium-home-hero .premium-hero-art{width:min(48vw,184px)!important;margin:0 auto!important}
+  .home-mobile-quick-languages{margin-top:10px!important}
+  .home-mobile-quick-languages a{min-height:44px!important}
+
+  /* Horizontal zones: next-card peek, snap stop, and free vertical page movement. */
+  .home-pinned-reports-viewport,
+  .home-special-grid,
+  .home-case-reel,
+  .home-case-reel-viewport,
+  .activity-impact-track{
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    gap:12px!important;
+    width:100%!important;
+    max-width:100%!important;
+    padding:4px 15vw 16px 2px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scroll-snap-type:x mandatory;
+    scroll-padding-inline:2px;
+    scrollbar-width:thin;
+    scrollbar-color:rgba(64,95,106,.45) transparent;
+    touch-action:pan-x pan-y!important;
+    overscroll-behavior-inline:contain;
+    -webkit-overflow-scrolling:touch;
+  }
+  .home-pinned-report-card,
+  .home-special-grid>* ,
+  .home-case-reel-card,
+  .activity-impact-track>*{
+    flex:0 0 min(80vw,320px)!important;
+    width:min(80vw,320px)!important;
+    min-width:0!important;
+    scroll-snap-align:start;
+    scroll-snap-stop:always;
+  }
+  .home-case-reel-hint{flex:0 0 min(80vw,320px)!important;align-self:stretch;scroll-snap-align:start}
+  .home-document-disc-shell{touch-action:pan-x pan-y!important}
+
+  /* Content-heavy activity area may also move vertically inside a bounded panel. */
+  .home-activity-scroll{max-height:min(68svh,620px);overflow-y:auto!important;overflow-x:hidden!important;scrollbar-gutter:stable;touch-action:pan-y!important}
+
+  /* Persistent, localized affordance instead of an invisible gesture. */
+  .home-pinned-reports>header small::after,
+  .home-specials header small::after,
+  .home-case-reel-hint span{
+    display:inline-flex;
+    align-items:center;
+    min-height:28px;
+    margin-inline-start:5px;
+    padding:3px 8px;
+    border:1px solid rgba(143,81,73,.2);
+    border-radius:999px;
+    background:rgba(255,255,255,.74);
+  }
+  .home-pinned-reports>header small::after{animation:home-mobile-swipe-cue 2.4s ease-in-out 1}
+
+  /* Bottom shortcuts: thumb-friendly and safe-area aware. */
+  .home-footer-mobile-bar{
+    left:max(0px,env(safe-area-inset-left,0px))!important;
+    right:max(0px,env(safe-area-inset-right,0px))!important;
+    min-height:62px!important;
+    border-top:1px solid rgba(54,88,87,.18)!important;
+    box-shadow:0 -8px 24px rgba(31,54,57,.13)!important;
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+  }
+  .home-footer-mobile-bar a{min-height:62px!important;border-radius:10px!important}
+
+  /* Prevent long labels and URLs from pushing the whole document sideways. */
+  .premium-home-hero *,
+  .home-priority-strip *,
+  .home-latest-flash *,
+  .home-policy-news *,
+  .home-activity-stream *,
+  .home-feature-stream *{min-width:0;overflow-wrap:anywhere}
+}
+
+@keyframes home-mobile-swipe-cue{
+  0%,100%{transform:translateX(0)}
+  35%{transform:translateX(7px)}
+  70%{transform:translateX(-3px)}
+}
+
+@media(max-width:380px){
+  .premium-home-hero .premium-hero-art{width:min(44vw,166px)!important}
+  .home-pinned-report-card,
+  .home-special-grid>*,
+  .home-case-reel-card,
+  .activity-impact-track>*{flex-basis:82vw!important;width:82vw!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .home-pinned-reports>header small::after{animation:none!important}
+}
