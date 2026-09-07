@@ -45,7 +45,7 @@ jobs:
           missing = []
           for page in pages:
               source = page.read_text(encoding='utf-8')
-              noindex = re.search(r'<meta\\b(?=[^>]*name=["\\\']robots["\\\'])(?=[^>]*content=["\\\'][^"\\\']*noindex)', source, re.I)
+              noindex = re.search(r"<meta\\b(?=[^>]*name=['\"]robots['\"])(?=[^>]*content=['\"][^'\"]*noindex)", source, re.I)
               if noindex:
                   continue
               absent = [marker for marker in markers if marker not in source]
