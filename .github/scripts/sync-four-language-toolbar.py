@@ -11,6 +11,7 @@ from urllib.parse import urljoin, urlsplit, parse_qsl, urlencode
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = "/child-advocacy-site/"
+HK_BASE = "https://cn.globalprotectionwall.com/"
 VERSION = "20260905-4"
 COMMENT_VERSION = "20260905-comment-key-3"
 EXCLUDED_ROOTS = {"child-advocacy-site", "child-advocacy-site-main", "source", "handoffs", "global-protection-wall"}
@@ -74,8 +75,12 @@ def neutral_route(path: Path, locale: str) -> str:
 def public_url(path: Path, locale: str) -> str:
     route = path.relative_to(ROOT).parent.as_posix()
     url = BASE + ("" if route == "." else route.rstrip("/") + "/")
-    if locale == "zh-Hans" and "/zh-Hans/" not in url and not url.lower().startswith(BASE + "zh-hans/"):
-        return url + ("&" if "?" in url else "?") + "lang=zh-Hans"
+    if locale == "zh-Hans":
+        # Every Simplified Chinese edition is served from the independent Hong Kong mirror.
+        mirror_path = url.removeprefix(BASE)
+        if "/zh-Hans/" not in url and not url.lower().startswith(BASE + "zh-hans/"):
+            mirror_path += ("&" if "?" in mirror_path else "?") + "lang=zh-Hans"
+        return urljoin(HK_BASE, mirror_path)
     return url
 
 
@@ -174,7 +179,10 @@ def main() -> None:
         route = neutral_route(path, html_locale(path, original))
         if route in routes:
             updated = re.sub(r'<link\b(?=[^>]*rel=["\']alternate["\'])(?=[^>]*hreflang=)[^>]*>\s*', '', updated, flags=re.I)
-            alternates = '\n'.join(f'<link rel="alternate" hreflang="{locale}" href="https://jerryzuhow77.github.io{url}">' for locale, url in sorted(routes[route].items()))
+            alternates = '\n'.join(
+                f'<link rel="alternate" hreflang="{locale}" href="{url if urlsplit(url).scheme else "https://jerryzuhow77.github.io" + url}">'
+                for locale, url in sorted(routes[route].items())
+            )
             updated = re.sub(r'</head>', lambda _: alternates + '\n</head>', updated, count=1, flags=re.I)
         if updated != original:
             write_html(path, updated)
