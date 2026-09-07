@@ -349,6 +349,10 @@
       "ja": "/child-advocacy-site/ja/social/",
       "zh-Hant": "/child-advocacy-site/social/",
       "zh-Hans": "/child-advocacy-site/social/?lang=zh-Hans"
+    },
+    "cases/kaikai/features/rescue-windows/": {
+      "zh-Hant": "/child-advocacy-site/cases/kaikai/features/rescue-windows/",
+      "zh-Hans": "https://cn.globalprotectionwall.com/cases/kaikai/features/rescue-windows/"
     }
   }
 }
