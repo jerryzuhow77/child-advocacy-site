@@ -208,7 +208,7 @@
     return {
       key: isKaikaiChapterOne
         ? "official--justice-for-kaikai"
-        : (isOfficialFeature && link.dataset.viewCounterKey
+        : (link.dataset.viewCounterKey
           ? cleanArticleKey(link.dataset.viewCounterKey)
           : `${articleHost}-${sharedPath.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-")}`),
       legacyViewKey: isKaikaiChapterTwo ? "kaikai-special-chapter-02-shared" : link.dataset.viewCounterKey || legacyViewKey(url),
