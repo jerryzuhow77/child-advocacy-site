@@ -1,0 +1,65 @@
+name: Four-language dropdown validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/*.html'
+      - 'assets/four-language-toolbar-20260901.js'
+      - 'assets/four-language-toolbar-20260901.css'
+      - 'data/four-language-routes.json'
+      - '.github/scripts/sync-four-language-toolbar.py'
+      - '.github/workflows/four-language-dropdown-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-dropdown:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate every active page and all language destinations
+        run: |
+          set -euo pipefail
+          node --check assets/four-language-toolbar-20260901.js
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path('.')
+          excluded_roots = {'child-advocacy-site', 'child-advocacy-site-main', 'source', 'handoffs', 'global-protection-wall'}
+          excluded_files = {'offline.html', 'google5c94bbe55c53b683.html'}
+          pages = [
+              p for p in root.rglob('*.html')
+              if p.name not in excluded_files
+              and not any(part in excluded_roots or part.startswith('.') for part in p.relative_to(root).parts)
+          ]
+          missing = []
+          markers = (
+              'data-cpa-four-language-toolbar-style',
+              'data-cpa-four-language-toolbar-flag',
+              'data-cpa-four-language-toolbar-script',
+          )
+          for page in pages:
+              source = page.read_text(encoding='utf-8')
+              if 'name="robots"' in source and 'noindex' in source:
+                  continue
+              absent = [marker for marker in markers if marker not in source]
+              if absent:
+                  missing.append((str(page), absent))
+          assert not missing, f'Pages missing the shared dropdown assets: {missing[:20]}'
+
+          toolbar = (root / 'assets/four-language-toolbar-20260901.js').read_text(encoding='utf-8')
+          for token in ('cpa-language-select', '"zh-Hant":ROOT', '"zh-Hans":"https://cn.globalprotectionwall.com/"', 'en:ROOT+"en/"', 'ja:ROOT+"ja/"'):
+              assert token in toolbar, f'Missing four-language navigable option contract: {token}'
+          assert '"zh-Hans": "簡中"' in toolbar
+          assert '簡中・香港' not in toolbar and '简中・香港' not in toolbar
+
+          routes = json.loads((root / 'data/four-language-routes.json').read_text(encoding='utf-8'))['routes']
+          invalid_hans = [(route, editions['zh-Hans']) for route, editions in routes.items()
+                          if 'zh-Hans' in editions and not editions['zh-Hans'].startswith('https://cn.globalprotectionwall.com/')]
+          assert not invalid_hans, f'Non-Hong-Kong Simplified routes: {invalid_hans[:20]}'
+          print(f'validated_pages={len(pages)} routes={len(routes)}')
+          PY
