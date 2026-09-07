@@ -282,7 +282,8 @@ jobs:
           """
           backup = target.with_name(target.name + ".bak-" + time.strftime("%Y%m%d%H%M%S"))
           shutil.copy2(target, backup)
-          server_block = server_block[:insert_at] + snippet + server_block[insert_at:]\n          target.write_text(text[:server_start] + server_block + text[server_end + 1:])
+          server_block = server_block[:insert_at] + snippet + server_block[insert_at:]
+          target.write_text(text[:server_start] + server_block + text[server_end + 1:])
           subprocess.run(["nginx", "-t"], check=True)
           subprocess.run(["systemctl", "reload", "nginx"], check=True)
           PY
