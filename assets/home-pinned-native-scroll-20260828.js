@@ -6,16 +6,6 @@
     var section = viewport && viewport.closest('[data-pinned-reports]');
     if (!viewport || !track || !section || viewport.dataset.nativePinnedScroll === 'true') return;
     track.querySelectorAll('[data-pinned-clone]').forEach(function (clone) { clone.remove(); });
-    if (!track.querySelector('.is-daily-child-protection-brief')) {
-      var daily = document.createElement('a');
-      daily.className = 'home-pinned-report-card is-daily-child-protection-brief';
-      daily.href = './news/daily-child-protection-brief-20260907/';
-      daily.dataset.hansHref = './news/daily-child-protection-brief-20260907/zh-Hans/';
-      daily.dataset.viewCounterKey = 'daily-child-protection-brief-20260907-shared';
-      daily.innerHTML = '<img alt="紙雕山景、陶土守護屋、警訊漣漪與安全網的象徵藝術" decoding="async" fetchpriority="high" src="./assets/images/daily-child-protection-brief-paper-clay-20260907.webp"><span><small>09.07 · 每日護童總報・置頂</small><strong>早期警訊，如何真正啟動保護？</strong><em>少年保護程序、通報安全網缺口與可稽核的早期保護門檻。</em></span>';
-      track.insertBefore(daily, track.firstChild);
-      section.querySelector('header small').textContent = '十一則重要消息可自動循環與手動移動';
-    }
     var cards = Array.prototype.slice.call(track.querySelectorAll('.home-pinned-report-card'));
     if (!cards.length) return;
     viewport.dataset.nativePinnedScroll = 'true';
