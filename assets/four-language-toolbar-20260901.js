@@ -76,7 +76,7 @@
     const toolbar=document.getElementById('cpa-four-language-toolbar');if(!toolbar)return;
     const words=navigationCopy[locale()],home=toolbar.querySelector('.cpa-four-language-brand');
     home.setAttribute('aria-label',words[0]);home.title=words[0];
-    home.href=locale()==='en'||locale()==='ja'?ROOT+locale()+'/':ROOT+(locale()==='zh-Hans'?'?lang=zh-Hans':'');
+    home.href=locale()==='en'||locale()==='ja'?ROOT+locale()+'/':(locale()==='zh-Hans'?'https://cn.globalprotectionwall.com/':ROOT);
     home.querySelector('span').textContent='⌂';home.querySelector('b').textContent=words[0];
     if(!toolbar.dataset.languagePreferenceBound){
       toolbar.dataset.languagePreferenceBound='true';
@@ -114,7 +114,9 @@
     if(location.hash)select.value=decodeURIComponent(location.hash.slice(1));
   }
   function languageUrl(key,href){
-    if(!href)return "";
+    if(!href){
+      return {"zh-Hant":ROOT,"zh-Hans":"https://cn.globalprotectionwall.com/",en:ROOT+"en/",ja:ROOT+"ja/"}[key]||ROOT;
+    }
     if(key!=="zh-Hans")return href;
     try{
       const direct=new URL(href,"https://jerryzuhow77.github.io");
