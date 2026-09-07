@@ -326,6 +326,8 @@ jobs:
           paths=(
             /child-advocacy-site/
             /cases/kaikai/features/rescue-windows/
+            /child-advocacy-site/cases/kaikai/features/final-24-hours/
+            /child-advocacy-site/cases/kaikai/features/final-24-hours/dialogues/
             /child-advocacy-site/en/
             /child-advocacy-site/ja/
             /child-advocacy-site/news/
