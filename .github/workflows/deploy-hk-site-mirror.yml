@@ -224,6 +224,66 @@ jobs:
           subprocess.run(["systemctl", "reload", "nginx"], check=True)
           PY
 
+      - name: Recover Hong Kong wall service
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'sudo bash -s' <<'REMOTE'
+          set -Eeuo pipefail
+          service=global-protection.service
+          local_url=http://127.0.0.1:8787/
+          healthy=
+          for attempt in 1 2 3; do
+            code="$(curl --connect-timeout 3 --max-time 10 -sS -o /tmp/hk-wall-local.html -w '%{http_code}' "$local_url" || true)"
+            if [ "$code" = 200 ] && [ "$(wc -c < /tmp/hk-wall-local.html)" -gt 1000 ]; then
+              healthy=1
+              break
+            fi
+            sleep 2
+          done
+          if [ -z "$healthy" ]; then
+            systemctl restart "$service"
+            for attempt in 1 2 3 4 5 6; do
+              code="$(curl --connect-timeout 3 --max-time 10 -sS -o /tmp/hk-wall-local.html -w '%{http_code}' "$local_url" || true)"
+              if [ "$code" = 200 ] && [ "$(wc -c < /tmp/hk-wall-local.html)" -gt 1000 ]; then
+                healthy=1
+                break
+              fi
+              sleep 5
+            done
+          fi
+          test -n "$healthy" || {
+            systemctl --no-pager --full status "$service" || true
+            journalctl -u "$service" -n 80 --no-pager || true
+            echo "Hong Kong wall service did not recover on port 8787"
+            exit 1
+          }
+          nginx -t
+          systemctl reload nginx
+          REMOTE
+
+      - name: Verify Hong Kong wall
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          checks=(/ /api/public/messages)
+          for path in "${checks[@]}"; do
+            ok=
+            for attempt in 1 2 3 4 5; do
+              code="$(curl --connect-timeout 10 --max-time 25 -sS -o /tmp/wall-response -w '%{http_code}' "https://cn.globalprotectionwall.com$path" || true)"
+              size="$(wc -c < /tmp/wall-response 2>/dev/null || echo 0)"
+              if [ "$code" = 200 ] && [ "$size" -gt 10 ]; then
+                ok=1
+                break
+              fi
+              sleep 4
+            done
+            test -n "$ok" || {
+              echo "Hong Kong wall verification failed: $path status=${code:-none} size=${size:-0}"
+              exit 1
+            }
+          done
+
       - name: Verify Hong Kong mirror
         shell: bash
         run: |
