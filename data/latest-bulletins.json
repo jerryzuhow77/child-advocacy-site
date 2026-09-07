@@ -1,8 +1,43 @@
 {
-  "version": 16,
-  "generatedAt": "2026-09-07T03:00:00Z",
+  "version": 17,
+  "generatedAt": "2026-09-07T11:12:46Z",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
+    {
+      "id": "guardian-duty-rebuttal-20260907",
+      "publishedAt": "2026-09-07",
+      "title": {
+        "zh-Hant": "不是背黑鍋｜四組事證形成個案責任",
+        "zh-Hans": "不是背黑锅｜四组证据形成个案责任",
+        "en": "Not a Scapegoat | Four Sets of Case-Specific Evidence",
+        "ja": "身代わりではない｜四つの証拠が示す個別責任"
+      },
+      "summary": {
+        "zh-Hant": "新聞說法、官方資料與本文判斷三欄對照；四組具體事證說明個案責任不等於社工群體。",
+        "zh-Hans": "新闻说法、官方资料与本文判断三栏对照；四组具体证据说明个案责任不等于社工群体。",
+        "en": "News claims, official records and analysis compared; case-specific duty is not a judgment on social workers as a profession.",
+        "ja": "報道、公式資料、分析を照合し、職種全体ではなく本件固有の作為義務を検証。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/cases/kaikai/features/guardian-duty-rebuttal/",
+        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/cases/kaikai/features/guardian-duty-rebuttal/zh-Hans/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/cases/kaikai/features/guardian-duty-rebuttal/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/cases/kaikai/features/guardian-duty-rebuttal/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/cases/kaikai/features/guardian-duty-rebuttal/hero.webp",
+      "imageByLocale": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/cases/kaikai/features/guardian-duty-rebuttal/hero.webp",
+        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/cases/kaikai/features/guardian-duty-rebuttal/hero.webp",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/cases/kaikai/features/guardian-duty-rebuttal/hero.webp",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/cases/kaikai/features/guardian-duty-rebuttal/hero.webp"
+      },
+      "imageAlt": {
+        "zh-Hant": "繽紛水墨花鳥、荷葉與紅線，象徵修補破裂的兒少保護安全網",
+        "zh-Hans": "缤纷水墨花鸟、荷叶与红线，象征修补破裂的儿童保护安全网",
+        "en": "Colorful ink-wash flowers, birds, lotus leaves, and red thread symbolising repair of a broken safety net",
+        "ja": "壊れた安全網の修復を象徴する、花鳥、蓮の葉、赤い糸による鮮やかな水墨画"
+      }
+    },
     {
       "id": "daily-child-protection-brief-20260907", "publishedAt": "2026-09-07",
       "title": {"zh-Hant":"每日護童總報｜早期警訊如何真正啟動保護？","zh-Hans":"每日护童总报｜早期警讯如何真正启动保护？","en":"Daily brief: turning early warnings into protection","ja":"デイリーブリーフ｜早期警告を保護につなげる"},
