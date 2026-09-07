@@ -21,7 +21,7 @@
     const timer = setTimeout(() => controller.abort(), 12000);
     return fetch(url, {...options, signal: controller.signal}).finally(() => clearTimeout(timer));
   }
-  const localeNames = { "zh-Hant": "繁中", "zh-Hans": "简中", en: "EN", ja: "日本語" };
+  const localeNames = { "zh-Hant": "繁中", "zh-Hans": "簡中", en: "English", ja: "日本語" };
   const copy = {
     "zh-Hant": { brand:"護童行動聯盟",official:"官方網站",views:"瀏覽",unavailable:"尚未提供此語言版本",aria:"四語頂端工具列",like:"按讚",comment:"留言",bookmark:"收藏",bookmarked:"已收藏" },
     "zh-Hans": { brand:"护童行动联盟",official:"官方网站",views:"浏览",unavailable:"尚未提供此语言版本",aria:"四语顶端工具栏",like:"点赞",comment:"留言",bookmark:"收藏",bookmarked:"已收藏" },
@@ -80,9 +80,12 @@
     home.querySelector('span').textContent='⌂';home.querySelector('b').textContent=words[0];
     if(!toolbar.dataset.languagePreferenceBound){
       toolbar.dataset.languagePreferenceBound='true';
-      toolbar.addEventListener('click',event=>{
-        const link=event.target.closest('a[hreflang]');
-        if(link)try{localStorage.setItem('siteLang',link.hreflang)}catch(_){}
+      const select=toolbar.querySelector('.cpa-language-select');
+      select?.addEventListener('change',()=>{
+        const option=select.selectedOptions[0];
+        if(!option||option.disabled||!option.value)return;
+        try{localStorage.setItem('siteLang',option.dataset.locale||'zh-Hant')}catch(_){}
+        location.href=option.value;
       });
     }
     if(!neutralRoute())return;
@@ -110,7 +113,33 @@
     toolbar.querySelector('.cpa-four-language-actions').prepend(select);
     if(location.hash)select.value=decodeURIComponent(location.hash.slice(1));
   }
-  function render(manifest){if(document.getElementById("cpa-four-language-toolbar"))return;const language=locale(),words=copy[language],route=neutralRoute(),routes=manifest?.routes?.[route]||{},toolbar=document.createElement("aside");toolbar.id="cpa-four-language-toolbar";toolbar.setAttribute("aria-label",words.aria);const navigation=Object.keys(localeNames).map(k=>{const href=routes[k];if(!href)return`<span aria-disabled="true" title="${words.unavailable}">${localeNames[k]}</span>`;return`<a href="${href}" hreflang="${k}"${language===k?' aria-current="page"':''}>${localeNames[k]}</a>`}).join("");toolbar.innerHTML=`<a class="cpa-four-language-brand" href="${ROOT}"><span aria-hidden="true">♥</span><b>${words.brand}</b><small>${words.official}</small></a><div class="cpa-four-language-actions"><span class="cpa-four-language-views" hidden aria-live="polite"><span>◉ ${words.views}</span><b>—</b></span><nav class="cpa-four-language-nav" aria-label="${words.aria}">${navigation}</nav></div>`;document.body.prepend(toolbar);document.querySelectorAll(".public-view-count-article,#cpa-page-views,[data-lx-counter],[data-km-view-counter]").forEach(n=>n.remove());renderEngagement(route,null);recordOrReadView(route,toolbar.querySelector(".cpa-four-language-views")).then(data=>{if(data){const count=document.querySelector(".cpa-article-engagement .is-view em");if(count)count.textContent=format(data.viewCount)}})}
+  function languageUrl(key,href){
+    if(!href)return "";
+    if(key!=="zh-Hans")return href;
+    try{
+      const direct=new URL(href,"https://jerryzuhow77.github.io");
+      if(direct.hostname==="cn.globalprotectionwall.com")return direct.href;
+      const relative=direct.pathname.replace(/^\/child-advocacy-site\/?/i,"");
+      return "https://cn.globalprotectionwall.com/"+relative+direct.search+direct.hash;
+    }catch(_){return href}
+  }
+  function render(manifest){
+    if(document.getElementById("cpa-four-language-toolbar"))return;
+    const language=locale(),words=copy[language],route=neutralRoute(),routes=manifest?.routes?.[route]||{},toolbar=document.createElement("aside");
+    toolbar.id="cpa-four-language-toolbar";
+    toolbar.setAttribute("aria-label",words.aria);
+    const options=Object.keys(localeNames).map(k=>{
+      const href=languageUrl(k,routes[k]);
+      const selected=language===k?" selected":"";
+      if(!href)return `<option value="" data-locale="${k}" disabled${selected}>${localeNames[k]} — ${words.unavailable}</option>`;
+      return `<option value="${href}" data-locale="${k}"${selected}>${localeNames[k]}</option>`;
+    }).join("");
+    toolbar.innerHTML=`<a class="cpa-four-language-brand" href="${ROOT}"><span aria-hidden="true">♥</span><b>${words.brand}</b><small>${words.official}</small></a><div class="cpa-four-language-actions"><span class="cpa-four-language-views" hidden aria-live="polite"><span>◉ ${words.views}</span><b>—</b></span><nav class="cpa-four-language-nav" aria-label="${words.aria}"><label class="cpa-language-picker"><span>${language==="en"?"Language":language==="ja"?"言語":language==="zh-Hans"?"语言":"語言"}</span><select class="cpa-language-select" aria-label="${words.aria}">${options}</select></label></nav></div>`;
+    document.body.prepend(toolbar);
+    document.querySelectorAll(".public-view-count-article,#cpa-page-views,[data-lx-counter],[data-km-view-counter]").forEach(n=>n.remove());
+    renderEngagement(route,null);
+    recordOrReadView(route,toolbar.querySelector(".cpa-four-language-views")).then(data=>{if(data){const count=document.querySelector(".cpa-article-engagement .is-view em");if(count)count.textContent=format(data.viewCount)}});
+  }
   async function init(){let manifest=null;try{const r=await boundedFetch(ROUTES_URL,{cache:"no-store"});if(r.ok)manifest=await r.json()}catch(_){}render(manifest);addNavigation();let pending=false;new MutationObserver(()=>{if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;addNavigation()})}).observe(document.querySelector("main")||document.body,{childList:true,subtree:true})}
   document.readyState==="loading"?document.addEventListener("DOMContentLoaded",init,{once:true}):init();
 })();
