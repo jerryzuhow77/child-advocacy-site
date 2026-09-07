@@ -180,7 +180,8 @@ def main() -> None:
         if route in routes:
             updated = re.sub(r'<link\b(?=[^>]*rel=["\']alternate["\'])(?=[^>]*hreflang=)[^>]*>\s*', '', updated, flags=re.I)
             alternates = '\n'.join(
-                f'<link rel="alternate" hreflang="{locale}" href="{url if urlsplit(url).scheme else "https://jerryzuhow77.github.io" + url}">'
+                '<link rel="alternate" hreflang="' + locale + '" href="' +
+                (url if urlsplit(url).scheme else 'https://jerryzuhow77.github.io' + url) + '">'
                 for locale, url in sorted(routes[route].items())
             )
             updated = re.sub(r'</head>', lambda _: alternates + '\n</head>', updated, count=1, flags=re.I)
