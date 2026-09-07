@@ -1,4 +1,5 @@
 name: Four-language dropdown validation
+# Validates the synchronized repository state.
 
 on:
   push:
