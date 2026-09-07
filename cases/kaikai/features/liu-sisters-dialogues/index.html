@@ -13,7 +13,7 @@
 <header class="topbar">
   <a class="brand" href="../../../../">護童行動聯盟</a>
   <nav aria-label="頁面導覽">
-    <a href="#timeline">對話時間軸</a><a href="#others">傳給其他人</a><a href="#issues">爭點總表</a><a href="#sources">來源與界限</a>
+    <a href="#timeline">對話時間軸</a><a href="#archive">完整訊息</a><a href="#others">傳給其他人</a><a href="#crosscheck">四欄勾稽</a><a href="#issues">爭點總表</a><a href="#sources">來源與界限</a>
   </nav>
 </header>
 
@@ -39,22 +39,31 @@
     <article><b>11</b><span>核心爭點</span></article>
   </section>
 
+  <section class="evidence-legend wrap" aria-labelledby="legend-title">
+    <h2 id="legend-title">先看證據層級</h2>
+    <div><span class="tag court">A｜法院確定認定</span><p>可作為本頁結論基礎；仍以判決原本為準。</p></div>
+    <div><span class="tag hearing">B｜公開庭審紀錄</span><p>旁聽紀錄或庭上提示內容，不等同官方逐字稿。</p></div>
+    <div><span class="tag court-report">C｜判決附件公開報導</span><p>媒體依公開判決附件整理的訊息，保留平台與時間。</p></div>
+    <div><span class="tag pending">D｜待核／部分公開</span><p>缺前後文、時間、帳號鑑識或傳訊方向，不寫成確定事實。</p></div>
+  </section>
+
   <section class="toolbar wrap" aria-label="篩選對話">
-    <div class="filters" role="group" aria-label="按主題篩選">
+    <div class="filter-block"><small>主題</small><div class="filters" role="group" aria-label="按主題篩選">
       <button class="active" data-filter="all">全部</button>
       <button data-filter="concealment">傷勢與隱瞞</button>
       <button data-filter="restraint">綑綁與限制</button>
       <button data-filter="violence">暴力與辱罵</button>
       <button data-filter="money">金錢與照顧</button>
       <button data-filter="emergency">最後急救</button>
-    </div>
+    </div></div>
+    <label class="recipient"><span>傳訊關係</span><select id="recipient"><option value="all">全部傳訊關係</option><option value="sisters">劉彩萱 ⇄ 劉若琳</option><option value="caixuan-out">劉彩萱 → 其他人</option><option value="others-in">其他人 → 劉彩萱</option><option value="third-party">第三人之間</option><option value="unclear">方向待核</option></select></label>
     <label class="search"><span>搜尋訊息</span><input id="search" type="search" placeholder="輸入日期、說話者或關鍵字"></label>
   </section>
 
   <section class="timeline wrap" id="timeline" aria-labelledby="timeline-title">
     <header class="section-head"><p>PART I</p><h2 id="timeline-title">姐妹對話｜依傳訊時間排列</h2><span>引號內文字依公開判決附件報導保留；影像僅以文字說明，不展示兒少照片。</span></header>
 
-    <article class="record" data-tags="concealment" data-search="9月7日 傷勢 社工 睡覺">
+    <article class="record" data-recipient="sisters" data-tags="concealment" data-search="9月7日 傷勢 社工 睡覺">
       <time datetime="2023-09-07T01:29">2023.09.07 <small>01:29 · LINE</small></time>
       <div class="record-body"><span class="tag court-report">判決附件公開報導</span><h3>傷口出現後，討論讓孩子在訪視時睡覺</h3>
         <div class="chat caixuan"><b>劉彩萱</b><p>傳送頸部劃傷照片；「夭壽喔這麼嚴重」、「我鼠定了，星期五人家就要來」。</p></div>
@@ -64,7 +73,7 @@
       </div>
     </article>
 
-    <article class="record" data-tags="restraint" data-search="9月17日 綑綁 冷氣 房間">
+    <article class="record" data-recipient="sisters" data-tags="restraint" data-search="9月17日 綑綁 冷氣 房間">
       <time datetime="2023-09-17T01:06">2023.09.17 <small>01:06–03:10 · LINE</small></time>
       <div class="record-body"><span class="tag court-report">判決附件公開報導</span><h3>連續傳送綑綁影像，接收者持續回應</h3>
         <div class="chat caixuan"><b>劉彩萱</b><p>傳送孩子遭綑綁橫躺照片；稱「被綁著躺不舒服」。其後又傳送手腳遭綑綁、頭臉被遮掩的照片，說孩子一直撞頭、想睡房間。</p></div>
@@ -73,7 +82,7 @@
       </div>
     </article>
 
-    <article class="record" data-tags="restraint" data-search="9月18日 綁 小房間">
+    <article class="record" data-recipient="sisters" data-tags="restraint" data-search="9月18日 綁 小房間">
       <time datetime="2023-09-18T02:32">2023.09.18 <small>02:32 · LINE</small></time>
       <div class="record-body"><span class="tag court-report">判決附件公開報導</span><h3>「乖乖讓我綁」</h3>
         <div class="chat caixuan"><b>劉彩萱</b><p>「回來進小房間手乖乖讓我綁，綁好躺下就睡了」、「我沒幫他」。</p></div>
@@ -82,7 +91,7 @@
       </div>
     </article>
 
-    <article class="record" data-tags="restraint" data-search="9月27日 大叫 求救 椅凳 口罩">
+    <article class="record" data-recipient="sisters" data-tags="restraint" data-search="9月27日 大叫 求救 椅凳 口罩">
       <time datetime="2023-09-27T01:47">2023.09.27 <small>01:47–08:16 · LINE</small></time>
       <div class="record-body"><span class="tag court-report">判決附件公開報導</span><h3>哭喊是否被理解為「試探救援」</h3>
         <div class="chat caixuan"><b>劉彩萱</b><p>傳送孩子手腳綁於椅凳、臉部被口罩遮掩的照片；稱洗澡時孩子大叫，「試探有沒有人進去救他」，叫了幾次都沒有人出現。其後回報身體快掙脫、已躺下並陸續大哭。</p></div>
@@ -92,7 +101,7 @@
       </div>
     </article>
 
-    <article class="record" data-tags="restraint violence" data-search="10月6日 木乃伊 哭 沒人可以救你">
+    <article class="record" data-recipient="sisters" data-tags="restraint violence" data-search="10月6日 木乃伊 哭 沒人可以救你">
       <time datetime="2023-10-06T01:54">2023.10.06 <small>01:54–02:15 · LINE</small></time>
       <div class="record-body"><span class="tag court-report">判決附件公開報導</span><h3>包裹、觀看與「沒人可以救你」</h3>
         <div class="chat caixuan"><b>劉彩萱</b><p>傳送孩子被包裹如木乃伊的照片；稱「很爽吧」、「等一下我洗好澡再去看變啥樣」。</p></div>
@@ -103,7 +112,7 @@
       </div>
     </article>
 
-    <article class="record" data-tags="restraint violence" data-search="11月2日 桶仔 裝死 鼻血">
+    <article class="record" data-recipient="sisters" data-tags="restraint violence" data-search="11月2日 桶仔 裝死 鼻血">
       <time datetime="2023-11-02T03:42">2023.11.02 <small>03:42–03:47 · Messenger</small></time>
       <div class="record-body"><span class="tag court-report">判決附件公開報導</span><h3>澡盆／桶子翻倒後的即時對話</h3>
         <div class="chat ruolin"><b>劉若琳</b><p>先稱「他沒機會了」；其後說剛去看、孩子大哭，自己幫了三次，並描述「桶仔反過去」、腳向上、孩子很有力，最後稱「裝死」。</p></div>
@@ -112,7 +121,7 @@
       </div>
     </article>
 
-    <article class="record" data-tags="concealment" data-search="11月5日 磨牙 牙齒">
+    <article class="record" data-recipient="sisters" data-tags="concealment" data-search="11月5日 磨牙 牙齒">
       <time datetime="2023-11-05T02:25">2023.11.05 <small>02:25 · LINE</small></time>
       <div class="record-body"><span class="tag media">媒體所列單句</span><h3>「磨牙聲」</h3>
         <div class="chat caixuan"><b>劉彩萱</b><p>公開報導僅列「磨牙聲」，未同時刊出接續回覆。</p></div>
@@ -120,7 +129,7 @@
       </div>
     </article>
 
-    <article class="record" data-tags="violence money" data-search="11月12日 手印 修理 揍 孫中山 金錢">
+    <article class="record" data-recipient="sisters" data-tags="violence money" data-search="11月12日 手印 修理 揍 孫中山 金錢">
       <time datetime="2023-11-12T03:12">2023.11.12 <small>03:12–03:27 · LINE</small></time>
       <div class="record-body"><span class="tag court-report">判決附件公開報導</span><h3>施打、管教用語與「為了孫中山」</h3>
         <div class="chat caixuan"><b>劉彩萱</b><p>稱孩子走樓梯邊哭，自己打手臂後留下「五手印」；又稱有「修理」孩子、讓他站在廁所外。其後說「你沒揍他，要揍啊」，並形容孩子在外人面前像「小媳婦」、是裝可憐。</p></div>
@@ -130,7 +139,7 @@
       </div>
     </article>
 
-    <article class="record" data-tags="violence restraint" data-search="12月3日 罰站 不讓睡 一巴掌 揍">
+    <article class="record" data-recipient="sisters" data-tags="violence restraint" data-search="12月3日 罰站 不讓睡 一巴掌 揍">
       <time datetime="2023-12-03T12:19">2023.12.03 <small>Messenger · 時段跨多則</small></time>
       <div class="record-body"><span class="tag court-report">判決附件公開報導</span><h3>不讓躺、不讓睡與長時間罰站</h3>
         <div class="chat ruolin"><b>劉若琳</b><p>稱孩子「欠揍」、不要讓他白天躺；稍後回「他真的不能給他太自由」，並說再大一點會管不動。</p></div>
@@ -139,7 +148,7 @@
       </div>
     </article>
 
-    <article class="record" data-tags="violence restraint" data-search="12月9日 立正站好 打暈 看不順眼">
+    <article class="record" data-recipient="sisters" data-tags="violence restraint" data-search="12月9日 立正站好 打暈 看不順眼">
       <time datetime="2023-12-09T12:08">2023.12.09 <small>12:08–12:19 · LINE</small></time>
       <div class="record-body"><span class="tag court-report">判決附件公開報導</span><h3>「再叫他起來立正站好」</h3>
         <div class="chat ruolin"><b>劉若琳</b><p>「死小孩在幹嘛」、「這麼早」；聽到對方擔心「又失手打暈」後追問原因。</p></div>
@@ -148,7 +157,7 @@
       </div>
     </article>
 
-    <article class="record" data-tags="emergency" data-search="12月23日 沒心跳 繼續救 急救">
+    <article class="record" data-recipient="sisters" data-tags="emergency" data-search="12月23日 沒心跳 繼續救 急救">
       <time datetime="2023-12-23">2023.12.23 <small>時間待原始訊息核定</small></time>
       <div class="record-body"><span class="tag hearing">公開庭審紀錄</span><h3>最後急救訊息</h3>
         <div class="chat caixuan"><b>劉彩萱</b><p>「沒心跳了」。</p></div>
@@ -158,20 +167,49 @@
     </article>
   </section>
 
+  <section class="archive wrap" id="archive" aria-labelledby="archive-title">
+    <header class="section-head"><p>PART II</p><h2 id="archive-title">公開報導所載完整訊息</h2><span>「完整」只指引用來源在該日期公開列出的全部訊息，不代表手機鑑識資料毫無省略。點開日期閱讀。</span></header>
+    <details><summary><time>09.07</time><strong>頸部傷勢與訪視</strong><span>C｜判決附件公開報導</span></summary><div class="full-chat"><p><b>萱：</b>［傳送頸部劃傷照片］</p><p><b>萱：</b>夭壽喔這麼嚴重</p><p><b>琳：</b>對呀這麼辦</p><p><b>萱：</b>我鼠定了 星期五人家就要來</p><p><b>琳：</b>這沒這麼快好 讓他睡覺</p><p><b>萱：</b>他回來就躺平了 本來還要跟我老公玩</p><p><b>琳：</b>我說星期五都不要讓他睡等下午時間快到了才讓他進去睡 小孩在睡覺社工都不會把他叫醒</p><p><b>萱：</b>喔 只能試試看了 我是看到衣服上的血，才發現哇嗚～這麼大一道 嚇死寶寶了</p></div></details>
+    <details><summary><time>09.17–09.18</time><strong>綑綁照片與睡眠</strong><span>C｜判決附件公開報導</span></summary><div class="full-chat"><p><b>萱：</b>［傳送孩子遭綑綁並橫躺照片］</p><p><b>琳：</b>也是躺著</p><p><b>萱：</b>被綁著躺不舒服</p><p><b>萱：</b>［再傳送手腳遭綑綁、頭上綁毛巾並遮蔽眼睛的坐姿照片］</p><p><b>萱：</b>一直撞頭 想睡我房間 我就讓他坐我房間地上</p><p><b>萱：</b>［再傳送手腳遭綑綁、臉部被遮掩、雙腳高舉過頭的躺姿照片］</p><p><b>琳：</b>好爽有冷氣吹</p><p><b>萱（09.18）：</b>回來進小房間手乖乖讓我綁，綁好躺下就睡了</p><p><b>萱：</b>我沒幫他</p><p><b>琳：</b>喔</p></div></details>
+    <details><summary><time>09.27</time><strong>大叫、哭喊與椅腳斷裂</strong><span>C｜判決附件公開報導</span></summary><div class="full-chat"><p><b>萱：</b>［01:47 傳送手腳綁於椅凳、臉部被口罩遮掩的照片］</p><p><b>萱：</b>剛剛我洗澡，他故意時不時的大叫幾聲，試探有沒有人進去救他，結果叫了幾次都沒有人出現救他，現在目前沒有再叫再發出聲音</p><p><b>萱：</b>身體快掙脫了</p><p><b>萱：</b>身體已經躺下去了，繼續陸續的大叫大哭</p><p><b>琳：</b>現在勒</p><p><b>萱：</b>［08:16 傳送木凳椅腳支架斷裂照片］</p></div></details>
+    <details><summary><time>10.06</time><strong>包裹與「沒人可以救你」</strong><span>C｜判決附件公開報導</span></summary><div class="full-chat"><p><b>萱：</b>［傳送被包裹如木乃伊的照片］</p><p><b>萱：</b>很爽吧</p><p><b>萱：</b>等一下我洗好澡再去看變啥樣</p><p><b>琳：</b>這是誰的毛巾</p><p><b>萱：</b>我綁冰箱的布，不是毛巾</p><p><b>琳：</b>看起來還不錯</p><p><b>萱：</b>是我以前做衣服買的布，沒用到</p><p><b>琳：</b>睡得很爽</p><p><b>萱：</b>剛剛還給我哭</p><p><b>琳：</b>為何</p><p><b>萱：</b>我警告他，沒人可以救你，哭沒用 因為他看到我兒子</p><p><b>琳：</b>為何哭</p><p><b>萱：</b>他看到我兒子咩</p><p><b>琳：</b>爽睡</p></div></details>
+    <details><summary><time>11.02</time><strong>澡盆／桶子翻倒</strong><span>C｜判決附件公開報導</span></summary><div class="full-chat"><p><b>琳：</b>他沒機會了</p><p><b>琳：</b>剛去看完他</p><p><b>萱：</b>怎了</p><p><b>琳：</b>他大哭</p><p><b>萱：</b>又 大哭</p><p><b>琳：</b>對</p><p><b>萱：</b>欠揍嗎</p><p><b>琳：</b>他自己又反了</p><p><b>萱：</b>白癡</p><p><b>琳：</b>我幫他3次了</p><p><b>萱：</b>不要理他啦 等一下又流鼻血</p><p><b>琳：</b>1掉出2腳向上3反巧</p><p><b>萱：</b>蝦米 誇張了</p><p><b>琳：</b>桶仔反過去 他很有力</p><p><b>萱：</b>掉出是桶仔翻過去</p><p><b>琳：</b>裝死</p><p><b>萱：</b>妳去睡覺啦！不要理他了</p></div></details>
+    <details><summary><time>11.12</time><strong>施打、管教與金錢</strong><span>C｜判決附件公開報導</span></summary><div class="full-chat"><p><b>萱：</b>走樓梯故意要走不走的邊走邊哭，越哭越大聲 後來忍不住打了一下他的手臂才比較小聲一點</p><p><b>琳：</b>可以教的還是要教</p><p><b>萱：</b>教啊！所以被我打一下重重的 到剛剛手還紅著 五手印</p><p><b>琳：</b>對啊</p><p><b>萱：</b>氣死 然後本來洗好手、腳準備包起來讓他睡 他又給我大哭 我有修理他，然後讓他站在廁所外面等我 他真的很聰明，都拉長耳朵在聽我們說什麼</p><p><b>琳：</b>這樣去那裡他回來又沒事一定會走樣 對我有發現</p><p><b>萱：</b>剛剛拿著廖ㄅㄟˊ啊叫他可愛一個給我看他才勉強裝笑給我 不會沒事啦！我的容忍程度很差</p><p><b>琳：</b>其實他很懂</p><p><b>萱：</b>他懂大人要什麼</p><p><b>琳：</b>回來我叫他脫鞋他居然踢我</p><p><b>萱：</b>但就是很會ㄍㄟ笑 你沒揍他 要揍啊 這個不對要教 不然他會變本加厲 他就不敢踢我</p><p><b>琳：</b>我放了東西要去揍 結果你來了他才脫</p><p><b>萱：</b>暈倒 他看到我很像小媳婦一樣，尤其是有外人在的時候更明顯 其實真的不是那麼怕我啦 這都是裝可憐給人看的 所以會顧人怨，不會討喜</p><p><b>琳：</b>為了孫中山 你玩不過他 他有政府認證</p><p><b>萱：</b>為錢死為錢狂為錢扣扣ㄗㄨㄥˊ</p></div></details>
+    <details><summary><time>12.03</time><strong>不讓躺、不讓睡與罰站</strong><span>C｜判決附件公開報導</span></summary><div class="full-chat"><p><b>琳：</b>他今天很假先</p><p><b>萱：</b>哪天不ㄍㄟ</p><p><b>琳：</b>欠揍</p><p><b>萱：</b>哪天不欠揍</p><p><b>琳：</b>讓他太舒服躺一天</p><p><b>萱：</b>剛剛才被我揍完</p><p><b>琳：</b>為何</p><p><b>萱：</b>愛哭啊</p><p><b>琳：</b>白天不要讓他躺 坐一下就好</p><p><b>萱：</b>我ㄤ一直說他水腫 剛剛又說了一次 他坐著還會自己按摩腳勒</p><p><b>琳：</b>現在坐嗎？為何？</p><p><b>萱：</b>上來站到剛剛我才讓他坐下的 我ㄤ一直說我讓他站一整天太久了…</p><p><b>萱：</b>等一下我去洗澡他就要繼續站著了 先讓他爽一下 等一下我洗澡開始他又得站到我睡著了…</p><p><b>琳：</b>還在坐</p><p><b>萱：</b>沒 我要去洗澡了</p><p><b>萱：</b>他今天還趁我出去上廁所整個人趴在大壯睡的被子上睡勒 氣死我 還被我狠狠的揍了一頓 他現在很誇張的自由啦</p><p><b>琳：</b>對啊</p><p><b>萱：</b>只要不小心他就自己當老大了 什麼都自己決定怎麼做就怎麼爽</p><p><b>琳：</b>他真的不能給他太自由</p><p><b>萱：</b>然後看到外人一副小媳婦的模樣 欠揍</p><p><b>琳：</b>在大一點會管不動</p><p><b>萱：</b>看了就很想一巴掌轟給他死 不用再大一點 現在就已經很難管得動了</p><p><b>萱：</b>我每天為了不讓他睡結果自己也不能睡</p></div></details>
+    <details><summary><time>12.09</time><strong>「失手打暈」與立正站好</strong><span>C｜判決附件公開報導</span></summary><div class="full-chat"><p><b>琳：</b>死小孩在幹嘛</p><p><b>萱：</b>躺平睡覺啊</p><p><b>琳：</b>這麼早</p><p><b>萱：</b>等我ㄤ出門再叫他起來立正站好 先讓他爽一下 不然我ㄤ又要唧唧叫了 他剛進去的呀 我才剛洗完澡吹好頭髮幫他換尿布讓他去小房間先爽一下 不然我怕我又失手打暈他了</p><p><b>琳：</b>為何</p><p><b>萱：</b>看他不順眼呀</p></div></details>
+    <p class="archive-limit"><b>未列作「完整全文」：</b>11月5日公開來源僅列「磨牙聲」；12月23日僅公開「沒心跳了／繼續救」。賴姓友人、社工與北投宮廟相關訊息也未見完整原始串，因此保留在待核區。</p>
+  </section>
+
   <section class="others wrap" id="others" aria-labelledby="others-title">
-    <header class="section-head"><p>PART II</p><h2 id="others-title">傳給其他人｜已公開與待核範圍</h2><span>只有能確認傳訊方向者才寫箭頭；姓名不一致時不擅自選定版本。</span></header>
+    <header class="section-head"><p>PART III</p><h2 id="others-title">傳給其他人｜已公開與待核範圍</h2><span>只有能確認傳訊方向者才寫箭頭；姓名不一致時不擅自選定版本。</span></header>
     <div class="other-grid">
-      <article><span class="tag hearing">庭審訊問</span><h3>劉彩萱 → 賴姓友人</h3><blockquote>「我睡著他才有機會睡、為了不讓他睡我也沒得睡」</blockquote><p>現有公開庭審整理曾以此訊息追問限制睡眠。賴姓友人的完整姓名在既有資料出現「賴玉臻／賴奕臻」不同版本，本頁只稱賴姓友人。</p><small>待補：原始日期、完整前後文、帳號鑑識。</small></article>
-      <article><span class="tag pending">部分公開</span><h3>賴姓友人 → 劉彩萱</h3><blockquote>介紹兒福服務時提及「那邊的孩子沒有父母管」</blockquote><p>這句涉及劉彩萱如何接觸收出養托育，以及她是否因「缺乏有力監督者」而形成特定認知。公開來源與逐字上下文仍須補強，因此不納入法院確定原話。</p><small>待補：服務機構指涉、日期、完整訊息串。</small></article>
-      <article><span class="tag hearing">公開庭審紀錄</span><h3>Mira → 友人</h3><blockquote lang="en">“It’s so terrible that she can just beat the baby like that.”</blockquote><p>第一日庭審紀錄記載原文曾誤作「be」，並勘誤為「beat」。這是第三人當時傳訊，可用來檢驗其即時觀察，但翻譯、身分指涉與完整前後文仍須核對。</p><small>不把第三人訊息混寫成劉氏姐妹原話。</small></article>
-      <article><span class="tag pending">訊息未完整公開</span><h3>劉若琳手機／北投宮廟線</h3><p>公開庭審整理顯示，劉若琳稱因聊天談到孩子「看人不太對」，帶往北投宮廟收驚及作法會；但現有公開資料不足以重建完整手機對話。</p><small>待補：實際發訊者、收訊者、日期、原句及附件。</small></article>
-      <article><span class="tag hearing">被告庭上陳述</span><h3>劉彩萱 → 兒盟／陳社工</h3><p>庭上說法涉及傷勢、撞頭、流鼻水、牙科與日常照片等聯繫；但這些是「庭上描述曾聯絡」或其他案件頁已整理的社工訊息，不等於本頁已取得完整對話。</p><small>應與社工手機、業務紀錄及三版處遇紀錄逐日勾稽。</small></article>
-      <article><span class="tag court">法院確定認定</span><h3>照片傳送本身也是證據鏈</h3><p>臺北地院認定，劉彩萱在綑綁、蒙眼等行為同時拍照傳給劉若琳；法院並依對話、照片、影片判斷劉若琳的追蹤、鼓吹、迎合與提供意見。</p><small>本站不展示任何可識別兒少影像。</small></article>
+      <article data-recipient-card="caixuan-out"><span class="tag hearing">庭審訊問</span><h3>劉彩萱 → 賴姓友人</h3><blockquote>「我睡著他才有機會睡、為了不讓他睡我也沒得睡」</blockquote><p>現有公開庭審整理曾以此訊息追問限制睡眠。賴姓友人的完整姓名在既有資料出現「賴玉臻／賴奕臻」不同版本，本頁只稱賴姓友人。</p><small>待補：原始日期、完整前後文、帳號鑑識。</small></article>
+      <article data-recipient-card="others-in"><span class="tag pending">部分公開</span><h3>賴姓友人 → 劉彩萱</h3><blockquote>介紹兒福服務時提及「那邊的孩子沒有父母管」</blockquote><p>這句涉及劉彩萱如何接觸收出養托育，以及她是否因「缺乏有力監督者」而形成特定認知。公開來源與逐字上下文仍須補強，因此不納入法院確定原話。</p><small>待補：服務機構指涉、日期、完整訊息串。</small></article>
+      <article data-recipient-card="third-party"><span class="tag hearing">公開庭審紀錄</span><h3>Mira → 友人</h3><blockquote lang="en">“It’s so terrible that she can just beat the baby like that.”</blockquote><p>第一日庭審紀錄記載原文曾誤作「be」，並勘誤為「beat」。這是第三人當時傳訊，可用來檢驗其即時觀察，但翻譯、身分指涉與完整前後文仍須核對。</p><small>不把第三人訊息混寫成劉氏姐妹原話。</small></article>
+      <article data-recipient-card="unclear"><span class="tag pending">訊息未完整公開</span><h3>劉若琳手機／北投宮廟線</h3><p>公開庭審整理顯示，劉若琳稱因聊天談到孩子「看人不太對」，帶往北投宮廟收驚及作法會；但現有公開資料不足以重建完整手機對話。</p><small>待補：實際發訊者、收訊者、日期、原句及附件。</small></article>
+      <article data-recipient-card="caixuan-out"><span class="tag hearing">被告庭上陳述</span><h3>劉彩萱 → 兒盟／陳社工</h3><p>庭上說法涉及傷勢、撞頭、流鼻水、牙科與日常照片等聯繫；但這些是「庭上描述曾聯絡」或其他案件頁已整理的社工訊息，不等於本頁已取得完整對話。</p><small>應與社工手機、業務紀錄及三版處遇紀錄逐日勾稽。</small></article>
+      <article data-recipient-card="sisters"><span class="tag court">法院確定認定</span><h3>照片傳送本身也是證據鏈</h3><p>臺北地院認定，劉彩萱在綑綁、蒙眼等行為同時拍照傳給劉若琳；法院並依對話、照片、影片判斷劉若琳的追蹤、鼓吹、迎合與提供意見。</p><small>本站不展示任何可識別兒少影像。</small></article>
     </div>
   </section>
 
+  <section class="crosscheck wrap" id="crosscheck" aria-labelledby="crosscheck-title">
+    <header class="section-head"><p>PART IV</p><h2 id="crosscheck-title">四欄勾稽｜把原句、解釋與認定分開</h2><span>Samsung 手機可左右滑動；任何一欄缺資料都不以推測補齊。</span></header>
+    <div class="table-scroll" tabindex="0" aria-label="四欄證據勾稽表，可左右滑動"><table><thead><tr><th>日期／時間</th><th>對話或事件內容</th><th>來源／證據代號</th><th>公開程度／可確認性</th></tr></thead><tbody>
+      <tr><td>09.07 01:29</td><td>頸傷照片；討論訪視時讓孩子睡覺。庭上劉彩萱稱怕傷勢被發現、影響接案。</td><td>C｜二審附件報導<br>B｜DAY4</td><td><strong>高度可確認</strong><br>對話與庭上說法相互勾稽；傷口形成仍須綜合證據。</td></tr>
+      <tr><td>09.17–09.18</td><td>多張綑綁照片傳送；劉若琳持續回覆。</td><td>C｜二審附件報導<br>A｜北院新聞稿</td><td><strong>法院採為證據鏈</strong><br>影像不在本站展示。</td></tr>
+      <tr><td>09.27</td><td>孩子大叫、掙脫；木凳椅腳斷裂。</td><td>C｜二審附件報導<br>B｜DAY1</td><td><strong>高度可確認</strong><br>「試探救援」是訊息中的描述。</td></tr>
+      <tr><td>10.06</td><td>包裹照片；「沒人可以救你，哭沒用」。</td><td>C｜二審附件報導<br>A｜北院新聞稿</td><td><strong>法院綜合評價</strong><br>須與照片、影片及行為共同閱讀。</td></tr>
+      <tr><td>11.02</td><td>桶子／澡盆翻倒；兩人即時討論。</td><td>C｜二審附件報導<br>B｜DAY4<br>A｜北院新聞稿</td><td><strong>存在說法差異</strong><br>庭上「抱出解綁」與法院參與認定並列。</td></tr>
+      <tr><td>11.05</td><td>「磨牙聲」。</td><td>C｜媒體所列單句</td><td><strong>部分公開</strong><br>不能據此認定缺牙原因。</td></tr>
+      <tr><td>11.12</td><td>五手印、修理、要揍；談及托育報酬。</td><td>C｜二審附件報導<br>A｜量刑理由</td><td><strong>高度可確認</strong><br>動機以法院綜合證據認定為準。</td></tr>
+      <tr><td>12.03–12.09</td><td>不讓躺、不讓睡、長時間站立與「失手打暈」。</td><td>C｜二審附件報導<br>B｜DAY4</td><td><strong>高度可確認</strong><br>「失手」不可單句推定為實際既往行為。</td></tr>
+      <tr><td>12.23</td><td>「沒心跳了／繼續救」。</td><td>B｜DAY1</td><td><strong>時間待核</strong><br>不能反推心肺停止時點。</td></tr>
+      <tr><td>日期待核</td><td>賴姓友人、北投宮廟、社工訊息與手機刪除／復原範圍。</td><td>D｜部分公開</td><td><strong>不得稱為全文</strong><br>缺原始串、帳號與鑑識時間。</td></tr>
+    </tbody></table></div>
+  </section>
+
   <section class="issues wrap" id="issues" aria-labelledby="issues-title">
-    <header class="section-head"><p>PART III</p><h2 id="issues-title">全部爭點｜從一句話回到證據鏈</h2><span>每個問題都分清「訊息顯示什麼」與「還要靠什麼證明」。</span></header>
+    <header class="section-head"><p>PART V</p><h2 id="issues-title">全部爭點｜從一句話回到證據鏈</h2><span>每個問題都分清「訊息顯示什麼」與「還要靠什麼證明」。</span></header>
     <div class="issue-grid">
       <article><b>01</b><h3>共同犯意與行為分擔</h3><p>反覆接收照片、追問現況、評論方式及提供意見，如何證明不只是旁觀？法院已認定兩人為共同正犯。</p></article>
       <article><b>02</b><h3>傷勢隱瞞</h3><p>9/7討論讓孩子睡過訪視，是否意在避免傷勢被看見；與劉彩萱庭上自述及社工訪視紀錄是否一致。</p></article>
