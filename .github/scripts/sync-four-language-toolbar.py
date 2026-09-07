@@ -160,7 +160,7 @@ def main() -> None:
     for route, editions in routes.items():
         hant = source.get((route, "zh-Hant"))
         if "zh-Hans" not in editions and hant and ("assets/site.js" in hant[1] or "data-hans" in hant[1]):
-            editions["zh-Hans"] = editions["zh-Hant"] + ("&" if "?" in editions["zh-Hant"] else "?") + "lang=zh-Hans"
+            editions["zh-Hans"] = urljoin(HK_BASE, route) + "?lang=zh-Hans"
 
     output = {"version": VERSION, "generatedFrom": "repository HTML routes", "routes": {key: routes[key] for key in sorted(routes)}}
     route_path = ROOT / "data" / "four-language-routes.json"
