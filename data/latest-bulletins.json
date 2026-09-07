@@ -39,33 +39,12 @@
       }
     },
     {
-      "id": "daily-child-protection-brief-20260907",
-      "publishedAt": "2026-09-07",
-      "title": {
-        "zh-Hant": "每日護童總報｜早期警訊如何真正啟動保護？",
-        "zh-Hans": "每日护童总报｜早期警讯如何真正启动保护？",
-        "en": "Daily brief: turning early warnings into protection",
-        "ja": "デイリーブリーフ｜早期警告を保護につなげる"
-      },
-      "summary": {
-        "zh-Hant": "少年保護程序、兒虐死亡未曾通報問題，以及可稽核的早期保護門檻。",
-        "zh-Hans": "少年保护程序、虐待死亡未曾通报问题，以及可核查的早期保护门槛。",
-        "en": "Juvenile protection procedure, unreported fatal abuse cases and auditable early-intervention thresholds.",
-        "ja": "少年保護手続、未通報の重大事案、監査可能な早期介入基準。"
-      },
-      "url": {
-        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260907/",
-        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260907/zh-Hans/",
-        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/news/daily-child-protection-brief-20260907/",
-        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/news/daily-child-protection-brief-20260907/"
-      },
+      "id": "daily-child-protection-brief-20260907", "publishedAt": "2026-09-07",
+      "title": {"zh-Hant":"每日護童總報｜早期警訊如何真正啟動保護？","zh-Hans":"每日护童总报｜早期警讯如何真正启动保护？","en":"Daily brief: turning early warnings into protection","ja":"デイリーブリーフ｜早期警告を保護につなげる"},
+      "summary": {"zh-Hant":"少年保護程序、兒虐死亡未曾通報問題，以及可稽核的早期保護門檻。","zh-Hans":"少年保护程序、虐待死亡未曾通报问题，以及可核查的早期保护门槛。","en":"Juvenile protection procedure, unreported fatal abuse cases and auditable early-intervention thresholds.","ja":"少年保護手続、未通報の重大事案、監査可能な早期介入基準。"},
+      "url": {"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260907/","zh-Hans":"https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260907/zh-Hans/","en":"https://jerryzuhow77.github.io/child-advocacy-site/en/news/daily-child-protection-brief-20260907/","ja":"https://jerryzuhow77.github.io/child-advocacy-site/ja/news/daily-child-protection-brief-20260907/"},
       "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/images/daily-child-protection-brief-paper-clay-20260907.webp",
-      "imageAlt": {
-        "zh-Hant": "紙雕山景、陶土守護屋、警訊漣漪與安全網的象徵藝術",
-        "zh-Hans": "纸雕山景、陶土守护屋、警讯涟漪与安全网的象征艺术",
-        "en": "Symbolic paper landscape, clay shelter, warning ripples and safety net",
-        "ja": "紙彫刻の山、粘土の保護シェルター、警告の波紋、安全網"
-      }
+      "imageAlt": {"zh-Hant":"紙雕山景、陶土守護屋、警訊漣漪與安全網的象徵藝術","zh-Hans":"纸雕山景、陶土守护屋、警讯涟漪与安全网的象征艺术","en":"Symbolic paper landscape, clay shelter, warning ripples and safety net","ja":"紙彫刻の山、粘土の保護シェルター、警告の波紋、安全網"}
     },
     {
       "id": "alliance-dialogues-20260905",
