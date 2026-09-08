@@ -1,0 +1,32 @@
+/* Mid-Autumn seasonal artwork shared by the official site and message wall. */
+body.art-site.home-medium-palette{
+  background-color:#f7ead0!important;
+  background-image:
+    linear-gradient(180deg,rgba(255,250,237,.82),rgba(255,246,226,.9)),
+    url("./art/mid-autumn-chang-e-rabbit-20260908.webp")!important;
+  background-position:center top,right top!important;
+  background-size:cover,cover!important;
+  background-repeat:no-repeat!important;
+  background-attachment:fixed!important;
+}
+.portal-main{
+  background-image:
+    linear-gradient(180deg,rgba(248,244,235,.86),rgba(236,242,239,.9)),
+    url("./art/mid-autumn-chang-e-rabbit-20260908.webp")!important;
+  background-position:center,right top!important;
+  background-size:cover!important;
+  background-repeat:no-repeat!important;
+  background-attachment:fixed!important;
+}
+.portal-purpose,.portal-frame-shell{
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+@media(max-width:760px){
+  body.art-site.home-medium-palette,.portal-main{
+    background-position:64% top!important;
+    background-size:auto 100svh!important;
+    background-attachment:scroll!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){body.art-site.home-medium-palette,.portal-main{background-attachment:scroll!important}}
