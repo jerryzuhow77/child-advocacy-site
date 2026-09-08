@@ -27,7 +27,14 @@ class Document(HTMLParser):
             self.lang = attrs.get('lang', '')
 
 def read(url):
-    path = ROOT / urlsplit(url).path.removeprefix(BASE) / 'index.html'
+    url_path = urlsplit(url).path
+    if url_path == '/':
+        relative = ''
+    elif url_path.startswith(BASE):
+        relative = url_path[len(BASE):]
+    else:
+        relative = url_path.lstrip('/')
+    path = ROOT / relative / 'index.html'
     return path, path.read_text(encoding='utf-8')
 
 for route, editions in routes.items():
