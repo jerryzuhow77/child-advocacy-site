@@ -1,32 +1,202 @@
-/* Mid-Autumn seasonal artwork shared by the official site and message wall. */
+/* Mid-Autumn and autumn ink artwork shared by every homepage section and the message wall. */
+:root{
+  --cpa-mid-autumn-art:url("./art/mid-autumn-chang-e-rabbit-20260908.webp");
+  --cpa-autumn-ink-art:url("./images/autumn-20260908/ink-background.webp");
+}
+
 body.art-site.home-medium-palette{
   background-color:#f7ead0!important;
   background-image:
     linear-gradient(180deg,rgba(255,250,237,.82),rgba(255,246,226,.9)),
-    url("./art/mid-autumn-chang-e-rabbit-20260908.webp")!important;
+    var(--cpa-mid-autumn-art)!important;
   background-position:center top,right top!important;
   background-size:cover,cover!important;
   background-repeat:no-repeat!important;
   background-attachment:fixed!important;
 }
-.portal-main{
-  background-image:
-    linear-gradient(180deg,rgba(248,244,235,.86),rgba(236,242,239,.9)),
-    url("./art/mid-autumn-chang-e-rabbit-20260908.webp")!important;
-  background-position:center,right top!important;
-  background-size:cover!important;
-  background-repeat:no-repeat!important;
-  background-attachment:fixed!important;
+
+/*
+ * Every direct homepage section receives its own translucent artwork layer.
+ * This remains future-proof when a new top-level section is added, while the
+ * explicit groups below alternate autumn foliage and Mid-Autumn characters.
+ */
+body.art-site.home-medium-palette > section,
+body.art-site.home-medium-palette > main > section{
+  --cpa-section-art:var(--cpa-autumn-ink-art);
+  --cpa-section-art-position:center center;
+  --cpa-section-veil:linear-gradient(128deg,rgba(255,253,246,.78),rgba(255,247,231,.72) 52%,rgba(248,229,194,.68));
+  background-color:#f7edda!important;
+  background-image:var(--cpa-section-veil),var(--cpa-section-art)!important;
+  background-position:center,var(--cpa-section-art-position)!important;
+  background-size:cover,cover!important;
+  background-repeat:no-repeat,no-repeat!important;
+  background-attachment:scroll,scroll!important;
 }
-.portal-purpose,.portal-frame-shell{
+
+/* Moon, Chang'e, jade rabbit and mooncakes alternate with the autumn landscape. */
+body.art-site.home-medium-palette > :is(
+  .premium-home-hero,
+  .kaikai-memorial,
+  .home-latest-flash,
+  #latest-news,
+  #news-hearing,
+  .home-special-zone,
+  .home-historical-zone,
+  .impact-dashboard-section,
+  .art-gallery-section,
+  .belief-footer-section
+),
+body.art-site.home-medium-palette > main > :is(
+  .premium-home-hero,
+  .kaikai-memorial,
+  .home-latest-flash,
+  #latest-news,
+  #news-hearing,
+  .home-special-zone,
+  .home-historical-zone,
+  .impact-dashboard-section,
+  .art-gallery-section,
+  .belief-footer-section
+){
+  --cpa-section-art:var(--cpa-mid-autumn-art);
+  --cpa-section-art-position:72% center;
+  --cpa-section-veil:linear-gradient(128deg,rgba(255,253,246,.88),rgba(250,244,229,.79) 54%,rgba(240,224,194,.72));
+}
+
+/* The memorial intentionally uses white type, so retain its quiet dark atmosphere. */
+body.art-site.home-medium-palette > .kaikai-memorial,
+body.art-site.home-medium-palette > main > .kaikai-memorial{
+  --cpa-section-art-position:70% center!important;
+  --cpa-section-veil:linear-gradient(110deg,rgba(8,21,24,.92),rgba(18,38,42,.84) 50%,rgba(23,34,35,.76))!important;
+  background-color:#14282b!important;
+}
+
+/* Nested homepage zones are visually distinct sections too. */
+body.art-site.home-medium-palette .home-pinned-reports,
+body.art-site.home-medium-palette .activity-impact-panel{
+  background-color:rgba(250,241,222,.82)!important;
+  background-image:
+    linear-gradient(128deg,rgba(255,253,247,.88),rgba(250,239,216,.82)),
+    var(--cpa-autumn-ink-art)!important;
+  background-position:center,center!important;
+  background-size:cover,cover!important;
+  background-repeat:no-repeat,no-repeat!important;
+  background-attachment:scroll,scroll!important;
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+}
+
+/* Replace the former summer lettering in the wall entrance with seasonal wording. */
+body.art-site.home-medium-palette .home-protection-wall::after{
+  content:"MID-AUTUMN · CARE · HOPE"!important;
+  color:rgba(116,79,48,.06)!important;
+}
+
+/* The desktop belief artwork is opaque, so a very light seasonal wash sits above it. */
+body.art-site.home-medium-palette .belief-desktop-wrap::after{
+  content:"";
+  position:absolute;
+  z-index:2;
+  inset:0;
+  pointer-events:none;
+  background-image:var(--cpa-mid-autumn-art);
+  background-position:72% center;
+  background-size:cover;
+  background-repeat:no-repeat;
+  opacity:.12;
+  mix-blend-mode:multiply;
+}
+body.art-site.home-medium-palette .belief-mobile-wrap{
+  background-color:#f7edda!important;
+  background-image:
+    linear-gradient(150deg,rgba(255,252,244,.9),rgba(248,236,211,.84)),
+    var(--cpa-mid-autumn-art)!important;
+  background-position:center,70% center!important;
+  background-size:cover,cover!important;
+  background-repeat:no-repeat,no-repeat!important;
+}
+
+.portal-main{
+  background-color:#eef0e7!important;
+  background-image:
+    linear-gradient(180deg,rgba(248,244,235,.84),rgba(236,242,239,.88)),
+    var(--cpa-mid-autumn-art)!important;
+  background-position:center,right top!important;
+  background-size:cover,cover!important;
+  background-repeat:no-repeat,no-repeat!important;
+  background-attachment:fixed,fixed!important;
+}
+.portal-main > section{
+  background-color:rgba(248,240,222,.8)!important;
+  background-image:
+    linear-gradient(135deg,rgba(255,253,246,.86),rgba(248,237,214,.78)),
+    var(--cpa-autumn-ink-art)!important;
+  background-position:center,center!important;
+  background-size:cover,cover!important;
+  background-repeat:no-repeat,no-repeat!important;
+  background-attachment:scroll,scroll!important;
   backdrop-filter:blur(8px);
   -webkit-backdrop-filter:blur(8px);
 }
+.portal-main > section:nth-of-type(even){
+  background-image:
+    linear-gradient(135deg,rgba(255,253,246,.9),rgba(244,235,218,.82)),
+    var(--cpa-mid-autumn-art)!important;
+  background-position:center,72% center!important;
+}
+
 @media(max-width:760px){
-  body.art-site.home-medium-palette,.portal-main{
+  body.art-site.home-medium-palette,
+  .portal-main{
     background-position:64% top!important;
-    background-size:auto 100svh!important;
+    background-size:cover!important;
     background-attachment:scroll!important;
   }
+  body.art-site.home-medium-palette > section,
+  body.art-site.home-medium-palette > main > section{
+    --cpa-section-art-position:66% center;
+    --cpa-section-veil:linear-gradient(152deg,rgba(255,253,247,.9),rgba(255,247,231,.86) 56%,rgba(247,230,199,.82));
+    background-size:cover,auto 100%!important;
+  }
+  body.art-site.home-medium-palette > :is(
+    .premium-home-hero,
+    .kaikai-memorial,
+    .home-latest-flash,
+    #latest-news,
+    #news-hearing,
+    .home-special-zone,
+    .home-historical-zone,
+    .impact-dashboard-section,
+    .art-gallery-section,
+    .belief-footer-section
+  ),
+  body.art-site.home-medium-palette > main > :is(
+    .premium-home-hero,
+    .kaikai-memorial,
+    .home-latest-flash,
+    #latest-news,
+    #news-hearing,
+    .home-special-zone,
+    .home-historical-zone,
+    .impact-dashboard-section,
+    .art-gallery-section,
+    .belief-footer-section
+  ){
+    --cpa-section-art-position:72% center;
+    --cpa-section-veil:linear-gradient(152deg,rgba(255,253,247,.93),rgba(250,244,230,.88) 58%,rgba(243,229,204,.84));
+  }
+  body.art-site.home-medium-palette > .kaikai-memorial,
+  body.art-site.home-medium-palette > main > .kaikai-memorial{
+    --cpa-section-art-position:72% center!important;
+    --cpa-section-veil:linear-gradient(145deg,rgba(8,21,24,.94),rgba(18,38,42,.88) 56%,rgba(23,34,35,.82))!important;
+  }
+  .portal-main > section{
+    background-position:center,62% center!important;
+    background-size:cover,auto 100%!important;
+  }
 }
-@media(prefers-reduced-motion:reduce){body.art-site.home-medium-palette,.portal-main{background-attachment:scroll!important}}
+
+@media(prefers-reduced-motion:reduce){
+  body.art-site.home-medium-palette,
+  .portal-main{background-attachment:scroll!important}
+}

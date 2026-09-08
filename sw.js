@@ -2,7 +2,7 @@
 
 // A new cache namespace is intentional: it retires the previous home document
 // and lets the revised paper-cut/embroidery art replace an already-installed PWA.
-const VERSION = '20260908-court-cleanup-v8';
+const VERSION = '20260908-mid-autumn-sections-v9';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -34,6 +34,9 @@ const OPTIONAL_SHELL = [
   './assets/home-bundle-zh-20260905.css',
   './assets/home-bundle-intl-20260905.css',
   './assets/home-mobile-polish-20260907.css',
+  './assets/mid-autumn-theme-20260908.css',
+  './assets/art/mid-autumn-chang-e-rabbit-20260908.webp',
+  './assets/images/autumn-20260908/ink-background.webp',
   './data/four-language-routes.json',
   './assets/home-gsap.css',
   './assets/home-gsap.js',
