@@ -1,0 +1,193 @@
+/* Samsung-first mobile navigation stability.
+ * Loaded last so desktop dropdown declarations cannot collapse nested mobile cards.
+ */
+@media (max-width: 900px) {
+  .art-header .container.nav.menu-open > nav {
+    box-sizing: border-box !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    padding: 10px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    background: rgba(255, 253, 248, .985) !important;
+  }
+
+  .art-header .container.nav.menu-open > nav > a,
+  .art-header .container.nav.menu-open > nav > .social-case-nav,
+  .art-header .container.nav.menu-open > nav > .social-case-nav > button {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .art-header .social-case-nav-menu,
+  html[lang] .art-header .special-feature-nav-menu {
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 4px 0 8px !important;
+    padding: 7px !important;
+    transform: none !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    overflow: hidden !important;
+    border-radius: 14px !important;
+    box-shadow: none !important;
+  }
+
+  .art-header .social-case-menu-column,
+  .art-header .social-case-tier,
+  .art-header .historical-region-group,
+  .art-header .special-feature-case-group,
+  .art-header .social-case-tier-children,
+  .art-header .historical-region-list,
+  .art-header .historical-region-children,
+  .art-header .special-feature-case-children {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .art-header .social-case-tier-toggle,
+  .art-header .historical-region-root-toggle,
+  .art-header .special-feature-case-toggle,
+  .art-header .special-feature-menu-prologue {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 2px 10px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 54px !important;
+    padding: 9px 12px !important;
+    text-align: left !important;
+    white-space: normal !important;
+  }
+
+  .art-header :is(.social-case-tier-toggle,.historical-region-root-toggle) > :is(small,strong,span),
+  .art-header .special-feature-case-toggle > span,
+  .art-header .special-feature-menu-prologue > span {
+    grid-column: 1 !important;
+    min-width: 0 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .art-header :is(.social-case-tier-toggle,.historical-region-root-toggle,.special-feature-case-toggle) > i,
+  .art-header .special-feature-menu-prologue > b {
+    position: static !important;
+    grid-column: 2 !important;
+    grid-row: 1 / -1 !important;
+    align-self: center !important;
+    margin: 0 !important;
+    transform: none;
+  }
+
+  .art-header .social-case-tier.is-expanded > .social-case-tier-toggle > i,
+  .art-header .historical-case-nav .social-case-menu-column.is-expanded > .historical-region-root-toggle > i,
+  .art-header .special-feature-case-group.is-expanded > .special-feature-case-toggle > i {
+    transform: rotate(90deg) !important;
+  }
+
+  .art-header .social-case-tier-children,
+  .art-header .historical-region-list,
+  .art-header .special-feature-case-children {
+    padding: 6px 0 2px !important;
+  }
+
+  .art-header .historical-region-children {
+    padding: 6px 0 2px 8px !important;
+  }
+
+  .art-header .social-case-nav-menu a.social-case-menu-item,
+  .art-header .historical-region-children > a,
+  html[lang] .art-header .special-feature-nav-menu a.special-feature-menu-card,
+  html[lang] .art-header .special-feature-nav-menu a.special-feature-prologue-link {
+    display: grid !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    white-space: normal !important;
+  }
+
+  .art-header .social-case-nav-menu a.social-case-menu-item {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 3px !important;
+  }
+
+  .art-header .historical-region-children > a {
+    grid-template-columns: 88px minmax(0, 1fr) !important;
+    gap: 10px !important;
+    align-items: center !important;
+  }
+
+  .art-header .historical-region-children > a > img {
+    width: 88px !important;
+    height: 58px !important;
+    max-width: 88px !important;
+    object-fit: cover !important;
+  }
+
+  html[lang] .art-header .special-feature-nav-menu a.special-feature-menu-card {
+    grid-template-columns: 96px minmax(0, 1fr) !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+  }
+
+  .art-header .special-feature-menu-art,
+  .art-header .special-feature-menu-art img {
+    width: 96px !important;
+    min-width: 96px !important;
+    min-height: 120px !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .art-header .special-feature-menu-copy {
+    min-width: 0 !important;
+    padding: 10px 10px 10px 0 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  html[lang] .art-header .special-feature-nav-menu a.special-feature-prologue-link {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 3px 10px !important;
+    align-items: center !important;
+  }
+
+  .art-header .special-feature-prologue-link > :is(small,strong,span) {
+    grid-column: 1 !important;
+  }
+
+  .art-header .special-feature-prologue-link > b {
+    grid-column: 2 !important;
+    grid-row: 1 / -1 !important;
+  }
+}
+
+@media (max-width: 390px) {
+  html[lang] .art-header .special-feature-nav-menu a.special-feature-menu-card {
+    grid-template-columns: 82px minmax(0, 1fr) !important;
+  }
+
+  .art-header .special-feature-menu-art,
+  .art-header .special-feature-menu-art img {
+    width: 82px !important;
+    min-width: 82px !important;
+  }
+
+  .art-header .historical-region-children > a {
+    grid-template-columns: 76px minmax(0, 1fr) !important;
+  }
+
+  .art-header .historical-region-children > a > img {
+    width: 76px !important;
+    max-width: 76px !important;
+    height: 52px !important;
+  }
+}
