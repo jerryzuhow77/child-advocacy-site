@@ -129,6 +129,9 @@
     const route=neutralRoute();
     if(!route){document.documentElement.classList.remove("cpa-four-language-toolbar-active");return;}
     document.documentElement.classList.add("cpa-four-language-toolbar-active");
+    document.getElementById("cpa-mobile-bar")?.remove();
+    document.getElementById("cpa-mobile-menu")?.remove();
+    document.documentElement.classList.remove("cpa-menu-open");
     const language=locale(),words=copy[language],routes=manifest?.routes?.[route]||{},toolbar=document.createElement("aside");
     toolbar.id="cpa-four-language-toolbar";
     toolbar.setAttribute("aria-label",words.aria);
