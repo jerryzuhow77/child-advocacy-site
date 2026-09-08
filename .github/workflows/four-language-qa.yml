@@ -219,57 +219,33 @@ jobs:
       - name: Chapter Two publication hold contract
         run: python3 .github/scripts/verify-chapter-two-publication.py
 
-      - name: Browser-level homepage and campaign checks
+      - name: Mobile homepage and campaign contracts
         shell: bash
         run: |
           set -euo pipefail
-          BROWSER="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
-          if [[ -z "$BROWSER" ]]; then
-            echo '::notice::No Chromium-compatible browser is installed on this runner; syntax and static assertions passed.'
-            exit 0
-          fi
 
-          python3 -m http.server 8765 --bind 127.0.0.1 --directory .. >/tmp/child-site-http.log 2>&1 &
-          SERVER_PID=$!
-          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
-          sleep 2
-
-          render_phone() {
-            local output="$1"
-            local url="$2"
-            set +e
-            timeout 30s "$BROWSER" \
-              --headless=new \
-              --no-sandbox \
-              --disable-gpu \
-              --disable-dev-shm-usage \
-              --disable-background-networking \
-              --disable-component-update \
-              --disable-sync \
-              --no-first-run \
-              --window-size=412,915 \
-              --screenshot="$output" "$url"
-            local status=$?
-            set -e
-            if [[ "$status" -ne 0 && "$status" -ne 124 ]]; then
-              return "$status"
-            fi
-            test -s "$output"
-          }
+          for page in index.html en/index.html ja/index.html; do
+            grep -F 'autumn-mobile-v2-20260908.css?v=20260908-3' "$page"
+          done
+          test -s assets/images/autumn-20260908/ferris-wheel-paper-clay.webp
+          test -s assets/images/autumn-20260908/ink-background.webp
+          grep -F 'html body #cpa-four-language-toolbar' assets/autumn-mobile-v2-20260908.css
+          grep -F 'aspect-ratio:4/3!important' assets/autumn-mobile-v2-20260908.css
+          grep -F 'ferris-wheel-paper-clay.webp' assets/autumn-mobile-v2-20260908.css
 
           grep -F 'data-qa916-card="true"' index.html
           grep -F '一起寫下剴剴的故事' index.html
           grep -F '一起写下剀剀的故事' assets/home-ia-hearing-campaign-20260823.js
-          grep -F 'Let Us Write Kaikai’s Story Together' assets/home-ia-hearing-campaign-20260823.js
+          grep -F 'Let Us Write Kai-Kai’s Story Together' assets/home-ia-hearing-campaign-20260823.js
+          if grep -F 'Mainland China' en/index.html; then
+            echo 'English UI still contains the deprecated Mainland China label.' >&2
+            exit 1
+          fi
           grep -F '控訴審準備手続' ja/activity-records/20260820-kaikai-story-collection/index.html
-          grep -F '思いを投稿する' assets/home-ia-hearing-campaign-20260823.js
+          grep -F '思いを投稿する' ja/activity-records/20260820-kaikai-story-collection/index.html
           if grep -E '治験|二次試験' ja/activity-records/20260820-kaikai-story-collection/index.html; then
             echo 'Japanese page still contains mistranslated court terminology.' >&2
             exit 1
           fi
 
-          if ! render_phone /tmp/browser-smoke.png 'about:blank'; then
-            echo '::notice::Runner Chromium could not complete a bounded screenshot smoke test; all syntax, route, publication, and localized-content assertions passed.'
-            exit 0
-          fi
-          echo 'Browser-level four-language checks passed.'
+          echo 'Mobile and four-language content contracts passed.'
