@@ -242,7 +242,7 @@ jobs:
             exit 1
           fi
           grep -F '控訴審準備手続' ja/activity-records/20260820-kaikai-story-collection/index.html
-          grep -F '思いを投稿する' ja/activity-records/20260820-kaikai-story-collection/index.html
+          grep -F '思いを投稿する' assets/home-ia-hearing-campaign-20260823.js
           if grep -E '治験|二次試験' ja/activity-records/20260820-kaikai-story-collection/index.html; then
             echo 'Japanese page still contains mistranslated court terminology.' >&2
             exit 1
