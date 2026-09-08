@@ -8,6 +8,7 @@
   window.__cpaHomeViewCounterWorker = true;
 
   const DEFAULT_ENDPOINT = 'https://sweet-art-bed8child-advocacy-page-views.jerryzuhow77.workers.dev/views';
+  const ENGAGEMENT_ENDPOINT = 'https://global-protection.jerryzuhow77.chatgpt.site/api/public/view-count';
   const CLIENT_KEY = 'cpa_engagement_client_v1';
   /*
    * IMPORTANT: homepage-all-languages-v1 is the original production KV key.
@@ -17,6 +18,10 @@
   const HOMEPAGE_CANONICAL_KEY = 'homepage-all-languages-v1';
   // 590 legacy CounterAPI views plus 17 visits collected under page-home.
   const HOMEPAGE_HISTORICAL_BASELINE = 607;
+  // Chapter 2 moved to the shared two-region engagement counter after 97
+  // verified Worker views. Freeze that migration baseline so it is added once.
+  const CHAPTER_TWO_KEY = 'kaikai-special-chapter-02-shared';
+  const CHAPTER_TWO_HISTORICAL_BASELINE = 97;
   const ARTICLE_HISTORICAL_FLOORS = Object.freeze({
     'case-xuanxuan-shared': 46,
     'feature-see-hear-after-shared': 53,
@@ -163,10 +168,32 @@
     }
   }
 
+  async function fetchSharedCount(key, increment) {
+    if (key !== CHAPTER_TWO_KEY) return fetchCount(key, increment);
+    const controller = typeof AbortController === 'function' ? new AbortController() : null;
+    const timer = window.setTimeout(() => controller && controller.abort(), TIMEOUT_MS);
+    try {
+      const response = await fetch(ENGAGEMENT_ENDPOINT, {
+        method: 'POST', mode: 'cors', cache: 'no-store', credentials: 'omit',
+        headers: { Accept: 'application/json', 'content-type': 'application/json' },
+        body: JSON.stringify({ channel: 'official-article', articleKey: key, action: increment ? 'view' : 'read', clientId: clientId() }),
+        signal: controller ? controller.signal : undefined
+      });
+      if (!response.ok) throw new Error(`Engagement counter ${response.status}`);
+      const data = await response.json();
+      const current = Number(data && data.viewCount);
+      if (!Number.isFinite(current) || current < 0) throw new Error('Invalid engagement counter value');
+      if (increment) markSeen(key);
+      return { value: current + CHAPTER_TWO_HISTORICAL_BASELINE, shared: true };
+    } finally {
+      window.clearTimeout(timer);
+    }
+  }
+
   function requestCount(key) {
     if (sharedRequests.has(key)) return sharedRequests.get(key);
     const increment = shouldIncrement(key);
-    const request = fetchCount(key, increment)
+    const request = fetchSharedCount(key, increment)
       .catch(() => ({ value: localCount(key, increment), shared: false }));
     sharedRequests.set(key, request);
     return request;
@@ -210,7 +237,7 @@
       if (reading || document.visibilityState === 'hidden') return;
       reading = true;
       try {
-        const current = await fetchCount(key, false);
+        const current = await fetchSharedCount(key, false);
         renderCounter(widget, restoreHistoricalCount(key, current));
       } catch (_) {
         // Preserve the last confirmed shared value during a transient read failure.
