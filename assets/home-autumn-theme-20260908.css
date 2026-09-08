@@ -1,0 +1,80 @@
+/* Autumn paper-cut and clay art direction shared by Taiwan and Hong Kong homepages. */
+:root{
+  --autumn-ink:#44352f;
+  --autumn-russet:#a84f32;
+  --autumn-maple:#c86e36;
+  --autumn-gold:#d5a747;
+  --autumn-moss:#6f7860;
+  --autumn-paper:#fff7e8;
+}
+body.art-site.home-medium-palette{
+  color:var(--autumn-ink);
+  background:
+    linear-gradient(135deg,rgba(255,247,232,.96),rgba(240,218,178,.76) 47%,rgba(198,112,64,.18)),
+    url("./images/ferris-paper-clay-diorama-20260905.webp") center top/cover fixed no-repeat;
+}
+.premium-home-hero,
+.home-priority-strip,
+.home-latest-flash,
+.home-policy-news,
+.home-activity-stream,
+.home-hearing-zone,
+.home-feature-stream,
+.home-court-schedule,
+.home-historical-section{
+  background-color:rgba(255,247,232,.82)!important;
+  background-image:linear-gradient(135deg,rgba(255,249,237,.9),rgba(226,184,117,.24) 55%,rgba(155,75,45,.16))!important;
+}
+.home-pinned-report-card,
+.home-document-disc-card,
+.home-policy-card,
+.home-news-card,
+.home-crafted-card,
+.home-case-reel-card,
+.home-historical-card,
+.home-priority-links>a{
+  border-color:rgba(169,101,43,.3)!important;
+  background:linear-gradient(145deg,#fffaf0,#f0d6a8 66%,#d69a67)!important;
+  box-shadow:0 9px 0 rgba(145,73,42,.1),0 24px 48px rgba(83,55,38,.14)!important;
+}
+.home-pinned-report-card img,
+.home-document-disc-card img,
+.home-policy-card img,
+.home-news-card img,
+.home-crafted-art img,
+.home-case-reel-card img,
+.home-historical-card img{
+  filter:saturate(.82) sepia(.13) hue-rotate(-8deg) contrast(1.03)!important;
+}
+.home-document-disc-center,
+.home-clay-seal,
+.stream-icon,
+.home-priority-icon{
+  color:#fff7e8!important;
+  background:linear-gradient(145deg,var(--autumn-russet),var(--autumn-maple))!important;
+  border-color:rgba(213,167,71,.55)!important;
+  box-shadow:inset 0 0 0 4px rgba(255,235,194,.16),0 14px 30px rgba(112,56,35,.22)!important;
+}
+.art-header{
+  border-bottom-color:rgba(151,83,46,.28)!important;
+  background:linear-gradient(90deg,rgba(255,248,234,.97),rgba(239,213,164,.96),rgba(220,151,93,.94))!important;
+}
+
+/* Final mobile authority: one header row only. */
+@media(max-width:1024px){
+  html body #cpa-four-language-toolbar,
+  html body .cpa-four-language-toolbar,
+  html body [data-cpa-four-language-toolbar]{display:none!important;height:0!important;min-height:0!important;overflow:hidden!important}
+  html body{padding-top:0!important}
+  html body .art-header{position:sticky!important;top:0!important;padding-top:env(safe-area-inset-top,0px)!important}
+  html body .art-header .container.nav{display:flex!important;flex-wrap:nowrap!important;align-items:center!important;width:100%!important;height:58px!important;min-height:58px!important;padding:5px 10px!important}
+  .art-header .nav>.brand-lockup{display:flex!important;flex:1 1 auto!important;min-width:0!important;max-width:calc(100% - 54px)!important}
+  .art-header .nav>.brand-lockup small,.art-header .site-qr-trigger,.art-header .pwa-mobile-header-install{display:none!important}
+  .art-header .mobile-menu-toggle{display:inline-flex!important;flex:0 0 44px!important;width:44px!important;height:44px!important;margin-left:auto!important}
+  .art-header .container.nav:not(.menu-open)>nav{display:none!important}
+  .art-header .container.nav.menu-open>nav{display:flex!important;top:58px!important;max-height:calc(100dvh - 58px - env(safe-area-inset-top,0px))!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  body.art-site.home-medium-palette{background-attachment:scroll}
+}

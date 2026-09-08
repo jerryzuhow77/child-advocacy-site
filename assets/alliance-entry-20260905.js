@@ -1,4 +1,5 @@
 (()=>{
+if(!document.querySelector('link[data-autumn-home-theme]')){const seasonal=document.createElement('link');seasonal.rel='stylesheet';seasonal.href='/child-advocacy-site/assets/home-autumn-theme-20260908.css?v=20260908-1';seasonal.dataset.autumnHomeTheme='true';document.head.append(seasonal);}
 const url='https://cn.globalprotectionwall.com/alliance-dialogues';
 const image='https://chen-witness-evidence-timeline.jerryzuhow77.chatgpt.site/shuimo-embroidery-mobile.png';
 const lang=document.documentElement.lang||'zh-Hant';

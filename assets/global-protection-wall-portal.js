@@ -1,4 +1,5 @@
 (function(){
+  if(!document.querySelector('link[data-autumn-wall-theme]')){const seasonal=document.createElement('link');seasonal.rel='stylesheet';seasonal.href='../assets/global-protection-wall-autumn-20260908.css?v=20260908-1';seasonal.dataset.autumnWallTheme='true';document.head.append(seasonal);}
   'use strict';
   const wallBase='https://wall.globalprotectionwall.com/';
   // Compatibility marker for the existing static QA assertion; active traffic uses wallBase above.
