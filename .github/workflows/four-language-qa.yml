@@ -235,7 +235,7 @@ jobs:
           sleep 2
 
           dump_dom() {
-            "$BROWSER" \
+            timeout 45s "$BROWSER" \
               --headless=new \
               --no-sandbox \
               --disable-gpu \
