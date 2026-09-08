@@ -1,16 +1,16 @@
-.kaikai-memorial{position:relative;overflow:hidden;padding:clamp(3rem,7vw,6.5rem) 0;background:linear-gradient(145deg,#152326 0%,#243638 43%,#6f695d 100%);color:#f4f0e7;isolation:isolate}
+.kaikai-memorial{position:relative;overflow:hidden;padding:clamp(3rem,7vw,6.5rem) 0;background-image:linear-gradient(110deg,rgba(8,21,24,.93) 0%,rgba(18,38,42,.85) 47%,rgba(23,34,35,.72) 100%),url("./memorial/20260908/kaikai-memorial-zhang-daqian-background-v2.webp");background-position:center;background-size:cover;background-attachment:fixed;color:#fffdf7;isolation:isolate}
 .kaikai-memorial::before,.kaikai-memorial::after{content:"";position:absolute;z-index:-1;border-radius:50%;filter:blur(12px);opacity:.58;pointer-events:none}
 .kaikai-memorial::before{inset:-38% 38% 28% -18%;background:radial-gradient(ellipse,rgba(223,226,215,.24),rgba(58,82,82,.1) 48%,transparent 72%);transform:rotate(-12deg)}
 .kaikai-memorial::after{right:-12%;bottom:-50%;width:58%;height:95%;background:radial-gradient(ellipse,rgba(157,132,96,.28),transparent 68%)}
 .kaikai-memorial-shell{width:min(1180px,calc(100% - 36px));margin:auto}
 .kaikai-memorial-head{display:grid;grid-template-columns:minmax(0,.8fr) minmax(360px,1.2fr);gap:clamp(2rem,6vw,5rem);align-items:end;margin-bottom:2rem}
-.kaikai-memorial-kicker{display:flex;align-items:center;gap:.75rem;margin:0 0 .8rem;color:#d4c4a2;font-size:.76rem;font-weight:850;letter-spacing:.16em}
+.kaikai-memorial-kicker{display:flex;align-items:center;gap:.75rem;margin:0 0 .8rem;color:#f2cc79;font-size:.82rem;font-weight:900;letter-spacing:.16em;text-shadow:0 2px 8px rgba(0,0,0,.78)}
 .kaikai-memorial-kicker::before{content:"";width:2.4rem;height:1px;background:currentColor}
-.kaikai-memorial h2{margin:0;font:800 clamp(2.25rem,5vw,4.8rem)/1.12 "Noto Serif TC","Songti TC",serif;letter-spacing:.06em}
-.kaikai-memorial h1{margin:0;font:800 clamp(2.25rem,5vw,4.8rem)/1.12 "Noto Serif TC","Songti TC",serif;letter-spacing:.06em;color:#f4f0e7}
-.kaikai-memorial-copy{max-width:42rem;border-left:1px solid rgba(221,204,168,.45);padding-left:clamp(1.25rem,3vw,2.5rem)}
-.kaikai-memorial-copy p{margin:0;color:#e4e2da;font:400 clamp(1rem,1.45vw,1.16rem)/1.95 "Noto Serif TC","Songti TC",serif}
-.kaikai-memorial-copy strong{display:block;margin-top:.75rem;color:#d9c9aa;font-size:.92rem;letter-spacing:.08em}
+.kaikai-memorial h2{margin:0;font:850 clamp(2.25rem,5vw,4.8rem)/1.12 "Noto Serif TC","Songti TC",serif;letter-spacing:.06em;color:#fffdf7;text-shadow:0 3px 18px rgba(0,0,0,.92)}
+.kaikai-memorial h1{margin:0;font:850 clamp(2.25rem,5vw,4.8rem)/1.12 "Noto Serif TC","Songti TC",serif;letter-spacing:.06em;color:#fffdf7;text-shadow:0 3px 18px rgba(0,0,0,.92)}
+.kaikai-memorial-copy{max-width:42rem;border-left:2px solid #dfb955;padding:clamp(1rem,2vw,1.35rem) clamp(1.15rem,2.5vw,2rem);background:rgba(5,18,21,.68);box-shadow:0 16px 44px rgba(0,0,0,.24);backdrop-filter:blur(5px)}
+.kaikai-memorial-copy p{margin:0;color:#fffdf7;font:600 clamp(1rem,1.45vw,1.16rem)/1.95 "Noto Serif TC","Songti TC",serif;text-shadow:0 2px 6px rgba(0,0,0,.8)}
+.kaikai-memorial-copy strong{display:block;margin-top:.75rem;color:#f2cc79;font-size:.96rem;font-weight:900;letter-spacing:.08em;text-shadow:0 2px 6px rgba(0,0,0,.8)}
 .kaikai-memorial-feature{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,.55fr);gap:14px}
 .kaikai-memorial-photo{position:relative;display:block;overflow:hidden;min-height:220px;margin:0;border:1px solid rgba(238,227,203,.2);background:#10191a;box-shadow:0 22px 60px rgba(0,0,0,.28)}
 .kaikai-memorial-photo:first-child{grid-row:span 2;min-height:590px}
@@ -19,11 +19,11 @@
 .kaikai-memorial-photo span{position:absolute;inset:auto 0 0;padding:3.8rem 1.15rem 1rem;background:linear-gradient(transparent,rgba(7,15,16,.86));color:#f5f0e6;font-size:.8rem;letter-spacing:.06em}
 .kaikai-memorial-gallery{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:10px}
 .kaikai-memorial-gallery .kaikai-memorial-photo{aspect-ratio:4/3;min-height:0}
-.kaikai-memorial-note{display:flex;justify-content:space-between;gap:1rem;margin-top:1.25rem;color:#c8c8c0;font-size:.78rem;line-height:1.7}
-.kaikai-memorial-note b{color:#dac9a7;font-weight:750}
+.kaikai-memorial-note{display:flex;justify-content:space-between;gap:1rem;margin-top:1.25rem;padding:.8rem 1rem;border-radius:12px;background:rgba(5,18,21,.72);color:#fffdf7;font-size:.86rem;font-weight:650;line-height:1.7;text-shadow:0 1px 4px rgba(0,0,0,.75)}
+.kaikai-memorial-note b{color:#f2cc79;font-weight:900}
 .kaikai-memorial-record{min-height:calc(100vh - 140px)}
 .memorial-record-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem}
 .memorial-record-actions a{display:inline-flex;align-items:center;min-height:44px;padding:.72rem 1rem;border:1px solid rgba(218,201,167,.45);border-radius:999px;color:#f4f0e7;text-decoration:none;font-weight:750;background:rgba(12,24,25,.28)}
 .memorial-record-actions a:hover,.memorial-record-actions a:focus-visible{background:rgba(218,201,167,.14);border-color:#dac9a7}
-@media(max-width:760px){.kaikai-memorial{padding:3.5rem 0}.kaikai-memorial-shell{width:calc(100% - 24px)}.kaikai-memorial-head{grid-template-columns:1fr;gap:1.2rem}.kaikai-memorial-copy{padding-left:1rem}.kaikai-memorial-feature{grid-template-columns:1fr}.kaikai-memorial-photo:first-child{grid-row:auto;min-height:440px}.kaikai-memorial-feature>.kaikai-memorial-photo:not(:first-child){min-height:245px}.kaikai-memorial-gallery{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px}.kaikai-memorial-gallery .kaikai-memorial-photo{flex:0 0 82%;scroll-snap-align:start}.kaikai-memorial-note{display:block}.kaikai-memorial-note span{display:block;margin-top:.45rem}}
+@media(max-width:760px){.kaikai-memorial{padding:3.5rem 0;background-attachment:scroll;background-position:54% center}.kaikai-memorial-shell{width:calc(100% - 24px)}.kaikai-memorial-head{grid-template-columns:1fr;gap:1.2rem}.kaikai-memorial-copy{padding:1rem 1.05rem}.kaikai-memorial-feature{grid-template-columns:1fr}.kaikai-memorial-photo:first-child{grid-row:auto;min-height:440px}.kaikai-memorial-feature>.kaikai-memorial-photo:not(:first-child){min-height:245px}.kaikai-memorial-gallery{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px}.kaikai-memorial-gallery .kaikai-memorial-photo{flex:0 0 82%;scroll-snap-align:start}.kaikai-memorial-note{display:block}.kaikai-memorial-note span{display:block;margin-top:.45rem}}
 @media(prefers-reduced-motion:reduce){.kaikai-memorial-photo img{transition:none}.kaikai-memorial-photo:hover img,.kaikai-memorial-photo:focus-visible img{transform:none}}
