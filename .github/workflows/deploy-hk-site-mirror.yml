@@ -179,7 +179,7 @@ jobs:
                   candidates.extend(path for path in root.iterdir() if path.is_file() or path.is_symlink())
 
           def server_name_position(body):
-              for match in re.finditer(r"(?m)^\\s*server_name\\s+([^;]+);", body):
+              for match in re.finditer(r"(?m)^\s*server_name\s+([^;]+);", body):
                   if domain in match.group(1).split():
                       return match.start()
               return None
@@ -199,18 +199,35 @@ jobs:
 
           legacy_marker = "# legacy-child-advocacy-cases-route"
 
+          def server_block_bounds(body, name_pos):
+              matches = list(re.finditer(r"(?m)^\s*server\s*\{", body[:name_pos]))
+              if not matches:
+                  raise SystemExit("Could not locate nginx server block start")
+              server_pos = matches[-1].start()
+              brace = body.find("{", matches[-1].start(), matches[-1].end())
+              depth = 0
+              for index in range(brace, len(body)):
+                  if body[index] == "{":
+                      depth += 1
+                  elif body[index] == "}":
+                      depth -= 1
+                      if depth == 0:
+                          return server_pos, index
+              raise SystemExit("Could not locate nginx server block boundary")
+
           def remove_location_blocks(body, declaration):
+              pattern = re.compile(r"(?m)^[ \t]*" + re.escape(declaration) + r"[ \t]*\{")
               while True:
-                  pos = body.find(declaration)
-                  if pos < 0:
+                  match = pattern.search(body)
+                  if match is None:
                       return body
-                  line_start = body.rfind("\n", 0, pos) + 1
+                  line_start = match.start()
                   marker_start = line_start
                   previous_start = body.rfind("\n", 0, max(0, line_start - 1)) + 1
                   previous = body[previous_start:line_start].strip()
                   if previous in {marker, legacy_marker}:
                       marker_start = previous_start
-                  brace = body.find("{", pos)
+                  brace = body.find("{", match.start(), match.end())
                   depth = 0
                   block_end = None
                   for index in range(brace, len(body)):
@@ -227,31 +244,22 @@ jobs:
                       block_end += 1
                   body = body[:marker_start] + body[block_end:]
 
-          # Always replace stale or duplicated mirror locations with one canonical
-          # configuration. This repairs servers left on the historical 308 redirect.
+          server_start, server_end = server_block_bounds(text, domain_pos)
+          server_block = text[server_start:server_end + 1]
+
+          # Normalize only exact mirror locations inside the selected Hong Kong
+          # virtual host. Other server blocks and more-specific routes are preserved.
           for declaration in (
               "location = /child-advocacy-site",
               "location ^~ /child-advocacy-site/",
               "location ^~ /cases/",
           ):
-              text = remove_location_blocks(text, declaration)
+              server_block = remove_location_blocks(server_block, declaration)
 
-          domain_pos = server_name_position(text)
-          if domain_pos is None:
+          if server_name_position(server_block) is None:
               raise SystemExit("Target server_name disappeared while normalizing nginx config")
-          server_pos = text.rfind("server", 0, domain_pos)
-          brace = text.find("{", server_pos)
-          depth = 0
-          server_end = None
-          for index in range(brace, len(text)):
-              if text[index] == "{":
-                  depth += 1
-              elif text[index] == "}":
-                  depth -= 1
-                  if depth == 0:
-                      server_end = index
-                      break
-          if server_end is None:
+          insert_at = server_block.rfind("}")
+          if insert_at < 0:
               raise SystemExit("Could not locate nginx server block boundary")
 
           snippet = """
@@ -274,7 +282,8 @@ jobs:
           """
           backup = target.with_name(target.name + ".bak-" + time.strftime("%Y%m%d%H%M%S"))
           shutil.copy2(target, backup)
-          target.write_text(text[:server_end] + snippet + text[server_end:])
+          server_block = server_block[:insert_at] + snippet + server_block[insert_at:]
+          target.write_text(text[:server_start] + server_block + text[server_end + 1:])
           subprocess.run(["nginx", "-t"], check=True)
           subprocess.run(["systemctl", "reload", "nginx"], check=True)
           PY
