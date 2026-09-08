@@ -677,3 +677,18 @@
   .home-activity-actions a{width:100%!important;min-height:44px!important;justify-content:center!important;text-align:center!important}
   .home-activity-clay-date{transform:scale(.78)!important;transform-origin:top right!important}
 }
+
+
+/* Mobile activity horizontal timeline — 2026-09-08 v5 */
+@media (max-width:760px){
+  .home-activity-scroll-toolbar .home-activity-scroll-label>i{transform:rotate(-90deg)!important}
+  .home-activity-scroll{display:flex!important;align-items:stretch!important;gap:12px!important;width:100%!important;max-width:100%!important;max-height:none!important;overflow-x:auto!important;overflow-y:hidden!important;padding:14px 14vw 14px 12px!important;scroll-snap-type:x mandatory!important;scroll-padding-left:12px!important;overscroll-behavior-x:contain!important;touch-action:pan-x pan-y!important;-webkit-overflow-scrolling:touch}
+  .home-activity-scroll>.home-activity-record-divider{display:none!important}
+  .home-activity-scroll>.home-activity-feature{flex:0 0 min(86vw,360px)!important;width:min(86vw,360px)!important;min-width:0!important;margin:0!important;scroll-snap-align:start!important;scroll-snap-stop:always!important;align-self:stretch!important}
+  .home-activity-feature .home-story-campaign-visual,.home-activity-feature .home-activity-collage{aspect-ratio:16/10!important}
+  .home-activity-story{display:flex!important;flex-direction:column!important;min-height:330px!important}
+  .home-activity-story .home-activity-actions{margin-top:auto!important}
+  .home-activity-scroll-controls button:first-child::before{content:"‹"!important;font-size:1.35rem!important}
+  .home-activity-scroll-controls button:last-child::before{content:"›"!important;font-size:1.35rem!important}
+  .home-activity-scroll-controls button{font-size:0!important}
+}
