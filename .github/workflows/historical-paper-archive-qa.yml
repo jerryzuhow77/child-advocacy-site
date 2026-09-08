@@ -122,20 +122,22 @@ jobs:
           assert 'home-map-paper-current.is-current-one' in weather_css
           assert 'home-map-paper-cloud.is-near' in weather_css
           assert 'transform-style: preserve-3d' in weather_css
-          assert 'home-history-paper-weather-20260825.css' in home_html
+          assert 'home-bundle-zh-20260905.css' in home_html
+          assert weather_css.strip() in Path('assets/home-bundle-zh-20260905.css').read_text(encoding='utf-8')
           assert 'home-history-paper-weather-20260825.js' in home_html
-          assert 'home-history-paper-weather-20260825.css' in home_en_html
+          assert 'home-bundle-intl-20260905.css' in home_en_html
+          assert weather_css.strip() in Path('assets/home-bundle-intl-20260905.css').read_text(encoding='utf-8')
           assert 'home-history-paper-weather-20260825.js' in home_en_html
-          assert 'home-post-engagement-20260826.css' in home_en_html
+          assert Path('assets/home-post-engagement-20260826.css').read_text(encoding='utf-8').strip() in Path('assets/home-bundle-intl-20260905.css').read_text(encoding='utf-8')
           assert 'home-post-engagement-20260826.js' in home_en_html
           assert 'Other Regions' not in home_en_html
           assert 'id="home-historical-cases"' in home_ja_html
           assert home_ja_html.count('class="home-historical-card"') == 6
           assert 'data-view-counter-key="historical-fujian-qiqi-shared"' in home_ja_html
           assert 'data-view-counter-key="historical-fu-junxiang-shared"' in home_ja_html
-          assert 'home-post-engagement-20260826.css' in home_ja_html
+          assert 'home-bundle-intl-20260905.css' in home_ja_html
           assert 'home-post-engagement-20260826.js' in home_ja_html
-          assert 'home-history-paper-weather-20260825.css' in home_ja_html
+          assert 'home-bundle-intl-20260905.css' in home_ja_html
           assert 'home-history-paper-weather-20260825.js' in home_ja_html
           assert image_path.exists() and image_path.stat().st_size > 50000
           with Image.open(image_path) as image:
