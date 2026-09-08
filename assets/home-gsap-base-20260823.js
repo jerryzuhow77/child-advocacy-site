@@ -591,8 +591,8 @@
           return card.getBoundingClientRect().width;
         }));
         return {
-          x: Math.min(168, Math.max(0, (shell.clientWidth - widestCard) / 2 - 8)),
-          y: Math.min(190, shell.clientHeight * 0.335)
+          x: Math.min(136, Math.max(0, (shell.clientWidth - widestCard) / 2 - 12)),
+          y: Math.min(224, shell.clientHeight * 0.37)
         };
       }
       var desktop = Math.min(shell.clientWidth * 0.33, 305);
@@ -625,7 +625,7 @@
       stopPhaseTweens();
       autoTween = gsap.to(phase, {
         rotation: phase.rotation + 360,
-        duration: 42,
+        duration: 56,
         repeat: -1,
         ease: 'none',
         onUpdate: render
@@ -672,8 +672,8 @@
     shell.appendChild(motionControl);
     if (!shell.hasAttribute('tabindex')) shell.tabIndex = 0;
     shell.addEventListener('keydown', function (event) {
-      if (event.key === 'ArrowLeft') { event.preventDefault(); rotateBy(step); }
-      if (event.key === 'ArrowRight') { event.preventDefault(); rotateBy(-step); }
+      if (event.key === 'ArrowLeft') { event.preventDefault(); rotateBy(-step); }
+      if (event.key === 'ArrowRight') { event.preventDefault(); rotateBy(step); }
     });
 
     render();
