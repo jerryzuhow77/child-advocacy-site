@@ -19,6 +19,7 @@
 
   var sharedPinned = [
     { className:'is-daily-brief-20260908', href:localizedPath('news/daily-child-protection-brief-20260908/'), image:local('assets/images/daily-child-protection-brief-ink-autumn-20260908.webp') },
+    { className:'is-early-warning-audit', href:localizedPath('news/early-warning-audit-20260908/'), image:local('assets/art/early-warning-audit-20260908.webp') },
     { className: 'is-guardian-duty-rebuttal', href: localizedPath('cases/kaikai/features/guardian-duty-rebuttal/'), image: local('cases/kaikai/features/guardian-duty-rebuttal/hero.webp') },
     { className: 'is-luo-brothers', href: local('cases/luo-brothers/'), image: local('assets/art/luo-brothers-hearing-poster.webp') },
     { className: 'is-hearing-update', href: local('activity-records/20260820-taipei-station-advocacy/'), image: local('assets/art/chen-shangjie-hearing-20260916-guohua-kai-v3.jpg') },
@@ -40,12 +41,13 @@
   var copy = {
     en: {
       eyebrow: 'LATEST REPORTS · RECENTLY UPDATED', title: 'Latest reports',
-      intro: 'Five pinned reports support automatic looping and manual horizontal movement, while the 10 most recently published articles move gently around the children’s Ferris wheel.',
-      all: 'View all documents →', pinned: 'Pinned reports', pinnedHint: 'Five important updates can loop automatically or move manually',
+      intro: 'Six pinned reports support automatic looping and manual horizontal movement, while the 10 most recently published articles move gently around the children’s Ferris wheel.',
+      all: 'View all documents →', pinned: 'Pinned reports', pinnedHint: 'Six important updates can loop automatically or move manually',
       listLabel: 'The 10 most recently published articles', wheel: 'Latest reports', wheelCount: '10 recent articles',
       previous: 'Previous report', next: 'Next report', help: 'The wheel turns slowly. Hover, touch, or drag to pause, then select a carriage to read the full article.',
       pinnedItems: [
         {"meta": "09.08 · DAILY CHILD PROTECTION BRIEF · PINNED", "title": "Invisible before reporting, waiting after", "summary": "The audited 61.90%–92.86% range, a reported placement delay and a Twelve Doors comparison.", "alt": "Expressive ink painting of persimmons, lotus pond, guardian birds, lantern and open gate"},
+        {"meta":"09.08 · INDEPENDENT CHILD-PROTECTION REPORT · PINNED","title":"Beyond 70%: bringing early warnings into protection","summary":"A primary-source check of 46/65 and 70.77%, with traceable early-protection thresholds.","alt":"Chinese ink-wash artwork of lotus leaves sheltering new buds; not an event photograph"},
         { meta: 'SEP 07 · MULTIPLE PERSPECTIVES · PINNED', title: 'Not a Scapegoat | Four Sets of Case-Specific Evidence', summary: 'News claims, official records, and analysis compared; case-specific duty is not a judgment on social workers as a profession', alt: 'Colorful ink-wash flowers, birds, lotus leaves, and red thread symbolising repair of a broken safety net' },
         { meta: '08.26 · LATEST REPORT · PINNED', title: 'Luo Brothers Miscarriage-of-Justice Retrial', summary: 'Latest developments, case background, and complete documents', alt: 'Key visual for the Luo brothers miscarriage-of-justice retrial' },
         { meta: '09.16 · APPEAL PREPARATORY PROCEEDING · PINNED', title: 'Chen Shangjie Case Appeal Preparatory Proceeding', summary: '2:30 p.m. · Taiwan High Court Special Courtroom', alt: 'Ink-wash mountains with a small symbolic child in navy and pale-blue stripes facing sunlight, representing care and hope' },
@@ -66,12 +68,13 @@
     },
     ja: {
       eyebrow: 'LATEST REPORTS · RECENTLY UPDATED', title: '最新速報',
-      intro: '5件の固定速報は自動循環と手動の横移動に対応し、最新公開10件の記事が子どもらしい観覧車に乗ってゆっくり回ります。',
-      all: '資料一覧を見る →', pinned: '固定速報', pinnedHint: '重要な5件を自動循環または手動で横移動',
+      intro: '6件の固定速報は自動循環と手動の横移動に対応し、最新公開10件の記事が子どもらしい観覧車に乗ってゆっくり回ります。',
+      all: '資料一覧を見る →', pinned: '固定速報', pinnedHint: '重要な6件を自動循環または手動で横移動',
       listLabel: '最新公開の10記事', wheel: '最新速報', wheelCount: '最新10件',
       previous: '前の速報', next: '次の速報', help: '観覧車はゆっくり回転します。マウスを重ねる、触れる、またはドラッグすると停止し、ゴンドラを選ぶと記事全文を読めます。',
       pinnedItems: [
         {"meta": "09.08・子ども保護デイリーブリーフ・固定", "title": "通報前の死角、通報後の待機", "summary": "監査原文の61.90%～92.86%、保護遅延報道、十二の扉の比較。", "alt": "秋の柿、蓮池、守護する鳥、灯籠と開いた門の写意水墨画"},
+        {"meta":"09.08・子ども保護独立報告・固定","title":"「約7割」の先へ：早期の兆候を保護につなぐ","summary":"46／65と70.77％を一次資料で確認し、追跡可能な早期保護基準を問います。","alt":"蓮の葉が若い芽を守る中国水墨画のイメージ。現場写真ではありません"},
         { meta: '09.07・多角的考察・固定', title: '身代わりではない｜四つの証拠が示す個別責任', summary: '報道、公式資料、分析を照合し、職種全体ではなく本件固有の作為義務を検証', alt: '壊れた安全網の修復を象徴する、花鳥、蓮の葉、赤い糸による鮮やかな水墨画' },
         { meta: '08.26・最新速報・固定', title: '羅兄弟冤罪事件の再審理', summary: '最新動向、事件の経緯、関連資料', alt: '羅兄弟冤罪事件の再審理を伝えるメインビジュアル' },
         { meta: '09.16・第二審準備手続・固定', title: '陳尚潔事件・第二審準備手続', summary: '午後2時30分・台湾高等法院 専一法廷', alt: '水墨の山並みの中、紺と淡い青の縞模様の服を着た象徴的な小さな子どもが光へ向かう、見守りと希望を表す主ビジュアル' },
