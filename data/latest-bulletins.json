@@ -1,8 +1,37 @@
 {
   "version": 19,
-  "generatedAt": "2026-09-08T00:30:00Z",
+  "generatedAt": "2026-09-08T10:00:00+08:00",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
+    {
+      "id": "early-warning-audit-20260908",
+      "publishedAt": "2026-09-08",
+      "title": {
+        "zh-Hant": "七成背後：讓早期警訊走進保護網",
+        "zh-Hans": "七成背后：让早期警讯走进保护网",
+        "en": "Beyond 70%: bringing early warnings into protection",
+        "ja": "「約7割」の先へ：早期の兆候を保護につなぐ"
+      },
+      "summary": {
+        "zh-Hant": "先讀清楚數字，再追問保護如何真正抵達孩子身邊。",
+        "zh-Hans": "先读清楚数字，再追问保护如何真正抵达孩子身边。",
+        "en": "Read the numbers carefully. Then ask how protection actually reaches a child.",
+        "ja": "数字を正確に読み、保護が子どもに届くまでを問い直す。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/early-warning-audit-20260908/",
+        "zh-Hans": "https://cn.globalprotectionwall.com/news/early-warning-audit-20260908/zh-Hans/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/news/early-warning-audit-20260908/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/news/early-warning-audit-20260908/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/early-warning-audit-20260908.webp",
+      "imageAlt": {
+        "zh-Hant": "AI 水墨藝術意象｜荷葉守護新芽，非事件現場、非齊白石原作。",
+        "zh-Hans": "AI水墨艺术意象｜荷叶守护新芽，非事件现场、非齐白石原作。",
+        "en": "AI ink-wash illustration: lotus leaves sheltering new buds. Not an event photograph or an original Qi Baishi painting.",
+        "ja": "AI水墨イメージ：若い芽を守る蓮の葉。現場写真でも、斉白石の原画でもありません。"
+      }
+    },
     {
       "id": "guardian-duty-rebuttal-20260907",
       "publishedAt": "2026-09-07",
@@ -39,12 +68,33 @@
       }
     },
     {
-      "id": "daily-child-protection-brief-20260908", "publishedAt": "2026-09-08",
-      "title": {"zh-Hant":"每日護童總報｜通報前的黑數、通報後的等待","zh-Hans":"每日护童总报｜通报前的黑数、通报后的等待","en":"Daily brief: invisible before reporting, waiting after","ja":"デイリーブリーフ｜通報前の死角、通報後の待機"},
-      "summary": {"zh-Hant":"審計原文的61.90%–92.86%區間、台北女童安置爭議，以及兩種制度缺口的十二道門比較。","zh-Hans":"审计原文的61.90%–92.86%区间、台北女童安置争议，以及两种制度缺口的十二道门比较。","en":"The audited 61.90%–92.86% range, a reported Taipei placement delay and a Twelve Doors comparison.","ja":"監査原文の61.90%～92.86%、台北の保護遅延報道、二つの制度的欠陥を比較。"},
-      "url": {"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260908/","zh-Hans":"https://cn.globalprotectionwall.com/child-advocacy-site/news/daily-child-protection-brief-20260908/zh-Hans/","en":"https://jerryzuhow77.github.io/child-advocacy-site/en/news/daily-child-protection-brief-20260908/","ja":"https://jerryzuhow77.github.io/child-advocacy-site/ja/news/daily-child-protection-brief-20260908/"},
+      "id": "daily-child-protection-brief-20260908",
+      "publishedAt": "2026-09-08",
+      "title": {
+        "zh-Hant": "每日護童總報｜通報前的黑數、通報後的等待",
+        "zh-Hans": "每日护童总报｜通报前的黑数、通报后的等待",
+        "en": "Daily brief: invisible before reporting, waiting after",
+        "ja": "デイリーブリーフ｜通報前の死角、通報後の待機"
+      },
+      "summary": {
+        "zh-Hant": "審計原文的61.90%–92.86%區間、台北女童安置爭議，以及兩種制度缺口的十二道門比較。",
+        "zh-Hans": "审计原文的61.90%–92.86%区间、台北女童安置争议，以及两种制度缺口的十二道门比较。",
+        "en": "The audited 61.90%–92.86% range, a reported Taipei placement delay and a Twelve Doors comparison.",
+        "ja": "監査原文の61.90%～92.86%、台北の保護遅延報道、二つの制度的欠陥を比較。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260908/",
+        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/news/daily-child-protection-brief-20260908/zh-Hans/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/news/daily-child-protection-brief-20260908/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/news/daily-child-protection-brief-20260908/"
+      },
       "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/images/daily-child-protection-brief-ink-autumn-20260908.webp",
-      "imageAlt": {"zh-Hant":"秋柿、荷塘、守護鳥、燈籠與開門構成的繽紛大寫意水墨畫","zh-Hans":"秋柿、荷塘、守护鸟、灯笼与开门构成的彩色写意水墨画","en":"Expressive ink painting of persimmons, lotus pond, guardian birds, lantern and open gate","ja":"秋の柿、蓮池、守護する鳥、灯籠と開いた門の写意水墨画"}
+      "imageAlt": {
+        "zh-Hant": "秋柿、荷塘、守護鳥、燈籠與開門構成的繽紛大寫意水墨畫",
+        "zh-Hans": "秋柿、荷塘、守护鸟、灯笼与开门构成的彩色写意水墨画",
+        "en": "Expressive ink painting of persimmons, lotus pond, guardian birds, lantern and open gate",
+        "ja": "秋の柿、蓮池、守護する鳥、灯籠と開いた門の写意水墨画"
+      }
     },
     {
       "id": "alliance-dialogues-20260905",
@@ -310,6 +360,35 @@
     }
   ],
   "items": [
+    {
+      "id": "early-warning-audit-20260908",
+      "publishedAt": "2026-09-08",
+      "title": {
+        "zh-Hant": "七成背後：讓早期警訊走進保護網",
+        "zh-Hans": "七成背后：让早期警讯走进保护网",
+        "en": "Beyond 70%: bringing early warnings into protection",
+        "ja": "「約7割」の先へ：早期の兆候を保護につなぐ"
+      },
+      "summary": {
+        "zh-Hant": "先讀清楚數字，再追問保護如何真正抵達孩子身邊。",
+        "zh-Hans": "先读清楚数字，再追问保护如何真正抵达孩子身边。",
+        "en": "Read the numbers carefully. Then ask how protection actually reaches a child.",
+        "ja": "数字を正確に読み、保護が子どもに届くまでを問い直す。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/early-warning-audit-20260908/",
+        "zh-Hans": "https://cn.globalprotectionwall.com/news/early-warning-audit-20260908/zh-Hans/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/news/early-warning-audit-20260908/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/news/early-warning-audit-20260908/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/early-warning-audit-20260908.webp",
+      "imageAlt": {
+        "zh-Hant": "AI 水墨藝術意象｜荷葉守護新芽，非事件現場、非齊白石原作。",
+        "zh-Hans": "AI水墨艺术意象｜荷叶守护新芽，非事件现场、非齐白石原作。",
+        "en": "AI ink-wash illustration: lotus leaves sheltering new buds. Not an event photograph or an original Qi Baishi painting.",
+        "ja": "AI水墨イメージ：若い芽を守る蓮の葉。現場写真でも、斉白石の原画でもありません。"
+      }
+    },
     {
       "id": "kaikai-court-question-20260903",
       "publishedAt": "2026-09-03",

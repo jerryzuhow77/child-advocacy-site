@@ -11,7 +11,7 @@ from urllib.parse import urljoin, urlsplit, parse_qsl, urlencode
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = "/child-advocacy-site/"
-HK_BASE = "https://cn.globalprotectionwall.com/"
+HK_BASE = "https://cn.globalprotectionwall.com/child-advocacy-site/"
 VERSION = "20260905-4"
 COMMENT_VERSION = "20260905-comment-key-3"
 EXCLUDED_ROOTS = {"child-advocacy-site", "child-advocacy-site-main", "source", "handoffs", "global-protection-wall"}
@@ -21,7 +21,7 @@ FLAG_MARKER = "data-cpa-four-language-toolbar-flag"
 JS_MARKER = "data-cpa-four-language-toolbar-script"
 CSS_TAG = f'<link {CSS_MARKER} rel="stylesheet" href="{BASE}assets/four-language-toolbar-20260901.css?v={VERSION}">'
 FLAG_TAG = f'<script {FLAG_MARKER}>window.__cpaFourLanguageToolbar=true;</script>'
-JS_TAG = f'<script {JS_MARKER} src="{BASE}assets/four-language-toolbar-20260901.js?v={VERSION}"></script>'
+JS_TAG = f'<script {JS_MARKER} src="{BASE}assets/four-language-toolbar-20260901.js?v=20260908-routing-1"></script>'
 LEGAL_TAG = f'<script data-cpa-legal-notice-script src="{BASE}assets/legal-notice.js?v=20260905-footer-1"></script>'
 
 

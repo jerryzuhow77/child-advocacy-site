@@ -25,6 +25,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Verify nginx route isolation and rollback
+        run: |
+          python3 -m pip install --quiet PyYAML
+          python3 scripts/test-hk-nginx-isolation.py
+
       - name: Build public mirror package
         shell: bash
         run: |
@@ -130,7 +135,10 @@ jobs:
           user="${HK_USER:-ubuntu}"
           port="${HK_PORT:-22}"
           key="${HK_KEY_A:-${HK_KEY_B:-${HK_KEY_C:-}}}"
-          test -n "$key"
+          if [ -z "$key" ]; then
+            echo '::error::Hong Kong deployment requires a configured TENCENT_SSH_PRIVATE_KEY, TENCENT_CVM_SSH_KEY, or SSH_PRIVATE_KEY repository secret.'
+            exit 1
+          fi
           mkdir -p ~/.ssh
           printf '%s\n' "$key" > ~/.ssh/hk_key
           chmod 600 ~/.ssh/hk_key
@@ -199,17 +207,23 @@ jobs:
 
           legacy_marker = "# legacy-child-advocacy-cases-route"
 
+          def structure(body):
+              # Preserve offsets, but ignore braces inside comments and quoted values.
+              return re.sub(r'''#[^\n]*|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*' '''.rstrip(),
+                            lambda m: re.sub(r"[^\n]", " ", m.group()), body)
+
           def server_block_bounds(body, name_pos):
-              matches = list(re.finditer(r"(?m)^\s*server\s*\{", body[:name_pos]))
+              syntax = structure(body)
+              matches = list(re.finditer(r"(?m)^\s*server\s*\{", syntax[:name_pos]))
               if not matches:
                   raise SystemExit("Could not locate nginx server block start")
               server_pos = matches[-1].start()
               brace = body.find("{", matches[-1].start(), matches[-1].end())
               depth = 0
               for index in range(brace, len(body)):
-                  if body[index] == "{":
+                  if syntax[index] == "{":
                       depth += 1
-                  elif body[index] == "}":
+                  elif syntax[index] == "}":
                       depth -= 1
                       if depth == 0:
                           return server_pos, index
@@ -218,7 +232,9 @@ jobs:
           def remove_location_blocks(body, declaration):
               pattern = re.compile(r"(?m)^[ \t]*" + re.escape(declaration) + r"[ \t]*\{")
               while True:
-                  match = pattern.search(body)
+                  syntax = structure(body)
+                  match = next((m for m in pattern.finditer(syntax)
+                                if syntax[:m.start()].count("{") - syntax[:m.start()].count("}") == 1), None)
                   if match is None:
                       return body
                   line_start = match.start()
@@ -231,9 +247,9 @@ jobs:
                   depth = 0
                   block_end = None
                   for index in range(brace, len(body)):
-                      if body[index] == "{":
+                      if syntax[index] == "{":
                           depth += 1
-                      elif body[index] == "}":
+                      elif syntax[index] == "}":
                           depth -= 1
                           if depth == 0:
                               block_end = index + 1
@@ -253,6 +269,7 @@ jobs:
               "location = /child-advocacy-site",
               "location ^~ /child-advocacy-site/",
               "location ^~ /cases/",
+              "location /cases/",
           ):
               server_block = remove_location_blocks(server_block, declaration)
 
@@ -274,18 +291,27 @@ jobs:
               }
 
               # legacy-child-advocacy-cases-route
-              location ^~ /cases/ {
+              location /cases/ {
                   root /srv/child-advocacy-site/current/child-advocacy-site;
                   try_files $uri $uri/ $uri/index.html =404;
                   add_header X-Robots-Tag "noindex, nofollow" always;
               }
           """
-          backup = target.with_name(target.name + ".bak-" + time.strftime("%Y%m%d%H%M%S"))
+          # Keep backups outside conf.d / sites-enabled: nginx must never load them.
+          backup_dir = Path("/var/backups/child-advocacy-nginx")
+          backup_dir.mkdir(parents=True, exist_ok=True)
+          backup = backup_dir / (target.name + ".bak-" + str(time.time_ns()))
           shutil.copy2(target, backup)
           server_block = server_block[:insert_at] + snippet + server_block[insert_at:]
           target.write_text(text[:server_start] + server_block + text[server_end + 1:])
-          subprocess.run(["nginx", "-t"], check=True)
-          subprocess.run(["systemctl", "reload", "nginx"], check=True)
+          try:
+              subprocess.run(["nginx", "-t"], check=True)
+              subprocess.run(["systemctl", "reload", "nginx"], check=True)
+          except Exception:
+              shutil.copy2(backup, target)
+              subprocess.run(["nginx", "-t"], check=True)
+              subprocess.run(["systemctl", "reload", "nginx"], check=True)
+              raise
           PY
 
       - name: Recover Hong Kong wall service
