@@ -206,11 +206,20 @@
     const isKaikaiChapterOne = isOfficialSite && /^\/Justice-For-Kaikai(?:\/|$)/i.test(url.pathname);
     const isKaikaiChapterTwo = isOfficialSite && /^\/child-advocacy-site\/hearing-records\/prison-watch\/kaikai-final-chapter(?:\/|$)/i.test(url.pathname);
     return {
+      // data-view-counter-key identifies the historical counter only. Official
+      // article pages write their live two-region count to the locale-neutral
+      // route key, so homepage cards must read that same key. Treating the
+      // historical key as current split one article into two records and made
+      // several pinned cards incorrectly display zero.
       key: isKaikaiChapterOne
         ? "official--justice-for-kaikai"
-        : (link.dataset.viewCounterKey
-          ? cleanArticleKey(link.dataset.viewCounterKey)
-          : `${articleHost}-${sharedPath.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-")}`),
+        : isKaikaiChapterTwo
+          ? "kaikai-special-chapter-02-shared"
+          : (isOfficialSite
+            ? `official-${sharedPath.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-")}`
+            : (link.dataset.viewCounterKey
+              ? cleanArticleKey(link.dataset.viewCounterKey)
+              : `${articleHost}-${sharedPath.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-")}`)),
       legacyViewKey: isKaikaiChapterTwo ? "kaikai-special-chapter-02-shared" : link.dataset.viewCounterKey || legacyViewKey(url),
       legacyViewMode: isKaikaiChapterTwo ? "add" : "maximum",
       countsOnArrival,
