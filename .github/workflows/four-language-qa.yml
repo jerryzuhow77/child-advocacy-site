@@ -236,7 +236,7 @@ jobs:
           grep -F 'data-qa916-card="true"' index.html
           grep -F '一起寫下剴剴的故事' index.html
           grep -F '一起写下剀剀的故事' assets/home-ia-hearing-campaign-20260823.js
-          grep -F 'Let Us Write Kai-Kai’s Story Together' assets/home-ia-hearing-campaign-20260823.js
+          grep -F 'Let Us Write Kaikai’s Story Together' assets/home-ia-hearing-campaign-20260823.js
           if grep -F 'Mainland China' en/index.html; then
             echo 'English UI still contains the deprecated Mainland China label.' >&2
             exit 1
