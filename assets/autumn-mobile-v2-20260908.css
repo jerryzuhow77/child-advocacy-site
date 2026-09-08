@@ -31,7 +31,7 @@ body.art-site.home-medium-palette{color:var(--autumn-ink);background-color:#f8ec
   .premium-home-hero .premium-hero-grid{display:grid!important;grid-template-columns:1fr!important;gap:14px!important;width:calc(100% - 20px)!important;margin:auto!important}
   .premium-home-hero .premium-hero-copy{order:2!important;padding:18px 16px!important;border:1px solid rgba(151,91,45,.20)!important;border-radius:22px!important;background:rgba(255,250,238,.76)!important;backdrop-filter:blur(9px)!important}
   .premium-home-hero .premium-hero-art{order:1!important;width:100%!important;max-width:none!important;height:auto!important;min-height:0!important;aspect-ratio:4/3!important;margin:0!important;overflow:hidden!important;border-radius:24px!important;background:rgba(255,248,232,.65)!important}
-  .premium-home-hero .premium-art-card{position:absolute!important;inset:10px!important;width:auto!important;height:auto!important;margin:0!important;transform:none!important}
+  .premium-home-hero .premium-art-card{position:absolute!important;inset:10px!important;display:flex!important;flex-direction:column!important;align-items:center!important;width:auto!important;height:auto!important;margin:0!important;transform:none!important}
   .premium-home-hero .premium-art-card img{display:block!important;width:100%!important;height:100%!important;min-height:0!important;max-height:none!important;aspect-ratio:auto!important;object-fit:cover!important;object-position:center!important;border-radius:18px!important}
   .premium-home-hero .premium-art-label{padding:10px 12px!important}
   .premium-home-hero h1{font-size:clamp(2rem,10vw,3.15rem)!important;line-height:1.08!important}
@@ -42,6 +42,10 @@ body.art-site.home-medium-palette{color:var(--autumn-ink);background-color:#f8ec
   .home-latest-flash .home-document-disc-card{width:118px!important;min-height:142px!important}
   .home-latest-flash .home-document-disc-card img{width:100%!important;height:70px!important;aspect-ratio:auto!important;object-fit:cover!important}
   main img{max-width:100%;height:auto}
+}
+@media(max-width:700px){
+  .premium-home-hero .premium-art-card{left:50%!important;right:auto!important;width:calc(100% - 20px)!important;transform:translateX(-50%)!important}
+  .premium-home-hero .premium-art-card img{margin-inline:auto!important}
 }
 
 @media(max-width:390px){
