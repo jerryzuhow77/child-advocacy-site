@@ -74,6 +74,7 @@
   const renderCopy=()=>{
     const t=copy[locale];
     document.documentElement.lang=locale;
+    document.documentElement.dataset.wallRegion=region;
     document.title=`${t.title}｜${t.officialBadge} · ${t.alliance}`;
     document.querySelectorAll('[data-i18n]').forEach(node=>{
       const key=node.dataset.i18n;
@@ -98,7 +99,12 @@
     syncParentUrl();
     // Use one top-level application shell for Taiwan and Hong Kong. This also
     // avoids leaving visitors in an iframe loader when embedding is blocked.
-    window.location.replace(target);
+    const navigate=()=>window.location.replace(target);
+    if(window.guardianWallTransition&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      window.guardianWallTransition({region,target,navigate});
+    }else{
+      navigate();
+    }
   };
 
   frame.addEventListener('load',()=>{
