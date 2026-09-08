@@ -247,6 +247,7 @@ jobs:
               --disable-background-networking \
               --disable-component-update \
               --disable-sync \
+              --disable-javascript \
               --no-first-run \
               --virtual-time-budget=5000 \
               --window-size=412,915 \
