@@ -333,3 +333,197 @@
   .home-history-static-map,
   .home-historical-card{flex-basis:86vw!important;width:86vw!important}
 }
+
+
+/* Desktop-parity mobile homepage repair — 2026-09-08 v2 */
+@media (max-width:760px){
+  /* Restore the actual Ferris-wheel composition instead of the temporary card strip. */
+  .home-latest-flash .home-document-disc-shell{
+    position:relative!important;
+    width:100%!important;
+    height:570px!important;
+    margin:8px auto 0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    touch-action:pan-y!important;
+  }
+  .home-latest-flash .home-document-disc-shell::before,
+  .home-latest-flash .home-document-disc-shell::after{display:block!important}
+  .home-latest-flash .home-document-disc-orbit{
+    position:absolute!important;
+    inset:0!important;
+    display:block!important;
+    width:auto!important;
+    max-width:none!important;
+    height:auto!important;
+    padding:0!important;
+    overflow:visible!important;
+    transform:none;
+  }
+  .home-latest-flash .home-document-disc-shell .home-document-disc-card{
+    position:absolute!important;
+    left:50%!important;
+    top:50%!important;
+    display:flex!important;
+    flex:0 0 auto!important;
+    width:118px!important;
+    min-width:118px!important;
+    height:auto!important;
+    min-height:142px!important;
+    border-radius:48px 48px 16px 16px!important;
+    overflow:hidden!important;
+    transform-origin:50% 50%!important;
+  }
+  .home-latest-flash .home-document-disc-card>img{
+    width:100%!important;
+    height:66px!important;
+    min-height:66px!important;
+    aspect-ratio:auto!important;
+    object-fit:cover!important;
+  }
+  .home-latest-flash .home-document-disc-card>span:not(.home-post-engagement):not(.home-pinned-thumb-copy){
+    display:grid!important;
+    gap:2px!important;
+    padding:7px 8px 9px!important;
+    text-align:center!important;
+  }
+  .home-latest-flash .home-document-disc-card small{display:block!important;font-size:.56rem!important;line-height:1.25!important}
+  .home-latest-flash .home-document-disc-card strong{font-size:.76rem!important;line-height:1.3!important}
+  .home-latest-flash .home-document-disc-card em{display:none!important}
+  .home-latest-flash .home-document-disc-card>.home-post-engagement{display:none!important}
+  .home-document-disc-center{
+    position:absolute!important;
+    left:50%!important;
+    top:50%!important;
+    display:grid!important;
+    width:124px!important;
+    transform:translate(-50%,-50%)!important;
+  }
+  .home-ferris-spokes,.home-ferris-stand,.home-sea-art,.home-ferris-cloud,.home-ferris-bubbles{display:block!important}
+  .home-document-disc-control{
+    top:auto!important;
+    bottom:8px!important;
+    display:block!important;
+    width:44px!important;
+    height:44px!important;
+  }
+  .home-document-disc-control.is-prev{left:calc(50% - 52px)!important}
+  .home-document-disc-control.is-next{right:calc(50% - 52px)!important}
+  .home-disc-motion-control{display:block!important;top:8px!important;right:8px!important}
+  .home-document-disc-help{margin:10px 0 0!important;font-size:.88rem!important;line-height:1.7!important}
+
+  /* Always expose all ten trial-day thumbnails as a compact two-column gallery. */
+  .home-hearing-ten-day-grid{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:10px!important;
+    width:100%!important;
+    max-width:100%!important;
+    max-height:none!important;
+    margin:18px 0 24px!important;
+    overflow:visible!important;
+  }
+  .home-hearing-ten-day-grid>a{display:block!important;min-width:0!important}
+  .home-hearing-ten-day-grid img{display:block!important;width:100%!important;height:auto!important;aspect-ratio:4/3!important;object-fit:cover!important}
+  .home-hearing-ten-day-grid span{display:block!important;padding:9px 10px 11px!important}
+  .home-hearing-ten-day-grid small,.home-hearing-ten-day-grid strong,.home-hearing-ten-day-grid b{display:block!important;white-space:normal!important}
+  .home-hearing-ten-day-grid strong{margin-top:3px!important;font-size:.83rem!important;line-height:1.35!important}
+  .home-hearing-ten-day-grid b{margin-top:6px!important;font-size:.7rem!important}
+
+  /* Match desktop content order: map first, then every historical case card. */
+  .home-historical-grid{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    width:100%!important;
+    max-width:100%!important;
+    gap:14px!important;
+    padding:0!important;
+    overflow:visible!important;
+  }
+  .home-history-static-map{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    margin:0 0 4px!important;
+    overflow:hidden!important;
+  }
+  .home-history-static-map>img{
+    display:block!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    aspect-ratio:16/10!important;
+    object-fit:cover!important;
+  }
+  .home-history-static-map figcaption{
+    position:absolute!important;
+    left:10px!important;
+    right:10px!important;
+    bottom:10px!important;
+    width:auto!important;
+    padding:8px 10px!important;
+    font-size:.76rem!important;
+    line-height:1.4!important;
+  }
+  .home-history-static-map .home-map-weather{display:none!important}
+  .home-historical-card{
+    display:grid!important;
+    grid-template-columns:minmax(112px,38%) minmax(0,1fr)!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-height:146px!important;
+    height:auto!important;
+    overflow:hidden!important;
+  }
+  .home-historical-card .home-historical-image{
+    width:100%!important;
+    height:100%!important;
+    min-height:146px!important;
+    aspect-ratio:auto!important;
+  }
+  .home-historical-card .home-historical-image>img{
+    width:100%!important;
+    height:100%!important;
+    min-height:146px!important;
+    aspect-ratio:auto!important;
+    object-fit:cover!important;
+  }
+  .home-historical-card>span:last-child{padding:13px!important}
+  .home-historical-foot{display:flex!important;flex-direction:column!important;gap:6px!important}
+
+  /* Restore both the full footer directory and the fixed phone shortcut bar. */
+  .home-art-footer{overflow:visible!important;padding-bottom:calc(86px + env(safe-area-inset-bottom,0px))!important}
+  .home-footer-shell{display:block!important;visibility:visible!important;opacity:1!important}
+  .home-footer-toolbar{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:10px!important;
+    padding:24px 0 20px!important;
+  }
+  .home-footer-toolbar section{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    align-content:start!important;
+    padding:15px!important;
+    background:rgba(255,255,255,.075)!important;
+  }
+  .home-footer-toolbar h2{display:block!important;grid-column:auto!important;color:#ffd8bd!important}
+  .home-footer-toolbar a{display:block!important;color:#eef6f2!important;opacity:1!important}
+  .home-footer-toolbar section.is-action{grid-column:1/-1!important}
+  .home-footer-wall-link{display:grid!important}
+  .home-footer-bottom{display:flex!important;color:#d8e5e2!important}
+  .home-footer-bottom a{display:inline-flex!important;color:#fff4e4!important}
+  .home-footer-mobile-bar{
+    position:fixed!important;
+    left:max(8px,env(safe-area-inset-left,0px))!important;
+    right:max(8px,env(safe-area-inset-right,0px))!important;
+    bottom:max(8px,env(safe-area-inset-bottom,0px))!important;
+    z-index:9997!important;
+    display:grid!important;
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+  body{padding-bottom:calc(78px + env(safe-area-inset-bottom,0px))!important}
+}
