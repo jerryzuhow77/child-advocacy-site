@@ -23,7 +23,13 @@ protected = '''    location / { proxy_pass http://wall; }
     location /quoted { return 200 "brace } and {"; }
     # a closing brace in a comment: }
 '''
-original = other + 'server {\n    server_name cn.globalprotectionwall.com;\n' + protected + '''    location ^~ /cases/ { root /old; }
+redirect = '''server {
+    listen 80;
+    server_name cn.globalprotectionwall.com;
+    return 301 https://$host$request_uri;
+}
+'''
+original = other + redirect + 'server {\n    listen 443 ssl;\n    server_name cn.globalprotectionwall.com;\n' + protected + '''    location ^~ /cases/ { root /old; }
     location = /child-advocacy-site { return 301 /old/; }
     location ^~ /child-advocacy-site/ { root /old; }
 }
@@ -40,7 +46,7 @@ with tempfile.TemporaryDirectory() as temp:
             exec(compile(test_code, 'remote-nginx', 'exec'), {})
             assert run.call_count == 2
         result = target.read_text()
-        assert other in result and protected in result
+        assert other in result and redirect in result and protected in result
         assert result.count('location /cases/ {') == 0
         assert result.count('location ^~ /cases/ {') == 2  # target mirror plus unrelated host
         assert result.count('location = /child-advocacy-site {') == 1

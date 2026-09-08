@@ -192,19 +192,6 @@ jobs:
                       return match.start()
               return None
 
-          target = text = domain_pos = None
-          for path in candidates:
-              try:
-                  body = path.read_text()
-              except Exception:
-                  continue
-              position = server_name_position(body)
-              if position is not None:
-                  target, text, domain_pos = path.resolve(), body, position
-                  break
-          if target is None:
-              raise SystemExit("No nginx server block found for " + domain)
-
           legacy_marker = "# legacy-child-advocacy-cases-route"
 
           def structure(body):
@@ -228,6 +215,26 @@ jobs:
                       if depth == 0:
                           return server_pos, index
               raise SystemExit("Could not locate nginx server block boundary")
+
+          matches = []
+          for path in candidates:
+              try:
+                  body = path.read_text()
+              except Exception:
+                  continue
+              for match in re.finditer(r"(?m)^\s*server_name\s+([^;]+);", body):
+                  if domain not in match.group(1).split():
+                      continue
+                  start, end = server_block_bounds(body, match.start())
+                  matches.append((path.resolve(), body, match.start(), start, end))
+          if not matches:
+              raise SystemExit("No nginx server block found for " + domain)
+          selected = next(
+              (item for item in matches
+               if re.search(r"(?m)^\s*listen\s+[^;]*\bssl\b", item[1][item[3]:item[4] + 1])),
+              matches[0],
+          )
+          target, text, domain_pos, server_start, server_end = selected
 
           def remove_location_blocks(body, declaration):
               pattern = re.compile(r"(?m)^[ \t]*" + re.escape(declaration) + r"[ \t]*\{")
@@ -260,7 +267,6 @@ jobs:
                       block_end += 1
                   body = body[:marker_start] + body[block_end:]
 
-          server_start, server_end = server_block_bounds(text, domain_pos)
           server_block = text[server_start:server_end + 1]
 
           # Normalize only exact mirror locations inside the selected Hong Kong
