@@ -9,6 +9,11 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 BASE = '/child-advocacy-site/'
 LOCALES = {'zh-Hant', 'zh-Hans', 'en', 'ja'}
+INTENTIONALLY_SINGLE_LANGUAGE = {
+    'cases/kaikai/features/final-24-hours/',
+    'cases/kaikai/features/final-24-hours/dialogues/',
+    'cases/kaikai/features/rescue-windows/',
+}
 routes = json.loads((ROOT / 'data/four-language-routes.json').read_text())['routes']
 errors = []
 physical = set()
@@ -27,11 +32,15 @@ class Document(HTMLParser):
             self.lang = attrs.get('lang', '')
 
 def read(url):
-    path = ROOT / urlsplit(url).path.removeprefix(BASE) / 'index.html'
+    # External mirror URLs may be rooted at "/" while local files live below
+    # the repository root. Never let an absolute URL path discard ROOT.
+    relative = urlsplit(url).path.removeprefix(BASE).lstrip('/')
+    path = ROOT / relative / 'index.html'
     return path, path.read_text(encoding='utf-8')
 
 for route, editions in routes.items():
-    if set(editions) != LOCALES:
+    single_language = route in INTENTIONALLY_SINGLE_LANGUAGE
+    if not single_language and set(editions) != LOCALES:
         errors.append(f'{route}: missing locales {LOCALES-set(editions)}')
     for locale, url in editions.items():
         path, text = read(url)
@@ -44,7 +53,7 @@ for route, editions in routes.items():
         for marker in ('data-cpa-four-language-toolbar-style', 'data-cpa-four-language-toolbar-flag', 'data-cpa-four-language-toolbar-script'):
             if marker not in text:
                 errors.append(f'{path.relative_to(ROOT)}: missing {marker}')
-        for alternate in LOCALES:
+        for alternate in (() if single_language else LOCALES):
             if f'hreflang="{alternate}"' not in text:
                 errors.append(f'{path.relative_to(ROOT)}: missing alternate {alternate}')
 

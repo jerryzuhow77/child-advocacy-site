@@ -157,7 +157,7 @@
         reloadingForUpdate = true;
         window.location.reload();
       });
-      navigator.serviceWorker.register(new URL('sw.js?v=20260907-mobile-v6', siteBase).href, {
+      navigator.serviceWorker.register(new URL('sw.js?v=20260908-daily-v7', siteBase).href, {
         scope: siteBase.pathname,
         updateViaCache: 'none'
       })
