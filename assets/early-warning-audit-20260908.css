@@ -29,6 +29,11 @@ main>section{padding:3rem 0;scroll-margin-top:9rem}
 .number:nth-child(2) strong{color:#236a65}.number:nth-child(3) strong{color:#345b86}
 .number span{font:.9rem/1.5 system-ui;display:block;margin-top:.6rem}
 .boundary{border-left:3px solid #b8913b;padding-left:1rem;color:#5f543c}
+.audit-detail,.official-response{margin:1.5rem 0;padding:1.25rem 1.4rem;border:1px solid rgba(71,105,99,.28);border-radius:18px;background:rgba(244,249,245,.72)}
+.audit-detail h3,.official-response h3{margin:.1rem 0 .65rem;color:#315d58}
+.audit-detail ul,.official-response ul{margin:.55rem 0;padding-left:1.25rem}
+.audit-detail li+li,.official-response li+li{margin-top:.45rem}
+.source-label{display:inline-block;margin-bottom:.35rem;font:700 .76rem/1.4 system-ui;letter-spacing:.08em;color:#963a34}
 .steps{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem;margin-top:2rem}
 .step{border:1px solid rgba(123,108,78,.34);border-top:5px solid #397669;padding:1.6rem;background:rgba(255,252,244,.76);box-shadow:0 14px 36px rgba(31,50,51,.08);backdrop-filter:blur(10px)}
 .step:nth-child(2){border-top-color:#a8443c}.step:nth-child(3){border-top-color:#426b9b}.step:nth-child(4){border-top-color:#9a684a}
@@ -36,5 +41,5 @@ main>section{padding:3rem 0;scroll-margin-top:9rem}
 .closing{font-size:clamp(1.6rem,3vw,2.5rem);color:#963a34;padding:2rem 0;border-block:1px solid rgba(85,79,61,.35)}
 footer{padding:2rem 0 4rem;font-size:.85rem}
 p,a{overflow-wrap:anywhere}
-@media(max-width:700px){body::before{background-position:62% center;opacity:.22}.hero{grid-template-columns:1fr;padding-top:2rem;gap:1rem}.hero>div{padding:1.25rem;border-radius:20px}.hero figure{max-width:500px}.steps{grid-template-columns:1fr}.shell{width:calc(100% - 32px)}.numbers{gap:.65rem}.number strong{font-size:2.5rem}.mast{font-size:.85rem}.toc{gap:.7rem}h1{font-size:2.4rem}}
+@media(max-width:700px){body::before{background-position:62% center;opacity:.22}.hero{grid-template-columns:1fr;padding-top:2rem;gap:1rem}.hero>div{padding:1.25rem;border-radius:20px}.hero figure{max-width:500px}.steps{grid-template-columns:1fr}.shell{width:calc(100% - 32px)}.numbers{gap:.65rem}.number strong{font-size:2.5rem}.mast{font-size:.85rem}.toc{gap:.7rem}h1{font-size:2.4rem}.audit-detail,.official-response{padding:1rem}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
