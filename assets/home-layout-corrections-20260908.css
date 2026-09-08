@@ -527,3 +527,109 @@
   }
   body{padding-bottom:calc(78px + env(safe-area-inset-bottom,0px))!important}
 }
+
+
+/* Samsung mobile layout refinement — 2026-09-08 v3 */
+@media (max-width:760px){
+  /* Ten hearing days form one chronological horizontal timeline. */
+  .home-hearing-ten-day-grid{
+    position:relative!important;
+    display:flex!important;
+    grid-template-columns:none!important;
+    width:100%!important;
+    max-width:100%!important;
+    gap:12px!important;
+    margin:16px 0 24px!important;
+    padding:22px 12vw 12px 2px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scroll-snap-type:x mandatory;
+    overscroll-behavior-x:contain;
+    touch-action:pan-x pan-y!important;
+    -webkit-overflow-scrolling:touch;
+  }
+  .home-hearing-ten-day-grid::before{
+    content:"最新 → 最早";
+    position:absolute;
+    top:0;
+    left:2px;
+    color:#8b5b3f;
+    font-size:.74rem;
+    font-weight:800;
+    letter-spacing:.08em;
+  }
+  .home-hearing-ten-day-grid>a{
+    position:relative!important;
+    flex:0 0 min(68vw,280px)!important;
+    width:min(68vw,280px)!important;
+    min-width:0!important;
+    scroll-snap-align:start;
+  }
+  .home-hearing-ten-day-grid>a::before{
+    content:"";
+    position:absolute;
+    top:-9px;
+    left:18px;
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:#b96e49;
+    box-shadow:0 0 0 4px rgba(185,110,73,.16);
+  }
+  .home-hearing-ten-day-grid img{aspect-ratio:16/10!important}
+  .home-hearing-compact-grid,.home-hearing-archive-links{display:none!important}
+
+  /* Historical archive gains an explicit region selector and a clean vertical result list. */
+  .home-history-region-filter{
+    display:grid!important;
+    grid-template-columns:auto minmax(0,1fr);
+    align-items:center;
+    gap:10px;
+    margin:14px 0 16px;
+    padding:12px 13px;
+    border:1px solid rgba(116,77,54,.2);
+    border-radius:14px;
+    background:rgba(255,250,240,.84);
+  }
+  .home-history-region-filter label{font-size:.88rem;font-weight:800;color:#17394f;white-space:nowrap}
+  .home-history-region-filter select{
+    width:100%;
+    min-height:44px;
+    padding:8px 38px 8px 12px;
+    border:1px solid rgba(23,57,79,.28);
+    border-radius:10px;
+    background:#fffaf0;
+    color:#17394f;
+    font:inherit;
+    font-size:1rem;
+  }
+  .home-historical-card[hidden]{display:none!important}
+  .home-historical-grid{gap:12px!important}
+  .home-historical-card{grid-template-columns:minmax(118px,38%) minmax(0,1fr)!important}
+  .home-historical-card>span:last-child{min-width:0!important;padding:12px!important}
+  .home-historical-card small{font-size:.68rem!important;line-height:1.3!important}
+  .home-historical-card strong{font-size:1rem!important;line-height:1.35!important}
+  .home-historical-card em{font-size:.82rem!important;line-height:1.45!important}
+
+  /* Keep the full directory available without letting it dominate the phone page. */
+  .home-footer-toolbar{
+    display:flex!important;
+    grid-template-columns:none!important;
+    gap:10px!important;
+    padding:18px 0 16px!important;
+    overflow-x:auto!important;
+    scroll-snap-type:x mandatory;
+    touch-action:pan-x pan-y!important;
+  }
+  .home-footer-toolbar section,
+  .home-footer-toolbar section.is-action{
+    flex:0 0 min(72vw,290px)!important;
+    grid-column:auto!important;
+    min-width:0!important;
+    min-height:0!important;
+    padding:14px!important;
+    scroll-snap-align:start;
+  }
+  .home-footer-toolbar h2{font-size:1.2rem!important;line-height:1.25!important;white-space:nowrap!important}
+  .home-footer-toolbar a{font-size:.9rem!important;line-height:1.45!important}
+}
