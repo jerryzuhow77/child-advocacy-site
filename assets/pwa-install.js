@@ -157,7 +157,7 @@
         reloadingForUpdate = true;
         window.location.reload();
       });
-      navigator.serviceWorker.register(new URL('sw.js?v=20260908-mid-autumn-sections-v9', siteBase).href, {
+      navigator.serviceWorker.register(new URL('sw.js?v=20260908-canonical-pinned-views-v10', siteBase).href, {
         scope: siteBase.pathname,
         updateViaCache: 'none'
       })
