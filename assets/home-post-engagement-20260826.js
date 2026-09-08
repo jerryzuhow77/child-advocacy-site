@@ -27,6 +27,7 @@
         host: feature.querySelector(".home-hearing-zone-copy") || feature,
       }),
     },
+    { selector: "#news-hearing-notes .home-hearing-ten-day-grid > a", layout: "mini" },
     { selector: "#news-hearing-notes a.home-hearing-compact-card" },
     { selector: "#news-hearing-notes .home-hearing-archive-links > a:not(.is-all)", layout: "archive" },
     { selector: "#news-hearing-notes a.qa916-hearing-mini", layout: "mini" },
