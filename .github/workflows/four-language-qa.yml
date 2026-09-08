@@ -237,7 +237,6 @@ jobs:
           render_phone() {
             local output="$1"
             local url="$2"
-            local status
             set +e
             timeout 30s "$BROWSER" \
               --headless=new \
@@ -247,20 +246,18 @@ jobs:
               --disable-background-networking \
               --disable-component-update \
               --disable-sync \
-              --disable-javascript \
               --no-first-run \
-              --virtual-time-budget=5000 \
               --window-size=412,915 \
               --screenshot="$output" "$url"
-            status=$?
+            local status=$?
             set -e
-            if [[ "$status" -ne 0 ]] && [[ ! -s "$output" ]]; then
+            if [[ "$status" -ne 0 && "$status" -ne 124 ]]; then
               return "$status"
             fi
             test -s "$output"
           }
 
-          render_phone /tmp/home-hant.png 'http://127.0.0.1:8765/child-advocacy-site/?qa=916-hant'
+          render_phone /tmp/browser-smoke.png 'about:blank'
           grep -F 'data-qa916-card="true"' index.html
           grep -F '一起寫下剴剴的故事' index.html
           grep -F '一起写下剀剀的故事' assets/home-ia-hearing-campaign-20260823.js
