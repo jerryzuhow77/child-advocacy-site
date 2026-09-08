@@ -108,6 +108,21 @@ def sync_legal_note(text: str) -> str:
     return re.sub(r'</body>', lambda _: LEGAL_TAG + '\n</body>', text, count=1, flags=re.I)
 
 
+def repair_japanese_court_terms(path: Path, text: str) -> str:
+    if 'ja' not in path.relative_to(ROOT).parts:
+        return text
+    replacements = {
+        '第二次治験準備手順': '第二審準備手続',
+        '二次試験準備過程': '第二審準備手続',
+        '二次試験の進捗状況': '第二審の進捗状況',
+        '← 試聴記録に戻る': '← 傍聴記録に戻る',
+        '2 番目のインスタンスの準備手順': '第二審準備手続',
+    }
+    for mistranslation, correction in replacements.items():
+        text = text.replace(mistranslation, correction)
+    return text
+
+
 def localize_links(path: Path, text: str, routes: dict) -> str:
     locale = html_locale(path, text)
     if locale == 'zh-Hant':
@@ -175,7 +190,7 @@ def main() -> None:
                 write_html(path, refreshed)
                 changed += 1
             continue
-        updated = sync_legal_note(localize_links(path, inject(path, original), routes)).replace('20260903-comment-key-2', COMMENT_VERSION)
+        updated = repair_japanese_court_terms(path, sync_legal_note(localize_links(path, inject(path, original), routes))).replace('20260903-comment-key-2', COMMENT_VERSION)
         route = neutral_route(path, html_locale(path, original))
         if route in routes:
             updated = re.sub(r'<link\b(?=[^>]*rel=["\']alternate["\'])(?=[^>]*hreflang=)[^>]*>\s*', '', updated, flags=re.I)
