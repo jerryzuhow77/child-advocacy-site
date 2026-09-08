@@ -12,6 +12,7 @@ on:
       - 'assets/site.js'
       - 'assets/mobile-nav-view-counter-20260823.js'
       - 'assets/four-language-toolbar-20260901.js'
+      - 'assets/home-post-engagement-20260826.js'
       - '.github/scripts/audit-page-view-coverage.py'
       - '.github/scripts/audit-page-view-values.py'
 
@@ -27,6 +28,9 @@ jobs:
 
       - name: Verify homepage and every public article load a counter
         run: python3 .github/scripts/audit-page-view-coverage.py
+
+      - name: Validate homepage engagement counter syntax
+        run: node --check assets/home-post-engagement-20260826.js
 
       - name: Read and validate every canonical article count
         run: python3 .github/scripts/audit-page-view-values.py
