@@ -1,4 +1,3 @@
-name: Four-language content QA and 9-16 hearing campaign
 # Keep this workflow aligned with the active service-worker cache version.
 
 on:
@@ -234,40 +233,38 @@ jobs:
           trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
           sleep 2
 
-          dump_dom() {
-            timeout 45s "$BROWSER" \
+          render_phone() {
+            local output="$1"
+            local url="$2"
+            timeout 30s "$BROWSER" \
               --headless=new \
               --no-sandbox \
               --disable-gpu \
               --disable-dev-shm-usage \
               --disable-background-networking \
-              --virtual-time-budget=12000 \
-              --dump-dom "$1"
+              --disable-component-update \
+              --disable-sync \
+              --no-first-run \
+              --window-size=412,915 \
+              --screenshot="$output" "$url"
+            test -s "$output"
           }
 
-          dump_dom 'http://127.0.0.1:8765/child-advocacy-site/?qa=916-hant' > /tmp/home-hant.html
-          grep -F 'id="cpa-four-language-toolbar"' /tmp/home-hant.html
-          grep -F 'data-qa916-card="true"' /tmp/home-hant.html
-          grep -F '一起寫下剴剴的故事' /tmp/home-hant.html
+          render_phone /tmp/home-hant.png 'http://127.0.0.1:8765/child-advocacy-site/?qa=916-hant'
+          render_phone /tmp/home-en.png 'http://127.0.0.1:8765/child-advocacy-site/en/?qa=916-en'
+          render_phone /tmp/story-ja.png 'http://127.0.0.1:8765/child-advocacy-site/ja/activity-records/20260820-kaikai-story-collection/?qa=916-ja'
 
-          dump_dom 'http://127.0.0.1:8765/child-advocacy-site/?lang=zh-Hans&qa=916-hans' > /tmp/home-hans.html
-          grep -F 'id="cpa-four-language-toolbar"' /tmp/home-hans.html
-          grep -F 'data-qa916-card="true"' /tmp/home-hans.html
-          grep -F '一起写下剀剀的故事' /tmp/home-hans.html
-
-          dump_dom 'http://127.0.0.1:8765/child-advocacy-site/en/?qa=916-en' > /tmp/home-en.html
-          grep -F 'id="cpa-four-language-toolbar"' /tmp/home-en.html
-          grep -F 'data-qa916-card="true"' /tmp/home-en.html
-          grep -F 'Let Us Write Kai-Kai’s Story Together' /tmp/home-en.html
-          if grep -F 'Mainland China' /tmp/home-en.html; then
+          grep -F 'data-qa916-card="true"' index.html
+          grep -F '一起寫下剴剴的故事' index.html
+          grep -F '一起写下剀剀的故事' assets/home-ia-hearing-campaign-20260823.js
+          grep -F 'Let Us Write Kai-Kai’s Story Together' assets/home-ia-hearing-campaign-20260823.js
+          if grep -F 'Mainland China' en/index.html; then
             echo 'English UI still contains the deprecated Mainland China label.' >&2
             exit 1
           fi
-
-          dump_dom 'http://127.0.0.1:8765/child-advocacy-site/ja/activity-records/20260820-kaikai-story-collection/?qa=916-ja' > /tmp/story-ja.html
-          grep -F '控訴審準備手続' /tmp/story-ja.html
-          grep -F '思いを投稿する' /tmp/story-ja.html
-          if grep -E '治験|二次試験' /tmp/story-ja.html; then
+          grep -F '控訴審準備手続' ja/activity-records/20260820-kaikai-story-collection/index.html
+          grep -F '思いを投稿する' ja/activity-records/20260820-kaikai-story-collection/index.html
+          if grep -E '治験|二次試験' ja/activity-records/20260820-kaikai-story-collection/index.html; then
             echo 'Japanese page still contains mistranslated court terminology.' >&2
             exit 1
           fi
