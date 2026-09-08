@@ -139,3 +139,197 @@
   .home-case-reel-card{flex-basis:84vw!important;width:84vw!important;min-width:0!important}
   .remember-kaikai-visual img{min-height:240px}
 }
+
+
+/* Samsung/mobile homepage layout repair — 2026-09-08 */
+@media (max-width:760px){
+  html,body{max-width:100%;overflow-x:hidden}
+
+  body.art-site.home-medium-palette .container{
+    width:100%;
+    max-width:100%;
+    padding-inline:16px;
+  }
+
+  /* Latest-content cards: swipeable cards with a stable landscape image and readable copy. */
+  .home-latest-flash .home-document-disc-shell{
+    width:100%!important;
+    height:auto!important;
+    margin:0!important;
+    padding:8px 0 18px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+  }
+  .home-latest-flash .home-document-disc-shell .home-document-disc-orbit{
+    display:flex!important;
+    width:max-content!important;
+    max-width:none!important;
+    grid-template-columns:none!important;
+    gap:12px!important;
+    padding:0 14vw 6px 0!important;
+    overflow:visible!important;
+  }
+  .home-latest-flash .home-document-disc-shell .home-document-disc-card{
+    display:flex!important;
+    flex:0 0 min(82vw,340px)!important;
+    width:min(82vw,340px)!important;
+    min-height:0!important;
+    height:auto!important;
+    border-radius:18px!important;
+    overflow:hidden!important;
+  }
+  .home-latest-flash .home-document-disc-card>img{
+    display:block!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    aspect-ratio:16/9!important;
+    object-fit:cover!important;
+    object-position:center!important;
+  }
+  .home-latest-flash .home-document-disc-card>span:not(.home-post-engagement):not(.home-pinned-thumb-copy){
+    display:grid!important;
+    gap:5px!important;
+    min-width:0!important;
+    padding:12px 14px 10px!important;
+  }
+  .home-latest-flash .home-document-disc-card small{
+    display:block!important;
+    font-size:.76rem!important;
+    line-height:1.4!important;
+  }
+  .home-latest-flash .home-document-disc-card strong{
+    display:block!important;
+    overflow-wrap:anywhere!important;
+    font-size:1.08rem!important;
+    line-height:1.45!important;
+  }
+  .home-latest-flash .home-document-disc-card em{
+    display:block!important;
+    overflow-wrap:anywhere!important;
+    font-size:.88rem!important;
+    line-height:1.55!important;
+  }
+  .home-latest-flash .home-document-disc-card>.home-post-engagement{
+    margin:0 10px 12px!important;
+  }
+
+  /* Hearing notes: prevent the feature artwork from becoming a full-screen portrait. */
+  .home-hearing-zone-head,
+  .home-crafted-head{align-items:flex-start!important;gap:12px!important}
+  .home-hearing-zone-head h2,
+  .home-crafted-head h2{font-size:clamp(2rem,10vw,2.65rem)!important;line-height:1.15!important}
+  .home-hearing-zone-head p,
+  .home-crafted-head p{font-size:1rem!important;line-height:1.75!important}
+  .home-hearing-zone-all{align-self:flex-start!important;white-space:normal!important}
+  .home-hearing-zone-feature{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    overflow:hidden!important;
+  }
+  .home-hearing-zone-poster{
+    display:block!important;
+    min-height:0!important;
+    aspect-ratio:16/10!important;
+    overflow:hidden!important;
+  }
+  .home-hearing-zone-poster>img{
+    display:block!important;
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    aspect-ratio:auto!important;
+    object-fit:cover!important;
+    object-position:center!important;
+  }
+  .home-hearing-zone-copy{padding:18px 16px 20px!important}
+  .home-hearing-zone-stamp{display:none!important}
+
+  /* Historical archive: keep the map landscape and cards compact/swipeable. */
+  .home-historical-grid{
+    display:flex!important;
+    width:100%!important;
+    max-width:100%!important;
+    gap:12px!important;
+    padding:4px 14vw 14px 0!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scroll-snap-type:x mandatory;
+    touch-action:pan-x pan-y!important;
+    -webkit-overflow-scrolling:touch;
+  }
+  .home-history-static-map,
+  .home-historical-card{
+    flex:0 0 min(84vw,350px)!important;
+    width:min(84vw,350px)!important;
+    min-width:0!important;
+    height:auto!important;
+    scroll-snap-align:start;
+    overflow:hidden!important;
+  }
+  .home-history-static-map>img{
+    display:block!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    aspect-ratio:16/10!important;
+    object-fit:cover!important;
+    object-position:center!important;
+  }
+  .home-history-static-map figcaption{
+    position:static!important;
+    padding:12px 14px!important;
+    font-size:.9rem!important;
+    line-height:1.55!important;
+  }
+  .home-historical-card{
+    display:flex!important;
+    flex-direction:column!important;
+  }
+  .home-historical-card .home-historical-image{
+    display:block!important;
+    width:100%!important;
+    height:auto!important;
+    aspect-ratio:16/10!important;
+    overflow:hidden!important;
+  }
+  .home-historical-card .home-historical-image>img{
+    display:block!important;
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    aspect-ratio:auto!important;
+    object-fit:cover!important;
+    object-position:center!important;
+  }
+  .home-historical-card>span:last-child{
+    display:grid!important;
+    gap:5px!important;
+    min-width:0!important;
+    padding:13px 14px 16px!important;
+  }
+  .home-historical-card small,
+  .home-historical-card strong,
+  .home-historical-card em{
+    display:block!important;
+    overflow-wrap:anywhere!important;
+    white-space:normal!important;
+  }
+  .home-historical-card small{font-size:.72rem!important;line-height:1.35!important}
+  .home-historical-card strong{font-size:1.06rem!important;line-height:1.45!important}
+  .home-historical-card em{font-size:.87rem!important;line-height:1.55!important}
+
+  /* One App entry only; remove the orphan launcher and its blank canvas. */
+  .pwa-install-launcher,
+  body>.pwa-install-launcher,
+  .home-footer-install{display:none!important}
+  .home-art-footer{margin-bottom:0!important;padding-bottom:calc(70px + env(safe-area-inset-bottom,0px))!important}
+  .home-footer-shell{min-height:0!important}
+}
+
+@media (max-width:390px){
+  body.art-site.home-medium-palette .container{padding-inline:13px}
+  .home-latest-flash .home-document-disc-shell .home-document-disc-card,
+  .home-history-static-map,
+  .home-historical-card{flex-basis:86vw!important;width:86vw!important}
+}
