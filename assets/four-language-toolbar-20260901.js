@@ -3,7 +3,6 @@
   if (window.__cpaFourLanguageToolbarReady) return;
   window.__cpaFourLanguageToolbarReady = true;
   window.__cpaFourLanguageToolbar = true;
-  document.documentElement.classList.add("cpa-four-language-toolbar-active");
 
   const ROOT = "/child-advocacy-site/";
   const ROUTES_URL = `${ROOT}data/four-language-routes.json?v=20260905-4`;
@@ -127,7 +126,10 @@
   }
   function render(manifest){
     if(document.getElementById("cpa-four-language-toolbar"))return;
-    const language=locale(),words=copy[language],route=neutralRoute(),routes=manifest?.routes?.[route]||{},toolbar=document.createElement("aside");
+    const route=neutralRoute();
+    if(!route){document.documentElement.classList.remove("cpa-four-language-toolbar-active");return;}
+    document.documentElement.classList.add("cpa-four-language-toolbar-active");
+    const language=locale(),words=copy[language],routes=manifest?.routes?.[route]||{},toolbar=document.createElement("aside");
     toolbar.id="cpa-four-language-toolbar";
     toolbar.setAttribute("aria-label",words.aria);
     const options=Object.keys(localeNames).map(k=>{

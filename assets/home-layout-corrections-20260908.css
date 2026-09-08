@@ -34,6 +34,19 @@
   display:none!important;
   background:none!important;
 }
+.home-court-schedule .home-news-card-guide .home-news-guide-thumb{
+  display:block!important;
+  width:112px!important;
+  height:76px!important;
+  aspect-ratio:16/10!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:12px!important;
+  outline:0!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  box-shadow:none!important;
+}
 
 /* Social cases: one clean horizontal rail without clay ornaments. */
 .home-social-cases-banner{
@@ -81,6 +94,10 @@
 .remember-kaikai-card::after{content:none!important;display:none!important}
 
 @media(max-width:760px){
+  .home-court-schedule .home-news-card-guide .home-news-guide-thumb{
+    width:88px!important;
+    height:66px!important;
+  }
   /* Give mobile thumbnails a readable landscape crop instead of a 96px strip. */
   .home-pinned-report-card{
     flex-basis:min(84vw,340px)!important;
