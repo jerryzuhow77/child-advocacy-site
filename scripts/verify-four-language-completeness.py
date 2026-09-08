@@ -55,7 +55,7 @@ for route, editions in routes.items():
         for marker in ('data-cpa-four-language-toolbar-style', 'data-cpa-four-language-toolbar-flag', 'data-cpa-four-language-toolbar-script'):
             if marker not in text:
                 errors.append(f'{path.relative_to(ROOT)}: missing {marker}')
-        for alternate in (() if single_language else LOCALES):
+        for alternate in editions:
             if f'hreflang="{alternate}"' not in text:
                 errors.append(f'{path.relative_to(ROOT)}: missing alternate {alternate}')
 
