@@ -11,8 +11,9 @@ var css=`
 #cpa-page-views[data-state="loading"]{opacity:.72}
 #cpa-page-views[data-state="error"]{opacity:.82}
 @media(max-width:820px){
+  html.cpa-four-language-toolbar-active body > header{display:none!important}
   body{padding-top:calc(58px + env(safe-area-inset-top,0px))!important}
-  html.cpa-four-language-toolbar-active body{padding-top:calc(106px + env(safe-area-inset-top,0px))!important}
+  html.cpa-four-language-toolbar-active body{padding-top:calc(56px + env(safe-area-inset-top,0px))!important}
   html.cpa-four-language-toolbar-active #cpa-mobile-bar{top:48px}
   html.cpa-four-language-toolbar-active #cpa-mobile-menu{top:calc(106px + env(safe-area-inset-top,0px));max-height:calc(100dvh - 106px - env(safe-area-inset-top,0px))}
   html.cpa-menu-open,html.cpa-menu-open body{overflow:hidden!important}
@@ -68,6 +69,7 @@ function rootPath(){
 }
 
 function addNav(){
+  if(window.__cpaFourLanguageToolbar||document.querySelector('[data-cpa-four-language-toolbar-script],[data-cpa-four-language-toolbar-flag]'))return;
   if(document.getElementById('cpa-mobile-bar'))return;
   var root=rootPath();
   var text=copy();
