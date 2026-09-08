@@ -246,6 +246,7 @@ jobs:
               --disable-component-update \
               --disable-sync \
               --no-first-run \
+              --virtual-time-budget=5000 \
               --window-size=412,915 \
               --screenshot="$output" "$url"
             test -s "$output"
