@@ -823,3 +823,45 @@
     margin:8px 10px 12px!important;
   }
 }
+
+
+/* 2026-09-08 Ferris full engagement labels */
+@media (max-width:760px){
+  .home-latest-flash .home-document-disc-card{
+    height:142px!important;
+    min-height:142px!important;
+    grid-template-rows:44px minmax(0,1fr) 38px!important;
+  }
+  .home-latest-flash .home-document-disc-card>img{
+    height:44px!important;
+    min-height:44px!important;
+  }
+  .home-latest-flash .home-document-disc-card>.home-post-engagement{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-template-rows:repeat(2,1fr)!important;
+    min-height:38px!important;
+    padding:3px 2px!important;
+    gap:2px 0!important;
+  }
+  .home-latest-flash .home-document-disc-card .home-post-stat{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:1px!important;
+    white-space:nowrap!important;
+    font-size:.52rem!important;
+    line-height:1.1!important;
+  }
+  .home-latest-flash .home-document-disc-card .home-post-stat-label{
+    display:inline!important;
+    font-size:.52rem!important;
+    line-height:1.1!important;
+  }
+  .home-latest-flash .home-document-disc-card .home-post-stat-icon,
+  .home-latest-flash .home-document-disc-card .home-post-stat-count{
+    display:inline!important;
+    font-size:.52rem!important;
+    line-height:1.1!important;
+  }
+}
