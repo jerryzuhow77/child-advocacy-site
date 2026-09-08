@@ -7,6 +7,7 @@
 .kaikai-memorial-kicker{display:flex;align-items:center;gap:.75rem;margin:0 0 .8rem;color:#d4c4a2;font-size:.76rem;font-weight:850;letter-spacing:.16em}
 .kaikai-memorial-kicker::before{content:"";width:2.4rem;height:1px;background:currentColor}
 .kaikai-memorial h2{margin:0;font:800 clamp(2.25rem,5vw,4.8rem)/1.12 "Noto Serif TC","Songti TC",serif;letter-spacing:.06em}
+.kaikai-memorial h1{margin:0;font:800 clamp(2.25rem,5vw,4.8rem)/1.12 "Noto Serif TC","Songti TC",serif;letter-spacing:.06em;color:#f4f0e7}
 .kaikai-memorial-copy{max-width:42rem;border-left:1px solid rgba(221,204,168,.45);padding-left:clamp(1.25rem,3vw,2.5rem)}
 .kaikai-memorial-copy p{margin:0;color:#e4e2da;font:400 clamp(1rem,1.45vw,1.16rem)/1.95 "Noto Serif TC","Songti TC",serif}
 .kaikai-memorial-copy strong{display:block;margin-top:.75rem;color:#d9c9aa;font-size:.92rem;letter-spacing:.08em}
@@ -20,5 +21,9 @@
 .kaikai-memorial-gallery .kaikai-memorial-photo{aspect-ratio:4/3;min-height:0}
 .kaikai-memorial-note{display:flex;justify-content:space-between;gap:1rem;margin-top:1.25rem;color:#c8c8c0;font-size:.78rem;line-height:1.7}
 .kaikai-memorial-note b{color:#dac9a7;font-weight:750}
+.kaikai-memorial-record{min-height:calc(100vh - 140px)}
+.memorial-record-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem}
+.memorial-record-actions a{display:inline-flex;align-items:center;min-height:44px;padding:.72rem 1rem;border:1px solid rgba(218,201,167,.45);border-radius:999px;color:#f4f0e7;text-decoration:none;font-weight:750;background:rgba(12,24,25,.28)}
+.memorial-record-actions a:hover,.memorial-record-actions a:focus-visible{background:rgba(218,201,167,.14);border-color:#dac9a7}
 @media(max-width:760px){.kaikai-memorial{padding:3.5rem 0}.kaikai-memorial-shell{width:calc(100% - 24px)}.kaikai-memorial-head{grid-template-columns:1fr;gap:1.2rem}.kaikai-memorial-copy{padding-left:1rem}.kaikai-memorial-feature{grid-template-columns:1fr}.kaikai-memorial-photo:first-child{grid-row:auto;min-height:440px}.kaikai-memorial-feature>.kaikai-memorial-photo:not(:first-child){min-height:245px}.kaikai-memorial-gallery{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px}.kaikai-memorial-gallery .kaikai-memorial-photo{flex:0 0 82%;scroll-snap-align:start}.kaikai-memorial-note{display:block}.kaikai-memorial-note span{display:block;margin-top:.45rem}}
 @media(prefers-reduced-motion:reduce){.kaikai-memorial-photo img{transition:none}.kaikai-memorial-photo:hover img,.kaikai-memorial-photo:focus-visible img{transform:none}}
