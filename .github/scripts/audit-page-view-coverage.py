@@ -55,6 +55,9 @@ def main() -> int:
     errors: list[str] = []
     if "data-home-view-counter" not in homepage:
         errors.append("index.html: missing homepage view counter")
+    counter_script = (ROOT / "assets/home-view-counter-20260811.js").read_text(encoding="utf-8")
+    if "HOMEPAGE_HISTORICAL_BASELINE = 607" not in counter_script:
+        errors.append("assets/home-view-counter-20260811.js: verified homepage historical baseline must remain 607")
 
     audited = 0
     for path in sorted(ROOT.rglob("index.html")):
