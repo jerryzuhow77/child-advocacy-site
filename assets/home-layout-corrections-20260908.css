@@ -743,3 +743,83 @@
   .home-activity-scroll-controls button:first-child::before,.home-activity-scroll-controls button:last-child::before{content:none!important}
   .home-activity-scroll::after{content:"上下滑動查看更多活動";display:block;padding:12px 6px 4px;text-align:center;color:#79513d;font-size:.78rem;font-weight:800}
 }
+
+
+/* 2026-09-08 mobile Ferris orbit and engagement stabilization */
+@media (max-width:760px){
+  .home-latest-flash .home-document-disc-shell{
+    min-height:610px!important;
+    height:610px!important;
+    overflow:hidden!important;
+    touch-action:pan-y pinch-zoom!important;
+  }
+  .home-latest-flash .home-document-disc-card{
+    width:86px!important;
+    min-width:86px!important;
+    height:132px!important;
+    min-height:132px!important;
+    display:grid!important;
+    grid-template-rows:46px minmax(0,1fr) 25px!important;
+    border-radius:30px 30px 14px 14px!important;
+    overflow:hidden!important;
+  }
+  .home-latest-flash .home-document-disc-card>img{
+    width:100%!important;
+    height:46px!important;
+    min-height:46px!important;
+    object-fit:cover!important;
+  }
+  .home-latest-flash .home-document-disc-card>span:not(.home-post-engagement){
+    min-width:0!important;
+    padding:5px 5px 2px!important;
+    overflow:hidden!important;
+  }
+  .home-latest-flash .home-document-disc-card small{
+    display:block!important;
+    overflow:hidden!important;
+    white-space:nowrap!important;
+    text-overflow:ellipsis!important;
+    font-size:.48rem!important;
+    line-height:1.2!important;
+  }
+  .home-latest-flash .home-document-disc-card strong{
+    display:-webkit-box!important;
+    -webkit-box-orient:vertical!important;
+    -webkit-line-clamp:2!important;
+    overflow:hidden!important;
+    font-size:.64rem!important;
+    line-height:1.25!important;
+  }
+  .home-latest-flash .home-document-disc-card em{display:none!important}
+  .home-latest-flash .home-document-disc-card>.home-post-engagement{
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    align-items:center!important;
+    gap:0!important;
+    min-height:25px!important;
+    margin:0!important;
+    padding:2px 2px 3px!important;
+    border-top:1px solid rgba(107,72,45,.16)!important;
+    background:rgba(255,249,235,.9)!important;
+  }
+  .home-latest-flash .home-document-disc-card .home-post-stat{
+    min-width:0!important;
+    padding:0!important;
+    gap:1px!important;
+    justify-content:center!important;
+    font-size:.45rem!important;
+    line-height:1!important;
+  }
+  .home-latest-flash .home-document-disc-card .home-post-stat-label{display:none!important}
+  .home-latest-flash .home-document-disc-card .home-post-stat-icon,
+  .home-latest-flash .home-document-disc-card .home-post-stat-count{
+    font-size:.45rem!important;
+    line-height:1!important;
+  }
+  #news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement{
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:4px!important;
+    margin:8px 10px 12px!important;
+  }
+}
