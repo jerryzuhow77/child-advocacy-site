@@ -237,6 +237,7 @@ jobs:
           render_phone() {
             local output="$1"
             local url="$2"
+            local status
             set +e
             timeout 30s "$BROWSER" \
               --headless=new \
@@ -247,11 +248,12 @@ jobs:
               --disable-component-update \
               --disable-sync \
               --no-first-run \
+              --virtual-time-budget=5000 \
               --window-size=412,915 \
               --screenshot="$output" "$url"
-            local status=$?
+            status=$?
             set -e
-            if [[ "$status" -ne 0 && "$status" -ne 124 ]]; then
+            if [[ "$status" -ne 0 ]] && [[ ! -s "$output" ]]; then
               return "$status"
             fi
             test -s "$output"
