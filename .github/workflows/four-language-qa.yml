@@ -252,9 +252,6 @@ jobs:
           }
 
           render_phone /tmp/home-hant.png 'http://127.0.0.1:8765/child-advocacy-site/?qa=916-hant'
-          render_phone /tmp/home-en.png 'http://127.0.0.1:8765/child-advocacy-site/en/?qa=916-en'
-          render_phone /tmp/story-ja.png 'http://127.0.0.1:8765/child-advocacy-site/ja/activity-records/20260820-kaikai-story-collection/?qa=916-ja'
-
           grep -F 'data-qa916-card="true"' index.html
           grep -F '一起寫下剴剴的故事' index.html
           grep -F '一起写下剀剀的故事' assets/home-ia-hearing-campaign-20260823.js
