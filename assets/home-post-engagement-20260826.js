@@ -31,6 +31,8 @@
     { selector: "#news-hearing-notes a.home-hearing-compact-card" },
     { selector: "#news-hearing-notes .home-hearing-archive-links > a:not(.is-all)", layout: "archive" },
     { selector: "#news-hearing-notes a.qa916-hearing-mini", layout: "mini" },
+    { selector: "a.special-feature-menu-card", layout: "feature" },
+    { selector: "a.special-feature-prologue-link", layout: "feature" },
     { selector: "#home-special-features a.home-crafted-card" },
     { selector: "a.home-case-reel-card" },
     {
