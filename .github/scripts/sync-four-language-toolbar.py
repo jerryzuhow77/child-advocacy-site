@@ -123,6 +123,13 @@ def repair_japanese_court_terms(path: Path, text: str) -> str:
     return text
 
 
+def repair_english_region_label(path: Path, text: str) -> str:
+    parts = path.relative_to(ROOT).parts
+    if not parts or parts[0] != 'en':
+        return text
+    return text.replace('Mainland China', 'China')
+
+
 def localize_links(path: Path, text: str, routes: dict) -> str:
     locale = html_locale(path, text)
     if locale == 'zh-Hant':
@@ -190,7 +197,7 @@ def main() -> None:
                 write_html(path, refreshed)
                 changed += 1
             continue
-        updated = repair_japanese_court_terms(path, sync_legal_note(localize_links(path, inject(path, original), routes))).replace('20260903-comment-key-2', COMMENT_VERSION)
+        updated = repair_english_region_label(path, repair_japanese_court_terms(path, sync_legal_note(localize_links(path, inject(path, original), routes)))).replace('20260903-comment-key-2', COMMENT_VERSION)
         route = neutral_route(path, html_locale(path, original))
         if route in routes:
             updated = re.sub(r'<link\b(?=[^>]*rel=["\']alternate["\'])(?=[^>]*hreflang=)[^>]*>\s*', '', updated, flags=re.I)
