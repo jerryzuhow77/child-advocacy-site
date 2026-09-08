@@ -291,7 +291,7 @@ jobs:
               }
 
               # legacy-child-advocacy-cases-route
-              location /cases/ {
+              location ^~ /cases/ {
                   root /srv/child-advocacy-site/current/child-advocacy-site;
                   try_files $uri $uri/ $uri/index.html =404;
                   add_header X-Robots-Tag "noindex, nofollow" always;

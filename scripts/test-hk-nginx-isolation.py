@@ -41,8 +41,8 @@ with tempfile.TemporaryDirectory() as temp:
             assert run.call_count == 2
         result = target.read_text()
         assert other in result and protected in result
-        assert result.count('location /cases/ {') == 1
-        assert result.count('location ^~ /cases/ {') == 1  # unrelated host only
+        assert result.count('location /cases/ {') == 0
+        assert result.count('location ^~ /cases/ {') == 2  # target mirror plus unrelated host
         assert result.count('location = /child-advocacy-site {') == 1
         assert result.count('location ^~ /child-advocacy-site/ {') == 1
         assert '/old' not in result
