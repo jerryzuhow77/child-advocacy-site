@@ -66,7 +66,7 @@
 <script>if(new URLSearchParams(location.search).get("lang")?.toLowerCase()==="zh-hans")location.replace("https://cn.globalprotectionwall.com/child-advocacy-site/"+location.hash);</script>
 <link rel="stylesheet" href="./assets/autumn-mobile-v2-20260908.css?v=20260908-3" data-autumn-mobile-v2>
 <link rel="stylesheet" href="./assets/home-kaikai-memorial-20260908.css?v=20260908-1">
-<link rel="stylesheet" href="./assets/home-layout-corrections-20260908.css?v=20260908-activity-horizontal-8">
+<link rel="stylesheet" href="./assets/home-layout-corrections-20260908.css?v=20260908-activity-vertical-dialog-9">
 <link rel="stylesheet" href="./assets/home-court-video-20260908.css?v=20260908-1">
 <link rel="stylesheet" href="./assets/home-media-reports-20260903.css?v=20260908-static-1" id="home-media-reports-20260903-style">
 <link rel="stylesheet" href="./assets/mid-autumn-theme-20260908.css?v=20260908-sections-2">
@@ -462,8 +462,8 @@
 <div class="container">
 <div class="home-news-stream-head home-activity-records-head"><div><div class="art-eyebrow dark">ACTIVITY RECORDS · PUBLIC ACTION</div><span class="stream-icon">📣</span><h2 id="homeActivityRecordsTitle">活動紀錄</h2><p>把公共倡議、被害者支持與兒少保護行動，整理成可以被看見、查閱與記住的共同紀錄。</p></div><a href="./activity-records/">查看全部活動紀錄 →</a></div>
 <div class="home-activity-scroll-shell" data-home-activity-shell>
-<div class="home-activity-scroll-toolbar"><span class="home-activity-scroll-label"><i aria-hidden="true">↔</i><span><strong>活動紀錄橫向時間軸</strong><small>由新到舊排列；左右滑動或使用按鈕瀏覽</small></span></span><span class="home-activity-scroll-controls"><button type="button" data-home-activity-up aria-label="向左瀏覽較新的活動紀錄">‹</button><button type="button" data-home-activity-down aria-label="向右瀏覽較早的活動紀錄">›</button></span></div>
-<div class="home-activity-scroll" data-home-activity-scroll tabindex="0" aria-label="活動紀錄時間軸，由新到舊排列，可左右滑動">
+<div class="home-activity-scroll-toolbar"><span class="home-activity-scroll-label"><i aria-hidden="true">↕</i><span><strong>活動紀錄上下瀏覽</strong><small>在框內上下滑動，或使用按鈕切換活動</small></span></span><span class="home-activity-scroll-controls"><button type="button" data-home-activity-up aria-label="向上瀏覽較新的活動紀錄">↑</button><button type="button" data-home-activity-down aria-label="向下瀏覽較早的活動紀錄">↓</button></span></div>
+<div class="home-activity-scroll" data-home-activity-scroll tabindex="0" aria-label="活動紀錄對話框，由新到舊排列，可上下滑動">
 <div class="home-activity-record-divider is-current-record" role="separator" aria-label="最新街頭宣傳活動紀錄"><span>LATEST STREET ADVOCACY · 2026.09.08</span><strong>讓開庭資訊走進街頭</strong><small>陳尚潔案二審準備程序宣傳行動・活動短片</small></div>
 <article class="home-activity-feature is-story-campaign is-street-advocacy-record">
 <a class="home-story-campaign-visual" href="./activity-records/20260908-chen-shangjie-hearing-street-advocacy/" aria-label="閱讀9月8日陳尚潔案二審開庭街頭宣傳活動紀錄">
@@ -928,7 +928,7 @@
 (()=>{const film=document.querySelector("[data-civic-film]");if(!film)return;const slides=[...film.querySelectorAll("[data-civic-film-slide]")],dots=[...film.querySelectorAll("[data-civic-film-dot]")];if(slides.length<2)return;let active=0,timer;const reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;const show=(index,manual=false)=>{active=(index+slides.length)%slides.length;slides.forEach((slide,i)=>{const on=i===active;slide.classList.toggle("is-active",on);slide.setAttribute("aria-hidden",String(!on));});dots.forEach((dot,i)=>{const on=i===active;dot.classList.toggle("is-active",on);dot.setAttribute("aria-pressed",String(on));});if(window.gsap&&!reduce){window.gsap.fromTo(slides[active],{autoAlpha:0,y:12},{autoAlpha:1,y:0,duration:.55,ease:"power2.out"});}if(manual)restart();};const restart=()=>{window.clearInterval(timer);if(!reduce)timer=window.setInterval(()=>show(active+1),8500);};dots.forEach((dot,i)=>dot.addEventListener("click",()=>show(i,true)));film.addEventListener("mouseenter",()=>window.clearInterval(timer));film.addEventListener("mouseleave",restart);film.addEventListener("focusin",()=>window.clearInterval(timer));film.addEventListener("focusout",e=>{if(!film.contains(e.relatedTarget))restart();});show(0);restart();})();
 </script>
 <script src="./assets/visitor-submission.js?v=20260907-no-auto-prompt-1"></script>
-<script src="./assets/home-gsap-map-20260824.js?v=20260908-activity-horizontal-3"></script>
+<script src="./assets/home-gsap-map-20260824.js?v=20260908-activity-vertical-dialog-4"></script>
 <script src="./assets/home-pinned-native-scroll-20260828.js?v=20260901-pinned-gsap-2"></script>
 <script src="./assets/home-history-paper-weather-20260825.js?v=20260828-performance-p7-1"></script>
 <script src="./assets/home-history-anchor-stability-20260825.js?v=20260905-media-reports-policy-3"></script>
