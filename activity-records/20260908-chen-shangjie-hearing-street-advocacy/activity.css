@@ -814,3 +814,13 @@ body.campaign-page {
 .campaign-videos-single{grid-template-columns:minmax(0,720px);justify-content:center}
 .campaign-videos-single .campaign-video video{aspect-ratio:4/5;max-height:760px;object-fit:contain;background:#101817}
 @media(max-width:760px){.campaign-hero-video video{height:auto}.campaign-videos-single .campaign-video video{max-height:none}}
+
+/* Main artwork and two-video layout — 2026-09-08 */
+.campaign-hero-image a{display:block}
+.campaign-hero-image img{aspect-ratio:16/9;object-fit:cover}
+.campaign-videos .campaign-video:nth-child(2) video{aspect-ratio:9/16;max-height:760px;object-fit:contain;background:#101817}
+@media(max-width:760px){
+  .campaign-hero-image img{aspect-ratio:16/10}
+  .campaign-videos{grid-template-columns:1fr}
+  .campaign-videos .campaign-video:nth-child(2) video{max-height:72vh}
+}
