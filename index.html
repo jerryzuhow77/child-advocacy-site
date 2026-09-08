@@ -66,7 +66,7 @@
 <script>if(new URLSearchParams(location.search).get("lang")?.toLowerCase()==="zh-hans")location.replace("https://cn.globalprotectionwall.com/child-advocacy-site/"+location.hash);</script>
 <link rel="stylesheet" href="./assets/autumn-mobile-v2-20260908.css?v=20260908-3" data-autumn-mobile-v2>
 <link rel="stylesheet" href="./assets/home-kaikai-memorial-20260908.css?v=20260908-1">
-<link rel="stylesheet" href="./assets/home-layout-corrections-20260908.css?v=20260908-activity-vertical-dialog-9">
+<link rel="stylesheet" href="./assets/home-layout-corrections-20260908.css?v=20260908-ferris-engagement-1">
 <link rel="stylesheet" href="./assets/home-court-video-20260908.css?v=20260908-1">
 <link rel="stylesheet" href="./assets/home-media-reports-20260903.css?v=20260908-static-1" id="home-media-reports-20260903-style">
 <link rel="stylesheet" href="./assets/mid-autumn-theme-20260908.css?v=20260908-sections-2">
@@ -921,14 +921,14 @@
 <script src="./assets/site.js?v=20260905-comment-key-3"></script>
 <script src="./assets/pwa-install.js?v=20260908-mid-autumn-sections-v9"></script>
 <script src="./assets/home-view-counter-20260811.js?v=9-restore-full-history"></script>
-<script src="./assets/home-post-engagement-20260826.js?v=20260908-canonical-pinned-2"></script>
+<script src="./assets/home-post-engagement-20260826.js?v=20260908-ferris-engagement-1"></script>
 <script src="./assets/vendor/gsap-3.13.0.min.js"></script>
 <script src="./assets/vendor/ScrollTrigger-3.13.0.min.js"></script>
 <script id="home-luo-civic-film-script">
 (()=>{const film=document.querySelector("[data-civic-film]");if(!film)return;const slides=[...film.querySelectorAll("[data-civic-film-slide]")],dots=[...film.querySelectorAll("[data-civic-film-dot]")];if(slides.length<2)return;let active=0,timer;const reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;const show=(index,manual=false)=>{active=(index+slides.length)%slides.length;slides.forEach((slide,i)=>{const on=i===active;slide.classList.toggle("is-active",on);slide.setAttribute("aria-hidden",String(!on));});dots.forEach((dot,i)=>{const on=i===active;dot.classList.toggle("is-active",on);dot.setAttribute("aria-pressed",String(on));});if(window.gsap&&!reduce){window.gsap.fromTo(slides[active],{autoAlpha:0,y:12},{autoAlpha:1,y:0,duration:.55,ease:"power2.out"});}if(manual)restart();};const restart=()=>{window.clearInterval(timer);if(!reduce)timer=window.setInterval(()=>show(active+1),8500);};dots.forEach((dot,i)=>dot.addEventListener("click",()=>show(i,true)));film.addEventListener("mouseenter",()=>window.clearInterval(timer));film.addEventListener("mouseleave",restart);film.addEventListener("focusin",()=>window.clearInterval(timer));film.addEventListener("focusout",e=>{if(!film.contains(e.relatedTarget))restart();});show(0);restart();})();
 </script>
 <script src="./assets/visitor-submission.js?v=20260907-no-auto-prompt-1"></script>
-<script src="./assets/home-gsap-map-20260824.js?v=20260908-activity-vertical-dialog-4"></script>
+<script src="./assets/home-gsap-map-20260824.js?v=20260908-ferris-engagement-1"></script>
 <script src="./assets/home-pinned-native-scroll-20260828.js?v=20260901-pinned-gsap-2"></script>
 <script src="./assets/home-history-paper-weather-20260825.js?v=20260828-performance-p7-1"></script>
 <script src="./assets/home-history-anchor-stability-20260825.js?v=20260905-media-reports-policy-3"></script>
