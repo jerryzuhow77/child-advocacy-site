@@ -724,7 +724,7 @@
     padding:12px!important;
     scroll-snap-type:y proximity!important;
     scroll-padding-top:12px!important;
-    overscroll-behavior-y:contain!important;
+    overscroll-behavior-y:auto!important;
     touch-action:pan-y!important;
     -webkit-overflow-scrolling:touch!important;
     scrollbar-width:thin!important;
