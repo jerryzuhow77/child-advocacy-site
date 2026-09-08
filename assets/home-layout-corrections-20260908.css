@@ -81,7 +81,61 @@
 .remember-kaikai-card::after{content:none!important;display:none!important}
 
 @media(max-width:760px){
-  .home-pinned-report-card{flex-basis:min(84vw,340px)!important}
+  /* Give mobile thumbnails a readable landscape crop instead of a 96px strip. */
+  .home-pinned-report-card{
+    flex-basis:min(84vw,340px)!important;
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    grid-template-rows:132px auto auto!important;
+    height:auto!important;
+    min-height:330px!important;
+  }
+  .home-pinned-report-card>img{
+    grid-column:1!important;
+    grid-row:1!important;
+    width:100%!important;
+    height:132px!important;
+    min-height:132px!important;
+    aspect-ratio:auto!important;
+    object-fit:cover!important;
+    object-position:center!important;
+  }
+  .home-pinned-report-card>.home-pinned-thumb-copy{
+    inset:0 0 auto!important;
+    width:100%!important;
+    height:132px!important;
+    padding:12px 18px!important;
+    background:linear-gradient(180deg,rgba(24,47,45,.08),rgba(24,47,45,.7))!important;
+  }
+  .home-pinned-report-card>span:not(.home-post-engagement):not(.home-pinned-thumb-copy){
+    grid-column:1!important;
+    grid-row:2!important;
+    align-content:start!important;
+    padding:14px 15px 9px!important;
+  }
+  .home-pinned-report-card>.home-post-engagement{
+    grid-column:1!important;
+    grid-row:3!important;
+    margin:0 12px 12px!important;
+  }
+  .home-court-schedule .home-news-card.is-hearing.is-court-poster .home-guohua-poster-title{
+    display:none!important;
+  }
+  .home-court-schedule .home-news-card.is-hearing.is-court-poster .home-news-card-copy{
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:stretch!important;
+    padding:22px 18px 24px!important;
+  }
+  .home-court-schedule .home-news-card.is-hearing.is-court-poster .home-news-card-copy>small,
+  .home-court-schedule .home-news-card.is-hearing.is-court-poster .home-news-card-copy>strong{
+    display:block!important;
+    width:100%!important;
+  }
+  .home-court-schedule .home-news-card.is-hearing.is-court-poster .home-news-card-copy strong{
+    font-size:1.45rem!important;
+    line-height:1.32!important;
+  }
   .home-case-reel-card{flex-basis:84vw!important;width:84vw!important;min-width:0!important}
   .remember-kaikai-visual img{min-height:240px}
 }
