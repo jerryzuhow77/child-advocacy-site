@@ -745,8 +745,10 @@
 
       function renderProgress() {
         ticking = false;
-        var max = Math.max(0, viewport.scrollHeight - viewport.clientHeight);
-        var ratio = max ? Math.min(1, Math.max(0, viewport.scrollTop / max)) : 1;
+        var horizontal = mobile;
+        var max = horizontal ? Math.max(0, viewport.scrollWidth - viewport.clientWidth) : Math.max(0, viewport.scrollHeight - viewport.clientHeight);
+        var position = horizontal ? viewport.scrollLeft : viewport.scrollTop;
+        var ratio = max ? Math.min(1, Math.max(0, position / max)) : 1;
         if (moveProgress) moveProgress(ratio);
         else progress.style.transform = 'scaleX(' + ratio + ')';
         shell.classList.toggle('is-at-start', ratio <= 0.002);
@@ -781,7 +783,8 @@
       function buildAutoTimeline() {
         if (reduceMotion) return;
         if (autoTimeline) autoTimeline.kill();
-        var max = Math.max(0, viewport.scrollHeight - viewport.clientHeight);
+        var horizontal = mobile;
+        var max = horizontal ? Math.max(0, viewport.scrollWidth - viewport.clientWidth) : Math.max(0, viewport.scrollHeight - viewport.clientHeight);
         if (max < 40) return;
         var duration = Math.max(18, Math.min(58, max / 72));
         autoTimeline = gsap.timeline({
@@ -791,14 +794,19 @@
         });
         autoTimeline
           .to({}, { duration: 0.8 })
-          .to(viewport, {
+          .to(viewport, horizontal ? {
+            scrollLeft: max,
+            duration: duration,
+            ease: 'none',
+            onUpdate: scheduleProgress
+          } : {
             scrollTop: max,
             duration: duration,
             ease: 'none',
             onUpdate: scheduleProgress
           })
           .to({}, { duration: 2 })
-          .set(viewport, { scrollTop: 0 })
+          .set(viewport, horizontal ? { scrollLeft: 0 } : { scrollTop: 0 })
           .call(scheduleProgress)
           .to({}, { duration: 1.4 });
         if (canAutoPlay()) autoTimeline.play();
@@ -806,7 +814,10 @@
 
       function moveViewport(direction) {
         pauseAuto(6200);
-        viewport.scrollBy({
+        viewport.scrollBy(horizontal ? {
+          left: direction * Math.max(260, viewport.clientWidth * 0.88),
+          behavior: reduceMotion ? 'auto' : 'smooth'
+        } : {
           top: direction * Math.max(280, viewport.clientHeight * 0.78),
           behavior: reduceMotion ? 'auto' : 'smooth'
         });
