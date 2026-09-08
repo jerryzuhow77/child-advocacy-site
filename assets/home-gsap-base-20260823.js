@@ -591,8 +591,8 @@
           return card.getBoundingClientRect().width;
         }));
         return {
-          x: Math.min(185, Math.max(0, (shell.clientWidth - widestCard) / 2 - 6)),
-          y: 260
+          x: Math.min(168, Math.max(0, (shell.clientWidth - widestCard) / 2 - 8)),
+          y: Math.min(190, shell.clientHeight * 0.335)
         };
       }
       var desktop = Math.min(shell.clientWidth * 0.33, 305);
