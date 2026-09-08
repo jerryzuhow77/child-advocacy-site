@@ -1,0 +1,87 @@
+/* Homepage corrections requested after the 2026-09-08 layout review. */
+
+/* News and pinned reports must remain genuinely horizontally scrollable. */
+.home-pinned-reports-viewport{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  overscroll-behavior-x:contain;
+  scroll-snap-type:x proximity;
+  scrollbar-width:thin!important;
+  scrollbar-color:rgba(82,106,105,.45) transparent;
+  touch-action:pan-x pan-y!important;
+  -webkit-overflow-scrolling:touch;
+}
+.home-pinned-reports-track{
+  display:flex!important;
+  width:max-content!important;
+  min-width:100%!important;
+  flex-wrap:nowrap!important;
+  transform:none!important;
+}
+.home-pinned-report-card{
+  flex:0 0 min(43vw,440px)!important;
+  scroll-snap-align:start;
+}
+
+/* Keep the court area factual and remove inherited decorative artwork. */
+.home-court-schedule::before,
+.home-court-schedule::after,
+.home-court-schedule .home-news-card::after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+}
+
+/* Social cases: one clean horizontal rail without clay ornaments. */
+.home-social-cases-banner{
+  grid-template-columns:1fr!important;
+}
+.home-social-cases-qcluster{display:none!important}
+.home-case-reel{
+  display:flex!important;
+  width:100%!important;
+  max-width:100%!important;
+  flex-wrap:nowrap!important;
+  gap:16px!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  padding:8px 4px 18px!important;
+  scroll-snap-type:x proximity;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(82,106,105,.45) transparent;
+  touch-action:pan-x pan-y!important;
+  -webkit-overflow-scrolling:touch;
+}
+.home-case-reel-card{
+  flex:0 0 min(78vw,420px)!important;
+  width:min(78vw,420px)!important;
+  min-width:280px!important;
+  scroll-snap-align:start;
+}
+.home-social-cases-section::before,
+.home-social-cases-section::after,
+.home-case-reel-card::after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+}
+
+/* The memorial block uses the actual case artwork, not the clay symbol sheet. */
+.remember-kaikai-visual img{
+  width:100%!important;
+  height:100%!important;
+  min-height:360px;
+  object-fit:cover!important;
+  object-position:center!important;
+}
+.remember-kaikai-card::before,
+.remember-kaikai-card::after{content:none!important;display:none!important}
+
+@media(max-width:760px){
+  .home-pinned-report-card{flex-basis:min(84vw,340px)!important}
+  .home-case-reel-card{flex-basis:84vw!important;width:84vw!important;min-width:0!important}
+  .remember-kaikai-visual img{min-height:240px}
+}
