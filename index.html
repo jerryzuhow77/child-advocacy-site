@@ -66,13 +66,12 @@
 <script>if(new URLSearchParams(location.search).get("lang")?.toLowerCase()==="zh-hans")location.replace("https://cn.globalprotectionwall.com/child-advocacy-site/"+location.hash);</script>
 <link rel="stylesheet" href="./assets/autumn-mobile-v2-20260908.css?v=20260908-3" data-autumn-mobile-v2>
 <link rel="stylesheet" href="./assets/home-kaikai-memorial-20260908.css?v=20260908-1">
-<link rel="stylesheet" href="./assets/home-layout-refresh-20260908.css?v=20260908-1" data-home-layout-refresh>
 <link rel="alternate" hreflang="en" href="https://jerryzuhow77.github.io/child-advocacy-site/en/">
 <link rel="alternate" hreflang="ja" href="https://jerryzuhow77.github.io/child-advocacy-site/ja/">
 <link rel="alternate" hreflang="zh-Hans" href="https://cn.globalprotectionwall.com/child-advocacy-site/?lang=zh-Hans">
 <link rel="alternate" hreflang="zh-Hant" href="https://jerryzuhow77.github.io/child-advocacy-site/">
 </head>
-<body class="art-site morandi-tone home-medium-palette" id="top">
+<body class="art-site morandi-tone home-medium-palette">
 <header class="art-header">
 <div class="container nav">
 <a class="brand brand-lockup home-brand-safe" href="./"><img alt="" height="48" src="./assets/brand/primary-logo-03-thumb.jpg" width="48"><span class="zh-brand-title"><span class="brand-title-line">護童行動</span><span class="brand-title-line">聯盟</span><small>Child Protection<br>Action Alliance</small></span></a>
@@ -333,24 +332,13 @@
 </div>
 </div>
 </section>
-<nav class="home-section-index" aria-label="首頁內容快速導覽">
-<div class="container home-section-index-inner">
-<span class="home-section-index-label"><small>EXPLORE</small><strong>快速前往</strong></span>
-<a href="#news-flash"><i aria-hidden="true">01</i><span>最新快報</span></a>
-<a href="#news-activity"><i aria-hidden="true">02</i><span>行動紀錄</span></a>
-<a href="#news-hearing"><i aria-hidden="true">03</i><span>開庭資訊</span></a>
-<a href="#news-hearing-notes"><i aria-hidden="true">04</i><span>旁聽紀錄</span></a>
-<a href="#home-special-features"><i aria-hidden="true">05</i><span>特別專題</span></a>
-<a href="#home-historical-cases"><i aria-hidden="true">06</i><span>歷史案件</span></a>
-</div>
-</nav>
 <section class="home-priority-strip" aria-labelledby="homePriorityTitle">
 <div class="container home-priority-shell">
 <header><span aria-hidden="true">!</span><div><small>IMPORTANT · 近期重要入口</small><h2 id="homePriorityTitle">先看最新進度，再一起行動</h2></div></header>
 <div class="home-priority-links">
 <a class="is-hearing" href="./features/social-observation/critical-seventeen-days-20260904/" data-hans-href="./features/social-observation/critical-seventeen-days-20260904/zh-Hans/"><time datetime="2026-09-16">09.16</time><span><small>陳尚潔案二審庭前專題</small><strong>《關鍵的倒數十七天》</strong><em>單據？VS 孩子？查看開庭資訊與判決書對話摘錄</em></span><b aria-hidden="true">→</b></a>
 <a class="is-hearing is-tucheng-domestic-priority" href="./hearing-records/tucheng-domestic-violence-double-homicide-20260821/"><time datetime="2026-08-21">08.21</time><span><small>一審宣判・最新旁聽筆記</small><strong>土城家暴雙屍案</strong><em>兩項殺人罪各判無期徒刑；全案仍可上訴</em></span><b aria-hidden="true">→</b></a>
-<a class="is-guest" href="./global-protection-wall/?section=guest-message"><span class="home-priority-icon" aria-hidden="true">♡</span><span><small>免登入即可參與</small><strong>留下訪客守護留言</strong><em>祝福、意見與照片皆可投稿</em></span><b aria-hidden="true">→</b></a>
+<a class="is-guest" href="#guest-message-home"><span class="home-priority-icon" aria-hidden="true">♡</span><span><small>免登入即可參與</small><strong>留下訪客守護留言</strong><em>祝福、意見與照片皆可投稿</em></span><b aria-hidden="true">↓</b></a>
 </div>
 </div>
 </section>
@@ -377,9 +365,9 @@
 </section>
 <section aria-labelledby="newsFlashTitle" class="home-latest-flash home-document-disc-section" id="news-flash">
 <div class="container">
-<div class="home-news-stream-head home-flash-head"><div><div class="art-eyebrow dark">LATEST REPORTS · RECENTLY UPDATED</div><span class="stream-icon">✦</span><h2 id="newsFlashTitle">最新快報</h2><p>精選近期重要更新，快速掌握案件進度、制度觀察與公共行動。</p></div><a href="./news/pinned-reports/">查看全部快報 →</a></div>
+<div class="home-news-stream-head home-flash-head"><div><div class="art-eyebrow dark">LATEST REPORTS · RECENTLY UPDATED</div><span class="stream-icon">✦</span><h2 id="newsFlashTitle">最新快報</h2><p>十八則置頂快報可自動循環與手動橫向移動；最新發布的 9 篇文章搭乘 GSAP 童趣摩天輪緩慢轉動。</p></div><a href="./news/pinned-reports/">查看置頂快報專區 →</a></div>
 <section class="home-pinned-reports" aria-labelledby="homePinnedReportsTitle" data-pinned-reports>
-<header><span>EDITOR'S PICKS</span><h3 id="homePinnedReportsTitle">重要更新</h3><small>首頁精選六則，其餘內容可前往快報專區查閱</small></header>
+<header><span>PINNED REPORTS</span><h3 id="homePinnedReportsTitle">置頂快報</h3><small>十八則重要消息可自動循環與手動移動</small></header>
 <div class="home-pinned-reports-viewport">
 <div class="home-pinned-reports-track">
 <a class="home-pinned-report-card is-kaikai-memorial" data-view-counter-key="kaikai-cemetery-memorial-20260908-shared" href="./activity-records/20260908-kaikai-cemetery-memorial/"><img alt="志工在墓園花木前追思剴剴的9月8日活動紀錄" decoding="async" fetchpriority="high" loading="eager" src="./assets/memorial/20260908/kaikai-cemetery-memorial-01.webp"><span><small>09.08 · 活動紀錄・置頂</small><strong>想念沒有散去，守護仍在路上</strong><em>志工夥伴前往墓園追思剴剴；八張現場照片，留下思念與持續守護孩子的承諾。</em></span></a>
@@ -910,5 +898,4 @@
 <script data-cpa-legal-notice-script src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"></script>
 <script src="./assets/alliance-entry-20260905.js?v=1"></script>
 <script src="./assets/home-autumn-motion-20260908.js?v=20260908-1" defer></script>
-<script src="./assets/home-layout-motion-20260908.js?v=20260908-1" defer></script>
 </body></html>
