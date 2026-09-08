@@ -109,3 +109,17 @@
   .home-court-info-stack .home-court-detail{grid-template-columns:52px minmax(0,1fr);gap:10px}
   .home-court-info-stack .home-court-detail b{font-size:.86rem}
 }
+
+/* Autumn splashed-ink wash: decorative only, kept translucent for legibility. */
+body.art-site #news-activity,
+body.art-site #news-hearing{position:relative;isolation:isolate;overflow:hidden}
+body.art-site #news-activity::before,
+body.art-site #news-hearing::before{
+  content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;
+  background-image:linear-gradient(118deg,rgba(255,251,241,.78),rgba(249,239,220,.72)),url("./art/autumn-splashed-ink-20260908.webp");
+  background-position:center,center;background-size:cover,cover;background-repeat:no-repeat;opacity:.72
+}
+@media(max-width:760px){
+  body.art-site #news-activity::before,
+  body.art-site #news-hearing::before{background-position:center,68% center;background-size:cover,auto 100%;opacity:.60}
+}
