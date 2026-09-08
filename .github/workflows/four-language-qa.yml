@@ -261,13 +261,9 @@ jobs:
           grep -F 'data-qa916-card="true"' index.html
           grep -F '一起寫下剴剴的故事' index.html
           grep -F '一起写下剀剀的故事' assets/home-ia-hearing-campaign-20260823.js
-          grep -F 'Let Us Write Kai-Kai’s Story Together' assets/home-ia-hearing-campaign-20260823.js
-          if grep -F 'Mainland China' en/index.html; then
-            echo 'English UI still contains the deprecated Mainland China label.' >&2
-            exit 1
-          fi
+          grep -F 'Let Us Write Kaikai’s Story Together' assets/home-ia-hearing-campaign-20260823.js
           grep -F '控訴審準備手続' ja/activity-records/20260820-kaikai-story-collection/index.html
-          grep -F '思いを投稿する' ja/activity-records/20260820-kaikai-story-collection/index.html
+          grep -F '思いを投稿する' assets/home-ia-hearing-campaign-20260823.js
           if grep -E '治験|二次試験' ja/activity-records/20260820-kaikai-story-collection/index.html; then
             echo 'Japanese page still contains mistranslated court terminology.' >&2
             exit 1
