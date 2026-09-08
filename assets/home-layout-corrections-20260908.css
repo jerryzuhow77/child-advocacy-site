@@ -865,3 +865,53 @@
     line-height:1.1!important;
   }
 }
+
+
+/* 2026-09-09 all mobile homepage engagement labels */
+@media (max-width:760px){
+  main .home-post-engagement{
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    width:100%!important;
+    max-width:100%!important;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+  main .home-post-engagement .home-post-stat{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    min-width:0!important;
+    white-space:nowrap!important;
+    font-size:.75rem!important;
+    line-height:1.2!important;
+  }
+  main .home-post-engagement .home-post-stat-label{
+    display:inline!important;
+    position:static!important;
+    width:auto!important;
+    height:auto!important;
+    overflow:visible!important;
+    clip:auto!important;
+    clip-path:none!important;
+    white-space:nowrap!important;
+    font-size:.75rem!important;
+    line-height:1.2!important;
+  }
+  main .home-post-engagement .home-post-stat-icon,
+  main .home-post-engagement .home-post-stat b{
+    display:inline!important;
+    position:static!important;
+    font-size:.75rem!important;
+    line-height:1.2!important;
+  }
+  .home-latest-flash .home-document-disc-card>.home-post-engagement{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  .home-latest-flash .home-document-disc-card .home-post-stat,
+  .home-latest-flash .home-document-disc-card .home-post-stat-label,
+  .home-latest-flash .home-document-disc-card .home-post-stat-icon,
+  .home-latest-flash .home-document-disc-card .home-post-stat b{
+    font-size:.52rem!important;
+  }
+}
