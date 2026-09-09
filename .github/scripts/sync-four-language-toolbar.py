@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the four-language route map and inject the shared top toolbar."""
+"""Generate the route map and inject the shared toolbar.\n\nShared Hong Kong query pages declare zh-Hans at runtime.\n"""
 
 from __future__ import annotations
 
