@@ -59,7 +59,7 @@
     });
   }
 
-  var groups = ['.section-head', '.embroidery-key span', '.evidence-card', '.evidence-step', '.decision-card', '.lens', '.accountability', '.scene', '.matrix article', '.risk-cell', '.law-card', '.news-card', '.appeal-card', '.note', '.takeaway-ribbon article'];
+  var groups = ['.section-head', '.embroidery-key span', '.evidence-card', '.evidence-step', '.decision-card', '.lens', '.accountability', '.scene', '.matrix article', '.risk-cell', '.law-card', '.news-card', '.appeal-card', '.note', '.takeaway-ribbon article', '.source-calibration', '.info-chain-step', '.not-equal', '.medical-context', '.legal-question', '.record-field'];
   groups.forEach(function (selector) {
     ScrollTrigger.batch(selector, {
       start: 'top 90%',
@@ -86,7 +86,7 @@
     });
   });
 
-  ScrollTrigger.batch('.timeline tbody tr, .audit-table tbody tr, .tracking tbody tr', {
+  ScrollTrigger.batch('.timeline tbody tr, .audit-table tbody tr, .tracking tbody tr, .decision-clock tbody tr', {
     start: 'top 94%',
     once: true,
     onEnter: function (rows) {
@@ -94,7 +94,7 @@
     }
   });
 
-  document.querySelectorAll('.chapter-nav a,.responsibility-step,.evidence-card,.evidence-step,.lens,.risk-cell,.law-card,.news-card,.appeal-card,.note').forEach(function (card) {
+  document.querySelectorAll('.chapter-nav a,.responsibility-step,.evidence-card,.evidence-step,.lens,.risk-cell,.law-card,.news-card,.appeal-card,.note,.source-calibration,.info-chain-step,.not-equal,.legal-question,.record-field').forEach(function (card) {
     card.addEventListener('pointerenter', function () {
       if (!mobile) gsap.to(card, { y: -5, duration: .24, ease: 'power2.out' });
     });
@@ -108,6 +108,12 @@
   progress.style.cssText = 'position:fixed;top:0;left:0;z-index:50;width:100%;height:3px;transform-origin:left;background:linear-gradient(90deg,#a63e38,#e7c56d,#3f7d68);pointer-events:none';
   document.body.appendChild(progress);
   gsap.fromTo(progress, { scaleX: 0 }, { scaleX: 1, ease: 'none', scrollTrigger: { trigger: document.documentElement, start: 'top top', end: 'bottom bottom', scrub: .15 } });
+
+  document.querySelectorAll('details.scene-detail').forEach(function (detail) {
+    detail.addEventListener('toggle', function () {
+      window.requestAnimationFrame(function () { ScrollTrigger.refresh(); });
+    });
+  });
 
   window.addEventListener('load', function () { window.setTimeout(function () { ScrollTrigger.refresh(); }, 120); }, { once: true });
 }());
