@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Keep physical Simplified Chinese pages structurally aligned with zh-Hant sources."""
+"""Keep physical Simplified Chinese pages structurally aligned with zh-Hant sources.\n\nThe generated HTML is deployed to both GitHub Pages and the Hong Kong mirror.\n"""
 
 from __future__ import annotations
 
