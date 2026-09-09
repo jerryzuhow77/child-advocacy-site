@@ -120,7 +120,7 @@
   function homeUrl(locale){
     if(locale==='en')return new URL('en/',siteRoot).href;
     if(locale==='ja')return new URL('ja/',siteRoot).href;
-    if(locale==='zh-Hans')return new URL('?lang=zh-Hans',siteRoot).href;
+    if(locale==='zh-Hans')return 'https://cn.globalprotectionwall.com/child-advocacy-site/';
     return siteRoot;
   }
 
