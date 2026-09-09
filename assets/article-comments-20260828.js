@@ -107,7 +107,11 @@
     section.dataset.articleComments = "";
     section.setAttribute("aria-labelledby", "articleCommentsTitle");
     section.innerHTML = `<div class="cpa-article-comments__inner"><header><small>${words.eyebrow}</small><h2 id="articleCommentsTitle">${words.title}</h2><p>${words.intro}</p></header><div class="cpa-article-comments__layout"><section class="cpa-comment-list" aria-labelledby="publishedCommentsTitle"><div class="cpa-comment-list__heading"><h3 id="publishedCommentsTitle">${words.list}</h3><span data-comment-count>—</span></div><div class="cpa-comment-list__items" data-comment-list aria-live="polite"><p class="cpa-comment-state">${words.loading}</p></div></section><form class="cpa-comment-form"><label><span>${words.name}</span><input name="nickname" maxlength="24" autocomplete="nickname" placeholder="${words.visitor}" required></label><label><span>${words.content}</span><textarea name="content" minlength="2" maxlength="500" rows="5" placeholder="${words.placeholder}" required></textarea></label><label class="cpa-comment-hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label><p class="cpa-comment-note"><span aria-hidden="true">♡</span>${words.note}</p><button type="submit">${words.submit}<span aria-hidden="true">→</span></button><output aria-live="polite"></output></form></div></div>`;
-    const footer = document.querySelector("body > footer, footer");
+    // Article content can contain source footers. Only the direct child is the
+    // page footer; falling back to the final footer avoids mounting comments
+    // inside a timeline or evidence section.
+    const pageFooters = document.querySelectorAll("footer");
+    const footer = document.querySelector("body > footer") || pageFooters[pageFooters.length - 1];
     if (footer) footer.before(section); else document.body.appendChild(section);
 
     const list = section.querySelector("[data-comment-list]");
