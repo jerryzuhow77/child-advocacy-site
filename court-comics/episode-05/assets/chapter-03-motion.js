@@ -3,6 +3,13 @@
 
   var gsap = window.gsap;
   var ScrollTrigger = window.ScrollTrigger;
+  var embroideryStyles = ['emb-suzhou', 'emb-shu', 'emb-xiang', 'emb-yue', 'emb-suzhou', 'emb-suzhou', 'emb-shu', 'emb-xiang', 'emb-yue'];
+  var embroideryLabels = ['蘇繡・雙面繡與套針暈色', '蜀繡・雲紋與蓮花暈針', '湘繡・立體葉片與深淺絲理', '粵繡・盤金與珠光結點', '蘇繡・套針暈色', '蘇繡・細密平針', '蜀繡・雲紋暈針', '湘繡・立體葉片', '粵繡・盤金珠結'];
+  document.querySelectorAll('.scene').forEach(function (scene, index) {
+    scene.classList.add(embroideryStyles[index] || 'emb-suzhou');
+    var label = scene.querySelector('.embroidery-label');
+    if (label && embroideryLabels[index]) label.textContent = embroideryLabels[index];
+  });
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!gsap || !ScrollTrigger || reduced) return;
 
@@ -77,6 +84,24 @@
       gsap.fromTo(labels, { autoAlpha: 0, scale: .82, rotate: -3 }, { autoAlpha: 1, scale: 1, rotate: 0, duration: .72, stagger: .08, ease: 'back.out(1.8)', clearProps: 'transform,opacity,visibility' });
     }
   });
+
+  var sampler = document.querySelector('.embroidery-sampler');
+  if (sampler) {
+    gsap.fromTo(sampler, { autoAlpha: .35, scale: 1.035 }, {
+      autoAlpha: 1,
+      scale: 1,
+      duration: 1.15,
+      ease: 'power2.out',
+      scrollTrigger: { trigger: sampler, start: 'top 88%', once: true }
+    });
+    if (!mobile) {
+      gsap.to(sampler, {
+        yPercent: -2.2,
+        ease: 'none',
+        scrollTrigger: { trigger: sampler, start: 'top bottom', end: 'bottom top', scrub: .45 }
+      });
+    }
+  }
 
   document.querySelectorAll('.scene-art').forEach(function (art) {
     gsap.fromTo(art, { scale: 1.11 }, {
