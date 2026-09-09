@@ -2,7 +2,7 @@
 
 // A new cache namespace is intentional: it retires the previous home document
 // and lets the revised paper-cut/embroidery art replace an already-installed PWA.
-const VERSION = '20260908-canonical-pinned-views-v10';
+const VERSION = '20260909-unique-17-v11';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
@@ -35,8 +35,40 @@ const OPTIONAL_SHELL = [
   './assets/home-bundle-intl-20260905.css',
   './assets/home-mobile-polish-20260907.css',
   './assets/mid-autumn-theme-20260908.css',
-  './assets/art/mid-autumn-chang-e-rabbit-20260908.webp',
-  './assets/images/autumn-20260908/ink-background.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-01.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-02.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-03.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-04.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-05.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-06.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-07.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-08.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-09.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-10.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-11.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-12.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-13.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-14.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-15.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-16.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-17.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-01-mobile.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-02-mobile.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-03-mobile.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-04-mobile.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-05-mobile.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-06-mobile.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-07-mobile.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-08-mobile.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-09-mobile.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-10-mobile.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-11-mobile.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-12-mobile.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-13-mobile.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-14-mobile.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-15-mobile.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-16-mobile.webp',
+  './assets/images/seasonal-sections-20260908-v3/section-17-mobile.webp',
   './data/four-language-routes.json',
   './assets/home-gsap.css',
   './assets/home-gsap.js',

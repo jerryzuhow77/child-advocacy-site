@@ -12,5 +12,4 @@
   gsap.utils.toArray('.home-pinned-report-card,.home-news-card,.home-case-reel-card').forEach((card,index)=>{
     gsap.fromTo(card,{y:12,rotate:index%2?-.18:.18},{y:0,rotate:0,duration:.72,delay:Math.min(index,6)*.045,ease:'power2.out'});
   });
-  gsap.to('.home-priority-strip,.home-policy-news,.home-feature-stream',{backgroundPosition:'51% 49%',duration:12,repeat:-1,yoyo:true,ease:'sine.inOut'});
 })();
