@@ -66,7 +66,7 @@
     });
   }
 
-  var groups = ['.section-head', '.embroidery-key span', '.evidence-card', '.evidence-step', '.decision-card', '.lens', '.accountability', '.scene', '.matrix article', '.risk-cell', '.law-card', '.news-card', '.appeal-card', '.note', '.takeaway-ribbon article', '.source-calibration', '.info-chain-step', '.not-equal', '.medical-context', '.legal-question', '.record-field'];
+  var groups = ['.section-head', '.embroidery-key span', '.evidence-card', '.evidence-step', '.decision-card', '.lens', '.accountability', '.scene', '.matrix article', '.risk-cell', '.law-card', '.news-card', '.appeal-card', '.note', '.takeaway-ribbon article', '.source-calibration', '.info-chain-step', '.not-equal', '.medical-context', '.legal-question', '.record-field', '.chapter-expansion'];
   groups.forEach(function (selector) {
     ScrollTrigger.batch(selector, {
       start: 'top 90%',
@@ -134,7 +134,7 @@
   document.body.appendChild(progress);
   gsap.fromTo(progress, { scaleX: 0 }, { scaleX: 1, ease: 'none', scrollTrigger: { trigger: document.documentElement, start: 'top top', end: 'bottom bottom', scrub: .15 } });
 
-  document.querySelectorAll('details.scene-detail').forEach(function (detail) {
+  document.querySelectorAll('details.scene-detail, details.chapter-expansion').forEach(function (detail) {
     detail.addEventListener('toggle', function () {
       window.requestAnimationFrame(function () { ScrollTrigger.refresh(); });
     });
