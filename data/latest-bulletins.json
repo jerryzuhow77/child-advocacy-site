@@ -1,8 +1,37 @@
 {
-  "version": 19,
-  "generatedAt": "2026-09-08T10:00:00+08:00",
+  "version": 20,
+  "generatedAt": "2026-09-09T18:00:00+08:00",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
+    {
+      "id": "korea-placement-warning-20260909",
+      "publishedAt": "2026-09-09",
+      "title": {
+        "zh-Hant": "通報增加，孩子仍未被帶離",
+        "zh-Hans": "通报增加，孩子仍未被带离",
+        "en": "More reports, but children still left in danger",
+        "ja": "通報が増えても、子どもは危険から離されない"
+      },
+      "summary": {
+        "zh-Hant": "南韓38名兒虐死亡兒童留下的安置警訊，對照台灣家外安置的五個制度漏接點。",
+        "zh-Hans": "韩国38名受虐死亡儿童留下的安置警讯，对照台湾家外安置的五个制度漏接点。",
+        "en": "South Korea's 38 child-abuse deaths, compared with five auditable gaps in Taiwan's out-of-home placement system.",
+        "ja": "韓国の虐待死38人から、台湾の家庭外養護にある五つの制度的な接続不全を検証。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/korea-placement-warning-20260909/",
+        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/news/korea-placement-warning-20260909/zh-Hans/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/news/korea-placement-warning-20260909/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/news/korea-placement-warning-20260909/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/korea-placement-warning-autumn-20260909.webp",
+      "imageAlt": {
+        "zh-Hant": "秋柿、菊花、麻雀與守護燈籠構成的繽紛水墨意象",
+        "zh-Hans": "秋柿、菊花、麻雀与守护灯笼构成的彩色水墨意象",
+        "en": "Colorful autumn ink painting with persimmons, chrysanthemums, sparrows and a protected lantern",
+        "ja": "秋柿、菊、雀、守られた灯籠の色彩豊かな水墨画"
+      }
+    },
     {
       "id": "early-warning-audit-20260908",
       "publishedAt": "2026-09-08",
