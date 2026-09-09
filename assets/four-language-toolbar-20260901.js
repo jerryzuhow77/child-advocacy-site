@@ -34,6 +34,21 @@
     return true;
   }
   if(redirectMainlandToMirror())return;
+  function applySimplifiedMirrorMetadata(){
+    const query=(new URLSearchParams(location.search).get("lang")||"").toLowerCase();
+    if(location.hostname!==HK_MIRROR_HOST||(query!=="zh-hans"&&query!=="zh-cn"))return;
+    document.documentElement.lang="zh-Hans";
+    document.documentElement.dataset.cpaLocale="zh-Hans";
+    const href=new URL(location.href);
+    href.hash="";
+    const canonical=document.querySelector('link[rel="canonical"]');
+    if(canonical)canonical.href=href.href;
+    const alternate=document.querySelector('link[rel="alternate"][hreflang="zh-Hans"]');
+    if(alternate)alternate.href=href.href;
+    const ogUrl=document.querySelector('meta[property="og:url"]');
+    if(ogUrl)ogUrl.content=href.href;
+  }
+  applySimplifiedMirrorMetadata();
   const ARTICLE_HISTORY_FLOORS = Object.freeze({
     "cases/lin-xinci/features/missing-four-days/": 33,
     "historical-cases/regions/japan/kurihara-mia/": 39
