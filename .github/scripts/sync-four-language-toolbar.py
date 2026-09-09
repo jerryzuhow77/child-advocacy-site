@@ -90,6 +90,13 @@ def is_noindex(text: str) -> bool:
 
 
 def inject(path: Path, text: str) -> str:
+    # The homepage intentionally uses its own compact navigation. Keep the
+    # article language toolbar off that page, even after an older sync run.
+    if path == ROOT / "index.html":
+        text = re.sub(r'<link\b[^>]*' + CSS_MARKER + r'[^>]*>\s*', '', text, flags=re.I)
+        text = re.sub(r'<script\b[^>]*' + FLAG_MARKER + r'[^>]*>[\s\S]*?</script>\s*', '', text, flags=re.I)
+        text = re.sub(r'<script\b[^>]*' + JS_MARKER + r'[^>]*>[\s\S]*?</script>\s*', '', text, flags=re.I)
+        return text
     text = re.sub(r'<link\b[^>]*' + CSS_MARKER + r'[^>]*>', lambda _: CSS_TAG, text, flags=re.I)
     text = re.sub(r'<script\b[^>]*' + JS_MARKER + r'[^>]*>\s*</script>', lambda _: JS_TAG, text, flags=re.I)
     if CSS_MARKER not in text and re.search(r"</head>", text, re.I):

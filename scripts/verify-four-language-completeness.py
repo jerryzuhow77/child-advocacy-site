@@ -53,9 +53,12 @@ for route, editions in routes.items():
             errors.append(f'{path.relative_to(ROOT)}: expected lang={locale}, got {doc.lang}')
         if urlsplit(url).query and locale == 'zh-Hans' and 'assets/site.js' not in text and 'data-hans' not in text:
             errors.append(f'{route}: query-language route lacks a converter')
-        for marker in ('data-cpa-four-language-toolbar-style', 'data-cpa-four-language-toolbar-flag', 'data-cpa-four-language-toolbar-script'):
-            if marker not in text:
-                errors.append(f'{path.relative_to(ROOT)}: missing {marker}')
+        # The root homepage deliberately uses compact in-page navigation; the
+        # shared four-language toolbar remains mandatory on article pages.
+        if path != ROOT / 'index.html':
+            for marker in ('data-cpa-four-language-toolbar-style', 'data-cpa-four-language-toolbar-flag', 'data-cpa-four-language-toolbar-script'):
+                if marker not in text:
+                    errors.append(f'{path.relative_to(ROOT)}: missing {marker}')
         for alternate in editions:
             if f'hreflang="{alternate}"' not in text:
                 errors.append(f'{path.relative_to(ROOT)}: missing alternate {alternate}')
