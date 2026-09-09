@@ -47,7 +47,10 @@ try {
       deviceScaleFactor: 1,
       colorScheme: 'light',
       locale: 'zh-TW',
-      reducedMotion: 'no-preference'
+      reducedMotion: 'no-preference',
+      // Audit the current release directly instead of letting an installing
+      // PWA worker contend with or substitute resources during the run.
+      serviceWorkers: 'block'
     });
     await context.addInitScript(() => {
       Object.defineProperty(navigator, 'webdriver', { configurable: true, get: () => false });
@@ -75,6 +78,9 @@ try {
     });
     page.on('requestfailed', (request) => {
       try {
+        // Browsers routinely cancel an off-screen video range request while
+        // the audit scrolls between sections; that is not a missing asset.
+        if (request.resourceType() === 'media' && request.failure()?.errorText === 'net::ERR_ABORTED') return;
         if (new URL(request.url()).origin === parsedBaseUrl.origin) {
           sameOriginResourceErrors.push(`${request.failure()?.errorText || 'request failed'} ${request.url()}`);
         }
