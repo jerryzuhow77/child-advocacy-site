@@ -1,26 +1,27 @@
 /*
  * Autumn / Mid-Autumn ink artwork for the homepages and message-wall portal.
- * Each top-level section owns one immutable image URL so scrolling can never
- * swap it back to an older page-wide background.
+ * Each top-level section owns one immutable HD image URL. A complete contain
+ * layer preserves the panorama, while a veiled cover layer fills tall sections.
+ * Both layers scroll with the section and can never swap back to older art.
  */
 :root{
-  --cpa-seasonal-01:url("./images/seasonal-sections-20260908-v3/section-01.webp");
-  --cpa-seasonal-02:url("./images/seasonal-sections-20260908-v3/section-02.webp");
-  --cpa-seasonal-03:url("./images/seasonal-sections-20260908-v3/section-03.webp");
-  --cpa-seasonal-04:url("./images/seasonal-sections-20260908-v3/section-04.webp");
-  --cpa-seasonal-05:url("./images/seasonal-sections-20260908-v3/section-05.webp");
-  --cpa-seasonal-06:url("./images/seasonal-sections-20260908-v3/section-06.webp");
-  --cpa-seasonal-07:url("./images/seasonal-sections-20260908-v3/section-07.webp");
-  --cpa-seasonal-08:url("./images/seasonal-sections-20260908-v3/section-08.webp");
-  --cpa-seasonal-09:url("./images/seasonal-sections-20260908-v3/section-09.webp");
-  --cpa-seasonal-10:url("./images/seasonal-sections-20260908-v3/section-10.webp");
-  --cpa-seasonal-11:url("./images/seasonal-sections-20260908-v3/section-11.webp");
-  --cpa-seasonal-12:url("./images/seasonal-sections-20260908-v3/section-12.webp");
-  --cpa-seasonal-13:url("./images/seasonal-sections-20260908-v3/section-13.webp");
-  --cpa-seasonal-14:url("./images/seasonal-sections-20260908-v3/section-14.webp");
-  --cpa-seasonal-15:url("./images/seasonal-sections-20260908-v3/section-15.webp");
-  --cpa-seasonal-16:url("./images/seasonal-sections-20260908-v3/section-16.webp");
-  --cpa-seasonal-17:url("./images/seasonal-sections-20260908-v3/section-17.webp");
+  --cpa-seasonal-01:url("./images/seasonal-sections-20260909-hd-v4/section-01.webp");
+  --cpa-seasonal-02:url("./images/seasonal-sections-20260909-hd-v4/section-02.webp");
+  --cpa-seasonal-03:url("./images/seasonal-sections-20260909-hd-v4/section-03.webp");
+  --cpa-seasonal-04:url("./images/seasonal-sections-20260909-hd-v4/section-04.webp");
+  --cpa-seasonal-05:url("./images/seasonal-sections-20260909-hd-v4/section-05.webp");
+  --cpa-seasonal-06:url("./images/seasonal-sections-20260909-hd-v4/section-06.webp");
+  --cpa-seasonal-07:url("./images/seasonal-sections-20260909-hd-v4/section-07.webp");
+  --cpa-seasonal-08:url("./images/seasonal-sections-20260909-hd-v4/section-08.webp");
+  --cpa-seasonal-09:url("./images/seasonal-sections-20260909-hd-v4/section-09.webp");
+  --cpa-seasonal-10:url("./images/seasonal-sections-20260909-hd-v4/section-10.webp");
+  --cpa-seasonal-11:url("./images/seasonal-sections-20260909-hd-v4/section-11.webp");
+  --cpa-seasonal-12:url("./images/seasonal-sections-20260909-hd-v4/section-12.webp");
+  --cpa-seasonal-13:url("./images/seasonal-sections-20260909-hd-v4/section-13.webp");
+  --cpa-seasonal-14:url("./images/seasonal-sections-20260909-hd-v4/section-14.webp");
+  --cpa-seasonal-15:url("./images/seasonal-sections-20260909-hd-v4/section-15.webp");
+  --cpa-seasonal-16:url("./images/seasonal-sections-20260909-hd-v4/section-16.webp");
+  --cpa-seasonal-17:url("./images/seasonal-sections-20260909-hd-v4/section-17.webp");
 }
 
 /* A neutral paper base prevents the former fixed artwork from showing between sections. */
@@ -46,20 +47,21 @@ html[lang="en"] body.art-site.home-medium-palette > .home-news-hub > section,
 html[lang="ja"] body.art-site.home-medium-palette > main > .home-news-hub > section,
 body.art-site.home-medium-palette section[data-seasonal-art]{
   --cpa-section-art:var(--cpa-seasonal-01);
-  --cpa-section-art-position:72% center;
-  --cpa-section-veil:linear-gradient(128deg,rgba(255,253,246,.86),rgba(255,247,231,.76) 52%,rgba(248,229,194,.67));
+  --cpa-section-art-position:right top;
+  --cpa-section-veil:linear-gradient(128deg,rgba(255,253,246,.82),rgba(255,247,231,.71) 52%,rgba(248,229,194,.62));
+  --cpa-section-fill-veil:linear-gradient(rgba(247,237,218,.78),rgba(247,237,218,.78));
   --ink-header-art:none;
   --ink-footer-art:none;
   --su-embroidery-corner:none;
   --su-embroidery-wide:none;
   background-color:#f7edda!important;
-  background-image:var(--cpa-section-veil),var(--cpa-section-art)!important;
-  background-position:center,var(--cpa-section-art-position)!important;
-  background-size:cover,cover!important;
-  background-repeat:no-repeat,no-repeat!important;
-  background-attachment:scroll,scroll!important;
-  background-origin:border-box,border-box!important;
-  background-clip:border-box,border-box!important;
+  background-image:var(--cpa-section-veil),var(--cpa-section-art),var(--cpa-section-fill-veil),var(--cpa-section-art)!important;
+  background-position:center,var(--cpa-section-art-position),center,right top!important;
+  background-size:100% 100%,contain,100% 100%,cover!important;
+  background-repeat:no-repeat,no-repeat,no-repeat,no-repeat!important;
+  background-attachment:scroll,scroll,scroll,scroll!important;
+  background-origin:border-box!important;
+  background-clip:border-box!important;
 }
 
 /* Each tagged section carries a permanent assignment, so reordering cannot change its artwork. */
@@ -108,8 +110,9 @@ body.art-site.home-medium-palette > main > .home-social-cases-section::before{
 /* The memorial uses white type, so its unique art stays beneath a quiet dark veil. */
 body.art-site.home-medium-palette > .kaikai-memorial,
 body.art-site.home-medium-palette > main > .kaikai-memorial{
-  --cpa-section-art-position:70% center!important;
-  --cpa-section-veil:linear-gradient(110deg,rgba(8,21,24,.93),rgba(18,38,42,.86) 50%,rgba(23,34,35,.78))!important;
+  --cpa-section-art-position:right top!important;
+  --cpa-section-veil:linear-gradient(110deg,rgba(8,21,24,.9),rgba(18,38,42,.82) 50%,rgba(23,34,35,.72))!important;
+  --cpa-section-fill-veil:linear-gradient(rgba(11,25,28,.74),rgba(11,25,28,.74))!important;
   background-color:#14282b!important;
 }
 
@@ -139,8 +142,8 @@ body.art-site.home-medium-palette .belief-desktop-wrap::after{
   inset:0;
   pointer-events:none;
   background-image:var(--cpa-seasonal-17)!important;
-  background-position:72% center!important;
-  background-size:cover!important;
+  background-position:right top!important;
+  background-size:contain!important;
   background-repeat:no-repeat!important;
   opacity:.13;
   mix-blend-mode:multiply;
@@ -149,10 +152,12 @@ body.art-site.home-medium-palette .belief-mobile-wrap{
   background-color:#f7edda!important;
   background-image:
     linear-gradient(150deg,rgba(255,252,244,.9),rgba(248,236,211,.84)),
+    var(--cpa-seasonal-17),
+    linear-gradient(rgba(247,237,218,.8),rgba(247,237,218,.8)),
     var(--cpa-seasonal-17)!important;
-  background-position:center,70% center!important;
-  background-size:cover,cover!important;
-  background-repeat:no-repeat,no-repeat!important;
+  background-position:center,right top,center,right top!important;
+  background-size:100% 100%,contain,100% 100%,cover!important;
+  background-repeat:no-repeat,no-repeat,no-repeat,no-repeat!important;
 }
 
 /* Message-wall portal: its two visible sections also use different seasonal art. */
@@ -166,14 +171,17 @@ body.art-site.home-medium-palette .belief-mobile-wrap{
 }
 .portal-main > section{
   --cpa-portal-art:var(--cpa-seasonal-06);
+  --cpa-portal-fill-veil:linear-gradient(rgba(238,240,231,.8),rgba(238,240,231,.8));
   background-color:rgba(248,240,222,.8)!important;
   background-image:
     linear-gradient(135deg,rgba(255,253,246,.88),rgba(248,237,214,.8)),
+    var(--cpa-portal-art),
+    var(--cpa-portal-fill-veil),
     var(--cpa-portal-art)!important;
-  background-position:center,72% center!important;
-  background-size:cover,cover!important;
-  background-repeat:no-repeat,no-repeat!important;
-  background-attachment:scroll,scroll!important;
+  background-position:center,right top,center,right top!important;
+  background-size:100% 100%,contain,100% 100%,cover!important;
+  background-repeat:no-repeat,no-repeat,no-repeat,no-repeat!important;
+  background-attachment:scroll,scroll,scroll,scroll!important;
   backdrop-filter:blur(8px);
   -webkit-backdrop-filter:blur(8px);
 }
@@ -182,23 +190,23 @@ body.art-site.home-medium-palette .belief-mobile-wrap{
 
 @media(max-width:760px){
   :root{
-    --cpa-seasonal-01:url("./images/seasonal-sections-20260908-v3/section-01-mobile.webp");
-    --cpa-seasonal-02:url("./images/seasonal-sections-20260908-v3/section-02-mobile.webp");
-    --cpa-seasonal-03:url("./images/seasonal-sections-20260908-v3/section-03-mobile.webp");
-    --cpa-seasonal-04:url("./images/seasonal-sections-20260908-v3/section-04-mobile.webp");
-    --cpa-seasonal-05:url("./images/seasonal-sections-20260908-v3/section-05-mobile.webp");
-    --cpa-seasonal-06:url("./images/seasonal-sections-20260908-v3/section-06-mobile.webp");
-    --cpa-seasonal-07:url("./images/seasonal-sections-20260908-v3/section-07-mobile.webp");
-    --cpa-seasonal-08:url("./images/seasonal-sections-20260908-v3/section-08-mobile.webp");
-    --cpa-seasonal-09:url("./images/seasonal-sections-20260908-v3/section-09-mobile.webp");
-    --cpa-seasonal-10:url("./images/seasonal-sections-20260908-v3/section-10-mobile.webp");
-    --cpa-seasonal-11:url("./images/seasonal-sections-20260908-v3/section-11-mobile.webp");
-    --cpa-seasonal-12:url("./images/seasonal-sections-20260908-v3/section-12-mobile.webp");
-    --cpa-seasonal-13:url("./images/seasonal-sections-20260908-v3/section-13-mobile.webp");
-    --cpa-seasonal-14:url("./images/seasonal-sections-20260908-v3/section-14-mobile.webp");
-    --cpa-seasonal-15:url("./images/seasonal-sections-20260908-v3/section-15-mobile.webp");
-    --cpa-seasonal-16:url("./images/seasonal-sections-20260908-v3/section-16-mobile.webp");
-    --cpa-seasonal-17:url("./images/seasonal-sections-20260908-v3/section-17-mobile.webp");
+    --cpa-seasonal-01:url("./images/seasonal-sections-20260909-hd-v4/section-01-mobile.webp");
+    --cpa-seasonal-02:url("./images/seasonal-sections-20260909-hd-v4/section-02-mobile.webp");
+    --cpa-seasonal-03:url("./images/seasonal-sections-20260909-hd-v4/section-03-mobile.webp");
+    --cpa-seasonal-04:url("./images/seasonal-sections-20260909-hd-v4/section-04-mobile.webp");
+    --cpa-seasonal-05:url("./images/seasonal-sections-20260909-hd-v4/section-05-mobile.webp");
+    --cpa-seasonal-06:url("./images/seasonal-sections-20260909-hd-v4/section-06-mobile.webp");
+    --cpa-seasonal-07:url("./images/seasonal-sections-20260909-hd-v4/section-07-mobile.webp");
+    --cpa-seasonal-08:url("./images/seasonal-sections-20260909-hd-v4/section-08-mobile.webp");
+    --cpa-seasonal-09:url("./images/seasonal-sections-20260909-hd-v4/section-09-mobile.webp");
+    --cpa-seasonal-10:url("./images/seasonal-sections-20260909-hd-v4/section-10-mobile.webp");
+    --cpa-seasonal-11:url("./images/seasonal-sections-20260909-hd-v4/section-11-mobile.webp");
+    --cpa-seasonal-12:url("./images/seasonal-sections-20260909-hd-v4/section-12-mobile.webp");
+    --cpa-seasonal-13:url("./images/seasonal-sections-20260909-hd-v4/section-13-mobile.webp");
+    --cpa-seasonal-14:url("./images/seasonal-sections-20260909-hd-v4/section-14-mobile.webp");
+    --cpa-seasonal-15:url("./images/seasonal-sections-20260909-hd-v4/section-15-mobile.webp");
+    --cpa-seasonal-16:url("./images/seasonal-sections-20260909-hd-v4/section-16-mobile.webp");
+    --cpa-seasonal-17:url("./images/seasonal-sections-20260909-hd-v4/section-17-mobile.webp");
   }
   body.art-site.home-medium-palette,
   .portal-main{
@@ -211,18 +219,23 @@ body.art-site.home-medium-palette .belief-mobile-wrap{
   html[lang="en"] body.art-site.home-medium-palette > .home-news-hub > section,
   html[lang="ja"] body.art-site.home-medium-palette > main > .home-news-hub > section,
   body.art-site.home-medium-palette section[data-seasonal-art]{
-    --cpa-section-art-position:68% center;
-    --cpa-section-veil:linear-gradient(152deg,rgba(255,253,247,.93),rgba(255,247,231,.88) 56%,rgba(247,230,199,.83));
-    background-size:cover,cover!important;
+    --cpa-section-art-position:right top;
+    --cpa-section-veil:linear-gradient(152deg,rgba(255,253,247,.91),rgba(255,247,231,.85) 56%,rgba(247,230,199,.79));
+    --cpa-section-fill-veil:linear-gradient(rgba(247,237,218,.82),rgba(247,237,218,.82));
   }
   body.art-site.home-medium-palette > .kaikai-memorial,
   body.art-site.home-medium-palette > main > .kaikai-memorial{
-    --cpa-section-art-position:70% center!important;
-    --cpa-section-veil:linear-gradient(145deg,rgba(8,21,24,.95),rgba(18,38,42,.9) 56%,rgba(23,34,35,.84))!important;
+    --cpa-section-art-position:right top!important;
+    --cpa-section-veil:linear-gradient(145deg,rgba(8,21,24,.93),rgba(18,38,42,.86) 56%,rgba(23,34,35,.78))!important;
+    --cpa-section-fill-veil:linear-gradient(rgba(11,25,28,.78),rgba(11,25,28,.78))!important;
+  }
+  body.art-site.home-medium-palette .belief-mobile-wrap{
+    background-position:center,right top,center,right top!important;
+    background-size:100% 100%,contain,100% 100%,cover!important;
   }
   .portal-main > section{
-    background-position:center,68% center!important;
-    background-size:cover,cover!important;
+    background-position:center,right top,center,right top!important;
+    background-size:100% 100%,contain,100% 100%,cover!important;
   }
 }
 
