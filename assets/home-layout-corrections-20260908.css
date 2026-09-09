@@ -425,10 +425,12 @@
   }
   .home-hearing-ten-day-grid>a{display:block!important;min-width:0!important}
   .home-hearing-ten-day-grid img{display:block!important;width:100%!important;height:auto!important;aspect-ratio:4/3!important;object-fit:cover!important}
-  .home-hearing-ten-day-grid span{display:block!important;padding:9px 10px 11px!important}
-  .home-hearing-ten-day-grid small,.home-hearing-ten-day-grid strong,.home-hearing-ten-day-grid b{display:block!important;white-space:normal!important}
-  .home-hearing-ten-day-grid strong{margin-top:3px!important;font-size:.83rem!important;line-height:1.35!important}
-  .home-hearing-ten-day-grid b{margin-top:6px!important;font-size:.7rem!important}
+  .home-hearing-ten-day-grid>a>span:not(.home-post-engagement){display:block!important;padding:9px 10px 11px!important}
+  .home-hearing-ten-day-grid>a>span:not(.home-post-engagement)>small,
+  .home-hearing-ten-day-grid>a>span:not(.home-post-engagement)>strong,
+  .home-hearing-ten-day-grid>a>span:not(.home-post-engagement)>b{display:block!important;white-space:normal!important}
+  .home-hearing-ten-day-grid>a>span:not(.home-post-engagement)>strong{margin-top:3px!important;font-size:.83rem!important;line-height:1.35!important}
+  .home-hearing-ten-day-grid>a>span:not(.home-post-engagement)>b{margin-top:6px!important;font-size:.7rem!important}
 
   /* Match desktop content order: map first, then every historical case card. */
   .home-historical-grid{
@@ -913,5 +915,141 @@
   .home-latest-flash .home-document-disc-card .home-post-stat-icon,
   .home-latest-flash .home-document-disc-card .home-post-stat b{
     font-size:.52rem!important;
+  }
+}
+
+/* 2026-09-09 desktop hearing-card rail and engagement repair.
+   Keep the ten records readable instead of squeezing five interactive cards into
+   one row, and isolate the injected engagement spans from legacy card-copy rules. */
+#news-hearing-notes .home-hearing-ten-day-grid>a{
+  display:grid!important;
+  grid-template-rows:auto minmax(72px,auto) auto!important;
+  align-content:stretch!important;
+  align-self:flex-start!important;
+}
+#news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement{
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  align-items:center!important;
+  gap:5px!important;
+  width:auto!important;
+  max-width:none!important;
+  margin:0 12px 14px!important;
+  padding:0!important;
+}
+#news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement>.home-post-stat{
+  box-sizing:border-box!important;
+  display:flex!important;
+  grid-template-columns:none!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:3px!important;
+  min-width:0!important;
+  min-height:32px!important;
+  width:100%!important;
+  margin:0!important;
+  padding:5px 4px!important;
+  font-size:.68rem!important;
+  line-height:1.15!important;
+  white-space:nowrap!important;
+}
+#news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement>.home-post-stat>span{
+  grid-template-columns:none!important;
+  gap:0!important;
+  margin:0!important;
+  padding:0!important;
+}
+#news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement>.home-post-stat>.home-post-stat-icon{
+  display:inline-grid!important;
+  min-width:1em!important;
+  font-size:1em!important;
+  line-height:1!important;
+}
+#news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement>.home-post-stat>.home-post-stat-label,
+#news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement>.home-post-stat>b{
+  display:inline!important;
+  align-self:auto!important;
+  margin:0!important;
+  padding:0!important;
+  color:inherit!important;
+  font:inherit!important;
+  white-space:nowrap!important;
+}
+
+@media (min-width:761px){
+  #news-hearing-notes .home-hearing-ten-day-grid{
+    display:flex!important;
+    width:100%!important;
+    max-width:100%!important;
+    flex-wrap:nowrap!important;
+    align-items:flex-start!important;
+    gap:16px!important;
+    margin:20px 0 26px!important;
+    padding:4px 2px 14px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scroll-snap-type:x proximity!important;
+    scroll-padding-inline:2px!important;
+    overscroll-behavior-x:contain!important;
+    scrollbar-width:thin!important;
+    scrollbar-color:rgba(82,106,105,.5) rgba(255,255,255,.42)!important;
+    touch-action:pan-x pan-y!important;
+    -webkit-overflow-scrolling:touch;
+  }
+  #news-hearing-notes .home-hearing-ten-day-grid>a{
+    flex:0 0 clamp(300px,31%,350px)!important;
+    width:clamp(300px,31%,350px)!important;
+    min-width:300px!important;
+    scroll-snap-align:start!important;
+  }
+  #news-hearing-notes .home-hearing-ten-day-grid>a>img{
+    display:block!important;
+    width:100%!important;
+    height:clamp(188px,19vw,219px)!important;
+    aspect-ratio:auto!important;
+    object-fit:cover!important;
+    object-position:center!important;
+  }
+  #news-hearing-notes .home-hearing-ten-day-grid>a>span:not(.home-post-engagement){
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+    gap:5px 8px!important;
+    padding:12px 13px!important;
+  }
+}
+
+@media (min-width:761px) and (max-width:1099px){
+  #news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:6px!important;
+  }
+}
+
+@media (max-width:760px){
+  #news-hearing-notes .home-hearing-ten-day-grid>a>img{
+    display:block!important;
+    width:100%!important;
+    height:min(42.5vw,175px)!important;
+    aspect-ratio:auto!important;
+    object-fit:cover!important;
+    object-position:center!important;
+  }
+  #news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:6px!important;
+    width:auto!important;
+    margin:0 9px 10px!important;
+    padding:0!important;
+  }
+  #news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement>.home-post-stat{
+    min-height:32px!important;
+    padding:5px 7px!important;
+    font-size:.7rem!important;
+  }
+  #news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement>.home-post-stat>.home-post-stat-label,
+  #news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement>.home-post-stat>.home-post-stat-icon,
+  #news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement>.home-post-stat>b{
+    font-size:.7rem!important;
   }
 }
