@@ -34,7 +34,7 @@
   }
   if (knots.length) gsap.fromTo(knots, { scale: 0, rotate: -120 }, { scale: 1, rotate: 0, duration: .75, stagger: .16, delay: .65, ease: 'back.out(2)' });
 
-  var groups = ['.section-head', '.evidence-card', '.evidence-step', '.decision-card', '.lens', '.matrix article', '.risk-cell', '.law-card', '.news-card', '.appeal-card', '.note', '.takeaway-ribbon article'];
+  var groups = ['.section-head', '.evidence-card', '.evidence-step', '.decision-card', '.lens', '.responsibility-step', '.accountability', '.scene', '.matrix article', '.risk-cell', '.law-card', '.news-card', '.appeal-card', '.note', '.takeaway-ribbon article'];
   groups.forEach(function (selector) {
     ScrollTrigger.batch(selector, {
       start: 'top 90%',
@@ -43,6 +43,14 @@
         gsap.fromTo(items, { autoAlpha: 0, y: mobile ? 14 : 25 }, { autoAlpha: 1, y: 0, duration: mobile ? .42 : .65, stagger: mobile ? .035 : .07, ease: 'power2.out', clearProps: 'transform,opacity,visibility' });
       }
     });
+  });
+
+  ScrollTrigger.batch('.embroidery-label', {
+    start: 'top 91%',
+    once: true,
+    onEnter: function (labels) {
+      gsap.fromTo(labels, { autoAlpha: 0, scale: .82, rotate: -3 }, { autoAlpha: 1, scale: 1, rotate: 0, duration: .72, stagger: .08, ease: 'back.out(1.8)', clearProps: 'transform,opacity,visibility' });
+    }
   });
 
   ScrollTrigger.batch('.timeline tbody tr, .audit-table tbody tr, .tracking tbody tr', {
