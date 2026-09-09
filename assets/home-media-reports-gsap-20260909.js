@@ -64,7 +64,7 @@
 
     function start() {
       window.clearInterval(timer);
-      if (reduceMotion || document.hidden) return;
+      if (reduceMotion || document.hidden || section.contains(document.activeElement) || section.matches(':hover')) return;
       timer = window.setInterval(function () {
         show(active + 1, false);
       }, interval);
