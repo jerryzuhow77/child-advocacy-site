@@ -25,7 +25,7 @@ PRIORITY_HTML = '''<section class="home-priority-strip" aria-labelledby="homePri
 <header><span aria-hidden="true">!</span><div><small>IMPORTANT · 近期重要入口</small><h2 id="homePriorityTitle">先看最新進度，再一起行動</h2></div></header>
 <div class="home-priority-links">
 <a class="is-hearing" href="./activity-records/20260820-taipei-station-advocacy/"><time datetime="2026-09-16">09.16</time><span><small>二審開庭倡議</small><strong>為 9/16 二審開庭發聲</strong><em>查看北車宣傳行動與開庭資訊</em></span><b aria-hidden="true">→</b></a>
-<a href="./hearing-records/prison-watch/kaikai-day4-20250428/"><span class="home-priority-icon" aria-hidden="true">記</span><span><small>最新重製編輯筆記</small><strong>第四次審判期日</strong><em>兩位證人、三處動線與傷勢通報</em></span><b aria-hidden="true">→</b></a>
+<a class="is-hearing is-latest-article-priority" data-daily-brief-priority href="./news/daily-child-protection-brief-20260909/" data-hans-href="./news/daily-child-protection-brief-20260909/zh-Hans/"><time datetime="2026-09-09">09.09</time><span><small>每日新更・護童日報</small><strong>安全網不能只列措施，更要交出安全結果</strong><em>高雄安全網補強、候選人政策與 UNICEF 網路性剝削研究</em></span><b aria-hidden="true">→</b></a>
 <a class="is-guest" href="#guest-message-home"><span class="home-priority-icon" aria-hidden="true">♡</span><span><small>免登入即可參與</small><strong>留下訪客守護留言</strong><em>祝福、意見與照片皆可投稿</em></span><b aria-hidden="true">↓</b></a>
 </div>
 </div>
