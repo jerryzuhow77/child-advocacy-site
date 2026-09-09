@@ -343,7 +343,7 @@
 <header><span aria-hidden="true">!</span><div><small>IMPORTANT · 近期重要入口</small><h2 id="homePriorityTitle">先看最新進度，再一起行動</h2></div></header>
 <div class="home-priority-links">
 <a class="is-hearing" href="./cases/chen-shangjie/"><time datetime="2026-09-16">09.16</time><span><small>最新開庭資訊・二審準備程序</small><strong>陳尚潔案</strong><em>下午2時30分・臺灣高等法院專一法庭（卯股）</em></span><b aria-hidden="true">→</b></a>
-<a class="is-hearing is-latest-article-priority" href="./news/early-warning-audit-20260908/"><time datetime="2026-09-08">09.08</time><span><small>最新文章・審計原文核對</small><strong>七成背後：讓早期警訊走進保護網</strong><em>三年統計口徑、死亡類型、結案後再通報與官方安全評估回應</em></span><b aria-hidden="true">→</b></a>
+<a class="is-hearing is-latest-article-priority" data-daily-brief-priority href="./news/daily-child-protection-brief-20260909/" data-hans-href="./news/daily-child-protection-brief-20260909/zh-Hans/"><time datetime="2026-09-09">09.09</time><span><small>每日新更・護童日報</small><strong>安全網不能只列措施，更要交出安全結果</strong><em>高雄安全網補強、候選人政策與 UNICEF 網路性剝削研究</em></span><b aria-hidden="true">→</b></a>
 <a class="is-guest" href="#guest-message-home"><span class="home-priority-icon" aria-hidden="true">♡</span><span><small>免登入即可參與</small><strong>留下訪客守護留言</strong><em>祝福、意見與照片皆可投稿</em></span><b aria-hidden="true">↓</b></a>
 </div>
 </div>
@@ -920,6 +920,9 @@
 
 <script id="home-history-region-filter-script">
 (()=>{const select=document.getElementById("homeHistoryRegion"),grid=document.getElementById("homeHistoricalGrid");if(!select||!grid)return;const cards=[...grid.querySelectorAll("[data-history-region]")];const apply=()=>{const value=select.value;cards.forEach(card=>{card.hidden=value!=="all"&&card.dataset.historyRegion!==value;});};select.addEventListener("change",apply);apply();})();
+</script>
+<script id="home-daily-brief-priority-script">
+(()=>{const priority=document.querySelector('[data-daily-brief-priority]');if(!priority)return;const daily=[...document.querySelectorAll('.home-media-report-card')].find(card=>card.querySelector('a[href*="/daily-child-protection-brief-"]'));if(!daily)return;const link=daily.querySelector('h3 a[href*="/daily-child-protection-brief-"]'),time=daily.querySelector('time'),summary=daily.querySelector('.home-media-report-copy>p');if(!link||!time)return;priority.href=link.getAttribute('href');const priorityTime=priority.querySelector('time'),title=priority.querySelector('strong'),description=priority.querySelector('em');priorityTime.dateTime=time.dateTime;priorityTime.textContent=time.dateTime.slice(5).replace('-','.');title.textContent=link.textContent.trim();if(summary&&description)description.textContent=summary.textContent.trim();})();
 </script>
 <script src="./assets/site.js?v=20260905-comment-key-3"></script>
 <script src="./assets/pwa-install.js?v=20260909-panorama-hd-v12"></script>
