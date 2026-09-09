@@ -91,42 +91,37 @@ def convert_html(fragment: str, source: Path, target: Path, source_to_hans: dict
 
 
 def replace_link_href(document: str, rel_value: str, href: str) -> str:
+    """Replace the complete metadata tag so repeated syncs stay idempotent."""
     tag_re = re.compile(r"<link\b[^>]*>", re.I)
-    href_re = re.compile(r"\bhref\s*=\s*([\"']).*?\1", re.I | re.S)
     for match in tag_re.finditer(document):
         tag = match.group(0)
         if not re.search(rf"\brel\s*=\s*([\"']){re.escape(rel_value)}\1", tag, re.I):
             continue
-        replacement = href_re.sub(f'href="{href}"', tag, count=1)
-        if replacement == tag:
-            replacement = tag[:-1] + f' href="{href}">'
+        replacement = f'<link rel="{rel_value}" href="{href}">'
         return document[:match.start()] + replacement + document[match.end():]
     return re.sub(r"</head>", f'<link rel="{rel_value}" href="{href}">\n</head>', document, count=1, flags=re.I)
 
 
 def replace_hreflang(document: str, locale: str, href: str) -> str:
     tag_re = re.compile(r"<link\b[^>]*>", re.I)
-    href_re = re.compile(r"\bhref\s*=\s*([\"']).*?\1", re.I | re.S)
     for match in tag_re.finditer(document):
         tag = match.group(0)
         if not re.search(rf"\bhreflang\s*=\s*([\"']){re.escape(locale)}\1", tag, re.I):
             continue
-        replacement = href_re.sub(f'href="{href}"', tag, count=1)
+        replacement = f'<link rel="alternate" hreflang="{locale}" href="{href}">'
         return document[:match.start()] + replacement + document[match.end():]
     return document
 
 
 def replace_og_url(document: str, href: str) -> str:
     tag_re = re.compile(r"<meta\b[^>]*>", re.I)
-    content_re = re.compile(r"\bcontent\s*=\s*([\"']).*?\1", re.I | re.S)
     for match in tag_re.finditer(document):
         tag = match.group(0)
         if not re.search(r"\bproperty\s*=\s*([\"'])og:url\1", tag, re.I):
             continue
-        replacement = content_re.sub(f'content="{href}"', tag, count=1)
+        replacement = f'<meta property="og:url" content="{href}">'
         return document[:match.start()] + replacement + document[match.end():]
     return document
-
 
 def structural_signature(fragment: str) -> dict[str, object]:
     tags = {tag: len(re.findall(rf"<{tag}\b", fragment, re.I)) for tag in ("h1", "h2", "h3", "p", "li", "details", "section", "article")}
@@ -176,6 +171,12 @@ def synchronize(check_only: bool) -> int:
                 errors.append(f"{route}: physical zh-Hans page has the wrong lang")
             if not re.search(rf'<link\b(?=[^>]*rel=["\']canonical["\'])(?=[^>]*href=["\']{re.escape(hans_url)}["\'])', target_text, re.I):
                 errors.append(f"{route}: canonical does not point to the Hong Kong mirror")
+            canonical_tags = [
+                tag for tag in re.findall(r"<link\b[^>]*>", target_text, re.I)
+                if re.search(r"\brel\s*=\s*([\"'])canonical\1", tag, re.I)
+            ]
+            if len(canonical_tags) != 1 or len(re.findall(r"\bhref\s*=", canonical_tags[0], re.I)) != 1:
+                errors.append(f"{route}: canonical metadata is duplicated or malformed")
         if errors:
             raise SystemExit("\n".join(errors))
         print(f"Verified {len(pairs)} physical zh-Hans pages and all manifest mirror URLs.")
