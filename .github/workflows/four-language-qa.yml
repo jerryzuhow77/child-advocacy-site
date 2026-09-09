@@ -20,6 +20,7 @@ on:
       - '.github/scripts/verify-chapter-two-publication.py'
       - '.github/scripts/protect-chapter-two-hold.py'
       - '.github/scripts/sync-four-language-toolbar.py'
+      - '.github/scripts/sync-zh-hans-content.py'
       - 'scripts/verify-four-language-completeness.py'
       - 'data/latest-bulletins.json'
       - 'data/four-language-routes.json'
@@ -53,6 +54,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install Simplified Chinese converter
+        run: python3 -m pip install --disable-pip-version-check opencc-python-reimplemented==0.1.7
+
+      - name: Synchronize complete Simplified Chinese article content
+        run: python3 .github/scripts/sync-zh-hans-content.py
+
       - name: Synchronize four-language dropdown before assertions
         run: |
           set -euo pipefail
@@ -61,7 +68,7 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add -- '*.html' data/four-language-routes.json
-            git commit -m "Sync four-language dropdown across article pages"
+            git commit -m "Sync complete Simplified Chinese content and language routes"
             for attempt in 1 2 3; do
               if git pull --rebase origin main && git push; then
                 break
@@ -73,6 +80,9 @@ jobs:
               sleep 2
             done
           fi
+
+      - name: Verify Simplified Chinese mirror parity
+        run: python3 .github/scripts/sync-zh-hans-content.py --check
 
       - name: JavaScript syntax checks
         run: |
@@ -128,7 +138,7 @@ jobs:
           assert 'cpa-four-language-toolbar' in toolbar
           assert 'cpa-language-select' in toolbar and 'languageUrl' in toolbar, 'Every article toolbar must expose the shared four-language dropdown.'
           assert 'https://cn.globalprotectionwall.com/' in toolbar and '簡中' in toolbar, 'Simplified Chinese must keep the short label and target the Hong Kong mirror.'
-          assert 'four-language-routes.json?v=20260905-4' in toolbar, 'The toolbar and generated route manifest must share a fresh cache key.'
+          assert 'four-language-routes.json?v=20260909-5' in toolbar, 'The toolbar and generated route manifest must share a fresh cache key.'
           assert 'parts.filter(part => part.toLowerCase() !== "zh-hans")' in comments, 'Comment keys must ignore physical locale route segments.'
           assert 'COMMENT_INDEX_ROUTES' in toolbar and 'attempts++<40' in toolbar, 'Unsupported comment pages must not poll indefinitely.'
           assert 'else setTimeout(go,120)' not in toolbar, 'The comment scroll retry must stay bounded.'
@@ -147,7 +157,7 @@ jobs:
               'news/lin-xinci-nexttv-20260902/zh-Hans/index.html',
               'en/news/lin-xinci-nexttv-20260902/index.html', 'ja/news/lin-xinci-nexttv-20260902/index.html'))
           assert all(term in localized_art for term in ('纸雕与黏土', 'paper-cut and clay', '紙彫刻と粘土造形')), 'Localized artwork descriptions must match the paper-cut and clay replacement.'
-          assert routes['version'] == '20260905-4'
+          assert routes['version'] == '20260909-5'
           assert set(routes['routes']['']) == {'zh-Hant', 'zh-Hans', 'en', 'ja'}
           question_route = routes['routes']['news/kaikai-court-question-20260903/']
           assert set(question_route) == {'zh-Hant', 'zh-Hans', 'en', 'ja'}, 'The courtroom-question article must have four physical language editions.'
