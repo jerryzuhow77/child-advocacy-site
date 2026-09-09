@@ -61,3 +61,28 @@
   .cpa-language-select{width:92px;min-width:92px;padding-left:8px}
   .cpa-chapter-select{font-size:12px;padding-inline:7px}
 }
+
+
+/* 2026-09-09: sitewide Simplified Chinese glyph and typography contract. */
+html[lang="zh-Hans"] body,
+html[lang="zh-Hans"] button,
+html[lang="zh-Hans"] input,
+html[lang="zh-Hans"] select,
+html[lang="zh-Hans"] textarea{
+  font-family:"Noto Sans SC","Source Han Sans SC","PingFang SC","Microsoft YaHei UI","Microsoft YaHei",sans-serif!important;
+  font-synthesis:none;
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+}
+html[lang="zh-Hans"] :where(h1,h2,h3,h4,h5,h6,.serif,.font-serif){
+  font-family:"Noto Serif SC","Source Han Serif SC","Songti SC","STSong","SimSun",serif!important;
+  letter-spacing:.01em!important;
+  line-break:strict;
+  word-break:normal;
+  overflow-wrap:break-word;
+}
+html[lang="zh-Hans"] :where(p,li,blockquote,figcaption,summary,dd,dt){
+  line-break:strict;
+  word-break:normal;
+  overflow-wrap:break-word;
+}

@@ -5,11 +5,35 @@
   window.__cpaFourLanguageToolbar = true;
 
   const ROOT = "/child-advocacy-site/";
-  const ROUTES_URL = `${ROOT}data/four-language-routes.json?v=20260905-4`;
+  const ROUTES_URL = `${ROOT}data/four-language-routes.json?v=20260909-5`;
   const ENGAGEMENT_API = "https://global-protection.jerryzuhow77.chatgpt.site/api/public/view-count";
   const WORKER_API = "https://sweet-art-bed8child-advocacy-page-views.jerryzuhow77.workers.dev/views";
   const BOOKMARK_KEY = "cpa_article_bookmarks_v1";
   const LIKED_KEY = "cpa_engagement_liked_v1";
+  const HK_MIRROR_HOST = "cn.globalprotectionwall.com";
+  function shouldUseHongKongMirror(){
+    if(location.hostname!=="jerryzuhow77.github.io"||!location.pathname.startsWith(ROOT))return false;
+    const query=(new URLSearchParams(location.search).get("lang")||"").toLowerCase();
+    if(query)return query==="zh-hans"||query==="zh-cn";
+    const declared=(document.documentElement.lang||"").toLowerCase();
+    if(declared.startsWith("zh-hans")||declared==="zh-cn")return true;
+    try{
+      const saved=(localStorage.getItem("siteLang")||"").toLowerCase();
+      if(saved)return saved==="zh-hans"||saved==="zh-cn";
+    }catch(_){}
+    const languages=[...(navigator.languages||[]),navigator.language||""].map(value=>String(value).toLowerCase());
+    return languages.some(value=>value==="zh-cn"||value==="zh-sg"||value.startsWith("zh-hans"));
+  }
+  function redirectMainlandToMirror(){
+    if(!shouldUseHongKongMirror())return false;
+    const target=new URL(location.href);
+    target.protocol="https:";
+    target.host=HK_MIRROR_HOST;
+    if(!/(?:^|\/)zh-hans(?:\/|$)/i.test(target.pathname))target.searchParams.set("lang","zh-Hans");
+    location.replace(target.href);
+    return true;
+  }
+  if(redirectMainlandToMirror())return;
   const ARTICLE_HISTORY_FLOORS = Object.freeze({
     "cases/lin-xinci/features/missing-four-days/": 33,
     "historical-cases/regions/japan/kurihara-mia/": 39
