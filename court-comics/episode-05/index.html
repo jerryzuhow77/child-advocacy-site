@@ -85,6 +85,16 @@
       .chapter-nav,.timeline-wrap,.audit-wrap,.tracking-wrap{-webkit-overflow-scrolling:touch;scrollbar-width:thin}.source{font-size:.8rem;line-height:1.45}
       .embroidery-key{grid-template-columns:1fr 1fr;gap:9px}.embroidery-key span{min-height:70px;padding:15px 12px 14px 49px}.embroidery-key span:before{left:14px;top:19px}
     }
+
+    /* 完整花鳥繡框回歸；文字移入中央宣紙安全面 */
+    :is(.evidence-card,.decision-card,.lens,.risk-cell,.law-card,.appeal-card,.news-card,.accountability,.note){isolation:isolate;padding:64px 56px;background-image:url("assets/suzhou-embroidery-frame-v2.webp"),linear-gradient(145deg,rgba(255,250,238,.98),rgba(239,218,198,.96));background-position:center;background-size:100% 100%,auto;background-repeat:no-repeat}
+    :is(.evidence-card,.decision-card,.lens,.risk-cell,.law-card,.appeal-card,.news-card,.accountability,.note):after{content:"";position:absolute;inset:43px 36px;z-index:0;border:1px solid rgba(188,138,64,.3);border-radius:16px;background:rgba(255,251,240,.94);box-shadow:0 0 22px 13px rgba(255,251,240,.91),inset 0 0 0 4px rgba(255,255,249,.55);pointer-events:none}
+    :is(.evidence-card,.decision-card,.lens,.risk-cell,.law-card,.appeal-card,.news-card,.accountability,.note)>*{position:relative;z-index:2}
+    .evidence-card:after{font-size:0}.lens{border-top-width:6px}.news-card time,.news-card .source,.law-card .law-tag{position:relative;z-index:3}
+    @media(max-width:760px){
+      :is(.evidence-card,.decision-card,.lens,.risk-cell,.law-card,.appeal-card,.news-card,.accountability,.note){padding:54px 42px}
+      :is(.evidence-card,.decision-card,.lens,.risk-cell,.law-card,.appeal-card,.news-card,.accountability,.note):after{inset:32px 24px;border-radius:13px;box-shadow:0 0 16px 9px rgba(255,251,240,.93),inset 0 0 0 3px rgba(255,255,249,.6)}
+    }
   </style>
 </head>
 <body>
