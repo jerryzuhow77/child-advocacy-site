@@ -18,7 +18,14 @@
     { selector: ".home-priority-links a.is-hearing", layout: "priority" },
     { selector: "#news-flash a.home-pinned-report-card:not([data-pinned-clone])", layout: "pinned" },
     { selector: "#news-flash a.home-document-disc-card", layout: "disc" },
-    { selector: "#news-hearing a.home-news-card.is-hearing" },
+    {
+      selector: "#news-hearing article.home-news-card.is-hearing",
+      layout: "standalone",
+      resolve: (card) => ({
+        link: card.querySelector("a.home-news-card-media") || card.querySelector("a[href]"),
+        host: card.querySelector(".home-news-card-copy") || card,
+      }),
+    },
     {
       selector: "#news-hearing-notes .home-hearing-zone-feature",
       layout: "standalone",

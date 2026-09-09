@@ -3,10 +3,8 @@
   if(!gsap||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   const shell=document.querySelector('.home-latest-flash .is-ferris-wheel');
   const avatar=document.querySelector('.premium-home-hero .premium-art-card');
-  if(shell){
+  if(shell&&!window.matchMedia('(max-width:760px)').matches){
     gsap.to(shell,{backgroundPosition:'52% 48%',duration:8,repeat:-1,yoyo:true,ease:'sine.inOut'});
-    const cards=shell.querySelectorAll('.home-document-disc-card');
-    gsap.to(cards,{y:(i)=>i%2?-3:3,rotate:(i)=>i%2?-.45:.45,duration:2.8,stagger:.18,repeat:-1,yoyo:true,ease:'sine.inOut'});
   }
   if(avatar)gsap.fromTo(avatar,{y:10,autoAlpha:.72,scale:.985},{y:0,autoAlpha:1,scale:1,duration:.8,ease:'power3.out',clearProps:'opacity,visibility,transform'});
   gsap.utils.toArray('.home-pinned-report-card,.home-news-card,.home-case-reel-card').forEach((card,index)=>{

@@ -170,23 +170,34 @@ body.art-site.home-medium-palette .belief-mobile-wrap{
   background-attachment:scroll!important;
 }
 .portal-main > section{
-  --cpa-portal-art:var(--cpa-seasonal-06);
-  --cpa-portal-fill-veil:linear-gradient(rgba(238,240,231,.8),rgba(238,240,231,.8));
+  --cpa-portal-art:var(--cpa-seasonal-04);
+  --cpa-portal-fill-veil:linear-gradient(rgba(238,240,231,.6),rgba(238,240,231,.6));
   background-color:rgba(248,240,222,.8)!important;
   background-image:
-    linear-gradient(135deg,rgba(255,253,246,.88),rgba(248,237,214,.8)),
+    linear-gradient(135deg,rgba(255,253,246,.72),rgba(248,237,214,.58)),
     var(--cpa-portal-art),
     var(--cpa-portal-fill-veil),
     var(--cpa-portal-art)!important;
   background-position:center,right top,center,right top!important;
-  background-size:100% 100%,contain,100% 100%,cover!important;
+  background-size:100% 100%,cover,100% 100%,cover!important;
   background-repeat:no-repeat,no-repeat,no-repeat,no-repeat!important;
   background-attachment:scroll,scroll,scroll,scroll!important;
   backdrop-filter:blur(8px);
   -webkit-backdrop-filter:blur(8px);
 }
-.portal-main > section:nth-of-type(1){--cpa-portal-art:var(--cpa-seasonal-06)!important}
-.portal-main > section:nth-of-type(2){--cpa-portal-art:var(--cpa-seasonal-12)!important}
+.portal-main > section:nth-of-type(1){--cpa-portal-art:var(--cpa-seasonal-02)!important}
+.portal-main > section:nth-of-type(2){--cpa-portal-art:var(--cpa-seasonal-04)!important}
+.portal-main > .portal-purpose{
+  background-image:linear-gradient(90deg,rgba(255,252,245,.48),rgba(244,231,210,.38)),var(--cpa-seasonal-02)!important;
+  background-position:center,center 38%!important;
+  background-size:100% 100%,cover!important;
+}
+.portal-main > .portal-frame-shell{
+  background-image:linear-gradient(180deg,rgba(255,252,245,.34),rgba(244,240,228,.7) 48%,rgba(235,243,240,.9)),var(--cpa-seasonal-04)!important;
+  background-position:center,center top!important;
+  background-size:100% 100%,100% auto!important;
+  background-repeat:no-repeat,no-repeat!important;
+}
 
 @media(max-width:760px){
   :root{
@@ -235,7 +246,11 @@ body.art-site.home-medium-palette .belief-mobile-wrap{
   }
   .portal-main > section{
     background-position:center,right top,center,right top!important;
-    background-size:100% 100%,contain,100% 100%,cover!important;
+    background-size:100% 100%,cover,100% 100%,cover!important;
+  }
+  .portal-main > .portal-frame-shell{
+    background-position:center,center top!important;
+    background-size:100% 100%,100% auto!important;
   }
 }
 

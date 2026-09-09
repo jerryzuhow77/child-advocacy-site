@@ -585,6 +585,10 @@
     var startX = 0;
     var startRotation = 0;
 
+    function usesMobileRail() {
+      return window.matchMedia('(max-width:760px)').matches;
+    }
+
     function radii() {
       if (window.innerWidth <= 760) {
         var widestCard = Math.max.apply(null, cards.map(function (card) {
@@ -600,6 +604,20 @@
     }
 
     function render() {
+      // The phone layout is a native horizontal rail. Do not keep measuring
+      // and transforming all seven cards on every animation frame behind an
+      // !important transform reset; that feedback loop can monopolize the
+      // main thread while producing no visible motion.
+      if (usesMobileRail()) {
+        if (autoTween) {
+          autoTween.kill();
+          autoTween = null;
+        }
+        cards.forEach(function (card) { gsap.set(card, { clearProps: 'transform' }); });
+        gsap.set(orbit, { clearProps: 'transform' });
+        if (spokes) gsap.set(spokes, { rotation: 0 });
+        return;
+      }
       var radius = radii();
       cards.forEach(function (card, index) {
         var angle = (-90 + index * step + phase.rotation) * Math.PI / 180;
@@ -621,7 +639,7 @@
     }
 
     function startAuto() {
-      if (reduceMotion || motionPaused || dragging || pointerInside) return;
+      if (reduceMotion || usesMobileRail() || motionPaused || dragging || pointerInside) return;
       stopPhaseTweens();
       autoTween = gsap.to(phase, {
         rotation: phase.rotation + 360,
@@ -633,7 +651,7 @@
     }
 
     function rotateBy(delta) {
-      if (reduceMotion) return;
+      if (reduceMotion || usesMobileRail()) return;
       stopPhaseTweens();
       gsap.to(phase, {
         rotation: phase.rotation + delta,
@@ -677,7 +695,10 @@
     });
 
     render();
-    window.addEventListener('resize', render, { passive: true });
+    window.addEventListener('resize', function () {
+      render();
+      if (!usesMobileRail() && !reduceMotion && !motionPaused && !dragging && !pointerInside) startAuto();
+    }, { passive: true });
 
     if (!reduceMotion) {
       motionPaused = false;
@@ -945,16 +966,21 @@
   }
 
   function startAfterContentIsUsable() {
-    // Start the primary carousel promptly after load. The former eight-second
-    // delay made the Ferris wheel appear broken even though GSAP was present.
+    // The Ferris wheel only needs server-rendered markup and local GSAP. Waiting
+    // for the window load event also waits for every remote thumbnail, counter
+    // and decorative image, which can make the wheel look permanently broken
+    // on a slow connection. Start once the DOM is usable instead.
+    var scheduled = false;
     var start = function () {
+      if (scheduled) return;
+      scheduled = true;
       window.setTimeout(function () {
         if ('requestIdleCallback' in window) requestIdleCallback(init, { timeout: 1200 });
         else init();
       }, 250);
     };
-    if (document.readyState === 'complete') start();
-    else window.addEventListener('load', start, { once: true });
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
+    else start();
   }
 
   startAfterContentIsUsable();

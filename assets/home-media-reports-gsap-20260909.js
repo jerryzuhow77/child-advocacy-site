@@ -5,6 +5,7 @@
     var section = document.querySelector('#home-media-reports');
     var viewport = section && section.querySelector('.home-media-report-viewport');
     var track = viewport && viewport.querySelector('.home-media-report-track');
+    var controls = section && section.querySelector('.home-media-report-controls');
     var cards = track && Array.prototype.slice.call(track.querySelectorAll('.home-media-report-card'));
     if (!section || !viewport || !track || !cards || cards.length < 2 || viewport.dataset.mediaGsapAutoplay === 'true') return;
 
@@ -20,11 +21,14 @@
     var interval = 5200;
 
     function nearestIndex() {
-      var left = viewport.scrollLeft;
+      var max = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+      if (viewport.scrollLeft <= 2) return 0;
+      if (viewport.scrollLeft >= max - 2) return cards.length - 1;
+      var viewportLeft = viewport.getBoundingClientRect().left;
       var best = 0;
       var distance = Infinity;
       cards.forEach(function (card, index) {
-        var candidate = Math.abs(card.offsetLeft - left);
+        var candidate = Math.abs(card.getBoundingClientRect().left - viewportLeft);
         if (candidate < distance) {
           distance = candidate;
           best = index;
@@ -46,7 +50,8 @@
 
     function show(index, manual) {
       active = (index + cards.length) % cards.length;
-      var destination = cards[active].offsetLeft;
+      var viewportLeft = viewport.getBoundingClientRect().left;
+      var destination = viewport.scrollLeft + cards[active].getBoundingClientRect().left - viewportLeft;
       if (window.gsap && !reduceMotion) {
         if (tween) tween.kill();
         tween = window.gsap.to(viewport, {
@@ -75,18 +80,22 @@
       resumeTimer = window.setTimeout(start, delay || 700);
     }
 
-    section.querySelectorAll('[data-home-media-direction]').forEach(function (button) {
-      button.addEventListener('click', function () {
-        var direction = Number(button.getAttribute('data-home-media-direction')) || 1;
-        show(active + direction, true);
+    // The responsive rail owns its accessible buttons and keyboard controls.
+    // Keep this module focused on autoplay when that controller is present so
+    // one click never starts two competing scroll animations.
+    if (!controls || controls.dataset.mediaRailBound !== 'true') {
+      section.querySelectorAll('[data-home-media-direction]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          var direction = Number(button.getAttribute('data-home-media-direction')) || 1;
+          show(active + direction, true);
+        });
       });
-    });
-
-    viewport.addEventListener('keydown', function (event) {
-      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
-      event.preventDefault();
-      show(active + (event.key === 'ArrowRight' ? 1 : -1), true);
-    });
+      viewport.addEventListener('keydown', function (event) {
+        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+        event.preventDefault();
+        show(active + (event.key === 'ArrowRight' ? 1 : -1), true);
+      });
+    }
 
     viewport.addEventListener('scroll', function () {
       window.clearTimeout(scrollTimer);

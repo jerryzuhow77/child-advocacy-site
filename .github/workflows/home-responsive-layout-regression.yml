@@ -1,0 +1,58 @@
+name: Home responsive layout regression
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'assets/**'
+      - '.github/scripts/verify-home-responsive-layout.mjs'
+      - '.github/workflows/home-responsive-layout-regression.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  responsive-layout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock playwright-core@1.55.0
+      - name: Check homepage JavaScript syntax
+        run: |
+          node --check assets/home-responsive-unification-20260909.js
+          node --check assets/home-media-reports-gsap-20260909.js
+          node --check assets/home-gsap-base-20260823.js
+          node --check assets/home-autumn-motion-20260908.js
+          node --check assets/home-post-engagement-20260826.js
+          node --check .github/scripts/verify-home-responsive-layout.mjs
+      - name: Verify homepage at six responsive widths
+        env:
+          BASE_URL: http://127.0.0.1:8765/
+          CHROME_PATH: /usr/bin/google-chrome
+        run: |
+          python3 -m http.server 8765 --directory . >/tmp/home-responsive-http.log 2>&1 &
+          trap 'kill $!' EXIT
+          for attempt in {1..20}; do
+            if curl --fail --silent "$BASE_URL" >/dev/null; then ready=1; break; fi
+            sleep 0.5
+          done
+          test "${ready:-0}" = 1
+          node .github/scripts/verify-home-responsive-layout.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: home-responsive-layout
+          path: browser-validation/home-responsive-layout/
+          retention-days: 14
+          if-no-files-found: error

@@ -50,16 +50,21 @@
       });
     }
     function nearestIndex() {
-      var left = viewport.scrollLeft, best = 0, distance = Infinity;
+      var max = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+      if (viewport.scrollLeft <= 2) return 0;
+      if (viewport.scrollLeft >= max - 2) return cards.length - 1;
+      var viewportLeft = viewport.getBoundingClientRect().left, best = 0, distance = Infinity;
       cards.forEach(function (card, index) {
-        var candidate = Math.abs(card.offsetLeft - left);
+        var candidate = Math.abs(card.getBoundingClientRect().left - viewportLeft);
         if (candidate < distance) { distance = candidate; best = index; }
       });
       return best;
     }
     function show(index, manual) {
       updateControls(index);
-      viewport.scrollTo({ left: cards[active].offsetLeft, behavior: reduceMotion ? 'auto' : 'smooth' });
+      var viewportLeft = viewport.getBoundingClientRect().left;
+      var targetLeft = viewport.scrollLeft + cards[active].getBoundingClientRect().left - viewportLeft;
+      viewport.scrollTo({ left: targetLeft, behavior: reduceMotion ? 'auto' : 'smooth' });
       if (!reduceMotion && window.gsap) {
         window.gsap.killTweensOf(cards[active]);
         window.gsap.fromTo(cards[active], { y: 12, scale: .985, boxShadow: '0 8px 18px rgba(70,52,47,.08)' }, { y: 0, scale: 1, boxShadow: '0 18px 34px rgba(70,52,47,.16)', duration: .65, ease: 'power3.out', clearProps: 'transform,boxShadow' });

@@ -1,0 +1,804 @@
+/*
+ * Homepage responsive authority — 2026-09-09
+ * Loaded after all legacy homepage sheets so one non-overlapping breakpoint
+ * system governs rails, thumbnails and engagement controls.
+ */
+
+:root{
+  --home-rail-gap:clamp(14px,1.6vw,20px);
+  --home-card-radius:clamp(22px,2.4vw,30px);
+  --home-control-size:44px;
+}
+
+html,body{max-width:100%;overflow-x:clip}
+
+/* Defer the 02–17 HD decorative backgrounds without changing section height.
+   The first hero is preloaded and ready in HTML; the loader only adds this
+   class and never removes it, so scrolling cannot restore an older image. */
+html.js body.art-site.home-medium-palette section[data-seasonal-art]{
+  --cpa-section-art-active:none;
+  background-image:
+    var(--cpa-section-veil),
+    var(--cpa-section-art-active),
+    var(--cpa-section-fill-veil),
+    var(--cpa-section-art-active)!important;
+}
+html.js body.art-site.home-medium-palette section[data-seasonal-art].is-seasonal-art-ready{
+  --cpa-section-art-active:var(--cpa-section-art);
+}
+html.js body.art-site.home-medium-palette .belief-desktop-wrap::after{
+  background-image:var(--cpa-section-art-active,none)!important;
+}
+html.js body.art-site.home-medium-palette .belief-mobile-wrap{
+  background-image:
+    linear-gradient(150deg,rgba(255,252,244,.9),rgba(248,236,211,.84)),
+    var(--cpa-section-art-active,none),
+    linear-gradient(rgba(247,237,218,.8),rgba(247,237,218,.8)),
+    var(--cpa-section-art-active,none)!important;
+}
+
+@supports(content-visibility:auto){
+  body.art-site.home-medium-palette section[data-seasonal-art="14"],
+  body.art-site.home-medium-palette section[data-seasonal-art="15"],
+  body.art-site.home-medium-palette section[data-seasonal-art="16"],
+  body.art-site.home-medium-palette section[data-seasonal-art="17"]{
+    content-visibility:auto;
+    contain-intrinsic-size:auto 760px;
+  }
+}
+
+/* News desk: compact image-first cards make more than one story visible on a
+   desktop while preserving a clear next-card peek on phones. */
+#home-media-reports .home-media-report-viewport{
+  box-sizing:border-box;
+  width:100%;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  scroll-snap-type:x mandatory!important;
+  scroll-padding-inline:5px;
+  scrollbar-width:thin!important;
+  scrollbar-color:rgba(86,107,94,.58) rgba(255,250,246,.48)!important;
+  touch-action:pan-x pan-y!important;
+  -webkit-overflow-scrolling:touch;
+}
+#home-media-reports .home-media-report-viewport::-webkit-scrollbar{display:block!important;height:9px}
+#home-media-reports .home-media-report-viewport::-webkit-scrollbar-track{border-radius:999px;background:rgba(255,250,246,.48)}
+#home-media-reports .home-media-report-viewport::-webkit-scrollbar-thumb{border:2px solid rgba(255,250,246,.7);border-radius:999px;background:#6f8b7c}
+#home-media-reports .home-media-report-track{
+  box-sizing:border-box;
+  display:flex!important;
+  align-items:stretch!important;
+  gap:var(--home-rail-gap)!important;
+  width:max-content!important;
+  min-width:100%!important;
+  padding:5px clamp(64px,9vw,132px) 18px 5px!important;
+}
+#home-media-reports .home-media-report-card{
+  box-sizing:border-box;
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  grid-template-rows:auto minmax(0,1fr)!important;
+  flex:0 0 clamp(440px,42vw,520px)!important;
+  width:clamp(440px,42vw,520px)!important;
+  min-width:0!important;
+  min-height:0!important;
+  align-self:stretch;
+  scroll-snap-align:start!important;
+  scroll-snap-stop:always;
+  border-radius:var(--home-card-radius)!important;
+}
+#home-media-reports .home-media-visual{
+  width:100%!important;
+  min-height:0!important;
+  aspect-ratio:16/10!important;
+  border-right:0!important;
+  border-bottom:1px solid rgba(112,83,77,.11);
+}
+#home-media-reports .home-media-pastel-art{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:var(--thumb-position,center)!important;
+}
+#home-media-reports .home-media-report-copy{
+  box-sizing:border-box;
+  min-width:0;
+  min-height:248px;
+  justify-content:flex-start!important;
+  gap:10px!important;
+  padding:clamp(20px,2.6vw,30px)!important;
+}
+#home-media-reports .home-media-report-copy h3{
+  display:-webkit-box;
+  overflow:hidden;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  font-size:clamp(1.28rem,2vw,1.72rem)!important;
+}
+#home-media-reports .home-media-report-copy>p{
+  display:-webkit-box;
+  overflow:hidden;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:3;
+}
+#home-media-reports .home-media-report-action{margin-top:auto!important;min-height:44px!important}
+#home-media-reports .home-media-report-controls{
+  display:grid!important;
+  grid-template-columns:var(--home-control-size) minmax(120px,1fr) var(--home-control-size)!important;
+  align-items:center!important;
+  gap:12px!important;
+  margin:8px 5px 12px!important;
+}
+#home-media-reports .home-media-report-controls>button{
+  width:var(--home-control-size)!important;
+  height:var(--home-control-size)!important;
+  min-width:var(--home-control-size)!important;
+  min-height:var(--home-control-size)!important;
+}
+#home-media-reports .home-media-report-controls>button:disabled{cursor:not-allowed;opacity:.38;transform:none!important}
+.home-media-report-progress{display:flex;align-items:center;gap:10px;min-width:0;color:#685f5d;font-size:.72rem;font-weight:850}
+.home-media-report-progress>span{position:relative;display:block;flex:1;height:7px;overflow:hidden;border-radius:999px;background:rgba(86,107,94,.16)}
+.home-media-report-progress i{position:absolute;inset:0;display:block;border-radius:inherit;background:linear-gradient(90deg,#bc786e,#d8a86b 48%,#6f8b7c);transform:scaleX(var(--media-progress,.111));transform-origin:left center;transition:transform .25s ease}
+.home-media-report-progress small{min-width:3.8em;text-align:right;font:inherit;font-variant-numeric:tabular-nums}
+
+/* Pinned reports are now consistent image-first cards. This removes the narrow
+   side-column layout that clipped the four interaction controls on desktop. */
+#news-flash .home-pinned-reports-viewport{
+  box-sizing:border-box;
+  width:100%!important;
+  max-width:100%!important;
+  padding:5px clamp(54px,8vw,112px) 18px 4px!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  scroll-snap-type:x mandatory!important;
+  scrollbar-width:thin!important;
+  scrollbar-color:rgba(143,81,73,.52) rgba(255,255,255,.44)!important;
+  touch-action:pan-x pan-y!important;
+}
+#news-flash .home-pinned-reports-viewport::-webkit-scrollbar{display:block!important;height:8px}
+#news-flash .home-pinned-reports-track{display:flex!important;align-items:stretch!important;gap:var(--home-rail-gap)!important;width:max-content!important;padding-right:0!important}
+#news-flash .home-pinned-report-card{
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  grid-template-rows:auto minmax(118px,1fr) auto!important;
+  flex:0 0 clamp(380px,35vw,440px)!important;
+  width:clamp(380px,35vw,440px)!important;
+  min-width:0!important;
+  min-height:0!important;
+  align-self:stretch!important;
+  scroll-snap-align:start!important;
+  scroll-snap-stop:always;
+  overflow:hidden!important;
+}
+#news-flash .home-pinned-report-card>*{min-width:0}
+#news-flash .home-pinned-report-card>img{
+  grid-column:1!important;
+  grid-row:1!important;
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  aspect-ratio:16/10!important;
+  object-fit:cover!important;
+  object-position:var(--thumb-position,center)!important;
+}
+#news-flash .home-pinned-report-card>span:not(.home-post-engagement):not(.home-pinned-thumb-copy){
+  grid-column:1!important;
+  grid-row:2!important;
+  box-sizing:border-box!important;
+  align-content:start!important;
+  padding:17px 18px 14px!important;
+}
+#news-flash .home-pinned-report-card>.home-pinned-thumb-copy{grid-column:1!important;grid-row:1!important}
+
+/* Pinned and special rail controls must remain real touch targets even where
+   the legacy bundle's rules are trapped inside its desktop-only block. */
+#news-flash .home-pinned-controls{
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:44px minmax(0,1fr) 44px!important;
+  align-items:center!important;
+  gap:8px!important;
+  width:100%!important;
+  margin:14px 0 0!important;
+}
+#news-flash .home-pinned-arrow{
+  appearance:none;
+  display:grid!important;
+  place-items:center!important;
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  min-height:44px!important;
+  padding:0!important;
+  border:1px solid rgba(82,106,105,.28)!important;
+  border-radius:50%!important;
+  background:#fffaf4!important;
+  color:#526a69!important;
+  font:900 1.55rem/1 serif!important;
+  box-shadow:0 5px 14px rgba(70,52,47,.08)!important;
+  cursor:pointer;
+}
+#news-flash .home-pinned-dots{
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:2px!important;
+  min-width:0!important;
+  overflow-x:auto!important;
+  scrollbar-width:none;
+}
+#news-flash .home-pinned-dots::-webkit-scrollbar{display:none}
+#news-flash .home-pinned-dot{
+  appearance:none;
+  position:relative!important;
+  flex:0 0 24px!important;
+  width:24px!important;
+  height:44px!important;
+  min-width:24px!important;
+  min-height:44px!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  cursor:pointer;
+}
+#news-flash .home-pinned-dot::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:9px;
+  height:9px;
+  border:1px solid rgba(82,106,105,.32);
+  border-radius:999px;
+  background:#fffaf4;
+  transform:translate(-50%,-50%);
+}
+#news-flash .home-pinned-dot.is-active::before{width:20px;background:#b36d75;border-color:#a86b73}
+#news-flash .home-pinned-progress{grid-column:1/-1!important;display:block!important;width:100%!important;height:4px!important;overflow:hidden;border-radius:999px;background:rgba(82,106,105,.13)}
+#news-flash .home-pinned-progress>i{display:block;width:100%;height:100%;border-radius:inherit;background:linear-gradient(90deg,#b36d75,#d6a65a,#6fa0a0);transform-origin:left center}
+
+#home-special-features .home-special-scroll-controls{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;margin-top:10px!important}
+#home-special-features .home-special-scroll-controls>div{display:flex!important;gap:8px!important;flex:0 0 auto!important}
+#home-special-features .home-special-scroll-controls button{
+  appearance:none;
+  display:grid!important;
+  place-items:center!important;
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  min-height:44px!important;
+  padding:0!important;
+  border:2px solid rgba(126,167,158,.42)!important;
+  border-radius:50%!important;
+  background:rgba(255,249,241,.9)!important;
+  color:#577a74!important;
+  font:900 1.45rem/1 serif!important;
+  box-shadow:0 7px 16px rgba(75,62,59,.08)!important;
+  cursor:pointer;
+}
+
+/* Shared, readable engagement layout. Breakpoints below are deliberately
+   non-overlapping: phone <=760, tablet 761–1099, desktop >=1100. */
+body.art-site.home-medium-palette .home-post-engagement{
+  box-sizing:border-box!important;
+  display:grid!important;
+  align-items:stretch!important;
+  width:100%!important;
+  max-width:100%!important;
+  gap:6px!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+body.art-site.home-medium-palette .home-post-engagement>.home-post-stat{
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:4px!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:40px!important;
+  margin:0!important;
+  padding:7px 6px!important;
+  font-size:.7rem!important;
+  line-height:1.15!important;
+  white-space:nowrap!important;
+}
+body.art-site.home-medium-palette .home-post-engagement>.home-post-stat>.home-post-stat-icon,
+body.art-site.home-medium-palette .home-post-engagement>.home-post-stat>.home-post-stat-label,
+body.art-site.home-medium-palette .home-post-engagement>.home-post-stat>b{
+  position:static!important;
+  display:inline-grid!important;
+  width:auto!important;
+  height:auto!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:visible!important;
+  clip:auto!important;
+  clip-path:none!important;
+  color:inherit!important;
+  font:inherit!important;
+  line-height:1!important;
+}
+#news-flash .home-pinned-report-card>.home-post-engagement{
+  grid-column:1!important;
+  grid-row:3!important;
+  align-self:end!important;
+  width:auto!important;
+  margin:0 14px 14px!important;
+}
+#news-hearing .home-news-card>.home-post-engagement,
+#news-activity .home-activity-feature>.home-post-engagement{
+  grid-column:1/-1!important;
+  width:auto!important;
+  margin:0 18px 18px!important;
+}
+#home-special-features .home-crafted-card>.home-post-engagement,
+.home-case-reel-card>.home-post-engagement{
+  flex:0 0 auto;
+  width:auto!important;
+  margin:0 16px 16px!important;
+}
+body.art-site.home-medium-palette .home-social-cases-section .home-case-reel-card>.home-post-engagement,
+body.art-site.home-medium-palette #home-special-features .home-crafted-card>.home-post-engagement{
+  width:calc(100% - 32px)!important;
+  max-width:calc(100% - 32px)!important;
+  margin:0 16px 16px!important;
+}
+
+/* Common 16:10 thumbnail reservation prevents lazy images from moving text. */
+#home-special-features .home-crafted-art,
+.home-case-reel-card .home-case-reel-media,
+#home-historical-cases .home-historical-image{
+  width:100%!important;
+  min-height:0!important;
+  aspect-ratio:16/10!important;
+  overflow:hidden!important;
+}
+#home-special-features .home-crafted-art>img,
+.home-case-reel-card .home-case-reel-media>img,
+#home-historical-cases .home-historical-image>img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:var(--thumb-position,center)!important;
+}
+#home-special-features .home-special-grid,
+.home-social-cases-section .home-case-reel{
+  box-sizing:border-box;
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  touch-action:pan-x pan-y!important;
+  -webkit-overflow-scrolling:touch;
+}
+#home-special-features .home-crafted-card,
+.home-social-cases-section .home-case-reel-card{box-sizing:border-box!important;min-width:0!important;scroll-snap-align:start;scroll-snap-stop:always}
+
+/* The legacy bundle accidentally leaves these card primitives inside a
+   desktop-only media block. Restate the complete structure here so phones do
+   not fall back to inline spans and intrinsically tall images. */
+#home-special-features .home-crafted-card{
+  position:relative!important;
+  display:flex!important;
+  flex-direction:column!important;
+  overflow:hidden!important;
+  color:inherit!important;
+  text-decoration:none!important;
+  border:6px solid rgba(255,250,242,.78)!important;
+  border-radius:var(--home-card-radius)!important;
+  background:rgba(255,249,241,.9)!important;
+}
+#home-special-features .home-crafted-art{
+  position:relative!important;
+  display:block!important;
+  flex:0 0 auto!important;
+  height:auto!important;
+  background:#d9c9bd;
+}
+#home-special-features .home-crafted-copy{
+  box-sizing:border-box!important;
+  display:flex!important;
+  flex:1 1 auto!important;
+  flex-direction:column!important;
+  gap:7px!important;
+  width:100%!important;
+  min-width:0!important;
+  padding:19px 19px 21px!important;
+}
+#home-special-features .home-crafted-copy small{color:#9c7168;font-size:.68rem;font-weight:850;letter-spacing:.09em}
+#home-special-features .home-crafted-copy strong{color:#3e5252;font:850 clamp(1.08rem,2vw,1.42rem)/1.38 "Noto Serif TC",serif}
+#home-special-features .home-crafted-copy em{color:#697473;font-size:.84rem;line-height:1.65;font-style:normal}
+#home-special-features .home-crafted-copy>b{margin-top:auto;padding-top:10px;color:#557776;font-size:.82rem}
+
+.home-social-cases-section .home-case-reel-card{
+  position:relative!important;
+  display:flex!important;
+  flex-direction:column!important;
+  overflow:hidden!important;
+  color:inherit!important;
+  text-decoration:none!important;
+  background:rgba(255,249,241,.92)!important;
+}
+.home-social-cases-section .home-case-reel-media{position:relative!important;display:block!important;flex:0 0 auto!important;height:auto!important;background:#d9d0c4}
+.home-social-cases-section .home-case-status{position:absolute!important;left:14px;top:14px;padding:7px 11px;border-radius:999px;background:rgba(22,52,72,.9);color:#fff;font-size:.72rem;font-weight:800;box-shadow:0 2px 10px rgba(0,0,0,.14)}
+.home-social-cases-section .home-case-reel-copy{box-sizing:border-box!important;display:flex!important;flex:1 1 auto!important;flex-direction:column!important;gap:7px!important;width:100%!important;min-width:0!important;padding:17px 18px 19px!important}
+.home-social-cases-section .home-case-reel-copy small{color:#9a784e;font-size:.62rem;font-weight:850;letter-spacing:.1em}
+.home-social-cases-section .home-case-reel-copy strong{color:#3e5252;font:850 clamp(1.06rem,1.8vw,1.28rem)/1.38 "Noto Serif TC",serif}
+.home-social-cases-section .home-case-reel-copy span{color:#6b7375;font-size:.84rem;line-height:1.58}
+
+/* Ferris wheel: desktop/tablet retain the moving wheel. Phones get a stable
+   swipe rail while the wheel scenery and motion control remain visible. */
+#news-flash .home-document-disc-shell{height:clamp(700px,64vw,790px)!important}
+#news-flash .home-document-disc-card{box-sizing:border-box!important;min-height:0!important}
+#news-flash .home-document-disc-card>img{display:block!important;width:100%!important;height:auto!important;aspect-ratio:16/10!important;object-fit:cover!important}
+#news-flash .home-document-disc-card>span:not(.home-post-engagement){min-width:0!important}
+#news-flash .home-document-disc-card>.home-post-engagement{width:auto!important;margin:0 6px 8px!important;padding:0!important}
+#news-flash .home-document-disc-card .home-post-stat-label{display:none!important}
+#news-flash .home-document-disc-help .is-mobile{display:none}
+#news-flash .home-document-disc-help .is-desktop{display:inline}
+
+@media(min-width:761px){
+  #news-flash .home-document-disc-shell{
+    position:relative!important;
+    isolation:isolate!important;
+    width:min(100%,980px)!important;
+    margin:18px auto 0!important;
+    overflow:hidden!important;
+    touch-action:pan-y!important;
+  }
+  #news-flash .home-document-disc-shell::before,
+  #news-flash .home-document-disc-shell::after{
+    content:"";
+    position:absolute!important;
+    left:50%!important;
+    top:50%!important;
+    border-radius:50%;
+    pointer-events:none;
+    transform:translate(-50%,-50%);
+  }
+  #news-flash .home-document-disc-shell::before{width:min(76vw,640px)!important;aspect-ratio:1}
+  #news-flash .home-document-disc-shell::after{width:min(22vw,170px)!important;aspect-ratio:1}
+  #news-flash .home-document-disc-orbit{
+    position:absolute!important;
+    inset:0!important;
+    z-index:3!important;
+    display:block!important;
+    width:auto!important;
+    overflow:visible!important;
+    will-change:transform;
+  }
+  #news-flash .home-document-disc-card{
+    position:absolute!important;
+    left:50%!important;
+    top:50%!important;
+    display:flex!important;
+    flex-direction:column!important;
+    overflow:hidden!important;
+    transform-origin:50% 50%;
+  }
+  #news-flash .home-document-disc-card>span:not(.home-post-engagement){
+    box-sizing:border-box!important;
+    display:grid!important;
+    gap:2px!important;
+    width:100%!important;
+    padding:8px 9px!important;
+    text-align:center!important;
+  }
+  #news-flash .home-document-disc-center{
+    position:absolute!important;
+    left:50%!important;
+    top:50%!important;
+    z-index:4!important;
+    display:grid!important;
+    place-content:center!important;
+    width:clamp(128px,14vw,160px)!important;
+    aspect-ratio:1;
+    text-align:center;
+    border-radius:50%;
+    transform:translate(-50%,-50%);
+  }
+  #news-flash .home-document-disc-center span,
+  #news-flash .home-document-disc-center strong,
+  #news-flash .home-document-disc-center small{display:block}
+  #news-flash .home-ferris-spokes{
+    position:absolute!important;
+    left:50%!important;
+    top:50%!important;
+    z-index:1!important;
+    display:block!important;
+    width:min(76vw,640px)!important;
+    aspect-ratio:1;
+    border-radius:50%;
+    transform:translate(-50%,-50%);
+    pointer-events:none;
+  }
+  #news-flash .home-ferris-spokes i{position:absolute;left:50%;top:50%;display:block;width:94%;height:6px;transform:translate(-50%,-50%)}
+  #news-flash .home-ferris-spokes i:nth-child(2){transform:translate(-50%,-50%) rotate(45deg)}
+  #news-flash .home-ferris-spokes i:nth-child(3){transform:translate(-50%,-50%) rotate(90deg)}
+  #news-flash .home-ferris-spokes i:nth-child(4){transform:translate(-50%,-50%) rotate(135deg)}
+  #news-flash .home-ferris-stand{position:absolute!important;left:50%!important;top:53%!important;z-index:1!important;display:block!important;width:min(44vw,360px)!important;height:42%!important;transform:translateX(-50%);pointer-events:none}
+  #news-flash .home-ferris-stand i{position:absolute;left:50%;top:0;display:block;width:16px;height:100%;transform-origin:50% 0}
+  #news-flash .home-ferris-stand i:first-child{transform:rotate(25deg)}
+  #news-flash .home-ferris-stand i:nth-child(2){transform:rotate(-25deg)}
+  #news-flash .home-ferris-stand b{position:absolute;left:50%;bottom:-6px;display:block;width:90%;height:22px;transform:translateX(-50%)}
+  #news-flash .home-document-disc-control{position:absolute!important;top:50%!important;z-index:9!important;display:grid!important;place-items:center!important;width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;transform:translateY(-50%)}
+  #news-flash .home-document-disc-control.is-prev{left:8px!important}
+  #news-flash .home-document-disc-control.is-next{right:8px!important}
+}
+
+@media(min-width:1100px){
+  body.art-site.home-medium-palette .home-post-engagement{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  #home-historical-cases .home-historical-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  body.art-site.home-medium-palette #home-historical-cases .home-post-engagement{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #home-special-features .home-crafted-card>.home-post-engagement,
+  .home-social-cases-section .home-case-reel-card>.home-post-engagement{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  #home-special-features .home-crafted-card,
+  .home-social-cases-section .home-case-reel-card{flex:0 0 clamp(380px,31vw,420px)!important;width:clamp(380px,31vw,420px)!important}
+  #news-flash .home-document-disc-card{width:clamp(190px,15vw,210px)!important;min-height:228px!important}
+  #news-flash .home-document-disc-card>span:not(.home-post-engagement){padding:8px 9px!important}
+  #news-flash .home-document-disc-card>.home-post-engagement{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:2px!important}
+  #news-flash .home-document-disc-card>.home-post-engagement>.home-post-stat{min-height:40px!important;padding:5px 2px!important;font-size:.58rem!important}
+  #news-flash .home-document-disc-shell{height:clamp(870px,62vw,900px)!important}
+}
+
+@media(min-width:761px) and (max-width:1099px){
+  body.art-site.home-medium-palette .home-post-engagement{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #home-special-features .home-crafted-card>.home-post-engagement,
+  .home-social-cases-section .home-case-reel-card>.home-post-engagement{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #home-media-reports .home-media-report-card{flex-basis:clamp(420px,58vw,500px)!important;width:clamp(420px,58vw,500px)!important}
+  #news-flash .home-pinned-report-card{flex-basis:clamp(350px,47vw,430px)!important;width:clamp(350px,47vw,430px)!important}
+  #home-special-features .home-crafted-card,
+  .home-social-cases-section .home-case-reel-card{flex:0 0 clamp(350px,47vw,410px)!important;width:clamp(350px,47vw,410px)!important}
+  #news-flash .home-document-disc-card{width:clamp(160px,18vw,178px)!important;min-height:266px!important}
+  #news-flash .home-document-disc-card>.home-post-engagement{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  /* The two-row engagement controls make the tablet cabins taller.  Leave
+     enough vertical room for a complete rotation at every intermediate width. */
+  #news-flash .home-document-disc-shell{height:clamp(880px,92vw,940px)!important}
+
+  #home-historical-cases .home-historical-grid{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:16px!important;
+    width:100%!important;
+  }
+  #home-historical-cases .home-history-static-map{
+    grid-column:1/-1!important;
+    position:relative!important;
+    display:block!important;
+    width:100%!important;
+    margin:0!important;
+    overflow:hidden!important;
+  }
+  #home-historical-cases .home-history-static-map>img{display:block!important;width:100%!important;height:auto!important;aspect-ratio:16/10!important;object-fit:cover!important}
+  #home-historical-cases .home-historical-card{
+    display:flex!important;
+    flex-direction:column!important;
+    width:100%!important;
+    min-width:0!important;
+    height:auto!important;
+    overflow:hidden!important;
+  }
+  #home-historical-cases .home-historical-card .home-historical-image{display:block!important;width:100%!important;height:auto!important;aspect-ratio:16/10!important;flex:0 0 auto!important}
+  #home-historical-cases .home-historical-card>span:last-child{display:flex!important;flex:1 1 auto!important;flex-direction:column!important;min-width:0!important;padding:16px!important}
+}
+
+@media(max-width:760px){
+  :root{--home-rail-gap:12px;--home-card-radius:22px;--home-control-size:44px}
+  body.art-site.home-medium-palette .home-post-engagement{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important}
+  #home-special-features .home-crafted-card>.home-post-engagement,
+  .home-social-cases-section .home-case-reel-card>.home-post-engagement{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  body.art-site.home-medium-palette .home-post-engagement>.home-post-stat{min-height:44px!important;padding:8px 6px!important;font-size:.72rem!important}
+
+  #home-media-reports .home-media-reports-head{gap:12px!important}
+  #home-media-reports .home-media-report-track{padding-right:18vw!important}
+  #home-media-reports .home-media-report-card{
+    flex-basis:clamp(300px,calc(50vw - 30px),350px)!important;
+    width:clamp(300px,calc(50vw - 30px),350px)!important;
+  }
+  #home-media-reports .home-media-report-copy{min-height:238px;padding:18px 16px!important}
+  #home-media-reports .home-media-report-copy h3{font-size:clamp(1.08rem,4.8vw,1.32rem)!important}
+  #home-media-reports .home-media-report-copy>p{display:-webkit-box!important;font-size:.8rem!important}
+  #home-media-reports .home-media-report-controls{grid-template-columns:44px minmax(90px,1fr) 44px!important;margin-inline:2px!important}
+
+  #news-flash .home-pinned-reports-viewport{padding-right:18vw!important}
+  #news-flash .home-pinned-report-card{
+    grid-template-rows:auto minmax(126px,1fr) auto!important;
+    flex-basis:min(82vw,340px)!important;
+    width:min(82vw,340px)!important;
+  }
+  #news-flash .home-pinned-report-card>span:not(.home-post-engagement):not(.home-pinned-thumb-copy){padding:15px 15px 12px!important}
+  #news-flash .home-pinned-report-card>.home-post-engagement{grid-template-columns:repeat(2,minmax(0,1fr))!important;margin:0 10px 11px!important}
+
+  #home-special-features .home-special-grid,
+  .home-social-cases-section .home-case-reel{padding:5px 18vw 18px 2px!important;gap:12px!important}
+  #home-special-features .home-crafted-card,
+  .home-social-cases-section .home-case-reel-card{flex:0 0 min(82vw,340px)!important;width:min(82vw,340px)!important}
+
+  #home-historical-cases .home-historical-grid{
+    box-sizing:border-box!important;
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    gap:12px!important;
+    width:100%!important;
+    max-width:100%!important;
+    padding:5px 18vw 18px 2px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scroll-snap-type:x mandatory!important;
+    touch-action:pan-x pan-y!important;
+  }
+  #home-historical-cases .home-history-static-map,
+  #home-historical-cases .home-historical-card{
+    box-sizing:border-box!important;
+    flex:0 0 min(82vw,340px)!important;
+    width:min(82vw,340px)!important;
+    min-width:0!important;
+    height:auto!important;
+    scroll-snap-align:start!important;
+    overflow:hidden!important;
+  }
+  #home-historical-cases .home-historical-card{display:flex!important;flex-direction:column!important}
+  #home-historical-cases .home-history-static-map>img,
+  #home-historical-cases .home-historical-card .home-historical-image{
+    display:block!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    aspect-ratio:16/10!important;
+    flex:0 0 auto!important;
+    object-fit:cover!important;
+  }
+  #home-historical-cases .home-historical-card .home-historical-image>img{display:block!important;width:100%!important;height:100%!important;min-height:0!important;object-fit:cover!important}
+  #home-historical-cases .home-historical-card>span:last-child{display:flex!important;flex:1 1 auto!important;flex-direction:column!important;min-width:0!important;padding:15px!important}
+
+  #news-flash .home-document-disc-shell{
+    box-sizing:border-box!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    padding:220px 0 70px!important;
+    overflow:hidden!important;
+  }
+  #news-flash .home-document-disc-orbit{
+    position:relative!important;
+    inset:auto!important;
+    z-index:6!important;
+    display:flex!important;
+    align-items:stretch!important;
+    gap:12px!important;
+    width:100%!important;
+    padding:8px 18vw 18px 5px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scroll-snap-type:x mandatory!important;
+    scrollbar-width:thin;
+    touch-action:pan-x pan-y!important;
+    transform:none!important;
+    -webkit-overflow-scrolling:touch;
+  }
+  #news-flash .home-document-disc-card{
+    position:relative!important;
+    inset:auto!important;
+    display:grid!important;
+    grid-template-rows:auto minmax(82px,1fr) auto!important;
+    flex:0 0 min(72vw,280px)!important;
+    width:min(72vw,280px)!important;
+    min-height:0!important;
+    scroll-snap-align:start;
+    scroll-snap-stop:always;
+    transform:none!important;
+  }
+  #news-flash .home-document-disc-card>img{height:auto!important;min-height:0!important}
+  #news-flash .home-document-disc-card>span:not(.home-post-engagement){display:grid!important;padding:9px 10px!important}
+  #news-flash .home-document-disc-card>.home-post-engagement{grid-template-columns:repeat(2,minmax(0,1fr))!important;margin:0 8px 9px!important;gap:5px!important}
+  #news-flash .home-document-disc-card>.home-post-engagement>.home-post-stat{min-height:44px!important;font-size:.68rem!important}
+  #news-flash .home-document-disc-card .home-post-stat-label{display:inline-grid!important}
+  #news-flash .home-document-disc-shell::before,
+  #news-flash .home-document-disc-shell::after,
+  #news-flash .home-ferris-spokes,
+  #news-flash .home-ferris-stand{display:none!important}
+  #news-flash .home-document-disc-center{
+    position:absolute!important;
+    left:50%!important;
+    top:108px!important;
+    z-index:5!important;
+    display:grid!important;
+    place-content:center!important;
+    width:108px!important;
+    height:108px!important;
+    aspect-ratio:1!important;
+    padding:10px!important;
+    border-radius:50%!important;
+    text-align:center!important;
+    transform:translate(-50%,-50%)!important;
+  }
+  #news-flash .home-document-disc-center span,
+  #news-flash .home-document-disc-center strong,
+  #news-flash .home-document-disc-center small{display:block!important}
+  #news-flash .home-document-disc-control{position:absolute!important;top:auto!important;bottom:14px!important;transform:none!important}
+  #news-flash .home-document-disc-control.is-prev{left:12px!important;right:auto!important}
+  #news-flash .home-document-disc-control.is-next{right:12px!important;left:auto!important}
+  #news-flash .home-disc-motion-control{bottom:14px!important}
+  #news-flash .home-disc-motion-control{display:none!important}
+  #news-flash .home-document-disc-help .is-desktop{display:none!important}
+  #news-flash .home-document-disc-help .is-mobile{display:inline!important}
+
+  /* The legacy bundle's footer styles were trapped inside an impossible
+     nested media query. Restate the complete phone navigation so it never
+     becomes a transparent empty strip. */
+  .home-footer-mobile-bar{
+    box-sizing:border-box!important;
+    min-height:62px!important;
+    padding:6px!important;
+    border:1px solid rgba(255,255,255,.65)!important;
+    border-radius:18px!important;
+    background:rgba(25,55,65,.94)!important;
+    box-shadow:0 14px 35px rgba(19,35,40,.28)!important;
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+  }
+  .home-footer-mobile-bar>a{
+    box-sizing:border-box!important;
+    display:flex!important;
+    min-width:0!important;
+    min-height:48px!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:2px!important;
+    padding:4px 2px!important;
+    border-radius:12px!important;
+    color:#eaf3ef!important;
+    text-decoration:none!important;
+  }
+  .home-footer-mobile-bar>a[aria-current="page"]{background:rgba(111,151,143,.46)!important;color:#fff!important}
+  .home-footer-mobile-bar>a>span{display:block!important;font-size:1.05rem!important;line-height:1!important}
+  .home-footer-mobile-bar>a>b{display:block!important;color:inherit!important;font-size:.64rem!important;line-height:1.15!important;white-space:nowrap!important}
+}
+
+@media(max-width:420px){
+  #home-media-reports .home-media-report-card{
+    flex-basis:min(78vw,320px)!important;
+    width:min(78vw,320px)!important;
+  }
+}
+
+/* Legacy day-card rules used a 32px control height with higher selector
+   specificity. Keep every interactive target readable at the final cascade
+   boundary, including activity navigation. */
+#news-hearing-notes .home-hearing-ten-day-grid>a>img{
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  aspect-ratio:16/10!important;
+  object-fit:cover!important;
+}
+#news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement>.home-post-stat,
+#news-hearing-notes .home-hearing-ten-day-grid .home-hearing-day-card>.home-post-engagement>.home-post-stat{
+  min-height:40px!important;
+}
+#news-activity .home-activity-scroll-controls>button{
+  min-width:44px!important;
+  min-height:44px!important;
+  width:44px!important;
+  height:44px!important;
+}
+
+@media(max-width:760px){
+  #news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement>.home-post-stat,
+  #news-hearing-notes .home-hearing-ten-day-grid .home-hearing-day-card>.home-post-engagement>.home-post-stat{
+    min-height:44px!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .home-media-report-progress i{transition:none!important}
+}
