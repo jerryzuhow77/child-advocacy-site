@@ -37,13 +37,59 @@
     .art:has(.scene-art):after{inset:0;z-index:2;border-radius:0;background:linear-gradient(180deg,rgba(46,29,24,.03),transparent 62%,rgba(46,29,24,.2));filter:none;pointer-events:none}
     .art:has(.scene-art) .embroidery-label{z-index:3!important;backdrop-filter:blur(7px)}
     .new-art-link{display:inline-flex;align-items:center;gap:10px;margin-top:22px;padding:12px 18px;border:1px solid rgba(125,67,54,.28);border-radius:999px;background:linear-gradient(135deg,#723f39,#a34d3f);color:#fff8e8;text-decoration:none;font:800 .92rem system-ui;box-shadow:0 10px 23px rgba(81,43,36,.2);transition:transform .2s ease,box-shadow .2s ease}.new-art-link span{padding:4px 7px;border-radius:999px;background:#f3ce72;color:#5d342e;font-size:.68rem;letter-spacing:.08em}.new-art-link:after{content:"↓";color:#ffe09b}.new-art-link:hover,.new-art-link:focus-visible{transform:translateY(-2px);box-shadow:0 14px 27px rgba(81,43,36,.27)}
+
+    /* 2026-09-09｜蘇繡主視覺與四大繡藝系統 */
+    :root{--cinnabar:#a84339;--kingfisher:#247b78;--indigo:#355f82;--lotus:#d9909b;--jade:#8ba887;--silk:#fff8e9;--deep-silk:#5b3431;--pearl:#fff5cf}
+    body{background:#ddcec0}
+    body:before{background:linear-gradient(180deg,rgba(250,244,229,.86),rgba(243,228,209,.91)),url("assets/chapter-03-hero-embroidery-20260909.webp") center/cover no-repeat}
+    body:after{opacity:.28;background-image:repeating-linear-gradient(12deg,transparent 0 5px,rgba(91,53,44,.06) 6px 7px),repeating-linear-gradient(92deg,transparent 0 11px,rgba(207,162,74,.045) 12px 13px)}
+    .topbar{border-bottom:3px double rgba(239,198,102,.64);background:linear-gradient(90deg,rgba(69,36,34,.97),rgba(102,48,45,.95),rgba(48,76,76,.94))}
+    .brand img{border:2px solid #ddb85d;box-shadow:0 0 0 3px rgba(255,245,207,.18)}
+    .nav a{border-style:dashed;border-color:rgba(245,213,132,.52)}
+    .hero-card{min-height:660px;border:2px solid rgba(190,139,55,.75);background:linear-gradient(90deg,rgba(255,249,235,.97) 0%,rgba(255,249,235,.91) 43%,rgba(255,249,235,.32) 60%,rgba(255,249,235,.04) 79%),url("assets/chapter-03-hero-embroidery-20260909.webp") center/cover no-repeat;box-shadow:0 28px 74px rgba(62,34,29,.22),inset 0 0 0 8px rgba(255,250,234,.56),inset 0 0 0 10px rgba(174,115,43,.32)}
+    .hero-card:before,.hero-card:after{width:116px;height:116px;border-width:3px;border-color:rgba(207,159,66,.84);filter:drop-shadow(0 2px 1px rgba(95,47,34,.23))}
+    .hero-copy{max-width:650px}.hero h1{color:#4f2e2b;text-shadow:0 1px #fff5dd}.hero h1 span{color:var(--cinnabar)}
+    .chain{position:relative}.chain li{border:1px dashed rgba(149,91,50,.44);background:linear-gradient(150deg,rgba(255,246,223,.96),rgba(230,197,172,.91));box-shadow:inset 0 0 0 3px rgba(255,252,239,.66)}
+    .chapter-nav{grid-template-columns:repeat(6,1fr);gap:14px;padding:16px;border:2px solid rgba(176,119,45,.46);background:linear-gradient(145deg,rgba(255,249,232,.94),rgba(239,216,193,.9));box-shadow:0 14px 32px rgba(62,38,29,.11),inset 0 0 0 6px rgba(255,252,240,.66)}
+    .chapter-nav a{position:relative;display:grid;place-items:center;min-height:70px;padding:13px 10px;border:2px solid var(--medallion,#bd8c42);border-radius:50% 46% 50% 47%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.9),transparent 28%),linear-gradient(145deg,#fff8e7,#e9cfc0);box-shadow:inset 0 0 0 4px rgba(255,249,229,.9),inset 0 0 0 5px rgba(151,88,48,.26),0 7px 15px rgba(74,42,34,.1);font-size:.84rem}
+    .chapter-nav a:before{content:"✦";display:block;margin-bottom:2px;color:var(--medallion,#a95042);font-size:.8rem}.chapter-nav a:nth-child(2){--medallion:var(--lotus)}.chapter-nav a:nth-child(3){--medallion:var(--kingfisher)}.chapter-nav a:nth-child(4){--medallion:var(--jade)}.chapter-nav a:nth-child(5){--medallion:var(--indigo)}.chapter-nav a:nth-child(6){--medallion:#c99b42}
+    .chapter-nav a:not(:last-child):after{content:"";position:absolute;left:calc(100% + 1px);top:50%;width:14px;height:3px;background:linear-gradient(#f5d686,#a96c27,#f5d686);box-shadow:0 2px 4px rgba(89,48,32,.2)}
+    .opening,.prose,.evidence-card,.decision-card,.lens,.matrix article,.evidence-step,.risk-cell,.law-card,.appeal-card,.news-card,.accountability,.note{position:relative;border:1px solid rgba(177,119,47,.44);background-color:rgba(255,249,234,.93);box-shadow:0 14px 33px rgba(62,38,29,.1),inset 0 0 0 6px rgba(255,252,241,.78)}
+    .evidence-card:before,.lens:before,.risk-cell:before,.law-card:before,.news-card:before,.accountability:before,.note:before{content:"";position:absolute;inset:9px;border:1px dashed rgba(182,123,48,.44);border-radius:15px;pointer-events:none}
+    .evidence-card:nth-child(4n+1),.lens:nth-child(4n+1),.risk-cell:nth-child(4n+1){border-top:5px solid var(--lotus)}
+    .evidence-card:nth-child(4n+2),.lens:nth-child(4n+2),.risk-cell:nth-child(4n+2){border-top:5px solid var(--kingfisher)}
+    .evidence-card:nth-child(4n+3),.lens:nth-child(4n+3),.risk-cell:nth-child(4n+3){border-top:5px solid var(--jade)}
+    .evidence-card:nth-child(4n),.lens:nth-child(4n),.risk-cell:nth-child(4n){border-top:5px solid #c99b42}
+    .section-head{position:relative;padding-left:24px}.section-head:before{content:"";position:absolute;left:0;top:3px;bottom:3px;width:8px;border-radius:99px;background:repeating-linear-gradient(180deg,var(--cinnabar) 0 7px,#e2b552 7px 13px,var(--kingfisher) 13px 19px);box-shadow:2px 0 0 rgba(255,248,219,.9),4px 0 0 rgba(178,120,44,.32)}
+    .source{position:relative;z-index:2;min-height:30px;align-items:center;padding:7px 11px;border:1px dashed #efd18a;background:linear-gradient(135deg,#5d3431,#825048);font-size:.78rem;box-shadow:inset 0 0 0 2px rgba(255,248,220,.12)}
+    .responsibility-chain{position:relative;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px;padding:28px 0}
+    .responsibility-chain:before{content:"";position:absolute;left:5%;right:5%;top:50%;height:5px;background:linear-gradient(#f6dc8b,#ad6e27,#f6dc8b);box-shadow:0 2px 7px rgba(92,48,30,.28);clip-path:inset(0 calc(100% - var(--thread-reveal,100%)) 0 0)}
+    .responsibility-step{min-height:232px;padding:25px 13px 20px;border:3px double var(--step-color,#c7923f);border-radius:49% 46% 48% 45%/24% 26% 23% 28%;background:radial-gradient(circle at 32% 22%,rgba(255,255,255,.96),transparent 23%),linear-gradient(155deg,#fff9e9,#efd3c4);box-shadow:inset 0 0 0 6px rgba(255,250,233,.86),inset 0 0 0 8px rgba(127,77,47,.14),0 12px 27px rgba(63,37,30,.13)}
+    .responsibility-step:nth-child(2){--step-color:var(--lotus)}.responsibility-step:nth-child(3){--step-color:var(--kingfisher)}.responsibility-step:nth-child(4){--step-color:var(--jade)}.responsibility-step:nth-child(5){--step-color:var(--indigo)}.responsibility-step:nth-child(6){--step-color:#c99b42}
+    .responsibility-step:not(:last-child):after{content:"";right:-19px;top:calc(50% - 2px);width:20px;height:5px;background:linear-gradient(#f6db88,#ad6d27,#f6db88)}
+    .responsibility-step b{display:grid;place-items:center;width:48px;height:48px;margin:0 auto 10px;border:2px solid var(--step-color,#c7923f);border-radius:50%;background:#673a35;color:#fff6dd;box-shadow:0 0 0 4px rgba(255,248,223,.9),0 0 0 5px var(--step-color,#c7923f)}
+    .responsibility-step h3{margin:8px 0;color:#633732;font-size:1rem}.responsibility-step p{margin:0;font-size:.88rem;line-height:1.65}
+    .scene{border:2px solid rgba(181,124,47,.68);box-shadow:0 18px 45px rgba(64,40,30,.16),inset 0 0 0 8px rgba(255,251,240,.82),inset 0 0 0 10px rgba(110,70,46,.13)}
+    .scene:nth-child(4n+1){--scene-thread:var(--lotus)}.scene:nth-child(4n+2){--scene-thread:var(--kingfisher)}.scene:nth-child(4n+3){--scene-thread:var(--jade)}.scene:nth-child(4n){--scene-thread:var(--indigo)}
+    .scene-copy{border-left-color:var(--scene-thread,#bc8a40)}.scene-copy:before{height:4px;background:repeating-linear-gradient(90deg,var(--scene-thread,#c99a48) 0 9px,#d7ac50 9px 14px,#9f453c 14px 19px)}
+    .art:has(.scene-art):before{inset:14px;border:2px dashed var(--scene-thread,#eecb7b);box-shadow:inset 0 0 0 5px rgba(255,248,225,.16),0 0 0 2px rgba(255,244,208,.74)}
+    .embroidery-label{min-height:30px;display:flex;align-items:center;border:1px dashed var(--scene-thread,#8c5a46);background:rgba(255,248,228,.93);font-size:.75rem;box-shadow:inset 0 0 0 2px rgba(255,255,255,.72),0 5px 15px rgba(49,30,25,.14)}
+    .timeline-wrap,.audit-wrap,.tracking{border:2px solid rgba(178,121,47,.45);box-shadow:0 14px 35px rgba(62,38,29,.12),inset 0 0 0 5px rgba(255,250,233,.65)}
+    .timeline th,.audit-table th,.tracking th{background:linear-gradient(100deg,#5b3330,#82463f 58%,#356d6b)}
+    .new-art-link{border:2px solid #dfba62;background:linear-gradient(135deg,#673633,#9a463c 58%,#2e706d);box-shadow:inset 0 0 0 3px rgba(255,244,208,.12),0 12px 26px rgba(70,37,32,.25)}
+    @media(max-width:760px){
+      body:before{background-position:66% center}.hero-card{min-height:610px;padding:35px 23px;background:linear-gradient(180deg,rgba(255,249,235,.97) 0%,rgba(255,249,235,.9) 54%,rgba(255,249,235,.45) 100%),url("assets/chapter-03-hero-embroidery-20260909.webp") 66% center/cover no-repeat}
+      .hero-copy{max-width:none}.chapter-nav{display:flex;gap:10px;padding:12px}.chapter-nav a{flex:0 0 126px;min-width:126px;min-height:70px}.chapter-nav a:not(:last-child):after{width:11px}
+      .responsibility-chain{grid-template-columns:1fr;gap:18px;padding:12px 0}.responsibility-chain:before{left:50%;right:auto;top:4%;bottom:4%;width:5px;height:auto;clip-path:inset(0 0 calc(100% - var(--thread-reveal,100%)) 0)}.responsibility-step{min-height:0;padding:24px 25px;border-radius:28px}.responsibility-step:not(:last-child):after{content:"";left:calc(50% - 2px);right:auto;bottom:-21px;top:auto;width:5px;height:24px}.responsibility-step p{font-size:.96rem}.scene-copy{border-left:0;border-top-color:var(--scene-thread,#bc8a40)}
+      .chapter-nav,.timeline-wrap,.audit-wrap,.tracking-wrap{-webkit-overflow-scrolling:touch;scrollbar-width:thin}.source{font-size:.8rem;line-height:1.45}
+    }
   </style>
 </head>
 <body>
   <header class="topbar"><div class="shell"><a class="brand" href="../../"><img src="../../assets/brand/primary-logo-03-thumb.jpg" alt=""><span>護童行動聯盟</span></a><nav class="nav" aria-label="頁面導覽"><a href="../../">首頁</a><a href="#timeline">證據時間軸</a><a href="#sources">資料來源</a></nav></div></header>
   <main>
     <section class="hero"><div class="shell"><div class="hero-card embroidered"><i class="knot knot-a" aria-hidden="true"></i><i class="knot knot-b" aria-hidden="true"></i><i class="gold-thread" aria-hidden="true"></i><div class="hero-copy"><span class="draft">獨立專題｜僅限網址閱覽</span><div class="eyebrow">KAIKAI CASE · CHAPTER 03</div><h1><span>剴剴案第三章</span>被延後的訪視</h1><p class="lead">等待、紀錄與責任。門關上後，誰該換一種方式？本章不只計算訪視次數，而是把延期、場域、醫療訊息、累積警訊與查核方法放回同一條證據鏈。</p><ol class="chain"><li>約定與改期</li><li>實際接觸</li><li>醫療轉述</li><li>警訊疊加</li><li>查核升級</li></ol><a class="new-art-link" href="#reader"><span>NEW</span>直接觀看九幕紙雕證據圖卡</a></div></div></div></section>
-    <div class="shell"><nav class="chapter-nav" aria-label="第三章段落導覽"><a href="#method">閱讀方法</a><a href="#evidence">核心問題</a><a href="#audit">逐次判讀</a><a href="#medical">醫療證據</a><a href="#threshold">升級門檻</a><a href="#law">法律地圖</a><a href="#current">新聞進度</a><a href="#review">查核界限</a></nav><div class="opening"><strong>閱讀界限：</strong>延期本身不等於違法；完成訪視也不等於已完成充分查核。本頁區分機構公開時間軸、媒體庭審整理、一審法院認定與倡議分析。公開摘要不能替代原始通訊、病歷、處遇紀錄、完整勘驗筆錄或判決原本，尚未取得之處均明確標示待核。</div></div>
+    <div class="shell"><nav class="chapter-nav" aria-label="第三章六段導覽"><a href="#method">閱讀方法</a><a href="#evidence">證據地圖</a><a href="#medical">醫療責任</a><a href="#threshold">升級門檻</a><a href="#current">新聞進度</a><a href="#review">查核界限</a></nav><div class="opening"><strong>閱讀界限：</strong>延期本身不等於違法；完成訪視也不等於已完成充分查核。本頁區分機構公開時間軸、媒體庭審整理、一審法院認定與倡議分析。公開摘要不能替代原始通訊、病歷、處遇紀錄、完整勘驗筆錄或判決原本，尚未取得之處均明確標示待核。</div></div>
 
     <section class="shell" id="method"><div class="section-head"><small>HOW TO READ THE EVIDENCE</small><h2>第三章的問題，不是誰說得比較像</h2><p>而是每一項資訊從哪裡來、是否經過獨立驗證，以及在下一個警訊出現時，先前的解釋有沒有被重新評估。</p></div><article class="prose">
       <p>公開資料顯示，期間並非完全沒有接觸：至少有三次實際訪視，也有多次訊息往返、牙科就診與單據確認。真正需要拆解的是，這些接觸是否產生足夠的客觀資料，以及不同日期出現的外觀、健康與行為變化，是否被串成一個持續更新的風險判斷。</p>
@@ -185,6 +231,6 @@
   <script data-cpa-legal-notice-script src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"></script>
   <script src="../../assets/vendor/gsap-3.13.0.min.js"></script>
   <script src="../../assets/vendor/ScrollTrigger-3.13.0.min.js"></script>
-  <script src="assets/chapter-03-motion.js?v=20260909-2"></script>
+  <script src="assets/chapter-03-motion.js?v=20260909-3"></script>
 </body>
 </html>

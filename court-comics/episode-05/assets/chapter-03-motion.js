@@ -34,7 +34,32 @@
   }
   if (knots.length) gsap.fromTo(knots, { scale: 0, rotate: -120 }, { scale: 1, rotate: 0, duration: .75, stagger: .16, delay: .65, ease: 'back.out(2)' });
 
-  var groups = ['.section-head', '.evidence-card', '.evidence-step', '.decision-card', '.lens', '.responsibility-step', '.accountability', '.scene', '.matrix article', '.risk-cell', '.law-card', '.news-card', '.appeal-card', '.note', '.takeaway-ribbon article'];
+  ScrollTrigger.batch('.chapter-nav a', {
+    start: 'top 94%',
+    once: true,
+    onEnter: function (badges) {
+      gsap.fromTo(badges, { autoAlpha: 0, scale: .76, rotate: -8 }, { autoAlpha: 1, scale: 1, rotate: 0, duration: .7, stagger: .08, ease: 'back.out(1.8)', clearProps: 'transform,opacity,visibility' });
+    }
+  });
+
+  ScrollTrigger.batch('.responsibility-step', {
+    start: 'top 90%',
+    once: true,
+    onEnter: function (medallions) {
+      gsap.fromTo(medallions, { autoAlpha: 0, scale: .82, y: mobile ? 14 : 24, rotateY: mobile ? 0 : -18 }, { autoAlpha: 1, scale: 1, y: 0, rotateY: 0, duration: .78, stagger: .11, ease: 'back.out(1.55)', clearProps: 'transform,opacity,visibility' });
+    }
+  });
+
+  var responsibilityLine = document.querySelector('.responsibility-chain');
+  if (responsibilityLine) {
+    gsap.fromTo(responsibilityLine, { '--thread-reveal': '0%' }, {
+      '--thread-reveal': '100%',
+      ease: 'none',
+      scrollTrigger: { trigger: responsibilityLine, start: 'top 85%', end: 'bottom 55%', scrub: .45 }
+    });
+  }
+
+  var groups = ['.section-head', '.evidence-card', '.evidence-step', '.decision-card', '.lens', '.accountability', '.scene', '.matrix article', '.risk-cell', '.law-card', '.news-card', '.appeal-card', '.note', '.takeaway-ribbon article'];
   groups.forEach(function (selector) {
     ScrollTrigger.batch(selector, {
       start: 'top 90%',
@@ -69,7 +94,7 @@
     }
   });
 
-  document.querySelectorAll('.evidence-card,.evidence-step,.lens,.risk-cell,.law-card,.news-card,.appeal-card,.note').forEach(function (card) {
+  document.querySelectorAll('.chapter-nav a,.responsibility-step,.evidence-card,.evidence-step,.lens,.risk-cell,.law-card,.news-card,.appeal-card,.note').forEach(function (card) {
     card.addEventListener('pointerenter', function () {
       if (!mobile) gsap.to(card, { y: -5, duration: .24, ease: 'power2.out' });
     });
