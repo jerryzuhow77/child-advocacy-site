@@ -2,7 +2,9 @@ name: Public wall read-only snapshot
 on:
   workflow_dispatch:
   schedule:
+    # GitHub may delay scheduled runs; a staggered fallback keeps snapshots fresh.
     - cron: '17 * * * *'
+    - cron: '47 * * * *'
   pull_request:
     paths:
       - '.github/workflows/public-wall-snapshot.yml'
