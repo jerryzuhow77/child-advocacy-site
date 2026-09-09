@@ -367,6 +367,11 @@
     return Number.isFinite(Number(value)) ? new Intl.NumberFormat(locale()).format(Number(value)) : "—";
   }
 
+  function publishedViewCount(value) {
+    const count = Number(value);
+    return Number.isFinite(count) ? Math.max(1, count) : 1;
+  }
+
   function registerBar(item, bar) {
     const bars = barsByKey.get(item.key) || new Set();
     bars.add(bar);
@@ -560,7 +565,7 @@
       initialRead(item).then((data) => {
         updateMetric(item, "like", data.likeCount);
         updateMetric(item, "comment", data.commentCount);
-        updateMetric(item, "view", data.viewCount);
+        updateMetric(item, "view", publishedViewCount(data.viewCount));
         bar.dataset.loadState = "ready";
 
         // Render the live engagement total immediately. The legacy service is
@@ -575,7 +580,7 @@
             const migratedTotal = item.legacyViewMode === "add" && validViews.length === 2
               ? validViews[0] + validViews[1]
               : Math.max(...validViews);
-            updateMetric(item, "view", migratedTotal);
+            updateMetric(item, "view", publishedViewCount(migratedTotal));
           }
         }).catch(() => { /* Keep the live engagement total visible. */ });
       }).catch(() => {

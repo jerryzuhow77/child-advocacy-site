@@ -1234,9 +1234,10 @@ document.addEventListener('DOMContentLoaded',initGlobalMemorialBanner);
   function revealBadge(badge, value) {
     const number = badge.querySelector('.public-view-number');
     if (!number) return;
-    number.textContent = formatCount(value);
+    const publishedValue = Math.max(1, Number(value) || 0);
+    number.textContent = formatCount(publishedValue);
     badge.hidden = false;
-    badge.setAttribute('title', viewCounterTitle(value));
+    badge.setAttribute('title', viewCounterTitle(publishedValue));
   }
 
   async function initArticleCounter() {
