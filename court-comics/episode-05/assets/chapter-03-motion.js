@@ -66,7 +66,7 @@
     });
   }
 
-  var groups = ['.section-head', '.embroidery-key span', '.evidence-card', '.evidence-step', '.decision-card', '.lens', '.accountability', '.scene', '.matrix article', '.risk-cell', '.law-card', '.news-card', '.appeal-card', '.note', '.takeaway-ribbon article', '.source-calibration', '.info-chain-step', '.not-equal', '.medical-context', '.legal-question', '.record-field', '.chapter-expansion'];
+  var groups = ['.section-head', '.embroidery-key span', '.evidence-card', '.evidence-step', '.decision-card', '.lens', '.accountability', '.scene', '.matrix article', '.risk-cell', '.law-card', '.news-card', '.appeal-card', '.note', '.takeaway-ribbon article', '.source-calibration', '.info-chain-step', '.not-equal', '.medical-context', '.legal-question', '.record-field', '.implementation-card', '.reform-boundary', '.chapter-expansion'];
   groups.forEach(function (selector) {
     ScrollTrigger.batch(selector, {
       start: 'top 90%',
@@ -111,7 +111,7 @@
     });
   });
 
-  ScrollTrigger.batch('.timeline tbody tr, .audit-table tbody tr, .tracking tbody tr, .decision-clock tbody tr', {
+  ScrollTrigger.batch('.timeline tbody tr, .audit-table tbody tr, .tracking tbody tr, .decision-clock tbody tr, .reform-table tbody tr', {
     start: 'top 94%',
     once: true,
     onEnter: function (rows) {
@@ -119,7 +119,7 @@
     }
   });
 
-  document.querySelectorAll('.chapter-nav a,.responsibility-step,.evidence-card,.evidence-step,.lens,.risk-cell,.law-card,.news-card,.appeal-card,.note,.source-calibration,.info-chain-step,.not-equal,.legal-question,.record-field').forEach(function (card) {
+  document.querySelectorAll('.chapter-nav a,.responsibility-step,.evidence-card,.evidence-step,.lens,.risk-cell,.law-card,.news-card,.appeal-card,.note,.source-calibration,.info-chain-step,.not-equal,.legal-question,.record-field,.implementation-card').forEach(function (card) {
     card.addEventListener('pointerenter', function () {
       if (!mobile) gsap.to(card, { y: -5, duration: .24, ease: 'power2.out' });
     });
