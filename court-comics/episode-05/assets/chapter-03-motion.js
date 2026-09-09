@@ -53,6 +53,14 @@
     }
   });
 
+  document.querySelectorAll('.scene-art').forEach(function (art) {
+    gsap.fromTo(art, { scale: 1.11 }, {
+      scale: 1.025,
+      ease: 'none',
+      scrollTrigger: { trigger: art, start: 'top bottom', end: 'bottom top', scrub: mobile ? .25 : .55 }
+    });
+  });
+
   ScrollTrigger.batch('.timeline tbody tr, .audit-table tbody tr, .tracking tbody tr', {
     start: 'top 94%',
     once: true,
