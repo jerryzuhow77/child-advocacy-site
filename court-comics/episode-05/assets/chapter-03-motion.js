@@ -34,7 +34,7 @@
   }
   if (knots.length) gsap.fromTo(knots, { scale: 0, rotate: -120 }, { scale: 1, rotate: 0, duration: .75, stagger: .16, delay: .65, ease: 'back.out(2)' });
 
-  var groups = ['.section-head', '.evidence-card', '.decision-card', '.lens', '.matrix article', '.news-card', '.note', '.takeaway-ribbon article'];
+  var groups = ['.section-head', '.evidence-card', '.evidence-step', '.decision-card', '.lens', '.matrix article', '.risk-cell', '.law-card', '.news-card', '.appeal-card', '.note', '.takeaway-ribbon article'];
   groups.forEach(function (selector) {
     ScrollTrigger.batch(selector, {
       start: 'top 90%',
@@ -45,7 +45,7 @@
     });
   });
 
-  ScrollTrigger.batch('.timeline tbody tr, .tracking tbody tr', {
+  ScrollTrigger.batch('.timeline tbody tr, .audit-table tbody tr, .tracking tbody tr', {
     start: 'top 94%',
     once: true,
     onEnter: function (rows) {
@@ -53,7 +53,7 @@
     }
   });
 
-  document.querySelectorAll('.evidence-card,.lens,.news-card,.note').forEach(function (card) {
+  document.querySelectorAll('.evidence-card,.evidence-step,.lens,.risk-cell,.law-card,.news-card,.appeal-card,.note').forEach(function (card) {
     card.addEventListener('pointerenter', function () {
       if (!mobile) gsap.to(card, { y: -5, duration: .24, ease: 'power2.out' });
     });
