@@ -17,10 +17,13 @@ const extractExpandedMarkup=(html,dir)=>{
  if(toc.some(item=>!item)||sections.some(item=>!item)) throw new Error(`Refusing to erase expanded sections in ${dir}`);
  return {toc:toc.join(''),sections:sections.join('')};
 };
-for(const [locale,d] of Object.entries(data)){
+const expandedByLocale=new Map(Object.entries(data).map(([locale,d])=>{
  const out=path.join(root,d.dir,'index.html');
  const current=fs.readFileSync(out,'utf8');
- const expanded=extractExpandedMarkup(current,d.dir);
+ return [locale,{out,expanded:extractExpandedMarkup(current,d.dir)}];
+}));
+for(const [locale,d] of Object.entries(data)){
+ const {out,expanded}=expandedByLocale.get(locale);
  const links={hant:`/child-advocacy-site/news/${slug}/`,hans:`https://cn.globalprotectionwall.com/child-advocacy-site/news/${slug}/zh-Hans/`,en:`/child-advocacy-site/en/news/${slug}/`,ja:`/child-advocacy-site/ja/news/${slug}/`};
  const canonical=locale==='zh-Hans'?links.hans:'https://jerryzuhow77.github.io'+links[locale==='zh-Hant'?'hant':locale];
  const list=x=>`<ul>${x.map(i=>`<li>${i}</li>`).join('')}</ul>`;
