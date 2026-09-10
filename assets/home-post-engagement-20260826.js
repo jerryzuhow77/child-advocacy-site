@@ -613,11 +613,9 @@
     // so IntersectionObserver alone leaves every metric on the loading glyph.
     // Prime their deduplicated reads during idle time while keeping the observer
     // as the fast path for cards that are already visible.
-    if (/^(?:en|ja)(?:-|$)/i.test(document.documentElement.lang || "")) {
-      const primeLocalizedMetrics = () => loadMetrics();
-      if ("requestIdleCallback" in window) requestIdleCallback(primeLocalizedMetrics, { timeout: 1500 });
-      else window.setTimeout(primeLocalizedMetrics, 300);
-    }
+    const primeMetrics = () => loadMetrics();
+    if ("requestIdleCallback" in window) requestIdleCallback(primeMetrics, { timeout: 1500 });
+    else window.setTimeout(primeMetrics, 300);
 
     const stop = (action) => (event) => {
       event.preventDefault();
@@ -674,6 +672,17 @@
     const deferredInit = () => init();
     if ("requestIdleCallback" in window) requestIdleCallback(deferredInit, { timeout: 1500 });
     else window.setTimeout(deferredInit, 600);
+
+    // Locale and carousel loaders can append or replace cards after startup.
+    // Remount only after child-list changes settle so every published card gets
+    // the same four controls and a numeric metric read in both regions.
+    let rescanTimer = 0;
+    const observer = new MutationObserver((records) => {
+      if (!records.some((record) => record.addedNodes.length || record.removedNodes.length)) return;
+      window.clearTimeout(rescanTimer);
+      rescanTimer = window.setTimeout(init, 120);
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
   }
 
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", start, { once: true }) : start();
