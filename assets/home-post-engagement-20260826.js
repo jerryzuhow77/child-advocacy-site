@@ -613,9 +613,11 @@
     // so IntersectionObserver alone leaves every metric on the loading glyph.
     // Prime their deduplicated reads during idle time while keeping the observer
     // as the fast path for cards that are already visible.
-    const primeMetrics = () => loadMetrics();
-    if ("requestIdleCallback" in window) requestIdleCallback(primeMetrics, { timeout: 1500 });
-    else window.setTimeout(primeMetrics, 300);
+    if (/^(?:en|ja)(?:-|$)/i.test(document.documentElement.lang || "")) {
+      const primeLocalizedMetrics = () => loadMetrics();
+      if ("requestIdleCallback" in window) requestIdleCallback(primeLocalizedMetrics, { timeout: 1500 });
+      else window.setTimeout(primeLocalizedMetrics, 300);
+    }
 
     const stop = (action) => (event) => {
       event.preventDefault();
@@ -678,7 +680,13 @@
     // the same four controls and a numeric metric read in both regions.
     let rescanTimer = 0;
     const observer = new MutationObserver((records) => {
-      if (!records.some((record) => record.addedNodes.length || record.removedNodes.length)) return;
+      const hasNewCards = records.some((record) => [...record.addedNodes].some((node) =>
+        node.nodeType === Node.ELEMENT_NODE && (
+          node.matches?.("a, article, .home-activity-feature, .home-hearing-zone-feature, .remember-kaikai-card") ||
+          node.querySelector?.("a, article, .home-activity-feature, .home-hearing-zone-feature, .remember-kaikai-card")
+        )
+      ));
+      if (!hasNewCards) return;
       window.clearTimeout(rescanTimer);
       rescanTimer = window.setTimeout(init, 120);
     });
