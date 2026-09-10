@@ -4,7 +4,7 @@
   const wallBase='https://wall.globalprotectionwall.com/';
   // Compatibility marker for the existing static QA assertion; active traffic uses wallBase above.
   // const wallBase='https://global-protection.jerryzuhow77.chatgpt.site/';
-  const mainlandWallBase='https://cn.globalprotectionwall.com/';
+  const mainlandWallBase=wallBase; // Stable shared shell until the Hong Kong root app is healthy.
   const supported=['zh-Hant','zh-Hans','en','ja'];
   const regions=['tw','hk'];
   const sections=['home','bulletins','guest-message','member-submit','guidelines'];
@@ -49,7 +49,8 @@
   const requested=new URLSearchParams(location.search);
   let locale=supported.includes(requested.get('lang'))?requested.get('lang'):'zh-Hant';
   let section=sections.includes(requested.get('section'))?requested.get('section'):'home';
-  let region=regions.includes(requested.get('region'))?requested.get('region'):'tw';
+  const mirrorHost=location.hostname==='cn.globalprotectionwall.com';
+  let region=regions.includes(requested.get('region'))?requested.get('region'):(mirrorHost?'hk':'tw');
 
   const wallUrl=()=>{
     const regionalBase=region==='hk'?mainlandWallBase:wallBase;
@@ -124,7 +125,7 @@
     const params=new URLSearchParams(location.search);
     locale=supported.includes(params.get('lang'))?params.get('lang'):'zh-Hant';
     section=sections.includes(params.get('section'))?params.get('section'):'home';
-    region=regions.includes(params.get('region'))?params.get('region'):'tw';
+    region=regions.includes(params.get('region'))?params.get('region'):(mirrorHost?'hk':'tw');
     loadWall();
   });
   loadWall();
