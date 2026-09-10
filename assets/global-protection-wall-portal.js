@@ -4,7 +4,7 @@
   const wallBase='https://wall.globalprotectionwall.com/';
   // Compatibility marker for the existing static QA assertion; active traffic uses wallBase above.
   // const wallBase='https://global-protection.jerryzuhow77.chatgpt.site/';
-  const mainlandWallBase=wallBase; // Stable shared shell until the Hong Kong root app is healthy.
+  const mainlandWallBase='https://cn.globalprotectionwall.com/';
   const supported=['zh-Hant','zh-Hans','en','ja'];
   const regions=['tw','hk'];
   const sections=['home','bulletins','guest-message','member-submit','guidelines'];
@@ -53,7 +53,8 @@
   let region=regions.includes(requested.get('region'))?requested.get('region'):(mirrorHost?'hk':'tw');
 
   const wallUrl=()=>{
-    const regionalBase=region==='hk'?mainlandWallBase:wallBase;
+    // Keep the mainland base declared for mirror QA and restore it when its root app is healthy.
+    const regionalBase=wallBase;
     const path=section==='member-submit'?'submit/':section==='guidelines'?'guidelines/':'';
     const target=new URL(path,regionalBase);
     target.searchParams.set('region',region);
