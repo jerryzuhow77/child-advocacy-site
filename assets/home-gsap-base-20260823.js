@@ -1,6 +1,9 @@
 (function () {
   'use strict';
 
+  if (window.__cpaHomeGsapBaseReady) return;
+  window.__cpaHomeGsapBaseReady = true;
+
   var gsap = window.gsap;
   var ScrollTrigger = window.ScrollTrigger;
   if (!gsap || !ScrollTrigger || document.body.dataset.homeGsapReady === 'true') return;

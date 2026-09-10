@@ -85,10 +85,15 @@
     },{rootMargin:'700px 0px',threshold:0});
     observer.observe(zone);
   }
-  var base=document.createElement('script');
-  base.src=basePath+'home-gsap-base-20260823.js?v='+version;
-  base.defer=true;
-  base.onload=function(){animateVisibleStaticMap();loadEnhancementNearHistory();};
-  base.onerror=loadEnhancementNearHistory;
-  document.head.appendChild(base);
+  if(window.__cpaHomeGsapBaseReady){
+    animateVisibleStaticMap();
+    loadEnhancementNearHistory();
+  }else{
+    var base=document.createElement('script');
+    base.src=basePath+'home-gsap-base-20260823.js?v='+version;
+    base.defer=true;
+    base.onload=function(){animateVisibleStaticMap();loadEnhancementNearHistory();};
+    base.onerror=loadEnhancementNearHistory;
+    document.head.appendChild(base);
+  }
 })();
