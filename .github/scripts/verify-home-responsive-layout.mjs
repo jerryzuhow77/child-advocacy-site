@@ -303,7 +303,7 @@ try {
 
     assert(initial.order.media < initial.order.latest, `[${width}] 新聞專區必須位於最新快報之前`, initial.order);
     assert(initial.counts.media >= 8, `[${width}] 新聞專區文章數不足`, initial.counts.media);
-    assert(initial.counts.pinned === 12, `[${width}] 置頂入口數量應為 12`, initial.counts.pinned);
+    assert(initial.counts.pinned === 13, `[${width}] 置頂入口數量應為 13`, initial.counts.pinned);
     assert(initial.counts.recent === 7, `[${width}] 摩天輪近期文章數量應為 7`, initial.counts.recent);
     assert(initial.counts.seasonal === 17, `[${width}] 秋季水墨專區數量應為 17`, initial.counts.seasonal);
     assert(initial.counts.engagement >= 45, `[${width}] 互動控制列未完整建立`, initial.counts.engagement);

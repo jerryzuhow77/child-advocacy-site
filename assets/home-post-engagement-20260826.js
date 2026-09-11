@@ -16,6 +16,14 @@
 
   const targetDefinitions = [
     { selector: ".home-priority-links a.is-hearing", layout: "priority" },
+    {
+      selector: "#home-media-reports article.home-media-report-card",
+      layout: "media-report",
+      resolve: (card) => ({
+        link: card.querySelector("h3 a[href]") || card.querySelector("a.home-media-report-action") || card.querySelector("a[href]"),
+        host: card.querySelector(".home-media-report-copy") || card,
+      }),
+    },
     { selector: "#news-flash a.home-pinned-report-card:not([data-pinned-clone])", layout: "pinned" },
     { selector: "#news-flash a.home-document-disc-card", layout: "disc" },
     {
