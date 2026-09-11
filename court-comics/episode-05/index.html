@@ -175,6 +175,135 @@
     @media(max-width:960px){.worker-test-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(max-width:760px){.worker-legal-note,.worker-findings,.worker-disclaimer{padding:22px 20px}.worker-test-grid,.worker-case-grid{grid-template-columns:1fr}.worker-case-card{padding:22px 20px}.worker-timeline li{padding-left:82px}.worker-timeline li:before{left:66px}.worker-timeline li:after{left:61px}}
 
+  
+    /* 2026-09-11｜第三章繡藝章節工具列與對話框精修 */
+    .chapter-nav{
+      position:relative;
+      isolation:isolate;
+      counter-reset:chapter-link;
+      gap:10px;
+      padding:18px 20px;
+      border:1px solid rgba(126,67,55,.34);
+      border-radius:22px;
+      background:
+        linear-gradient(135deg,rgba(255,252,239,.97),rgba(247,226,199,.94)),
+        repeating-linear-gradient(90deg,transparent 0 18px,rgba(184,130,58,.05) 18px 19px);
+      box-shadow:0 16px 34px rgba(67,37,29,.13),inset 0 0 0 5px rgba(255,249,231,.78);
+    }
+    .chapter-nav:before,.chapter-nav:after{
+      content:"";
+      position:absolute;
+      z-index:-1;
+      pointer-events:none;
+      border-radius:inherit;
+    }
+    .chapter-nav:before{inset:7px;border:1px dashed rgba(165,105,44,.62)}
+    .chapter-nav:after{inset:12px;border:1px solid rgba(118,57,51,.16)}
+    .chapter-nav a{
+      counter-increment:chapter-link;
+      position:relative;
+      min-height:52px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 10px 12px 32px;
+      border:1px solid rgba(130,74,58,.16);
+      border-radius:14px;
+      background:rgba(255,250,237,.76);
+      color:#593833;
+      line-height:1.35;
+      box-shadow:0 5px 12px rgba(76,43,32,.07),inset 0 0 0 1px rgba(255,255,255,.65);
+      transition:transform .2s ease,box-shadow .2s ease,background .2s ease,color .2s ease;
+    }
+    .chapter-nav a:before{
+      content:counter(chapter-link,decimal-leading-zero);
+      position:absolute;
+      left:9px;
+      top:50%;
+      transform:translateY(-50%);
+      display:grid;
+      place-items:center;
+      width:20px;
+      height:20px;
+      border:1px solid rgba(170,113,45,.65);
+      border-radius:50%;
+      background:radial-gradient(circle,#fff8d7 0 34%,#d8aa52 36% 43%,#7a4039 45% 100%);
+      color:#fff9e9;
+      font:800 .61rem/1 system-ui;
+      letter-spacing:0;
+      box-shadow:0 2px 5px rgba(67,36,28,.18);
+    }
+    .chapter-nav a:hover,.chapter-nav a:focus-visible{
+      transform:translateY(-2px);
+      background:linear-gradient(135deg,#7b4039,#9d5848);
+      color:#fffaf0;
+      box-shadow:0 9px 18px rgba(74,40,31,.18),inset 0 0 0 1px rgba(231,190,102,.38);
+      outline:2px solid #d8ac58;
+      outline-offset:2px;
+    }
+    .quote-line{
+      position:relative;
+      margin:28px 0;
+      padding:23px 24px 23px 68px;
+      border:1px solid rgba(139,76,60,.28);
+      border-left:0;
+      border-radius:7px 22px 22px 7px;
+      background:linear-gradient(135deg,rgba(255,249,226,.98),rgba(246,221,190,.9));
+      color:#52352f;
+      font-size:1.05rem;
+      line-height:1.85;
+      box-shadow:0 12px 26px rgba(70,39,30,.11),inset 5px 0 0 #9b4e44,inset 9px 0 0 #d2a04c;
+    }
+    .quote-line:before{
+      content:"「";
+      position:absolute;
+      left:23px;
+      top:13px;
+      color:#984b42;
+      font:800 2.7rem/1 serif;
+      text-shadow:1px 1px 0 #f2d991;
+    }
+    .quote-line:after{
+      content:"";
+      position:absolute;
+      right:17px;
+      bottom:-8px;
+      width:15px;
+      height:15px;
+      transform:rotate(45deg);
+      border-right:1px solid rgba(139,76,60,.25);
+      border-bottom:1px solid rgba(139,76,60,.25);
+      background:#f7e4c5;
+    }
+    .quote-line strong{color:#713d37}
+    .opening,.chapter-verdict,.contact-boundary,.family-closing,.worker-disclaimer{
+      border-color:rgba(132,73,57,.24);
+      box-shadow:0 12px 28px rgba(68,38,29,.09),inset 0 0 0 1px rgba(255,255,255,.58);
+    }
+    @media(max-width:760px){
+      .chapter-nav{
+        display:flex;
+        gap:9px;
+        margin-left:-16px;
+        margin-right:-16px;
+        padding:15px 16px 17px;
+        overflow-x:auto;
+        scroll-snap-type:x proximity;
+        scrollbar-width:thin;
+        scrollbar-color:#a8654f rgba(255,247,225,.65);
+        border-radius:0;
+      }
+      .chapter-nav a{
+        flex:0 0 min(43vw,174px);
+        min-height:58px;
+        padding:11px 9px 11px 31px;
+        scroll-snap-align:start;
+        font-size:.82rem;
+      }
+      .quote-line{padding:21px 18px 21px 52px;font-size:1rem;line-height:1.78}
+      .quote-line:before{left:17px;top:15px;font-size:2.15rem}
+    }
+
   </style>
 </head>
 <body>
@@ -831,7 +960,7 @@
           <li><time datetime="2026-09-10">2026/09/10</time><span>未取得足以確認個人刑事定讞的官方判決文本。</span></li>
         </ol><p class="worker-responsibility"><b>責任讀法：</b>「未找到」不是「不存在」；若後續取得判決、起訴或行政報告，應按程序狀態更新，而不是補寫推測。</p><a class="worker-source" href="https://www.japaneselawtranslation.go.jp/en/laws/view/3581/en" target="_blank" rel="noopener noreferrer">日本法務省法律翻譯網站（刑法）↗</a></article>
       </div>
-      <div class="worker-compare-block"><h4>八案責任與程序比較</h4><p>比較的是角色、義務與程序，不是用刑期排列國家優劣。表中「未見定罪」只代表目前可核對公開資料的結果。</p><div class="worker-compare-wrap" role="region" aria-label="八個國外兒保責任案例比較表，可左右滑動查看" tabindex="0"><table class="worker-compare"><thead><tr><th>案件</th><th>工作者角色</th><th>是否直接照顧</th><th>個人刑事結果</th><th>其他問責</th><th>對臺灣的意義</th></tr></thead><tbody>
+      <div class="worker-compare-block"><h4>七案責任比較與日本判例查核</h4><p>本表整理七個具名兒童死亡案件，另列一項日本司法判例查核結果；比較的是角色、義務與程序，不是用刑期排列國家優劣。表中「未見定罪」只代表目前可核對公開資料的結果。</p><div class="worker-compare-wrap" role="region" aria-label="七個兒保責任案件與一項日本判例查核結果比較表，可左右滑動查看" tabindex="0"><table class="worker-compare"><thead><tr><th>案件</th><th>工作者角色</th><th>是否直接照顧</th><th>個人刑事結果</th><th>其他問責</th><th>對臺灣的意義</th></tr></thead><tbody>
 <tr><td>剴剴案</td><td>收出養個案社工</td><td>否</td><td>依頁面最新審級標示過失致死判決，未確定前不稱定讞</td><td>機構、督導與制度檢討</td><td>保護義務、查核強度與漏接因果</td></tr>
 <tr><td>AJ Freund</td><td>DCFS調查員</td><td>否</td><td>危害兒童罪定罪；不是過失致死</td><td>主管同案獲判無罪</td><td>職位不同仍須個別證明責任</td></tr>
 <tr><td>Logan Marr</td><td>前兒保工作者兼寄養者</td><td>是</td><td>Manslaughter定罪，17年</td><td>安置與利益衝突規則檢討</td><td>直接控制不能類推為一般漏訪</td></tr>
