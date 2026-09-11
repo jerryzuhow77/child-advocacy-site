@@ -9,6 +9,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DAYS = {
+    1: "20250422",
+    2: "20250423",
+    3: "20250425",
+    4: "20250428",
+    5: "20250429",
     6: "20250430",
     7: "20250502",
     8: "20250505",
@@ -18,16 +23,19 @@ DAYS = {
 STYLE = (
     '<link rel="stylesheet" '
     'href="/child-advocacy-site/hearing-records/prison-watch/pw-verbatim.css'
-    '?v=20260909-inline-dialogue-3">'
+    '?v=20260911-speaker-labels-2">'
 )
 INTEGRATION_SCRIPT = (
     '<script src="/child-advocacy-site/hearing-records/prison-watch/pw-verbatim.js'
-    '?v=20260909-inline-dialogue-3"></script>'
+    '?v=20260911-speaker-labels-2"></script>'
 )
 STANDALONE_SCRIPT = (
     '<script src="/child-advocacy-site/hearing-records/prison-watch/'
-    'pw-verbatim-standalone.js?v=20260911-1"></script>'
+    'pw-verbatim-standalone.js?v=20260911-speaker-labels-2"></script>'
 )
+STYLE_RE = re.compile(r'<link rel="stylesheet" href="/child-advocacy-site/hearing-records/prison-watch/pw-verbatim\.css\?v=[^"]+">')
+INTEGRATION_RE = re.compile(r'<script src="/child-advocacy-site/hearing-records/prison-watch/pw-verbatim\.js\?v=[^"]+"></script>\s*')
+STANDALONE_RE = re.compile(r'<script src="/child-advocacy-site/hearing-records/prison-watch/pw-verbatim-standalone\.js\?v=[^"]+"></script>')
 SECTION_TOKEN = re.compile(r"<section\b[^>]*>|</section>", re.IGNORECASE)
 ID_TOKEN = re.compile(r'\bid="([^"]+)"')
 
@@ -88,7 +96,9 @@ def main() -> None:
                 count=1,
                 flags=re.IGNORECASE,
             )
-            if STYLE not in target_text:
+            if STYLE_RE.search(target_text):
+                target_text = STYLE_RE.sub(STYLE, target_text, count=1)
+            elif STYLE not in target_text:
                 target_text = target_text.replace("</head>", STYLE + "\n</head>", 1)
             if 'id="verbatim-source"' in target_text:
                 existing_block = extract_section(target_text, "verbatim-source")
@@ -99,9 +109,10 @@ def main() -> None:
             # The Traditional-Chinese pages use pw-verbatim.js to heuristically
             # pair same-language rows with editorial cards. That heuristic must
             # not run across languages, where it can create false pairings.
-            target_text = target_text.replace(INTEGRATION_SCRIPT + "\n", "")
-            target_text = target_text.replace(INTEGRATION_SCRIPT, "")
-            if STANDALONE_SCRIPT not in target_text:
+            target_text = INTEGRATION_RE.sub("", target_text)
+            if STANDALONE_RE.search(target_text):
+                target_text = STANDALONE_RE.sub(STANDALONE_SCRIPT, target_text, count=1)
+            elif STANDALONE_SCRIPT not in target_text:
                 target_text = target_text.replace("</body>", STANDALONE_SCRIPT + "\n</body>", 1)
 
             missing = source_ids - set(ID_TOKEN.findall(target_text))
