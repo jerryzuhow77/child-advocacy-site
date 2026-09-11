@@ -21,7 +21,7 @@ FLAG_MARKER = "data-cpa-four-language-toolbar-flag"
 JS_MARKER = "data-cpa-four-language-toolbar-script"
 CSS_TAG = f'<link {CSS_MARKER} rel="stylesheet" href="{BASE}assets/four-language-toolbar-20260901.css?v={VERSION}">'
 FLAG_TAG = f'<script {FLAG_MARKER}>window.__cpaFourLanguageToolbar=true;</script>'
-JS_TAG = f'<script {JS_MARKER} src="{BASE}assets/four-language-toolbar-20260901.js?v=20260909-hk-routing-3"></script>'
+JS_TAG = f'<script {JS_MARKER} src="{BASE}assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"></script>'
 LEGAL_TAG = f'<script data-cpa-legal-notice-script src="{BASE}assets/legal-notice.js?v=20260905-footer-1"></script>'
 
 
