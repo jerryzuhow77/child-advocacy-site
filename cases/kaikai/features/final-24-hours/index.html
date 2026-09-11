@@ -179,6 +179,17 @@
                 </details>
               </div>
             </li>
+            <li id="feeding-2200" class="event" data-status="disputed" data-view="event">
+              <div class="time" data-feeding-i18n="time">12月23日 22:00+</div>
+              <div class="card">
+                <span class="status disputed" data-feeding-i18n="status">說法待核｜被告供述</span>
+                <h3 data-feeding-i18n="title">劉彩萱稱10點多餵奶，時序遭法官質疑</h3>
+                <p data-feeding-i18n="claim">2025年4月30日庭訊中，劉彩萱稱2023年12月23日約22時拿奶粉，剴剴在22時多喝完奶。</p>
+                <p data-feeding-i18n="comparison">法官以救護員12月24日00:27抵達，以及鑑定推估前晚21:30–22:00死亡，追問時序不符。</p>
+                <p class="source-note" data-feeding-i18n="boundary">以上為媒體庭審摘述，不等於餵奶／灌奶已證實，也不是確定死亡時刻；鑑定、救護紀錄與庭訊筆錄原件仍待核對。</p>
+                <a class="evidence-link" href="#source-feeding-20250501" data-feeding-i18n="sourceJump">來源與報導日期</a>
+              </div>
+            </li>
             <li class="event" data-status="disputed" data-view="event">
               <div class="time">23日晚—24日凌晨</div>
               <div class="card">
@@ -701,6 +712,10 @@
             <h2>每一項判斷都要回到來源</h2>
           </div>
           <ol>
+            <li id="source-feeding-20250501">
+              <a href="https://www.taisounds.com/news/content/97/187907" rel="noopener" data-feeding-i18n="sourceLabel">太報｜2025年5月1日庭審報導（侯柏青）</a>
+              <span data-feeding-i18n="sourceNote">記錄4月30日供述與法官追問；事件日期為2023年12月23日至24日，非鑑定或筆錄原件。</span>
+            </li>
             <li>
               <a
                 href="https://www.cna.com.tw/news/asoc/202512220165.aspx"
@@ -791,6 +806,54 @@
       <a href="#timeline">時間軸</a><a href="#matrix">知情矩陣</a
       ><a href="#conflicts">差異</a><a href="#sources">來源</a>
     </nav>
+    <script data-feeding-timeline-l10n>
+      (() => {
+        const translations = {
+          "zh-Hans": {
+            time: "12月23日 22:00+",
+            status: "说法待核｜被告供述",
+            title: "刘彩萱称10点多喂奶，时序遭法官质疑",
+            claim: "2025年4月30日庭讯中，刘彩萱称2023年12月23日约22时拿奶粉，剀剀在22时多喝完奶。",
+            comparison: "法官以救护员12月24日00:27抵达，以及鉴定推估前晚21:30–22:00死亡，追问时序不符。",
+            boundary: "以上为媒体庭审摘述，不等于喂奶／灌奶已证实，也不是确定死亡时刻；鉴定、救护记录与庭讯笔录原件仍待核对。",
+            sourceJump: "来源与报道日期",
+            sourceLabel: "太报｜2025年5月1日庭审报道（侯柏青）",
+            sourceNote: "记录4月30日供述与法官追问；事件日期为2023年12月23日至24日，非鉴定或笔录原件。",
+          },
+          ja: {
+            time: "12月23日 22時過ぎ",
+            status: "要照合｜被告人の供述",
+            title: "劉彩萱の「22時過ぎの授乳」供述に裁判官が疑問",
+            claim: "2025年4月30日の審理で、劉彩萱は2023年12月23日22時頃に粉ミルクを取り、剴剴が22時過ぎに飲み終えたと供述した。",
+            comparison: "裁判官は救急隊の12月24日00:27到着と、鑑定による前夜21:30–22:00の死亡推定を挙げ、時間の食い違いを問うた。",
+            boundary: "報道による審理の要約であり、授乳・強制的な注入や正確な死亡時刻の立証ではない。鑑定書、救急記録、審理調書の原本は要照合。",
+            sourceJump: "出典と報道日",
+            sourceLabel: "太報｜2025年5月1日の審理報道（侯柏青）",
+            sourceNote: "4月30日の供述と裁判官の質問を報道。対象の出来事は2023年12月23–24日。鑑定書・調書の原本ではない。",
+          },
+          en: {
+            time: "Dec 23 · after 22:00",
+            status: "Disputed | Defendant's account",
+            title: "Judge questions Liu's claim of feeding after 22:00",
+            claim: "At the April 30, 2025 hearing, Liu claimed she fetched formula around 22:00 on December 23, 2023 and Kaikai finished it after 22:00.",
+            comparison: "The judge questioned this against the reported 21:30–22:00 death estimate and the ambulance crew's 00:27 arrival on December 24.",
+            boundary: "This is a press summary, not proof of feeding or forced feeding, or an exact death time. Original forensic, ambulance and hearing records still require checking.",
+            sourceJump: "Source and publication date",
+            sourceLabel: "TaiSounds | May 1, 2025 court report (Hou Po-ching)",
+            sourceNote: "Reports the April 30 testimony and judicial questions about December 23–24, 2023; not an original expert report or transcript.",
+          },
+        };
+        const locale = new URLSearchParams(location.search).get("lang");
+        const copy = Object.prototype.hasOwnProperty.call(translations, locale)
+          ? translations[locale]
+          : null;
+        if (!copy) return;
+        document.querySelectorAll("[data-feeding-i18n]").forEach((element) => {
+          const text = copy[element.dataset.feedingI18n];
+          if (typeof text === "string") element.textContent = text;
+        });
+      })();
+    </script>
     <script src="./assets/article.js?v=14"></script>
   <script data-cpa-four-language-toolbar-script src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260909-hk-routing-3"></script>
 <script data-cpa-legal-notice-script src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"></script>
