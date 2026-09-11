@@ -11,6 +11,7 @@
   const BOOKMARK_KEY = "cpa_article_bookmarks_v1";
   const LIKED_KEY = "cpa_engagement_liked_v1";
   const HK_MIRROR_HOST = "cn.globalprotectionwall.com";
+  const HK_SITE_BASE = "https://cn.globalprotectionwall.com/child-advocacy-site/";
   // Every published article has necessarily been opened at least once during
   // authoring or publication.  A zero therefore means that a counter key was
   // reset/split during a migration, not that the article has never been read.
@@ -118,7 +119,7 @@
     const toolbar=document.getElementById('cpa-four-language-toolbar');if(!toolbar)return;
     const words=navigationCopy[locale()],home=toolbar.querySelector('.cpa-four-language-brand');
     home.setAttribute('aria-label',words[0]);home.title=words[0];
-    home.href=locale()==='en'||locale()==='ja'?ROOT+locale()+'/':(locale()==='zh-Hans'?'https://cn.globalprotectionwall.com/':ROOT);
+    home.href=locale()==='en'||locale()==='ja'?ROOT+locale()+'/':(locale()==='zh-Hans'?HK_SITE_BASE:ROOT);
     home.querySelector('span').textContent='⌂';home.querySelector('b').textContent=words[0];
     if(!toolbar.dataset.languagePreferenceBound){
       toolbar.dataset.languagePreferenceBound='true';
@@ -157,14 +158,14 @@
   }
   function languageUrl(key,href){
     if(!href){
-      return {"zh-Hant":ROOT,"zh-Hans":"https://cn.globalprotectionwall.com/",en:ROOT+"en/",ja:ROOT+"ja/"}[key]||ROOT;
+      return {"zh-Hant":ROOT,"zh-Hans":HK_SITE_BASE,en:ROOT+"en/",ja:ROOT+"ja/"}[key]||ROOT;
     }
     if(key!=="zh-Hans")return href;
     try{
       const direct=new URL(href,"https://jerryzuhow77.github.io");
       if(direct.hostname==="cn.globalprotectionwall.com")return direct.href;
       const relative=direct.pathname.replace(/^\/child-advocacy-site\/?/i,"");
-      return "https://cn.globalprotectionwall.com/"+relative+direct.search+direct.hash;
+      return HK_SITE_BASE+relative+direct.search+direct.hash;
     }catch(_){return href}
   }
   function render(manifest){
