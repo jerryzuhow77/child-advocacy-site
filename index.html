@@ -518,7 +518,7 @@
 <header><span aria-hidden="true">!</span><div><small>IMPORTANT · 近期重要入口</small><h2 id="homePriorityTitle">先看最新進度，再一起行動</h2></div></header>
 <div class="home-priority-links">
 <a class="is-hearing" href="./cases/chen-shangjie/"><time datetime="2026-09-16">09.16</time><span><small>最新開庭資訊・二審準備程序</small><strong>陳尚潔案</strong><em>下午2時30分・臺灣高等法院專一法庭（卯股）</em></span><b aria-hidden="true">→</b></a>
-<a class="is-hearing is-latest-article-priority" href="./news/daily-child-protection-brief-20260911/"><time datetime="2026-09-11">09.11</time><span><small>最新文章・每日護童總報</small><strong>保護不只防止虐待，也要讓孩子安全離開教室</strong><em>剛果民主共和國校園安全事故與美國司法程序的證據分層分析</em></span><b aria-hidden="true">→</b></a>
+<a class="is-hearing is-latest-article-priority" data-daily-brief-priority href="./news/daily-child-protection-brief-20260911/" data-hans-href="https://cn.globalprotectionwall.com/child-advocacy-site/news/daily-child-protection-brief-20260911/"><time datetime="2026-09-11">09.11</time><span><small>最新文章・每日護童總報</small><strong>保護不只防止虐待，也要讓孩子安全離開教室</strong><em>剛果民主共和國校園安全事故與美國司法程序的證據分層分析</em></span><b aria-hidden="true">→</b></a>
 <a class="is-guest" href="#guest-message-home"><span class="home-priority-icon" aria-hidden="true">♡</span><span><small>免登入即可參與</small><strong>留下訪客守護留言</strong><em>祝福、意見與照片皆可投稿</em></span><b aria-hidden="true">↓</b></a>
 </div>
 </div>
@@ -1072,6 +1072,9 @@
 
 <script id="home-history-region-filter-script">
 (()=>{const select=document.getElementById("homeHistoryRegion"),grid=document.getElementById("homeHistoricalGrid");if(!select||!grid)return;const cards=[...grid.querySelectorAll("[data-history-region]")];const apply=()=>{const value=select.value;cards.forEach(card=>{card.hidden=value!=="all"&&card.dataset.historyRegion!==value;});};select.addEventListener("change",apply);apply();})();
+</script>
+<script id="home-daily-brief-priority-script">
+(()=>{const priority=document.querySelector('[data-daily-brief-priority]');if(!priority)return;const daily=[...document.querySelectorAll('.home-media-report-card')].find(card=>card.querySelector('a[href*="/daily-child-protection-brief-"]'));if(!daily)return;const link=daily.querySelector('h3 a[href*="/daily-child-protection-brief-"]'),time=daily.querySelector('time'),summary=daily.querySelector('.home-media-report-copy>p');if(!link||!time)return;const href=link.getAttribute('href'),localized=[...document.querySelectorAll('.home-pinned-report-card[data-hans-href]')].find(card=>card.getAttribute('href')===href);priority.href=href;if(localized?.dataset.hansHref)priority.dataset.hansHref=localized.dataset.hansHref;const priorityTime=priority.querySelector('time'),title=priority.querySelector('strong'),description=priority.querySelector('em');priorityTime.dateTime=time.dateTime;priorityTime.textContent=time.dateTime.slice(5).replace('-','.');title.textContent=link.textContent.trim();if(summary&&description)description.textContent=summary.textContent.trim();})();
 </script>
 <script src="./assets/home-feed-integrity-20260911.js?v=1"></script>
 <script src="./assets/site.js?v=20260905-comment-key-3"></script>
