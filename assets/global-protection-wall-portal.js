@@ -1,9 +1,9 @@
 (function(){
   if(!document.querySelector('link[data-autumn-wall-theme]')){const seasonal=document.createElement('link');seasonal.rel='stylesheet';seasonal.href='../assets/global-protection-wall-autumn-20260908.css?v=20260908-1';seasonal.dataset.autumnWallTheme='true';document.head.append(seasonal);}
   'use strict';
-  const wallBase='https://wall.globalprotectionwall.com/';
-  // Compatibility marker for the existing static QA assertion; active traffic uses wallBase above.
-  // const wallBase='https://global-protection.jerryzuhow77.chatgpt.site/';
+  const wallBase='https://global-protection.jerryzuhow77.chatgpt.site/';
+  // Temporary direct Sites route while custom-domain DNS validation is pending.
+  // Restore wall.globalprotectionwall.com after both custom domains report active.
   const mainlandWallBase='https://cn.globalprotectionwall.com/';
   const supported=['zh-Hant','zh-Hans','en','ja'];
   const regions=['tw','hk'];
