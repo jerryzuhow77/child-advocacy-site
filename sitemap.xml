@@ -750,7 +750,7 @@
   </url>
   <url>
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/news/</loc>
-    <lastmod>2026-09-09</lastmod>
+    <lastmod>2026-09-11</lastmod>
   </url>
   <url>
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/news/child-protection-oversight-202608/</loc>
@@ -779,6 +779,22 @@
   <url>
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260909/zh-Hans/</loc>
     <lastmod>2026-09-09</lastmod>
+  </url>
+  <url>
+    <loc>https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260910/</loc>
+    <lastmod>2026-09-11</lastmod>
+  </url>
+  <url>
+    <loc>https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260910/zh-Hans/</loc>
+    <lastmod>2026-09-11</lastmod>
+  </url>
+  <url>
+    <loc>https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260911/</loc>
+    <lastmod>2026-09-11</lastmod>
+  </url>
+  <url>
+    <loc>https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260911/zh-Hans/</loc>
+    <lastmod>2026-09-11</lastmod>
   </url>
   <url>
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/news/early-warning-audit-20260908/</loc>
@@ -868,9 +884,4 @@
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/zh-hans/historical-cases/regions/mainland-china/fujian-qiqi/</loc>
     <lastmod>2026-09-09</lastmod>
   </url>
-
-  <url><loc>https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260910/</loc><lastmod>2026-09-11</lastmod></url>
-  <url><loc>https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260910/zh-Hans/</loc><lastmod>2026-09-11</lastmod></url>
-  <url><loc>https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260911/</loc><lastmod>2026-09-11</lastmod></url>
-  <url><loc>https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260911/zh-Hans/</loc><lastmod>2026-09-11</lastmod></url>
 </urlset>
