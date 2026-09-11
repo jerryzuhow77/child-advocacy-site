@@ -4,7 +4,9 @@
   var gsap = window.gsap;
   var ScrollTrigger = window.ScrollTrigger;
   var embroideryStyles = ['emb-suzhou', 'emb-shu', 'emb-xiang', 'emb-yue', 'emb-suzhou', 'emb-suzhou', 'emb-shu', 'emb-xiang', 'emb-yue'];
-  var embroideryLabels = ['蘇繡・雙面繡與套針暈色', '蜀繡・雲紋與蓮花暈針', '湘繡・立體葉片與深淺絲理', '粵繡・盤金與珠光結點', '蘇繡・套針暈色', '蘇繡・細密平針', '蜀繡・雲紋暈針', '湘繡・立體葉片', '粵繡・盤金珠結'];
+  var traditionalLabels = ['蘇繡・雙面繡與套針暈色', '蜀繡・雲紋與蓮花暈針', '湘繡・立體葉片與深淺絲理', '粵繡・盤金與珠光結點', '蘇繡・套針暈色', '蘇繡・細密平針', '蜀繡・雲紋暈針', '湘繡・立體葉片', '粵繡・盤金珠結'];
+  var simplifiedLabels = ['苏绣・双面绣与套针晕色', '蜀绣・云纹与莲花晕针', '湘绣・立体叶片与深浅丝理', '粤绣・盘金与珠光结点', '苏绣・套针晕色', '苏绣・细密平针', '蜀绣・云纹晕针', '湘绣・立体叶片', '粤绣・盘金珠结'];
+  var embroideryLabels = document.documentElement.lang === 'zh-Hans' ? simplifiedLabels : traditionalLabels;
   document.querySelectorAll('.scene').forEach(function (scene, index) {
     scene.classList.add(embroideryStyles[index] || 'emb-suzhou');
     var label = scene.querySelector('.embroidery-label');
