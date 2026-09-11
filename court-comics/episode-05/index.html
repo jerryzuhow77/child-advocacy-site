@@ -356,10 +356,113 @@
       .chapter-nav{display:none}
     }
 
+  
+    /* 2026-09-11｜頂端工具列章節下拉選單 */
+    .topbar{overflow:visible}
+    .topbar .shell{position:relative}
+    .top-chapter-menu{position:relative}
+    .top-chapter-menu summary{
+      display:flex;
+      align-items:center;
+      gap:7px;
+      min-height:39px;
+      padding:9px 13px;
+      border:1px dashed rgba(245,213,132,.62);
+      border-radius:999px;
+      color:#fff8e9;
+      font:700 .9rem/1.2 system-ui;
+      list-style:none;
+      cursor:pointer;
+      user-select:none;
+    }
+    .top-chapter-menu summary::-webkit-details-marker{display:none}
+    .top-chapter-menu summary i{font-style:normal;font-size:1.05rem;transition:transform .2s ease}
+    .top-chapter-menu[open] summary,.top-chapter-menu summary:hover{background:#fff2d5;color:#53312d}
+    .top-chapter-menu[open] summary i{transform:rotate(180deg)}
+    .top-chapter-menu summary:focus-visible{outline:3px solid #edc86d;outline-offset:3px}
+    .top-chapter-panel{
+      position:absolute;
+      top:calc(100% + 12px);
+      right:0;
+      z-index:50;
+      display:grid;
+      grid-template-columns:repeat(2,minmax(190px,1fr));
+      gap:7px;
+      width:min(460px,calc(100vw - 24px));
+      padding:16px;
+      border:1px solid rgba(227,184,87,.72);
+      border-radius:19px;
+      background:linear-gradient(145deg,rgba(78,40,37,.985),rgba(92,49,43,.985) 62%,rgba(43,72,71,.98));
+      box-shadow:0 20px 48px rgba(27,17,15,.38),inset 0 0 0 4px rgba(255,241,198,.07);
+    }
+    .top-chapter-panel:before{
+      content:"";
+      position:absolute;
+      inset:7px;
+      z-index:-1;
+      border:1px dashed rgba(239,198,102,.42);
+      border-radius:13px;
+      pointer-events:none;
+    }
+    .top-chapter-panel a{
+      display:flex;
+      align-items:center;
+      gap:9px;
+      min-height:43px;
+      padding:9px 11px;
+      border:1px solid rgba(255,239,193,.15);
+      border-radius:11px;
+      color:#fff8e9;
+      font-size:.88rem;
+      line-height:1.35;
+      text-align:left;
+      white-space:normal;
+    }
+    .top-chapter-panel a b{
+      display:grid;
+      place-items:center;
+      flex:0 0 24px;
+      width:24px;
+      height:24px;
+      border:1px solid rgba(235,192,92,.68);
+      border-radius:50%;
+      color:#f3d584;
+      font-size:.67rem;
+    }
+    .top-chapter-panel a:hover,.top-chapter-panel a:focus-visible{background:rgba(255,244,210,.15);color:#fffdf5;outline:2px solid rgba(237,200,109,.8);outline-offset:1px}
+    @media(max-width:760px){
+      .topbar .shell{gap:8px}
+      .topbar .nav{gap:6px}
+      .topbar .nav>a{padding:8px 10px;font-size:.8rem}
+      .top-timeline-link{display:none}
+      .top-chapter-menu summary{min-height:36px;padding:8px 10px;font-size:.8rem}
+      .top-chapter-panel{
+        position:fixed;
+        top:68px;
+        left:10px;
+        right:10px;
+        width:auto;
+        max-height:calc(100dvh - 92px);
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        padding:15px;
+        overflow-y:auto;
+        overscroll-behavior:contain;
+      }
+      .top-chapter-panel a{min-height:46px;padding:9px 8px;font-size:.82rem}
+      .top-chapter-panel a b{flex-basis:22px;width:22px;height:22px}
+      body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+      .mobile-nav{bottom:calc(8px + env(safe-area-inset-bottom))}
+    }
+    @media(max-width:390px){
+      .topbar .nav>a{padding:7px 8px;font-size:.76rem}
+      .top-chapter-menu summary{padding:7px 9px}
+      .top-chapter-panel{grid-template-columns:1fr}
+    }
+
   </style>
 </head>
 <body>
-  <header class="topbar"><div class="shell"><a class="brand" href="../../"><img src="../../assets/brand/primary-logo-03-thumb.jpg" alt=""><span>護童行動聯盟</span></a><nav class="nav" aria-label="頁面導覽"><a href="../../">首頁</a><a href="#timeline">證據時間軸</a><a href="#sources">資料來源</a></nav></div></header>
+  <header class="topbar"><div class="shell"><a class="brand" href="../../"><img src="../../assets/brand/primary-logo-03-thumb.jpg" alt=""><span>護童行動聯盟</span></a><nav class="nav" aria-label="頁面導覽"><a href="../../">首頁</a><a class="top-timeline-link" href="#timeline">證據時間軸</a><a href="#sources">資料來源</a><details class="top-chapter-menu"><summary aria-label="開啟第三章章節選單"><span>章節選單</span><i aria-hidden="true">⌄</i></summary><div class="top-chapter-panel" aria-label="第三章十二段導覽"><a href="#method"><b>01</b>閱讀方法</a><a href="#evidence"><b>02</b>證據地圖</a><a href="#medical"><b>03</b>牙科資訊鏈</a><a href="#threshold"><b>04</b>升級門檻</a><a href="#family-contact"><b>05</b>案情・親屬・社工</a><a href="#three-way-tree"><b>06</b>三方關係樹</a><a href="#case-comparison"><b>07</b>二十四案漏接</a><a href="#sentencing-comparison"><b>08</b>量刑比較</a><a href="#social-worker-precedents"><b>09</b>社工判例</a><a href="#current"><b>10</b>新聞進度</a><a href="#reform"><b>11</b>制度改革</a><a href="#review"><b>12</b>查核界限</a></div></details></nav></div></header>
   <main>
     <section class="hero"><div class="shell"><div class="hero-card embroidered"><i class="knot knot-a" aria-hidden="true"></i><i class="knot knot-b" aria-hidden="true"></i><i class="gold-thread" aria-hidden="true"></i><div class="hero-copy"><span class="draft">獨立專題｜僅限網址閱覽</span><div class="eyebrow">KAIKAI CASE · CHAPTER 03</div><h1><span>剴剴案第三章</span>被延後的訪視</h1><p class="lead">等待、紀錄與責任。門關上後，誰該換一種方式？本章不只計算訪視次數，而是把延期、場域、醫療訊息、累積警訊與查核方法放回同一條證據鏈。</p><ol class="chain"><li>約定與改期</li><li>實際接觸</li><li>醫療轉述</li><li>警訊疊加</li><li>查核升級</li></ol><a class="new-art-link" href="#reader"><span>NEW</span>直接觀看九幕紙雕證據圖卡</a></div></div></div></section>
     <div class="shell"><div class="chapter-jump embroidered" role="group" aria-labelledby="chapter-jump-label"><label id="chapter-jump-label" for="chapter-jump-select"><span>章節導覽</span><strong>快速前往第三章各節</strong></label><div class="chapter-select-shell"><select id="chapter-jump-select" aria-label="選擇要前往的第三章段落"><option value="">請選擇章節…</option><option value="#method">01｜閱讀方法</option><option value="#evidence">02｜證據地圖</option><option value="#medical">03｜牙科資訊鏈</option><option value="#threshold">04｜升級門檻</option><option value="#family-contact">05｜案情・親屬・社工</option><option value="#three-way-tree">06｜三方關係樹</option><option value="#case-comparison">07｜二十四案漏接</option><option value="#sentencing-comparison">08｜量刑比較</option><option value="#social-worker-precedents">09｜社工判例</option><option value="#current">10｜新聞進度</option><option value="#reform">11｜制度改革</option><option value="#review">12｜查核界限</option></select><span class="chapter-select-arrow" aria-hidden="true">⌄</span></div></div><nav class="chapter-nav" aria-label="第三章十二段導覽"><a href="#method">閱讀方法</a><a href="#evidence">證據地圖</a><a href="#medical">牙科資訊鏈</a><a href="#threshold">升級門檻</a><a href="#family-contact">案情・親屬・社工</a><a href="#three-way-tree">三方關係樹</a><a href="#case-comparison">二十四案漏接</a><a href="#sentencing-comparison">量刑比較</a><a href="#social-worker-precedents">社工判例</a><a href="#current">新聞進度</a><a href="#reform">制度改革</a><a href="#review">查核界限</a></nav><div class="opening"><strong>閱讀界限：</strong>延期本身不等於違法；完成訪視也不等於已完成充分查核。本頁區分機構公開時間軸、媒體庭審整理、一審法院認定與倡議分析。公開摘要不能替代原始通訊、病歷、處遇紀錄、完整勘驗筆錄或判決原本，尚未取得之處均明確標示待核。</div><article class="chapter-verdict" aria-labelledby="chapter-verdict-title"><h2 id="chapter-verdict-title">第三章核心結論</h2><p>剴剴案不是只有一次訪視延期，也不是只有一名工作者漏看一項傷勢。這是一名等待出養、已與原生家庭失去直接聯繫的孩子，在保母照顧、機構訪視、醫療資訊、督導複核與公權力保護之間，一再沒有被完整看見。當家屬不能接近孩子，制度就應承擔更高的親見、查證與交接責任，而不是讓孩子只剩照顧者提供的單一版本。</p></article></div>
@@ -1189,6 +1292,26 @@
       });
       window.addEventListener('hashchange', syncSelection);
       syncSelection();
+    })();
+  </script>
+
+
+  <script>
+    (() => {
+      const menu = document.querySelector('.top-chapter-menu');
+      if (!menu) return;
+      menu.querySelectorAll('.top-chapter-panel a').forEach(link => {
+        link.addEventListener('click', () => { menu.open = false; });
+      });
+      document.addEventListener('click', event => {
+        if (menu.open && !menu.contains(event.target)) menu.open = false;
+      });
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && menu.open) {
+          menu.open = false;
+          menu.querySelector('summary').focus();
+        }
+      });
     })();
   </script>
 
