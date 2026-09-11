@@ -74,12 +74,12 @@ full_routes = [
     'hearing-records/tucheng-domestic-violence-double-homicide-20260821/',
     'hearing-records/prison-watch/kaikai-final-chapter/',
     'hearing-records/prison-watch/kaikai-final-chapter/witnesses/',
-] + [f'hearing-records/prison-watch/kaikai-day{day}-{date}/' for day,date in [(6,'20250430'),(7,'20250502'),(8,'20250505'),(9,'20250506'),(10,'20250507')]]
+] + [f'hearing-records/prison-watch/kaikai-day{day}-{date}/' for day,date in [(1,'20250422'),(2,'20250423'),(3,'20250425'),(4,'20250428'),(5,'20250429'),(6,'20250430'),(7,'20250502'),(8,'20250505'),(9,'20250506'),(10,'20250507')]]
 for route in full_routes:
     editions = routes[route]
     _, source = read(editions['zh-Hant'])
     required = Document(source).ids
-    for locale in ('en', 'ja'):
+    for locale in ('zh-Hans', 'en', 'ja'):
         if locale not in editions:
             continue
         path, text = read(editions[locale])

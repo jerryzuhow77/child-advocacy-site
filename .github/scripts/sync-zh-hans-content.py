@@ -123,6 +123,19 @@ def replace_og_url(document: str, href: str) -> str:
         return document[:match.start()] + replacement + document[match.end():]
     return document
 
+
+def ensure_shared_record_assets(document: str, source: str) -> str:
+    """Carry required transcript assets into older physical locale shells."""
+    patterns = (
+        (r'<link\b[^>]*href=["\'][^"\']*pw-verbatim\.css[^"\']*["\'][^>]*>', "</head>"),
+        (r'<script\b[^>]*src=["\'][^"\']*pw-verbatim\.js[^"\']*["\'][^>]*></script>', "</body>"),
+    )
+    for pattern, marker in patterns:
+        source_tag = re.search(pattern, source, re.I)
+        if source_tag and not re.search(pattern, document, re.I):
+            document = document.replace(marker, source_tag.group(0) + "\n" + marker, 1)
+    return document
+
 def structural_signature(fragment: str) -> dict[str, object]:
     tags = {tag: len(re.findall(rf"<{tag}\b", fragment, re.I)) for tag in ("h1", "h2", "h3", "p", "li", "details", "section", "article")}
     ids = sorted(re.findall(r"\bid\s*=\s*[\"']([^\"']+)", fragment, re.I))
@@ -185,23 +198,25 @@ def synchronize(check_only: bool) -> int:
     converter = OpenCC("t2s")
     changed = 0
     for route, source, target, hans_url in pairs:
-        if not source.exists() or not target.exists():
-            errors.append(f"{route}: missing physical source or zh-Hans page")
+        if not source.exists():
+            errors.append(f"{route}: missing physical source page")
             continue
         source_text = source.read_text(encoding="utf-8")
-        target_text = target.read_text(encoding="utf-8")
+        target_text = target.read_text(encoding="utf-8") if target.exists() else source_text
         source_main = MAIN_RE.search(source_text)
         target_main = MAIN_RE.search(target_text)
         if not source_main or not target_main:
-            errors.append(f"{route}: missing main element")
+            errors.append(f"{route}: missing source or target main element")
             continue
         converted_main = convert_html(source_main.group(0), source, target, source_to_hans, converter)
         updated = target_text[:target_main.start()] + converted_main + target_text[target_main.end():]
+        updated = ensure_shared_record_assets(updated, source_text)
         updated = re.sub(r'(<html\b[^>]*\blang\s*=\s*)["\'][^"\']+["\']', r'\1"zh-Hans"', updated, count=1, flags=re.I)
         updated = replace_link_href(updated, "canonical", hans_url)
         updated = replace_hreflang(updated, "zh-Hans", hans_url)
         updated = replace_og_url(updated, hans_url)
         if updated != target_text:
+            target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(updated, encoding="utf-8")
             changed += 1
 
