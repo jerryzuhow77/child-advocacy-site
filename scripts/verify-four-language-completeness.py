@@ -16,6 +16,7 @@ INTENTIONALLY_SINGLE_LANGUAGE = {
     'activity-records/20260908-kaikai-cemetery-memorial/',
     'activity-records/20260908-chen-shangjie-hearing-street-advocacy/',
     'cases/kaikai/features/liu-sisters-dialogues/',
+    'news/reporting-threshold-20260911/',
 }
 routes = json.loads((ROOT / 'data/four-language-routes.json').read_text())['routes']
 errors = []
