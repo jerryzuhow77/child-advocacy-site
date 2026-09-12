@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -16,8 +17,14 @@ from opencc import OpenCC
 ROOT = Path(__file__).resolve().parents[2]
 BASE = "/child-advocacy-site/"
 HK_BASE = "https://cn.globalprotectionwall.com"
+# This noindex edition uses manually localized Mainland wording. Keep its body
+# intact while still synchronizing and checking structure plus mirror metadata.
+MANUALLY_LOCALIZED_MAIN_ROUTES = {"court-comics/episode-05/"}
 URL_ATTR_RE = re.compile(r"(?P<prefix>\b(?:href|src|action|poster)\s*=\s*)(?P<quote>[\"'])(?P<url>.*?)(?P=quote)", re.I | re.S)
 MAIN_RE = re.compile(r"<main\b[^>]*>[\s\S]*?</main>", re.I)
+MANUAL_SOURCE_SHA_RE = re.compile(
+    r'\bdata-cpa-source-main-sha256\s*=\s*(["\'])([0-9a-f]{64})\1', re.I
+)
 
 
 def repo_path(url: str) -> Path | None:
@@ -144,6 +151,21 @@ def structural_signature(fragment: str) -> dict[str, object]:
     return {"tags": tags, "ids": ids, "sources": sources}
 
 
+def validate_manual_main_revision(route: str, source_main: str, target_main: str, errors: list[str]) -> bool:
+    """Require a manual translation to name the exact source revision it covers."""
+    if route not in MANUALLY_LOCALIZED_MAIN_ROUTES:
+        return True
+    expected = hashlib.sha256(source_main.encode("utf-8")).hexdigest()
+    marker = MANUAL_SOURCE_SHA_RE.search(target_main)
+    if marker and marker.group(2).lower() == expected:
+        return True
+    errors.append(
+        f'{route}: manually localized zh-Hans main is stale; '
+        f'expected data-cpa-source-main-sha256="{expected}" after editorial review'
+    )
+    return False
+
+
 def synchronize(check_only: bool) -> int:
     manifest = json.loads((ROOT / "data/four-language-routes.json").read_text(encoding="utf-8"))
     pairs: list[tuple[str, Path, Path, str]] = []
@@ -180,6 +202,7 @@ def synchronize(check_only: bool) -> int:
                 continue
             if structural_signature(source_main.group(0)) != structural_signature(target_main.group(0)):
                 errors.append(f"{route}: zh-Hans main content is not structurally complete")
+            validate_manual_main_revision(route, source_main.group(0), target_main.group(0), errors)
             if not re.search(r'<html\b[^>]*lang=["\']zh-Hans["\']', target_text, re.I):
                 errors.append(f"{route}: physical zh-Hans page has the wrong lang")
             if not re.search(rf'<link\b(?=[^>]*rel=["\']canonical["\'])(?=[^>]*href=["\']{re.escape(hans_url)}["\'])', target_text, re.I):
@@ -208,8 +231,13 @@ def synchronize(check_only: bool) -> int:
         if not source_main or not target_main:
             errors.append(f"{route}: missing source or target main element")
             continue
-        converted_main = convert_html(source_main.group(0), source, target, source_to_hans, converter)
-        updated = target_text[:target_main.start()] + converted_main + target_text[target_main.end():]
+        updated = target_text
+        if route in MANUALLY_LOCALIZED_MAIN_ROUTES:
+            if not validate_manual_main_revision(route, source_main.group(0), target_main.group(0), errors):
+                continue
+        else:
+            converted_main = convert_html(source_main.group(0), source, target, source_to_hans, converter)
+            updated = target_text[:target_main.start()] + converted_main + target_text[target_main.end():]
         updated = ensure_shared_record_assets(updated, source_text)
         updated = re.sub(r'(<html\b[^>]*\blang\s*=\s*)["\'][^"\']+["\']', r'\1"zh-Hans"', updated, count=1, flags=re.I)
         updated = replace_link_href(updated, "canonical", hans_url)
