@@ -24,8 +24,9 @@ if (targetStats.scope !== "taiwan-hong-kong-shared") throw new Error("Taiwan tar
 
 const sourceMessages = array(sourcePublic.messages, "Hong Kong messages");
 const targetMessages = array(targetPublic.messages, "Taiwan messages");
+const sourceGuestMessages = sourceMessages.filter((message) => typeof message.id === "string" && UUID.test(message.id));
 const targetIds = new Set(targetMessages.map((message) => string(message.id, "target message id")));
-const sourceOnly = sourceMessages.filter((message) => !targetIds.has(uuid(message.id, "source message id")));
+const sourceOnly = sourceGuestMessages.filter((message) => !targetIds.has(message.id));
 const messageRows = [];
 const versionRows = [];
 
@@ -75,7 +76,7 @@ for (const message of sourceOnly) {
 const targetImageHashes = new Set();
 for (const image of imageEntries(targetMessages)) targetImageHashes.add(await imageHash(targetOrigin, image));
 const imageRows = [];
-for (const image of imageEntries(sourceMessages)) {
+for (const image of imageEntries(sourceGuestMessages)) {
   const hash = await imageHash(sourceOrigin, image);
   if (targetImageHashes.has(hash)) continue;
   imageRows.push({
@@ -118,8 +119,9 @@ const [verifiedSource, verifiedTarget] = apply
   : [sourcePublic, targetPublic];
 const verifiedSourceMessages = array(verifiedSource.messages, "verified Hong Kong messages");
 const verifiedTargetMessages = array(verifiedTarget.messages, "verified Taiwan messages");
+const verifiedSourceGuestMessages = verifiedSourceMessages.filter((message) => typeof message.id === "string" && UUID.test(message.id));
 const verifiedTargetIds = new Set(verifiedTargetMessages.map((row) => string(row.id, "verified target id")));
-const missingIds = verifiedSourceMessages
+const missingIds = verifiedSourceGuestMessages
   .map((row) => uuid(row.id, "verified source id"))
   .filter((id) => !verifiedTargetIds.has(id));
 
@@ -127,7 +129,7 @@ let missingImageCount = 0;
 if (apply) {
   const verifiedTargetHashes = new Set();
   for (const image of imageEntries(verifiedTargetMessages)) verifiedTargetHashes.add(await imageHash(targetOrigin, image));
-  for (const image of imageEntries(verifiedSourceMessages)) {
+  for (const image of imageEntries(verifiedSourceGuestMessages)) {
     if (!verifiedTargetHashes.has(await imageHash(sourceOrigin, image))) missingImageCount += 1;
   }
 }
@@ -142,7 +144,7 @@ console.log(JSON.stringify({
   importedImages: apply ? imageRows.length : 0,
   pendingMessageImports: messageRows.length,
   pendingImageImports: imageRows.length,
-  hongKongPublished: verifiedSourceMessages.length,
+  hongKongPublished: verifiedSourceGuestMessages.length,
   taiwanPublished: verifiedTargetMessages.length,
   hongKongMessagesMissingInTaiwan: missingIds.length,
   hongKongImagesMissingInTaiwan: apply ? missingImageCount : null,
