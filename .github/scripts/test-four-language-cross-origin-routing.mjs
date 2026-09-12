@@ -5,7 +5,12 @@ import vm from 'node:vm';
 const toolbarUrl = new URL('../../assets/four-language-toolbar-20260901.js', import.meta.url);
 const toolbarSource = fs.readFileSync(toolbarUrl, 'utf8');
 
-function simulateRedirect({ href, declaredLanguage, savedLanguage = '', browserLanguages = ['en'] }) {
+const instrumentedToolbarSource = toolbarSource.replace(
+  '  async function init(){',
+  '  window.__testLanguageUrl=languageUrl;\n  async function init(){',
+);
+
+function simulateRedirect({ href, declaredLanguage, savedLanguage = '', browserLanguages = ['en'], source = toolbarSource }) {
   const current = new URL(href);
   const storage = new Map(savedLanguage ? [['siteLang', savedLanguage]] : []);
   let replacement = null;
@@ -28,7 +33,7 @@ function simulateRedirect({ href, declaredLanguage, savedLanguage = '', browserL
   };
   const window = {};
 
-  vm.runInNewContext(toolbarSource, {
+  vm.runInNewContext(source, {
     AbortController,
     URL,
     URLSearchParams,
@@ -43,7 +48,7 @@ function simulateRedirect({ href, declaredLanguage, savedLanguage = '', browserL
     window,
   });
 
-  return { replacement, savedLanguage: storage.get('siteLang') || '' };
+  return { replacement, savedLanguage: storage.get('siteLang') || '', languageUrl: window.__testLanguageUrl };
 }
 
 const english = simulateRedirect({
@@ -64,6 +69,15 @@ const japanese = simulateRedirect({
 assert.equal(japanese.replacement, null, 'A physical Japanese page must override stale Simplified preference.');
 assert.equal(japanese.savedLanguage, 'ja', 'The Taiwan origin must remember the physical Japanese locale.');
 
+const trailingEnglish = simulateRedirect({
+  href: 'https://jerryzuhow77.github.io/child-advocacy-site/features/social-observation/guarantor-status/en/',
+  declaredLanguage: 'en',
+  savedLanguage: 'zh-Hans',
+  browserLanguages: ['zh-CN'],
+});
+assert.equal(trailingEnglish.replacement, null, 'A trailing physical English edition must override stale Simplified preference.');
+assert.equal(trailingEnglish.savedLanguage, 'en', 'A trailing English edition must refresh Taiwan-origin storage.');
+
 const traditionalSelection = simulateRedirect({
   href: 'https://jerryzuhow77.github.io/child-advocacy-site/features/example/?lang=zh-Hant',
   declaredLanguage: 'zh-Hant',
@@ -82,6 +96,29 @@ assert.equal(
   storedSimplified.replacement,
   'https://cn.globalprotectionwall.com/child-advocacy-site/features/example/?lang=zh-Hans',
   'An ordinary Traditional route must keep the existing saved-preference mirror redirect.',
+);
+
+const hongKongRuntime = simulateRedirect({
+  href: 'https://cn.globalprotectionwall.com/child-advocacy-site/zh-Hans/features/example/',
+  declaredLanguage: 'zh-Hans',
+  source: instrumentedToolbarSource,
+});
+assert.equal(typeof hongKongRuntime.languageUrl, 'function', 'The routing helper must be available to the regression harness.');
+for (const [language, route] of [
+  ['zh-Hant', '/child-advocacy-site/features/example/'],
+  ['en', '/child-advocacy-site/en/features/example/'],
+  ['ja', '/child-advocacy-site/ja/features/example/'],
+]) {
+  assert.equal(
+    hongKongRuntime.languageUrl(language, route),
+    `https://jerryzuhow77.github.io${route}`,
+    `${language} root-relative manifest destinations must resolve against Taiwan.`,
+  );
+}
+assert.equal(
+  hongKongRuntime.languageUrl('en', null),
+  'https://jerryzuhow77.github.io/child-advocacy-site/en/',
+  'The English fallback must leave the Hong Kong host.',
 );
 
 assert.match(

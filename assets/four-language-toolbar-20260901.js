@@ -33,6 +33,7 @@
     const physical=(location.pathname.slice(ROOT.length).split("/")[0]||"").toLowerCase();
     if(physical==="en"||physical==="ja"){rememberLocale(physical);return false;}
     const declared=(document.documentElement.lang||"").toLowerCase();
+    if(declared.startsWith("en")||declared.startsWith("ja")){rememberLocale(declared.startsWith("en")?"en":"ja");return false;}
     if(declared.startsWith("zh-hans")||declared==="zh-cn")return true;
     try{
       const saved=(localStorage.getItem("siteLang")||"").toLowerCase();
@@ -174,7 +175,9 @@
     if(!href){
       return {"zh-Hant":TW_SITE_BASE,"zh-Hans":HK_SITE_BASE,en:TW_SITE_BASE+"en/",ja:TW_SITE_BASE+"ja/"}[key]||TW_SITE_BASE;
     }
-    if(key!=="zh-Hans")return href;
+    if(key!=="zh-Hans"){
+      try{return new URL(href,TW_SITE_BASE).href}catch(_){return href}
+    }
     try{
       const direct=new URL(href,"https://jerryzuhow77.github.io");
       if(direct.hostname==="cn.globalprotectionwall.com")return direct.href;
