@@ -1102,6 +1102,17 @@ html[lang="ja"] body {
 }
 
 .comparison-table tbody td:nth-child(2) { width: 34%; }
+.legal-effect-note {
+  max-width: 78ch;
+  margin: -0.45rem 0 1rem;
+  color: #666d69;
+  font-size: 0.9rem;
+}
+.legal-effect-table tbody th a {
+  color: inherit;
+  text-underline-offset: 0.2em;
+}
+.legal-effect-table tbody td { vertical-align: top; }
 .position-table tbody td,
 .knowledge-table tbody td { width: 33.333%; }
 

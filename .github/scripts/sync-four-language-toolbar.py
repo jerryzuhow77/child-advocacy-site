@@ -15,9 +15,10 @@ HK_BASE = "https://cn.globalprotectionwall.com/child-advocacy-site/"
 ROUTE_VERSION = "20260912-6"
 TOOLBAR_CSS_VERSION = "20260909-5"
 COMMENT_VERSION = "20260905-comment-key-3"
-EXCLUDED_ROOTS = {"child-advocacy-site", "child-advocacy-site-main", "source", "handoffs", "global-protection-wall"}
+EXCLUDED_ROOTS = {"child-advocacy-site", "child-advocacy-site-main", "source", "handoffs", "global-protection-wall", "node_modules"}
 EXCLUDED_FILES = {"offline.html", "google5c94bbe55c53b683.html"}
 NOINDEX_ROUTE_EXCEPTIONS = {"court-comics/episode-05/"}
+X_DEFAULT_ROUTES = {"features/kaikai-grandmother-rescue-barriers/"}
 CSS_MARKER = "data-cpa-four-language-toolbar-style"
 FLAG_MARKER = "data-cpa-four-language-toolbar-flag"
 JS_MARKER = "data-cpa-four-language-toolbar-script"
@@ -221,6 +222,11 @@ def main() -> None:
                 (url if urlsplit(url).scheme else 'https://jerryzuhow77.github.io' + url) + '">'
                 for locale, url in sorted(routes[route].items())
             )
+            if route in X_DEFAULT_ROUTES and "zh-Hant" in routes[route]:
+                default_url = routes[route]["zh-Hant"]
+                if not urlsplit(default_url).scheme:
+                    default_url = 'https://jerryzuhow77.github.io' + default_url
+                alternates += f'\n<link rel="alternate" hreflang="x-default" href="{default_url}">'
             updated = re.sub(r'</head>', lambda _: alternates + '\n</head>', updated, count=1, flags=re.I)
         if updated != original:
             write_html(path, updated)
