@@ -157,18 +157,28 @@ async function getJson(url) {
 }
 
 async function getPublicSnapshot(origin, expectedScope, label) {
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    const publishedBefore = await getPublishedCount(origin, expectedScope, label);
+    const url = new URL("/api/public/messages", origin);
+    url.searchParams.set("limit", String(Math.max(publishedBefore, 1)));
+    const payload = await getJson(url);
+    const messages = array(payload.messages, `${label} messages`);
+    const publishedAfter = await getPublishedCount(origin, expectedScope, label);
+    if (publishedBefore !== publishedAfter) continue;
+    if (messages.length < publishedAfter) {
+      throw new Error(`${label} messages incomplete: expected at least ${publishedAfter}, received ${messages.length}`);
+    }
+    return { messages };
+  }
+  throw new Error(`${label} published count did not stabilize`);
+}
+
+async function getPublishedCount(origin, expectedScope, label) {
   const stats = await getJson(`${origin}/api/public/submission-stats`);
   if (stats.scope !== expectedScope) throw new Error(`${label} scope changed`);
   const published = Number(stats.published);
   if (!Number.isSafeInteger(published) || published < 0) throw new Error(`Invalid ${label} published count`);
-  const url = new URL("/api/public/messages", origin);
-  url.searchParams.set("limit", String(Math.max(published, 1)));
-  const payload = await getJson(url);
-  const messages = array(payload.messages, `${label} messages`);
-  if (messages.length < published) {
-    throw new Error(`${label} messages incomplete: expected at least ${published}, received ${messages.length}`);
-  }
-  return { messages };
+  return published;
 }
 
 async function postBundle(bundle) {
