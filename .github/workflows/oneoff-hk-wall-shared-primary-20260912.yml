@@ -1,4 +1,4 @@
-name: Diagnose Hong Kong wall shared-primary path
+name: Diagnose Cloudflare sync relay access
 
 on:
   push:
@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  diagnose:
+  diagnose-relay:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     env:
@@ -26,17 +26,7 @@ jobs:
       HK_KEY_A: ${{ secrets.TENCENT_SSH_PRIVATE_KEY }}
       HK_KEY_B: ${{ secrets.TENCENT_CVM_SSH_KEY }}
       HK_KEY_C: ${{ secrets.SSH_PRIVATE_KEY }}
-      HK_SYNC_SECRET: ${{ secrets.HK_SYNC_SECRET }}
     steps:
-      - name: Report secret availability
-        shell: bash
-        run: |
-          if [ -n "$HK_SYNC_SECRET" ]; then
-            echo "github_hk_sync_secret_present=true"
-          else
-            echo "github_hk_sync_secret_present=false"
-          fi
-
       - name: Configure SSH
         shell: bash
         run: |
@@ -46,218 +36,41 @@ jobs:
           user="${HK_USER:-ubuntu}"
           port="${HK_PORT:-22}"
           key="${HK_KEY_A:-${HK_KEY_B:-${HK_KEY_C:-}}}"
-          if [ -z "$key" ]; then
-            echo '::error::Hong Kong diagnostics require a configured SSH private-key repository secret.'
-            exit 1
-          fi
+          test -n "$key"
           mkdir -p ~/.ssh
           printf '%s\n' "$key" > ~/.ssh/hk_key
           chmod 600 ~/.ssh/hk_key
           ssh-keyscan -p "$port" "$host" > ~/.ssh/known_hosts
           printf 'HOST=%s\nUSER=%s\nPORT=%s\n' "$host" "$user" "$port" >> "$GITHUB_ENV"
 
-      - name: Probe established sync Worker from Hong Kong origin
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-          ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'python3 -' <<'PY'
-          import hashlib
-          import json
-          import urllib.error
-          import urllib.request
-
-          origin = "https://global-protection-sync.jerryzuhow77.workers.dev"
-          for path in ("/", "/api/health", "/api/public/submission-stats", "/api/public/messages"):
-              request = urllib.request.Request(
-                  origin + path,
-                  headers={"Accept": "application/json,text/plain,*/*", "User-Agent": "GuardianWallOriginProbe/20260912"},
-              )
-              try:
-                  response = urllib.request.urlopen(request, timeout=30)
-                  status = response.status
-                  headers = dict(response.headers.items())
-                  body = response.read(4000001)
-              except urllib.error.HTTPError as error:
-                  status = error.code
-                  headers = dict(error.headers.items())
-                  body = error.read(4000001)
-              item = {
-                  "path": path,
-                  "http": status,
-                  "content_type": next((v for k, v in headers.items() if k.lower() == "content-type"), ""),
-                  "location": next((v for k, v in headers.items() if k.lower() == "location"), ""),
-                  "bytes": len(body),
-                  "sha256": hashlib.sha256(body).hexdigest(),
-              }
-              try:
-                  data = json.loads(body)
-                  if isinstance(data, dict):
-                      item["json_keys"] = sorted(data.keys())
-                      for key in ("status", "scope", "dataPrimary", "total", "pending", "published", "visitor", "publicMessages"):
-                          if key in data and isinstance(data[key], (str, int, float, bool, type(None))):
-                              item[key] = data[key]
-                      if isinstance(data.get("messages"), list):
-                          item["message_count"] = len(data["messages"])
-                          item["message_ids_sha256"] = hashlib.sha256(
-                              json.dumps(sorted(str(row.get("id", "")) for row in data["messages"])).encode()
-                          ).hexdigest()
-                  elif isinstance(data, list):
-                      item["json_list_length"] = len(data)
-              except Exception:
-                  item["body_preview"] = body[:160].decode("utf-8", "replace").replace("\n", " ")
-              print(json.dumps(item, ensure_ascii=False))
-          PY
-
-      - name: Inspect Hong Kong wall runtime without reading secret values
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-          ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'sudo bash -s' <<'SH'
-          set -u
-          echo '--- listener 8787 ---'
-          ss -ltnp 2>/dev/null | awk 'NR == 1 || /:8787[[:space:]]/'
-          pid="$(ss -ltnp 2>/dev/null | sed -n 's/.*:8787 .*pid=\([0-9][0-9]*\).*/\1/p' | head -n 1)"
-          if [ -n "$pid" ] && [ -d "/proc/$pid" ]; then
-            echo "pid=$pid"
-            printf 'cwd='; readlink -f "/proc/$pid/cwd" || true
-            printf 'exe='; readlink -f "/proc/$pid/exe" || true
-            printf 'cgroup='; tr '\n' ' ' < "/proc/$pid/cgroup"; echo
-            cwd="$(readlink -f "/proc/$pid/cwd" || true)"
-            echo '--- matching systemd unit ---'
-            while read -r unit; do
-              [ -n "$unit" ] || continue
-              main="$(systemctl show "$unit" -p MainPID --value 2>/dev/null || true)"
-              if [ "$main" = "$pid" ]; then
-                echo "unit=$unit"
-                systemctl show "$unit" -p FragmentPath -p ActiveState -p SubState -p User --no-pager
-              fi
-            done < <(systemctl list-units --type=service --all --no-legend 2>/dev/null | awk '{print $1}')
-            if [ -n "$cwd" ] && [ -d "$cwd" ]; then
-              echo '--- project descriptors and sync references ---'
-              find "$cwd" -maxdepth 3 -type f \( -name package.json -o -name wrangler.toml -o -name wrangler.json -o -name '*.service' -o -name ecosystem.config.js -o -name ecosystem.config.cjs \) -print 2>/dev/null | head -n 80
-              grep -RIlE 'global-protection-sync|HK_SYNC|hong.kong.reconcile|workers\.dev' "$cwd" --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=.git 2>/dev/null | head -n 80
-            fi
-          else
-            echo 'pid_not_resolved=true'
-          fi
-          echo '--- process manager summary ---'
-          if command -v pm2 >/dev/null 2>&1; then pm2 list || true; fi
-          echo '--- no production mutation performed ---'
-          SH
-
-
-      - name: Probe alternate Sites edge routes from Hong Kong
+      - name: Check Cloudflare relay management access
         shell: bash
         run: |
           set -Eeuo pipefail
           ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'bash -s' <<'SH'
-          set -Eeuo pipefail
-          tmpdir="$(mktemp -d)"
-          trap 'rm -rf "$tmpdir"' EXIT
-          probe() {
-            label="$1"
-            shift
-            code="$(curl --silent --show-error --max-time 30 \
-              -A 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140 Safari/537.36' \
-              -H 'Accept: application/json' \
-              -D "$tmpdir/headers" -o "$tmpdir/body" -w '%{http_code}' "$@" || true)"
-            LABEL="$label" CODE="$code" BODY="$tmpdir/body" HEADERS="$tmpdir/headers" python3 - <<'PY'
-          import hashlib, json, os
-          label, code = os.environ["LABEL"], os.environ["CODE"]
-          body_path, headers_path = os.environ["BODY"], os.environ["HEADERS"]
-          body = open(body_path, "rb").read(4000001) if os.path.exists(body_path) else b""
-          headers = open(headers_path, "r", errors="replace").read().splitlines() if os.path.exists(headers_path) else []
-          result = {"label": label, "http": code, "bytes": len(body), "sha256": hashlib.sha256(body).hexdigest()}
-          for line in headers:
-              if ":" in line:
-                  key, value = line.split(":", 1)
-                  if key.lower() in {"content-type", "location", "server", "x-data-primary"}:
-                      result[key.lower()] = value.strip()
-          try:
-              data = json.loads(body)
-              if isinstance(data, dict):
-                  result["json_keys"] = sorted(data.keys())
-                  for key in ("status", "scope", "dataPrimary", "total", "pending", "published", "visitor", "publicMessages"):
-                      if key in data and isinstance(data[key], (str, int, float, bool, type(None))):
-                          result[key] = data[key]
-          except Exception:
-              result["body_preview"] = body[:100].decode("utf-8", "replace").replace("\n", " ")
-          print(json.dumps(result, ensure_ascii=False))
-          PY
-          }
-          probe direct-site-origin 'https://global-protection.jerryzuhow77.chatgpt.site/api/health'
-          probe custom-edge-host-header -H 'Host: cn.globalprotectionwall.com' 'https://custom-domains.chatgpt.site/api/health'
-          probe custom-edge-sni-cn --connect-to 'cn.globalprotectionwall.com:443:custom-domains.chatgpt.site:443' 'https://cn.globalprotectionwall.com/api/health'
-          probe custom-edge-sni-wall --connect-to 'wall.globalprotectionwall.com:443:custom-domains.chatgpt.site:443' 'https://wall.globalprotectionwall.com/api/health'
-          SH
-
-      - name: Inspect relevant Hong Kong source and runtime metadata
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-          ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'sudo bash -s' <<'SH'
           set -u
           cd /opt/global-protection
-          echo '--- root descriptors ---'
-          find . -maxdepth 1 -type f -printf '%f\n' | sort
-          echo '--- runtime variable names only ---'
-          for file in .dev.vars .deploy-stage-v164-sync/.dev.vars .deploy-stage-v164-public/.dev.vars; do
-            if [ -f "$file" ]; then
-              echo "[$file]"
-              sed -n -E 's/^[[:space:]]*([A-Za-z_][A-Za-z0-9_]*)[[:space:]]*=.*/\1/p' "$file" | sort -u
-            fi
-          done
-          echo '--- systemd unit (environment values redacted) ---'
-          systemctl cat global-protection.service 2>/dev/null \
-            | sed -E 's/^([[:space:]]*Environment(File)?=).*/\1<redacted>/' || true
-          echo '--- app api route files ---'
-          find app/api -maxdepth 5 -type f -name 'route.ts' -print 2>/dev/null | sort
-          echo '--- guest submission route ---'
-          sed -n '1,260p' app/api/guest/submissions/route.ts 2>/dev/null || true
-          echo '--- public messages route ---'
-          sed -n '1,220p' app/api/public/messages/route.ts 2>/dev/null || true
-          echo '--- sync reference lines ---'
-          grep -RInE 'global-protection-sync|HK_SYNC|hong.kong.reconcile|workers\.dev' app worker scripts 2>/dev/null \
-            --exclude='*.map' --exclude='*.lock' | head -n 160 || true
+          echo '--- wrangler version ---'
+          npx --no-install wrangler --version 2>&1 || true
+          echo '--- wrangler identity ---'
+          npx --no-install wrangler whoami 2>&1 || true
+          echo '--- wrangler config files (paths only) ---'
+          find "$HOME/.config/.wrangler" "$HOME/.wrangler" -maxdepth 4 -type f -printf '%p\n' 2>/dev/null | sort || true
+          echo '--- Cloudflare environment variable names only ---'
+          env | sed -n -E 's/^((CLOUDFLARE|CF)_[A-Za-z0-9_]+)=.*/\1/p' | sort -u
+          echo '--- candidate sync Worker source files ---'
+          find /opt/global-protection -maxdepth 6 -type f \
+            \( -iname '*sync*' -o -iname 'wrangler.toml' -o -iname 'wrangler.json' -o -iname 'wrangler.jsonc' -o -iname 'worker.js' -o -iname 'worker.ts' \) \
+            -not -path '*/node_modules/*' -not -path '*/dist/client/*' -not -path '*/.release-backups/*' \
+            -printf '%p\n' 2>/dev/null | sort | head -n 240
+          echo '--- files declaring HK_SYNC_SECRET ---'
+          grep -RIlE '^[[:space:]]*HK_SYNC_SECRET[[:space:]]*=' /opt/global-protection \
+            --exclude-dir=node_modules --exclude-dir=dist --exclude-dir=.release-backups 2>/dev/null | head -n 80 || true
+          echo '--- local D1 files ---'
+          find .wrangler/state -maxdepth 8 -type f -printf '%p %s bytes\n' 2>/dev/null | sort | head -n 120
+          echo '--- deployments list for sync relay ---'
+          npx --no-install wrangler deployments list --name global-protection-sync 2>&1 | sed -n '1,160p' || true
+          echo '--- deployments command help ---'
+          npx --no-install wrangler deployments --help 2>&1 | sed -n '1,160p' || true
           echo '--- no production mutation performed ---'
           SH
-
-
-      - name: Validate retired sync credential from an allowed runner
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-          secret="$(ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'sudo python3 -' <<'PY'
-          from pathlib import Path
-          import re
-          path = Path("/opt/global-protection/.dev.vars.pre-secret-removal-20260901T041428Z")
-          text = path.read_text() if path.exists() else ""
-          match = re.search(r"(?m)^\s*HK_SYNC_SECRET\s*=\s*(.*?)\s*$", text)
-          if match:
-              value = match.group(1).strip()
-              if len(value) >= 2 and value[0] == value[-1] and value[0] in ("'", '"'):
-                  value = value[1:-1]
-              print(value, end="")
-          PY
-          )"
-          if [ "${#secret}" -lt 32 ]; then
-            echo "retired_sync_secret_present=false"
-            exit 0
-          fi
-          echo "::add-mask::$secret"
-          code="$(curl --silent --show-error --max-time 30 \
-            -o /tmp/reconcile-auth-probe.json -w '%{http_code}' \
-            -X POST 'https://global-protection.jerryzuhow77.chatgpt.site/api/internal/hong-kong-reconcile' \
-            -H 'content-type: application/json' \
-            -H "x-hk-sync-secret: $secret" \
-            --data-binary '{')"
-          rm -f /tmp/reconcile-auth-probe.json
-          echo "retired_sync_secret_present=true"
-          echo "reconcile_auth_probe_http=$code"
-          if [ "$code" = 400 ]; then
-            echo "retired_sync_secret_matches_sites=true"
-          elif [ "$code" = 404 ]; then
-            echo "retired_sync_secret_matches_sites=false"
-          else
-            echo "retired_sync_secret_matches_sites=indeterminate"
-          fi
