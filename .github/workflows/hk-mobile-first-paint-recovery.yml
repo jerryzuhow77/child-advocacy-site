@@ -1,0 +1,128 @@
+name: Recover Hong Kong mobile first paint
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hk-mobile-first-paint-recovery.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hong-kong-mobile-first-paint-recovery
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      HK_HOST: ${{ secrets.TENCENT_SSH_HOST }}
+      HK_USER: ${{ secrets.TENCENT_SSH_USER }}
+      HK_PORT: ${{ secrets.TENCENT_SSH_PORT }}
+      HK_KEY_A: ${{ secrets.TENCENT_SSH_PRIVATE_KEY }}
+      HK_KEY_B: ${{ secrets.TENCENT_CVM_SSH_KEY }}
+      HK_KEY_C: ${{ secrets.SSH_PRIVATE_KEY }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+    steps:
+      - name: Configure SSH
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          host="${HK_HOST:-150.109.69.104}"
+          user="${HK_USER:-ubuntu}"
+          port="${HK_PORT:-22}"
+          key="${HK_KEY_A:-${HK_KEY_B:-${HK_KEY_C:-}}}"
+          test -n "$key" || { echo '::error::Hong Kong SSH key is unavailable.'; exit 1; }
+          mkdir -p ~/.ssh
+          printf '%s\n' "$key" > ~/.ssh/hk_key
+          chmod 600 ~/.ssh/hk_key
+          ssh-keyscan -p "$port" "$host" > ~/.ssh/known_hosts
+          printf 'HOST=%s\nUSER=%s\nPORT=%s\n' "$host" "$user" "$port" >> "$GITHUB_ENV"
+
+      - name: Install mobile first-paint fail-safe
+        id: patch
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          css_name="$(ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" \
+            "curl -fsS --max-time 15 http://127.0.0.1:8787/" \
+            | sed -nE 's#.*href="/assets/([^"?]+\.css)[^"]*".*#\1#p' | head -n 1)"
+          test -n "$css_name" || { echo '::error::Could not resolve the live stylesheet.'; exit 1; }
+          printf 'css_name=%s\n' "$css_name" >> "$GITHUB_OUTPUT"
+
+          ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" \
+            "sudo CSS_NAME='$css_name' python3 -" <<'PY'
+          from pathlib import Path
+          import os
+
+          marker = "hk-mobile-first-paint-v1"
+          css_name = os.environ["CSS_NAME"]
+          roots = [Path("/var/www"), Path("/srv"), Path("/opt"), Path("/home/ubuntu")]
+          matches = []
+          for root in roots:
+              if root.exists():
+                  matches.extend(root.rglob(css_name))
+          matches = [path for path in matches if path.is_file()]
+          if not matches:
+              raise SystemExit(f"Live stylesheet not found: {css_name}")
+
+          rule = r'''\n/* hk-mobile-first-paint-v1: keep core content visible if GSAP stalls in Android WebView/Chrome */
+          @media (max-width:980px){
+            .gsap-enhanced .site-header,
+            .gsap-enhanced .visitor-launch-section,
+            .gsap-enhanced .hero-copy>*,
+            .gsap-enhanced .hero-art,
+            .gsap-enhanced .paper-sky-art,
+            .gsap-enhanced .kaikai-clay-heart{
+              opacity:1!important;
+              visibility:visible!important;
+              transform:none!important;
+            }
+          }
+          '''
+          patched = 0
+          for path in matches:
+              text = path.read_text(encoding="utf-8", errors="strict")
+              if ".gsap-enhanced .hero-copy" not in text:
+                  continue
+              if marker not in text:
+                  path.write_text(text + rule, encoding="utf-8")
+              patched += 1
+          if patched == 0:
+              raise SystemExit("No matching Guardian Wall stylesheet was patched")
+          print(f"Patched {patched} live stylesheet(s)")
+          PY
+
+      - name: Purge the patched stylesheet from Cloudflare
+        if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ZONE_ID != ''
+        shell: bash
+        env:
+          CSS_NAME: ${{ steps.patch.outputs.css_name }}
+        run: |
+          set -Eeuo pipefail
+          response="$(curl -fsS --max-time 20 \
+            -X POST "https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE_ID/purge_cache" \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            -H 'Content-Type: application/json' \
+            --data "{\"files\":[\"https://cn.globalprotectionwall.com/assets/$CSS_NAME\"]}")"
+          printf '%s' "$response" | python3 -c 'import json,sys; assert json.load(sys.stdin).get("success") is True'
+
+      - name: Verify mobile-visible fail-safe
+        shell: bash
+        env:
+          CSS_NAME: ${{ steps.patch.outputs.css_name }}
+        run: |
+          set -Eeuo pipefail
+          css="$(curl -fsS --retry 5 --retry-delay 3 --max-time 25 \
+            -A 'Mozilla/5.0 (Linux; Android 16; SM-F9360) AppleWebKit/537.36 Chrome/140.0 Mobile Safari/537.36' \
+            "https://cn.globalprotectionwall.com/assets/$CSS_NAME")"
+          grep -Fq 'hk-mobile-first-paint-v1' <<<"$css"
+          page="$(curl -fsS --retry 5 --retry-delay 3 --max-time 25 \
+            -A 'Mozilla/5.0 (Linux; Android 16; SM-F9360) AppleWebKit/537.36 Chrome/140.0 Mobile Safari/537.36' \
+            https://cn.globalprotectionwall.com/)"
+          grep -Fq '全球守護留言牆' <<<"$page"
