@@ -1,4 +1,4 @@
-name: Route Hong Kong wall to Taiwan shared primary
+name: Diagnose Hong Kong wall shared-primary path
 
 on:
   push:
@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  route-shared-wall:
+  diagnose:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     env:
@@ -26,7 +26,17 @@ jobs:
       HK_KEY_A: ${{ secrets.TENCENT_SSH_PRIVATE_KEY }}
       HK_KEY_B: ${{ secrets.TENCENT_CVM_SSH_KEY }}
       HK_KEY_C: ${{ secrets.SSH_PRIVATE_KEY }}
+      HK_SYNC_SECRET: ${{ secrets.HK_SYNC_SECRET }}
     steps:
+      - name: Report secret availability
+        shell: bash
+        run: |
+          if [ -n "$HK_SYNC_SECRET" ]; then
+            echo "github_hk_sync_secret_present=true"
+          else
+            echo "github_hk_sync_secret_present=false"
+          fi
+
       - name: Configure SSH
         shell: bash
         run: |
@@ -37,7 +47,7 @@ jobs:
           port="${HK_PORT:-22}"
           key="${HK_KEY_A:-${HK_KEY_B:-${HK_KEY_C:-}}}"
           if [ -z "$key" ]; then
-            echo '::error::Hong Kong routing requires a configured SSH private-key repository secret.'
+            echo '::error::Hong Kong diagnostics require a configured SSH private-key repository secret.'
             exit 1
           fi
           mkdir -p ~/.ssh
@@ -46,259 +56,91 @@ jobs:
           ssh-keyscan -p "$port" "$host" > ~/.ssh/known_hosts
           printf 'HOST=%s\nUSER=%s\nPORT=%s\n' "$host" "$user" "$port" >> "$GITHUB_ENV"
 
-      - name: Install shared Taiwan data route with rollback
+      - name: Probe established sync Worker from Hong Kong origin
         shell: bash
         run: |
           set -Eeuo pipefail
-          ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'sudo python3 -' <<'PY'
-          from pathlib import Path
+          ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'python3 -' <<'PY'
+          import hashlib
           import json
-          import re
-          import shutil
-          import ssl
-          import subprocess
-          import time
+          import urllib.error
           import urllib.request
 
-          domain = "cn.globalprotectionwall.com"
-          upstream_host = "global-protection.jerryzuhow77.chatgpt.site"
-          upstream_origin = "https://" + upstream_host
-          marker = "# guardian-wall-shared-primary"
-          context = ssl.create_default_context()
-
-          def get_json(url):
-              request = urllib.request.Request(
-                  url,
-                  headers={"Accept": "application/json", "User-Agent": "GuardianWallSharedPrimary/20260912"},
-              )
-              with urllib.request.urlopen(request, timeout=30, context=context) as response:
-                  body = json.loads(response.read().decode("utf-8"))
-                  return response.status, dict(response.headers.items()), body
-
-          status, headers, health = get_json(upstream_origin + "/api/health")
-          if status != 200 or health.get("dataPrimary") != "taiwan":
-              raise SystemExit("Taiwan shared primary preflight failed")
-
-          candidates = []
-          for root in (Path("/etc/nginx/sites-enabled"), Path("/etc/nginx/conf.d")):
-              if root.exists():
-                  candidates.extend(path for path in root.iterdir() if path.is_file() or path.is_symlink())
-
-          def structure(body):
-              return re.sub(
-                  r'''#[^\n]*|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*' ''',
-                  lambda match: re.sub(r"[^\n]", " ", match.group()),
-                  body,
-              )
-
-          def server_block_bounds(body, name_position):
-              syntax = structure(body)
-              matches = list(re.finditer(r"(?m)^\s*server\s*\{", syntax[:name_position]))
-              if not matches:
-                  raise RuntimeError("Could not locate nginx server block start")
-              server_start = matches[-1].start()
-              brace = body.find("{", matches[-1].start(), matches[-1].end())
-              depth = 0
-              for index in range(brace, len(body)):
-                  if syntax[index] == "{":
-                      depth += 1
-                  elif syntax[index] == "}":
-                      depth -= 1
-                      if depth == 0:
-                          return server_start, index
-              raise RuntimeError("Could not locate nginx server block boundary")
-
-          matches = []
-          for path in candidates:
-              try:
-                  body = path.read_text()
-              except Exception:
-                  continue
-              for match in re.finditer(r"(?m)^\s*server_name\s+([^;]+);", body):
-                  if domain not in match.group(1).split():
-                      continue
-                  start, end = server_block_bounds(body, match.start())
-                  matches.append((path.resolve(), body, start, end))
-          if not matches:
-              raise SystemExit("No nginx server block found for " + domain)
-          target, original, server_start, server_end = next(
-              (item for item in matches if re.search(r"(?m)^\s*listen\s+[^;]*\bssl\b", item[1][item[2]:item[3] + 1])),
-              matches[0],
-          )
-
-          def remove_location_blocks(body, declaration):
-              pattern = re.compile(r"(?m)^[ \t]*" + re.escape(declaration) + r"[ \t]*\{")
-              while True:
-                  syntax = structure(body)
-                  match = next(
-                      (
-                          item
-                          for item in pattern.finditer(syntax)
-                          if syntax[:item.start()].count("{") - syntax[:item.start()].count("}") == 1
-                      ),
-                      None,
-                  )
-                  if match is None:
-                      return body
-                  line_start = match.start()
-                  marker_start = line_start
-                  previous_start = body.rfind("\n", 0, max(0, line_start - 1)) + 1
-                  if body[previous_start:line_start].strip() == marker:
-                      marker_start = previous_start
-                  brace = body.find("{", match.start(), match.end())
-                  depth = 0
-                  block_end = None
-                  for index in range(brace, len(body)):
-                      if syntax[index] == "{":
-                          depth += 1
-                      elif syntax[index] == "}":
-                          depth -= 1
-                          if depth == 0:
-                              block_end = index + 1
-                              break
-                  if block_end is None:
-                      raise RuntimeError("Could not parse nginx location: " + declaration)
-                  while block_end < len(body) and body[block_end] in " \t\r\n":
-                      block_end += 1
-                  body = body[:marker_start] + body[block_end:]
-
-          server_block = original[server_start:server_end + 1]
-          for declaration in (
-              "location /",
-              "location = /",
-              "location /api/",
-              "location ^~ /api/",
-              "location /admin-actions/",
-              "location ^~ /admin-actions/",
-              "location /assets/",
-              "location ^~ /assets/",
-              "location /_vinext/",
-              "location ^~ /_vinext/",
-          ):
-              server_block = remove_location_blocks(server_block, declaration)
-
-          insert_at = server_block.rfind("}")
-          if insert_at < 0:
-              raise SystemExit("Could not locate nginx server block boundary")
-          snippet = """
-              # guardian-wall-shared-primary
-              location / {
-                  proxy_pass https://global-protection.jerryzuhow77.chatgpt.site;
-                  proxy_http_version 1.1;
-                  proxy_ssl_server_name on;
-                  proxy_ssl_name global-protection.jerryzuhow77.chatgpt.site;
-                  proxy_set_header Host global-protection.jerryzuhow77.chatgpt.site;
-                  proxy_set_header X-Forwarded-Host $host;
-                  proxy_set_header X-Forwarded-Proto $scheme;
-                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                  proxy_set_header X-Real-IP $remote_addr;
-                  proxy_set_header Connection "";
-                  proxy_redirect https://global-protection.jerryzuhow77.chatgpt.site/ https://cn.globalprotectionwall.com/;
-                  proxy_cookie_domain global-protection.jerryzuhow77.chatgpt.site cn.globalprotectionwall.com;
-                  proxy_buffering off;
-                  proxy_request_buffering off;
-                  proxy_read_timeout 120s;
-                  client_max_body_size 48m;
-              }
-          """
-          updated_block = server_block[:insert_at] + snippet + server_block[insert_at:]
-          updated = original[:server_start] + updated_block + original[server_end + 1:]
-
-          backup_dir = Path("/var/backups/guardian-wall-shared-primary")
-          backup_dir.mkdir(parents=True, exist_ok=True)
-          backup = backup_dir / (target.name + ".bak-" + str(time.time_ns()))
-          shutil.copy2(target, backup)
-
-          try:
-              target.write_text(updated)
-              subprocess.run(["nginx", "-t"], check=True)
-              subprocess.run(["systemctl", "reload", "nginx"], check=True)
-
-              live_status, live_headers, live_health = get_json("https://" + domain + "/api/health")
-              primary_header = next(
-                  (value for key, value in live_headers.items() if key.lower() == "x-data-primary"),
-                  "",
-              )
-              if live_status != 200 or live_health.get("dataPrimary") != "taiwan" or primary_header.lower() != "taiwan":
-                  raise RuntimeError("Hong Kong route did not reach the Taiwan shared primary")
-
-              stats_status, _, stats = get_json("https://" + domain + "/api/public/submission-stats")
-              if stats_status != 200 or stats.get("scope") != "taiwan-hong-kong-shared":
-                  raise RuntimeError("Hong Kong public submission scope is not shared")
-          except Exception:
-              shutil.copy2(backup, target)
-              subprocess.run(["nginx", "-t"], check=True)
-              subprocess.run(["systemctl", "reload", "nginx"], check=True)
-              raise
-
-          print(json.dumps({
-              "shared_primary": True,
-              "hong_kong_host": domain,
-              "data_primary": live_health.get("dataPrimary"),
-              "scope": stats.get("scope"),
-              "public_messages": live_health.get("publicMessages"),
-              "legacy_data_preserved": True,
-              "rollback_backup": str(backup),
-          }))
-          PY
-
-      - name: Verify Taiwan and Hong Kong share one public dataset
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-          python3 - <<'PY'
-          import json
-          import ssl
-          import urllib.request
-
-          context = ssl.create_default_context()
-          origins = {
-              "taiwan": "https://global-protection.jerryzuhow77.chatgpt.site",
-              "hong_kong": "https://cn.globalprotectionwall.com",
-          }
-
-          def read(path, origin):
+          origin = "https://global-protection-sync.jerryzuhow77.workers.dev"
+          for path in ("/", "/api/health", "/api/public/submission-stats", "/api/public/messages"):
               request = urllib.request.Request(
                   origin + path,
-                  headers={"Accept": "application/json", "User-Agent": "GuardianWallSharedVerification/20260912"},
+                  headers={"Accept": "application/json,text/plain,*/*", "User-Agent": "GuardianWallOriginProbe/20260912"},
               )
-              with urllib.request.urlopen(request, timeout=30, context=context) as response:
-                  return response.status, dict(response.headers.items()), json.loads(response.read().decode("utf-8"))
-
-          results = {}
-          for region, origin in origins.items():
-              status, headers, health = read("/api/health", origin)
-              stats_status, _, stats = read("/api/public/submission-stats", origin)
-              _, _, public = read("/api/public/messages", origin)
-              primary = next((value for key, value in headers.items() if key.lower() == "x-data-primary"), "")
-              if status != 200 or stats_status != 200:
-                  raise SystemExit(region + " health check failed")
-              if health.get("dataPrimary") != "taiwan" or primary.lower() != "taiwan":
-                  raise SystemExit(region + " is not using the Taiwan primary")
-              if stats.get("scope") != "taiwan-hong-kong-shared":
-                  raise SystemExit(region + " does not report the shared scope")
-              results[region] = {
-                  "stats": stats,
-                  "message_ids": sorted(item["id"] for item in public.get("messages", [])),
+              try:
+                  response = urllib.request.urlopen(request, timeout=30)
+                  status = response.status
+                  headers = dict(response.headers.items())
+                  body = response.read(4000001)
+              except urllib.error.HTTPError as error:
+                  status = error.code
+                  headers = dict(error.headers.items())
+                  body = error.read(4000001)
+              item = {
+                  "path": path,
+                  "http": status,
+                  "content_type": next((v for k, v in headers.items() if k.lower() == "content-type"), ""),
+                  "location": next((v for k, v in headers.items() if k.lower() == "location"), ""),
+                  "bytes": len(body),
+                  "sha256": hashlib.sha256(body).hexdigest(),
               }
-
-          if results["taiwan"]["message_ids"] != results["hong_kong"]["message_ids"]:
-              raise SystemExit("Taiwan and Hong Kong public message IDs differ")
-          for field in ("total", "pending", "published", "visitor"):
-              if results["taiwan"]["stats"].get(field) != results["hong_kong"]["stats"].get(field):
-                  raise SystemExit("Taiwan and Hong Kong counts differ: " + field)
-
-          print(json.dumps({
-              "shared": True,
-              "scope": results["taiwan"]["stats"]["scope"],
-              "published": results["taiwan"]["stats"]["published"],
-              "public_message_ids_equal": True,
-          }))
+              try:
+                  data = json.loads(body)
+                  if isinstance(data, dict):
+                      item["json_keys"] = sorted(data.keys())
+                      for key in ("status", "scope", "dataPrimary", "total", "pending", "published", "visitor", "publicMessages"):
+                          if key in data and isinstance(data[key], (str, int, float, bool, type(None))):
+                              item[key] = data[key]
+                      if isinstance(data.get("messages"), list):
+                          item["message_count"] = len(data["messages"])
+                          item["message_ids_sha256"] = hashlib.sha256(
+                              json.dumps(sorted(str(row.get("id", "")) for row in data["messages"])).encode()
+                          ).hexdigest()
+                  elif isinstance(data, list):
+                      item["json_list_length"] = len(data)
+              except Exception:
+                  item["body_preview"] = body[:160].decode("utf-8", "replace").replace("\n", " ")
+              print(json.dumps(item, ensure_ascii=False))
           PY
 
-          for path in / /child-advocacy-site/; do
-            code="$(curl --connect-timeout 10 --max-time 30 -sS -o /tmp/hk-shared-check -w '%{http_code}' "https://cn.globalprotectionwall.com$path")"
-            size="$(wc -c < /tmp/hk-shared-check)"
-            test "$code" = 200
-            test "$size" -gt 1000
-          done
+      - name: Inspect Hong Kong wall runtime without reading secret values
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'sudo bash -s' <<'SH'
+          set -u
+          echo '--- listener 8787 ---'
+          ss -ltnp 2>/dev/null | awk 'NR == 1 || /:8787[[:space:]]/'
+          pid="$(ss -ltnp 2>/dev/null | sed -n 's/.*:8787 .*pid=\([0-9][0-9]*\).*/\1/p' | head -n 1)"
+          if [ -n "$pid" ] && [ -d "/proc/$pid" ]; then
+            echo "pid=$pid"
+            printf 'cwd='; readlink -f "/proc/$pid/cwd" || true
+            printf 'exe='; readlink -f "/proc/$pid/exe" || true
+            printf 'cgroup='; tr '\n' ' ' < "/proc/$pid/cgroup"; echo
+            cwd="$(readlink -f "/proc/$pid/cwd" || true)"
+            echo '--- matching systemd unit ---'
+            while read -r unit; do
+              [ -n "$unit" ] || continue
+              main="$(systemctl show "$unit" -p MainPID --value 2>/dev/null || true)"
+              if [ "$main" = "$pid" ]; then
+                echo "unit=$unit"
+                systemctl show "$unit" -p FragmentPath -p ActiveState -p SubState -p User --no-pager
+              fi
+            done < <(systemctl list-units --type=service --all --no-legend 2>/dev/null | awk '{print $1}')
+            if [ -n "$cwd" ] && [ -d "$cwd" ]; then
+              echo '--- project descriptors and sync references ---'
+              find "$cwd" -maxdepth 3 -type f \( -name package.json -o -name wrangler.toml -o -name wrangler.json -o -name '*.service' -o -name ecosystem.config.js -o -name ecosystem.config.cjs \) -print 2>/dev/null | head -n 80
+              grep -RIlE 'global-protection-sync|HK_SYNC|hong.kong.reconcile|workers\.dev' "$cwd" --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=.git 2>/dev/null | head -n 80
+            fi
+          else
+            echo 'pid_not_resolved=true'
+          fi
+          echo '--- process manager summary ---'
+          if command -v pm2 >/dev/null 2>&1; then pm2 list || true; fi
+          echo '--- no production mutation performed ---'
+          SH
