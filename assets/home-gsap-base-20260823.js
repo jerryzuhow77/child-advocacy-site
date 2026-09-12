@@ -157,13 +157,11 @@
       gsap.fromTo(items, {
         x: direction || 32,
         y: 22,
-        autoAlpha: 0,
-        scale: 0.975
+        autoAlpha: 0
       }, {
         x: 0,
         y: 0,
         autoAlpha: 1,
-        scale: 1,
         duration: 0.72,
         stagger: 0.085,
         ease: 'power3.out',

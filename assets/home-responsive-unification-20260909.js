@@ -44,22 +44,33 @@
     // skipped observer delivery can never leave a visited section on an old
     // background. Readiness remains monotonic: classes are only ever added.
     let revealFrame = 0;
+    let furthestRevealBottom = 0;
     const revealNearViewport = () => {
       revealFrame = 0;
       const margin = Math.max(1000, window.innerHeight);
+      const scrollTop = window.scrollY;
+      furthestRevealBottom = Math.max(
+        furthestRevealBottom,
+        scrollTop + window.innerHeight + margin
+      );
       sections.forEach((section) => {
         if (section.classList.contains('is-seasonal-art-ready')) return;
         const rect = section.getBoundingClientRect();
         // Treat every section above the current viewport as visited too. Large
         // scrollbar jumps can skip an IntersectionObserver delivery entirely;
         // once the visitor has moved past a section its artwork must stay ready.
-        if (rect.top <= window.innerHeight + margin) {
+        if (rect.top + scrollTop <= furthestRevealBottom) {
           reveal(section);
           observer.unobserve(section);
         }
       });
     };
     const scheduleReveal = () => {
+      const margin = Math.max(1000, window.innerHeight);
+      furthestRevealBottom = Math.max(
+        furthestRevealBottom,
+        window.scrollY + window.innerHeight + margin
+      );
       if (revealFrame) return;
       revealFrame = requestAnimationFrame(revealNearViewport);
     };
