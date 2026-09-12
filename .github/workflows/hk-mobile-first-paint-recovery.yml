@@ -142,6 +142,8 @@ jobs:
               if target_current != repaired:
                   target.write_text(repaired, encoding="utf-8")
               js_patched += 1
+          if js_patched == 0:
+              raise SystemExit("No matching Guardian Wall locale helper was patched")
           for root in roots:
               if not root.exists():
                   continue
@@ -154,8 +156,6 @@ jobs:
                   if updated != html:
                       html_path.write_text(updated, encoding="utf-8")
                       html_patched += 1
-          if js_patched == 0:
-              raise SystemExit("No matching Guardian Wall locale helper was patched")
           if js_name != js_new_name and html_patched == 0:
               raise SystemExit("No Guardian Wall HTML reference was updated")
           print(f"Published {js_patched} repaired script(s); updated {html_patched} HTML file(s)")
