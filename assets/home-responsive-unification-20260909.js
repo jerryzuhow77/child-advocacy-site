@@ -50,7 +50,10 @@
       sections.forEach((section) => {
         if (section.classList.contains('is-seasonal-art-ready')) return;
         const rect = section.getBoundingClientRect();
-        if (rect.top <= window.innerHeight + margin && rect.bottom >= -margin) {
+        // Treat every section above the current viewport as visited too. Large
+        // scrollbar jumps can skip an IntersectionObserver delivery entirely;
+        // once the visitor has moved past a section its artwork must stay ready.
+        if (rect.top <= window.innerHeight + margin) {
           reveal(section);
           observer.unobserve(section);
         }

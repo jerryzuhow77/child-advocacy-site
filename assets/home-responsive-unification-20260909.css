@@ -620,6 +620,11 @@ body.art-site.home-medium-palette #home-special-features .home-crafted-card>.hom
   .home-social-cases-section .home-case-reel{padding:5px 18vw 18px 2px!important;gap:12px!important}
   #home-special-features .home-crafted-card,
   .home-social-cases-section .home-case-reel-card{flex:0 0 min(82vw,340px)!important;width:min(82vw,340px)!important}
+  .home-social-cases-section .home-case-reel{align-items:stretch!important}
+  .home-social-cases-section .home-case-reel-card{
+    align-self:stretch!important;
+    transform:none!important;
+  }
 
   #home-historical-cases .home-historical-grid{
     box-sizing:border-box!important;
