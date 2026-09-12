@@ -8,9 +8,16 @@
     if (!sections.length) return;
 
     const reveal = (section) => {
-      if (!section || section.classList.contains('is-seasonal-art-ready')) return;
-      section.classList.add('is-seasonal-art-ready');
-      section.dataset.seasonalArtLoaded = 'true';
+      if (!section) return;
+      const index = sections.indexOf(section);
+      // Once readers reach the archive, preload the shorter closing sections
+      // together so rapid page jumps cannot leave the final background blank.
+      const targets = index >= 10 ? sections.slice(10) : [section];
+      targets.forEach((target) => {
+        if (target.classList.contains('is-seasonal-art-ready')) return;
+        target.classList.add('is-seasonal-art-ready');
+        target.dataset.seasonalArtLoaded = 'true';
+      });
     };
 
     reveal(sections.find((section) => section.dataset.seasonalArt === '01'));
