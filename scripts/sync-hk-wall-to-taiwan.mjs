@@ -13,17 +13,13 @@ const COLORS = new Set(["moon", "lotus", "apricot", "sage", "indigo", "clay", "l
 const CONTENT_KINDS = new Set(["guardian", "official", "bulletin"]);
 const USER_AGENT = "GuardianWallScheduledSync/1";
 
-const [sourceStats, targetStats, sourcePublic, targetPublic] = await Promise.all([
-  getJson(`${sourceOrigin}/api/public/submission-stats`),
-  getJson(`${targetOrigin}/api/public/submission-stats`),
-  getJson(`${sourceOrigin}/api/public/messages`),
-  getJson(`${targetOrigin}/api/public/messages`),
+const [sourcePublic, targetPublic] = await Promise.all([
+  getPublicSnapshot(sourceOrigin, "hong-kong-data-site", "Hong Kong"),
+  getPublicSnapshot(targetOrigin, "taiwan-hong-kong-shared", "Taiwan"),
 ]);
-if (sourceStats.scope !== "hong-kong-data-site") throw new Error("Hong Kong source scope changed");
-if (targetStats.scope !== "taiwan-hong-kong-shared") throw new Error("Taiwan target scope changed");
 
-const sourceMessages = array(sourcePublic.messages, "Hong Kong messages");
-const targetMessages = array(targetPublic.messages, "Taiwan messages");
+const sourceMessages = sourcePublic.messages;
+const targetMessages = targetPublic.messages;
 const sourceGuestMessages = sourceMessages.filter((message) => typeof message.id === "string" && UUID.test(message.id));
 const targetIds = new Set(targetMessages.map((message) => string(message.id, "target message id")));
 const sourceOnly = sourceGuestMessages.filter((message) => !targetIds.has(message.id));
@@ -73,12 +69,11 @@ for (const message of sourceOnly) {
   });
 }
 
-const targetImageHashes = new Set();
-for (const image of imageEntries(targetMessages)) targetImageHashes.add(await imageHash(targetOrigin, image));
+const targetImageAssociations = new Set(imageEntries(targetMessages).map(imageAssociationKey));
 const imageRows = [];
 for (const image of imageEntries(sourceGuestMessages)) {
-  const hash = await imageHash(sourceOrigin, image);
-  if (targetImageHashes.has(hash)) continue;
+  const association = imageAssociationKey(image);
+  if (targetImageAssociations.has(association)) continue;
   imageRows.push({
     id: uuid(image.id, "source image id"),
     message_id: uuid(image.messageId, "source image message id"),
@@ -86,6 +81,7 @@ for (const image of imageEntries(sourceGuestMessages)) {
     height: positiveInteger(image.height),
     sort_order: safeInteger(image.sortOrder),
   });
+  targetImageAssociations.add(association);
 }
 
 if (apply) {
@@ -113,12 +109,12 @@ if (apply) {
 
 const [verifiedSource, verifiedTarget] = apply
   ? await Promise.all([
-      getJson(`${sourceOrigin}/api/public/messages`),
-      getJson(`${targetOrigin}/api/public/messages`),
+      getPublicSnapshot(sourceOrigin, "hong-kong-data-site", "verified Hong Kong"),
+      getPublicSnapshot(targetOrigin, "taiwan-hong-kong-shared", "verified Taiwan"),
     ])
   : [sourcePublic, targetPublic];
-const verifiedSourceMessages = array(verifiedSource.messages, "verified Hong Kong messages");
-const verifiedTargetMessages = array(verifiedTarget.messages, "verified Taiwan messages");
+const verifiedSourceMessages = verifiedSource.messages;
+const verifiedTargetMessages = verifiedTarget.messages;
 const verifiedSourceGuestMessages = verifiedSourceMessages.filter((message) => typeof message.id === "string" && UUID.test(message.id));
 const verifiedTargetIds = new Set(verifiedTargetMessages.map((row) => string(row.id, "verified target id")));
 const missingIds = verifiedSourceGuestMessages
@@ -127,10 +123,14 @@ const missingIds = verifiedSourceGuestMessages
 
 let missingImageCount = 0;
 if (apply) {
-  const verifiedTargetHashes = new Set();
-  for (const image of imageEntries(verifiedTargetMessages)) verifiedTargetHashes.add(await imageHash(targetOrigin, image));
+  const verifiedTargetImages = new Map(
+    imageEntries(verifiedTargetMessages).map((image) => [imageAssociationKey(image), image]),
+  );
   for (const image of imageEntries(verifiedSourceGuestMessages)) {
-    if (!verifiedTargetHashes.has(await imageHash(sourceOrigin, image))) missingImageCount += 1;
+    const targetImage = verifiedTargetImages.get(imageAssociationKey(image));
+    if (!targetImage || await imageHash(sourceOrigin, image) !== await imageHash(targetOrigin, targetImage)) {
+      missingImageCount += 1;
+    }
   }
 }
 
@@ -156,6 +156,21 @@ async function getJson(url) {
   return response.json();
 }
 
+async function getPublicSnapshot(origin, expectedScope, label) {
+  const stats = await getJson(`${origin}/api/public/submission-stats`);
+  if (stats.scope !== expectedScope) throw new Error(`${label} scope changed`);
+  const published = Number(stats.published);
+  if (!Number.isSafeInteger(published) || published < 0) throw new Error(`Invalid ${label} published count`);
+  const url = new URL("/api/public/messages", origin);
+  url.searchParams.set("limit", String(Math.max(published, 1)));
+  const payload = await getJson(url);
+  const messages = array(payload.messages, `${label} messages`);
+  if (messages.length < published) {
+    throw new Error(`${label} messages incomplete: expected at least ${published}, received ${messages.length}`);
+  }
+  return { messages };
+}
+
 async function postBundle(bundle) {
   const response = await fetch(`${targetOrigin}/api/internal/hong-kong-reconcile`, {
     method: "POST",
@@ -170,6 +185,10 @@ function imageEntries(messages) {
   return messages
     .flatMap((message) => array(message.images ?? [], "images").map((image) => ({ ...image, messageId: message.id })))
     .filter((image) => typeof image.id === "string" && UUID.test(image.id));
+}
+
+function imageAssociationKey(image) {
+  return `${uuid(image.messageId, "image message id")}:${uuid(image.id, "image id")}`;
 }
 
 async function imageHash(origin, image) {
