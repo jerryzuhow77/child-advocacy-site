@@ -68,6 +68,13 @@ jobs:
           marker = "hk-mobile-first-paint-v1"
           css_name = os.environ["CSS_NAME"]
           roots = [Path("/var/www"), Path("/srv"), Path("/opt"), Path("/home/ubuntu")]
+
+          def atomic_write_text(path, text):
+              temporary = path.with_name(f".{path.name}.recovery-tmp")
+              temporary.write_text(text, encoding="utf-8")
+              temporary.chmod(path.stat().st_mode)
+              os.replace(temporary, path)
+
           matches = []
           for root in roots:
               if root.exists():
@@ -100,7 +107,7 @@ jobs:
               if marker not in repaired:
                   repaired += rule
               if repaired != text:
-                  path.write_text(repaired, encoding="utf-8")
+                  atomic_write_text(path, repaired)
               patched += 1
           if patched == 0:
               raise SystemExit("No matching Guardian Wall stylesheet was patched")
@@ -127,7 +134,7 @@ jobs:
                   continue
               repaired = text.replace(unsafe, safe, 1)
               if repaired != text:
-                  path.write_text(repaired, encoding="utf-8")
+                  atomic_write_text(path, repaired)
               js_patched += 1
           if js_patched == 0:
               raise SystemExit("No matching Guardian Wall locale helper was patched")
