@@ -25,6 +25,11 @@ if (targetStats.scope !== "taiwan-hong-kong-shared") throw new Error("Taiwan tar
 const sourceMessages = array(sourcePublic.messages, "Hong Kong messages");
 const targetMessages = array(targetPublic.messages, "Taiwan messages");
 const sourceGuestMessages = sourceMessages.filter((message) => typeof message.id === "string" && UUID.test(message.id));
+if (sourceMessages.length && !sourceGuestMessages.length) {
+  console.log(JSON.stringify({
+    sourceIdDiagnostic: sourceMessages.slice(0, 8).map((message) => ({ id: message.id, authorType: message.authorType })),
+  }));
+}
 const targetIds = new Set(targetMessages.map((message) => string(message.id, "target message id")));
 const sourceOnly = sourceGuestMessages.filter((message) => !targetIds.has(message.id));
 const messageRows = [];
