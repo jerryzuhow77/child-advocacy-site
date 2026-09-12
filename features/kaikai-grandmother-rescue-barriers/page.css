@@ -727,10 +727,150 @@ html[lang="ja"] body {
   font-family: "Noto Serif JP", "Yu Mincho", "Hiragino Mincho ProN", serif;
 }
 
+
+.qa-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.4rem;
+}
+
+.qa-grid article {
+  padding: 1.35rem;
+  border: 1px solid var(--line);
+  border-top: 6px solid var(--sage);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.65);
+  box-shadow: 0 12px 30px rgba(74, 86, 83, 0.07);
+}
+
+.qa-grid article:nth-child(2) { border-top-color: var(--ochre); }
+.qa-grid article:nth-child(3) { border-top-color: var(--rose); }
+
+.qa-no {
+  display: block;
+  color: #7b6964;
+  font: 800 0.8rem/1.2 system-ui, sans-serif;
+  letter-spacing: 0.12em;
+}
+
+.qa-grid h3 {
+  margin: 0.55rem 0 0.65rem;
+  color: #4b5855;
+  font-size: 1.28rem;
+}
+
+.qa-grid p { margin: 0; }
+
+.source-link {
+  white-space: nowrap;
+  font-family: system-ui, -apple-system, "Noto Sans TC", "Noto Sans SC", "Noto Sans JP", sans-serif;
+  font-size: 0.82em;
+  font-weight: 750;
+  text-underline-offset: 0.2em;
+}
+
+.highlight-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.85rem;
+  margin: 1rem 0 0;
+  color: #666d69;
+  font-family: system-ui, -apple-system, "Noto Sans TC", "Noto Sans SC", "Noto Sans JP", sans-serif;
+  font-size: 0.78rem !important;
+}
+
+.highlight-key span::before {
+  content: "";
+  display: inline-block;
+  width: 1.2rem;
+  height: 0.45rem;
+  margin-right: 0.32rem;
+  border-radius: 999px;
+  background: rgba(246, 213, 76, 0.72);
+}
+
+.highlight-key .key-sage::before { background: rgba(139, 194, 137, 0.68); }
+.highlight-key .key-rose::before { background: rgba(235, 137, 141, 0.65); }
+.highlight-key .key-blue::before { background: rgba(111, 182, 210, 0.64); }
+
+.comparison-table,
+.knowledge-table {
+  max-width: 100%;
+  margin-top: 1.8rem;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: 0 13px 35px rgba(74, 86, 83, 0.08);
+}
+
+.comparison-table table { min-width: 850px; }
+.position-table table { min-width: 760px; }
+.knowledge-table table { min-width: 900px; }
+
+.comparison-table caption {
+  padding: 1.1rem 1.2rem 0.55rem;
+  color: #6e5550;
+  font-size: 1.12rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+.comparison-table thead th,
+.knowledge-table thead th {
+  color: #f8f4eb;
+  background: rgba(74, 86, 83, 0.9);
+}
+
+.comparison-table tbody th {
+  width: 22%;
+  color: #6e5550;
+  background: rgba(185, 148, 142, 0.1);
+}
+
+.comparison-table tbody td:nth-child(2) { width: 34%; }
+.position-table tbody td,
+.knowledge-table tbody td { width: 33.333%; }
+
+.change-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.change-grid article {
+  padding: 1.45rem;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: 0 12px 30px rgba(74, 86, 83, 0.07);
+}
+
+.change-grid h3 { margin: 0.7rem 0 0.45rem; }
+.change-grid p { margin: 0; }
+
+.status-badge {
+  display: inline-flex;
+  padding: 0.16rem 0.55rem;
+  border: 1px solid #adc1b2;
+  border-radius: 999px;
+  color: #40584e;
+  background: #dce6dc;
+  font: 800 0.75rem/1.4 system-ui, sans-serif;
+}
+
+.status-badge.is-claimed {
+  border-color: #b7c4ca;
+  color: #465b65;
+  background: #dce5e9;
+}
+
 @media (max-width: 980px) {
   .route-columns { grid-template-columns: 1fr; }
   .route-cell { border-top: 0; border-left: 4px solid transparent; }
-  .quick-points { grid-template-columns: 1fr; }
+  .quick-points,
+  .qa-grid { grid-template-columns: 1fr; }
   .quick-points li { min-height: 0; }
 }
 
@@ -771,7 +911,79 @@ html[lang="ja"] body {
   .opening { padding-left: 1rem; }
   .boundary { grid-template-columns: 1fr; }
   .evidence-grid,
-  .questions { grid-template-columns: 1fr; }
+  .questions,
+  .change-grid { grid-template-columns: 1fr; }
+
+  .comparison-table,
+  .knowledge-table {
+    overflow: visible;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .comparison-table table,
+  .knowledge-table table {
+    min-width: 0;
+    background: transparent;
+  }
+
+  .comparison-table thead,
+  .knowledge-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .comparison-table tbody,
+  .knowledge-table tbody {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .comparison-table tbody tr,
+  .knowledge-table tbody tr {
+    display: block;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.66);
+    box-shadow: 0 10px 26px rgba(74, 86, 83, 0.06);
+  }
+
+  .comparison-table tbody th {
+    display: block;
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid var(--line);
+    background: rgba(185, 148, 142, 0.13);
+    white-space: normal;
+  }
+
+  .comparison-table tbody td,
+  .knowledge-table tbody td {
+    display: grid;
+    grid-template-columns: minmax(7rem, 34%) minmax(0, 1fr);
+    gap: 0.8rem;
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .comparison-table tbody td::before,
+  .knowledge-table tbody td::before {
+    content: attr(data-label);
+    color: #6e5550;
+    font-family: system-ui, -apple-system, "Noto Sans TC", "Noto Sans SC", "Noto Sans JP", sans-serif;
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  .comparison-table tbody tr > :last-child,
+  .knowledge-table tbody tr > :last-child { border-bottom: 0; }
 
   .timeline::before { left: 8px; }
 
@@ -815,6 +1027,10 @@ html[lang="ja"] body {
   .hero-art { opacity: 0.2; }
   .hero-copy { padding: 3rem 0; color: #111; }
   .paper { width: 100%; margin: 0; padding: 2rem 0; border: 0; box-shadow: none; }
+  .qa-grid article,
+  .change-grid article,
+  .comparison-table tbody tr,
+  .knowledge-table tbody tr { break-inside: avoid; }
   .fluorescent {
     background-image: none;
     text-decoration-line: underline;
