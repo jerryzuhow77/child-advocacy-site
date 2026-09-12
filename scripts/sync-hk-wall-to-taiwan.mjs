@@ -6,7 +6,7 @@ const targetOrigin = new URL(process.env.TARGET_ORIGIN ?? "https://global-protec
 const secret = process.env.HK_SYNC_SECRET;
 const apply = process.argv.includes("--apply");
 
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{12}$/i;
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const LANGUAGES = new Set(["zh-Hant", "zh-Hans", "en", "ja"]);
 const THEMES = new Set(["support", "listen", "system", "courage", "official", "bulletin", "custom"]);
 const COLORS = new Set(["moon", "lotus", "apricot", "sage", "indigo", "clay", "lilac"]);
@@ -25,11 +25,6 @@ if (targetStats.scope !== "taiwan-hong-kong-shared") throw new Error("Taiwan tar
 const sourceMessages = array(sourcePublic.messages, "Hong Kong messages");
 const targetMessages = array(targetPublic.messages, "Taiwan messages");
 const sourceGuestMessages = sourceMessages.filter((message) => typeof message.id === "string" && UUID.test(message.id));
-if (sourceMessages.length && !sourceGuestMessages.length) {
-  console.log(JSON.stringify({
-    sourceIdDiagnostic: sourceMessages.slice(0, 8).map((message) => ({ id: message.id, authorType: message.authorType })),
-  }));
-}
 const targetIds = new Set(targetMessages.map((message) => string(message.id, "target message id")));
 const sourceOnly = sourceGuestMessages.filter((message) => !targetIds.has(message.id));
 const messageRows = [];
