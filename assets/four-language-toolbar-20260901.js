@@ -5,7 +5,7 @@
   window.__cpaFourLanguageToolbar = true;
 
   const ROOT = "/child-advocacy-site/";
-  const ROUTES_URL = `${ROOT}data/four-language-routes.json?v=20260909-5`;
+  const ROUTES_URL = `${ROOT}data/four-language-routes.json?v=20260912-6`;
   const ENGAGEMENT_API = "https://global-protection.jerryzuhow77.chatgpt.site/api/public/view-count";
   const WORKER_API = "https://sweet-art-bed8child-advocacy-page-views.jerryzuhow77.workers.dev/views";
   const BOOKMARK_KEY = "cpa_article_bookmarks_v1";

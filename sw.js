@@ -2,7 +2,7 @@
 
 // A new cache namespace is intentional: it retires the previous seasonal assets
 // and lets the panoramic HD ink artwork replace an already-installed PWA.
-const VERSION = '20260909-panorama-hd-v12';
+const VERSION = '20260912-kaikai-chapter4-v13';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
