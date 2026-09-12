@@ -982,8 +982,16 @@ html[lang="ja"] body {
     font-weight: 800;
   }
 
+  .comparison-table tbody td:nth-child(n),
+  .knowledge-table tbody td:nth-child(n) { width: 100%; }
+
+  .comparison-table tbody tr:last-child > td,
+  .knowledge-table tbody tr:last-child > td { border-bottom: 1px solid var(--line); }
+
   .comparison-table tbody tr > :last-child,
-  .knowledge-table tbody tr > :last-child { border-bottom: 0; }
+  .knowledge-table tbody tr > :last-child,
+  .comparison-table tbody tr:last-child > :last-child,
+  .knowledge-table tbody tr:last-child > :last-child { border-bottom: 0; }
 
   .timeline::before { left: 8px; }
 
