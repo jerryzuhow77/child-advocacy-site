@@ -1,4 +1,4 @@
-name: Recover Hong Kong blank page
+name: Recover Hong Kong blank page and mobile layout
 
 on:
   push:
@@ -67,6 +67,7 @@ jobs:
           import tempfile
 
           marker = "hk-mobile-first-paint-v1"
+          layout_marker = "hk-mobile-layout-guardrails-v1"
           css_name = os.environ["CSS_NAME"]
           roots = [Path("/var/www"), Path("/srv"), Path("/opt"), Path("/home/ubuntu")]
 
@@ -110,6 +111,84 @@ jobs:
             }
           }
           '''
+
+          layout_rule = '''
+          /* hk-mobile-layout-guardrails-v1: compact mobile chrome without changing public data routes */
+          .mobile-nav-locales{
+            display:grid;
+            grid-template-columns:repeat(2,minmax(0,1fr));
+            gap:7px;
+            padding:11px;
+            border:1px solid rgba(67,103,103,.16);
+            border-radius:16px 9px;
+            background:rgba(235,241,235,.72);
+          }
+          .mobile-nav-locales button{
+            min-width:0;
+            min-height:40px;
+            padding:7px 8px;
+            border:1px solid rgba(67,103,103,.14);
+            border-radius:999px;
+            color:#4e6665;
+            background:rgba(255,253,247,.82);
+            box-shadow:none;
+            cursor:pointer;
+            font-size:13px;
+            font-weight:800;
+            white-space:nowrap;
+          }
+          .mobile-nav-locales button.active{
+            border-color:#496f70;
+            color:#fff;
+            background:#496f70;
+          }
+          .mobile-nav-locales button:focus-visible{
+            outline:3px solid rgba(73,111,112,.28);
+            outline-offset:2px;
+          }
+          @media(max-width:900px){
+            html body>.four-language-toolbar{
+              display:none!important;
+              visibility:hidden!important;
+              position:absolute!important;
+              height:0!important;
+              min-height:0!important;
+              padding:0!important;
+              border:0!important;
+              overflow:hidden!important;
+            }
+            html body{padding-top:0!important}
+            .portal-header{top:0!important}
+            .portal-page~.pwa-install-fab{display:none!important}
+          }
+          @media(max-width:680px){
+            .site~.pwa-install-fab{display:none!important}
+            .site-footer{padding-bottom:calc(118px + env(safe-area-inset-bottom))!important}
+            .plaza-page,.message-reader-page{padding-bottom:calc(112px + env(safe-area-inset-bottom))!important}
+            .review-workspace.is-empty,
+            .review-workspace:has(.review-queue .empty-state){display:block!important;min-height:0!important}
+            .review-workspace.is-empty .review-queue,
+            .review-workspace:has(.review-queue .empty-state) .review-queue{display:none!important}
+            .review-workspace.is-empty .review-detail,
+            .review-workspace:has(.review-queue .empty-state) .review-detail{
+              min-height:0!important;
+              display:grid!important;
+              gap:14px!important;
+              place-items:stretch!important;
+              padding:22px 16px!important;
+              text-align:center!important;
+            }
+            .review-workspace.is-empty .review-detail>p,
+            .review-workspace:has(.review-queue .empty-state) .review-detail>p{margin:0!important}
+            .review-workspace.is-empty .review-reason,
+            .review-workspace:has(.review-queue .empty-state) .review-reason{text-align:left!important}
+            .review-workspace.is-empty .review-detail>button,
+            .review-workspace:has(.review-queue .empty-state) .review-detail>button{
+              min-height:44px!important;
+              border-radius:9px!important;
+            }
+          }
+          '''
           patched = 0
           for path in matches:
               text = path.read_text(encoding="utf-8", errors="strict")
@@ -118,6 +197,8 @@ jobs:
               repaired = text.replace(r"\n/* " + marker, "\n/* " + marker)
               if marker not in repaired:
                   repaired += rule
+              if layout_marker not in repaired:
+                  repaired += layout_rule
               if repaired != text:
                   atomic_write_text(path, repaired)
               patched += 1
@@ -136,15 +217,32 @@ jobs:
 
           unsafe = 'function P(e,t){return e[t]||e[`zh-Hant`]||e.en||``}'
           safe = 'function P(e,t){return e?.[t]||e?.[`zh-Hant`]||e?.en||``}'
+
+          script_marker = "hk-mobile-layout-nav-v1"
+          script_addition = r'''
+          ;(()=>{const m="hk-mobile-layout-nav-v1";if(window.__hkMobileLayoutNav===m)return;window.__hkMobileLayoutNav=m;
+          const labels={"zh-Hant":"繁體中文","zh-Hans":"简体中文","en":"English","ja":"日本語"};
+          const activate=(wrap,key)=>wrap.querySelectorAll("button").forEach((button)=>{const active=button.dataset.locale===key;button.classList.toggle("active",active);button.setAttribute("aria-pressed",String(active));});
+          const install=()=>{const nav=document.querySelector(".mobile-nav");if(!nav||nav.querySelector(".mobile-nav-locales"))return;
+          const wrap=document.createElement("div");wrap.className="mobile-nav-locales";wrap.setAttribute("role","group");wrap.setAttribute("aria-label","Language");
+          const select=document.querySelector(".locale-picker select");const current=select?.value||document.documentElement.lang||"zh-Hans";
+          Object.entries(labels).forEach(([key,label])=>{const button=document.createElement("button");button.type="button";button.dataset.locale=key;button.textContent=label;
+          button.addEventListener("click",()=>{activate(wrap,key);const picker=document.querySelector(".locale-picker select");if(picker){picker.value=key;picker.dispatchEvent(new Event("change",{bubbles:true}));return;}
+          const destination=new URL(window.location.href);if(key==="zh-Hant"||key==="zh-Hans"){destination.hostname=key==="zh-Hant"?"global-protection.jerryzuhow77.chatgpt.site":"cn.globalprotectionwall.com";destination.protocol="https:";destination.port="";destination.searchParams.set("lang",key);destination.searchParams.set("region",key==="zh-Hant"?"tw":"hk");}else{destination.searchParams.set("lang",key);if(!destination.searchParams.has("region"))destination.searchParams.set("region",window.location.hostname==="cn.globalprotectionwall.com"?"hk":"tw");}window.location.assign(destination.toString());});
+          wrap.appendChild(button);});activate(wrap,current);nav.insertBefore(wrap,nav.querySelector(".mobile-nav-official"));};
+          install();new MutationObserver(install).observe(document.documentElement,{childList:true,subtree:true});})();
+          '''
           js_patched = 0
           for path in js_matches:
               try:
                   text = path.read_text(encoding="utf-8", errors="strict")
               except UnicodeDecodeError:
                   continue
-              if safe not in text and unsafe not in text:
+              if safe not in text and unsafe not in text and script_marker not in text:
                   continue
               repaired = text.replace(unsafe, safe, 1)
+              if script_marker not in repaired:
+                  repaired += script_addition
               if repaired != text:
                   atomic_write_text(path, repaired)
               js_patched += 1
@@ -179,6 +277,8 @@ jobs:
             -A 'Mozilla/5.0 (Linux; Android 16; SM-F9360) AppleWebKit/537.36 Chrome/140.0 Mobile Safari/537.36' \
             "https://cn.globalprotectionwall.com/assets/$CSS_NAME")"
           grep -Fq 'hk-mobile-first-paint-v1' <<<"$css"
+          grep -Fq 'hk-mobile-layout-guardrails-v1' <<<"$css"
+          grep -Fq '.mobile-nav-locales' <<<"$css"
           if grep -Fq '\n/* hk-mobile-first-paint-v1' <<<"$css"; then
             echo '::error::Mobile CSS still contains an invalid literal newline.'
             exit 1
@@ -202,4 +302,6 @@ jobs:
           safe = 'function P(e,t){return e?.[t]||e?.[`zh-Hant`]||e?.en||``}'
           assert safe in text, "Safe locale fallback is missing from the live script"
           assert unsafe not in text, "Unsafe locale fallback remains in the live script"
+          assert 'hk-mobile-layout-nav-v1' in text, "Mobile layout navigation helper is missing"
+          assert '.mobile-nav-locales' in text, "Mobile language controls are missing"
           PY
