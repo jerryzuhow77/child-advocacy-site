@@ -156,6 +156,8 @@ html.cpa-four-language-toolbar-active .preview-bar {
   width: min(1180px, calc(100% - 3rem));
   margin: -2.5rem auto 4rem;
   padding: clamp(2rem, 5vw, 5.4rem);
+  overflow: hidden;
+  overflow: clip;
   border: 1px solid rgba(255, 255, 255, 0.66);
   border-radius: 34px;
   background: rgba(248, 244, 235, 0.88);
