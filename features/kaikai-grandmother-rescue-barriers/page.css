@@ -815,6 +815,15 @@ html[lang="ja"] body {
   .hero-art { opacity: 0.2; }
   .hero-copy { padding: 3rem 0; color: #111; }
   .paper { width: 100%; margin: 0; padding: 2rem 0; border: 0; box-shadow: none; }
+  .fluorescent {
+    background-image: none;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-color: currentColor;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.15em;
+    text-decoration-skip-ink: auto;
+  }
 }
 
 @media (forced-colors: active) {
