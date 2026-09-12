@@ -57,11 +57,17 @@ jobs:
             "curl -fsS --max-time 15 http://127.0.0.1:8787/" \
             | sed -nE 's#.*(src|href)="/assets/(guardian-wall-[^"?]+\.js)[^"]*".*#\2#p' | head -n 1)"
           test -n "$js_name" || { echo '::error::Could not resolve the live Guardian Wall script.'; exit 1; }
+          if [[ "$js_name" == *-localefix-v1.js ]]; then
+            js_new_name="$js_name"
+          else
+            js_new_name="${js_name%.js}-localefix-v1.js"
+          fi
           printf 'css_name=%s\n' "$css_name" >> "$GITHUB_OUTPUT"
           printf 'js_name=%s\n' "$js_name" >> "$GITHUB_OUTPUT"
+          printf 'js_new_name=%s\n' "$js_new_name" >> "$GITHUB_OUTPUT"
 
           ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" \
-            "sudo CSS_NAME='$css_name' JS_NAME='$js_name' python3 -" <<'PY'
+            "sudo CSS_NAME='$css_name' JS_NAME='$js_name' JS_NEW_NAME='$js_new_name' python3 -" <<'PY'
           from pathlib import Path
           import os
 
@@ -107,6 +113,7 @@ jobs:
           print(f"Patched {patched} live stylesheet(s)")
 
           js_name = os.environ["JS_NAME"]
+          js_new_name = os.environ["JS_NEW_NAME"]
           js_matches = []
           for root in roots:
               if root.exists():
@@ -118,19 +125,28 @@ jobs:
           unsafe = 'function P(e,t){return e[t]||e[`zh-Hant`]||e.en||``}'
           safe = 'function P(e,t){return e?.[t]||e?.[`zh-Hant`]||e?.en||``}'
           js_patched = 0
+          html_patched = 0
           for path in js_matches:
               text = path.read_text(encoding="utf-8", errors="strict")
-              if safe in text:
-                  js_patched += 1
-                  continue
-              if unsafe not in text:
+              if safe not in text and unsafe not in text:
                   continue
               repaired = text.replace(unsafe, safe, 1)
-              path.write_text(repaired, encoding="utf-8")
+              target = path.with_name(js_new_name)
+              if not target.exists() or target.read_text(encoding="utf-8", errors="strict") != repaired:
+                  target.write_text(repaired, encoding="utf-8")
               js_patched += 1
+              app_root = path.parent.parent
+              for html_path in app_root.rglob("*.html"):
+                  html = html_path.read_text(encoding="utf-8", errors="strict")
+                  updated = html.replace(js_name, js_new_name)
+                  if updated != html:
+                      html_path.write_text(updated, encoding="utf-8")
+                      html_patched += 1
           if js_patched == 0:
               raise SystemExit("No matching Guardian Wall locale helper was patched")
-          print(f"Patched {js_patched} live script(s)")
+          if js_name != js_new_name and html_patched == 0:
+              raise SystemExit("No Guardian Wall HTML reference was updated")
+          print(f"Published {js_patched} repaired script(s); updated {html_patched} HTML file(s)")
           PY
 
       - name: Purge patched assets from Cloudflare
@@ -139,20 +155,21 @@ jobs:
         env:
           CSS_NAME: ${{ steps.patch.outputs.css_name }}
           JS_NAME: ${{ steps.patch.outputs.js_name }}
+          JS_NEW_NAME: ${{ steps.patch.outputs.js_new_name }}
         run: |
           set -Eeuo pipefail
           response="$(curl -fsS --max-time 20 \
             -X POST "https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE_ID/purge_cache" \
             -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
             -H 'Content-Type: application/json' \
-            --data "{\"files\":[\"https://cn.globalprotectionwall.com/assets/$CSS_NAME\",\"https://cn.globalprotectionwall.com/assets/$JS_NAME\"]}")"
+            --data "{\"files\":[\"https://cn.globalprotectionwall.com/\",\"https://cn.globalprotectionwall.com/assets/$CSS_NAME\",\"https://cn.globalprotectionwall.com/assets/$JS_NAME\",\"https://cn.globalprotectionwall.com/assets/$JS_NEW_NAME\"]}")"
           printf '%s' "$response" | python3 -c 'import json,sys; assert json.load(sys.stdin).get("success") is True'
 
       - name: Verify blank-page recovery
         shell: bash
         env:
           CSS_NAME: ${{ steps.patch.outputs.css_name }}
-          JS_NAME: ${{ steps.patch.outputs.js_name }}
+          JS_NEW_NAME: ${{ steps.patch.outputs.js_new_name }}
         run: |
           set -Eeuo pipefail
           css="$(curl -fsS --retry 5 --retry-delay 3 --max-time 25 \
@@ -163,9 +180,14 @@ jobs:
             echo '::error::Mobile CSS still contains an invalid literal newline.'
             exit 1
           fi
+          page="$(curl -fsS --retry 5 --retry-delay 3 --max-time 25 \
+            -A 'Mozilla/5.0 (Linux; Android 16; SM-F9360) AppleWebKit/537.36 Chrome/140.0 Mobile Safari/537.36' \
+            https://cn.globalprotectionwall.com/)"
+          grep -Fq '全球守護留言牆' <<<"$page"
+          grep -Fq "/assets/$JS_NEW_NAME" <<<"$page"
           curl -fsS --retry 5 --retry-delay 3 --max-time 25 \
             -A 'Mozilla/5.0 (Linux; Android 16; SM-F9360) AppleWebKit/537.36 Chrome/140.0 Mobile Safari/537.36' \
-            "https://cn.globalprotectionwall.com/assets/$JS_NAME" > /tmp/guardian-wall.js
+            "https://cn.globalprotectionwall.com/assets/$JS_NEW_NAME" > /tmp/guardian-wall.js
           python3 - <<'PY'
           from pathlib import Path
 
@@ -175,7 +197,3 @@ jobs:
           assert safe in text, "Safe locale fallback is missing from the live script"
           assert unsafe not in text, "Unsafe locale fallback remains in the live script"
           PY
-          page="$(curl -fsS --retry 5 --retry-delay 3 --max-time 25 \
-            -A 'Mozilla/5.0 (Linux; Android 16; SM-F9360) AppleWebKit/537.36 Chrome/140.0 Mobile Safari/537.36' \
-            https://cn.globalprotectionwall.com/)"
-          grep -Fq '全球守護留言牆' <<<"$page"
