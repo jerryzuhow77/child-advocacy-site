@@ -69,10 +69,13 @@ for (const message of sourceOnly) {
   });
 }
 
-const targetImageAssociations = new Set(imageEntries(targetMessages).map(imageAssociationKey));
+const targetImageAssociations = new Set();
+for (const image of imageEntries(targetMessages)) {
+  targetImageAssociations.add(await imageAssociationHash(targetOrigin, image));
+}
 const imageRows = [];
 for (const image of imageEntries(sourceGuestMessages)) {
-  const association = imageAssociationKey(image);
+  const association = await imageAssociationHash(sourceOrigin, image);
   if (targetImageAssociations.has(association)) continue;
   imageRows.push({
     id: uuid(image.id, "source image id"),
@@ -123,12 +126,12 @@ const missingIds = verifiedSourceGuestMessages
 
 let missingImageCount = 0;
 if (apply) {
-  const verifiedTargetImages = new Map(
-    imageEntries(verifiedTargetMessages).map((image) => [imageAssociationKey(image), image]),
-  );
+  const verifiedTargetImageAssociations = new Set();
+  for (const image of imageEntries(verifiedTargetMessages)) {
+    verifiedTargetImageAssociations.add(await imageAssociationHash(targetOrigin, image));
+  }
   for (const image of imageEntries(verifiedSourceGuestMessages)) {
-    const targetImage = verifiedTargetImages.get(imageAssociationKey(image));
-    if (!targetImage || await imageHash(sourceOrigin, image) !== await imageHash(targetOrigin, targetImage)) {
+    if (!verifiedTargetImageAssociations.has(await imageAssociationHash(sourceOrigin, image))) {
       missingImageCount += 1;
     }
   }
@@ -197,8 +200,8 @@ function imageEntries(messages) {
     .filter((image) => typeof image.id === "string" && UUID.test(image.id));
 }
 
-function imageAssociationKey(image) {
-  return `${uuid(image.messageId, "image message id")}:${uuid(image.id, "image id")}`;
+async function imageAssociationHash(origin, image) {
+  return `${uuid(image.messageId, "image message id")}:${await imageHash(origin, image)}`;
 }
 
 async function imageHash(origin, image) {
