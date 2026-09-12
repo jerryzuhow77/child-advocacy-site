@@ -142,8 +142,10 @@ jobs:
               if target_current != repaired:
                   target.write_text(repaired, encoding="utf-8")
               js_patched += 1
-              app_root = path.parent.parent
-              for html_path in app_root.rglob("*.html"):
+          for root in roots:
+              if not root.exists():
+                  continue
+              for html_path in root.rglob("*.html"):
                   try:
                       html = html_path.read_text(encoding="utf-8", errors="strict")
                   except UnicodeDecodeError:
