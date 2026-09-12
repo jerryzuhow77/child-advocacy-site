@@ -168,6 +168,15 @@
       return HK_SITE_BASE+relative+direct.search+direct.hash;
     }catch(_){return href}
   }
+  function pageAlternateRoutes(){
+    const routes={};
+    const aliases={"zh-hant":"zh-Hant","zh-tw":"zh-Hant","zh-hans":"zh-Hans","zh-cn":"zh-Hans",en:"en",ja:"ja"};
+    document.querySelectorAll('link[rel~="alternate"][hreflang][href]').forEach(link=>{
+      const key=aliases[(link.getAttribute("hreflang")||"").toLowerCase()];
+      if(key&&!routes[key])routes[key]=link.href;
+    });
+    return routes;
+  }
   function render(manifest){
     if(document.getElementById("cpa-four-language-toolbar"))return;
     const route=neutralRoute();
@@ -176,7 +185,7 @@
     document.getElementById("cpa-mobile-bar")?.remove();
     document.getElementById("cpa-mobile-menu")?.remove();
     document.documentElement.classList.remove("cpa-menu-open");
-    const language=locale(),words=copy[language],routes=manifest?.routes?.[route]||{},toolbar=document.createElement("aside");
+    const language=locale(),words=copy[language],routes={...pageAlternateRoutes(),...(manifest?.routes?.[route]||{})},toolbar=document.createElement("aside");
     toolbar.id="cpa-four-language-toolbar";
     toolbar.setAttribute("aria-label",words.aria);
     const options=Object.keys(localeNames).map(k=>{
