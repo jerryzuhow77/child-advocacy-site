@@ -595,6 +595,7 @@
     if (ambientTween) ambientTween.kill();
     if (scrollContext) scrollContext.revert();
     motionTargets.forEach(function (target) {
+      gsap.killTweensOf(target);
       gsap.set(target, {
         clearProps: "opacity,visibility,transform,filter,clipPath,backgroundSize"
       });
