@@ -799,3 +799,42 @@ html[lang="ja"] body {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
+
+/* Fluorescent key-point underlines shared by the four unlisted editions.
+   Presentation only: preserve wording, evidence labels, links and layout. */
+.paper strong,
+.paper .quick-points b {
+  background-image: linear-gradient(
+    transparent 55%,
+    rgba(248, 224, 82, 0.72) 55%,
+    rgba(248, 224, 82, 0.72) 93%,
+    transparent 93%
+  );
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.paper #public-support-title,
+.paper #fee-options-title {
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-color: rgba(248, 224, 82, 0.72);
+  text-decoration-thickness: 0.42em;
+  text-underline-offset: -0.2em;
+  text-decoration-skip-ink: none;
+}
+
+@media (forced-colors: active), print {
+  .paper strong,
+  .paper .quick-points b,
+  .paper #public-support-title,
+  .paper #fee-options-title {
+    background-image: none;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-color: currentColor;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.15em;
+    text-decoration-skip-ink: auto;
+  }
+}
