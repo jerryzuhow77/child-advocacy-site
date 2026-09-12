@@ -10,6 +10,7 @@ on:
       - 'assets/four-language-toolbar-20260901.css'
       - 'data/four-language-routes.json'
       - '.github/scripts/sync-four-language-toolbar.py'
+      - '.github/scripts/test-four-language-cross-origin-routing.mjs'
       - '.github/workflows/four-language-dropdown-validation.yml'
   workflow_dispatch:
 
@@ -25,6 +26,7 @@ jobs:
         run: |
           set -euo pipefail
           node --check assets/four-language-toolbar-20260901.js
+          node .github/scripts/test-four-language-cross-origin-routing.mjs
           python3 - <<'PY'
           import json
           from pathlib import Path

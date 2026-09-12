@@ -10,16 +10,28 @@
   const WORKER_API = "https://sweet-art-bed8child-advocacy-page-views.jerryzuhow77.workers.dev/views";
   const BOOKMARK_KEY = "cpa_article_bookmarks_v1";
   const LIKED_KEY = "cpa_engagement_liked_v1";
+  const TW_SITE_HOST = "jerryzuhow77.github.io";
+  const TW_SITE_BASE = `https://${TW_SITE_HOST}${ROOT}`;
   const HK_MIRROR_HOST = "cn.globalprotectionwall.com";
   const HK_SITE_BASE = "https://cn.globalprotectionwall.com/child-advocacy-site/";
   // Every published article has necessarily been opened at least once during
   // authoring or publication.  A zero therefore means that a counter key was
   // reset/split during a migration, not that the article has never been read.
   const MIN_PUBLISHED_VIEW_COUNT = 1;
+  function normalizedLocale(value){
+    return ({"zh-hant":"zh-Hant","zh-tw":"zh-Hant","zh-hans":"zh-Hans","zh-cn":"zh-Hans",en:"en",ja:"ja"})[String(value||"").trim().toLowerCase()]||"";
+  }
+  function rememberLocale(value){
+    const language=normalizedLocale(value);
+    if(!language)return;
+    try{localStorage.setItem("siteLang",language)}catch(_){}
+  }
   function shouldUseHongKongMirror(){
-    if(location.hostname!=="jerryzuhow77.github.io"||!location.pathname.startsWith(ROOT))return false;
-    const query=(new URLSearchParams(location.search).get("lang")||"").toLowerCase();
-    if(query)return query==="zh-hans"||query==="zh-cn";
+    if(location.hostname!==TW_SITE_HOST||!location.pathname.startsWith(ROOT))return false;
+    const query=normalizedLocale(new URLSearchParams(location.search).get("lang"));
+    if(query){rememberLocale(query);return query==="zh-Hans";}
+    const physical=(location.pathname.slice(ROOT.length).split("/")[0]||"").toLowerCase();
+    if(physical==="en"||physical==="ja"){rememberLocale(physical);return false;}
     const declared=(document.documentElement.lang||"").toLowerCase();
     if(declared.startsWith("zh-hans")||declared==="zh-cn")return true;
     try{
@@ -127,8 +139,10 @@
       select?.addEventListener('change',()=>{
         const option=select.selectedOptions[0];
         if(!option||option.disabled||!option.value)return;
-        try{localStorage.setItem('siteLang',option.dataset.locale||'zh-Hant')}catch(_){}
-        location.href=option.value;
+        const language=normalizedLocale(option.dataset.locale)||'zh-Hant',target=new URL(option.value,location.href);
+        rememberLocale(language);
+        if(location.hostname===HK_MIRROR_HOST&&target.hostname===TW_SITE_HOST)target.searchParams.set('lang',language);
+        location.href=target.href;
       });
     }
     if(!neutralRoute())return;
@@ -158,7 +172,7 @@
   }
   function languageUrl(key,href){
     if(!href){
-      return {"zh-Hant":ROOT,"zh-Hans":HK_SITE_BASE,en:ROOT+"en/",ja:ROOT+"ja/"}[key]||ROOT;
+      return {"zh-Hant":TW_SITE_BASE,"zh-Hans":HK_SITE_BASE,en:TW_SITE_BASE+"en/",ja:TW_SITE_BASE+"ja/"}[key]||TW_SITE_BASE;
     }
     if(key!=="zh-Hans")return href;
     try{

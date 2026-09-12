@@ -20,6 +20,7 @@ on:
       - '.github/scripts/verify-chapter-two-publication.py'
       - '.github/scripts/protect-chapter-two-hold.py'
       - '.github/scripts/sync-four-language-toolbar.py'
+      - '.github/scripts/test-four-language-cross-origin-routing.mjs'
       - '.github/scripts/sync-zh-hans-content.py'
       - 'scripts/verify-four-language-completeness.py'
       - 'data/latest-bulletins.json'
@@ -95,6 +96,7 @@ jobs:
           node --check assets/home-ia-bootstrap-20260823.js
           node --check assets/global-protection-wall-portal.js
           node --check assets/four-language-toolbar-20260901.js
+          node .github/scripts/test-four-language-cross-origin-routing.mjs
           node --check assets/article-comments-20260828.js
           node --check assets/home-view-counter-20260811.js
           node --check assets/mobile-nav-view-counter-20260823.js
