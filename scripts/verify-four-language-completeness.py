@@ -4,10 +4,11 @@ import json
 import re
 from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import urljoin, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = '/child-advocacy-site/'
+SITE_ORIGIN = 'https://jerryzuhow77.github.io'
 LOCALES = {'zh-Hant', 'zh-Hans', 'en', 'ja'}
 INTENTIONALLY_SINGLE_LANGUAGE = {
     'cases/kaikai/features/final-24-hours/',
@@ -28,6 +29,8 @@ class Document(HTMLParser):
         super().__init__()
         self.ids = set()
         self.lang = ''
+        self.language_links = {}
+        self.alternates = {}
         self.feed(text)
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
@@ -35,6 +38,11 @@ class Document(HTMLParser):
             self.ids.add(attrs['id'])
         if tag == 'html':
             self.lang = attrs.get('lang', '')
+        hreflang = attrs.get('hreflang')
+        if tag == 'a' and hreflang in LOCALES and attrs.get('href'):
+            self.language_links[hreflang] = attrs['href']
+        if tag == 'link' and 'alternate' in attrs.get('rel', '').lower().split() and hreflang in LOCALES and attrs.get('href'):
+            self.alternates[hreflang] = attrs['href']
 
 def read(url):
     relative = urlsplit(url).path.removeprefix(BASE).lstrip('/')
@@ -57,12 +65,23 @@ for route, editions in routes.items():
             errors.append(f'{route}: query-language route lacks a converter')
         # The root homepage deliberately uses compact in-page navigation; the
         # shared four-language toolbar remains mandatory on article pages.
-        if path != ROOT / 'index.html' and route not in BESPOKE_TOOLBAR_ROUTES:
+        bespoke_toolbar = route in BESPOKE_TOOLBAR_ROUTES and locale in {'zh-Hant', 'zh-Hans'}
+        if path != ROOT / 'index.html' and not bespoke_toolbar:
             for marker in ('data-cpa-four-language-toolbar-style', 'data-cpa-four-language-toolbar-flag', 'data-cpa-four-language-toolbar-script'):
                 if marker not in text:
                     errors.append(f'{path.relative_to(ROOT)}: missing {marker}')
-        if route in BESPOKE_TOOLBAR_ROUTES and not re.search(r'class=["\'](?:top-lang-links|langs)["\']', text):
+        if bespoke_toolbar and not re.search(r'class=["\']top-lang-links["\']', text):
             errors.append(f'{path.relative_to(ROOT)}: missing bespoke four-language toolbar')
+        if bespoke_toolbar:
+            page_url = url if urlsplit(url).scheme else SITE_ORIGIN + url
+            for alternate, target in editions.items():
+                expected_alternate = target if urlsplit(target).scheme else SITE_ORIGIN + target
+                if doc.alternates.get(alternate) != expected_alternate:
+                    errors.append(f'{path.relative_to(ROOT)}: incorrect {alternate} alternate')
+                href = doc.language_links.get(alternate)
+                expected_link = target if urlsplit(target).scheme else urljoin(page_url, target)
+                if not href or urljoin(page_url, href) != expected_link:
+                    errors.append(f'{path.relative_to(ROOT)}: incorrect bespoke {alternate} destination')
         for alternate in editions:
             if f'hreflang="{alternate}"' not in text:
                 errors.append(f'{path.relative_to(ROOT)}: missing alternate {alternate}')
