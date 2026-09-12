@@ -81,8 +81,8 @@ jobs:
                       handle.write(text)
                       handle.flush()
                       os.fsync(handle.fileno())
-                  os.chmod(temporary, metadata.st_mode)
-                  os.chown(temporary, metadata.st_uid, metadata.st_gid)
+                      os.fchmod(handle.fileno(), metadata.st_mode)
+                      os.fchown(handle.fileno(), metadata.st_uid, metadata.st_gid)
                   os.replace(temporary, path)
               finally:
                   temporary.unlink(missing_ok=True)
