@@ -18,6 +18,7 @@ INTENTIONALLY_SINGLE_LANGUAGE = {
     'cases/kaikai/features/liu-sisters-dialogues/',
     'news/reporting-threshold-20260911/',
 }
+BESPOKE_TOOLBAR_ROUTES = {'court-comics/episode-05/'}
 routes = json.loads((ROOT / 'data/four-language-routes.json').read_text())['routes']
 errors = []
 physical = set()
@@ -56,10 +57,12 @@ for route, editions in routes.items():
             errors.append(f'{route}: query-language route lacks a converter')
         # The root homepage deliberately uses compact in-page navigation; the
         # shared four-language toolbar remains mandatory on article pages.
-        if path != ROOT / 'index.html':
+        if path != ROOT / 'index.html' and route not in BESPOKE_TOOLBAR_ROUTES:
             for marker in ('data-cpa-four-language-toolbar-style', 'data-cpa-four-language-toolbar-flag', 'data-cpa-four-language-toolbar-script'):
                 if marker not in text:
                     errors.append(f'{path.relative_to(ROOT)}: missing {marker}')
+        if route in BESPOKE_TOOLBAR_ROUTES and not re.search(r'class=["\'](?:top-lang-links|langs)["\']', text):
+            errors.append(f'{path.relative_to(ROOT)}: missing bespoke four-language toolbar')
         for alternate in editions:
             if f'hreflang="{alternate}"' not in text:
                 errors.append(f'{path.relative_to(ROOT)}: missing alternate {alternate}')

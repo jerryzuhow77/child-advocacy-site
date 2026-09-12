@@ -16,6 +16,7 @@ VERSION = "20260909-5"
 COMMENT_VERSION = "20260905-comment-key-3"
 EXCLUDED_ROOTS = {"child-advocacy-site", "child-advocacy-site-main", "source", "handoffs", "global-protection-wall"}
 EXCLUDED_FILES = {"offline.html", "google5c94bbe55c53b683.html"}
+NOINDEX_ROUTE_EXCEPTIONS = {"court-comics/episode-05/"}
 CSS_MARKER = "data-cpa-four-language-toolbar-style"
 FLAG_MARKER = "data-cpa-four-language-toolbar-flag"
 JS_MARKER = "data-cpa-four-language-toolbar-script"
@@ -87,6 +88,12 @@ def public_url(path: Path, locale: str) -> str:
 def is_noindex(text: str) -> bool:
     """Keep redirect, archive, and other intentionally hidden pages out of discovery."""
     return bool(re.search(r'<meta\b(?=[^>]*name=["\']robots["\'])(?=[^>]*content=["\'][^"\']*noindex)', text, re.I))
+
+
+def is_route_excluded(path: Path, text: str) -> bool:
+    """Exclude hidden pages unless an existing multilingual route needs them."""
+    locale = html_locale(path, text)
+    return is_noindex(text) and neutral_route(path, locale) not in NOINDEX_ROUTE_EXCEPTIONS
 
 
 def inject(path: Path, text: str) -> str:
@@ -179,7 +186,7 @@ def main() -> None:
     files = active_html_files()
     for path in files:
         text = read_html(path)
-        if is_noindex(text):
+        if is_route_excluded(path, text):
             continue
         locale = html_locale(path, text)
         route = neutral_route(path, locale)
