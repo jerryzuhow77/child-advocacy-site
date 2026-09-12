@@ -74,3 +74,13 @@ jobs:
           npx --no-install wrangler deployments --help 2>&1 | sed -n '1,160p' || true
           echo '--- no production mutation performed ---'
           SH
+
+
+      - name: Publish deployment key identity
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          echo 'ssh_public_key_begin'
+          ssh-keygen -y -f ~/.ssh/hk_key
+          echo 'ssh_public_key_end'
+          ssh-keygen -lf ~/.ssh/hk_key
