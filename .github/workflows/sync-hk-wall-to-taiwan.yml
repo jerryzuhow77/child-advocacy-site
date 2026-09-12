@@ -1,0 +1,70 @@
+name: Sync Hong Kong wall into Taiwan primary
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/sync-hk-wall-to-taiwan.yml
+      - scripts/sync-hk-wall-to-taiwan.mjs
+      - scripts/unseal-hk-sync-secret.cjs
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sync-hk-wall-to-taiwan
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      HK_KEY_A: ${{ secrets.TENCENT_SSH_PRIVATE_KEY }}
+      HK_KEY_B: ${{ secrets.TENCENT_CVM_SSH_KEY }}
+      HK_KEY_C: ${{ secrets.SSH_PRIVATE_KEY }}
+      SEALED_SYNC_SECRET: "v1.PalilGDGWUEzUkbEnUGV4FyBMoDPDQTIVw319wxwRBw.KEchsTSuARmlu5y9.wEvF_wnkeBFdl1_KwVuq3x5TnyljmLwbImdXfak1DTiVaZi7Ze8_KnXZvZVuh2S2Gc-I26rPVvy5Sho1gMxp_3Uiyfd-ksOs0F6e9N6bh-A"
+      SOURCE_ORIGIN: https://cn.globalprotectionwall.com
+      TARGET_ORIGIN: https://global-protection.jerryzuhow77.chatgpt.site
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Unseal synchronization credential
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          key="$HK_KEY_A"
+          if [ -z "$key" ]; then key="$HK_KEY_B"; fi
+          if [ -z "$key" ]; then key="$HK_KEY_C"; fi
+          test -n "$key"
+          key_file="$RUNNER_TEMP/hk_sync_key"
+          printf '%s\n' "$key" > "$key_file"
+          chmod 600 "$key_file"
+          secret="$(node scripts/unseal-hk-sync-secret.cjs "$key_file")"
+          test -n "$secret"
+          echo "::add-mask::$secret"
+          printf 'HK_SYNC_SECRET=%s\n' "$secret" >> "$GITHUB_ENV"
+
+      - name: Verify Taiwan synchronization endpoint
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          code="$(curl --silent --show-error --max-time 30 \
+            -o "$RUNNER_TEMP/hk_sync_auth_probe" -w '%{http_code}' \
+            -X POST "$TARGET_ORIGIN/api/internal/hong-kong-reconcile" \
+            -H 'content-type: application/json' \
+            -H "x-hk-sync-secret: $HK_SYNC_SECRET" \
+            --data-binary '{"messages":[],"message_versions":[],"guest_submissions":[],"moderation_reviews":[],"message_images":[]}')"
+          if [ "$code" != 400 ]; then
+            echo "::error::Synchronization endpoint authentication failed with HTTP $code"
+            exit 1
+          fi
+          echo "sync_endpoint_authenticated=true"
+
+      - name: Reconcile and verify public messages and photos
+        run: node scripts/sync-hk-wall-to-taiwan.mjs --apply
