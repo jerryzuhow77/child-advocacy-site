@@ -24,7 +24,7 @@ if (targetStats.scope !== "taiwan-hong-kong-shared") throw new Error("Taiwan tar
 
 const sourceMessages = array(sourcePublic.messages, "Hong Kong messages");
 const targetMessages = array(targetPublic.messages, "Taiwan messages");
-const targetIds = new Set(targetMessages.map((message) => uuid(message.id, "target message id")));
+const targetIds = new Set(targetMessages.map((message) => string(message.id, "target message id")));
 const sourceOnly = sourceMessages.filter((message) => !targetIds.has(uuid(message.id, "source message id")));
 const messageRows = [];
 const versionRows = [];
@@ -118,7 +118,7 @@ const [verifiedSource, verifiedTarget] = apply
   : [sourcePublic, targetPublic];
 const verifiedSourceMessages = array(verifiedSource.messages, "verified Hong Kong messages");
 const verifiedTargetMessages = array(verifiedTarget.messages, "verified Taiwan messages");
-const verifiedTargetIds = new Set(verifiedTargetMessages.map((row) => uuid(row.id, "verified target id")));
+const verifiedTargetIds = new Set(verifiedTargetMessages.map((row) => string(row.id, "verified target id")));
 const missingIds = verifiedSourceMessages
   .map((row) => uuid(row.id, "verified source id"))
   .filter((id) => !verifiedTargetIds.has(id));
