@@ -16,6 +16,9 @@ from opencc import OpenCC
 ROOT = Path(__file__).resolve().parents[2]
 BASE = "/child-advocacy-site/"
 HK_BASE = "https://cn.globalprotectionwall.com"
+# This noindex edition uses manually localized Mainland wording. Keep its body
+# intact while still synchronizing and checking structure plus mirror metadata.
+MANUALLY_LOCALIZED_MAIN_ROUTES = {"court-comics/episode-05/"}
 URL_ATTR_RE = re.compile(r"(?P<prefix>\b(?:href|src|action|poster)\s*=\s*)(?P<quote>[\"'])(?P<url>.*?)(?P=quote)", re.I | re.S)
 MAIN_RE = re.compile(r"<main\b[^>]*>[\s\S]*?</main>", re.I)
 
@@ -208,8 +211,10 @@ def synchronize(check_only: bool) -> int:
         if not source_main or not target_main:
             errors.append(f"{route}: missing source or target main element")
             continue
-        converted_main = convert_html(source_main.group(0), source, target, source_to_hans, converter)
-        updated = target_text[:target_main.start()] + converted_main + target_text[target_main.end():]
+        updated = target_text
+        if route not in MANUALLY_LOCALIZED_MAIN_ROUTES:
+            converted_main = convert_html(source_main.group(0), source, target, source_to_hans, converter)
+            updated = target_text[:target_main.start()] + converted_main + target_text[target_main.end():]
         updated = ensure_shared_record_assets(updated, source_text)
         updated = re.sub(r'(<html\b[^>]*\blang\s*=\s*)["\'][^"\']+["\']', r'\1"zh-Hans"', updated, count=1, flags=re.I)
         updated = replace_link_href(updated, "canonical", hans_url)
