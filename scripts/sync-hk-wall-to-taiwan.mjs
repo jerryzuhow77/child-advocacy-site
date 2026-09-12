@@ -167,7 +167,9 @@ async function postBundle(bundle) {
 }
 
 function imageEntries(messages) {
-  return messages.flatMap((message) => array(message.images ?? [], "images").map((image) => ({ ...image, messageId: message.id })));
+  return messages
+    .flatMap((message) => array(message.images ?? [], "images").map((image) => ({ ...image, messageId: message.id })))
+    .filter((image) => typeof image.id === "string" && UUID.test(image.id));
 }
 
 async function imageHash(origin, image) {
