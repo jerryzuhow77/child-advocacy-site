@@ -147,7 +147,7 @@ def localize_links(path: Path, text: str, routes: dict) -> str:
         opening, label, ending = match.groups()
         if re.search(r'\b(?:hreflang|lang|data-language|data-hans|data-hant)\b', opening):
             return match.group()
-        if re.sub('<[^>]+>', '', label).strip() in {'繁', '简', '繁中', '简中', 'EN', '日本語'}:
+        if re.sub('<[^>]+>', '', label).strip() in {'繁', '简', '繁中', '简中', 'EN', '日', '日本語'}:
             return match.group()
         href = re.search(r'\bhref=(["\'])([^"\']*)\1', opening)
         if not href or href.group(2).startswith('#'):
