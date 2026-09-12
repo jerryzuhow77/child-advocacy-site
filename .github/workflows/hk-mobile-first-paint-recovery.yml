@@ -71,7 +71,8 @@ jobs:
           if not matches:
               raise SystemExit(f"Live stylesheet not found: {css_name}")
 
-          rule = r'''\n/* hk-mobile-first-paint-v1: keep core content visible if GSAP stalls in Android WebView/Chrome */
+          rule = '''
+          /* hk-mobile-first-paint-v1: keep core content visible if GSAP stalls in Android WebView/Chrome */
           @media (max-width:980px){
             .gsap-enhanced .site-header,
             .gsap-enhanced .visitor-launch-section,
@@ -90,8 +91,11 @@ jobs:
               text = path.read_text(encoding="utf-8", errors="strict")
               if ".gsap-enhanced .hero-copy" not in text:
                   continue
-              if marker not in text:
-                  path.write_text(text + rule, encoding="utf-8")
+              repaired = text.replace(r"\n/* " + marker, "\n/* " + marker)
+              if marker not in repaired:
+                  repaired += rule
+              if repaired != text:
+                  path.write_text(repaired, encoding="utf-8")
               patched += 1
           if patched == 0:
               raise SystemExit("No matching Guardian Wall stylesheet was patched")
@@ -122,6 +126,10 @@ jobs:
             -A 'Mozilla/5.0 (Linux; Android 16; SM-F9360) AppleWebKit/537.36 Chrome/140.0 Mobile Safari/537.36' \
             "https://cn.globalprotectionwall.com/assets/$CSS_NAME")"
           grep -Fq 'hk-mobile-first-paint-v1' <<<"$css"
+          if grep -Fq '\n/* hk-mobile-first-paint-v1' <<<"$css"; then
+            echo '::error::Mobile CSS still contains an invalid literal newline.'
+            exit 1
+          fi
           page="$(curl -fsS --retry 5 --retry-delay 3 --max-time 25 \
             -A 'Mozilla/5.0 (Linux; Android 16; SM-F9360) AppleWebKit/537.36 Chrome/140.0 Mobile Safari/537.36' \
             https://cn.globalprotectionwall.com/)"
