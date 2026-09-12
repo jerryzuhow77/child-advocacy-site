@@ -144,3 +144,80 @@ jobs:
           if command -v pm2 >/dev/null 2>&1; then pm2 list || true; fi
           echo '--- no production mutation performed ---'
           SH
+
+
+      - name: Probe alternate Sites edge routes from Hong Kong
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'bash -s' <<'SH'
+          set -Eeuo pipefail
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+          probe() {
+            label="$1"
+            shift
+            code="$(curl --silent --show-error --max-time 30 \
+              -A 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140 Safari/537.36' \
+              -H 'Accept: application/json' \
+              -D "$tmpdir/headers" -o "$tmpdir/body" -w '%{http_code}' "$@" || true)"
+            LABEL="$label" CODE="$code" BODY="$tmpdir/body" HEADERS="$tmpdir/headers" python3 - <<'PY'
+          import hashlib, json, os
+          label, code = os.environ["LABEL"], os.environ["CODE"]
+          body_path, headers_path = os.environ["BODY"], os.environ["HEADERS"]
+          body = open(body_path, "rb").read(4000001) if os.path.exists(body_path) else b""
+          headers = open(headers_path, "r", errors="replace").read().splitlines() if os.path.exists(headers_path) else []
+          result = {"label": label, "http": code, "bytes": len(body), "sha256": hashlib.sha256(body).hexdigest()}
+          for line in headers:
+              if ":" in line:
+                  key, value = line.split(":", 1)
+                  if key.lower() in {"content-type", "location", "server", "x-data-primary"}:
+                      result[key.lower()] = value.strip()
+          try:
+              data = json.loads(body)
+              if isinstance(data, dict):
+                  result["json_keys"] = sorted(data.keys())
+                  for key in ("status", "scope", "dataPrimary", "total", "pending", "published", "visitor", "publicMessages"):
+                      if key in data and isinstance(data[key], (str, int, float, bool, type(None))):
+                          result[key] = data[key]
+          except Exception:
+              result["body_preview"] = body[:100].decode("utf-8", "replace").replace("\n", " ")
+          print(json.dumps(result, ensure_ascii=False))
+          PY
+          }
+          probe direct-site-origin 'https://global-protection.jerryzuhow77.chatgpt.site/api/health'
+          probe custom-edge-host-header -H 'Host: cn.globalprotectionwall.com' 'https://custom-domains.chatgpt.site/api/health'
+          probe custom-edge-sni-cn --connect-to 'cn.globalprotectionwall.com:443:custom-domains.chatgpt.site:443' 'https://cn.globalprotectionwall.com/api/health'
+          probe custom-edge-sni-wall --connect-to 'wall.globalprotectionwall.com:443:custom-domains.chatgpt.site:443' 'https://wall.globalprotectionwall.com/api/health'
+          SH
+
+      - name: Inspect relevant Hong Kong source and runtime metadata
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'sudo bash -s' <<'SH'
+          set -u
+          cd /opt/global-protection
+          echo '--- root descriptors ---'
+          find . -maxdepth 1 -type f -printf '%f\n' | sort
+          echo '--- runtime variable names only ---'
+          for file in .dev.vars .deploy-stage-v164-sync/.dev.vars .deploy-stage-v164-public/.dev.vars; do
+            if [ -f "$file" ]; then
+              echo "[$file]"
+              sed -n -E 's/^[[:space:]]*([A-Za-z_][A-Za-z0-9_]*)[[:space:]]*=.*/\1/p' "$file" | sort -u
+            fi
+          done
+          echo '--- systemd unit (environment values redacted) ---'
+          systemctl cat global-protection.service 2>/dev/null \
+            | sed -E 's/^([[:space:]]*Environment(File)?=).*/\1<redacted>/' || true
+          echo '--- app api route files ---'
+          find app/api -maxdepth 5 -type f -name 'route.ts' -print 2>/dev/null | sort
+          echo '--- guest submission route ---'
+          sed -n '1,260p' app/api/guest/submissions/route.ts 2>/dev/null || true
+          echo '--- public messages route ---'
+          sed -n '1,220p' app/api/public/messages/route.ts 2>/dev/null || true
+          echo '--- sync reference lines ---'
+          grep -RInE 'global-protection-sync|HK_SYNC|hong.kong.reconcile|workers\.dev' app worker scripts 2>/dev/null \
+            --exclude='*.map' --exclude='*.lock' | head -n 160 || true
+          echo '--- no production mutation performed ---'
+          SH
