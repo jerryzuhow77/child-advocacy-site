@@ -554,6 +554,11 @@
 
   function mount(link, host = link, layout = "card") {
     if (!link || !host) return;
+    // Navigation cards reuse some of the homepage card class names, but they
+    // are menu destinations rather than article surfaces.  Never mount the
+    // four-button engagement bar inside the header: it makes nested mobile
+    // menus several screens tall and creates invalid interactive nesting.
+    if (link.closest(".art-header, header") || host.closest?.(".art-header, header")) return;
     host.querySelectorAll(".public-view-count-card").forEach((badge) => badge.remove());
     if (link.hasAttribute("data-engagement-ready")) return;
     const item = article(link, host);
@@ -668,6 +673,7 @@
   function init() {
     targetDefinitions.forEach((definition) => {
       document.querySelectorAll(definition.selector).forEach((element) => {
+        if (element.closest(".art-header, header")) return;
         const resolved = definition.resolve ? definition.resolve(element) : { link: element, host: element };
         mount(resolved?.link, resolved?.host || resolved?.link, definition.layout || "card");
       });
