@@ -127,17 +127,27 @@ jobs:
           js_patched = 0
           html_patched = 0
           for path in js_matches:
-              text = path.read_text(encoding="utf-8", errors="strict")
+              try:
+                  text = path.read_text(encoding="utf-8", errors="strict")
+              except UnicodeDecodeError:
+                  continue
               if safe not in text and unsafe not in text:
                   continue
               repaired = text.replace(unsafe, safe, 1)
               target = path.with_name(js_new_name)
-              if not target.exists() or target.read_text(encoding="utf-8", errors="strict") != repaired:
+              try:
+                  target_current = target.read_text(encoding="utf-8", errors="strict")
+              except (FileNotFoundError, UnicodeDecodeError):
+                  target_current = None
+              if target_current != repaired:
                   target.write_text(repaired, encoding="utf-8")
               js_patched += 1
               app_root = path.parent.parent
               for html_path in app_root.rglob("*.html"):
-                  html = html_path.read_text(encoding="utf-8", errors="strict")
+                  try:
+                      html = html_path.read_text(encoding="utf-8", errors="strict")
+                  except UnicodeDecodeError:
+                      continue
                   updated = html.replace(js_name, js_new_name)
                   if updated != html:
                       html_path.write_text(updated, encoding="utf-8")
