@@ -80,7 +80,24 @@
   const veils = stage.querySelectorAll(".hero-paper-veil");
   const doorLines = stage.querySelectorAll(".hero-door-line");
   const heroCopyItems = Array.from(heroCopy.children);
-  const motionTargets = new Set([heroArt, heroCopy, paper, stage, atmosphere, warmLight]);
+  const closing = document.querySelector(".closing");
+  let closingStage = null;
+
+  if (closing) {
+    closingStage = document.createElement("div");
+    closingStage.className = "closing-motion-stage";
+    closingStage.setAttribute("aria-hidden", "true");
+    closingStage.innerHTML = [
+      '<span class="closing-glow"></span>',
+      '<span class="closing-door closing-door--left"></span>',
+      '<span class="closing-door closing-door--right"></span>',
+      '<span class="closing-seam"></span>',
+      '<span class="closing-threshold"></span>'
+    ].join("");
+    closing.prepend(closingStage);
+  }
+
+  const motionTargets = new Set([heroArt, heroCopy, paper, stage, atmosphere, warmLight, closing, closingStage].filter(Boolean));
   let introTimeline = null;
   let ambientTween = null;
   let scrollContext = null;
@@ -216,11 +233,96 @@
     );
   }
 
+  function buildClosingMotion(isMobile) {
+    if (!closing || !closingStage) return;
+
+    const label = closing.querySelector(":scope > .section-label");
+    const title = closing.querySelector(":scope > h2");
+    const copy = closing.querySelector(":scope > p:not(.section-label)");
+    const highlight = closing.querySelector(".fluorescent");
+    const glow = closingStage.querySelector(".closing-glow");
+    const leftDoor = closingStage.querySelector(".closing-door--left");
+    const rightDoor = closingStage.querySelector(".closing-door--right");
+    const seam = closingStage.querySelector(".closing-seam");
+    const threshold = closingStage.querySelector(".closing-threshold");
+    const content = [label, title, copy].filter(Boolean);
+
+    remember([closingStage, glow, leftDoor, rightDoor, seam, threshold, highlight, ...content].filter(Boolean));
+
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: closing,
+        start: isMobile ? "top 84%" : "top 78%",
+        once: true
+      },
+      onStart: function () {
+        closing.classList.add("is-closing-motion-active");
+      },
+      onComplete: function () {
+        closing.classList.add("is-closing-motion-complete");
+      }
+    })
+      .fromTo(closingStage, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.28 }, 0)
+      .fromTo(glow, { autoAlpha: 0, scale: 0.72 }, { autoAlpha: 0.74, scale: 1, duration: 1.45, ease: "sine.out" }, 0.05)
+      .fromTo(leftDoor, { xPercent: 12, autoAlpha: 0.52 }, { xPercent: -20, autoAlpha: 0.22, duration: 1.35, ease: "power2.inOut" }, 0)
+      .fromTo(rightDoor, { xPercent: -12, autoAlpha: 0.52 }, { xPercent: 20, autoAlpha: 0.22, duration: 1.35, ease: "power2.inOut" }, 0)
+      .fromTo(seam, { scaleY: 0, autoAlpha: 0 }, { scaleY: 1, autoAlpha: 0.82, duration: 0.72, ease: "power2.out" }, 0.08)
+      .to(seam, { autoAlpha: 0.2, duration: 0.62, ease: "sine.out" }, 0.73)
+      .fromTo(threshold, { scaleX: 0, autoAlpha: 0 }, { scaleX: 1, autoAlpha: 0.58, duration: 1.05, ease: "power2.out" }, 0.28)
+      .fromTo(label, { y: 16, autoAlpha: 0, "--motion-label-line": 0 }, {
+        y: 0,
+        autoAlpha: 1,
+        "--motion-label-line": 1,
+        duration: 0.72,
+        ease: "power2.out",
+        clearProps: "opacity,visibility,transform"
+      }, 0.22)
+      .fromTo(title, { y: isMobile ? 26 : 36, autoAlpha: 0, filter: "blur(5px)" }, {
+        y: 0,
+        autoAlpha: 1,
+        filter: "blur(0px)",
+        duration: 0.96,
+        ease: "power2.out",
+        clearProps: "opacity,visibility,transform,filter"
+      }, 0.38)
+      .fromTo(copy, { y: isMobile ? 20 : 28, autoAlpha: 0 }, {
+        y: 0,
+        autoAlpha: 1,
+        duration: 0.8,
+        ease: "power2.out",
+        clearProps: "opacity,visibility,transform"
+      }, 0.68)
+      .fromTo(highlight, { backgroundSize: "0% 100%" }, {
+        backgroundSize: "100% 100%",
+        duration: 0.95,
+        ease: "power1.out"
+      }, 0.86);
+
+    gsap.fromTo(
+      closingStage,
+      { yPercent: isMobile ? 3 : 6 },
+      {
+        yPercent: isMobile ? -3 : -6,
+        ease: "none",
+        scrollTrigger: {
+          trigger: closing,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1.1
+        }
+      }
+    );
+  }
+
   function buildScrollMotion() {
     const isMobile = window.matchMedia("(max-width: 780px)").matches;
     const sections = gsap.utils.toArray(".paper > section");
-    const labelsOnPage = gsap.utils.toArray(".paper .section-label, .paper .subsection-label");
-    const highlights = gsap.utils.toArray(".paper .fluorescent");
+    const labelsOnPage = gsap.utils.toArray(".paper .section-label, .paper .subsection-label").filter(function (label) {
+      return !label.closest(".closing");
+    });
+    const highlights = gsap.utils.toArray(".paper .fluorescent").filter(function (highlight) {
+      return !highlight.closest(".closing");
+    });
     const timeline = document.querySelector(".timeline");
 
     remember(sections);
@@ -274,6 +376,8 @@
     });
 
     sections.forEach(function (section, index) {
+      if (section.classList.contains("closing")) return;
+
       const lead = Array.from(section.children).filter(function (child) {
         return child.matches(".section-label, h2, .intro");
       });
@@ -338,6 +442,8 @@
       );
     });
 
+    buildClosingMotion(isMobile);
+
     if (timeline) {
       remember(timeline);
       gsap.fromTo(
@@ -396,9 +502,11 @@
     const cards = document.querySelectorAll(
       ".qa-grid article, .evidence-grid article, .questions article, .change-grid article, .route, .chapter-next a"
     );
+    remember(cards);
 
     cards.forEach(function (card) {
       card.addEventListener("pointermove", function (event) {
+        if (reduceMotion.matches) return;
         const box = card.getBoundingClientRect();
         const x = (event.clientX - box.left) / box.width - 0.5;
         const y = (event.clientY - box.top) / box.height - 0.5;
@@ -414,6 +522,7 @@
       });
 
       card.addEventListener("pointerleave", function () {
+        if (reduceMotion.matches) return;
         gsap.to(card, {
           rotationY: 0,
           rotationX: 0,
@@ -486,6 +595,7 @@
     if (ambientTween) ambientTween.kill();
     if (scrollContext) scrollContext.revert();
     motionTargets.forEach(function (target) {
+      gsap.killTweensOf(target);
       gsap.set(target, {
         clearProps: "opacity,visibility,transform,filter,clipPath,backgroundSize"
       });
@@ -493,6 +603,7 @@
     root.classList.remove("motion-ready", "motion-intro-complete");
     root.classList.add("motion-reduced");
     stage.remove();
+    if (closingStage) closingStage.remove();
     controls.remove();
     progress.remove();
   });

@@ -58,15 +58,18 @@ try {
           lang: document.documentElement.lang,
           overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
           stage: Boolean(document.querySelector('.hero-motion-stage')),
+          closingStage: Boolean(document.querySelector('.closing-motion-stage')),
+          closingParts: document.querySelectorAll('.closing-motion-stage > span').length,
           progress: Boolean(document.querySelector('.story-progress')),
           controls: Array.from(document.querySelectorAll('.motion-control')).map((button) => button.textContent.trim()),
-          scriptCount: Array.from(document.scripts).filter((script) => script.src.includes('/page-motion.js?v=20260912-1')).length,
-          styleCount: Array.from(document.styleSheets).filter((sheet) => sheet.href?.includes('/page.css?v=20260912-7')).length
+          scriptCount: Array.from(document.scripts).filter((script) => script.src.includes('/page-motion.js?v=20260912-2')).length,
+          styleCount: Array.from(document.styleSheets).filter((sheet) => sheet.href?.includes('/page.css?v=20260912-8')).length
         }));
 
         if (initial.lang !== locale.lang) recordFailure(record, `locale ${initial.lang}`);
         if (initial.overflow > 2) recordFailure(record, `initial overflow ${initial.overflow}px`);
         if (!initial.stage || !initial.progress) recordFailure(record, 'motion chrome missing');
+        if (!initial.closingStage || initial.closingParts !== 5) recordFailure(record, 'closing motion stage missing');
         if (JSON.stringify(initial.controls) !== JSON.stringify(locale.controls)) recordFailure(record, `controls ${initial.controls.join(' | ')}`);
         if (initial.scriptCount !== 1 || initial.styleCount !== 1) recordFailure(record, 'versioned motion assets missing or duplicated');
 
@@ -90,17 +93,23 @@ try {
           await page.screenshot({ path: `${outputDir}/hero-${locale.lang}-${width}.png`, fullPage: false });
         }
 
+        if (width === 360 && locale.lang === 'zh-Hant') {
+          await page.locator('.closing').scrollIntoViewIfNeeded();
+          await page.waitForTimeout(820);
+          await page.screenshot({ path: `${outputDir}/closing-${locale.lang}-${width}.png`, fullPage: false });
+        }
+
         const sectionCount = await page.locator('.paper > section').count();
         for (let index = 0; index < sectionCount; index += 1) {
           await page.locator('.paper > section').nth(index).scrollIntoViewIfNeeded();
           await page.waitForTimeout(35);
         }
         await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
-        await page.waitForTimeout(1_350);
+        await page.waitForTimeout(1_900);
 
         const final = await page.evaluate(() => {
           const animated = Array.from(document.querySelectorAll(
-            '.paper .section-label, .paper .subsection-label, .qa-grid > *, .aid-flow > *, .timeline > *, .evidence-grid > *, .questions > *, .route-list > *, .chain > *, .change-grid > *, .chapter-next > *, .comparison-table tbody > *, .knowledge-table tbody > *, .missing-evidence tbody > *'
+            '.paper .section-label, .paper .subsection-label, .closing > h2, .closing > p:not(.section-label), .qa-grid > *, .aid-flow > *, .timeline > *, .evidence-grid > *, .questions > *, .route-list > *, .chain > *, .change-grid > *, .chapter-next > *, .comparison-table tbody > *, .knowledge-table tbody > *, .missing-evidence tbody > *'
           ));
           const hidden = animated.filter((element) => {
             const style = getComputedStyle(element);
@@ -113,12 +122,14 @@ try {
             ? progress.getBoundingClientRect().width / progressTrack.getBoundingClientRect().width
             : 0;
           const timelineProgress = Number.parseFloat(getComputedStyle(document.querySelector('.timeline')).getPropertyValue('--timeline-progress'));
+          const closing = document.querySelector('.closing');
           return {
             overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
             hidden,
             incompleteHighlights: highlights.filter((size) => !size.startsWith('100%')).length,
             progressRatio,
-            timelineProgress
+            timelineProgress,
+            closingComplete: closing.classList.contains('is-closing-motion-complete')
           };
         });
 
@@ -127,6 +138,7 @@ try {
         if (final.incompleteHighlights) recordFailure(record, `${final.incompleteHighlights} highlights remain incomplete`);
         if (final.progressRatio < 0.98) recordFailure(record, `reading progress ${final.progressRatio}`);
         if (final.timelineProgress < 0.98) recordFailure(record, `timeline progress ${final.timelineProgress}`);
+        if (!final.closingComplete) recordFailure(record, 'closing motion did not complete');
         if (runtimeErrors.length) recordFailure(record, `runtime: ${runtimeErrors.join(' | ')}`);
       } catch (error) {
         recordFailure(record, error.message);
@@ -153,12 +165,52 @@ try {
         reduced: document.documentElement.classList.contains('motion-reduced'),
         ready: document.documentElement.classList.contains('motion-ready'),
         stage: Boolean(document.querySelector('.hero-motion-stage')),
+        closingStage: Boolean(document.querySelector('.closing-motion-stage')),
         controls: Boolean(document.querySelector('.motion-controls')),
         progress: Boolean(document.querySelector('.story-progress')),
         overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth
       }));
-      if (!state.reduced || state.ready || state.stage || state.controls || state.progress) recordFailure(record, `reduced-motion state ${JSON.stringify(state)}`);
+      if (!state.reduced || state.ready || state.stage || state.closingStage || state.controls || state.progress) recordFailure(record, `reduced-motion state ${JSON.stringify(state)}`);
       if (state.overflow > 2) recordFailure(record, `overflow ${state.overflow}px`);
+    } catch (error) {
+      recordFailure(record, error.message);
+    }
+
+    await context.close();
+  }
+
+  {
+    const context = await browser.newContext({ viewport: { width: 1280, height: 915 } });
+    await keepLocalRequests(context);
+    const page = await context.newPage();
+    const record = { lang: 'zh-Hant', mode: 'dynamic-reduced', failures: [] };
+    results.push(record);
+
+    try {
+      await page.goto(root + locales[0].path, { waitUntil: 'networkidle' });
+      await page.locator('html.motion-ready').waitFor({ state: 'attached', timeout: 8_000 });
+      const card = page.locator('.qa-grid article').first();
+      await card.scrollIntoViewIfNeeded();
+      const box = await card.boundingBox();
+      if (box) {
+        await page.mouse.move(box.x + box.width * 0.7, box.y + box.height * 0.35);
+        await page.waitForTimeout(90);
+      }
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await page.waitForTimeout(120);
+      if (box) await page.mouse.move(box.x + box.width * 0.3, box.y + box.height * 0.65);
+      const state = await page.evaluate(() => ({
+        reduced: document.documentElement.classList.contains('motion-reduced'),
+        ready: document.documentElement.classList.contains('motion-ready'),
+        stage: Boolean(document.querySelector('.hero-motion-stage')),
+        closingStage: Boolean(document.querySelector('.closing-motion-stage')),
+        controls: Boolean(document.querySelector('.motion-controls')),
+        progress: Boolean(document.querySelector('.story-progress')),
+        cardTransform: getComputedStyle(document.querySelector('.qa-grid article')).transform
+      }));
+      if (!state.reduced || state.ready || state.stage || state.closingStage || state.controls || state.progress || state.cardTransform !== 'none') {
+        recordFailure(record, `dynamic reduced-motion state ${JSON.stringify(state)}`);
+      }
     } catch (error) {
       recordFailure(record, error.message);
     }
@@ -180,14 +232,17 @@ try {
       await page.emulateMedia({ media: 'print' });
       const state = await page.evaluate(() => ({
         stage: getComputedStyle(document.querySelector('.hero-motion-stage')).display,
+        closingStage: getComputedStyle(document.querySelector('.closing-motion-stage')).display,
         progress: getComputedStyle(document.querySelector('.story-progress')).display,
+        heroOpacity: Number(getComputedStyle(document.querySelector('.hero-art')).opacity),
         decoration: getComputedStyle(document.querySelector('.fluorescent')).textDecorationLine,
         hiddenSections: Array.from(document.querySelectorAll('.paper > section')).filter((section) => {
           const style = getComputedStyle(section);
           return style.visibility === 'hidden' || Number(style.opacity) < 0.99;
         }).length
       }));
-      if (state.stage !== 'none' || state.progress !== 'none') recordFailure(record, 'motion chrome visible in print');
+      if (state.stage !== 'none' || state.closingStage !== 'none' || state.progress !== 'none') recordFailure(record, 'motion chrome visible in print');
+      if (Math.abs(state.heroOpacity - 0.2) > 0.01) recordFailure(record, `print hero opacity ${state.heroOpacity}`);
       if (!state.decoration.includes('underline')) recordFailure(record, `print highlight ${state.decoration}`);
       if (state.hiddenSections) recordFailure(record, `${state.hiddenSections} print sections hidden`);
     } catch (error) {
