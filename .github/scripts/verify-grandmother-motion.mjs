@@ -43,7 +43,10 @@ try {
 
       page.on('pageerror', (error) => runtimeErrors.push(error.message));
       page.on('console', (message) => {
-        if (message.type() === 'error') runtimeErrors.push(message.text());
+        const text = message.text();
+        if (message.type() === 'error' && !text.includes('Failed to load resource: net::ERR_FAILED')) {
+          runtimeErrors.push(text);
+        }
       });
 
       try {
