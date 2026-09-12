@@ -1,4 +1,4 @@
-name: Recover Hong Kong mobile first paint
+name: Recover Hong Kong blank page
 
 on:
   push:
@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: hong-kong-mobile-first-paint-recovery
+  group: hong-kong-blank-page-recovery
   cancel-in-progress: false
 
 jobs:
@@ -44,7 +44,7 @@ jobs:
           ssh-keyscan -p "$port" "$host" > ~/.ssh/known_hosts
           printf 'HOST=%s\nUSER=%s\nPORT=%s\n' "$host" "$user" "$port" >> "$GITHUB_ENV"
 
-      - name: Install mobile first-paint fail-safe
+      - name: Install blank-page recovery
         id: patch
         shell: bash
         run: |
@@ -53,10 +53,15 @@ jobs:
             "curl -fsS --max-time 15 http://127.0.0.1:8787/" \
             | sed -nE 's#.*href="/assets/([^"?]+\.css)[^"]*".*#\1#p' | head -n 1)"
           test -n "$css_name" || { echo '::error::Could not resolve the live stylesheet.'; exit 1; }
+          js_name="$(ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" \
+            "curl -fsS --max-time 15 http://127.0.0.1:8787/" \
+            | sed -nE 's#.*(src|href)="/assets/(guardian-wall-[^"?]+\.js)[^"]*".*#\2#p' | head -n 1)"
+          test -n "$js_name" || { echo '::error::Could not resolve the live Guardian Wall script.'; exit 1; }
           printf 'css_name=%s\n' "$css_name" >> "$GITHUB_OUTPUT"
+          printf 'js_name=%s\n' "$js_name" >> "$GITHUB_OUTPUT"
 
           ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" \
-            "sudo CSS_NAME='$css_name' python3 -" <<'PY'
+            "sudo CSS_NAME='$css_name' JS_NAME='$js_name' python3 -" <<'PY'
           from pathlib import Path
           import os
 
@@ -100,26 +105,54 @@ jobs:
           if patched == 0:
               raise SystemExit("No matching Guardian Wall stylesheet was patched")
           print(f"Patched {patched} live stylesheet(s)")
+
+          js_name = os.environ["JS_NAME"]
+          js_matches = []
+          for root in roots:
+              if root.exists():
+                  js_matches.extend(root.rglob(js_name))
+          js_matches = [path for path in js_matches if path.is_file()]
+          if not js_matches:
+              raise SystemExit(f"Live Guardian Wall script not found: {js_name}")
+
+          unsafe = 'function P(e,t){return e[t]||e[`zh-Hant`]||e.en||``}'
+          safe = 'function P(e,t){return e?.[t]||e?.[`zh-Hant`]||e?.en||``}'
+          js_patched = 0
+          for path in js_matches:
+              text = path.read_text(encoding="utf-8", errors="strict")
+              if safe in text:
+                  js_patched += 1
+                  continue
+              if unsafe not in text:
+                  continue
+              repaired = text.replace(unsafe, safe, 1)
+              path.write_text(repaired, encoding="utf-8")
+              js_patched += 1
+          if js_patched == 0:
+              raise SystemExit("No matching Guardian Wall locale helper was patched")
+          print(f"Patched {js_patched} live script(s)")
           PY
 
-      - name: Purge the patched stylesheet from Cloudflare
+      - name: Purge patched assets from Cloudflare
         if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ZONE_ID != ''
         shell: bash
         env:
           CSS_NAME: ${{ steps.patch.outputs.css_name }}
+          JS_NAME: ${{ steps.patch.outputs.js_name }}
         run: |
           set -Eeuo pipefail
           response="$(curl -fsS --max-time 20 \
             -X POST "https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE_ID/purge_cache" \
             -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
             -H 'Content-Type: application/json' \
-            --data "{\"files\":[\"https://cn.globalprotectionwall.com/assets/$CSS_NAME\"]}")"
+            --data "{\"files\":[\"https://cn.globalprotectionwall.com/assets/$CSS_NAME\",\"https://cn.globalprotectionwall.com/assets/$JS_NAME\"]}")"
           printf '%s' "$response" | python3 -c 'import json,sys; assert json.load(sys.stdin).get("success") is True'
 
-      - name: Verify mobile-visible fail-safe
+      - name: Verify blank-page recovery
         shell: bash
         env:
           CSS_NAME: ${{ steps.patch.outputs.css_name }}
+          JS_NAME: ${{ steps.patch.outputs.js_name }}
         run: |
           set -Eeuo pipefail
           css="$(curl -fsS --retry 5 --retry-delay 3 --max-time 25 \
@@ -130,6 +163,18 @@ jobs:
             echo '::error::Mobile CSS still contains an invalid literal newline.'
             exit 1
           fi
+          curl -fsS --retry 5 --retry-delay 3 --max-time 25 \
+            -A 'Mozilla/5.0 (Linux; Android 16; SM-F9360) AppleWebKit/537.36 Chrome/140.0 Mobile Safari/537.36' \
+            "https://cn.globalprotectionwall.com/assets/$JS_NAME" > /tmp/guardian-wall.js
+          python3 - <<'PY'
+          from pathlib import Path
+
+          text = Path("/tmp/guardian-wall.js").read_text(encoding="utf-8", errors="strict")
+          unsafe = 'function P(e,t){return e[t]||e[`zh-Hant`]||e.en||``}'
+          safe = 'function P(e,t){return e?.[t]||e?.[`zh-Hant`]||e?.en||``}'
+          assert safe in text, "Safe locale fallback is missing from the live script"
+          assert unsafe not in text, "Unsafe locale fallback remains in the live script"
+          PY
           page="$(curl -fsS --retry 5 --retry-delay 3 --max-time 25 \
             -A 'Mozilla/5.0 (Linux; Android 16; SM-F9360) AppleWebKit/537.36 Chrome/140.0 Mobile Safari/537.36' \
             https://cn.globalprotectionwall.com/)"
