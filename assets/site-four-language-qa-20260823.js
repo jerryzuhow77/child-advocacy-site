@@ -137,7 +137,10 @@
       var href=link.getAttribute('href')||'';
       var oldWall=href.indexOf('global-protection.jerryzuhow77.chatgpt.site')>-1;
       var simplifyWall=locale==='zh-Hans'&&href.indexOf('wall.globalprotectionwall.com')>-1;
-      if(oldWall||simplifyWall)setLink(link,target,locale==='zh-Hans');
+      var submission=link.matches('[data-qa916-primary],[data-member-submit],.story-submit-panel .read-btn,.home-footer-wall-link')||
+        /(?:\/submit\/?|[?&]section=member-submit(?:&|$))/.test(href)||
+        /一般會員投稿|一般会员投稿|Member submission|一般会員投稿|心得投稿|Share your reflection|思いを投稿/.test(link.textContent||'');
+      if((oldWall||simplifyWall)&&submission)setLink(link,target,locale==='zh-Hans');
     });
   }
 

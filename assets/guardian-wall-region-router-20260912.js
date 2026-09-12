@@ -27,38 +27,61 @@
     }
   }
 
-  function wallUrl() {
+  function wallUrl(section = "home") {
     const useTaiwan = location.hostname !== "cn.globalprotectionwall.com" || isTaiwanAudience();
-    if (!useTaiwan) return HONG_KONG_WALL;
-    const target = new URL(TAIWAN_WALL);
     const language = languageKey();
+    if (!useTaiwan) {
+      const target = new URL(HONG_KONG_WALL);
+      if (section !== "home") target.searchParams.set("section", section);
+      if (language !== "zh-Hans") target.searchParams.set("lang", language);
+      return target.href;
+    }
+    const target = new URL(section === "member-submit" ? "submit/" : "", TAIWAN_WALL);
     target.searchParams.set("region", "tw");
     if (language !== "zh-Hant") target.searchParams.set("lang", language);
+    if (section === "bulletins") target.hash = "bulletins";
+    if (section === "guest-message") target.hash = "guest-message";
     return target.href;
   }
 
-  function updateMobileWallLink() {
+  function updateLink(link, section) {
+    const target = wallUrl(section);
+    if (link.href !== target) link.href = target;
+    link.dataset.guardianWallRegion = link.hostname === "cn.globalprotectionwall.com" ? "hk" : "tw";
+  }
+
+  function updateGuardianLinks() {
+    let updated = false;
     const menu = document.getElementById("cpa-mobile-menu");
-    if (!menu) return false;
-    const wallLink = [...menu.querySelectorAll("a[href]")].find(link =>
+    const wallLink = menu && [...menu.querySelectorAll("a[href]")].find(link =>
       /全球守護留言牆|全球守护留言墙|Global Protection Wall|グローバル保護メッセージウォール/.test(link.textContent || "")
     );
-    if (!wallLink) return false;
-    wallLink.href = wallUrl();
-    wallLink.dataset.guardianWallRegion = wallLink.hostname === "cn.globalprotectionwall.com" ? "hk" : "tw";
-    return true;
+    if (wallLink) {
+      updateLink(wallLink, "home");
+      updated = true;
+    }
+    document.querySelectorAll(".guardian-action-nav").forEach(group => {
+      const links = [...group.querySelectorAll("a[href]")];
+      links.forEach((link, index) => {
+        const section = link.classList.contains("is-wall-home") ? "home"
+          : link.classList.contains("guest-message-nav-link") ? "guest-message"
+          : index === links.length - 1 ? "member-submit"
+          : "bulletins";
+        updateLink(link, section);
+        updated = true;
+      });
+    });
+    return updated;
   }
 
   function init() {
-    if (updateMobileWallLink()) return;
-    const observer = new MutationObserver(() => {
-      if (updateMobileWallLink()) observer.disconnect();
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
+    updateGuardianLinks();
+    const observer = new MutationObserver(updateGuardianLinks);
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["href"] });
     window.setTimeout(() => observer.disconnect(), 15000);
   }
 
-  document.addEventListener("cpa-language-change", updateMobileWallLink);
+  document.addEventListener("cpa-language-change", updateGuardianLinks);
   document.readyState === "loading"
     ? document.addEventListener("DOMContentLoaded", init, { once: true })
     : init();
