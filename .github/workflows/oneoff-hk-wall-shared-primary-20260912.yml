@@ -221,3 +221,43 @@ jobs:
             --exclude='*.map' --exclude='*.lock' | head -n 160 || true
           echo '--- no production mutation performed ---'
           SH
+
+
+      - name: Validate retired sync credential from an allowed runner
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          secret="$(ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'sudo python3 -' <<'PY'
+          from pathlib import Path
+          import re
+          path = Path("/opt/global-protection/.dev.vars.pre-secret-removal-20260901T041428Z")
+          text = path.read_text() if path.exists() else ""
+          match = re.search(r"(?m)^\s*HK_SYNC_SECRET\s*=\s*(.*?)\s*$", text)
+          if match:
+              value = match.group(1).strip()
+              if len(value) >= 2 and value[0] == value[-1] and value[0] in ("'", '"'):
+                  value = value[1:-1]
+              print(value, end="")
+          PY
+          )"
+          if [ "${#secret}" -lt 32 ]; then
+            echo "retired_sync_secret_present=false"
+            exit 0
+          fi
+          echo "::add-mask::$secret"
+          code="$(curl --silent --show-error --max-time 30 \
+            -o /tmp/reconcile-auth-probe.json -w '%{http_code}' \
+            -X POST 'https://global-protection.jerryzuhow77.chatgpt.site/api/internal/hong-kong-reconcile' \
+            -H 'content-type: application/json' \
+            -H "x-hk-sync-secret: $secret" \
+            --data-binary '{')"
+          rm -f /tmp/reconcile-auth-probe.json
+          echo "retired_sync_secret_present=true"
+          echo "reconcile_auth_probe_http=$code"
+          if [ "$code" = 400 ]; then
+            echo "retired_sync_secret_matches_sites=true"
+          elif [ "$code" = 404 ]; then
+            echo "retired_sync_secret_matches_sites=false"
+          else
+            echo "retired_sync_secret_matches_sites=indeterminate"
+          fi
