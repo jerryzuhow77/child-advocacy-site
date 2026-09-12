@@ -5,10 +5,10 @@ const root = 'http://127.0.0.1:8765/child-advocacy-site/';
 const outputDir = 'browser-validation/september-advocacy/grandmother-motion';
 const widths = [320, 360, 390, 412, 768, 1280];
 const locales = [
-  { lang: 'zh-Hant', path: 'features/kaikai-grandmother-rescue-barriers/', controls: ['略過動畫', '重播動畫'] },
-  { lang: 'zh-Hans', path: 'zh-Hans/features/kaikai-grandmother-rescue-barriers/', controls: ['略过动画', '重播动画'] },
-  { lang: 'en', path: 'en/features/kaikai-grandmother-rescue-barriers/', controls: ['Skip animation', 'Replay animation'] },
-  { lang: 'ja', path: 'ja/features/kaikai-grandmother-rescue-barriers/', controls: ['アニメーションをスキップ', 'アニメーションを再生'] }
+  { lang: 'zh-Hant', path: 'features/kaikai-grandmother-rescue-barriers/', controls: ['略過動畫', '重播動畫'], appealToken: '提起上訴' },
+  { lang: 'zh-Hans', path: 'zh-Hans/features/kaikai-grandmother-rescue-barriers/', controls: ['略过动画', '重播动画'], appealToken: '提起上诉' },
+  { lang: 'en', path: 'en/features/kaikai-grandmother-rescue-barriers/', controls: ['Skip animation', 'Replay animation'], appealToken: 'appealed' },
+  { lang: 'ja', path: 'ja/features/kaikai-grandmother-rescue-barriers/', controls: ['アニメーションをスキップ', 'アニメーションを再生'], appealToken: '控訴' }
 ];
 
 fs.mkdirSync(outputDir, { recursive: true });
@@ -63,7 +63,12 @@ try {
           progress: Boolean(document.querySelector('.story-progress')),
           controls: Array.from(document.querySelectorAll('.motion-control')).map((button) => button.textContent.trim()),
           scriptCount: Array.from(document.scripts).filter((script) => script.src.includes('/page-motion.js?v=20260912-2')).length,
-          styleCount: Array.from(document.styleSheets).filter((sheet) => sheet.href?.includes('/page.css?v=20260912-8')).length
+          styleCount: Array.from(document.styleSheets).filter((sheet) => sheet.href?.includes('/page.css?v=20260913-1')).length,
+          alternates: Array.from(document.querySelectorAll('link[rel="alternate"][hreflang]')).map((link) => link.hreflang).sort(),
+          lawArticles: Array.from(document.querySelectorAll('.legal-effect-table a')).map((link) => new URL(link.href).searchParams.get('flno')),
+          procedure: document.querySelector('.procedure-note')?.textContent ?? '',
+          deprecatedCarePhrase: /恢復照顧權|恢复照顾权|restore caregiving rights|監護権を当然に回復/.test(document.body.textContent),
+          mixedHansName: document.documentElement.lang === 'zh-Hans' && document.body.textContent.includes('剀剀')
         }));
 
         if (initial.lang !== locale.lang) recordFailure(record, `locale ${initial.lang}`);
@@ -72,6 +77,11 @@ try {
         if (!initial.closingStage || initial.closingParts !== 5) recordFailure(record, 'closing motion stage missing');
         if (JSON.stringify(initial.controls) !== JSON.stringify(locale.controls)) recordFailure(record, `controls ${initial.controls.join(' | ')}`);
         if (initial.scriptCount !== 1 || initial.styleCount !== 1) recordFailure(record, 'versioned motion assets missing or duplicated');
+        if (JSON.stringify(initial.alternates) !== JSON.stringify(['en', 'ja', 'x-default', 'zh-Hans', 'zh-Hant'])) recordFailure(record, `alternates ${initial.alternates.join(' | ')}`);
+        if (JSON.stringify(initial.lawArticles) !== JSON.stringify(['53', '56', '16'])) recordFailure(record, `law articles ${initial.lawArticles.join(' | ')}`);
+        if (!initial.procedure.includes('2026') || !initial.procedure.includes(locale.appealToken) || !initial.procedure.includes('4688')) recordFailure(record, 'appeal status missing from procedure note');
+        if (initial.deprecatedCarePhrase) recordFailure(record, 'deprecated caregiving-rights wording remains');
+        if (initial.mixedHansName) recordFailure(record, 'mixed Simplified proper name remains');
 
         await page.locator('.motion-control--replay').click();
         await page.waitForTimeout(120);
