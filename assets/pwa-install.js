@@ -157,7 +157,7 @@
         reloadingForUpdate = true;
         window.location.reload();
       });
-      navigator.serviceWorker.register(new URL('sw.js?v=20260909-panorama-hd-v12', siteBase).href, {
+      navigator.serviceWorker.register(new URL('sw.js?v=20260912-kaikai-chapter4-v13', siteBase).href, {
         scope: siteBase.pathname,
         updateViaCache: 'none'
       })
