@@ -78,7 +78,6 @@
     updateGuardianLinks();
     const observer = new MutationObserver(updateGuardianLinks);
     observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["href"] });
-    window.setTimeout(() => observer.disconnect(), 15000);
   }
 
   document.addEventListener("cpa-language-change", updateGuardianLinks);

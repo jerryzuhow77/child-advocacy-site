@@ -13,7 +13,7 @@
 
   var current=document.currentScript&&document.currentScript.src?document.currentScript.src:'';
   var base=current?current.slice(0,current.lastIndexOf('/')+1):'./assets/';
-  var version='20260912-taiwan-guardian-wall-2';
+  var version='20260912-taiwan-guardian-wall-3';
   var commentVersion='20260905-comment-key-3';
   function load(name,marker,done,assetVersion){
     var existing=document.querySelector('script[data-cpa-site-layer="'+marker+'"]');

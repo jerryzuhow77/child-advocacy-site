@@ -181,7 +181,7 @@
     applying=true;
     try{
       var locale=detectLocale();
-      document.documentElement.lang=locale;
+      if(document.documentElement.lang!==locale)document.documentElement.lang=locale;
       patchTextNodes(locale);
       patchSubmissionLinks(locale);
       patchStoryPage(locale);
