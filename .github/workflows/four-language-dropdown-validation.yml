@@ -10,6 +10,7 @@ on:
       - 'assets/four-language-toolbar-20260901.css'
       - 'data/four-language-routes.json'
       - '.github/scripts/sync-four-language-toolbar.py'
+      - '.github/scripts/test-four-language-cross-origin-routing.mjs'
       - '.github/workflows/four-language-dropdown-validation.yml'
   workflow_dispatch:
 
@@ -25,6 +26,7 @@ jobs:
         run: |
           set -euo pipefail
           node --check assets/four-language-toolbar-20260901.js
+          node .github/scripts/test-four-language-cross-origin-routing.mjs
           python3 - <<'PY'
           import json
           from pathlib import Path
@@ -37,7 +39,7 @@ jobs:
           pages = [p for p in root.rglob('*.html')]
 
           toolbar = (root / 'assets/four-language-toolbar-20260901.js').read_text(encoding='utf-8')
-          for token in ('cpa-language-select', '"zh-Hant":ROOT', '"zh-Hans":HK_SITE_BASE', 'en:ROOT+"en/"', 'ja:ROOT+"ja/"'):
+          for token in ('cpa-language-select', '"zh-Hant":TW_SITE_BASE', '"zh-Hans":HK_SITE_BASE', 'en:TW_SITE_BASE+"en/"', 'ja:TW_SITE_BASE+"ja/"'):
               assert token in toolbar, f'Missing four-language navigable option contract: {token}'
           assert '"zh-Hans": "簡中"' in toolbar
           assert '簡中・香港' not in toolbar and '简中・香港' not in toolbar
