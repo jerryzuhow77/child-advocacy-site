@@ -1065,6 +1065,20 @@ body::after{position:fixed;inset:0;z-index:-1;content:"";pointer-events:none;opa
 .rb-debate,.rb-chen-verbatim{border-width:2px;box-shadow:0 11px 0 rgba(104,65,38,.09),0 34px 70px rgba(75,46,28,.18)}
 @media(max-width:760px){.rb-section::before{opacity:.22}.rb-turn-pair{padding:0 .78rem 1rem}.rb-turn-pair p{padding:.82rem .85rem}.rb-chen-records summary{min-height:70px}.rb-section h2::after,.rb-archive-subtitle::after{height:.42rem}}
 
+/* Editorial hero artwork and restrained fluorescent emphasis. */
+body::before{z-index:-2;opacity:.2;background-image:linear-gradient(rgba(239,232,214,.28),rgba(224,215,194,.52)),url('/child-advocacy-site/assets/art/recognition-blind-spots-autumn-impressionist-20260913.webp');background-size:cover;background-position:center;background-attachment:fixed;filter:saturate(.72) contrast(.92)}
+.rb-page{background:linear-gradient(125deg,rgba(255,252,240,.87),rgba(239,226,198,.79) 34%,rgba(220,234,211,.76) 65%,rgba(244,219,208,.79));backdrop-filter:blur(12px) saturate(.9)}
+.rb-hero-art{min-height:clamp(430px,48vw,620px);border:1px solid rgba(255,255,255,.7);border-radius:34px 58px 42px 66px;background:#d8cfb8;box-shadow:0 12px 0 rgba(102,68,41,.1),0 34px 72px rgba(71,49,31,.24);transform:rotate(.8deg)}
+.rb-hero-painting{position:absolute;inset:0;overflow:hidden;border-radius:inherit}.rb-hero-painting::after{position:absolute;inset:0;content:"";background:linear-gradient(115deg,rgba(255,250,232,.13),transparent 42%,rgba(88,107,88,.1));box-shadow:inset 0 0 60px rgba(78,54,35,.16)}.rb-hero-painting img{width:100%;height:100%;display:block;object-fit:cover;object-position:56% center;filter:saturate(.82) contrast(.94) brightness(1.02);transform:scale(1.015)}
+.rb-hero-art>.rb-art-halo,.rb-hero-art>.rb-evidence-sheet,.rb-hero-art>.rb-thread,.rb-hero-art>.rb-clay-mark,.rb-hero-art>.rb-leaf{display:none}
+mark.rb-highlight,mark.rb-highlight--rose,mark.rb-highlight--jade{padding:0 .07em;color:inherit;border-radius:.08em;background-repeat:no-repeat;background-position:0 93%;background-size:100% 42%;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+mark.rb-highlight{background-image:linear-gradient(100deg,rgba(255,224,74,.12),rgba(255,216,55,.68) 8% 88%,rgba(255,225,87,.18))}
+mark.rb-highlight--rose{background-image:linear-gradient(100deg,rgba(231,143,140,.13),rgba(224,126,120,.52) 9% 90%,rgba(235,159,154,.14))}
+mark.rb-highlight--jade{background-image:linear-gradient(100deg,rgba(129,173,148,.12),rgba(107,163,134,.48) 8% 90%,rgba(137,180,155,.14))}
+.motion-ready mark.rb-highlight,.motion-ready mark.rb-highlight--rose,.motion-ready mark.rb-highlight--jade{background-size:0 42%}.motion-ready mark.is-drawn{background-size:100% 42%}
+@media(max-width:900px){.rb-hero-art{min-height:470px;transform:none}.rb-hero-painting img{object-position:60% center}}
+@media(max-width:760px){body::before{background-attachment:scroll;opacity:.14}.rb-page{backdrop-filter:blur(8px)}.rb-hero-art{min-height:390px;border-radius:24px 38px 28px 44px}.rb-hero-painting img{object-position:63% center}mark.rb-highlight,mark.rb-highlight--rose,mark.rb-highlight--jade{background-size:100% 38%}.motion-ready mark.rb-highlight,.motion-ready mark.rb-highlight--rose,.motion-ready mark.rb-highlight--jade{background-size:0 38%}.motion-ready mark.is-drawn{background-size:100% 38%}}
+
 @media print {
   @page { margin: 16mm; }
   body { color: #000; background: #fff; font-size: 11pt; }
