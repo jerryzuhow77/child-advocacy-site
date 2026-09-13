@@ -416,7 +416,8 @@
     closingReplayButton.addEventListener("click", function () {
       stopClosingAmbient();
       closing.classList.remove("is-closing-motion-active", "is-closing-motion-complete");
-      closingTimeline.restart(true, false);
+      if (closingTimeline.scrollTrigger) closingTimeline.scrollTrigger.kill(false, true);
+      closingTimeline.invalidate().restart(true, false);
     });
 
     gsap.fromTo(
