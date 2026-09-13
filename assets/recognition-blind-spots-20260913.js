@@ -27,6 +27,9 @@
   const threads = hero.querySelectorAll(".rb-thread");
   const seals = hero.querySelectorAll(".rb-clay-mark");
   const leaves = hero.querySelectorAll(".rb-leaf");
+  const inkBloom = document.createElement("span");
+  inkBloom.className = "rb-ink-bloom";
+  hero.appendChild(inkBloom);
   let intro;
 
   function playIntro() {
@@ -72,7 +75,8 @@
         duration: 1.1,
         stagger: 0.12,
         clearProps: "opacity,visibility,transform"
-      }, 0.5);
+      }, 0.5)
+      .fromTo(inkBloom, { scale: 0.25, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 1.8 }, 0.15);
   }
 
   playIntro();
@@ -97,6 +101,26 @@
       onEnter: function () { mark.classList.add("is-drawn"); }
     });
   });
+
+  gsap.utils.toArray(".rb-hero-questions span").forEach(function (item, index) {
+    gsap.fromTo(item, { y: 24, rotation: index % 2 ? 1.5 : -1.5, autoAlpha: 0 }, { y: 0, rotation: 0, autoAlpha: 1, duration: 0.7, delay: index * 0.08, clearProps: "opacity,visibility,transform" });
+  });
+
+  gsap.utils.toArray(".rb-witness-matrix, .rb-crosscheck-wrap, .rb-cannot-infer").forEach(function (panel) {
+    gsap.fromTo(panel, { y: 36, clipPath: "inset(0 100% 0 0)", autoAlpha: 0 }, { y: 0, clipPath: "inset(0 0% 0 0)", autoAlpha: 1, duration: 1, ease: "power3.out", clearProps: "opacity,visibility,transform,clipPath", scrollTrigger: { trigger: panel, start: "top 86%", once: true } });
+  });
+
+  gsap.utils.toArray(".rb-witness-records > details, .rb-chen-records > details").forEach(function (panel) {
+    panel.addEventListener("toggle", function () {
+      if (!panel.open) return;
+      const targets = panel.querySelectorAll(".rb-excerpts blockquote, p");
+      gsap.fromTo(targets, { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.48, stagger: 0.055, clearProps: "opacity,visibility,transform" });
+      panel.querySelectorAll("mark.rb-highlight").forEach(function (mark) { mark.classList.add("is-drawn"); });
+      ScrollTrigger.refresh();
+    });
+  });
+
+  gsap.to(leaves, { y: 18, rotation: 18, duration: 3.2, stagger: 0.25, repeat: -1, yoyo: true, ease: "sine.inOut" });
 
   gsap.to(".rb-sheet-1", {
     yPercent: -8,
