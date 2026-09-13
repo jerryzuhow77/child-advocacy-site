@@ -123,6 +123,19 @@
     });
   });
 
+  gsap.utils.toArray(".rb-quote-ribbon blockquote").forEach(function (quote, index) {
+    gsap.fromTo(quote, { y: 30, rotation: index % 2 ? 1.4 : -1.4, autoAlpha: 0 }, {
+      y: 0,
+      rotation: 0,
+      autoAlpha: 1,
+      duration: 0.72,
+      delay: (index % 2) * 0.09,
+      ease: "back.out(1.2)",
+      clearProps: "opacity,visibility,transform",
+      scrollTrigger: { trigger: quote, start: "top 89%", once: true }
+    });
+  });
+
   gsap.utils.toArray(".rb-witness-records summary, .rb-chen-records summary, .rb-locale-dropdown > summary").forEach(function (summary) {
     summary.addEventListener("pointerenter", function () { gsap.to(summary, { x: 3, duration: 0.22, ease: "power2.out" }); });
     summary.addEventListener("pointerleave", function () { gsap.to(summary, { x: 0, duration: 0.3, ease: "power2.out", clearProps: "transform" }); });
