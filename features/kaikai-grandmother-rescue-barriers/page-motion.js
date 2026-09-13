@@ -296,23 +296,29 @@
         .to(claySeal, { rotation: 92, scale: 0.86, duration: 5.6, ease: "sine.inOut" }, 0);
     }
 
-    closingTimeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: closing,
-        start: isMobile ? "top 82%" : "top 76%",
-        once: true
-      },
-      onStart: function () {
-        stopClosingAmbient();
-        closing.classList.remove("is-closing-motion-complete");
-        closing.classList.add("is-closing-motion-active");
-      },
-      onComplete: function () {
-        closing.classList.add("is-closing-motion-complete");
-        startClosingAmbient();
+    function createClosingTimeline(useScrollTrigger) {
+      const timelineOptions = {
+        onStart: function () {
+          stopClosingAmbient();
+          closing.classList.remove("is-closing-motion-complete");
+          closing.classList.add("is-closing-motion-active");
+        },
+        onComplete: function () {
+          closing.classList.add("is-closing-motion-complete");
+          startClosingAmbient();
+        }
+      };
+
+      if (useScrollTrigger) {
+        timelineOptions.scrollTrigger = {
+          trigger: closing,
+          start: isMobile ? "top 82%" : "top 76%",
+          once: true
+        };
       }
-    })
-      .fromTo(closingStage, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.34 }, 0)
+
+      return gsap.timeline(timelineOptions)
+        .fromTo(closingStage, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.34 }, 0)
       .fromTo(paperFrame, { autoAlpha: 0, scale: 0.91, rotation: -1.6 }, {
         autoAlpha: 0.92,
         scale: 1,
@@ -405,19 +411,25 @@
         duration: 1.2,
         ease: "power1.out"
       }, 1.62)
-      .fromTo(closingReplayButton, { y: 12, autoAlpha: 0 }, {
-        y: 0,
-        autoAlpha: 1,
-        duration: 0.62,
-        ease: "power2.out",
-        clearProps: "opacity,visibility,transform"
-      }, 1.92);
+        .fromTo(closingReplayButton, { y: 12, autoAlpha: 0 }, {
+          y: 0,
+          autoAlpha: 1,
+          duration: 0.62,
+          ease: "power2.out",
+          clearProps: "opacity,visibility,transform"
+        }, 1.92);
+    }
+
+    closingTimeline = createClosingTimeline(true);
 
     closingReplayButton.addEventListener("click", function () {
       stopClosingAmbient();
+      if (closingTimeline) {
+        if (closingTimeline.scrollTrigger) closingTimeline.scrollTrigger.kill(false);
+        closingTimeline.kill();
+      }
       closing.classList.remove("is-closing-motion-active", "is-closing-motion-complete");
-      if (closingTimeline.scrollTrigger) closingTimeline.scrollTrigger.kill(false, true);
-      closingTimeline.invalidate().restart(true, false);
+      closingTimeline = createClosingTimeline(false);
     });
 
     gsap.fromTo(
