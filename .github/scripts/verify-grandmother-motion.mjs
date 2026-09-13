@@ -63,9 +63,9 @@ try {
           closingControl: document.querySelector('.closing-motion-replay')?.textContent.trim() ?? '',
           progress: Boolean(document.querySelector('.story-progress')),
           controls: Array.from(document.querySelectorAll('.motion-control')).map((button) => button.textContent.trim()),
-          scriptCount: Array.from(document.scripts).filter((script) => script.src.includes('/page-motion.js?v=20260913-3')).length,
+          scriptCount: Array.from(document.scripts).filter((script) => script.src.includes('/page-motion.js?v=20260913-4')).length,
           toolbarScriptCount: Array.from(document.scripts).filter((script) => script.src.includes('/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4-closing-offset-20260913-1')).length,
-          styleCount: Array.from(document.styleSheets).filter((sheet) => sheet.href?.includes('/page.css?v=20260913-3')).length,
+          styleCount: Array.from(document.styleSheets).filter((sheet) => sheet.href?.includes('/page.css?v=20260913-4')).length,
           closingScrollMargin: Number.parseFloat(getComputedStyle(document.querySelector('#closing-title')).scrollMarginTop),
           markerBands: Array.from(document.querySelectorAll('.fluorescent')).map((mark) => {
             const style = getComputedStyle(mark);
@@ -173,7 +173,7 @@ try {
 
         const final = await page.evaluate(() => {
           const animated = Array.from(document.querySelectorAll(
-            '.paper .section-label, .paper .subsection-label, .closing > h2, .closing > p:not(.section-label), .qa-grid > *, .aid-flow > *, .timeline > *, .evidence-grid > *, .questions > *, .route-list > *, .chain > *, .change-grid > *, .chapter-next > *, .comparison-table tbody > *, .knowledge-table tbody > *, .missing-evidence tbody > *'
+            '.paper .section-label, .paper .subsection-label, .closing > h2, .closing > p:not(.section-label), .closing-manifest > *, .qa-grid > *, .aid-flow > *, .timeline > *, .evidence-grid > *, .questions > *, .route-list > *, .chain > *, .change-grid > *, .accountability-loop > *, .implementation-test li, .poster-grid > *, .chapter-next > *, .comparison-table tbody > *, .knowledge-table tbody > *, .missing-evidence tbody > *'
           ));
           const hidden = animated.filter((element) => {
             const style = getComputedStyle(element);
