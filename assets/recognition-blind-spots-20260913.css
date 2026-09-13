@@ -31,6 +31,7 @@
 .rb-witness-records>details>summary span{color:var(--rb-muted);font-size:.88rem;text-align:right}
 .rb-witness-records>details>a{display:inline-block;margin:0 1.15rem 1.15rem;font-weight:800}
 .rb-excerpts{display:grid;gap:.7rem;padding:1rem 1.15rem}
+.rb-verbatim-note{margin:0;padding:.85rem 1.15rem 0;color:var(--rb-muted);font-size:.88rem;line-height:1.65}
 .rb-excerpts blockquote{margin:0;padding:.85rem 1rem;border-left:4px solid var(--rb-ochre);background:rgba(247,240,223,.55);line-height:1.75}
 .rb-excerpts blockquote b{color:var(--rb-cinnabar-dark)}
 .rb-locale-dropdown{border:1px solid rgba(28,38,42,.24);border-radius:16px;background:#fff;overflow:hidden}
