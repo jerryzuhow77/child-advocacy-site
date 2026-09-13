@@ -1077,6 +1077,20 @@ mark.rb-highlight--rose{background-image:linear-gradient(100deg,rgba(231,143,140
 mark.rb-highlight--jade{background-image:linear-gradient(100deg,rgba(129,173,148,.12),rgba(107,163,134,.48) 8% 90%,rgba(137,180,155,.14))}
 .motion-ready mark.rb-highlight,.motion-ready mark.rb-highlight--rose,.motion-ready mark.rb-highlight--jade{background-size:0 42%}.motion-ready mark.is-drawn{background-size:100% 42%}
 .motion-ready .rb-section h2,.motion-ready .rb-section .rb-archive-subtitle{opacity:1!important;visibility:visible!important}
+/* Never let a missed ScrollTrigger hide editorial content. GSAP may still animate
+   transforms, but text and evidence cards remain readable at every scroll position. */
+html.motion-ready .rb-reveal,
+html.motion-ready .rb-witness-matrix,
+html.motion-ready .rb-crosscheck-wrap,
+html.motion-ready .rb-cannot-infer,
+html.motion-ready .rb-debate-card,
+html.motion-ready .rb-quote-ribbon blockquote,
+html.motion-ready .rb-hero-questions span,
+html.motion-ready .rb-excerpts blockquote,
+html.motion-ready .rb-turn-pair p{opacity:1!important;visibility:visible!important}
+html.motion-ready .rb-witness-matrix,
+html.motion-ready .rb-crosscheck-wrap,
+html.motion-ready .rb-cannot-infer{clip-path:none!important}
 @media(max-width:900px){.rb-hero-art{min-height:470px;transform:none}.rb-hero-painting img{object-position:60% center}}
 @media(max-width:760px){body::before{background-attachment:scroll;opacity:.14}.rb-page{backdrop-filter:blur(8px)}.rb-hero-art{min-height:390px;border-radius:24px 38px 28px 44px}.rb-hero-painting img{object-position:63% center}mark.rb-highlight,mark.rb-highlight--rose,mark.rb-highlight--jade{background-size:100% 38%}.motion-ready mark.rb-highlight,.motion-ready mark.rb-highlight--rose,.motion-ready mark.rb-highlight--jade{background-size:0 38%}.motion-ready mark.is-drawn{background-size:100% 38%}}
 
