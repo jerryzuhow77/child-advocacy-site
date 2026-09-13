@@ -63,7 +63,7 @@ try {
           closingControl: document.querySelector('.closing-motion-replay')?.textContent.trim() ?? '',
           progress: Boolean(document.querySelector('.story-progress')),
           controls: Array.from(document.querySelectorAll('.motion-control')).map((button) => button.textContent.trim()),
-          scriptCount: Array.from(document.scripts).filter((script) => script.src.includes('/page-motion.js?v=20260913-2')).length,
+          scriptCount: Array.from(document.scripts).filter((script) => script.src.includes('/page-motion.js?v=20260913-3')).length,
           styleCount: Array.from(document.styleSheets).filter((sheet) => sheet.href?.includes('/page.css?v=20260913-3')).length,
           closingScrollMargin: Number.parseFloat(getComputedStyle(document.querySelector('#closing-title')).scrollMarginTop),
           markerBands: Array.from(document.querySelectorAll('.fluorescent')).map((mark) => {
@@ -129,7 +129,9 @@ try {
             complete: document.querySelector('.closing').classList.contains('is-closing-motion-complete'),
             titleOpacity: Number(getComputedStyle(document.querySelector('#closing-title')).opacity)
           }));
-          if (earlyReplay.complete || earlyReplay.titleOpacity >= 0.99) recordFailure(record, 'early closing replay did not restart');
+          if (earlyReplay.complete || earlyReplay.titleOpacity >= 0.99) {
+            recordFailure(record, `early closing replay did not restart ${JSON.stringify(earlyReplay)}`);
+          }
           await page.waitForTimeout(3_200);
           const earlyReplayFinal = await page.evaluate(() => ({
             complete: document.querySelector('.closing').classList.contains('is-closing-motion-complete'),
@@ -189,7 +191,9 @@ try {
           complete: document.querySelector('.closing').classList.contains('is-closing-motion-complete'),
           titleOpacity: Number(getComputedStyle(document.querySelector('#closing-title')).opacity)
         }));
-        if (closingReplay.complete || closingReplay.titleOpacity >= 0.99) recordFailure(record, 'closing replay did not restart');
+        if (closingReplay.complete || closingReplay.titleOpacity >= 0.99) {
+          recordFailure(record, `closing replay did not restart ${JSON.stringify(closingReplay)}`);
+        }
       } catch (error) {
         recordFailure(record, error.message);
       }
