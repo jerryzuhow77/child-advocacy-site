@@ -15,6 +15,23 @@
   --rb-serif: "Noto Serif TC", "Noto Serif SC", "Noto Serif JP", "Source Han Serif TC", "PingFang TC", serif;
 }
 
+.rb-archive{border-top:4px solid var(--rb-ink)}
+.rb-archive-subtitle{margin:2.2rem 0 1rem;font-size:clamp(1.25rem,2.6vw,1.75rem)}
+.rb-testimony-index{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}
+.rb-testimony-index a{display:flex;flex-direction:column;gap:.3rem;padding:1rem;border:1px solid rgba(28,38,42,.2);border-radius:14px;background:#fff;color:inherit;text-decoration:none;transition:transform .18s ease,border-color .18s ease}
+.rb-testimony-index a:hover,.rb-testimony-index a:focus-visible{transform:translateY(-2px);border-color:var(--rb-cinnabar)}
+.rb-testimony-index b{color:var(--rb-cinnabar-dark)}
+.rb-testimony-index span{font-size:.93rem;line-height:1.65}
+.rb-source-link{margin:1rem 0 0}
+.rb-chen-records{display:grid;gap:.75rem}
+.rb-chen-records details{border:1px solid rgba(28,38,42,.22);border-radius:14px;background:#fff;overflow:hidden}
+.rb-chen-records summary{display:flex;justify-content:space-between;gap:1rem;cursor:pointer;padding:1rem 1.1rem;list-style:none}
+.rb-chen-records summary::-webkit-details-marker{display:none}
+.rb-chen-records summary span{color:var(--rb-muted);font-size:.88rem;text-align:right}
+.rb-chen-records details p{margin:0;padding:0 1.1rem 1.1rem;line-height:1.8}
+.rb-chen-records em{font-style:normal;font-weight:800;color:var(--rb-cinnabar-dark)}
+@media (max-width:720px){.rb-testimony-index{grid-template-columns:1fr}.rb-chen-records summary{flex-direction:column;gap:.25rem}.rb-chen-records summary span{text-align:left}}
+
 * { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
