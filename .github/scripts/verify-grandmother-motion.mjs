@@ -65,7 +65,7 @@ try {
           controls: Array.from(document.querySelectorAll('.motion-control')).map((button) => button.textContent.trim()),
           scriptCount: Array.from(document.scripts).filter((script) => script.src.includes('/page-motion.js?v=20260913-4')).length,
           toolbarScriptCount: Array.from(document.scripts).filter((script) => script.src.includes('/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4-closing-offset-20260913-1')).length,
-          styleCount: Array.from(document.styleSheets).filter((sheet) => sheet.href?.includes('/page.css?v=20260913-4')).length,
+          styleCount: Array.from(document.styleSheets).filter((sheet) => sheet.href?.includes('/page.css?v=20260913-5')).length,
           closingScrollMargin: Number.parseFloat(getComputedStyle(document.querySelector('#closing-title')).scrollMarginTop),
           markerBands: Array.from(document.querySelectorAll('.fluorescent')).map((mark) => {
             const style = getComputedStyle(mark);
