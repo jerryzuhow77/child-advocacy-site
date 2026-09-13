@@ -15,8 +15,8 @@ HK_BASE = "https://cn.globalprotectionwall.com/child-advocacy-site/"
 ROUTE_VERSION = "20260912-6"
 TOOLBAR_CSS_VERSION = "20260909-5"
 TOOLBAR_JS_VERSION = "20260911-hk-site-home-4"
-TOOLBAR_JS_ROUTE_VERSIONS = {
-    "features/kaikai-grandmother-rescue-barriers/": "20260913-closing-offset-1",
+TOOLBAR_JS_ROUTE_SUFFIXES = {
+    "features/kaikai-grandmother-rescue-barriers/": "closing-offset-20260913-1",
 }
 COMMENT_VERSION = "20260905-comment-key-3"
 EXCLUDED_ROOTS = {"child-advocacy-site", "child-advocacy-site-main", "source", "handoffs", "global-protection-wall", "node_modules"}
@@ -110,7 +110,8 @@ def inject(path: Path, text: str) -> str:
         text = re.sub(r'<script\b[^>]*' + JS_MARKER + r'[^>]*>[\s\S]*?</script>\s*', '', text, flags=re.I)
         return text
     route = neutral_route(path, html_locale(path, text))
-    js_version = TOOLBAR_JS_ROUTE_VERSIONS.get(route, TOOLBAR_JS_VERSION)
+    route_suffix = TOOLBAR_JS_ROUTE_SUFFIXES.get(route)
+    js_version = TOOLBAR_JS_VERSION + (f"-{route_suffix}" if route_suffix else "")
     js_tag = f'<script {JS_MARKER} src="{BASE}assets/four-language-toolbar-20260901.js?v={js_version}"></script>'
     text = re.sub(r'<link\b[^>]*' + CSS_MARKER + r'[^>]*>', lambda _: CSS_TAG, text, flags=re.I)
     text = re.sub(r'<script\b[^>]*' + JS_MARKER + r'[^>]*>\s*</script>', lambda _: js_tag, text, flags=re.I)
