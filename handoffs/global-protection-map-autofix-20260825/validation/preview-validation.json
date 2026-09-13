@@ -1,0 +1,57 @@
+{
+  "url": "https://global-protection-preview.invalid/",
+  "scope": "offline reconstructed live shell with captured public messages",
+  "checks": {
+    "region_selector_exists": true,
+    "region_selector_options": [
+      {
+        "value": "all",
+        "text": "全部"
+      },
+      {
+        "value": "GB",
+        "text": "英國・倫敦（1）"
+      },
+      {
+        "value": "TW",
+        "text": "台灣（8）"
+      },
+      {
+        "value": "CN",
+        "text": "大陸（5）"
+      }
+    ],
+    "region_selector_has_all_tw_cn_gb": true,
+    "london_marker": {
+      "targetX": 102,
+      "targetY": 163,
+      "transform": "translate(-150 -12)",
+      "r": 30
+    },
+    "london_coordinate_corrected": true,
+    "marker_click_syncs_region_selector": true,
+    "marker_click_filters_message_count": true,
+    "gb_note_count": 1,
+    "selector_filters_tw_count": true,
+    "selector_filters_cn_count": true,
+    "selector_clears_filter": true,
+    "desktop_map_style": {
+      "opacity": "1",
+      "visibility": "visible",
+      "display": "block",
+      "height": 850
+    },
+    "desktop_map_remains_visible": true,
+    "mobile_map_style": {
+      "opacity": "1",
+      "visibility": "visible",
+      "display": "block",
+      "width": 366,
+      "height": 990
+    },
+    "mobile_selector_visible": true
+  },
+  "console_errors": [],
+  "page_errors": [],
+  "pass": true
+}
