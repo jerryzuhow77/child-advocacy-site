@@ -18,7 +18,10 @@ BASE = "/child-advocacy-site/"
 HK_BASE = "https://cn.globalprotectionwall.com"
 URL_ATTR_RE = re.compile(r"(?P<prefix>\b(?:href|src|action|poster)\s*=\s*)(?P<quote>[\"'])(?P<url>.*?)(?P=quote)", re.I | re.S)
 MAIN_RE = re.compile(r"<main\b[^>]*>[\s\S]*?</main>", re.I)
-KAIKAI_ROUTE = "features/kaikai-grandmother-rescue-barriers/"
+KAIKAI_ROUTES = {
+    "features/kaikai-grandmother-rescue-barriers/",
+    "features/social-observation/child-abuse-recognition-blind-spots/",
+}
 
 
 def repo_path(url: str) -> Path | None:
@@ -181,9 +184,9 @@ def synchronize(check_only: bool) -> int:
                 continue
             if structural_signature(source_main.group(0)) != structural_signature(target_main.group(0)):
                 errors.append(f"{route}: zh-Hans main content is not structurally complete")
-            if route == KAIKAI_ROUTE and "剀剀" in target_text:
+            if route in KAIKAI_ROUTES and "剀剀" in target_text:
                 errors.append(f"{route}: mixed Simplified proper name 剀剀 remains; use 凯凯")
-            if route == KAIKAI_ROUTE and "凯凯" not in target_text:
+            if route in KAIKAI_ROUTES and "凯凯" not in target_text:
                 errors.append(f"{route}: expected Simplified proper name 凯凯 is missing")
             if not re.search(r'<html\b[^>]*lang=["\']zh-Hans["\']', target_text, re.I):
                 errors.append(f"{route}: physical zh-Hans page has the wrong lang")
@@ -214,7 +217,7 @@ def synchronize(check_only: bool) -> int:
             errors.append(f"{route}: missing source or target main element")
             continue
         converted_main = convert_html(source_main.group(0), source, target, source_to_hans, converter)
-        if route == KAIKAI_ROUTE:
+        if route in KAIKAI_ROUTES:
             converted_main = converted_main.replace("剀剀", "凯凯")
         updated = target_text[:target_main.start()] + converted_main + target_text[target_main.end():]
         updated = ensure_shared_record_assets(updated, source_text)

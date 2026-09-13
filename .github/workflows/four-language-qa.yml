@@ -30,6 +30,8 @@ on:
       - 'assets/article-comments-20260828.js'
       - 'assets/home-view-counter-20260811.js'
       - 'assets/home-latest-i18n-20260826.js'
+      - 'assets/recognition-blind-spots-20260913.css'
+      - 'assets/recognition-blind-spots-20260913.js'
       - 'features/kaikai-grandmother-rescue-barriers/**'
       - 'activity-records/20260820-taipei-station-advocacy/**'
       - 'en/activity-records/20260820-taipei-station-advocacy/**'
@@ -101,6 +103,7 @@ jobs:
           node --check assets/article-comments-20260828.js
           node --check assets/home-view-counter-20260811.js
           node --check assets/mobile-nav-view-counter-20260823.js
+          node --check assets/recognition-blind-spots-20260913.js
           node --check features/kaikai-grandmother-rescue-barriers/page-motion.js
           node --check sw.js
 

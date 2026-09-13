@@ -73,6 +73,7 @@ full_routes = [
     'activity-records/20260825-111-surplus-donation/',
     'cases/kaikai/a4-dossier/', 'cases/luo-brothers/',
     'cases/tucheng-domestic-violence-double-homicide/',
+    'features/social-observation/child-abuse-recognition-blind-spots/',
     'features/social-observation/guarantor-status/',
     'hearing-records/tucheng-domestic-violence-double-homicide-20260821/',
     'hearing-records/prison-watch/kaikai-final-chapter/',
