@@ -64,6 +64,7 @@ try {
           progress: Boolean(document.querySelector('.story-progress')),
           controls: Array.from(document.querySelectorAll('.motion-control')).map((button) => button.textContent.trim()),
           scriptCount: Array.from(document.scripts).filter((script) => script.src.includes('/page-motion.js?v=20260913-3')).length,
+          toolbarScriptCount: Array.from(document.scripts).filter((script) => script.src.includes('/four-language-toolbar-20260901.js?v=20260913-closing-offset-1')).length,
           styleCount: Array.from(document.styleSheets).filter((sheet) => sheet.href?.includes('/page.css?v=20260913-3')).length,
           closingScrollMargin: Number.parseFloat(getComputedStyle(document.querySelector('#closing-title')).scrollMarginTop),
           markerBands: Array.from(document.querySelectorAll('.fluorescent')).map((mark) => {
@@ -88,7 +89,9 @@ try {
         if (initial.closingControl !== locale.closingControl) recordFailure(record, `closing control ${initial.closingControl}`);
         if (initial.closingScrollMargin < 120) recordFailure(record, `closing scroll margin ${initial.closingScrollMargin}`);
         if (JSON.stringify(initial.controls) !== JSON.stringify(locale.controls)) recordFailure(record, `controls ${initial.controls.join(' | ')}`);
-        if (initial.scriptCount !== 1 || initial.styleCount !== 1) recordFailure(record, 'versioned motion assets missing or duplicated');
+        if (initial.scriptCount !== 1 || initial.styleCount !== 1 || initial.toolbarScriptCount !== 1) {
+          recordFailure(record, 'versioned motion assets missing or duplicated');
+        }
         if (initial.markerBands.some((band) => band.heightRatio < 0.3 || band.heightRatio > 0.62 || band.boxDecorationBreak !== 'clone')) {
           recordFailure(record, `unclear marker band ${JSON.stringify(initial.markerBands[0])}`);
         }
@@ -116,6 +119,23 @@ try {
 
         if ((width === 360 && locale.lang !== 'en') || (width === 412 && locale.lang === 'en') || (width === 1280 && locale.lang === 'zh-Hant')) {
           await page.screenshot({ path: `${outputDir}/hero-${locale.lang}-${width}.png`, fullPage: false });
+        }
+
+        if (width === 360) {
+          await page.locator('.cpa-chapter-select').selectOption('closing-title');
+          await page.waitForTimeout(120);
+          const chapterJump = await page.evaluate(() => {
+            const title = document.querySelector('#closing-title');
+            const toolbar = document.querySelector('#cpa-four-language-toolbar');
+            return {
+              margin: Number.parseFloat(getComputedStyle(title).scrollMarginTop),
+              titleTop: title.getBoundingClientRect().top,
+              toolbarBottom: toolbar.getBoundingClientRect().bottom
+            };
+          });
+          if (chapterJump.margin + 0.5 < initial.closingScrollMargin || chapterJump.titleTop + 1 < chapterJump.toolbarBottom) {
+            recordFailure(record, `closing chapter jump obscured ${JSON.stringify(chapterJump)}`);
+          }
         }
 
         if (width === 360 && locale.lang === 'zh-Hant') {
