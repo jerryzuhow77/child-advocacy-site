@@ -147,9 +147,9 @@
   gsap.utils.toArray(".rb-section").forEach(function (section, index) {
     const heading = section.querySelector("h2, .rb-archive-subtitle");
     if (!heading) return;
-    gsap.fromTo(heading, { x: index % 2 ? 28 : -28, autoAlpha: 0, filter: "blur(4px)" }, {
-      x: 0, autoAlpha: 1, filter: "blur(0px)", duration: .9, ease: "power3.out",
-      clearProps: "opacity,visibility,transform,filter", scrollTrigger: { trigger: heading, start: "top 88%", once: true }
+    gsap.fromTo(heading, { x: index % 2 ? 28 : -28, filter: "blur(4px)" }, {
+      x: 0, filter: "blur(0px)", duration: .9, ease: "power3.out",
+      clearProps: "transform,filter", scrollTrigger: { trigger: heading, start: "top 88%", once: true }
     });
   });
 
