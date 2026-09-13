@@ -889,6 +889,7 @@ html.motion-reduced .rb-replay { display: none; }
 @media print {
   @page { margin: 16mm; }
   body { color: #000; background: #fff; font-size: 11pt; }
+  .rb-reveal { opacity: 1 !important; visibility: visible !important; transform: none !important; }
   body::before,
   .rb-top,
   .rb-hero-art,
