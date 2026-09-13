@@ -63,8 +63,10 @@ try {
           closingControl: document.querySelector('.closing-motion-replay')?.textContent.trim() ?? '',
           progress: Boolean(document.querySelector('.story-progress')),
           controls: Array.from(document.querySelectorAll('.motion-control')).map((button) => button.textContent.trim()),
-          scriptCount: Array.from(document.scripts).filter((script) => script.src.includes('/page-motion.js?v=20260913-1')).length,
-          styleCount: Array.from(document.styleSheets).filter((sheet) => sheet.href?.includes('/page.css?v=20260913-2')).length,
+          scriptCount: Array.from(document.scripts).filter((script) => script.src.includes('/page-motion.js?v=20260913-3')).length,
+          toolbarScriptCount: Array.from(document.scripts).filter((script) => script.src.includes('/four-language-toolbar-20260901.js?v=20260913-closing-offset-1')).length,
+          styleCount: Array.from(document.styleSheets).filter((sheet) => sheet.href?.includes('/page.css?v=20260913-3')).length,
+          closingScrollMargin: Number.parseFloat(getComputedStyle(document.querySelector('#closing-title')).scrollMarginTop),
           markerBands: Array.from(document.querySelectorAll('.fluorescent')).map((mark) => {
             const style = getComputedStyle(mark);
             const sizeParts = style.backgroundSize.split(' ');
@@ -85,8 +87,11 @@ try {
         if (!initial.stage || !initial.progress) recordFailure(record, 'motion chrome missing');
         if (!initial.closingStage || initial.closingParts !== 10) recordFailure(record, 'closing paper-and-clay motion stage missing');
         if (initial.closingControl !== locale.closingControl) recordFailure(record, `closing control ${initial.closingControl}`);
+        if (initial.closingScrollMargin < 120) recordFailure(record, `closing scroll margin ${initial.closingScrollMargin}`);
         if (JSON.stringify(initial.controls) !== JSON.stringify(locale.controls)) recordFailure(record, `controls ${initial.controls.join(' | ')}`);
-        if (initial.scriptCount !== 1 || initial.styleCount !== 1) recordFailure(record, 'versioned motion assets missing or duplicated');
+        if (initial.scriptCount !== 1 || initial.styleCount !== 1 || initial.toolbarScriptCount !== 1) {
+          recordFailure(record, 'versioned motion assets missing or duplicated');
+        }
         if (initial.markerBands.some((band) => band.heightRatio < 0.3 || band.heightRatio > 0.62 || band.boxDecorationBreak !== 'clone')) {
           recordFailure(record, `unclear marker band ${JSON.stringify(initial.markerBands[0])}`);
         }
@@ -116,10 +121,46 @@ try {
           await page.screenshot({ path: `${outputDir}/hero-${locale.lang}-${width}.png`, fullPage: false });
         }
 
+        if (width === 360) {
+          await page.locator('.cpa-chapter-select').selectOption('closing-title');
+          await page.waitForTimeout(120);
+          const chapterJump = await page.evaluate(() => {
+            const title = document.querySelector('#closing-title');
+            const toolbar = document.querySelector('#cpa-four-language-toolbar');
+            return {
+              margin: Number.parseFloat(getComputedStyle(title).scrollMarginTop),
+              titleTop: title.getBoundingClientRect().top,
+              toolbarBottom: toolbar.getBoundingClientRect().bottom
+            };
+          });
+          if (chapterJump.margin + 0.5 < initial.closingScrollMargin || chapterJump.titleTop + 1 < chapterJump.toolbarBottom) {
+            recordFailure(record, `closing chapter jump obscured ${JSON.stringify(chapterJump)}`);
+          }
+        }
+
         if (width === 360 && locale.lang === 'zh-Hant') {
           await page.locator('.closing').scrollIntoViewIfNeeded();
           await page.waitForTimeout(820);
           await page.screenshot({ path: `${outputDir}/closing-${locale.lang}-${width}.png`, fullPage: false });
+          await page.waitForTimeout(1_500);
+          await page.evaluate(() => document.querySelector('.closing-motion-replay').click());
+          await page.waitForTimeout(160);
+          const earlyReplay = await page.evaluate(() => ({
+            complete: document.querySelector('.closing').classList.contains('is-closing-motion-complete'),
+            titleOpacity: Number(getComputedStyle(document.querySelector('#closing-title')).opacity)
+          }));
+          if (earlyReplay.complete || earlyReplay.titleOpacity >= 0.99) {
+            recordFailure(record, `early closing replay did not restart ${JSON.stringify(earlyReplay)}`);
+          }
+          await page.waitForTimeout(3_200);
+          const earlyReplayFinal = await page.evaluate(() => ({
+            complete: document.querySelector('.closing').classList.contains('is-closing-motion-complete'),
+            titleOpacity: Number(getComputedStyle(document.querySelector('#closing-title')).opacity),
+            highlightSize: getComputedStyle(document.querySelector('.closing .fluorescent')).backgroundSize
+          }));
+          if (!earlyReplayFinal.complete || earlyReplayFinal.titleOpacity < 0.99 || !earlyReplayFinal.highlightSize.startsWith('100%')) {
+            recordFailure(record, `early closing replay stalled ${JSON.stringify(earlyReplayFinal)}`);
+          }
         }
 
         const sectionCount = await page.locator('.paper > section').count();
@@ -170,7 +211,9 @@ try {
           complete: document.querySelector('.closing').classList.contains('is-closing-motion-complete'),
           titleOpacity: Number(getComputedStyle(document.querySelector('#closing-title')).opacity)
         }));
-        if (closingReplay.complete || closingReplay.titleOpacity >= 0.99) recordFailure(record, 'closing replay did not restart');
+        if (closingReplay.complete || closingReplay.titleOpacity >= 0.99) {
+          recordFailure(record, `closing replay did not restart ${JSON.stringify(closingReplay)}`);
+        }
       } catch (error) {
         recordFailure(record, error.message);
       }
