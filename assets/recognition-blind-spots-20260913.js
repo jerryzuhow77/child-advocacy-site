@@ -110,6 +110,24 @@
     gsap.fromTo(panel, { y: 36, clipPath: "inset(0 100% 0 0)", autoAlpha: 0 }, { y: 0, clipPath: "inset(0 0% 0 0)", autoAlpha: 1, duration: 1, ease: "power3.out", clearProps: "opacity,visibility,transform,clipPath", scrollTrigger: { trigger: panel, start: "top 86%", once: true } });
   });
 
+  gsap.utils.toArray(".rb-debate-card").forEach(function (card, index) {
+    gsap.fromTo(card, { y: 44, rotation: index % 2 ? 1.2 : -1.2, autoAlpha: 0 }, {
+      y: 0,
+      rotation: 0,
+      autoAlpha: 1,
+      duration: 0.82,
+      delay: index * 0.08,
+      ease: "back.out(1.25)",
+      clearProps: "opacity,visibility,transform",
+      scrollTrigger: { trigger: card, start: "top 88%", once: true }
+    });
+  });
+
+  gsap.utils.toArray(".rb-witness-records summary, .rb-chen-records summary, .rb-locale-dropdown > summary").forEach(function (summary) {
+    summary.addEventListener("pointerenter", function () { gsap.to(summary, { x: 3, duration: 0.22, ease: "power2.out" }); });
+    summary.addEventListener("pointerleave", function () { gsap.to(summary, { x: 0, duration: 0.3, ease: "power2.out", clearProps: "transform" }); });
+  });
+
   gsap.utils.toArray(".rb-witness-records > details, .rb-chen-records > details").forEach(function (panel) {
     panel.addEventListener("toggle", function () {
       if (!panel.open) return;
