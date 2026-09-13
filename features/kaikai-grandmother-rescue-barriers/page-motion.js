@@ -41,6 +41,11 @@
   stage.setAttribute("aria-hidden", "true");
   stage.innerHTML = [
     '<span class="hero-atmosphere"></span>',
+    '<span class="hero-clay-moon"></span>',
+    '<span class="hero-pond-glint"></span>',
+    '<span class="hero-autumn-leaf hero-autumn-leaf--one"></span>',
+    '<span class="hero-autumn-leaf hero-autumn-leaf--two"></span>',
+    '<span class="hero-autumn-leaf hero-autumn-leaf--three"></span>',
     '<span class="hero-paper-veil hero-paper-veil--left"></span>',
     '<span class="hero-paper-veil hero-paper-veil--right"></span>',
     '<span class="hero-door-line hero-door-line--one"></span>',
@@ -77,6 +82,9 @@
   const progressFill = progress.firstElementChild;
   const atmosphere = stage.querySelector(".hero-atmosphere");
   const warmLight = stage.querySelector(".hero-warm-light");
+  const clayMoon = stage.querySelector(".hero-clay-moon");
+  const pondGlint = stage.querySelector(".hero-pond-glint");
+  const autumnLeaves = stage.querySelectorAll(".hero-autumn-leaf");
   const veils = stage.querySelectorAll(".hero-paper-veil");
   const doorLines = stage.querySelectorAll(".hero-door-line");
   const heroCopyItems = Array.from(heroCopy.children);
@@ -110,7 +118,7 @@
     closing.appendChild(closingReplayButton);
   }
 
-  const motionTargets = new Set([heroArt, heroCopy, paper, stage, atmosphere, warmLight, closing, closingStage, closingReplayButton].filter(Boolean));
+  const motionTargets = new Set([heroArt, heroCopy, paper, stage, atmosphere, warmLight, clayMoon, pondGlint, closing, closingStage, closingReplayButton].filter(Boolean));
   let introTimeline = null;
   let ambientTween = null;
   let closingTimeline = null;
@@ -128,17 +136,15 @@
   remember(heroCopyItems);
   remember(veils);
   remember(doorLines);
+  remember(autumnLeaves);
 
   function startAmbientLight() {
     if (ambientTween) ambientTween.kill();
-    ambientTween = gsap.to(warmLight, {
-      scale: 1.08,
-      autoAlpha: 0.78,
-      duration: 5.4,
-      ease: "sine.inOut",
-      repeat: -1,
-      yoyo: true
-    });
+    ambientTween = gsap.timeline({ repeat: -1, yoyo: true })
+      .to(warmLight, { scale: 1.08, autoAlpha: 0.78, duration: 5.4, ease: "sine.inOut" }, 0)
+      .to(clayMoon, { rotation: 4, scale: 1.025, duration: 6.2, ease: "sine.inOut" }, 0)
+      .to(pondGlint, { xPercent: -2, autoAlpha: 0.52, duration: 5.8, ease: "sine.inOut" }, 0)
+      .to(autumnLeaves, { y: -8, rotation: "+=10", duration: 5.6, stagger: 0.35, ease: "sine.inOut" }, 0);
   }
 
   function playIntro() {
@@ -148,7 +154,7 @@
 
     gsap.set(stage, { autoAlpha: 1 });
     gsap.set(heroCopyItems, { clearProps: "opacity,visibility,transform,filter" });
-    gsap.set([heroArt, atmosphere, warmLight, ...veils, ...doorLines], {
+    gsap.set([heroArt, atmosphere, warmLight, clayMoon, pondGlint, ...autumnLeaves, ...veils, ...doorLines], {
       clearProps: "opacity,visibility,transform,filter"
     });
 
@@ -172,6 +178,24 @@
         { autoAlpha: 0, scale: 0.86 },
         { autoAlpha: 0.7, scale: 1, duration: 2.1 },
         0.08
+      )
+      .fromTo(
+        clayMoon,
+        { autoAlpha: 0, scale: 0.72, rotation: -8 },
+        { autoAlpha: 0.34, scale: 1, rotation: 0, duration: 2.1, ease: "sine.out" },
+        0.16
+      )
+      .fromTo(
+        pondGlint,
+        { autoAlpha: 0, scaleX: 0.68 },
+        { autoAlpha: 0.38, scaleX: 1, duration: 2.2, ease: "power2.out" },
+        0.38
+      )
+      .fromTo(
+        autumnLeaves,
+        { y: -54, x: -14, rotation: -42, autoAlpha: 0 },
+        { y: 0, x: 0, rotation: "+=72", autoAlpha: 0.74, duration: 1.65, stagger: 0.16, ease: "power2.out" },
+        0.22
       )
       .fromTo(
         stage.querySelector(".hero-paper-veil--left"),
@@ -254,7 +278,8 @@
 
     const label = closing.querySelector(":scope > .section-label");
     const title = closing.querySelector(":scope > h2");
-    const copy = closing.querySelector(":scope > p:not(.section-label)");
+    const copies = Array.from(closing.querySelectorAll(":scope > p:not(.section-label)"));
+    const manifestItems = Array.from(closing.querySelectorAll(".closing-manifest > article"));
     const highlight = closing.querySelector(".fluorescent");
     const paperFrame = closingStage.querySelector(".closing-paper-frame");
     const glow = closingStage.querySelector(".closing-glow");
@@ -265,7 +290,7 @@
     const claySeal = closingStage.querySelector(".closing-clay-seal");
     const dust = closingStage.querySelector(".closing-dust");
     const threshold = closingStage.querySelector(".closing-threshold");
-    const content = [label, title, copy, closingReplayButton].filter(Boolean);
+    const content = [label, title, ...copies, ...manifestItems, closingReplayButton].filter(Boolean);
 
     remember([
       closingStage,
@@ -399,10 +424,11 @@
         ease: "power3.out",
         clearProps: "opacity,visibility,transform,filter,clipPath"
       }, 1.02)
-      .fromTo(copy, { y: isMobile ? 24 : 32, autoAlpha: 0 }, {
+      .fromTo(copies, { y: isMobile ? 24 : 32, autoAlpha: 0 }, {
         y: 0,
         autoAlpha: 1,
         duration: 0.9,
+        stagger: 0.1,
         ease: "power2.out",
         clearProps: "opacity,visibility,transform"
       }, 1.34)
@@ -411,13 +437,26 @@
         duration: 1.2,
         ease: "power1.out"
       }, 1.62)
+      .fromTo(manifestItems, {
+        y: isMobile ? 18 : 26,
+        scale: 0.96,
+        autoAlpha: 0
+      }, {
+        y: 0,
+        scale: 1,
+        autoAlpha: 1,
+        duration: 0.76,
+        stagger: 0.11,
+        ease: "back.out(1.35)",
+        clearProps: "opacity,visibility,transform"
+      }, 1.72)
         .fromTo(closingReplayButton, { y: 12, autoAlpha: 0 }, {
           y: 0,
           autoAlpha: 1,
           duration: 0.62,
           ease: "power2.out",
           clearProps: "opacity,visibility,transform"
-        }, 1.92);
+        }, 2.16);
     }
 
     closingTimeline = createClosingTimeline(true);
@@ -512,6 +551,67 @@
     sections.forEach(function (section, index) {
       if (section.classList.contains("closing")) return;
 
+      const sectionStage = document.createElement("div");
+      sectionStage.className = "section-motion-stage";
+      sectionStage.setAttribute("aria-hidden", "true");
+      sectionStage.innerHTML = [
+        '<span class="section-light-wash"></span>',
+        '<span class="section-paper-ribbon"></span>',
+        '<span class="section-clay-leaf"></span>'
+      ].join("");
+      section.prepend(sectionStage);
+
+      const sectionPaper = sectionStage.querySelector(".section-paper-ribbon");
+      const sectionLeaf = sectionStage.querySelector(".section-clay-leaf");
+      const sectionWash = sectionStage.querySelector(".section-light-wash");
+      remember([sectionStage, sectionPaper, sectionLeaf, sectionWash]);
+
+      gsap.timeline({
+        scrollTrigger: { trigger: section, start: "top 88%", once: true }
+      })
+        .fromTo(sectionStage, {
+          x: isMobile ? 26 : index % 2 === 0 ? 54 : -54,
+          y: 24,
+          autoAlpha: 0
+        }, {
+          x: 0,
+          y: 0,
+          autoAlpha: 0.78,
+          duration: 1.05,
+          ease: "power2.out",
+          clearProps: "opacity,visibility,transform"
+        }, 0)
+        .fromTo(sectionPaper, { scaleX: 0.55, rotation: index % 2 === 0 ? 5 : -5 }, {
+          scaleX: 1,
+          rotation: 0,
+          duration: 1.15,
+          ease: "power2.out"
+        }, 0.08)
+        .fromTo(sectionLeaf, { y: -22, rotation: -28, autoAlpha: 0 }, {
+          y: 0,
+          rotation: index % 2 === 0 ? 12 : -12,
+          autoAlpha: 1,
+          duration: 0.95,
+          ease: "back.out(1.4)"
+        }, 0.22)
+        .fromTo(sectionWash, { scale: 0.5, autoAlpha: 0 }, {
+          scale: 1,
+          autoAlpha: 1,
+          duration: 1.3,
+          ease: "sine.out"
+        }, 0.12);
+
+      gsap.to(sectionStage, {
+        yPercent: isMobile ? -5 : index % 2 === 0 ? -10 : 10,
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1.2
+        }
+      });
+
       const lead = Array.from(section.children).filter(function (child) {
         return child.matches(".section-label, h2, .intro");
       });
@@ -605,6 +705,9 @@
       ".route-list",
       ".chain",
       ".change-grid",
+      ".accountability-loop",
+      ".implementation-test ol",
+      ".poster-grid",
       ".chapter-next"
     ].forEach(function (selector) {
       document.querySelectorAll(selector).forEach(function (container) {
@@ -634,7 +737,7 @@
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
     const cards = document.querySelectorAll(
-      ".qa-grid article, .evidence-grid article, .questions article, .change-grid article, .route, .chapter-next a"
+      ".qa-grid article, .evidence-grid article, .questions article, .change-grid article, .accountability-loop article, .poster-grid figure, .closing-manifest article, .route, .chapter-next a"
     );
     remember(cards);
 
