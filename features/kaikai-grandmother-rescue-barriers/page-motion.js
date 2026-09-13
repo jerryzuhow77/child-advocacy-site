@@ -29,12 +29,12 @@
 
   const lang = (root.lang || "zh-Hant").toLowerCase();
   const labels = lang.startsWith("zh-hans")
-    ? { skip: "略过动画", replay: "重播动画" }
+    ? { skip: "略过动画", replay: "重播动画", closingReplay: "重播结语动画" }
     : lang.startsWith("en")
-      ? { skip: "Skip animation", replay: "Replay animation" }
+      ? { skip: "Skip animation", replay: "Replay animation", closingReplay: "Replay closing animation" }
       : lang.startsWith("ja")
-        ? { skip: "アニメーションをスキップ", replay: "アニメーションを再生" }
-        : { skip: "略過動畫", replay: "重播動畫" };
+        ? { skip: "アニメーションをスキップ", replay: "アニメーションを再生", closingReplay: "結語アニメーションを再生" }
+        : { skip: "略過動畫", replay: "重播動畫", closingReplay: "重播結語動畫" };
 
   const stage = document.createElement("div");
   stage.className = "hero-motion-stage";
@@ -82,27 +82,43 @@
   const heroCopyItems = Array.from(heroCopy.children);
   const closing = document.querySelector(".closing");
   let closingStage = null;
+  let closingReplayButton = null;
 
   if (closing) {
     closingStage = document.createElement("div");
     closingStage.className = "closing-motion-stage";
     closingStage.setAttribute("aria-hidden", "true");
     closingStage.innerHTML = [
+      '<span class="closing-paper-frame"></span>',
       '<span class="closing-glow"></span>',
+      '<span class="closing-paper-fold closing-paper-fold--left"></span>',
+      '<span class="closing-paper-fold closing-paper-fold--right"></span>',
       '<span class="closing-door closing-door--left"></span>',
       '<span class="closing-door closing-door--right"></span>',
       '<span class="closing-seam"></span>',
+      '<span class="closing-clay-seal"></span>',
+      '<span class="closing-dust"></span>',
       '<span class="closing-threshold"></span>'
     ].join("");
     closing.prepend(closingStage);
+
+    closingReplayButton = document.createElement("button");
+    closingReplayButton.type = "button";
+    closingReplayButton.className = "closing-motion-replay";
+    closingReplayButton.textContent = labels.closingReplay;
+    closingReplayButton.setAttribute("aria-label", labels.closingReplay);
+    closing.appendChild(closingReplayButton);
   }
 
-  const motionTargets = new Set([heroArt, heroCopy, paper, stage, atmosphere, warmLight, closing, closingStage].filter(Boolean));
+  const motionTargets = new Set([heroArt, heroCopy, paper, stage, atmosphere, warmLight, closing, closingStage, closingReplayButton].filter(Boolean));
   let introTimeline = null;
   let ambientTween = null;
+  let closingTimeline = null;
+  let closingAmbientTimeline = null;
   let scrollContext = null;
   let printPaused = false;
   let introWasPlayingBeforePrint = false;
+  let closingWasPlayingBeforePrint = false;
 
   function remember(targets) {
     gsap.utils.toArray(targets).forEach((target) => motionTargets.add(target));
@@ -240,63 +256,168 @@
     const title = closing.querySelector(":scope > h2");
     const copy = closing.querySelector(":scope > p:not(.section-label)");
     const highlight = closing.querySelector(".fluorescent");
+    const paperFrame = closingStage.querySelector(".closing-paper-frame");
     const glow = closingStage.querySelector(".closing-glow");
+    const folds = closingStage.querySelectorAll(".closing-paper-fold");
     const leftDoor = closingStage.querySelector(".closing-door--left");
     const rightDoor = closingStage.querySelector(".closing-door--right");
     const seam = closingStage.querySelector(".closing-seam");
+    const claySeal = closingStage.querySelector(".closing-clay-seal");
+    const dust = closingStage.querySelector(".closing-dust");
     const threshold = closingStage.querySelector(".closing-threshold");
-    const content = [label, title, copy].filter(Boolean);
+    const content = [label, title, copy, closingReplayButton].filter(Boolean);
 
-    remember([closingStage, glow, leftDoor, rightDoor, seam, threshold, highlight, ...content].filter(Boolean));
+    remember([
+      closingStage,
+      paperFrame,
+      glow,
+      ...folds,
+      leftDoor,
+      rightDoor,
+      seam,
+      claySeal,
+      dust,
+      threshold,
+      highlight,
+      ...content
+    ].filter(Boolean));
 
-    gsap.timeline({
+    function stopClosingAmbient() {
+      if (!closingAmbientTimeline) return;
+      closingAmbientTimeline.kill();
+      closingAmbientTimeline = null;
+    }
+
+    function startClosingAmbient() {
+      stopClosingAmbient();
+      closingAmbientTimeline = gsap.timeline({ repeat: -1, yoyo: true })
+        .to(glow, { scale: 1.045, autoAlpha: 0.88, duration: 4.8, ease: "sine.inOut" }, 0)
+        .to(dust, { y: isMobile ? -5 : -8, autoAlpha: 0.72, duration: 5.6, ease: "sine.inOut" }, 0)
+        .to(claySeal, { rotation: 92, scale: 0.86, duration: 5.6, ease: "sine.inOut" }, 0);
+    }
+
+    closingTimeline = gsap.timeline({
       scrollTrigger: {
         trigger: closing,
-        start: isMobile ? "top 84%" : "top 78%",
+        start: isMobile ? "top 82%" : "top 76%",
         once: true
       },
       onStart: function () {
+        stopClosingAmbient();
+        closing.classList.remove("is-closing-motion-complete");
         closing.classList.add("is-closing-motion-active");
       },
       onComplete: function () {
         closing.classList.add("is-closing-motion-complete");
+        startClosingAmbient();
       }
     })
-      .fromTo(closingStage, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.28 }, 0)
-      .fromTo(glow, { autoAlpha: 0, scale: 0.72 }, { autoAlpha: 0.74, scale: 1, duration: 1.45, ease: "sine.out" }, 0.05)
-      .fromTo(leftDoor, { xPercent: 12, autoAlpha: 0.52 }, { xPercent: -20, autoAlpha: 0.22, duration: 1.35, ease: "power2.inOut" }, 0)
-      .fromTo(rightDoor, { xPercent: -12, autoAlpha: 0.52 }, { xPercent: 20, autoAlpha: 0.22, duration: 1.35, ease: "power2.inOut" }, 0)
-      .fromTo(seam, { scaleY: 0, autoAlpha: 0 }, { scaleY: 1, autoAlpha: 0.82, duration: 0.72, ease: "power2.out" }, 0.08)
-      .to(seam, { autoAlpha: 0.2, duration: 0.62, ease: "sine.out" }, 0.73)
-      .fromTo(threshold, { scaleX: 0, autoAlpha: 0 }, { scaleX: 1, autoAlpha: 0.58, duration: 1.05, ease: "power2.out" }, 0.28)
-      .fromTo(label, { y: 16, autoAlpha: 0, "--motion-label-line": 0 }, {
+      .fromTo(closingStage, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.34 }, 0)
+      .fromTo(paperFrame, { autoAlpha: 0, scale: 0.91, rotation: -1.6 }, {
+        autoAlpha: 0.92,
+        scale: 1,
+        rotation: 0,
+        duration: 1.35,
+        ease: "power2.out"
+      }, 0)
+      .fromTo(dust, { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 0.56, duration: 1.6, ease: "sine.out" }, 0.08)
+      .fromTo(glow, { autoAlpha: 0, scale: 0.62 }, { autoAlpha: 0.82, scale: 1, duration: 1.9, ease: "sine.out" }, 0.12)
+      .fromTo(folds, { xPercent: function (index) { return index ? 34 : -34; }, autoAlpha: 0 }, {
+        xPercent: 0,
+        autoAlpha: 0.5,
+        duration: 1.25,
+        stagger: 0.08,
+        ease: "power2.out"
+      }, 0.08)
+      .fromTo(leftDoor, { xPercent: 7, rotationY: 0, autoAlpha: 0.78 }, {
+        xPercent: isMobile ? -27 : -25,
+        rotationY: isMobile ? -12 : -18,
+        autoAlpha: 0.34,
+        duration: 1.78,
+        ease: "power3.inOut"
+      }, 0.16)
+      .fromTo(rightDoor, { xPercent: -7, rotationY: 0, autoAlpha: 0.78 }, {
+        xPercent: isMobile ? 27 : 25,
+        rotationY: isMobile ? 12 : 18,
+        autoAlpha: 0.34,
+        duration: 1.78,
+        ease: "power3.inOut"
+      }, 0.16)
+      .fromTo(seam, { scaleY: 0, autoAlpha: 0 }, { scaleY: 1, autoAlpha: 0.92, duration: 0.82, ease: "power2.out" }, 0.12)
+      .to(seam, { autoAlpha: 0.14, duration: 0.86, ease: "sine.out" }, 0.88)
+      .fromTo(claySeal, {
+        xPercent: -50,
+        yPercent: -50,
+        scale: 0.62,
+        rotation: -18,
+        autoAlpha: 0
+      }, {
+        xPercent: -50,
+        yPercent: -50,
+        scale: 1,
+        rotation: 0,
+        autoAlpha: 1,
+        duration: 0.86,
+        ease: "back.out(1.7)"
+      }, 0.18)
+      .to(claySeal, {
+        xPercent: -50,
+        yPercent: -50,
+        y: isMobile ? 54 : 76,
+        scale: 0.84,
+        rotation: 90,
+        autoAlpha: 0.46,
+        duration: 1.12,
+        ease: "power2.inOut"
+      }, 0.84)
+      .fromTo(threshold, { scaleX: 0, autoAlpha: 0 }, { scaleX: 1, autoAlpha: 0.72, duration: 1.32, ease: "power2.out" }, 0.46)
+      .fromTo(label, { y: 20, autoAlpha: 0, "--motion-label-line": 0 }, {
         y: 0,
         autoAlpha: 1,
         "--motion-label-line": 1,
-        duration: 0.72,
+        duration: 0.78,
         ease: "power2.out",
         clearProps: "opacity,visibility,transform"
-      }, 0.22)
-      .fromTo(title, { y: isMobile ? 26 : 36, autoAlpha: 0, filter: "blur(5px)" }, {
+      }, 0.92)
+      .fromTo(title, {
+        y: isMobile ? 36 : 48,
+        autoAlpha: 0,
+        filter: "blur(7px)",
+        clipPath: "inset(0 0 100% 0)"
+      }, {
         y: 0,
         autoAlpha: 1,
         filter: "blur(0px)",
-        duration: 0.96,
-        ease: "power2.out",
-        clearProps: "opacity,visibility,transform,filter"
-      }, 0.38)
-      .fromTo(copy, { y: isMobile ? 20 : 28, autoAlpha: 0 }, {
+        clipPath: "inset(0% 0% 0% 0%)",
+        duration: 1.08,
+        ease: "power3.out",
+        clearProps: "opacity,visibility,transform,filter,clipPath"
+      }, 1.02)
+      .fromTo(copy, { y: isMobile ? 24 : 32, autoAlpha: 0 }, {
         y: 0,
         autoAlpha: 1,
-        duration: 0.8,
+        duration: 0.9,
         ease: "power2.out",
         clearProps: "opacity,visibility,transform"
-      }, 0.68)
-      .fromTo(highlight, { backgroundSize: "0% 100%" }, {
-        backgroundSize: "100% 100%",
-        duration: 0.95,
+      }, 1.34)
+      .fromTo(highlight, { backgroundSize: "0% 0.46em" }, {
+        backgroundSize: "100% 0.46em",
+        duration: 1.2,
         ease: "power1.out"
-      }, 0.86);
+      }, 1.62)
+      .fromTo(closingReplayButton, { y: 12, autoAlpha: 0 }, {
+        y: 0,
+        autoAlpha: 1,
+        duration: 0.62,
+        ease: "power2.out",
+        clearProps: "opacity,visibility,transform"
+      }, 1.92);
+
+    closingReplayButton.addEventListener("click", function () {
+      stopClosingAmbient();
+      closing.classList.remove("is-closing-motion-active", "is-closing-motion-complete");
+      closingTimeline.restart(true, false);
+    });
 
     gsap.fromTo(
       closingStage,
@@ -432,9 +553,9 @@
     highlights.forEach(function (highlight) {
       gsap.fromTo(
         highlight,
-        { backgroundSize: "0% 100%" },
+        { backgroundSize: "0% 0.46em" },
         {
-          backgroundSize: "100% 100%",
+          backgroundSize: "100% 0.46em",
           duration: 1.15,
           ease: "power1.out",
           scrollTrigger: { trigger: highlight, start: "top 89%", once: true }
@@ -541,8 +662,11 @@
   function prepareForPrint() {
     printPaused = true;
     introWasPlayingBeforePrint = Boolean(introTimeline && introTimeline.isActive());
+    closingWasPlayingBeforePrint = Boolean(closingTimeline && closingTimeline.isActive());
     if (introTimeline) introTimeline.pause();
     if (ambientTween) ambientTween.pause();
+    if (closingTimeline) closingTimeline.pause();
+    if (closingAmbientTimeline) closingAmbientTimeline.pause();
     root.classList.add("motion-printing");
     motionTargets.forEach(function (target) {
       gsap.set(target, {
@@ -556,6 +680,8 @@
     printPaused = false;
     if (introWasPlayingBeforePrint && introTimeline) introTimeline.resume();
     if (ambientTween) ambientTween.resume();
+    if (closingWasPlayingBeforePrint && closingTimeline) closingTimeline.resume();
+    if (closingAmbientTimeline) closingAmbientTimeline.resume();
     ScrollTrigger.refresh();
   }
 
@@ -584,15 +710,19 @@
   window.addEventListener("afterprint", restoreAfterPrint);
 
   document.addEventListener("visibilitychange", function () {
-    if (!ambientTween || printPaused) return;
-    if (document.hidden) ambientTween.pause();
-    else ambientTween.resume();
+    if (printPaused) return;
+    [ambientTween, closingAmbientTimeline].filter(Boolean).forEach(function (tween) {
+      if (document.hidden) tween.pause();
+      else tween.resume();
+    });
   });
 
   reduceMotion.addEventListener("change", function (event) {
     if (!event.matches) return;
     if (introTimeline) introTimeline.kill();
     if (ambientTween) ambientTween.kill();
+    if (closingTimeline) closingTimeline.kill();
+    if (closingAmbientTimeline) closingAmbientTimeline.kill();
     if (scrollContext) scrollContext.revert();
     motionTargets.forEach(function (target) {
       gsap.killTweensOf(target);
@@ -604,6 +734,7 @@
     root.classList.add("motion-reduced");
     stage.remove();
     if (closingStage) closingStage.remove();
+    if (closingReplayButton) closingReplayButton.remove();
     controls.remove();
     progress.remove();
   });
