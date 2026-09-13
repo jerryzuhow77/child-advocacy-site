@@ -136,6 +136,23 @@
     });
   });
 
+  gsap.utils.toArray(".rb-answer-grid, .rb-blind-grid, .rb-finding-grid, .rb-evidence-levels, .rb-related-grid").forEach(function (group) {
+    const cards = group.children;
+    gsap.fromTo(cards, { y: 38, rotation: function (index) { return index % 2 ? 1.1 : -1.1; }, autoAlpha: 0 }, {
+      y: 0, rotation: 0, autoAlpha: 1, duration: .78, stagger: .09, ease: "back.out(1.16)",
+      clearProps: "opacity,visibility,transform", scrollTrigger: { trigger: group, start: "top 86%", once: true }
+    });
+  });
+
+  gsap.utils.toArray(".rb-section").forEach(function (section, index) {
+    const heading = section.querySelector("h2, .rb-archive-subtitle");
+    if (!heading) return;
+    gsap.fromTo(heading, { x: index % 2 ? 28 : -28, autoAlpha: 0, filter: "blur(4px)" }, {
+      x: 0, autoAlpha: 1, filter: "blur(0px)", duration: .9, ease: "power3.out",
+      clearProps: "opacity,visibility,transform,filter", scrollTrigger: { trigger: heading, start: "top 88%", once: true }
+    });
+  });
+
   gsap.utils.toArray(".rb-witness-records summary, .rb-chen-records summary, .rb-locale-dropdown > summary").forEach(function (summary) {
     summary.addEventListener("pointerenter", function () { gsap.to(summary, { x: 3, duration: 0.22, ease: "power2.out" }); });
     summary.addEventListener("pointerleave", function () { gsap.to(summary, { x: 0, duration: 0.3, ease: "power2.out", clearProps: "transform" }); });

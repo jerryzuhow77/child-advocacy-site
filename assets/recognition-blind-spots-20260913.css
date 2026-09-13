@@ -1043,6 +1043,28 @@ body{background:radial-gradient(circle at 8% 8%,rgba(238,173,52,.34),transparent
 .rb-quote-note{position:relative;z-index:1;margin:1rem 0 0;padding:.8rem 1rem;border-radius:12px;background:rgba(255,255,255,.64);font-size:.88rem}
 @media(max-width:720px){.rb-hero-actions{grid-template-columns:1fr}.rb-quote-ribbon{grid-template-columns:1fr}.rb-chen-verbatim-head{grid-template-columns:1fr}.rb-clay-date{width:68px}.rb-hero-art{filter:saturate(1.15)}}
 
+/* Site-wide impressionist light, layered paper sculpture and hand-shaped clay. */
+:root{--rb-sunset:#e97045;--rb-rose:#c94262;--rb-gold:#efb332;--rb-jade:#348975;--rb-lapis:#426e9c;--rb-violet:#7d5f91}
+body::after{position:fixed;inset:0;z-index:-1;content:"";pointer-events:none;opacity:.3;background:repeating-linear-gradient(101deg,transparent 0 8px,rgba(255,255,255,.28) 9px 10px,transparent 11px 18px);mix-blend-mode:soft-light}
+.rb-page{border:1px solid rgba(255,255,255,.65);background:linear-gradient(125deg,rgba(255,251,232,.93),rgba(239,224,187,.86) 34%,rgba(218,233,207,.82) 65%,rgba(244,213,203,.86));}
+.rb-section{overflow:hidden;border-bottom-color:rgba(107,67,35,.14)}
+.rb-section::before{position:absolute;z-index:-1;content:"";pointer-events:none;width:clamp(18rem,42vw,36rem);height:clamp(10rem,25vw,22rem);top:8%;left:-12%;opacity:.36;filter:blur(2px);background:radial-gradient(ellipse at 18% 45%,var(--rb-gold) 0 5%,transparent 20%),radial-gradient(ellipse at 43% 28%,var(--rb-sunset) 0 6%,transparent 23%),radial-gradient(ellipse at 68% 62%,var(--rb-jade) 0 8%,transparent 28%),radial-gradient(ellipse at 89% 34%,var(--rb-violet) 0 5%,transparent 22%);transform:rotate(-7deg)}
+.rb-section:nth-child(even)::before{left:auto;right:-14%;transform:rotate(8deg) scaleX(-1)}
+.rb-section h2,.rb-archive-subtitle{position:relative;text-wrap:balance}.rb-section h2::after,.rb-archive-subtitle::after{display:block;width:min(11rem,42vw);height:.55rem;margin-top:.65rem;content:"";border-radius:65% 35% 58% 42%;background:linear-gradient(90deg,var(--rb-rose),var(--rb-sunset),var(--rb-gold),var(--rb-jade));opacity:.78;transform:rotate(-1deg)}
+.rb-answer,.rb-blind,.rb-defense,.rb-finding,.rb-evidence-levels article,.rb-warning-timeline,.rb-crosscheck-wrap,.rb-cannot-infer,.rb-kpi-panel,.rb-related,.rb-law-panel{position:relative;border:1px solid rgba(255,255,255,.75);box-shadow:0 8px 0 rgba(91,58,35,.06),0 22px 44px rgba(77,52,31,.13),inset 0 1px rgba(255,255,255,.92)}
+.rb-answer::after,.rb-blind::after,.rb-defense::after,.rb-finding::after,.rb-related::after{position:absolute;right:-10px;bottom:-10px;z-index:-1;width:35%;height:34%;content:"";border-radius:38% 62% 45% 55%;background:linear-gradient(135deg,rgba(233,112,69,.22),rgba(52,137,117,.24));transform:rotate(5deg)}
+.rb-answer:nth-child(3n+2)::after,.rb-blind:nth-child(3n+2)::after,.rb-finding:nth-child(3n+2)::after{background:linear-gradient(135deg,rgba(239,179,50,.3),rgba(125,95,145,.2));transform:rotate(-6deg)}
+.rb-chip,.rb-label,.rb-clay-date{filter:saturate(1.12)}
+.rb-witness-records>details,.rb-chen-records details{position:relative;margin:.9rem 0;border-radius:14px 24px 18px 26px;background:linear-gradient(132deg,rgba(255,253,243,.96),rgba(244,231,199,.88));box-shadow:0 7px 0 rgba(112,73,40,.08),0 18px 34px rgba(79,51,29,.11)}
+.rb-witness-records>details:nth-child(4n+2),.rb-chen-records details:nth-child(4n+2){background:linear-gradient(132deg,rgba(255,247,224,.96),rgba(244,207,174,.8))}
+.rb-witness-records>details:nth-child(4n+3),.rb-chen-records details:nth-child(4n+3){background:linear-gradient(132deg,rgba(245,251,236,.96),rgba(184,220,199,.78))}
+.rb-witness-records>details:nth-child(4n),.rb-chen-records details:nth-child(4n){background:linear-gradient(132deg,rgba(253,242,239,.96),rgba(226,193,207,.76))}
+.rb-chen-records summary{min-height:78px}.rb-chen-records summary::before{box-shadow:inset 2px 2px 4px rgba(255,255,255,.5),0 4px 9px rgba(82,48,28,.16)}
+.rb-chen-index-note{margin:1rem 0 1.4rem;padding:1rem 1.15rem;border-left:5px solid var(--rb-jade);border-radius:5px 18px 18px 5px;background:rgba(255,255,255,.66);box-shadow:0 12px 25px rgba(75,49,29,.08)}
+.rb-turn-pair{display:grid;gap:.72rem;padding:0 1.15rem 1.2rem}.rb-turn-pair p{margin:0;padding:.9rem 1rem;border-left:5px solid var(--rb-lapis);border-radius:5px 16px 16px 5px;background:rgba(255,255,255,.76);box-shadow:0 7px 16px rgba(70,48,31,.07);line-height:1.8}.rb-turn-pair p:nth-child(even){border-left-color:var(--rb-sunset);background:rgba(255,250,235,.88)}.rb-turn-pair p b{color:#70271f;font-family:var(--rb-sans)}.rb-turn-pair .rb-source-caveat{border-left-color:var(--rb-gold);font-size:.88rem}
+.rb-debate,.rb-chen-verbatim{border-width:2px;box-shadow:0 11px 0 rgba(104,65,38,.09),0 34px 70px rgba(75,46,28,.18)}
+@media(max-width:760px){.rb-section::before{opacity:.22}.rb-turn-pair{padding:0 .78rem 1rem}.rb-turn-pair p{padding:.82rem .85rem}.rb-chen-records summary{min-height:70px}.rb-section h2::after,.rb-archive-subtitle::after{height:.42rem}}
+
 @media print {
   @page { margin: 16mm; }
   body { color: #000; background: #fff; font-size: 11pt; }
