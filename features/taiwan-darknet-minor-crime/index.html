@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="近十年台灣暗網與匿名加密網絡重大犯罪：以未成年受害事件為核心的查核型專題草稿。">
+  <title>看不見的網，留下的傷｜台灣近十年匿名網絡犯罪</title>
+  <style>
+    :root{--paper:#eee8de;--ink:#42443f;--sage:#929b87;--clay:#b57f68;--blue:#748793;--wine:#795f63;--gold:#b49a68;--cream:#f7f2e9;--shadow:0 18px 48px rgba(70,61,52,.15)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:var(--paper);font-family:"Noto Serif TC","PingFang TC",serif;line-height:1.85;overflow-x:hidden}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.26;background-image:radial-gradient(#665b4f 0.55px,transparent .65px);background-size:6px 6px;mix-blend-mode:multiply}
+    a{color:#4f6871;text-underline-offset:4px}.wrap{width:min(1120px,calc(100% - 34px));margin:auto}.hero{min-height:92vh;display:grid;place-items:center;position:relative;isolation:isolate;padding:90px 0}
+    .wash{position:absolute;border-radius:50%;filter:blur(2px);opacity:.68;z-index:-2}.w1{width:52vw;height:34vw;background:#c8b5a3;left:-12vw;top:8vh;transform:rotate(-12deg)}.w2{width:44vw;height:38vw;background:#9ca9a0;right:-10vw;bottom:2vh}.w3{width:30vw;height:22vw;background:#c9a07f;left:40%;top:10%;opacity:.45}
+    .mountains{position:absolute;inset:auto 0 0;height:43%;z-index:-1;background:linear-gradient(155deg,transparent 32%,rgba(116,135,147,.42) 33% 47%,transparent 48%),linear-gradient(25deg,transparent 36%,rgba(121,95,99,.32) 37% 57%,transparent 58%);clip-path:polygon(0 35%,15% 14%,29% 42%,43% 18%,57% 50%,72% 11%,86% 40%,100% 22%,100% 100%,0 100%)}
+    .hero-card{max-width:820px;padding:clamp(34px,7vw,76px);background:rgba(247,242,233,.83);border:1px solid rgba(255,255,255,.8);box-shadow:var(--shadow);clip-path:polygon(2% 0,98% 1%,100% 96%,95% 100%,3% 98%,0 5%);backdrop-filter:blur(9px)}
+    .eyebrow{font:700 .78rem/1.2 system-ui;letter-spacing:.22em;color:var(--wine);text-transform:uppercase}.hero h1{font-size:clamp(2.5rem,7.4vw,6rem);line-height:1.08;margin:.28em 0}.lead{font-size:clamp(1.05rem,2vw,1.35rem);max-width:42em}.tag{display:inline-block;background:var(--clay);color:#fff;border-radius:999px;padding:8px 16px;margin-top:16px;font:700 .8rem system-ui}
+    section{padding:84px 0}.section-head{display:grid;grid-template-columns:.7fr 1.3fr;gap:36px;align-items:start;margin-bottom:36px}.section-head h2{font-size:clamp(2rem,4.8vw,4rem);line-height:1.12;margin:0}.section-head p{margin:0;font-size:1.06rem}.answer{background:#48514b;color:#f4eee5;position:relative;overflow:hidden}.answer:after{content:"12";position:absolute;right:-.03em;bottom:-.32em;font:800 28rem/1 system-ui;color:rgba(255,255,255,.045)}
+    .answer-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;position:relative;z-index:1}.number-card{padding:30px;border-radius:30px;background:#59625b;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}.number-card strong{display:block;font:800 clamp(3rem,8vw,6rem)/1 system-ui;color:#e0c59a}.number-card h3{margin:.7em 0 .25em}.number-card p{margin:0;color:#eee8de}
+    .definition{background:var(--cream)}.compare{display:grid;grid-template-columns:1fr 1fr;gap:20px}.clay{padding:28px;border-radius:34px 24px 38px 20px;background:#d2b39f;box-shadow:inset 10px 10px 22px rgba(255,255,255,.34),inset -10px -10px 22px rgba(89,61,47,.14),var(--shadow)}.clay h3{margin-top:0}.clay.dark{background:#9ca9a0}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:30px 0}.toolbar button{border:1px solid #aaa093;background:#f4eee5;color:#4f514c;padding:10px 16px;border-radius:999px;cursor:pointer;font-weight:700}.toolbar button.active{background:#59625b;color:white}
+    .cases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.case{position:relative;background:#f5efe5;padding:28px;border-radius:10px 34px 16px 28px;box-shadow:var(--shadow);border:1px solid rgba(94,80,69,.12);transition:.3s transform}.case:hover{transform:translateY(-5px)}.case:before{content:"";position:absolute;inset:-7px 14px 9px -8px;border:2px solid rgba(181,127,104,.25);border-radius:18px 28px 10px 34px;z-index:-1}.case small{font:700 .72rem system-ui;letter-spacing:.1em;color:var(--wine)}.case h3{font-size:1.35rem;line-height:1.35;margin:.5em 0}.case p{margin:.4em 0}.status{display:inline-block;margin-top:10px;padding:4px 10px;border-radius:99px;background:#ded2be;font:700 .72rem system-ui}.source-list{columns:2;column-gap:34px}.source-list li{break-inside:avoid;margin-bottom:14px}.ethics{background:#d7d0c2}.ethics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.leaf{padding:24px;background:rgba(247,242,233,.72);border-radius:60% 30% 55% 25%/35% 55% 35% 55%;min-height:220px;display:grid;place-content:center}.leaf h3{margin:.2em 0}.footer{padding:48px 0 80px;font-size:.9rem}.reveal{opacity:0;transform:translateY(30px)}
+    @media(max-width:760px){.section-head,.answer-grid,.compare,.cases,.ethics-grid{grid-template-columns:1fr}.hero{min-height:84vh}.hero-card{padding:38px 26px}.source-list{columns:1}section{padding:62px 0}.answer:after{font-size:16rem}}
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.reveal{opacity:1;transform:none}}
+    @media print{.reveal{opacity:1!important;transform:none!important}.toolbar{display:none}.hero{min-height:auto}.wash{filter:none}a{color:inherit}}
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wash w1"></div><div class="wash w2"></div><div class="wash w3"></div><div class="mountains"></div>
+    <div class="hero-card reveal">
+      <div class="eyebrow">數位兒少保護・查核型專題草稿</div>
+      <h1>看不見的網，<br>留下的傷</h1>
+      <p class="lead">近十年台灣「暗網」重大犯罪，應從名詞開始查核。真正需要被看見的，不是獵奇細節，而是未成年受害者的影像如何被製造、交易、複製，以及制度在哪一站沒有及時阻斷。</p>
+      <span class="tag">秋季專題｜資料更新至 2026.09</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="answer">
+      <div class="wrap">
+        <div class="section-head reveal"><h2>本篇完整收錄<br>12 個案件群</h2><p>十二案均保留，但採「平台主案、犯罪上游、會員責任、司法追訴」分層呈現。部分案件源自同一平台生態系，因此不把涉案人數、受害人數或查緝波次直接相加，避免製造虛高總數。</p></div>
+        <div class="answer-grid">
+          <article class="number-card reveal"><strong>12</strong><h3>完整案件群</h3><p>呈現平台、製造、勒索、販售、購買與追訴六個環節，每案各自標示證據與程序界線。</p></article>
+          <article class="number-card reveal"><strong>0</strong><h3>不重複加總</h3><p>同一影像、同一受害者或同一平台的不同查緝支線，不因分成十二張卡片而重複計數。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="definition">
+      <div class="wrap">
+        <div class="section-head reveal"><h2>先拆開<br>「暗網」</h2><p>Tor 隱藏服務、一般會員論壇與 Telegram 並不是同一種技術。若不區分，案件數會被放大，也會讓讀者誤以為所有加密通訊都屬於暗網。</p></div>
+        <div class="compare">
+          <article class="clay reveal"><h3>嚴格定義：暗網</h3><p>須透過特殊軟體或匿名網路存取、未被一般搜尋引擎索引的隱藏服務。依目前公開證據，能確定歸入這一欄的台灣重大案件群有限。</p></article>
+          <article class="clay dark reveal"><h3>廣義定義：匿名／加密犯罪網絡</h3><p>包括封閉論壇、Telegram 群組、虛擬貨幣付費與跨境操控。多數台灣重大兒少數位性剝削案，較精確地屬於這一欄。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head reveal"><h2>完整收錄的<br>十二個案件群</h2><p>以下不是十二宗彼此完全無關的犯罪；部分是「創意私房」產業鏈衍生支線。每案均以「涉嫌／起訴／一審／定讞」標示程序，其中第 12 案屬成年受害為主的比較案例，不併入未成年受害統計。</p></div>
+        <div class="toolbar" aria-label="案件篩選"><button class="active" data-filter="all">全部</button><button data-filter="platform">平台</button><button data-filter="production">製造／勒索</button><button data-filter="buyer">買方／持有</button></div>
+        <div class="cases">
+          <article class="case reveal" data-kind="platform"><small>01｜平台主案</small><h3>「創意私房」跨境性影像論壇</h3><p>逾 5,000 名會員、虛擬貨幣收費、匿名網路與跨境操控，是近年最具代表性的案件群。未成年受害與偷拍影像應分層統計。</p><span class="status">2024 起大規模查緝</span></article>
+          <article class="case reveal" data-kind="production"><small>02｜勒索製造</small><h3>「SCP／台版 N 號房」社群</h3><p>檢方指控透過社群鎖定未成年少女，以詐騙、威脅取得影像，再於 Telegram 販售；公開報導記載 86 名未成年受害者。</p><span class="status">已有一審判決，仍須標示審級</span></article>
+          <article class="case reveal" data-kind="platform"><small>03｜自動化擴散</small><h3>「自動跟車」加密群組支線</h3><p>高檢署公開事蹟將其列為獨立破獲的「台版 N 號房」自動跟車群組。正文需避免與 SCP 受害數重複加總。</p><span class="status">案件群待逐筆對照起訴資料</span></article>
+          <article class="case reveal" data-kind="production"><small>04｜大規模偷拍</small><h3>跨縣市店家偷拍案</h3><p>中檢公布清查 833 名受害者，其中 20 名未成年。它呈現的是影像「上游製造」如何進入交易網絡。</p><span class="status">官方起訴新聞可核</span></article>
+          <article class="case reveal" data-kind="production"><small>05｜職務接近</small><h3>補教人員偷拍與散布支線</h3><p>中檢公布清查 30 名受害者，其中 25 名未成年，並指涉猥褻、偷拍、重製與合成影像。應避免揭露學校與受害者線索。</p><span class="status">官方起訴新聞可核</span></article>
+          <article class="case reveal" data-kind="buyer"><small>06｜會員責任</small><h3>知名藝人付費持有案</h3><p>此案讓社會看見「只是購買、持有」仍維持兒少性剝削市場。頁面只應記錄司法認定與審級，不以名人爭議取代受害者視角。</p><span class="status">依最新裁判狀態更新</span></article>
+          <article class="case reveal" data-kind="buyer"><small>07｜公權力風險</small><h3>警職會員與影像再販售支線</h3><p>公開判決報導涉及警職人員購買、偷拍或再販售；其制度問題在於可接觸報案與下架資訊者是否被充分監督。</p><span class="status">多名被告、不可合併刑度</span></article>
+          <article class="case reveal" data-kind="buyer"><small>08｜教育場域</small><h3>教師高階會員與帳房支線</h3><p>平台維運、浮水印與帳務角色，使案件超越單純持有。涉及校園者應特別採最小揭露原則。</p><span class="status">個案已有裁判；逐案核對</span></article>
+          <article class="case reveal" data-kind="platform"><small>09｜另一平台</small><h3>「5F 自拍」網站案</h3><p>橋頭地檢署公布網站經營者涉兒少性影像案件，適合作為「平台責任與付費觀看」的比較案例。</p><span class="status">2025 起訴資訊</span></article>
+          <article class="case reveal" data-kind="platform"><small>10｜新近案件群</small><h3>「男版創意私房」系列群組</h3><p>刑事局公布 2025–2026 五波行動，查緝 20 名犯嫌、未成年影像被害人逾 170 名。因為是最新案件，必須清楚區分偵查、起訴與定罪。</p><span class="status">2026 公布，持續更新</span></article>
+          <article class="case reveal" data-kind="buyer"><small>11｜追訴擴張</small><h3>80 名高級會員分案偵辦</h3><p>媒體揭露高級會員名單後，中檢與北檢於 2025 年另行分案。此案可呈現從平台經營者、影像製造者一路追到付費觀看端的追訴缺口；「80 人」是報導所稱會員規模，不等於 80 人均已定罪。</p><span class="status">分案偵辦，不作有罪推定</span></article>
+          <article class="case reveal" data-kind="production"><small>12｜比較案例</small><h3>北投湯屋偷拍販售支線</h3><p>偷拍集團將公共住宿場域取得的私密影像上傳論壇販售，呈現線下偷拍如何成為匿名交易平台的供應端。公開資料未以未成年受害為核心，本案僅作產業鏈比較，不列入兒少受害人數。</p><span class="status">已有二審判決報導，仍須追蹤定讞</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="ethics">
+      <div class="wrap">
+        <div class="section-head reveal"><h2>報導的三條<br>保護線</h2><p>這不是犯罪圖鑑，而是公共制度報導。任何可使未成年受害者再次被搜尋、辨識或拼湊的資訊，都不應為了「完整」而刊出。</p></div>
+        <div class="ethics-grid"><article class="leaf reveal"><h3>不重現</h3><p>不放影像縮圖、檔名、群組邀請方式、存取教學或犯罪術語清單。</p></article><article class="leaf reveal"><h3>不辨識</h3><p>不寫學校、班級、住居地、帳號與可交叉拼湊身分的時間細節。</p></article><article class="leaf reveal"><h3>不重複計數</h3><p>平台、會員、上游製造者與掃蕩波次分開呈現，不把同一受害者多次加總。</p></article></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head reveal"><h2>主要查核來源</h2><p>正式版以官方資料為骨架、中央社等可信媒體補足判決進度。來源更新日期與案件狀態應同步顯示。</p></div>
+        <ol class="source-list">
+          <li><a href="https://www.tcc.moj.gov.tw/295804/295830/657577/1198841/post">臺中地檢署：創意私房產業鏈查緝</a></li>
+          <li><a href="https://www.tph.moj.gov.tw/4421/4447/853423/1292696/post">臺灣高等檢察署：SCP、自動跟車群組與創意私房偵辦概述</a></li>
+          <li><a href="https://www.tcc.moj.gov.tw/295804/295830/657577/1229261/post">臺中地檢署：SCP、OAT 社群衍生偷拍與兒少案件</a></li>
+          <li><a href="https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&amp;module=news&amp;serno=fa4a06db-ea3c-4b33-ab18-cfb51ec6266f">刑事警察局：創意私房跨境與匿名網路特徵</a></li>
+          <li><a href="https://www.cib.npa.gov.tw/ch/app/news/view?id=1885&amp;module=news&amp;serno=586857aa-c619-4b1c-872b-fa21ff9f0685">刑事警察局：男版創意私房查緝</a></li>
+          <li><a href="https://www.qtc.moj.gov.tw/10181/10255/10257/1351455/post">橋頭地檢署：5F 自拍網站案</a></li>
+          <li><a href="https://www.tcc.moj.gov.tw/295804/295830/657577/1271413/post">臺中地檢署：創意私房高級會員分案偵辦</a></li>
+          <li><a href="https://www.cna.com.tw/news/asoc/202412250189.aspx">中央社：SCP 社群一審判決</a></li>
+          <li><a href="https://www.cna.com.tw/news/asoc/202511250151.aspx">中央社：創意私房各支線與北投偷拍案司法進度</a></li>
+          <li><a href="https://www.rjsd.moj.gov.tw/RJSDWeb/common/WebListFile.ashx?list_id=1994">法務部司法官學院：我國性影像犯罪態樣</a></li>
+        </ol>
+      </div>
+    </section>
+  </main>
+  <footer class="footer"><div class="wrap">本頁為編輯研究草稿。案件狀態可能變動；發布前須再次查核裁判與不起訴、緩起訴、上訴或定讞情形。未成年受害人一律去識別化。</div></footer>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script>
+    const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!reduced&&window.gsap){gsap.registerPlugin(ScrollTrigger);gsap.utils.toArray('.reveal').forEach((el,i)=>gsap.to(el,{opacity:1,y:0,duration:.85,delay:(i%3)*.05,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 88%',once:true}}));gsap.to('.w1',{x:70,y:40,scrollTrigger:{trigger:'.hero',scrub:1}});gsap.to('.w2',{x:-60,y:-25,scrollTrigger:{trigger:'.hero',scrub:1}})}else document.querySelectorAll('.reveal').forEach(el=>{el.style.opacity=1;el.style.transform='none'});
+    document.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-filter]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const f=btn.dataset.filter;document.querySelectorAll('.case').forEach(c=>c.hidden=f!=='all'&&c.dataset.kind!==f)}));
+  </script>
+</body>
+</html>
