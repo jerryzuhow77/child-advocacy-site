@@ -165,7 +165,10 @@
     }
     select.addEventListener('change',()=>{const target=document.getElementById(select.value);if(!target)return;
       for(let parent=target.parentElement;parent;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;
-      target.style.scrollMarginTop=(toolbar.getBoundingClientRect().height+16)+'px';
+      if(!('cpaOriginalScrollMarginTop' in target.dataset))target.dataset.cpaOriginalScrollMarginTop=target.style.scrollMarginTop;
+      target.style.scrollMarginTop=target.dataset.cpaOriginalScrollMarginTop;
+      const authoredMargin=Number.parseFloat(getComputedStyle(target).scrollMarginTop)||0;
+      target.style.scrollMarginTop=Math.max(authoredMargin,toolbar.getBoundingClientRect().height+16)+'px';
       target.scrollIntoView({block:'start',behavior:'auto'});history.replaceState(null,'','#'+encodeURIComponent(target.id));
     });
     toolbar.querySelector('.cpa-four-language-actions').prepend(select);
