@@ -3,8 +3,8 @@ name: Page view counter smoke test
 on:
   workflow_dispatch:
   schedule:
-    # Daily at 06:23 Asia/Taipei (GitHub Actions cron uses UTC).
-    - cron: '23 22 * * *'
+    # Read-only health check every hour at minute 23 (GitHub Actions cron uses UTC).
+    - cron: '23 * * * *'
   push:
     paths:
       - '.github/workflows/page-view-counter-smoke.yml'
