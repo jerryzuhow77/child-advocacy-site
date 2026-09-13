@@ -14,6 +14,10 @@ BASE = "/child-advocacy-site/"
 HK_BASE = "https://cn.globalprotectionwall.com/child-advocacy-site/"
 ROUTE_VERSION = "20260912-6"
 TOOLBAR_CSS_VERSION = "20260909-5"
+TOOLBAR_JS_VERSION = "20260911-hk-site-home-4"
+TOOLBAR_JS_ROUTE_SUFFIXES = {
+    "features/kaikai-grandmother-rescue-barriers/": "closing-offset-20260913-1",
+}
 COMMENT_VERSION = "20260905-comment-key-3"
 EXCLUDED_ROOTS = {"child-advocacy-site", "child-advocacy-site-main", "source", "handoffs", "global-protection-wall", "node_modules"}
 EXCLUDED_FILES = {"offline.html", "google5c94bbe55c53b683.html"}
@@ -24,7 +28,6 @@ FLAG_MARKER = "data-cpa-four-language-toolbar-flag"
 JS_MARKER = "data-cpa-four-language-toolbar-script"
 CSS_TAG = f'<link {CSS_MARKER} rel="stylesheet" href="{BASE}assets/four-language-toolbar-20260901.css?v={TOOLBAR_CSS_VERSION}">'
 FLAG_TAG = f'<script {FLAG_MARKER}>window.__cpaFourLanguageToolbar=true;</script>'
-JS_TAG = f'<script {JS_MARKER} src="{BASE}assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"></script>'
 LEGAL_TAG = f'<script data-cpa-legal-notice-script src="{BASE}assets/legal-notice.js?v=20260905-footer-1"></script>'
 
 
@@ -106,14 +109,18 @@ def inject(path: Path, text: str) -> str:
         text = re.sub(r'<script\b[^>]*' + FLAG_MARKER + r'[^>]*>[\s\S]*?</script>\s*', '', text, flags=re.I)
         text = re.sub(r'<script\b[^>]*' + JS_MARKER + r'[^>]*>[\s\S]*?</script>\s*', '', text, flags=re.I)
         return text
+    route = neutral_route(path, html_locale(path, text))
+    route_suffix = TOOLBAR_JS_ROUTE_SUFFIXES.get(route)
+    js_version = TOOLBAR_JS_VERSION + (f"-{route_suffix}" if route_suffix else "")
+    js_tag = f'<script {JS_MARKER} src="{BASE}assets/four-language-toolbar-20260901.js?v={js_version}"></script>'
     text = re.sub(r'<link\b[^>]*' + CSS_MARKER + r'[^>]*>', lambda _: CSS_TAG, text, flags=re.I)
-    text = re.sub(r'<script\b[^>]*' + JS_MARKER + r'[^>]*>\s*</script>', lambda _: JS_TAG, text, flags=re.I)
+    text = re.sub(r'<script\b[^>]*' + JS_MARKER + r'[^>]*>\s*</script>', lambda _: js_tag, text, flags=re.I)
     if CSS_MARKER not in text and re.search(r"</head>", text, re.I):
         text = re.sub(r"</head>", CSS_TAG + "\n</head>", text, count=1, flags=re.I)
     if FLAG_MARKER not in text and re.search(r"</head>", text, re.I):
         text = re.sub(r"</head>", FLAG_TAG + "\n</head>", text, count=1, flags=re.I)
     if JS_MARKER not in text and re.search(r"</body>", text, re.I):
-        text = re.sub(r"</body>", JS_TAG + "\n</body>", text, count=1, flags=re.I)
+        text = re.sub(r"</body>", js_tag + "\n</body>", text, count=1, flags=re.I)
     return text
 
 
