@@ -1,6 +1,10 @@
 name: Public wall read-only snapshot
 on:
   workflow_dispatch:
+  # Main updates provide an event-driven fallback when GitHub delays cron events.
+  push:
+    branches:
+      - main
   schedule:
     # GitHub may delay scheduled runs; a staggered fallback keeps snapshots fresh.
     - cron: '17 * * * *'
