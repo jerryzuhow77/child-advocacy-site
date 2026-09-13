@@ -937,10 +937,6 @@ html.motion-reduced .rb-replay { display: none; }
   .rb-flow li::after { display: none !important; }
   .rb-warning-timeline ol,
   .rb-kpi-panel ul { grid-template-columns: 1fr; }
-  .rb-duty-row { grid-template-columns: 1fr; }
-  .rb-duty-row > * + * { border-left: 0; }
-  .rb-duty-row > * { border-bottom: 1px solid rgba(63, 83, 100, 0.14); }
-  .rb-duty-head b:last-child { border-top: 1px solid rgba(255, 255, 255, 0.35); }
 }
 
 @media (prefers-reduced-motion: reduce) {
