@@ -1,0 +1,55 @@
+/* 2026-09-13 — shared Taiwan / Hong Kong homepage court rail */
+.home-court-schedule .home-news-reel.home-court-horizontal-reel {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: none;
+  grid-auto-columns: min(92%, 1080px);
+  gap: clamp(16px, 2.4vw, 28px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px max(4%, calc((100% - 1080px) / 2)) 22px;
+  scroll-padding-inline: max(4%, calc((100% - 1080px) / 2));
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(135, 59, 50, .55) rgba(231, 215, 184, .48);
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
+}
+
+.home-court-schedule .home-court-horizontal-reel > .home-news-card {
+  grid-column: auto;
+  width: 100%;
+  min-width: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.home-court-schedule .home-court-horizontal-reel::-webkit-scrollbar { height: 8px; }
+.home-court-schedule .home-court-horizontal-reel::-webkit-scrollbar-track {
+  border-radius: 999px;
+  background: rgba(231, 215, 184, .48);
+}
+.home-court-schedule .home-court-horizontal-reel::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(135, 59, 50, .55);
+}
+.home-court-schedule .home-court-horizontal-reel:focus-visible {
+  outline: 3px solid rgba(135, 59, 50, .45);
+  outline-offset: 5px;
+}
+
+@media (max-width: 760px) {
+  .home-court-schedule .home-news-reel.home-court-horizontal-reel {
+    grid-template-columns: none;
+    grid-auto-columns: calc(100% - 24px);
+    gap: 12px;
+    overflow-x: auto;
+    padding: 3px 12px 18px 0;
+    scroll-padding-inline: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-court-schedule .home-news-reel.home-court-horizontal-reel { scroll-behavior: auto; }
+}
