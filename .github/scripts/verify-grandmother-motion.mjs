@@ -5,10 +5,10 @@ const root = 'http://127.0.0.1:8765/child-advocacy-site/';
 const outputDir = 'browser-validation/september-advocacy/grandmother-motion';
 const widths = [320, 360, 390, 412, 768, 1280];
 const locales = [
-  { lang: 'zh-Hant', path: 'features/kaikai-grandmother-rescue-barriers/', controls: ['略過動畫', '重播動畫'], appealToken: '提起上訴' },
-  { lang: 'zh-Hans', path: 'zh-Hans/features/kaikai-grandmother-rescue-barriers/', controls: ['略过动画', '重播动画'], appealToken: '提起上诉' },
-  { lang: 'en', path: 'en/features/kaikai-grandmother-rescue-barriers/', controls: ['Skip animation', 'Replay animation'], appealToken: 'appealed' },
-  { lang: 'ja', path: 'ja/features/kaikai-grandmother-rescue-barriers/', controls: ['アニメーションをスキップ', 'アニメーションを再生'], appealToken: '控訴' }
+  { lang: 'zh-Hant', path: 'features/kaikai-grandmother-rescue-barriers/', controls: ['略過動畫', '重播動畫'], closingControl: '重播結語動畫', appealToken: '提起上訴' },
+  { lang: 'zh-Hans', path: 'zh-Hans/features/kaikai-grandmother-rescue-barriers/', controls: ['略过动画', '重播动画'], closingControl: '重播结语动画', appealToken: '提起上诉' },
+  { lang: 'en', path: 'en/features/kaikai-grandmother-rescue-barriers/', controls: ['Skip animation', 'Replay animation'], closingControl: 'Replay closing animation', appealToken: 'appealed' },
+  { lang: 'ja', path: 'ja/features/kaikai-grandmother-rescue-barriers/', controls: ['アニメーションをスキップ', 'アニメーションを再生'], closingControl: '結語アニメーションを再生', appealToken: '控訴' }
 ];
 
 fs.mkdirSync(outputDir, { recursive: true });
@@ -60,10 +60,19 @@ try {
           stage: Boolean(document.querySelector('.hero-motion-stage')),
           closingStage: Boolean(document.querySelector('.closing-motion-stage')),
           closingParts: document.querySelectorAll('.closing-motion-stage > span').length,
+          closingControl: document.querySelector('.closing-motion-replay')?.textContent.trim() ?? '',
           progress: Boolean(document.querySelector('.story-progress')),
           controls: Array.from(document.querySelectorAll('.motion-control')).map((button) => button.textContent.trim()),
-          scriptCount: Array.from(document.scripts).filter((script) => script.src.includes('/page-motion.js?v=20260912-2')).length,
-          styleCount: Array.from(document.styleSheets).filter((sheet) => sheet.href?.includes('/page.css?v=20260913-1')).length,
+          scriptCount: Array.from(document.scripts).filter((script) => script.src.includes('/page-motion.js?v=20260913-1')).length,
+          styleCount: Array.from(document.styleSheets).filter((sheet) => sheet.href?.includes('/page.css?v=20260913-2')).length,
+          markerBands: Array.from(document.querySelectorAll('.fluorescent')).map((mark) => {
+            const style = getComputedStyle(mark);
+            const sizeParts = style.backgroundSize.split(' ');
+            return {
+              heightRatio: Number.parseFloat(sizeParts[1]) / Number.parseFloat(style.fontSize),
+              boxDecorationBreak: style.boxDecorationBreak || style.webkitBoxDecorationBreak
+            };
+          }),
           alternates: Array.from(document.querySelectorAll('link[rel="alternate"][hreflang]')).map((link) => link.hreflang).sort(),
           lawArticles: Array.from(document.querySelectorAll('.legal-effect-table a')).map((link) => new URL(link.href).searchParams.get('flno')),
           procedure: document.querySelector('.procedure-note')?.textContent ?? '',
@@ -74,9 +83,13 @@ try {
         if (initial.lang !== locale.lang) recordFailure(record, `locale ${initial.lang}`);
         if (initial.overflow > 2) recordFailure(record, `initial overflow ${initial.overflow}px`);
         if (!initial.stage || !initial.progress) recordFailure(record, 'motion chrome missing');
-        if (!initial.closingStage || initial.closingParts !== 5) recordFailure(record, 'closing motion stage missing');
+        if (!initial.closingStage || initial.closingParts !== 10) recordFailure(record, 'closing paper-and-clay motion stage missing');
+        if (initial.closingControl !== locale.closingControl) recordFailure(record, `closing control ${initial.closingControl}`);
         if (JSON.stringify(initial.controls) !== JSON.stringify(locale.controls)) recordFailure(record, `controls ${initial.controls.join(' | ')}`);
         if (initial.scriptCount !== 1 || initial.styleCount !== 1) recordFailure(record, 'versioned motion assets missing or duplicated');
+        if (initial.markerBands.some((band) => band.heightRatio < 0.3 || band.heightRatio > 0.62 || band.boxDecorationBreak !== 'clone')) {
+          recordFailure(record, `unclear marker band ${JSON.stringify(initial.markerBands[0])}`);
+        }
         if (JSON.stringify(initial.alternates) !== JSON.stringify(['en', 'ja', 'x-default', 'zh-Hans', 'zh-Hant'])) recordFailure(record, `alternates ${initial.alternates.join(' | ')}`);
         if (JSON.stringify(initial.lawArticles) !== JSON.stringify(['53', '56', '16'])) recordFailure(record, `law articles ${initial.lawArticles.join(' | ')}`);
         if (!initial.procedure.includes('2026') || !initial.procedure.includes(locale.appealToken) || !initial.procedure.includes('4688')) recordFailure(record, 'appeal status missing from procedure note');
@@ -115,7 +128,7 @@ try {
           await page.waitForTimeout(35);
         }
         await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
-        await page.waitForTimeout(1_900);
+        await page.waitForTimeout(3_200);
 
         const final = await page.evaluate(() => {
           const animated = Array.from(document.querySelectorAll(
@@ -150,6 +163,14 @@ try {
         if (final.timelineProgress < 0.98) recordFailure(record, `timeline progress ${final.timelineProgress}`);
         if (!final.closingComplete) recordFailure(record, 'closing motion did not complete');
         if (runtimeErrors.length) recordFailure(record, `runtime: ${runtimeErrors.join(' | ')}`);
+
+        await page.locator('.closing-motion-replay').click();
+        await page.waitForTimeout(160);
+        const closingReplay = await page.evaluate(() => ({
+          complete: document.querySelector('.closing').classList.contains('is-closing-motion-complete'),
+          titleOpacity: Number(getComputedStyle(document.querySelector('#closing-title')).opacity)
+        }));
+        if (closingReplay.complete || closingReplay.titleOpacity >= 0.99) recordFailure(record, 'closing replay did not restart');
       } catch (error) {
         recordFailure(record, error.message);
       }
@@ -176,11 +197,12 @@ try {
         ready: document.documentElement.classList.contains('motion-ready'),
         stage: Boolean(document.querySelector('.hero-motion-stage')),
         closingStage: Boolean(document.querySelector('.closing-motion-stage')),
+        closingControl: Boolean(document.querySelector('.closing-motion-replay')),
         controls: Boolean(document.querySelector('.motion-controls')),
         progress: Boolean(document.querySelector('.story-progress')),
         overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth
       }));
-      if (!state.reduced || state.ready || state.stage || state.closingStage || state.controls || state.progress) recordFailure(record, `reduced-motion state ${JSON.stringify(state)}`);
+      if (!state.reduced || state.ready || state.stage || state.closingStage || state.closingControl || state.controls || state.progress) recordFailure(record, `reduced-motion state ${JSON.stringify(state)}`);
       if (state.overflow > 2) recordFailure(record, `overflow ${state.overflow}px`);
     } catch (error) {
       recordFailure(record, error.message);
@@ -214,11 +236,12 @@ try {
         ready: document.documentElement.classList.contains('motion-ready'),
         stage: Boolean(document.querySelector('.hero-motion-stage')),
         closingStage: Boolean(document.querySelector('.closing-motion-stage')),
+        closingControl: Boolean(document.querySelector('.closing-motion-replay')),
         controls: Boolean(document.querySelector('.motion-controls')),
         progress: Boolean(document.querySelector('.story-progress')),
         cardTransform: getComputedStyle(document.querySelector('.qa-grid article')).transform
       }));
-      if (!state.reduced || state.ready || state.stage || state.closingStage || state.controls || state.progress || state.cardTransform !== 'none') {
+      if (!state.reduced || state.ready || state.stage || state.closingStage || state.closingControl || state.controls || state.progress || state.cardTransform !== 'none') {
         recordFailure(record, `dynamic reduced-motion state ${JSON.stringify(state)}`);
       }
     } catch (error) {
@@ -243,6 +266,7 @@ try {
       const state = await page.evaluate(() => ({
         stage: getComputedStyle(document.querySelector('.hero-motion-stage')).display,
         closingStage: getComputedStyle(document.querySelector('.closing-motion-stage')).display,
+        closingControl: getComputedStyle(document.querySelector('.closing-motion-replay')).display,
         progress: getComputedStyle(document.querySelector('.story-progress')).display,
         heroOpacity: Number(getComputedStyle(document.querySelector('.hero-art')).opacity),
         decoration: getComputedStyle(document.querySelector('.fluorescent')).textDecorationLine,
@@ -251,7 +275,7 @@ try {
           return style.visibility === 'hidden' || Number(style.opacity) < 0.99;
         }).length
       }));
-      if (state.stage !== 'none' || state.closingStage !== 'none' || state.progress !== 'none') recordFailure(record, 'motion chrome visible in print');
+      if (state.stage !== 'none' || state.closingStage !== 'none' || state.closingControl !== 'none' || state.progress !== 'none') recordFailure(record, 'motion chrome visible in print');
       if (Math.abs(state.heroOpacity - 0.2) > 0.01) recordFailure(record, `print hero opacity ${state.heroOpacity}`);
       if (!state.decoration.includes('underline')) recordFailure(record, `print highlight ${state.decoration}`);
       if (state.hiddenSections) recordFailure(record, `${state.hiddenSections} print sections hidden`);
