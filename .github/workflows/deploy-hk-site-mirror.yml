@@ -315,7 +315,8 @@ jobs:
                   return 301 /child-advocacy-site/;
               }
               location = /child-advocacy-site/ {
-                  alias /srv/child-advocacy-site/current/child-advocacy-site/index.html;
+                  root /srv/child-advocacy-site/current;
+                  try_files /child-advocacy-site/index.html =404;
                   add_header X-Robots-Tag "noindex, nofollow" always;
               }
               location ^~ /child-advocacy-site/ {
