@@ -84,3 +84,7 @@ a{color:var(--indigo);text-decoration-thickness:1px;text-underline-offset:3px}
   .fact-table{display:block;overflow-x:auto;white-space:normal;min-width:620px}.section:has(.fact-table){overflow-x:auto}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+.poster-inline{margin:28px 0 34px;padding:12px;background:rgba(255,249,237,.84);border:1px solid rgba(92,67,48,.18);box-shadow:0 14px 28px rgba(71,45,29,.12);transform:rotate(-.45deg)}
+.poster-inline img{display:block;width:min(100%,680px);margin:0 auto;height:auto;border:1px solid rgba(92,67,48,.18)}
+.poster-inline figcaption{margin:10px auto 2px;max-width:680px;color:#705d50;text-align:center;font-size:.92rem;line-height:1.7}
