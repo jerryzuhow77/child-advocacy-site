@@ -436,6 +436,12 @@ jobs:
           home_code="$(curl --connect-timeout 10 --max-time 25 -sS -L -o /tmp/hk-home.html -w '%{http_code}' 'https://cn.globalprotectionwall.com/child-advocacy-site/?lang=zh-Hans' || true)"
           test "$home_code" = 200 && test "$(wc -c < /tmp/hk-home.html)" -gt 1000 || {
             echo "Hong Kong mirror homepage failed after redirects: status=${home_code:-none}"
+            echo "External redirect chain:"
+            curl --connect-timeout 10 --max-time 25 -sS -I -L --max-redirs 10 \
+              'https://cn.globalprotectionwall.com/child-advocacy-site/?lang=zh-Hans' || true
+            echo "Server-side exact route:"
+            ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" \
+              "curl -k -sS -I --resolve cn.globalprotectionwall.com:443:127.0.0.1 'https://cn.globalprotectionwall.com/child-advocacy-site/?lang=zh-Hans' || true"
             exit 1
           }
           paths=(
