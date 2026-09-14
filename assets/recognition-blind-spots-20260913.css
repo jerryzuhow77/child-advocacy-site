@@ -47,6 +47,7 @@
 .rb-matrix-head{background:rgba(63,83,100,.1);font-family:var(--rb-sans)}
 .rb-crosscheck-wrap{margin-top:2rem;padding:clamp(1rem,3vw,1.6rem);border-radius:24px;background:linear-gradient(135deg,rgba(234,223,198,.75),rgba(255,255,255,.8))}
 .rb-crosschecks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}.rb-crosschecks article{padding:1rem;border-left:4px solid var(--rb-cinnabar);border-radius:8px 16px 16px 8px;background:#fff}.rb-crosschecks b,.rb-crosschecks span{display:block}.rb-crosschecks span{margin-top:.3rem;color:var(--rb-muted)}
+.rb-reading-path{display:flex;flex-wrap:wrap;align-items:center;gap:.45rem .7rem;margin:1.4rem 0 2rem;padding:.8rem 1rem;border:1px solid rgba(124,92,67,.22);border-radius:16px;background:rgba(255,252,241,.68);color:var(--rb-ink);font-size:.93rem;box-shadow:0 5px 0 rgba(91,58,35,.05)}.rb-reading-path b{color:var(--rb-cinnabar);margin-right:.2rem}.rb-reading-path i{font-style:normal;color:var(--rb-gold)}
 .rb-synthesis{margin:1.2rem 0 0;font-weight:800}
 .rb-cannot-infer{margin-top:1.2rem;padding:1.2rem 1.4rem;border:1px dashed var(--rb-indigo);border-radius:18px;background:rgba(224,232,231,.55)}.rb-cannot-infer h3{margin-top:0}.rb-cannot-infer li{margin:.35rem 0}
 .rb-ink-bloom{position:absolute;inset:8% 4% auto auto;width:230px;height:230px;border-radius:50%;background:radial-gradient(circle,rgba(164,59,43,.2),rgba(194,139,61,.08) 42%,transparent 70%);filter:blur(8px);pointer-events:none}
@@ -64,6 +65,7 @@
 .rb-chen-records details p{margin:0;padding:0 1.1rem 1.1rem;line-height:1.8}
 .rb-chen-records em{font-style:normal;font-weight:800;color:var(--rb-cinnabar-dark)}
 @media (max-width:720px){.rb-testimony-index,.rb-hero-questions,.rb-crosschecks{grid-template-columns:1fr}.rb-chen-records summary,.rb-witness-records>details>summary,.rb-locale-dropdown>summary{grid-template-columns:auto 1fr}.rb-chen-records summary span,.rb-witness-records>details>summary span,.rb-locale-dropdown>summary span{grid-column:2;text-align:left}.rb-matrix-row{grid-template-columns:1fr}.rb-matrix-head{display:none}.rb-matrix-row>*{padding:.35rem 1rem}.rb-matrix-row>b{padding-top:.9rem}.rb-matrix-row>span:last-child{padding-bottom:.9rem}}
+@media (max-width:720px){.rb-reading-path{align-items:flex-start;gap:.45rem .55rem;padding:.85rem .9rem;line-height:1.55}.rb-reading-path i{display:none}.rb-reading-path span{padding:.2rem .5rem;border-radius:999px;background:rgba(215,166,73,.14)}}
 
 * { box-sizing: border-box; }
 
