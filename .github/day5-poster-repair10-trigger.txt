@@ -1,0 +1,7 @@
+Repair the blank Day 5 posters with the two user-selected WebP files.
+
+Forensic poster SHA-256: c4b478119d380b401c1287a9adf2ea99adbcf11abefb19ba848f34ed7ce175d9
+Medical poster SHA-256: 1266367242aa535b14376f9e3dc81b100fd9cf0152936241531e5132059d2eda
+Dimensions: 768 × 1152 px each
+
+Also preserve and strengthen the clarification that 42 injuries is a confirmed minimum, not the complete total.
