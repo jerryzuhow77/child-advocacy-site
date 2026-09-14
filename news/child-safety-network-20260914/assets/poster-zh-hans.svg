@@ -1,15 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1080" height="1350" viewBox="0 0 1080 1350">
-  <title>今日护童周报：9月16日庭前三日</title>
-  <image xlink:href="../../../assets/images/daily-child-protection-brief-autumn-20260913.webp" width="1080" height="608" preserveAspectRatio="xMidYMid slice"/>
-  <rect width="1080" height="1350" fill="#f2d08a" fill-opacity=".12"/>
-  <path d="M0 670 Q280 610 540 680 T1080 650 V1350 H0Z" fill="#245b55" fill-opacity=".93"/>
-  <circle cx="935" cy="770" r="108" fill="#d65b43" fill-opacity=".9"/><circle cx="935" cy="770" r="74" fill="#e5aa3d" fill-opacity=".85"/>
-  <g fill="#fff3d0" font-family="Noto Sans CJK SC, Microsoft YaHei, sans-serif">
-    <text x="88" y="800" font-size="42" letter-spacing="5">今日护童周报　｜　2026.09.14</text>
-    <text x="88" y="908" font-size="78" font-weight="700">9月16日庭前三日</text>
-    <text x="88" y="1002" font-size="62" font-weight="700">哪些警讯不该被错过？</text>
-    <text x="88" y="1078" font-size="36" fill="#f6cf79">从责任通报到儿童安全网</text>
-    <text x="88" y="1155" font-size="34">通报后，谁负责确认孩子的实际安全？</text>
-    <text x="88" y="1262" font-size="27" fill="#f5dfad">制度观察不等同司法认定　｜　守护每一个求助讯号</text>
-  </g>
-</svg>
+  <image xlink:href="autumn-ink-v2.webp" width="1080" height="1350" preserveAspectRatio="xMidYMid slice"/>
+  <rect x="54" y="654" width="972" height="520" rx="28" fill="#fff7dd" fill-opacity=".84"/>
+  <path d="M80 700 H1000" stroke="#a83a24" stroke-width="4"/>
+  <g fill="#34231d" font-family="Noto Sans CJK SC, Noto Sans CJK TC, Microsoft YaHei, Microsoft JhengHei, sans-serif">
+    <text x="94" y="762" font-size="35" letter-spacing="5" fill="#9c351f">今日护童快报　｜　2026.09.14</text><text x="94" y="870" font-size="78" font-weight="700">9月16日庭前三日</text><text x="94" y="961" font-size="58" font-weight="700">哪些警讯不该再被错过？</text><text x="94" y="1030" font-size="35" fill="#126a62">从责任通报到儿童安全网</text><text x="94" y="1101" font-size="31">通报后，谁负责确认孩子的实际安全？</text><text x="94" y="1147" font-size="25" fill="#75513a">制度观察不等同司法认定　｜　守护每一个求助讯号</text>
+  </g></svg>
