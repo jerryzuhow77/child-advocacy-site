@@ -43,10 +43,17 @@
   .home-court-schedule .home-news-reel.home-court-horizontal-reel {
     grid-template-columns: none;
     grid-auto-columns: 100%;
+    align-items: start;
     gap: 12px;
     overflow-x: auto;
     padding: 3px 0 18px;
     scroll-padding-inline: 0;
+    transition: height .22s ease;
+  }
+
+  .home-court-schedule .home-court-horizontal-reel > .home-news-card {
+    align-self: start;
+    height: auto;
   }
 }
 
