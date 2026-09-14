@@ -346,7 +346,8 @@ jobs:
                   add_header Cache-Control "public, max-age=300, must-revalidate" always;
               }
               location = /news/child-safety-network-20260914/zh-Hans/ {
-                  alias /srv/child-advocacy-site/current/child-advocacy-site/news/child-safety-network-20260914/zh-Hans/index.html;
+                  root /srv/child-advocacy-site/current/child-advocacy-site;
+                  try_files /news/child-safety-network-20260914/zh-Hans/index.html =404;
                   add_header Cache-Control "public, max-age=300, must-revalidate" always;
               }
               location ^~ /news/child-safety-network-20260914/ {
