@@ -378,7 +378,14 @@ jobs:
           set -Eeuo pipefail
           ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'sudo bash -s' <<'REMOTE'
           set -Eeuo pipefail
-          service=global-protection.service
+          # This host has both the legacy Taiwan unit and the Hong Kong unit.
+          # The legacy unit can bind the shared port and make the HK source report
+          # the Taiwan scope, so stop it before recovering the intended HK service.
+          service=global-protection-hk.service
+          legacy_service=global-protection.service
+          if systemctl is-active --quiet "$legacy_service"; then
+            systemctl stop "$legacy_service"
+          fi
           local_url=http://127.0.0.1:8787/
           healthy=
           for attempt in 1 2 3; do
