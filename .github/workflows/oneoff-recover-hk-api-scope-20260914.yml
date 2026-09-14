@@ -108,6 +108,107 @@ jobs:
           echo 'local_scope_recovered=true'
           REMOTE
 
+      - name: Route Hong Kong API to the recovered local service
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'sudo python3 -' <<'PY'
+          from pathlib import Path
+          import re, shutil, subprocess, time
+
+          domain = "cn.globalprotectionwall.com"
+          declarations = ("location ^~ /api/", "location /api/")
+          candidates = []
+          for root in (Path("/etc/nginx/sites-enabled"), Path("/etc/nginx/conf.d")):
+              if root.exists():
+                  candidates.extend(p for p in root.iterdir() if p.is_file() or p.is_symlink())
+
+          def masked(text):
+              pattern = r'''#[^\n]*|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*' '''
+              return re.sub(pattern.rstrip(), lambda m: re.sub(r"[^\n]", " ", m.group()), text)
+
+          def block_end(text, start):
+              syntax = masked(text)
+              brace = syntax.find("{", start)
+              depth = 0
+              for i in range(brace, len(syntax)):
+                  if syntax[i] == "{":
+                      depth += 1
+                  elif syntax[i] == "}":
+                      depth -= 1
+                      if depth == 0:
+                          return i + 1
+              raise SystemExit("Unbalanced nginx block")
+
+          selected = None
+          for path in candidates:
+              try:
+                  text = path.read_text()
+              except Exception:
+                  continue
+              syntax = masked(text)
+              for match in re.finditer(r"(?m)^\s*server\s*\{", syntax):
+                  end = block_end(text, match.start())
+                  block = text[match.start():end]
+                  names = re.findall(r"(?m)^\s*server_name\s+([^;]+);", block)
+                  if any(domain in value.split() for value in names):
+                      if re.search(r"(?m)^\s*listen\s+[^;]*\bssl\b", block):
+                          selected = (path.resolve(), text, match.start(), end)
+                          break
+                      selected = selected or (path.resolve(), text, match.start(), end)
+              if selected and re.search(r"(?m)^\s*listen\s+[^;]*\bssl\b", selected[1][selected[2]:selected[3]]):
+                  break
+          if not selected:
+              raise SystemExit("Hong Kong nginx server block not found")
+
+          target, full, start, end = selected
+          block = full[start:end]
+          for declaration in declarations:
+              while True:
+                  syntax = masked(block)
+                  match = re.search(r"(?m)^\s*" + re.escape(declaration) + r"\s*\{", syntax)
+                  if not match:
+                      break
+                  loc_end = block_end(block, match.start())
+                  line_start = block.rfind("\n", 0, match.start()) + 1
+                  while loc_end < len(block) and block[loc_end] in " \t\r\n":
+                      loc_end += 1
+                  block = block[:line_start] + block[loc_end:]
+
+          insert = block.rfind("}")
+          snippet = """
+              # dedicated-hong-kong-api
+              location ^~ /api/ {
+                  proxy_pass http://127.0.0.1:8787;
+                  proxy_http_version 1.1;
+                  proxy_set_header Host $host;
+                  proxy_set_header X-Real-IP $remote_addr;
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto $scheme;
+                  proxy_no_cache 1;
+                  proxy_cache_bypass 1;
+              }
+          """
+          updated_block = block[:insert] + snippet + block[insert:]
+          backup_dir = Path("/var/backups/child-advocacy-nginx")
+          backup_dir.mkdir(parents=True, exist_ok=True)
+          backup = backup_dir / (target.name + ".api-scope-" + str(time.time_ns()))
+          shutil.copy2(target, backup)
+          target.write_text(full[:start] + updated_block + full[end:])
+          try:
+              subprocess.run(["nginx", "-t"], check=True)
+              subprocess.run(["systemctl", "reload", "nginx"], check=True)
+          except Exception:
+              shutil.copy2(backup, target)
+              subprocess.run(["nginx", "-t"], check=True)
+              subprocess.run(["systemctl", "reload", "nginx"], check=True)
+              raise
+          PY
+
+          origin_scope="$(ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST"             "curl -k --silent --show-error --max-time 15 --resolve cn.globalprotectionwall.com:443:127.0.0.1 https://cn.globalprotectionwall.com/api/public/submission-stats | python3 -c 'import json,sys; print(json.load(sys.stdin).get(\"scope\",\"\"))'")"
+          printf 'origin_scope=%s\n' "$origin_scope"
+          test "$origin_scope" = hong-kong-data-site
+
       - name: Verify public Hong Kong API scope
         shell: bash
         run: |
