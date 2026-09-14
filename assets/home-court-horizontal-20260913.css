@@ -1,4 +1,4 @@
-/* 2026-09-13 — shared Taiwan / Hong Kong homepage court rail */
+/* 2026-09-13 — shared Taiwan / Hong Kong homepage court rail; mobile width correction 2026-09-14 */
 .home-court-schedule .home-news-reel.home-court-horizontal-reel {
   display: grid;
   grid-auto-flow: column;
@@ -42,10 +42,10 @@
 @media (max-width: 760px) {
   .home-court-schedule .home-news-reel.home-court-horizontal-reel {
     grid-template-columns: none;
-    grid-auto-columns: calc(100% - 24px);
+    grid-auto-columns: 100%;
     gap: 12px;
     overflow-x: auto;
-    padding: 3px 12px 18px 0;
+    padding: 3px 0 18px;
     scroll-padding-inline: 0;
   }
 }
