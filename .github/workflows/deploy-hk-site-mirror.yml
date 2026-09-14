@@ -383,6 +383,13 @@ jobs:
           # the Taiwan scope, so stop it before recovering the intended HK service.
           service=global-protection-hk.service
           legacy_service=global-protection.service
+          # The Hong Kong app runs Vite and needs enough inotify watches to
+          # traverse its cached dependency tree. Persist the safe host floor.
+          watch_limit="$(sysctl -n fs.inotify.max_user_watches)"
+          if [ "$watch_limit" -lt 524288 ]; then
+            printf 'fs.inotify.max_user_watches = 524288\n' > /etc/sysctl.d/60-global-protection-watchers.conf
+            sysctl -w fs.inotify.max_user_watches=524288
+          fi
           if systemctl is-active --quiet "$legacy_service"; then
             systemctl stop "$legacy_service"
           fi
