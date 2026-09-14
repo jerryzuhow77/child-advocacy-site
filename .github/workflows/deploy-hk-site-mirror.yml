@@ -291,11 +291,14 @@ jobs:
           # virtual host. Other server blocks and more-specific routes are preserved.
           for declaration in (
               "location = /child-advocacy-site",
+              "location = /child-advocacy-site/",
               "location ^~ /child-advocacy-site/",
               "location ^~ /cases/",
               "location /cases/",
               "location = /news/child-safety-network-20260914",
+              "location = /news/child-safety-network-20260914/",
               "location = /news/child-safety-network-20260914/zh-Hans",
+              "location = /news/child-safety-network-20260914/zh-Hans/",
               "location ^~ /news/child-safety-network-20260914/",
           ):
               server_block = remove_location_blocks(server_block, declaration)
@@ -311,9 +314,14 @@ jobs:
               location = /child-advocacy-site {
                   return 301 /child-advocacy-site/;
               }
+              location = /child-advocacy-site/ {
+                  root /srv/child-advocacy-site/current;
+                  try_files /child-advocacy-site/index.html =404;
+                  add_header X-Robots-Tag "noindex, nofollow" always;
+              }
               location ^~ /child-advocacy-site/ {
                   root /srv/child-advocacy-site/current;
-                  try_files $uri $uri/ $uri/index.html =404;
+                  try_files $uri $uri/index.html =404;
                   add_header X-Robots-Tag "noindex, nofollow" always;
               }
 
@@ -330,9 +338,19 @@ jobs:
               location = /news/child-safety-network-20260914/zh-Hans {
                   return 301 /news/child-safety-network-20260914/zh-Hans/;
               }
+              location = /news/child-safety-network-20260914/ {
+                  root /srv/child-advocacy-site/current/child-advocacy-site;
+                  try_files /news/child-safety-network-20260914/index.html =404;
+                  add_header Cache-Control "public, max-age=300, must-revalidate" always;
+              }
+              location = /news/child-safety-network-20260914/zh-Hans/ {
+                  root /srv/child-advocacy-site/current/child-advocacy-site;
+                  try_files /news/child-safety-network-20260914/zh-Hans/index.html =404;
+                  add_header Cache-Control "public, max-age=300, must-revalidate" always;
+              }
               location ^~ /news/child-safety-network-20260914/ {
                   root /srv/child-advocacy-site/current/child-advocacy-site;
-                  try_files $uri $uri/ $uri/index.html =404;
+                  try_files $uri $uri/index.html =404;
                   add_header Cache-Control "public, max-age=300, must-revalidate" always;
               }
 
