@@ -16,6 +16,7 @@ from opencc import OpenCC
 ROOT = Path(__file__).resolve().parents[2]
 BASE = "/child-advocacy-site/"
 HK_BASE = "https://cn.globalprotectionwall.com"
+HK_ROOT_ROUTES = {"news/child-safety-network-20260914/"}
 URL_ATTR_RE = re.compile(r"(?P<prefix>\b(?:href|src|action|poster)\s*=\s*)(?P<quote>[\"'])(?P<url>.*?)(?P=quote)", re.I | re.S)
 MAIN_RE = re.compile(r"<main\b[^>]*>[\s\S]*?</main>", re.I)
 KAIKAI_ROUTES = {
@@ -29,9 +30,19 @@ def repo_path(url: str) -> Path | None:
     if parsed.query:
         return None
     path = parsed.path
-    if not path.startswith(BASE):
-        return None
-    relative = path[len(BASE):]
+    if path.startswith(BASE):
+        relative = path[len(BASE):]
+    else:
+        # A small set of public wall pages intentionally lives at the Hong
+        # Kong root, while the legacy mirror remains under BASE.
+        root_route = next(
+            (route for route in HK_ROOT_ROUTES
+             if path == "/" + route.rstrip("/") or path.startswith("/" + route)),
+            None,
+        )
+        if root_route is None:
+            return None
+        relative = path.lstrip("/")
     if not relative or relative.endswith("/"):
         relative += "index.html"
     return ROOT / relative

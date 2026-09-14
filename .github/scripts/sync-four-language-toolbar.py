@@ -12,6 +12,9 @@ from urllib.parse import urljoin, urlsplit, parse_qsl, urlencode
 ROOT = Path(__file__).resolve().parents[2]
 BASE = "/child-advocacy-site/"
 HK_BASE = "https://cn.globalprotectionwall.com/child-advocacy-site/"
+HK_ROOT_BASE = "https://cn.globalprotectionwall.com/"
+# Root-path publication exceptions are backed by the Hong Kong wall Nginx route.
+HK_ROOT_ROUTES = {"news/child-safety-network-20260914/"}
 ROUTE_VERSION = "20260912-6"
 TOOLBAR_CSS_VERSION = "20260909-5"
 TOOLBAR_JS_VERSION = "20260911-hk-site-home-4"
@@ -82,7 +85,13 @@ def public_url(path: Path, locale: str) -> str:
     route = path.relative_to(ROOT).parent.as_posix()
     url = BASE + ("" if route == "." else route.rstrip("/") + "/")
     if locale == "zh-Hans":
-        # Every Simplified Chinese edition is served from the independent Hong Kong mirror.
+        # The new wall briefing is served at the public Hong Kong root route;
+        # legacy official mirror pages keep the /child-advocacy-site prefix.
+        neutral = neutral_route(path, locale)
+        if neutral in HK_ROOT_ROUTES:
+            return urljoin(HK_ROOT_BASE, neutral.rstrip("/") + "/zh-Hans/")
+        # Every other Simplified Chinese edition is served from the independent
+        # Hong Kong official-site mirror.
         mirror_path = url.removeprefix(BASE)
         if "/zh-Hans/" not in url and not url.lower().startswith(BASE + "zh-hans/"):
             mirror_path += ("&" if "?" in mirror_path else "?") + "lang=zh-Hans"
@@ -205,7 +214,7 @@ def main() -> None:
     for route, editions in routes.items():
         hant = source.get((route, "zh-Hant"))
         if "zh-Hans" not in editions and hant and ("assets/site.js" in hant[1] or "data-hans" in hant[1]):
-            editions["zh-Hans"] = urljoin(HK_BASE, route) + "?lang=zh-Hans"
+            editions["zh-Hans"] = (urljoin(HK_ROOT_BASE, route) if route in HK_ROOT_ROUTES else urljoin(HK_BASE, route)) + "?lang=zh-Hans"
 
     output = {"version": ROUTE_VERSION, "generatedFrom": "repository HTML routes", "routes": {key: routes[key] for key in sorted(routes)}}
     route_path = ROOT / "data" / "four-language-routes.json"
