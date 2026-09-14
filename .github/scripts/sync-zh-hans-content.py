@@ -24,6 +24,12 @@ KAIKAI_ROUTES = {
     "features/social-observation/child-abuse-recognition-blind-spots/",
 }
 
+LANGUAGE_ASSET_REWRITES = {
+    "news/child-safety-network-20260914/": (
+        ("poster-zh-hant.svg", "poster-zh-hans.svg"),
+    ),
+}
+
 
 def repo_path(url: str) -> Path | None:
     parsed = urlsplit(url)
@@ -230,6 +236,8 @@ def synchronize(check_only: bool) -> int:
         converted_main = convert_html(source_main.group(0), source, target, source_to_hans, converter)
         if route in KAIKAI_ROUTES:
             converted_main = converted_main.replace("剀剀", "凯凯")
+        for source_asset, target_asset in LANGUAGE_ASSET_REWRITES.get(route, ()):
+            converted_main = converted_main.replace(source_asset, target_asset)
         updated = target_text[:target_main.start()] + converted_main + target_text[target_main.end():]
         updated = ensure_shared_record_assets(updated, source_text)
         updated = re.sub(r'(<html\b[^>]*\blang\s*=\s*)["\'][^"\']+["\']', r'\1"zh-Hans"', updated, count=1, flags=re.I)
