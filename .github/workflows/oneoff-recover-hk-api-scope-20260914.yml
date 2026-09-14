@@ -1,0 +1,125 @@
+name: One-off recover Hong Kong API scope
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-recover-hk-api-scope-20260914.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: oneoff-recover-hk-api-scope-20260914
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      HK_HOST: ${{ secrets.TENCENT_SSH_HOST }}
+      HK_USER: ${{ secrets.TENCENT_SSH_USER }}
+      HK_PORT: ${{ secrets.TENCENT_SSH_PORT }}
+      HK_KEY_A: ${{ secrets.TENCENT_SSH_PRIVATE_KEY }}
+      HK_KEY_B: ${{ secrets.TENCENT_CVM_SSH_KEY }}
+      HK_KEY_C: ${{ secrets.SSH_PRIVATE_KEY }}
+    steps:
+      - name: Configure SSH
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          host="${HK_HOST:-150.109.69.104}"
+          user="${HK_USER:-ubuntu}"
+          port="${HK_PORT:-22}"
+          key="${HK_KEY_A:-${HK_KEY_B:-${HK_KEY_C:-}}}"
+          test -n "$key"
+          mkdir -p ~/.ssh
+          printf '%s\n' "$key" > ~/.ssh/hk_key
+          chmod 600 ~/.ssh/hk_key
+          ssh-keyscan -p "$port" "$host" > ~/.ssh/known_hosts
+          printf 'HOST=%s\nUSER=%s\nPORT=%s\n' "$host" "$user" "$port" >> "$GITHUB_ENV"
+
+      - name: Recover dedicated Hong Kong data service
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'sudo bash -s' <<'REMOTE'
+          set -Eeuo pipefail
+          expected=hong-kong-data-site
+          shared_service=global-protection.service
+          hk_service=global-protection-hk.service
+
+          scope() {
+            curl --silent --show-error --max-time 10               -H 'accept: application/json'               http://127.0.0.1:8787/api/public/submission-stats |
+              python3 -c 'import json,sys; print(json.load(sys.stdin).get("scope",""))'
+          }
+
+          before="$(scope 2>/dev/null || true)"
+          printf 'scope_before=%s\n' "$before"
+          systemctl is-active "$shared_service" || true
+          systemctl is-active "$hk_service" || true
+          systemctl --no-pager --full status "$shared_service" "$hk_service" || true
+          ss -ltnp | grep ':8787' || true
+
+          if [ "$before" = "$expected" ]; then
+            echo 'Hong Kong API scope is already correct.'
+            exit 0
+          fi
+
+          shared_was_active=false
+          if systemctl is-active --quiet "$shared_service"; then
+            shared_was_active=true
+          fi
+
+          rollback() {
+            code=$?
+            if [ "$code" -ne 0 ]; then
+              echo 'Recovery validation failed; restoring previous service state.'
+              systemctl stop "$hk_service" || true
+              if [ "$shared_was_active" = true ]; then
+                systemctl restart "$shared_service" || true
+              fi
+            fi
+            exit "$code"
+          }
+          trap rollback EXIT
+
+          systemctl stop "$shared_service"
+          systemctl restart "$hk_service"
+
+          recovered=
+          for attempt in 1 2 3 4 5 6; do
+            current="$(scope 2>/dev/null || true)"
+            printf 'scope_attempt_%s=%s\n' "$attempt" "$current"
+            if [ "$current" = "$expected" ]; then
+              recovered=1
+              break
+            fi
+            sleep 5
+          done
+          test -n "$recovered"
+
+          nginx -t
+          systemctl reload nginx
+          trap - EXIT
+          echo 'local_scope_recovered=true'
+          REMOTE
+
+      - name: Verify public Hong Kong API scope
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          expected=hong-kong-data-site
+          for attempt in 1 2 3 4 5 6; do
+            scope="$(curl --silent --show-error --max-time 20               -H 'accept: application/json'               "https://cn.globalprotectionwall.com/api/public/submission-stats?verify=${GITHUB_RUN_ID}-${attempt}" |
+              python3 -c 'import json,sys; print(json.load(sys.stdin).get("scope",""))' || true)"
+            printf 'public_scope_attempt_%s=%s\n' "$attempt" "$scope"
+            if [ "$scope" = "$expected" ]; then
+              exit 0
+            fi
+            sleep 5
+          done
+          exit 1
