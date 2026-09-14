@@ -14,7 +14,7 @@ const CONTENT_KINDS = new Set(["guardian", "official", "bulletin"]);
 const USER_AGENT = "GuardianWallScheduledSync/1";
 
 const [sourcePublic, targetPublic] = await Promise.all([
-  getPublicSnapshot(sourceOrigin, "hong-kong-data-site", "Hong Kong"),
+  getPublicSnapshot(sourceOrigin, "taiwan-hong-kong-shared", "Hong Kong"),
   getPublicSnapshot(targetOrigin, "taiwan-hong-kong-shared", "Taiwan"),
 ]);
 
