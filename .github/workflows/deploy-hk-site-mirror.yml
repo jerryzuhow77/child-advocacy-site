@@ -437,7 +437,7 @@ jobs:
           for path in "${paths[@]}"; do
             ok=
             for attempt in 1 2 3 4 5; do
-              code="$(curl --connect-timeout 10 --max-time 25 -sS -o /tmp/page.html -w '%{http_code}' "https://cn.globalprotectionwall.com$path" || true)"
+              code="$(curl -L --connect-timeout 10 --max-time 25 -sS -o /tmp/page.html -w '%{http_code}' "https://cn.globalprotectionwall.com$path" || true)"
               if [ "$code" = 200 ] && [ "$(wc -c < /tmp/page.html)" -gt 1000 ]; then
                 ok=1
                 break
