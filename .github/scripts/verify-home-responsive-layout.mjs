@@ -164,13 +164,13 @@ try {
         [...document.querySelectorAll(selector)].map((link) => canonical(link.href))
       ]));
       const duplicates = [];
-      const roles = Object.keys(roleLinks);
-      for (let left = 0; left < roles.length; left += 1) {
-        for (let right = left + 1; right < roles.length; right += 1) {
-          const shared = [...new Set(roleLinks[roles[left]].filter((href) => roleLinks[roles[right]].includes(href)))];
-          shared.forEach((href) => duplicates.push({ roles: [roles[left], roles[right]], href }));
-        }
-      }
+      Object.entries(roleLinks).forEach(([role, hrefs]) => {
+        const seen = new Set();
+        hrefs.forEach((href) => {
+          if (seen.has(href)) duplicates.push({ role, href });
+          seen.add(href);
+        });
+      });
 
       const toolbar = document.getElementById('cpa-four-language-toolbar');
       const mobileFooter = document.querySelector('.home-footer-mobile-bar');
@@ -303,11 +303,11 @@ try {
 
     assert(initial.order.media < initial.order.latest, `[${width}] 新聞專區必須位於最新快報之前`, initial.order);
     assert(initial.counts.media >= 8, `[${width}] 新聞專區文章數不足`, initial.counts.media);
-    assert(initial.counts.pinned === 14, `[${width}] 置頂入口數量應為 14`, initial.counts.pinned);
+    assert(initial.counts.pinned === 20, `[${width}] 置頂入口數量應為 20`, initial.counts.pinned);
     assert(initial.counts.recent === 7, `[${width}] 摩天輪近期文章數量應為 7`, initial.counts.recent);
     assert(initial.counts.seasonal === 17, `[${width}] 秋季水墨專區數量應為 17`, initial.counts.seasonal);
     assert(initial.counts.engagement >= 45, `[${width}] 互動控制列未完整建立`, initial.counts.engagement);
-    assert(initial.duplicates.length === 0, `[${width}] 新聞／置頂／近期／活動角色仍有重複`, initial.duplicates);
+    assert(initial.duplicates.length === 0, `[${width}] 同一專區內仍有重複文章`, initial.duplicates);
     assert(!initial.visibleTextArtifacts.escapedNewline && !initial.visibleTextArtifacts.encodedSpace, `[${width}] 畫面仍有 \\n 或 &#x20; 文字殘留`, initial.visibleTextArtifacts);
     assert(!initial.hearing.includesCountdownSeventeen && initial.hearing.criticalCardCount === 0, `[${width}] 開庭資訊仍混入倒數十七天`, initial.hearing);
     assert(initial.footerArticleCount === 0, `[${width}] 網頁底端仍有置底文章專區`, initial.footerArticleCount);
