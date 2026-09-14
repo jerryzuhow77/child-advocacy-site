@@ -17,13 +17,11 @@
     }
   };
 
-  const reserved = new Set();
-  document
-    .querySelectorAll('#home-media-reports a.home-media-report-action, #news-activity a.home-activity-feature')
-    .forEach((anchor) => reserved.add(canonicalHref(anchor)));
-
   const removeDuplicates = (selector) => {
-    const seen = new Set(reserved);
+    // Each homepage section is an independent editorial surface. An article may
+    // intentionally appear in News, Court information and Pinned reports at the
+    // same time, so deduplicate only inside the current feed.
+    const seen = new Set();
     document.querySelectorAll(selector).forEach((anchor) => {
       const href = canonicalHref(anchor);
       if (!href || seen.has(href)) {
@@ -31,7 +29,6 @@
         return;
       }
       seen.add(href);
-      reserved.add(href);
     });
   };
 
