@@ -336,7 +336,8 @@ jobs:
                   return 301 /news/child-safety-network-20260914/;
               }
               location = /news/child-safety-network-20260914/zh-Hans {
-                  return 301 /news/child-safety-network-20260914/zh-Hans/;
+                  alias /srv/child-advocacy-site/current/child-advocacy-site/news/child-safety-network-20260914/zh-Hans/index.html;
+                  add_header Cache-Control "public, max-age=300, must-revalidate" always;
               }
               location = /news/child-safety-network-20260914/ {
                   alias /srv/child-advocacy-site/current/child-advocacy-site/news/child-safety-network-20260914/index.html;
@@ -461,6 +462,12 @@ jobs:
             /child-advocacy-site/news/child-safety-network-20260914/zh-Hans/
             /child-advocacy-site/hearing-records/prison-watch/kaikai-day6-20250430/
           )
+          direct_path=/news/child-safety-network-20260914/zh-Hans
+          direct_code="$(curl --connect-timeout 10 --max-time 25 -sS -o /tmp/direct-brief.html -w '%{http_code}' "https://cn.globalprotectionwall.com$direct_path" || true)"
+          test "$direct_code" = 200 && test "$(wc -c < /tmp/direct-brief.html)" -gt 1000 || {
+            echo "Mirror direct brief route failed: $direct_path status=${direct_code:-none}"
+            exit 1
+          }
           for path in "${paths[@]}"; do
             ok=
             for attempt in 1 2 3 4 5; do
