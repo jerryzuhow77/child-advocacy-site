@@ -25,6 +25,8 @@ jobs:
       HK_KEY_A: ${{ secrets.TENCENT_SSH_PRIVATE_KEY }}
       HK_KEY_B: ${{ secrets.TENCENT_CVM_SSH_KEY }}
       HK_KEY_C: ${{ secrets.SSH_PRIVATE_KEY }}
+      CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CF_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
     steps:
       - name: Configure SSH
         shell: bash
@@ -208,6 +210,61 @@ jobs:
           origin_scope="$(ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST"             "curl -k --silent --show-error --max-time 15 --resolve cn.globalprotectionwall.com:443:127.0.0.1 https://cn.globalprotectionwall.com/api/public/submission-stats | python3 -c 'import json,sys; print(json.load(sys.stdin).get(\"scope\",\"\"))'")"
           printf 'origin_scope=%s\n' "$origin_scope"
           test "$origin_scope" = hong-kong-data-site
+
+      - name: Bypass shared Worker for Hong Kong API
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test -n "$CF_TOKEN"
+          zone="$CF_ZONE_ID"
+          if [ -z "$zone" ]; then
+            zone="$(curl --silent --show-error --fail-with-body               -H "Authorization: Bearer $CF_TOKEN"               'https://api.cloudflare.com/client/v4/zones?name=globalprotectionwall.com&status=active' |
+              python3 -c 'import json,sys; print((json.load(sys.stdin).get("result") or [{}])[0].get("id",""))')"
+          fi
+          test -n "$zone"
+          api="https://api.cloudflare.com/client/v4/zones/$zone/workers/routes"
+          routes="$(curl --silent --show-error --fail-with-body             -H "Authorization: Bearer $CF_TOKEN" "$api")"
+          exact="$(printf '%s' "$routes" | python3 -c '
+          import json,sys
+          rows=json.load(sys.stdin).get("result") or []
+          matches=[r for r in rows if r.get("pattern")=="cn.globalprotectionwall.com/api/*"]
+          print(json.dumps(matches[0] if matches else {}))
+          ')"
+          route_id="$(printf '%s' "$exact" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("id",""))')"
+          old_script="$(printf '%s' "$exact" | python3 -c 'import json,sys; v=json.load(sys.stdin).get("script"); print("" if v is None else v)')"
+          created=false
+          if [ -n "$route_id" ]; then
+            response="$(curl --silent --show-error --fail-with-body -X PUT               -H "Authorization: Bearer $CF_TOKEN" -H 'Content-Type: application/json'               --data '{"pattern":"cn.globalprotectionwall.com/api/*","script":null}'               "$api/$route_id")"
+          else
+            response="$(curl --silent --show-error --fail-with-body -X POST               -H "Authorization: Bearer $CF_TOKEN" -H 'Content-Type: application/json'               --data '{"pattern":"cn.globalprotectionwall.com/api/*","script":null}'               "$api")"
+            route_id="$(printf '%s' "$response" | python3 -c 'import json,sys; print((json.load(sys.stdin).get("result") or {}).get("id",""))')"
+            created=true
+          fi
+          test -n "$route_id"
+
+          recovered=
+          for attempt in 1 2 3 4 5 6; do
+            scope="$(curl --silent --show-error --max-time 20               -H 'accept: application/json'               "https://cn.globalprotectionwall.com/api/public/submission-stats?edge=${GITHUB_RUN_ID}-${attempt}" |
+              python3 -c 'import json,sys; print(json.load(sys.stdin).get("scope",""))' || true)"
+            printf 'edge_scope_attempt_%s=%s\n' "$attempt" "$scope"
+            if [ "$scope" = hong-kong-data-site ]; then
+              recovered=1
+              break
+            fi
+            sleep 5
+          done
+
+          if [ -z "$recovered" ]; then
+            if [ "$created" = true ]; then
+              curl --silent --show-error --fail-with-body -X DELETE                 -H "Authorization: Bearer $CF_TOKEN" "$api/$route_id" >/dev/null
+            elif [ -n "$old_script" ]; then
+              payload="$(OLD_SCRIPT="$old_script" python3 -c 'import json,os; print(json.dumps({"pattern":"cn.globalprotectionwall.com/api/*","script":os.environ["OLD_SCRIPT"]}))')"
+              curl --silent --show-error --fail-with-body -X PUT                 -H "Authorization: Bearer $CF_TOKEN" -H 'Content-Type: application/json'                 --data "$payload" "$api/$route_id" >/dev/null
+            fi
+            echo 'Cloudflare API bypass validation failed; route restored.'
+            exit 1
+          fi
+          echo 'cloudflare_api_bypass_verified=true'
 
       - name: Verify public Hong Kong API scope
         shell: bash
