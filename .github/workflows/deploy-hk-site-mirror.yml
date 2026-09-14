@@ -294,6 +294,9 @@ jobs:
               "location ^~ /child-advocacy-site/",
               "location ^~ /cases/",
               "location /cases/",
+              "location = /news/child-safety-network-20260914",
+              "location = /news/child-safety-network-20260914/zh-Hans",
+              "location ^~ /news/child-safety-network-20260914/",
           ):
               server_block = remove_location_blocks(server_block, declaration)
 
