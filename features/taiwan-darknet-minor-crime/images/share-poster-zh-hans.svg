@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1080" height="1350" viewBox="0 0 1080 1350" role="img" aria-labelledby="title desc">
+  <title id="title">看不见的网，留下的伤｜台湾近十年匿名网络犯罪</title>
+  <desc id="desc">简体中文版秋季纸雕与陶土风格社交分享海报，附香港镜像网址。</desc>
+  <defs>
+    <linearGradient id="veil" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f7f2e9" stop-opacity=".92"/><stop offset=".55" stop-color="#eee8de" stop-opacity=".72"/><stop offset="1" stop-color="#59625b" stop-opacity=".78"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#423f39" flood-opacity=".28"/></filter>
+    <clipPath id="paper"><path d="M64 78L1007 60l25 1180-68 34-878-18z"/></clipPath>
+  </defs>
+  <image xlink:href="autumn-paper-clay-hero.webp" x="0" y="0" width="1080" height="1350" preserveAspectRatio="xMidYMid slice"/>
+  <rect width="1080" height="1350" fill="url(#veil)"/>
+  <g clip-path="url(#paper)" filter="url(#shadow)">
+    <path d="M74 90L996 72l20 1160-72 28-860-16z" fill="#f7f2e9" fill-opacity=".82" stroke="#fff" stroke-opacity=".8" stroke-width="3"/>
+    <path d="M100 930c160-120 250-80 390-22 152 64 258 52 506-80v320H100z" fill="#929b87" fill-opacity=".32"/>
+    <path d="M90 1050c190-98 284-45 414 16 136 64 286 56 512-58v270H90z" fill="#b57f68" fill-opacity=".27"/>
+    <circle cx="850" cy="205" r="86" fill="#b49a68" fill-opacity=".52"/>
+    <circle cx="852" cy="205" r="57" fill="#f7f2e9" fill-opacity=".55"/>
+    <path d="M180 1030l44-112 42 112 43-120 45 120 49-91 43 91" fill="none" stroke="#748793" stroke-width="17" stroke-linecap="round" opacity=".75"/>
+    <text x="118" y="176" font-family="Noto Serif SC, Microsoft YaHei, sans-serif" font-size="27" letter-spacing="9" fill="#795f63">数字儿童保护・核查型独立专题</text>
+    <text x="112" y="360" font-family="Noto Serif SC, Microsoft YaHei, sans-serif" font-size="78" font-weight="700" fill="#42443f">看不见的网，</text>
+    <text x="112" y="455" font-family="Noto Serif SC, Microsoft YaHei, sans-serif" font-size="78" font-weight="700" fill="#42443f">留下的伤</text>
+    <path d="M112 492h440" stroke="#b57f68" stroke-width="9" stroke-linecap="round" opacity=".8"/>
+    <text x="116" y="565" font-family="Noto Serif SC, Microsoft YaHei, sans-serif" font-size="35" fill="#586963">台湾近十年匿名网络犯罪</text>
+    <text x="116" y="620" font-family="Noto Serif SC, Microsoft YaHei, sans-serif" font-size="42" font-weight="700" fill="#586963">12 案判决与社会影响</text>
+    <rect x="112" y="700" width="690" height="106" rx="30" fill="#59625b" fill-opacity=".94"/>
+    <text x="145" y="766" font-family="Noto Serif SC, Microsoft YaHei, sans-serif" font-size="31" font-weight="700" fill="#f7f2e9">起诉不等于有罪・一审不等于定谳</text>
+    <text x="116" y="930" font-family="Noto Serif SC, Microsoft YaHei, sans-serif" font-size="28" fill="#42443f">不猎奇・不重复计数・优先保护未成年受害者</text>
+    <text x="116" y="1112" font-family="system-ui, sans-serif" font-size="26" fill="#795f63">香港镜像｜独立核查页面</text>
+    <text x="116" y="1160" font-family="system-ui, sans-serif" font-size="20" fill="#586963">cn.globalprotectionwall.com/features/</text>
+    <text x="116" y="1195" font-family="system-ui, sans-serif" font-size="20" fill="#586963">taiwan-darknet-minor-crime/</text>
+  </g>
+</svg>
+
