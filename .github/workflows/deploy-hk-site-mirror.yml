@@ -378,21 +378,7 @@ jobs:
           set -Eeuo pipefail
           ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'sudo bash -s' <<'REMOTE'
           set -Eeuo pipefail
-          # This host has both the legacy Taiwan unit and the Hong Kong unit.
-          # The legacy unit can bind the shared port and make the HK source report
-          # the Taiwan scope, so stop it before recovering the intended HK service.
-          service=global-protection-hk.service
-          legacy_service=global-protection.service
-          # The Hong Kong app runs Vite and needs enough inotify watches to
-          # traverse its cached dependency tree. Persist the safe host floor.
-          watch_limit="$(sysctl -n fs.inotify.max_user_watches)"
-          if [ "$watch_limit" -lt 524288 ]; then
-            printf 'fs.inotify.max_user_watches = 524288\n' > /etc/sysctl.d/60-global-protection-watchers.conf
-            sysctl -w fs.inotify.max_user_watches=524288
-          fi
-          if systemctl is-active --quiet "$legacy_service"; then
-            systemctl stop "$legacy_service"
-          fi
+          service=global-protection.service
           local_url=http://127.0.0.1:8787/
           healthy=
           for attempt in 1 2 3; do
