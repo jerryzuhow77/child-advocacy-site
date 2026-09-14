@@ -61,6 +61,8 @@ jobs:
               root / "news/index.html",
               root / "hearing-records/prison-watch/kaikai-day6-20250430/index.html",
               root / "assets/legal-notice.js",
+              root / "news/child-safety-network-20260914/index.html",
+              root / "news/child-safety-network-20260914/zh-Hans/index.html",
           ]
           missing = [str(path) for path in required if not path.is_file()]
           assert not missing, "Missing required mirror files: " + ", ".join(missing)
@@ -318,6 +320,19 @@ jobs:
                   try_files $uri $uri/ $uri/index.html =404;
                   add_header X-Robots-Tag "noindex, nofollow" always;
               }
+              # child-safety-brief-root-route
+              location = /news/child-safety-network-20260914 {
+                  return 301 /news/child-safety-network-20260914/;
+              }
+              location = /news/child-safety-network-20260914/zh-Hans {
+                  return 301 /news/child-safety-network-20260914/zh-Hans/;
+              }
+              location ^~ /news/child-safety-network-20260914/ {
+                  root /srv/child-advocacy-site/current/child-advocacy-site;
+                  try_files $uri $uri/ $uri/index.html =404;
+                  add_header Cache-Control "public, max-age=300, must-revalidate" always;
+              }
+
           """
           # Keep backups outside conf.d / sites-enabled: nginx must never load them.
           backup_dir = Path("/var/backups/child-advocacy-nginx")
@@ -410,6 +425,10 @@ jobs:
             /child-advocacy-site/en/
             /child-advocacy-site/ja/
             /child-advocacy-site/news/
+            /news/child-safety-network-20260914/
+            /news/child-safety-network-20260914/zh-Hans/
+            /child-advocacy-site/news/child-safety-network-20260914/
+            /child-advocacy-site/news/child-safety-network-20260914/zh-Hans/
             /child-advocacy-site/hearing-records/prison-watch/kaikai-day6-20250430/
           )
           for path in "${paths[@]}"; do
