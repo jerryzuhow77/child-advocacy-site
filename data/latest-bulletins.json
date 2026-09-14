@@ -1,8 +1,43 @@
 {
-  "version": 20,
-  "generatedAt": "2026-09-09T18:00:00+08:00",
+  "version": 21,
+  "generatedAt": "2026-09-14T09:00:00+08:00",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
+    {
+      "id": "child-safety-network-20260914",
+      "publishedAt": "2026-09-14",
+      "title": {
+        "zh-Hant": "9月16日庭前三日：從責任通報到兒少安全網，哪些警訊不該再被錯過？",
+        "zh-Hans": "9月16日庭前三日：从责任通报到儿童安全网，哪些警讯不该再被错过？",
+        "en": "Three Days Before the September 16 Hearing: Which Warnings Must Not Be Missed Again?",
+        "ja": "9月16日の期日まであと3日：二度と見逃してはならない警告とは"
+      },
+      "summary": {
+        "zh-Hant": "保留原先三則新聞，詳析責任通報、訪視查核、跨機關交接、家屬求助與庭前公開資訊；台灣／香港兩地同步。",
+        "zh-Hans": "保留原先三则新闻，详析责任通报、访视核查、跨机关交接、家属求助与庭前公开信息；台湾／香港两地同步。",
+        "en": "The original three stories remain, with detailed analysis of duty-to-report records, home visits, inter-agency handoffs, family help-seeking, and public pre-hearing information across Taiwan and Hong Kong.",
+        "ja": "先に掲載した三つのニュースを残し、責任通報、訪問確認、機関間の引き継ぎ、家族の支援要請、期日前の公開情報を台湾・香港で同期して検証します。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/child-safety-network-20260914/",
+        "zh-Hans": "https://cn.globalprotectionwall.com/news/child-safety-network-20260914/zh-Hans/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/news/child-safety-network-20260914/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/news/child-safety-network-20260914/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/images/daily-child-protection-brief-autumn-20260913.webp",
+      "imageByLocale": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/assets/images/daily-child-protection-brief-autumn-20260913.webp",
+        "zh-Hans": "https://jerryzuhow77.github.io/child-advocacy-site/assets/images/daily-child-protection-brief-autumn-20260913.webp",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/assets/images/daily-child-protection-brief-autumn-20260913.webp",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/assets/images/daily-child-protection-brief-autumn-20260913.webp"
+      },
+      "imageAlt": {
+        "zh-Hant": "秋柿、紅楓、秋菊、雙雀、山水與河流構成的繽紛秋季水墨守護意象；非齊白石原作",
+        "zh-Hans": "秋柿、红枫、秋菊、双雀、山水与河流构成的缤纷秋季水墨守护意象；非齐白石原作",
+        "en": "A colorful autumn bird-and-flower ink scene with persimmons, maple leaves, chrysanthemums, sparrows, mountains, and a river; not an original work by Qi Baishi.",
+        "ja": "柿、紅葉、菊、雀、山水と川で構成した秋の彩色水墨守護イメージ。斉白石の原作ではありません。"
+      }
+    },
     {
       "id": "korea-placement-warning-20260909",
       "publishedAt": "2026-09-09",
