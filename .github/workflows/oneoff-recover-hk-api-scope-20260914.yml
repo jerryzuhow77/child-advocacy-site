@@ -281,3 +281,73 @@ jobs:
             sleep 5
           done
           exit 1
+
+      - name: Bypass shared Worker for the published Hong Kong brief
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test -n "$CF_TOKEN"
+          zone="$CF_ZONE_ID"
+          if [ -z "$zone" ]; then
+            zone="$(curl --silent --show-error --fail-with-body \
+              -H "Authorization: Bearer $CF_TOKEN" \
+              'https://api.cloudflare.com/client/v4/zones?name=globalprotectionwall.com&status=active' |
+              python3 -c 'import json,sys; print((json.load(sys.stdin).get("result") or [{}])[0].get("id",""))')"
+          fi
+          test -n "$zone"
+          api="https://api.cloudflare.com/client/v4/zones/$zone/workers/routes"
+          pattern='cn.globalprotectionwall.com/news/child-safety-network-20260914/*'
+          routes="$(curl --silent --show-error --fail-with-body \
+            -H "Authorization: Bearer $CF_TOKEN" "$api")"
+          existing="$(printf '%s' "$routes" | PATTERN="$pattern" python3 -c '
+          import json, os, sys
+          rows=json.load(sys.stdin).get("result") or []
+          match=next((row for row in rows if row.get("pattern") == os.environ["PATTERN"]), {})
+          print(json.dumps(match))
+          ')"
+          route_id="$(printf '%s' "$existing" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("id", ""))')"
+          old_script="$(printf '%s' "$existing" | python3 -c 'import json,sys; value=json.load(sys.stdin).get("script"); print("" if value is None else value)')"
+          created=false
+          if [ -n "$route_id" ]; then
+            curl --silent --show-error --fail-with-body -X PUT \
+              -H "Authorization: Bearer $CF_TOKEN" -H 'Content-Type: application/json' \
+              --data "$(PATTERN="$pattern" python3 -c 'import json,os; print(json.dumps({"pattern": os.environ["PATTERN"], "script": None}))')" \
+              "$api/$route_id" >/dev/null
+          else
+            response="$(curl --silent --show-error --fail-with-body -X POST \
+              -H "Authorization: Bearer $CF_TOKEN" -H 'Content-Type: application/json' \
+              --data "$(PATTERN="$pattern" python3 -c 'import json,os; print(json.dumps({"pattern": os.environ["PATTERN"], "script": None}))')" \
+              "$api")"
+            route_id="$(printf '%s' "$response" | python3 -c 'import json,sys; print((json.load(sys.stdin).get("result") or {}).get("id", ""))')"
+            created=true
+          fi
+          test -n "$route_id"
+
+          path='/news/child-safety-network-20260914/zh-Hans/'
+          recovered=
+          for attempt in 1 2 3 4 5 6; do
+            code="$(curl --silent --show-error --max-time 20 -o /tmp/hk-brief \
+              -w '%{http_code}' "https://cn.globalprotectionwall.com${path}?edge=${GITHUB_RUN_ID}-${attempt}" || true)"
+            size="$(wc -c </tmp/hk-brief 2>/dev/null || printf 0)"
+            printf 'brief_attempt_%s_status=%s size=%s\n' "$attempt" "$code" "$size"
+            if [ "$code" = 200 ] && [ "$size" -gt 1000 ]; then
+              recovered=1
+              break
+            fi
+            sleep 5
+          done
+
+          if [ -z "$recovered" ]; then
+            if [ "$created" = true ]; then
+              curl --silent --show-error --fail-with-body -X DELETE \
+                -H "Authorization: Bearer $CF_TOKEN" "$api/$route_id" >/dev/null
+            elif [ -n "$old_script" ]; then
+              payload="$(PATTERN="$pattern" OLD_SCRIPT="$old_script" python3 -c 'import json,os; print(json.dumps({"pattern": os.environ["PATTERN"], "script": os.environ["OLD_SCRIPT"]}))')"
+              curl --silent --show-error --fail-with-body -X PUT \
+                -H "Authorization: Bearer $CF_TOKEN" -H 'Content-Type: application/json' \
+                --data "$payload" "$api/$route_id" >/dev/null
+            fi
+            echo 'Cloudflare brief-route bypass validation failed; route restored.'
+            exit 1
+          fi
+          echo 'cloudflare_brief_bypass_verified=true'
