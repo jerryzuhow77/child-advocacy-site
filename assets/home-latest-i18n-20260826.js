@@ -18,6 +18,7 @@
   function localizedPath(path) { return local(locale + '/' + path.replace(/^\//, '')); }
 
   var sharedPinned = [
+    { className:'is-recognition-blind-spots-20260914', href:localizedPath('features/social-observation/child-abuse-recognition-blind-spots/'), image:local('assets/art/recognition-blind-spots-autumn-impressionist-20260913.webp'), viewKey:'recognition-blind-spots-20260914-shared' },
     { className:'is-early-warning-audit-20260908', href:localizedPath('news/early-warning-audit-20260908/'), image:local('assets/art/early-warning-audit-20260908.webp'), viewKey:'early-warning-audit-20260908-shared' },
     { className:'is-daily-brief-20260908', href:localizedPath('news/daily-child-protection-brief-20260908/'), image:local('assets/images/daily-child-protection-brief-ink-autumn-20260908.webp') },
     { className:'is-daily-brief-20260907', href:localizedPath('news/daily-child-protection-brief-20260907/'), image:local('assets/images/daily-child-protection-brief-paper-clay-20260907.webp'), viewKey:'daily-child-protection-brief-20260907-shared' },
@@ -42,11 +43,12 @@
   var copy = {
     en: {
       eyebrow: 'LATEST REPORTS · RECENTLY UPDATED', title: 'Latest reports',
-      intro: 'Seven pinned reports support automatic looping and manual horizontal movement, while the 10 most recently published articles move gently around the children’s Ferris wheel.',
-      all: 'View all documents →', pinned: 'Pinned reports', pinnedHint: 'Seven important updates can loop automatically or move manually',
+      intro: 'Eight pinned reports support automatic looping and manual horizontal movement, while the 10 most recently published articles move gently around the children’s Ferris wheel.',
+      all: 'View all documents →', pinned: 'Pinned reports', pinnedHint: 'Eight important updates can loop automatically or move manually',
       listLabel: 'The 10 most recently published articles', wheel: 'Latest reports', wheelCount: '10 recent articles',
       previous: 'Previous report', next: 'Next report', help: 'The wheel turns slowly. Hover, touch, or drag to pause, then select a carriage to read the full article.',
-      pinnedItems: [
+      pinnedItems: [        { meta: '09.14 · KAIKAI CASE · CHILD-SAFETY FEATURE · PINNED', title: 'When Warning Signs Are Split Apart', summary: 'Chen Shangjie’s 2/23 hearing notes cross-checked against five Children’s Welfare League witness records; fluorescent highlights mark checkable points.', alt: 'Autumn paper-cut and clay artwork for a child-safety evidence cross-check' },
+
         { meta: '09.08 · AUDIT SOURCE CHECK · PINNED', title: 'Beyond 70%: bringing early warnings into protection', summary: 'Three-year definitions, causes of death, repeat reports after closure, and the official response on safety assessment.', alt: 'AI splashed-ink landscape with an empty lantern, an open gate and a golden protection network; not an event photograph' },
     {"meta": "09.08 · DAILY CHILD PROTECTION BRIEF · PINNED", "title": "Invisible before reporting, waiting after", "summary": "The audited 61.90%–92.86% range, a reported placement delay and a Twelve Doors comparison.", "alt": "Expressive ink painting of persimmons, lotus pond, guardian birds, lantern and open gate"},
         {"meta":"09.07 · DAILY CHILD PROTECTION BRIEF · PINNED","title":"How should early warnings trigger protection?","summary":"Article 156, verified audit data, the 24-hour reporting duty and auditable protection thresholds.","alt":"Paper-and-clay artwork symbolising early warnings and child-protection thresholds"},
@@ -70,11 +72,12 @@
     },
     ja: {
       eyebrow: 'LATEST REPORTS · RECENTLY UPDATED', title: '最新速報',
-      intro: '7件の固定速報は自動循環と手動の横移動に対応し、最新公開10件の記事が子どもらしい観覧車に乗ってゆっくり回ります。',
-      all: '資料一覧を見る →', pinned: '固定速報', pinnedHint: '重要な7件を自動循環または手動で横移動',
+      intro: '8件の固定速報は自動循環と手動の横移動に対応し、最新公開10件の記事が子どもらしい観覧車に乗ってゆっくり回ります。',
+      all: '資料一覧を見る →', pinned: '固定速報', pinnedHint: '重要な8件を自動循環または手動で横移動',
       listLabel: '最新公開の10記事', wheel: '最新速報', wheelCount: '最新10件',
       previous: '前の速報', next: '次の速報', help: '観覧車はゆっくり回転します。マウスを重ねる、触れる、またはドラッグすると停止し、ゴンドラを選ぶと記事全文を読めます。',
-      pinnedItems: [
+      pinnedItems: [        { meta: '09.14・剴剴事件特集・子ども保護・固定速報', title: '警告サインが分断されるとき', summary: '陳尚潔氏の2月23日傍聴整理を、5名の兒福聯盟関係証人の記録と照合し、検証できる箇所を蛍光線で示します。', alt: '秋の切り紙とクレイによる、児童虐待認識の死角を照合するビジュアル' },
+
         { meta: '09.08・監査原文照合・固定', title: '「約7割」の先へ：早期の兆候を保護につなぐ', summary: '3年間の定義、死因、終結後の再通報、安全評価に関する政府回答を補足。', alt: '空の灯籠、開いた門、金色の保護網を描いたAI潑墨山水。現場写真ではありません' },
     {"meta": "09.08・子ども保護デイリーブリーフ・固定", "title": "通報前の死角、通報後の待機", "summary": "監査原文の61.90%～92.86%、保護遅延報道、十二の扉の比較。", "alt": "秋の柿、蓮池、守護する鳥、灯籠と開いた門の写意水墨画"},
         {"meta":"09.07・子ども保護デイリーブリーフ・固定","title":"早期警告を、どう保護につなげるか","summary":"憲法第156条、確認済み監査資料、24時間以内の通報義務、監査可能な保護基準。","alt":"早期警告と子ども保護基準を象徴する紙彫刻と粘土のアート"},
