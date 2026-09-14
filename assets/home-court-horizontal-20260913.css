@@ -50,6 +50,15 @@
   }
 }
 
+@media (max-width: 760px) {
+  /* The guide card must not stretch to the height of the adjacent hearing card. */
+  .home-court-schedule .home-court-horizontal-reel > .home-news-card-guide {
+    align-self: start;
+    min-height: 0;
+    height: auto;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .home-court-schedule .home-news-reel.home-court-horizontal-reel { scroll-behavior: auto; }
 }
