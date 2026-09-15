@@ -2,3 +2,5 @@
 /* Evidence highlighter: selected phrases in sourced hearing excerpts */
 .excerpt-body mark{background:linear-gradient(transparent 28%,rgba(255,222,65,.82) 28% 88%,transparent 88%);color:inherit;padding:0 .12em;border-radius:.18em;box-decoration-break:clone;-webkit-box-decoration-break:clone;font-weight:700}
 @media (prefers-contrast:more){.excerpt-body mark{background:#ffe24a;outline:2px solid #7a4d00}}
+
+.dialogue-index-group{margin:2.25rem 0 .65rem;padding:.55rem .85rem;border-left:5px solid #b45136;background:linear-gradient(90deg,rgba(246,212,109,.27),transparent);color:#6d2f20;font-size:1.05rem}.dialogue-index details{margin:.5rem 0}.dialogue-index summary{font-size:.98rem}.turn-ref{display:inline-block;margin-left:.45em;color:#8a5b2b;font-size:.78em;font-weight:700;letter-spacing:.04em}.dialogue-index .excerpt-body p{margin:.55rem 0}@media(max-width:760px){.dialogue-index-group{margin-top:1.7rem}.dialogue-index summary{line-height:1.55}}
