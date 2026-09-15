@@ -47,17 +47,18 @@ html[lang="en"] body.art-site.home-medium-palette > .home-news-hub > section,
 html[lang="ja"] body.art-site.home-medium-palette > main > .home-news-hub > section,
 body.art-site.home-medium-palette section[data-seasonal-art]{
   --cpa-section-art:var(--cpa-seasonal-01);
-  --cpa-section-art-position:right top;
-  --cpa-section-veil:linear-gradient(128deg,rgba(255,253,246,.82),rgba(255,247,231,.71) 52%,rgba(248,229,194,.62));
-  --cpa-section-fill-veil:linear-gradient(rgba(247,237,218,.78),rgba(247,237,218,.78));
+  /* A centered cover layer lets the ink wash span the full viewport without stretching it. */
+  --cpa-section-art-position:center top;
+  --cpa-section-veil:linear-gradient(128deg,rgba(255,253,246,.76),rgba(255,247,231,.64) 52%,rgba(248,229,194,.54));
+  --cpa-section-fill-veil:linear-gradient(rgba(247,237,218,.38),rgba(247,237,218,.38));
   --ink-header-art:none;
   --ink-footer-art:none;
   --su-embroidery-corner:none;
   --su-embroidery-wide:none;
   background-color:#f7edda!important;
   background-image:var(--cpa-section-veil),var(--cpa-section-art),var(--cpa-section-fill-veil),var(--cpa-section-art)!important;
-  background-position:center,var(--cpa-section-art-position),center,right top!important;
-  background-size:100% 100%,contain,100% 100%,cover!important;
+  background-position:center,var(--cpa-section-art-position),center,center top!important;
+  background-size:100% 100%,cover,100% 100%,cover!important;
   background-repeat:no-repeat,no-repeat,no-repeat,no-repeat!important;
   background-attachment:scroll,scroll,scroll,scroll!important;
   background-origin:border-box!important;
@@ -230,9 +231,9 @@ body.art-site.home-medium-palette .belief-mobile-wrap{
   html[lang="en"] body.art-site.home-medium-palette > .home-news-hub > section,
   html[lang="ja"] body.art-site.home-medium-palette > main > .home-news-hub > section,
   body.art-site.home-medium-palette section[data-seasonal-art]{
-    --cpa-section-art-position:right top;
-    --cpa-section-veil:linear-gradient(152deg,rgba(255,253,247,.91),rgba(255,247,231,.85) 56%,rgba(247,230,199,.79));
-    --cpa-section-fill-veil:linear-gradient(rgba(247,237,218,.82),rgba(247,237,218,.82));
+    --cpa-section-art-position:center top;
+    --cpa-section-veil:linear-gradient(152deg,rgba(255,253,247,.87),rgba(255,247,231,.78) 56%,rgba(247,230,199,.70));
+    --cpa-section-fill-veil:linear-gradient(rgba(247,237,218,.46),rgba(247,237,218,.46));
   }
   body.art-site.home-medium-palette > .kaikai-memorial,
   body.art-site.home-medium-palette > main > .kaikai-memorial{
