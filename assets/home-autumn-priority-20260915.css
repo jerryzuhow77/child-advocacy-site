@@ -1,3 +1,6 @@
+Warning: truncated output (original token count: 55917)
+Total output lines: 1185
+
 /* Homepage refinement: Mid-Autumn ink wash + clear mobile hierarchy. */
 :root{--autumn-paper:#fbf5e9;--autumn-ink:#304f4a}
 body.art-site{background:radial-gradient(circle at 88% 8%,rgba(243,211,119,.16),transparent 21rem),linear-gradient(180deg,#fffaf0 0,#f8f0e4 42%,#fffaf3 100%)}
@@ -6,4 +9,7 @@ body.art-site{background:radial-gradient(circle at 88% 8%,rgba(243,211,119,.16),
 @media(max-width:760px){.home-priority-links{grid-template-columns:1fr!important}}
 .home-court-horizontal-reel{display:grid!important;grid-auto-flow:column!important;grid-auto-columns:minmax(min(92vw,340px),1080px)!important;overflow-x:auto!important;overflow-y:hidden!important;align-items:start!important;padding-bottom:22px!important;scroll-snap-type:x mandatory!important;overscroll-behavior-inline:contain!important}.home-court-horizontal-reel>.home-news-card{min-width:0!important;width:100%!important;scroll-snap-align:start!important}
 @media(max-width:760px){.home-court-horizontal-reel{grid-auto-columns:100%!important;padding-bottom:18px!important}.home-court-horizontal-reel>.home-news-card{height:auto!important}}
+/* A compact desktop board keeps the court updates readable; the horizontal rail is mobile-only. */
+@media(min-width:821px){.home-court-horizontal-reel{grid-auto-flow:initial!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-auto-columns:auto!important;overflow:visible!important;padding:4px 0 0!important;scroll-snap-type:none!important}.home-court-horizontal-reel>.home-news-card.is-court-poster{grid-column:1/-1!important}}
 @media(prefers-reduced-motion:reduce){.home-court-horizontal-reel{transition:none!important;scroll-behavior:auto!important}.home-court-horizontal-reel *{transition-duration:0s!important;animation-duration:0s!important}}
+
