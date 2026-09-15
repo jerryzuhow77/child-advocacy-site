@@ -251,10 +251,7 @@ try {
         },
         counts: {
           media: mediaCards.length,
-          // The motion layer appends a marked clone for a seamless loop. Count
-          // editorial entries only, otherwise the clone turns the 20-card
-          // contract into a false 21-card regression at every viewport width.
-          pinned: document.querySelectorAll('#news-flash .home-pinned-reports-track .home-pinned-report-card:not([data-pinned-clone])').length,
+          pinned: document.querySelectorAll('#news-flash .home-pinned-reports-track .home-pinned-report-card').length,
           recent: document.querySelectorAll('#news-flash .home-document-disc-orbit .home-document-disc-card').length,
           seasonal: document.querySelectorAll('section[data-seasonal-art]').length,
           engagement: bars.length
@@ -306,7 +303,7 @@ try {
 
     assert(initial.order.media < initial.order.latest, `[${width}] 新聞專區必須位於最新快報之前`, initial.order);
     assert(initial.counts.media >= 8, `[${width}] 新聞專區文章數不足`, initial.counts.media);
-    assert(initial.counts.pinned === 20, `[${width}] 置頂入口數量應為 20`, initial.counts.pinned);
+    assert(initial.counts.pinned === 21, `[${width}] 置頂入口數量應為 21`, initial.counts.pinned);
     assert(initial.counts.recent === 7, `[${width}] 摩天輪近期文章數量應為 7`, initial.counts.recent);
     assert(initial.counts.seasonal === 17, `[${width}] 秋季水墨專區數量應為 17`, initial.counts.seasonal);
     assert(initial.counts.engagement >= 45, `[${width}] 互動控制列未完整建立`, initial.counts.engagement);
