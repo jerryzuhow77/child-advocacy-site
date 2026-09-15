@@ -1,4 +1,5 @@
 name: One-off recover Hong Kong API scope
+# Operational retrigger: restore the dedicated Hong Kong public API route.
 
 on:
   push:
