@@ -16,8 +16,8 @@
    * language switches and newer page-home naming never reset the total.
    */
   const HOMEPAGE_CANONICAL_KEY = 'homepage-all-languages-v1';
-  // 590 legacy CounterAPI views plus 17 visits collected under page-home.
-  const HOMEPAGE_HISTORICAL_BASELINE = 607;
+  // Historical homepage total confirmed at 2,987 views; preserve this baseline while adding new shared views.
+  const HOMEPAGE_HISTORICAL_BASELINE = 2987;
   // Chapter 2 moved to the shared two-region engagement counter after 97
   // verified Worker views. Freeze that migration baseline so it is added once.
   const CHAPTER_TWO_KEY = 'kaikai-special-chapter-02-shared';
