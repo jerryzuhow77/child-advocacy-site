@@ -67,6 +67,38 @@ jobs:
           systemctl --no-pager --full status "$shared_service" "$hk_service" || true
           ss -ltnp | grep ':8787' || true
 
+          echo 'safe_service_metadata_begin'
+          for unit in "$shared_service" "$hk_service"; do
+            systemctl show "$unit"               --property=FragmentPath               --property=DropInPaths               --property=WorkingDirectory               --property=User               --property=ExecStart               --no-pager || true
+          done
+          find /opt/global-protection -maxdepth 2 -type f             \( -name 'package.json' -o -name 'wrangler*.json' -o -name '.dev.vars*' \)             -printf 'config_file=%p\n' 2>/dev/null | sort || true
+          python3 - <<'PY'
+          from pathlib import Path
+          import json, re
+
+          package = Path("/opt/global-protection/package.json")
+          if package.is_file():
+              scripts = json.loads(package.read_text()).get("scripts", {})
+              for name in sorted(scripts):
+                  value = str(scripts[name])
+                  if not re.search(r"(token|secret|password|key)", value, re.I):
+                      print(f"package_script_{name}={value}")
+
+          safe_name = re.compile(r"(scope|data_primary|site_mode|region|deployment)", re.I)
+          secret_name = re.compile(r"(token|secret|password|key|credential)", re.I)
+          for env_file in sorted(Path("/opt/global-protection").glob(".dev.vars*")):
+              print(f"env_file={env_file}")
+              for raw in env_file.read_text(errors="replace").splitlines():
+                  line = raw.strip()
+                  if not line or line.startswith("#") or "=" not in line:
+                      continue
+                  name, value = line.split("=", 1)
+                  name = name.strip()
+                  if safe_name.search(name) and not secret_name.search(name):
+                      print(f"scope_setting={env_file.name}:{name}={value.strip()}")
+          PY
+          echo 'safe_service_metadata_end'
+
           if [ "$before" = "$expected" ]; then
             echo 'Hong Kong API scope is already correct.'
             exit 0
