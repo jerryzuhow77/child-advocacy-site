@@ -157,7 +157,7 @@
         reloadingForUpdate = true;
         window.location.reload();
       });
-      navigator.serviceWorker.register(new URL('sw.js?v=20260915-home-structure-recovery-v14', siteBase).href, {
+      navigator.serviceWorker.register(new URL('sw.js?v=20260915-home-counter-baseline-2987-v15', siteBase).href, {
         scope: siteBase.pathname,
         updateViaCache: 'none'
       })
