@@ -39,6 +39,12 @@
   outline-offset: 5px;
 }
 
+/* Keep the short 17-day guide card from inheriting the tallest court card's height. */
+.home-court-schedule .home-court-horizontal-reel > .home-news-card-guide {
+  align-self: start;
+  height: auto;
+}
+
 @media (max-width: 760px) {
   .home-court-schedule .home-news-reel.home-court-horizontal-reel {
     grid-template-columns: none;
