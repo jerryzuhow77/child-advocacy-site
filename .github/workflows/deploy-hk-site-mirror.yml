@@ -472,6 +472,12 @@ jobs:
             echo "Mirror direct brief route failed: $direct_path status=${direct_code:-none}"
             exit 1
           }
+          poster_path=/child-advocacy-site/assets/images/child-safety-network-20260914.png
+          poster_code="$(curl --connect-timeout 10 --max-time 25 -sS -o /tmp/direct-brief-poster.png -w '%{http_code}' "https://cn.globalprotectionwall.com$poster_path" || true)"
+          test "$poster_code" = 200 && test "$(wc -c < /tmp/direct-brief-poster.png)" -gt 100000 || {
+            echo "Mirror brief poster failed: $poster_path status=${poster_code:-none}"
+            exit 1
+          }
           for path in "${paths[@]}"; do
             ok=
             for attempt in 1 2 3 4 5; do
