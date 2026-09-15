@@ -251,7 +251,10 @@ try {
         },
         counts: {
           media: mediaCards.length,
-          pinned: document.querySelectorAll('#news-flash .home-pinned-reports-track .home-pinned-report-card').length,
+          // The motion layer appends a marked clone for a seamless loop. Count
+          // editorial entries only, otherwise the clone turns the 20-card
+          // contract into a false 21-card regression at every viewport width.
+          pinned: document.querySelectorAll('#news-flash .home-pinned-reports-track .home-pinned-report-card:not([data-pinned-clone])').length,
           recent: document.querySelectorAll('#news-flash .home-document-disc-orbit .home-document-disc-card').length,
           seasonal: document.querySelectorAll('section[data-seasonal-art]').length,
           engagement: bars.length
