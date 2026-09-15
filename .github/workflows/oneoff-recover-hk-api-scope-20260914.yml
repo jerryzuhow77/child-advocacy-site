@@ -97,6 +97,9 @@ jobs:
                   if safe_name.search(name) and not secret_name.search(name):
                       print(f"scope_setting={env_file.name}:{name}={value.strip()}")
           PY
+          grep -R -n -E 'hong-kong-data-site|taiwan-hong-kong-shared' /opt/global-protection \
+            --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=.wrangler \
+            --exclude='*.map' 2>/dev/null | head -80 || true
           echo 'safe_service_metadata_end'
 
           if [ "$before" = "$expected" ]; then
