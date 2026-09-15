@@ -1,8 +1,30 @@
 {
   "version": 21,
-  "generatedAt": "2026-09-14T09:00:00+08:00",
+  "generatedAt": "2026-09-15T13:00:00+08:00",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
+    {
+      "id": "daily-child-protection-brief-20260915",
+      "publishedAt": "2026-09-15",
+      "title": {
+        "zh-Hant": "二審庭審前一日：回頭檢視每一個警訊",
+        "zh-Hans": "二审庭审前一日：回头检视每一个警讯",
+        "en": "Day before appeal hearing: review every warning",
+        "ja": "控訴審前日：すべての警告を検証"
+      },
+      "summary": {
+        "zh-Hant": "2/23當庭訊問24組逐句節錄；校正旁聽紀錄，非官方逐字筆錄。",
+        "zh-Hans": "2/23当庭讯问24组逐句节录；校正旁听纪录，非官方逐字笔录。",
+        "en": "24 grouped sentence-level hearing-note excerpts.",
+        "ja": "2/23法廷尋問の24組逐次抜粋。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260915/",
+        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/news/daily-child-protection-brief-20260915/zh-Hans/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/news/daily-child-protection-brief-20260915/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/news/daily-child-protection-brief-20260915/"
+      }
+    },
     {
       "id": "child-safety-network-20260914",
       "publishedAt": "2026-09-14",
@@ -97,6 +119,35 @@
       }
     },
     {
+      "id": "daily-child-protection-brief-20260908",
+      "publishedAt": "2026-09-08",
+      "title": {
+        "zh-Hant": "每日護童總報｜通報前的黑數、通報後的等待",
+        "zh-Hans": "每日护童总报｜通报前的黑数、通报后的等待",
+        "en": "Daily brief: invisible before reporting, waiting after",
+        "ja": "デイリーブリーフ｜通報前の死角、通報後の待機"
+      },
+      "summary": {
+        "zh-Hant": "審計原文的61.90%–92.86%區間、台北女童安置爭議，以及兩種制度缺口的十二道門比較。",
+        "zh-Hans": "审计原文的61.90%–92.86%区间、台北女童安置争议，以及两种制度缺口的十二道门比较。",
+        "en": "The audited 61.90%–92.86% range, a reported Taipei placement delay and a Twelve Doors comparison.",
+        "ja": "監査原文の61.90%～92.86%、台北の保護遅延報道、二つの制度的欠陥を比較。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260908/",
+        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/news/daily-child-protection-brief-20260908/zh-Hans/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/news/daily-child-protection-brief-20260908/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/news/daily-child-protection-brief-20260908/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/images/daily-child-protection-brief-ink-autumn-20260908.webp",
+      "imageAlt": {
+        "zh-Hant": "秋柿、荷塘、守護鳥、燈籠與開門構成的繽紛大寫意水墨畫",
+        "zh-Hans": "秋柿、荷塘、守护鸟、灯笼与开门构成的彩色写意水墨画",
+        "en": "Expressive ink painting of persimmons, lotus pond, guardian birds, lantern and open gate",
+        "ja": "秋の柿、蓮池、守護する鳥、灯籠と開いた門の写意水墨画"
+      }
+    },
+    {
       "id": "guardian-duty-rebuttal-20260907",
       "publishedAt": "2026-09-07",
       "title": {
@@ -129,35 +180,6 @@
         "zh-Hans": "缤纷水墨花鸟、荷叶与红线，象征修补破裂的儿童保护安全网",
         "en": "Colorful ink-wash flowers, birds, lotus leaves, and red thread symbolising repair of a broken safety net",
         "ja": "壊れた安全網の修復を象徴する、花鳥、蓮の葉、赤い糸による鮮やかな水墨画"
-      }
-    },
-    {
-      "id": "daily-child-protection-brief-20260908",
-      "publishedAt": "2026-09-08",
-      "title": {
-        "zh-Hant": "每日護童總報｜通報前的黑數、通報後的等待",
-        "zh-Hans": "每日护童总报｜通报前的黑数、通报后的等待",
-        "en": "Daily brief: invisible before reporting, waiting after",
-        "ja": "デイリーブリーフ｜通報前の死角、通報後の待機"
-      },
-      "summary": {
-        "zh-Hant": "審計原文的61.90%–92.86%區間、台北女童安置爭議，以及兩種制度缺口的十二道門比較。",
-        "zh-Hans": "审计原文的61.90%–92.86%区间、台北女童安置争议，以及两种制度缺口的十二道门比较。",
-        "en": "The audited 61.90%–92.86% range, a reported Taipei placement delay and a Twelve Doors comparison.",
-        "ja": "監査原文の61.90%～92.86%、台北の保護遅延報道、二つの制度的欠陥を比較。"
-      },
-      "url": {
-        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260908/",
-        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/news/daily-child-protection-brief-20260908/zh-Hans/",
-        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/news/daily-child-protection-brief-20260908/",
-        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/news/daily-child-protection-brief-20260908/"
-      },
-      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/images/daily-child-protection-brief-ink-autumn-20260908.webp",
-      "imageAlt": {
-        "zh-Hant": "秋柿、荷塘、守護鳥、燈籠與開門構成的繽紛大寫意水墨畫",
-        "zh-Hans": "秋柿、荷塘、守护鸟、灯笼与开门构成的彩色写意水墨画",
-        "en": "Expressive ink painting of persimmons, lotus pond, guardian birds, lantern and open gate",
-        "ja": "秋の柿、蓮池、守護する鳥、灯籠と開いた門の写意水墨画"
       }
     },
     {
