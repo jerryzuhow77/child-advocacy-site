@@ -2,7 +2,7 @@
 
 // A new cache namespace is intentional: it retires the previous seasonal assets
 // and lets the panoramic HD ink artwork replace an already-installed PWA.
-const VERSION = '20260915-home-structure-recovery-v14';
+const VERSION = '20260915-home-counter-baseline-2987-v15';
 const CACHE_PREFIX = 'cpa-alliance-pwa-';
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${VERSION}`;
