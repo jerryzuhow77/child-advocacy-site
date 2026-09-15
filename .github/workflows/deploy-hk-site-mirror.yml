@@ -63,6 +63,7 @@ jobs:
               root / "assets/legal-notice.js",
               root / "news/child-safety-network-20260914/index.html",
               root / "news/child-safety-network-20260914/zh-Hans/index.html",
+              root / "zh-Hans/features/social-observation/family-preservation-incentives/index.html",
           ]
           missing = [str(path) for path in required if not path.is_file()]
           assert not missing, "Missing required mirror files: " + ", ".join(missing)
