@@ -85,6 +85,16 @@ def rebase_url(raw_url: str, source: Path, target: Path, source_to_hans: dict[Pa
     if resolved is None:
         return raw_url
     resolved = resolved.resolve()
+    resolved_repo = resolved.relative_to(ROOT.resolve()).as_posix()
+    target_repo = target.resolve().relative_to(ROOT.resolve()).as_posix()
+    if (
+        resolved_repo.startswith("assets/")
+        and any(target_repo.startswith(route) for route in HK_ROOT_ROUTES)
+    ):
+        # Hong Kong root routes are served outside BASE, while shared assets
+        # remain under /child-advocacy-site/. A repository-relative URL would
+        # escape to /assets/ and break on the public mirror.
+        return urlunsplit(("", "", BASE + resolved_repo, parsed.query, parsed.fragment))
     hans_url = source_to_hans.get(resolved)
     if hans_url:
         destination = urlsplit(hans_url)
