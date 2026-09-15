@@ -1145,6 +1145,10 @@ body.prologue-active{
   top:max(24px,env(safe-area-inset-top));
   right:max(24px,env(safe-area-inset-right));
 }
+/* Keep the Chinese "skip / enter" control comfortably tappable in both regions. */
+html:is([lang="zh-Hant"],[lang="zh-Hans"]) .entry-prologue__skip{
+  min-width:148px;
+}
 .entry-prologue__play{
   top:50%;
   left:50%;
@@ -1209,6 +1213,7 @@ body.prologue-active{
   .entry-prologue__skip{
     top:max(16px,env(safe-area-inset-top));
     right:max(14px,env(safe-area-inset-right));
+    min-width:142px;
     min-height:42px;
     padding:8px 13px;
     font-size:12px;
