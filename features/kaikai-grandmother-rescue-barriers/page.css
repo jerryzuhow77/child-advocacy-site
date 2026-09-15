@@ -2205,3 +2205,23 @@ html[lang="ja"] body {
 
   .motion-ready .fluorescent { background-size: 100% var(--fluorescent-height) !important; }
 }
+
+.zhou-caregiver-story {
+  margin: clamp(2.5rem, 7vw, 5.5rem) 0 0;
+  padding: clamp(1.1rem, 3vw, 2.5rem);
+  border: 1px solid rgba(116, 81, 72, .24);
+  border-radius: 1.35rem;
+  background: linear-gradient(135deg, rgba(255, 252, 246, .94), rgba(239, 222, 211, .62));
+  box-shadow: 0 1.1rem 3rem rgba(80, 56, 43, .09);
+}
+.zhou-caregiver-story h3 { font-size: clamp(2rem, 5.6vw, 4.5rem); line-height: 1.12; margin: .25rem 0 1rem; color: #623f3c; }
+.zhou-caregiver-story p { max-width: 48rem; }
+.zhou-lead { font-size: clamp(1.1rem, 2.25vw, 1.35rem); line-height: 1.9; }
+.zhou-caregiver-story blockquote { max-width: 43rem; margin: 1.65rem 0; padding: 1rem 1.2rem; border-left: .26rem solid #aa725f; color: #5c3c39; font-size: clamp(1.2rem, 2.6vw, 1.55rem); line-height: 1.7; font-weight: 700; }
+.zhou-closing { font-size: 1.13rem; color: #5a3835; }
+.zhou-boundary { padding-top: .9rem; border-top: 1px dashed rgba(116, 81, 72, .35); font-size: .92rem; color: #695a56; }
+.zhou-caregiver-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(.8rem, 2vw, 1.35rem); margin-top: 1.75rem; }
+.zhou-caregiver-gallery figure { margin: 0; overflow: hidden; border-radius: 1rem; background: #fffdf8; box-shadow: 0 .7rem 1.75rem rgba(64, 43, 37, .12); }
+.zhou-caregiver-gallery img { display: block; width: 100%; aspect-ratio: 2 / 3; object-fit: cover; object-position: center; }
+.zhou-caregiver-gallery figcaption { padding: .75rem .85rem .9rem; color: #68524c; font-size: .88rem; line-height: 1.65; }
+@media (max-width: 620px) { .zhou-caregiver-story { margin-inline: -.25rem; } .zhou-caregiver-gallery { grid-template-columns: 1fr; } }
