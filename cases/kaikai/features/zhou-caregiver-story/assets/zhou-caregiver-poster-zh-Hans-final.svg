@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1122" height="1402" viewBox="0 0 1122 1402" role="img" aria-labelledby="title desc">
+  <title id="title">生离，最后竟成了死别</title>
+  <desc id="desc">周保母愿意继续照顾，多元观察简体中文海报。</desc>
+  <image href="zhou-caregiver-poster-zh-Hant-20260915.png" x="0" y="0" width="1122" height="1402"/>
+  <rect x="492" y="42" width="610" height="584" rx="8" fill="#fbf8ef" fill-opacity=".975"/>
+  <g font-family="'Noto Serif SC','Songti SC','STSong','Microsoft YaHei',serif">
+    <text x="528" y="178" fill="#74283f" font-size="108" font-weight="700">生离，</text>
+    <text x="528" y="290" fill="#182333" font-size="68" font-weight="700">最后竟成了<tspan fill="#74283f">死别</tspan></text>
+    <path d="M528 348h555M528 461h555" stroke="#6d655b" stroke-width="2"/>
+    <text x="528" y="398" fill="#1f405a" font-size="29" font-weight="700">检方指责：</text>
+    <text x="528" y="440" fill="#1f405a" font-size="25" font-weight="700">未告知、未协助评估可能的照顾与费用选项</text>
+    <text x="600" y="548" fill="#1f405a" font-size="29" font-weight="700">周保母愿意继续照顾｜多元观察</text>
+    <text x="628" y="588" fill="#645b54" font-size="18">检方指控与庭审争点，非最终确定判决</text>
+  </g>
+</svg>
