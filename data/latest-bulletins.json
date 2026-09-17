@@ -1,8 +1,25 @@
 {
+  
   "version": 21,
   "generatedAt": "2026-09-15T13:00:00+08:00",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
+        {
+      "id": "daily-child-protection-brief-20260916",
+      "publishedAt": "2026-09-16",
+      "title": {
+        "zh-Hant": "二審首度開庭後：把每一道保護責任放回可檢驗的脈絡",
+        "zh-Hans": "二审首次开庭后：把每一道保护责任放回可检验的脉络"
+      },
+      "summary": {
+        "zh-Hant": "每日護童快報｜補上二審首次準備庭後的程序、證據與保護責任脈絡。",
+        "zh-Hans": "每日护童快报｜补上二审首次准备庭后的程序、证据与保护责任脉络。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260916/",
+        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/news/daily-child-protection-brief-20260916/zh-Hans/"
+      }
+    },
     {
       "id": "daily-child-protection-brief-20260915",
       "publishedAt": "2026-09-15",
