@@ -14,3 +14,5 @@
 .brief-embroidered .section{background:rgba(255,252,241,.74);backdrop-filter:blur(2px)}
 .highlight{box-decoration-break:clone;-webkit-box-decoration-break:clone}
 @media (prefers-reduced-motion:reduce){.home-priority-strip::before,.brief-embroidered main::before{animation:none}}
+
+.brief-quick-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.brief-quick-grid p{margin:0;padding:14px;background:rgba(255,248,220,.84);border-top:3px solid var(--cpa-embroidery-red);display:grid;gap:4px}.brief-quick-grid b{font-size:.82rem;color:var(--cpa-embroidery-red)}.brief-status-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.brief-status-grid>div{padding:18px 20px;background:rgba(255,250,232,.76);border:1px solid rgba(162,98,42,.22)}.brief-status-grid>div:last-child{background:rgba(229,239,226,.74)}.brief-status-grid h3{margin-top:0}@media(max-width:700px){.brief-quick-grid,.brief-status-grid{grid-template-columns:1fr 1fr}.brief-status-grid{gap:10px}.brief-status-grid>div{padding:14px}}
