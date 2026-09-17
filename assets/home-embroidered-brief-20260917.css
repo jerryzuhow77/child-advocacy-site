@@ -1,0 +1,16 @@
+/* 2026-09-17: embroidered autumn-ink treatment for the daily brief and its homepage entry. */
+:root{--cpa-embroidery-red:#b3472c;--cpa-embroidery-gold:#c9953d;--cpa-embroidery-teal:#295b5a}
+.home-priority-strip{position:relative;overflow:hidden}
+.home-priority-strip::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,248,230,.82),rgba(255,248,230,.48)),url("/child-advocacy-site/assets/art/child-protection-brief-embroidery-ink-20260917-zh-Hant.svg") center/cover;opacity:.18;mix-blend-mode:multiply;pointer-events:none}
+.home-priority-strip>*{position:relative;z-index:1}
+[data-embroidered-brief]{position:relative;isolation:isolate;overflow:hidden}
+[data-embroidered-brief]::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(135deg,rgba(230,177,66,.22),transparent 44%,rgba(175,55,42,.15));opacity:.8;pointer-events:none}
+.brief-embroidered{background:linear-gradient(145deg,#fbf6e8,#f3e7ca)}
+.brief-embroidered main{position:relative;isolation:isolate}
+.brief-embroidered main::before{content:"";position:absolute;inset:0;z-index:-1;background:url("/child-advocacy-site/assets/art/child-protection-brief-embroidery-ink-20260917-zh-Hant.svg") center 30px/680px auto repeat-y;opacity:.075;mix-blend-mode:multiply;pointer-events:none}
+.brief-embroidered .hero{position:relative;overflow:hidden}
+.brief-embroidered .hero::after{content:"";position:absolute;inset:0;background:url("/child-advocacy-site/assets/art/child-protection-brief-embroidery-ink-20260917-zh-Hant.svg") center/cover;opacity:.22;mix-blend-mode:screen;pointer-events:none}
+.brief-embroidered .hero-copy{position:relative;z-index:1}
+.brief-embroidered .section{background:rgba(255,252,241,.74);backdrop-filter:blur(2px)}
+.highlight{box-decoration-break:clone;-webkit-box-decoration-break:clone}
+@media (prefers-reduced-motion:reduce){.home-priority-strip::before,.brief-embroidered main::before{animation:none}}
