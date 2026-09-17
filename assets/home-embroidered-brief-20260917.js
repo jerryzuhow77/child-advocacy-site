@@ -6,6 +6,13 @@
   const ScrollTrigger = window.ScrollTrigger;
   if (ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
 
+  const priorityStrip = document.querySelector(".home-priority-strip");
+  if (priorityStrip) {
+    gsap.from(priorityStrip, { autoAlpha: 0, y: 20, duration: .7, ease: "power3.out" });
+    const priorityItems = priorityStrip.querySelectorAll("h1, h2, h3, p, a, article, li");
+    if (priorityItems.length) gsap.from(priorityItems, { autoAlpha: 0, y: 14, duration: .5, stagger: .055, ease: "power2.out", delay: .12 });
+  }
+
   const hero = document.querySelector(".brief-embroidered .hero");
   const heroItems = hero ? hero.querySelectorAll(".eyebrow, h1, p") : [];
   const sections = [...document.querySelectorAll(".brief-embroidered main > .section")];
