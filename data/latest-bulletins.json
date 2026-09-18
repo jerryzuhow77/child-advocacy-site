@@ -1,11 +1,25 @@
 {
-  
-  "version": 22,
-  "generatedAt": "2026-09-18T16:00:00+08:00",
+  "version": 23,
+  "generatedAt": "2026-09-18T18:00:00+08:00",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
-    {"id":"daily-child-protection-brief-20260918","publishedAt":"2026-09-18","title":{"zh-Hant":"剴剴案定讞後：把悲劇化為可稽核的保護","zh-Hans":"剀剀案定谳后：把悲剧化为可核查的保护"},"summary":{"zh-Hant":"分開閱讀定讞案件與仍在上訴的案件；讓責任、程序與制度改革各自清楚。","zh-Hans":"分开阅读定谳案件与仍在上诉的案件；让责任、程序与制度改革各自清楚。"},"url":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260918/","zh-Hans":"https://cn.globalprotectionwall.com/child-advocacy-site/news/daily-child-protection-brief-20260918/zh-Hans/"}},
-        {
+    {
+      "id": "daily-child-protection-brief-20260918",
+      "publishedAt": "2026-09-18",
+      "title": {
+        "zh-Hant": "剴剴案定讞後：閱覽評議單能翻案嗎？",
+        "zh-Hans": "剀剀案定谳后：阅览评议单能翻案吗？"
+      },
+      "summary": {
+        "zh-Hant": "從評議意見閱覽到再審門檻：哪些程序可能被評估，哪些並不等於翻案。",
+        "zh-Hans": "从评议意见阅览到再审门槛：哪些程序可能被评估，哪些并不等于翻案。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260918/",
+        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/news/daily-child-protection-brief-20260918/zh-Hans/"
+      }
+    },
+    {
       "id": "daily-child-protection-brief-20260916",
       "publishedAt": "2026-09-16",
       "title": {
