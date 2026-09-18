@@ -316,12 +316,15 @@ jobs:
                   return 301 /child-advocacy-site/;
               }
               location = /child-advocacy-site/ {
-                  root /srv/child-advocacy-site/current;
-                  try_files /child-advocacy-site/index.html =404;
+                  root /srv/child-advocacy-site/current/child-advocacy-site;
+                  try_files /index.html =404;
                   add_header X-Robots-Tag "noindex, nofollow" always;
               }
               location ^~ /child-advocacy-site/ {
-                  root /srv/child-advocacy-site/current;
+                  # The release archive contains a child-advocacy-site directory.
+                  # Strip the public prefix before resolving files inside that directory.
+                  rewrite ^/child-advocacy-site/(.*)$ /$1 break;
+                  root /srv/child-advocacy-site/current/child-advocacy-site;
                   try_files $uri $uri/index.html =404;
                   add_header X-Robots-Tag "noindex, nofollow" always;
               }
@@ -460,6 +463,7 @@ jobs:
             /child-advocacy-site/en/
             /child-advocacy-site/ja/
             /child-advocacy-site/news/
+            /child-advocacy-site/news/daily-child-protection-brief-20260918/zh-Hans/
             /news/child-safety-network-20260914/
             /news/child-safety-network-20260914/zh-Hans/
             /child-advocacy-site/news/child-safety-network-20260914/
