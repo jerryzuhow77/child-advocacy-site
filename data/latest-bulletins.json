@@ -1,11 +1,25 @@
 {
-  
-  "version": 22,
-  "generatedAt": "2026-09-18T16:00:00+08:00",
+  "version": 24,
+  "generatedAt": "2026-09-18T21:20:00+08:00",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
-    {"id":"daily-child-protection-brief-20260918","publishedAt":"2026-09-18","title":{"zh-Hant":"剴剴案定讞後：把悲劇化為可稽核的保護","zh-Hans":"剀剀案定谳后：把悲剧化为可核查的保护"},"summary":{"zh-Hant":"分開閱讀定讞案件與仍在上訴的案件；讓責任、程序與制度改革各自清楚。","zh-Hans":"分开阅读定谳案件与仍在上诉的案件；让责任、程序与制度改革各自清楚。"},"url":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260918/","zh-Hans":"https://cn.globalprotectionwall.com/child-advocacy-site/news/daily-child-protection-brief-20260918/zh-Hans/"}},
-        {
+    {
+      "id": "daily-child-protection-brief-20260918",
+      "publishedAt": "2026-09-18",
+      "title": {
+        "zh-Hant": "剴剴案定讞後：閱覽評議單能翻案嗎？",
+        "zh-Hans": "剀剀案定谳后：阅览评议单能翻案吗？"
+      },
+      "summary": {
+        "zh-Hant": "從「可閱覽、不可複製」的評議意見，到特別救濟門檻與三起台灣平反案例。",
+        "zh-Hans": "從「可閱覽、不可複製」的評議意見，到特別救濟門檻與三起台灣平反案例。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260918/",
+        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/news/daily-child-protection-brief-20260918/zh-Hans/"
+      }
+    },
+    {
       "id": "daily-child-protection-brief-20260916",
       "publishedAt": "2026-09-16",
       "title": {
@@ -464,6 +478,37 @@
     }
   ],
   "items": [
+    {
+      "id": "daily-child-protection-brief-20260918",
+      "publishedAt": "2026-09-18",
+      "tag": "MULTIPLE PERSPECTIVES",
+      "className": "is-daily-brief-20260918",
+      "badge": {
+        "zh-Hant": "多元觀察・程序界線",
+        "zh-Hans": "多元观察・程序界限"
+      },
+      "title": {
+        "zh-Hant": "剴剴案定讞後：閱覽評議單能翻案嗎？",
+        "zh-Hans": "剀剀案定谳后：阅览评议单能翻案吗？"
+      },
+      "summary": {
+        "zh-Hant": "定讞後的閱覽申請，處理的是評議意見的保密範圍；它不會自行重啟審判或改變刑度。",
+        "zh-Hans": "定谳后的阅览申请，处理的是评议意见的保密范围；它不会自行重启审判或改变刑度。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260918/",
+        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/news/daily-child-protection-brief-20260918/zh-Hans/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/images/news/daily-child-protection-brief-20260918/udn-child-protection-news-graphic-20260917.jpg",
+      "imageByLocale": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/assets/images/news/daily-child-protection-brief-20260918/udn-child-protection-news-graphic-20260917.jpg",
+        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/assets/images/news/daily-child-protection-brief-20260918/udn-child-protection-news-graphic-20260917.jpg"
+      },
+      "imageAlt": {
+        "zh-Hant": "兒童保護新聞圖；來源標示為聯合新聞網",
+        "zh-Hans": "儿童保护新闻图；来源标示为联合新闻网"
+      }
+    },
     {
       "id": "early-warning-audit-20260908",
       "publishedAt": "2026-09-08",
