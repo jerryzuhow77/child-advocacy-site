@@ -1,0 +1,143 @@
+name: Converge Hong Kong wall API with Taiwan primary
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-converge-hk-wall-api-20260918.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: converge-hk-wall-api-20260918
+  cancel-in-progress: false
+
+jobs:
+  converge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      HK_HOST: ${{ secrets.TENCENT_SSH_HOST }}
+      HK_USER: ${{ secrets.TENCENT_SSH_USER }}
+      HK_PORT: ${{ secrets.TENCENT_SSH_PORT }}
+      HK_KEY_A: ${{ secrets.TENCENT_SSH_PRIVATE_KEY }}
+      HK_KEY_B: ${{ secrets.TENCENT_CVM_SSH_KEY }}
+      HK_KEY_C: ${{ secrets.SSH_PRIVATE_KEY }}
+      PRIMARY_ORIGIN: https://global-protection.jerryzuhow77.chatgpt.site
+      HK_ORIGIN: https://cn.globalprotectionwall.com
+    steps:
+      - name: Configure SSH
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          host="${HK_HOST:-150.109.69.104}"
+          user="${HK_USER:-ubuntu}"
+          port="${HK_PORT:-22}"
+          key="${HK_KEY_A:-${HK_KEY_B:-${HK_KEY_C:-}}}"
+          test -n "$key"
+          mkdir -p ~/.ssh
+          printf '%s\n' "$key" > ~/.ssh/hk_key
+          chmod 600 ~/.ssh/hk_key
+          ssh-keyscan -p "$port" "$host" > ~/.ssh/known_hosts
+          printf 'HOST=%s\nUSER=%s\nPORT=%s\n' "$host" "$user" "$port" >> "$GITHUB_ENV"
+
+      - name: Route Hong Kong API to the shared primary data source
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'sudo python3 -' <<'PY'
+          from pathlib import Path
+          import re, shutil, subprocess, time
+
+          domain = "cn.globalprotectionwall.com"
+          marker = "# shared-primary-wall-api"
+          candidates = []
+          for root in (Path("/etc/nginx/sites-enabled"), Path("/etc/nginx/conf.d")):
+              if root.exists():
+                  candidates.extend(p for p in root.iterdir() if p.is_file() or p.is_symlink())
+
+          def masked(text):
+              pattern = r'''#[^\n]*|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*' '''
+              return re.sub(pattern.rstrip(), lambda m: re.sub(r"[^\n]", " ", m.group()), text)
+
+          def block_end(text, start):
+              syntax = masked(text)
+              brace = syntax.find("{", start)
+              depth = 0
+              for pos in range(brace, len(syntax)):
+                  if syntax[pos] == "{": depth += 1
+                  elif syntax[pos] == "}":
+                      depth -= 1
+                      if depth == 0: return pos + 1
+              raise RuntimeError("unbalanced nginx block")
+
+          selected = None
+          for path in candidates:
+              try: text = path.read_text()
+              except Exception: continue
+              syntax = masked(text)
+              for match in re.finditer(r"(?m)^\s*server\s*\{", syntax):
+                  end = block_end(text, match.start())
+                  block = text[match.start():end]
+                  names = re.findall(r"(?m)^\s*server_name\s+([^;]+);", block)
+                  if any(domain in row.split() for row in names):
+                      selected = (path.resolve(), text, match.start(), end)
+                      if re.search(r"(?m)^\s*listen\s+[^;]*\bssl\b", block): break
+              if selected and re.search(r"(?m)^\s*listen\s+[^;]*\bssl\b", selected[1][selected[2]:selected[3]]): break
+          if not selected: raise SystemExit("Hong Kong nginx server block not found")
+
+          target, full, start, end = selected
+          block = full[start:end]
+          while True:
+              syntax = masked(block)
+              match = re.search(r"(?m)^\s*location\s+\^~\s+/api/\s*\{", syntax)
+              if not match: break
+              loc_end = block_end(block, match.start())
+              line_start = block.rfind("\n", 0, match.start()) + 1
+              previous_start = block.rfind("\n", 0, max(0, line_start - 2)) + 1
+              if block[previous_start:line_start].strip() in {marker, "# dedicated-hong-kong-api"}: line_start = previous_start
+              while loc_end < len(block) and block[loc_end] in " \t\r\n": loc_end += 1
+              block = block[:line_start] + block[loc_end:]
+
+          snippet = '''
+              # shared-primary-wall-api
+              location ^~ /api/ {
+                  proxy_pass https://global-protection.jerryzuhow77.chatgpt.site;
+                  proxy_http_version 1.1;
+                  proxy_ssl_server_name on;
+                  proxy_set_header Host global-protection.jerryzuhow77.chatgpt.site;
+                  proxy_set_header X-Real-IP $remote_addr;
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto $scheme;
+                  proxy_no_cache 1;
+                  proxy_cache_bypass 1;
+              }
+          '''
+          updated = block[:block.rfind("}")] + snippet + block[block.rfind("}"):]
+          backup_dir = Path("/var/backups/child-advocacy-nginx")
+          backup_dir.mkdir(parents=True, exist_ok=True)
+          backup = backup_dir / (target.name + ".shared-wall-api-" + str(time.time_ns()))
+          shutil.copy2(target, backup)
+          target.write_text(full[:start] + updated + full[end:])
+          try:
+              subprocess.run(["nginx", "-t"], check=True)
+              subprocess.run(["systemctl", "reload", "nginx"], check=True)
+          except Exception:
+              shutil.copy2(backup, target)
+              subprocess.run(["nginx", "-t"], check=True)
+              subprocess.run(["systemctl", "reload", "nginx"], check=True)
+              raise
+          PY
+
+      - name: Verify both public origins expose the same shared wall data
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          primary="$(curl --silent --show-error --fail-with-body --max-time 25 "$PRIMARY_ORIGIN/api/public/messages?limit=100" | sha256sum | cut -d' ' -f1)"
+          hong_kong="$(curl --silent --show-error --fail-with-body --max-time 25 "$HK_ORIGIN/api/public/messages?limit=100" | sha256sum | cut -d' ' -f1)"
+          test "$primary" = "$hong_kong"
+          scope="$(curl --silent --show-error --fail-with-body --max-time 25 "$HK_ORIGIN/api/public/submission-stats" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("scope", ""))')"
+          test "$scope" = taiwan-hong-kong-shared
