@@ -1,0 +1,56 @@
+name: Diagnose guardian wall latency
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-diagnose-wall-latency-20260918.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      HK_HOST: ${{ secrets.TENCENT_SSH_HOST }}
+      HK_USER: ${{ secrets.TENCENT_SSH_USER }}
+      HK_PORT: ${{ secrets.TENCENT_SSH_PORT }}
+      HK_KEY_A: ${{ secrets.TENCENT_SSH_PRIVATE_KEY }}
+      HK_KEY_B: ${{ secrets.TENCENT_CVM_SSH_KEY }}
+      HK_KEY_C: ${{ secrets.SSH_PRIVATE_KEY }}
+    steps:
+      - name: Configure SSH
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          host="${HK_HOST:-150.109.69.104}"
+          user="${HK_USER:-ubuntu}"
+          port="${HK_PORT:-22}"
+          key="${HK_KEY_A:-${HK_KEY_B:-${HK_KEY_C:-}}}"
+          test -n "$key"
+          mkdir -p ~/.ssh
+          printf '%s\n' "$key" > ~/.ssh/hk_key
+          chmod 600 ~/.ssh/hk_key
+          ssh-keyscan -p "$port" "$host" > ~/.ssh/known_hosts
+          printf 'HOST=%s\nUSER=%s\nPORT=%s\n' "$host" "$user" "$port" >> "$GITHUB_ENV"
+
+      - name: Measure local API and locate frontend timeout source
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'bash -s' <<'REMOTE'
+          set -Eeuo pipefail
+          systemctl is-active global-protection.service
+          systemctl show global-protection.service -p MainPID -p ActiveEnterTimestamp --no-pager
+          for path in /api/public/messages?limit=5 /api/public/submission-stats /api/public/view-count; do
+            curl --silent --show-error --output /dev/null --max-time 40 --write-out "$path %{http_code} %{time_total}s\n" "http://127.0.0.1:8787$path"
+          done
+          find /opt/global-protection -type f \( -name '*.js' -o -name '*.mjs' -o -name '*.ts' -o -name '*.tsx' \) -print0 2>/dev/null |
+            xargs -0 grep -l 'Messages returned' 2>/dev/null || true
+          find /opt/global-protection -type f \( -name '*.js' -o -name '*.mjs' -o -name '*.ts' -o -name '*.tsx' \) -print0 2>/dev/null |
+            xargs -0 grep -l 'submission-stats' 2>/dev/null | head -40 || true
+          REMOTE
