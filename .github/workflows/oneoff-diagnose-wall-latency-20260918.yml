@@ -53,4 +53,7 @@ jobs:
             xargs -0 grep -l 'Messages returned' 2>/dev/null || true
           find /opt/global-protection -type f \( -name '*.js' -o -name '*.mjs' -o -name '*.ts' -o -name '*.tsx' \) -print0 2>/dev/null |
             xargs -0 grep -l 'submission-stats' 2>/dev/null | head -40 || true
+          find /opt/global-protection -type f \( -name '*.js' -o -name '*.mjs' -o -name '*.ts' -o -name '*.tsx' \) -print0 2>/dev/null |
+            xargs -0 grep -l 'official_article_views' 2>/dev/null || true
+          grep -n -C 3 -E '7e3|7000|7_000|official_article_views' /opt/global-protection/components/guardian-wall.tsx /opt/global-protection/app/api/public/view-count/route.ts 2>/dev/null || true
           REMOTE
