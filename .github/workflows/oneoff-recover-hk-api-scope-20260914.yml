@@ -1,5 +1,6 @@
 name: One-off recover Hong Kong API scope
 # Operational retrigger: restore the dedicated Hong Kong public API route.
+# Repair retrigger 2026-09-18: restore isolated Hong Kong comment-wall API routing.
 
 on:
   push:
