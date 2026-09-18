@@ -440,7 +440,7 @@ try {
       await captureSection(page, '#news-hearing-notes', path.join(outputDir, `hearing-${width}.png`));
       if ([390, 761, 1180].includes(width)) {
         await captureSection(page, '#news-hearing-notes .home-hearing-ten-day-grid', path.join(outputDir, `hearing-days-${width}.png`));
-        await captureSection(page, '#kaikai-memorial-20260908', path.join(outputDir, `memorial-${width}.png`));
+        await captureSection(page, '#kaikai-memorial-20260916', path.join(outputDir, `memorial-${width}.png`));
         await captureSection(page, '#news-flash [data-document-disc]', path.join(outputDir, `ferris-${width}.png`));
         await captureSection(page, '#home-special-features', path.join(outputDir, `special-${width}.png`));
         await captureSection(page, '.home-social-cases-section', path.join(outputDir, `cases-${width}.png`));
