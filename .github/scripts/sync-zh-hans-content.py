@@ -29,6 +29,7 @@ LANGUAGE_ASSET_REWRITES = {
         ("poster-zh-hant.svg", "poster-zh-hans.svg"),
         ("poster-zh-hant.jpg", "poster-zh-hans.jpg"),
         ("poster-zh-hant.png", "poster-zh-hans.png"),
+        ("comparison-poster-zh-Hant.png", "comparison-poster-zh-Hans.png"),
     ),
 }
 
