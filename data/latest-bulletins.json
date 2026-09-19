@@ -1,8 +1,43 @@
 {
-  "version": 24,
-  "generatedAt": "2026-09-18T21:20:00+08:00",
+  "version": 25,
+  "generatedAt": "2026-09-19T21:00:00+08:00",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
+    {
+      "id": "chen-shangjie-second-instance-prep-20260917",
+      "publishedAt": "2026-09-17",
+      "title": {
+        "zh-Hant": "陳尚潔案二審第一次準備庭",
+        "zh-Hans": "陈尚洁案二审首次准备庭",
+        "en": "Chen Shangjie case: first second-instance preparatory hearing",
+        "ja": "陳尚潔事件：控訴審第1回準備手続"
+      },
+      "summary": {
+        "zh-Hant": "程序焦點、檢辯主張與證據能力爭點；10/15 提書狀，11/6 繼續準備程序。圖片：中央社記者張皓安攝／115年9月16日。",
+        "zh-Hans": "程序焦点、检辩主张与证据能力争点；10/15 交书状，11/6 继续准备程序。图片：中央社记者张皓安摄／115年9月16日。",
+        "en": "Procedure, party submissions and evidentiary issues; photo by CNA reporter Chang Hao-an, September 16, 2026.",
+        "ja": "手続上の争点、検察・弁護双方の主張、証拠能力を整理。写真：中央通信社・張皓安記者／2026年9月16日。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/chen-shangjie-prep-hearing-20260917/",
+        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/hearing-records/chen-shangjie-prep-hearing-20260917/zh-Hans/",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/en/hearing-records/chen-shangjie-prep-hearing-20260917/",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/ja/hearing-records/chen-shangjie-prep-hearing-20260917/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/news/chen-shangjie-high-court-protest-20260916/assets/high-court-protest-01-cna-20260916.jpg",
+      "imageByLocale": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/chen-shangjie-high-court-protest-20260916/assets/high-court-protest-01-cna-20260916.jpg",
+        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/news/chen-shangjie-high-court-protest-20260916/assets/high-court-protest-01-cna-20260916.jpg",
+        "en": "https://jerryzuhow77.github.io/child-advocacy-site/news/chen-shangjie-high-court-protest-20260916/assets/high-court-protest-01-cna-20260916.jpg",
+        "ja": "https://jerryzuhow77.github.io/child-advocacy-site/news/chen-shangjie-high-court-protest-20260916/assets/high-court-protest-01-cna-20260916.jpg"
+      },
+      "imageAlt": {
+        "zh-Hant": "護童行動聯盟成員於台灣高等法院外舉牌表達訴求，中央社新聞照片",
+        "zh-Hans": "护童行动联盟成员在台湾高等法院外举牌表达诉求，中央社新闻照片",
+        "en": "Child Protection Action Alliance members holding signs outside the Taiwan High Court, a CNA news photograph.",
+        "ja": "台湾高等法院前で訴えを示す護童行動聯盟の参加者。中央通信社の報道写真。"
+      }
+    },
     {
       "id": "daily-child-protection-brief-20260918",
       "publishedAt": "2026-09-18",
