@@ -28,6 +28,7 @@ LANGUAGE_ASSET_REWRITES = {
     "news/child-safety-network-20260914/": (
         ("poster-zh-hant.svg", "poster-zh-hans.svg"),
         ("poster-zh-hant.jpg", "poster-zh-hans.jpg"),
+        ("poster-zh-hant.png", "poster-zh-hans.png"),
     ),
 }
 
