@@ -31,6 +31,10 @@ LANGUAGE_ASSET_REWRITES = {
         ("poster-zh-hant.png", "poster-zh-hans.png"),
         ("comparison-poster-zh-Hant.png", "comparison-poster-zh-Hans.png"),
     ),
+    "features/social-observation/reporting-duty-question-20260919/": (
+        ("comparison-poster-zh-Hant.png", "comparison-poster-zh-Hans.png"),
+        ("source-poster-zh-hant.jpg", "source-poster-zh-hans.jpg"),
+    ),
 }
 
 
