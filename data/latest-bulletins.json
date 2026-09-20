@@ -1,8 +1,29 @@
 {
-  "version": 25,
-  "generatedAt": "2026-09-19T21:00:00+08:00",
+  "version": 26,
+  "generatedAt": "2026-09-20T11:15:00+08:00",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
+    {
+      "id": "daily-child-protection-brief-20260920",
+      "publishedAt": "2026-09-20",
+      "title": {
+        "zh-Hant": "每一次失守，都不該只剩下一句遺憾",
+        "zh-Hans": "每一次失守，都不该只剩下一句遗憾"
+      },
+      "summary": {
+        "zh-Hant": "每日護童快報｜從醫療辨識與轉介、跨單位通報到日常防誤食提醒，檢視保護網如何接住孩子。",
+        "zh-Hans": "每日护童快报｜从医疗辨识与转介、跨单位通报到日常防误食提醒，检视保护网如何接住孩子。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260920/",
+        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/news/daily-child-protection-brief-20260920/zh-Hans/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/family-preservation-ink-autumn-20260915.png",
+      "imageAlt": {
+        "zh-Hant": "秋柿、菊花、荷葉、麻雀與燈籠構成的秋日水墨守護意象，非事件現場。",
+        "zh-Hans": "秋柿、菊花、荷叶、麻雀与灯笼构成的秋日水墨守护意象，非事件现场。"
+      }
+    },
     {
       "id": "chen-shangjie-second-instance-prep-20260917",
       "publishedAt": "2026-09-17",
