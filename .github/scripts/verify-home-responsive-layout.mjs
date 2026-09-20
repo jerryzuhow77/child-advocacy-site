@@ -303,7 +303,7 @@ try {
 
     assert(initial.order.media < initial.order.latest, `[${width}] 新聞專區必須位於最新快報之前`, initial.order);
     assert(initial.counts.media >= 8, `[${width}] 新聞專區文章數不足`, initial.counts.media);
-    assert(initial.counts.pinned === 27, `[${width}] 置頂入口數量應為 27`, initial.counts.pinned);
+    assert(initial.counts.pinned === 31, `[${width}] 置頂入口數量應為 31`, initial.counts.pinned);
     assert(initial.counts.recent === 7, `[${width}] 摩天輪近期文章數量應為 7`, initial.counts.recent);
     assert(initial.counts.seasonal === 17, `[${width}] 秋季水墨專區數量應為 17`, initial.counts.seasonal);
     assert(initial.counts.engagement >= 45, `[${width}] 互動控制列未完整建立`, initial.counts.engagement);
@@ -440,7 +440,7 @@ try {
       await captureSection(page, '#news-hearing-notes', path.join(outputDir, `hearing-${width}.png`));
       if ([390, 761, 1180].includes(width)) {
         await captureSection(page, '#news-hearing-notes .home-hearing-ten-day-grid', path.join(outputDir, `hearing-days-${width}.png`));
-        await captureSection(page, '#kaikai-memorial-20260908', path.join(outputDir, `memorial-${width}.png`));
+        await captureSection(page, '#kaikai-memorial-20260916', path.join(outputDir, `memorial-${width}.png`));
         await captureSection(page, '#news-flash [data-document-disc]', path.join(outputDir, `ferris-${width}.png`));
         await captureSection(page, '#home-special-features', path.join(outputDir, `special-${width}.png`));
         await captureSection(page, '.home-social-cases-section', path.join(outputDir, `cases-${width}.png`));
