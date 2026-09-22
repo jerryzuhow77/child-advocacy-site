@@ -253,6 +253,49 @@
         .hero > div { grid-area: copy; }
         .hero figure { grid-area: art; width: min(100%, 410px); }
       }
+      /* 強化桌機水墨主視覺與可掃讀重點：不使用陰影。 */
+      .hero {
+        background:
+          linear-gradient(112deg, rgba(244, 238, 219, 0.58), rgba(224, 231, 209, 0.14)),
+          url("/child-advocacy-site/assets/images/kaikai-intercountry-adoption-choices-20260920/midautumn-kaikai-symbolic-hero-20260922.jpg") center / cover;
+      }
+      .hero figure {
+        width: min(100%, 540px);
+        justify-self: end;
+        padding: 0.7rem;
+        border: 2px solid rgba(48, 87, 109, 0.74);
+        border-radius: 2px;
+        background: rgba(248, 240, 220, 0.9);
+        box-shadow: none;
+      }
+      .hero img {
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .mark {
+        padding: 0.04em 0.15em;
+        font-weight: 760;
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+        background: linear-gradient(transparent 31%, rgba(255, 225, 70, 0.88) 31%, rgba(255, 225, 70, 0.88) 92%, transparent 92%);
+      }
+      .decision-tree {
+        padding: 1.25rem;
+        background: rgba(255, 250, 231, 0.56);
+        border-left: 4px solid #bd6b35;
+      }
+      .audit-panel {
+        border-left: 4px solid #bd6b35;
+        background: rgba(255, 250, 231, 0.58);
+      }
+      @media (max-width: 700px) {
+        .hero figure { justify-self: center; }
+        .hero img { aspect-ratio: 16 / 10; }
+      }
+
     </style>
     <link data-cpa-four-language-toolbar-style rel="stylesheet" href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5">
     <script data-cpa-four-language-toolbar-flag>
