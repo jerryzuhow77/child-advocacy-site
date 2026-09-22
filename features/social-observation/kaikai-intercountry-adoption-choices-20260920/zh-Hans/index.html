@@ -164,6 +164,18 @@
           justify-self: center;
         }
       }
+
+      /* Keep the Mid-Autumn ink illustration visible on first mobile viewport. */
+      .hero {
+        background:
+          linear-gradient(115deg, rgba(244, 238, 219, 0.78), rgba(224, 231, 209, 0.36)),
+          url("../../../assets/images/kaikai-intercountry-adoption-choices-20260920/midautumn-kaikai-symbolic-hero-20260922.jpg") center / cover;
+      }
+      @media (max-width: 700px) {
+        .hero { grid-template-areas: "art" "copy"; gap: 1.1rem; padding-top: 4.2rem; }
+        .hero > div { grid-area: copy; }
+        .hero figure { grid-area: art; width: min(100%, 410px); }
+      }
     </style>
     <link data-cpa-four-language-toolbar-style rel="stylesheet" href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5">
     <script data-cpa-four-language-toolbar-flag>
