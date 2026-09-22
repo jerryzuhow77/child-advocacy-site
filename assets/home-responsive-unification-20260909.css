@@ -966,3 +966,22 @@ body.art-site.home-medium-palette #home-special-features .home-crafted-card>.hom
   }
   .home-priority-links .home-post-stat{font-size:.68rem!important}
 }
+
+
+/* Preserve the complete feature thumbnail in the phone pinned-report rail. */
+@media (max-width:760px){
+  #news-flash .home-pinned-report-card[href*="kaikai-intercountry-adoption-choices-20260920"]{
+    grid-template-rows:196px auto auto!important;
+  }
+  #news-flash .home-pinned-report-card[href*="kaikai-intercountry-adoption-choices-20260920"]>img{
+    grid-column:1!important;
+    grid-row:1!important;
+    display:block!important;
+    width:100%!important;
+    height:196px!important;
+    min-height:196px!important;
+    aspect-ratio:auto!important;
+    object-fit:cover!important;
+    object-position:center!important;
+  }
+}
