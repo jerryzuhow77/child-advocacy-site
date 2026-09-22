@@ -134,6 +134,53 @@
         background: rgba(255, 255, 255, 0.42);
         border: 1px solid rgba(88, 119, 138, 0.35);
       }
+      .decision-tree {
+        display: grid;
+        gap: 0.8rem;
+        margin: 1.5rem 0;
+      }
+      .tree-node {
+        position: relative;
+        padding: 0.95rem 1.05rem;
+        background: rgba(244, 238, 219, 0.8);
+        border: 1px solid rgba(88, 119, 138, 0.35);
+      }
+      .tree-root {
+        background: rgba(222, 231, 217, 0.8);
+        border-left: 4px solid #5d7c6c;
+      }
+      .tree-branches {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.8rem;
+      }
+      .tree-node::before {
+        content: "↓";
+        display: block;
+        color: #b47438;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+      }
+      .tree-root::before {
+        content: "";
+        display: none;
+      }
+      .tree-node strong {
+        display: block;
+        color: #375565;
+        margin-bottom: 0.25rem;
+      }
+      .tree-stop {
+        background: rgba(255, 255, 255, 0.55);
+      }
+      .tree-action {
+        background: rgba(239, 228, 192, 0.58);
+      }
+      @media (max-width: 700px) {
+        .tree-branches {
+          grid-template-columns: 1fr;
+        }
+      }
       dt {
         font-weight: 700;
       }
@@ -278,6 +325,47 @@
               >。
             </p>
           </div>
+          <div class="decision-tree" role="group" aria-label="跨國收出養的制度決策樹">
+            <div class="tree-node tree-root">
+              <strong>本案當時是否「只能」走向跨國收出養？</strong>
+              公開資料尚不足以下定論；必須逐層檢視正式評估與交接紀錄。
+            </div>
+            <div class="tree-node">
+              <strong>第一層：出養必要性是否成立？</strong>
+              若家庭支持、托育、生活或醫療協助足以維持照顧，制度上不應直接進入收出養。
+            </div>
+            <div class="tree-branches">
+              <div class="tree-node tree-stop">
+                <strong>否／尚無充分紀錄</strong>
+                不能說其他路徑必然不可行；應回到家庭支持與安全評估。
+              </div>
+              <div class="tree-node">
+                <strong>是</strong>
+                才進入收養人評估與媒合。
+              </div>
+            </div>
+            <div class="tree-node">
+              <strong>第二層：台灣島內媒合是否有適配家庭？</strong>
+              法律以<span class="mark">台灣島內收養人優先</span>；年齡、健康與發展需求、手足、等待時間及照顧穩定性，都應有可回看的判斷。
+            </div>
+            <div class="tree-branches">
+              <div class="tree-node tree-stop">
+                <strong>有適配家庭</strong>
+                應優先走台灣島內收養，並依程序與法院認可評估。
+              </div>
+              <div class="tree-node">
+                <strong>無／不適配／等待風險需說明</strong>
+                才能進一步評估跨國收出養是否符合孩子最佳利益。
+              </div>
+            </div>
+            <div class="tree-node tree-action">
+              <strong>第三層：跨國收出養是否符合孩子最佳利益？</strong>
+              必須核對孩子需求、收養人適格性與兩地主管機關保障；<span class="mark">等待永久家庭期間，安全訪視與風險升級不能暫停。</span>
+            </div>
+          </div>
+          <p class="notice">
+            這張樹狀圖呈現制度上需要成立的判斷鏈，不是對本案未公開個案評估資料的倒推，也不以任何單一結果推定個人責任。
+          </p>
           <div class="reading-spine" aria-label="安全檢視三步驟">
             <article class="spine-card">
               <strong>看見警訊</strong

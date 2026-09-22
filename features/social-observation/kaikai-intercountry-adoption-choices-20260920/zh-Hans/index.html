@@ -134,6 +134,53 @@
         background: rgba(255, 255, 255, 0.42);
         border: 1px solid rgba(88, 119, 138, 0.35);
       }
+      .decision-tree {
+        display: grid;
+        gap: 0.8rem;
+        margin: 1.5rem 0;
+      }
+      .tree-node {
+        position: relative;
+        padding: 0.95rem 1.05rem;
+        background: rgba(244, 238, 219, 0.8);
+        border: 1px solid rgba(88, 119, 138, 0.35);
+      }
+      .tree-root {
+        background: rgba(222, 231, 217, 0.8);
+        border-left: 4px solid #5d7c6c;
+      }
+      .tree-branches {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.8rem;
+      }
+      .tree-node::before {
+        content: "↓";
+        display: block;
+        color: #b47438;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+      }
+      .tree-root::before {
+        content: "";
+        display: none;
+      }
+      .tree-node strong {
+        display: block;
+        color: #375565;
+        margin-bottom: 0.25rem;
+      }
+      .tree-stop {
+        background: rgba(255, 255, 255, 0.55);
+      }
+      .tree-action {
+        background: rgba(239, 228, 192, 0.58);
+      }
+      @media (max-width: 700px) {
+        .tree-branches {
+          grid-template-columns: 1fr;
+        }
+      }
       dt {
         font-weight: 700;
       }
@@ -279,6 +326,47 @@
               >。
             </p>
           </div>
+          <div class="decision-tree" role="group" aria-label="跨国收出养的制度决策树">
+            <div class="tree-node tree-root">
+              <strong>本案当时是否「只能」走向跨国收出养？</strong>
+              公开资料尚不足以下定论；必须逐层检视正式评估与交接记录。
+            </div>
+            <div class="tree-node">
+              <strong>第一层：出养必要性是否成立？</strong>
+              若家庭支持、托育、生活或医疗协助足以维持照顾，制度上不应直接进入收出养。
+            </div>
+            <div class="tree-branches">
+              <div class="tree-node tree-stop">
+                <strong>否／尚无充分记录</strong>
+                不能说其他路径必然不可行；应回到家庭支持与安全评估。
+              </div>
+              <div class="tree-node">
+                <strong>是</strong>
+                才进入收养人评估与媒合。
+              </div>
+            </div>
+            <div class="tree-node">
+              <strong>第二层：台湾岛内媒合是否有适配家庭？</strong>
+              法律以<span class="mark">台湾岛内收养人优先</span>；年龄、健康与发展需求、手足、等待时间及照顾稳定性，都应有可回看的判断。
+            </div>
+            <div class="tree-branches">
+              <div class="tree-node tree-stop">
+                <strong>有适配家庭</strong>
+                应优先走台湾岛内收养，并依程序与法院认可评估。
+              </div>
+              <div class="tree-node">
+                <strong>无／不适配／等待风险需说明</strong>
+                才能进一步评估跨国收出养是否符合孩子最佳利益。
+              </div>
+            </div>
+            <div class="tree-node tree-action">
+              <strong>第三层：跨国收出养是否符合孩子最佳利益？</strong>
+              必须核对孩子需求、收养人适格性与两地主管机关保障；<span class="mark">等待永久家庭期间，安全访视与风险升级不能暂停。</span>
+            </div>
+          </div>
+          <p class="notice">
+            这张树状图呈现制度上需要成立的判断链，不是对本案未公开个案评估资料的倒推，也不以任何单一结果推定个人责任。
+          </p>
           <div class="reading-spine" aria-label="安全检视三步骤">
             <article class="spine-card">
               <strong>看见警讯</strong
