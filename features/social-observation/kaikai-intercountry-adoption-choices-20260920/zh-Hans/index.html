@@ -176,6 +176,36 @@
       .tree-action {
         background: rgba(239, 228, 192, 0.58);
       }
+      .audit-panel {
+        margin: 1.25rem 0 1.8rem;
+        padding: 1.25rem;
+        background: rgba(255, 255, 255, 0.44);
+        border: 1px solid rgba(88, 119, 138, 0.35);
+      }
+      .audit-panel h3 {
+        margin: 0 0 0.9rem;
+        line-height: 1.45;
+      }
+      .audit-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.8rem;
+      }
+      .audit-card {
+        padding: 1rem;
+        background: rgba(244, 238, 219, 0.72);
+        border-top: 2px solid rgba(192, 118, 57, 0.65);
+      }
+      .audit-card strong {
+        display: block;
+        color: #375565;
+        margin-bottom: 0.3rem;
+      }
+      @media (max-width: 700px) {
+        .audit-grid {
+          grid-template-columns: 1fr;
+        }
+      }
       @media (max-width: 700px) {
         .tree-branches {
           grid-template-columns: 1fr;
@@ -367,6 +397,31 @@
           <p class="notice">
             这张树状图呈现制度上需要成立的判断链，不是对本案未公开个案评估资料的倒推，也不以任何单一结果推定个人责任。
           </p>
+          <div class="audit-panel">
+            <h3>要确认为何未采寄养或机构安置，应公开四组决策轨迹</h3>
+            <div class="audit-grid">
+              <article class="audit-card">
+                <strong>一、新北市安置需求与风险评估</strong>
+                不只要看有没有填表，而要回答：谁在何时评估孩子是否需要家外安置？评估使用哪些家庭、照顾与安全资讯？若未启动寄养或机构安置，理由、复核者与再次评估日期为何？
+              </article>
+              <article class="audit-card">
+                <strong>二、寄养家庭与机构资源记录</strong>
+                应提出当时实际可用名额、询问对象、配对条件与回复结果。若曾认为不适配，必须区分是孩子需求不符、资源不足、等待时间过长，还是根本未进行完整询问。
+              </article>
+              <article class="audit-card">
+                <strong>三、2022、2023 年出养必要性评估</strong>
+                两次程序之间，监护、家庭支持与照顾条件如何改变？重新转介时是否重新评估出养必要性及台湾岛内媒合可能性，而非沿用先前结论？这些都应由原始评估报告证明。
+              </article>
+              <article class="audit-card">
+                <strong>四、等待媒合期间的安全计划</strong>
+                永久安置尚未完成，不代表暂时照顾可以降级。应核对照顾者遴选、访视频率、督导复核、医疗与外观异常记录，以及警讯由谁查证、通报、交接并启动保护措施。
+              </article>
+            </div>
+            <p>
+              <span class="mark">真正的问题不是「最后选了哪一条路」，而是每一条未采用的路径是否真的被评估、留下理由并受到复核。</span>
+              在完整记录公开或经合法调阅前，不能把最终走向跨国收出养倒推成寄养、机构安置或台湾岛内收养必然不可行。
+            </p>
+          </div>
           <div class="reading-spine" aria-label="安全检视三步骤">
             <article class="spine-card">
               <strong>看见警讯</strong
