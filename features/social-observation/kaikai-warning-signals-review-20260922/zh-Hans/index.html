@@ -31,7 +31,20 @@
         font:
           17px/1.9 system-ui,
           "Noto Serif TC",
-          serif;`r`n        position: relative;`r`n        isolation: isolate;`r`n      }`r`n      body:before {`r`n        content: "";`r`n        position: fixed;`r`n        z-index: -2;`r`n        inset: 0;`r`n        background: linear-gradient(rgba(247, 244, 239, 0.84), rgba(233, 238, 240, 0.9)), url("/child-advocacy-site/assets/images/kaikai-warning-signals-review-20260922/paper-clay-kaikai-hero-20260923.png") center top / max(1280px, 100vw) auto repeat-y;`r`n        opacity: 0.38;`r`n        pointer-events: none;`r`n      }`r`n      .wrap {
+          serif;
+        position: relative;
+        isolation: isolate;
+      }
+      body:before {
+        content: "";
+        position: fixed;
+        z-index: -2;
+        inset: 0;
+        background: linear-gradient(rgba(247, 244, 239, 0.84), rgba(233, 238, 240, 0.9)), url("/child-advocacy-site/assets/images/kaikai-warning-signals-review-20260922/paper-clay-kaikai-hero-20260923.png") center top / max(1280px, 100vw) auto repeat-y;
+        opacity: 0.38;
+        pointer-events: none;
+      }
+      .wrap {
         width: min(1000px, 92vw);
         margin: auto;
       }
@@ -55,7 +68,17 @@
             center/cover;
         z-index: -1;
       }
-      .hero-art {`r`n        position: absolute;`r`n        z-index: -1;`r`n        inset: 0;`r`n        background: url("/child-advocacy-site/assets/images/kaikai-warning-signals-review-20260922/paper-clay-kaikai-hero-20260923.png") center/cover;`r`n        opacity: 0.16;`r`n        mix-blend-mode: screen;`r`n        transform: scale(1.04);`r`n        pointer-events: none;`r`n      }`r`n      .eyebrow {
+      .hero-art {
+        position: absolute;
+        z-index: -1;
+        inset: 0;
+        background: url("/child-advocacy-site/assets/images/kaikai-warning-signals-review-20260922/paper-clay-kaikai-hero-20260923.png") center/cover;
+        opacity: 0.16;
+        mix-blend-mode: screen;
+        transform: scale(1.04);
+        pointer-events: none;
+      }
+      .eyebrow {
         font-weight: 800;
         letter-spacing: 0.13em;
         color: #dce9ed;
@@ -363,7 +386,8 @@
 </head>
   <body>
     <header class="hero">
-      <div class="hero-art" aria-hidden="true"></div>`r`n      <div class="wrap">
+      <div class="hero-art" aria-hidden="true"></div>
+      <div class="wrap">
         <p class="eyebrow">多元观察 · 2026.09.22</p>
         <h1>是被蒙骗，还是没有查核？</h1>
         <p class="lead">115天里，这些警讯不是事后才知道。</p>
@@ -672,7 +696,8 @@
           duration: 0.8,
           stagger: 0.12,
         });
-        gsap.to(".hero-art", { scale: 1.12, xPercent: -1.5, duration: 15, ease: "sine.inOut", repeat: -1, yoyo: true });`r`n        const io = new IntersectionObserver(
+        gsap.to(".hero-art", { scale: 1.12, xPercent: -1.5, duration: 15, ease: "sine.inOut", repeat: -1, yoyo: true });
+        const io = new IntersectionObserver(
           (es) =>
             es.forEach((e) => {
               if (e.isIntersecting) {
