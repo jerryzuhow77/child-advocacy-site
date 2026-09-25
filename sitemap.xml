@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/</loc>
-    <lastmod>2026-09-24</lastmod>
+    <lastmod>2026-09-25</lastmod>
   </url>
   <url>
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/about/</loc>
@@ -1129,6 +1129,14 @@
     <lastmod>2026-09-11</lastmod>
   </url>
   <url>
+    <loc>https://jerryzuhow77.github.io/child-advocacy-site/news/guardian-alliance-statement-20260925/</loc>
+    <lastmod>2026-09-25</lastmod>
+  </url>
+  <url>
+    <loc>https://jerryzuhow77.github.io/child-advocacy-site/news/guardian-alliance-statement-20260925/zh-Hans/</loc>
+    <lastmod>2026-09-25</lastmod>
+  </url>
+  <url>
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/news/kaikai-court-question-20260903/</loc>
     <lastmod>2026-09-11</lastmod>
   </url>
@@ -1166,7 +1174,7 @@
   </url>
   <url>
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/news/pinned-reports/</loc>
-    <lastmod>2026-09-24</lastmod>
+    <lastmod>2026-09-25</lastmod>
   </url>
   <url>
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/news/reporting-threshold-20260911/</loc>
@@ -1268,6 +1276,4 @@
     <loc>https://jerryzuhow77.github.io/child-advocacy-site/zh-hans/historical-cases/regions/mainland-china/fujian-qiqi/</loc>
     <lastmod>2026-09-11</lastmod>
   </url>
-  <url><loc>https://jerryzuhow77.github.io/child-advocacy-site/news/guardian-alliance-statement-20260925/</loc><lastmod>2026-09-25</lastmod></url>
-  <url><loc>https://cn.globalprotectionwall.com/child-advocacy-site/news/guardian-alliance-statement-20260925/zh-Hans/</loc><lastmod>2026-09-25</lastmod></url>
 </urlset>
