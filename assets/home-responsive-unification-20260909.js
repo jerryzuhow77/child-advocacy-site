@@ -92,9 +92,9 @@
     const viewport = section?.querySelector('.home-media-report-viewport');
     const track = viewport?.querySelector('.home-media-report-track');
     const controls = section?.querySelector('.home-media-report-controls');
-    const cards = track ? [...track.querySelectorAll('.home-media-report-card')] : [];
+    const cards = () => [...track.querySelectorAll('.home-media-report-card')];
     const buttons = controls ? [...controls.querySelectorAll('button')] : [];
-    if (!viewport || !track || !controls || !cards.length || buttons.length < 2) return;
+    if (!viewport || !track || !controls || !cards().length || buttons.length < 2) return;
 
     if (!viewport.id) viewport.id = 'homeMediaReportViewport';
     buttons.forEach((button) => button.setAttribute('aria-controls', viewport.id));
@@ -111,16 +111,15 @@
 
     const current = progress.querySelector('b');
     const total = progress.querySelector('small span');
-    total.textContent = String(cards.length);
 
-    const nearestIndex = () => {
+    const nearestIndex = (items = cards()) => {
       const max = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
       if (viewport.scrollLeft <= 2) return 0;
-      if (viewport.scrollLeft >= max - 2) return cards.length - 1;
+      if (viewport.scrollLeft >= max - 2) return items.length - 1;
       const viewportLeft = viewport.getBoundingClientRect().left;
       let best = 0;
       let distance = Number.POSITIVE_INFINITY;
-      cards.forEach((card, index) => {
+      items.forEach((card, index) => {
         const nextDistance = Math.abs(card.getBoundingClientRect().left - viewportLeft);
         if (nextDistance < distance) {
           distance = nextDistance;
@@ -131,21 +130,26 @@
     };
 
     const update = () => {
-      const index = nearestIndex();
+      // Homepage briefs can be inserted after this controller starts. Read the
+      // live rail so the total, end state and current card stay aligned.
+      const items = cards();
+      const index = nearestIndex(items);
+      total.textContent = String(items.length);
       current.textContent = String(index + 1);
-      progress.style.setProperty('--media-progress', String((index + 1) / cards.length));
+      progress.style.setProperty('--media-progress', String((index + 1) / items.length));
       const max = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
       // Scroll snapping can settle a fraction short of the mathematical edge
       // on narrow screens.  The selected end card is the authoritative state.
       buttons[0].disabled = index === 0 || viewport.scrollLeft <= 2;
-      buttons[1].disabled = index === cards.length - 1 || viewport.scrollLeft >= max - 2;
-      cards.forEach((card, cardIndex) => card.toggleAttribute('data-current-news', cardIndex === index));
+      buttons[1].disabled = index === items.length - 1 || viewport.scrollLeft >= max - 2;
+      items.forEach((card, cardIndex) => card.toggleAttribute('data-current-news', cardIndex === index));
     };
 
     const show = (index) => {
-      const targetIndex = Math.max(0, Math.min(cards.length - 1, index));
+      const items = cards();
+      const targetIndex = Math.max(0, Math.min(items.length - 1, index));
       const viewportLeft = viewport.getBoundingClientRect().left;
-      const targetLeft = viewport.scrollLeft + cards[targetIndex].getBoundingClientRect().left - viewportLeft;
+      const targetLeft = viewport.scrollLeft + items[targetIndex].getBoundingClientRect().left - viewportLeft;
       viewport.scrollTo({ left: targetLeft, behavior: reduceMotion ? 'auto' : 'smooth' });
       window.setTimeout(update, reduceMotion ? 0 : 520);
     };
