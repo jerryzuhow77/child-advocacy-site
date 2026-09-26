@@ -23,6 +23,8 @@ INTENTIONALLY_SINGLE_LANGUAGE = {
     'features/social-observation/reporting-duty-question-20260919/',
     'features/social-observation/kaikai-warning-signals-review-20260922/',
     'features/social-observation/taiwan-child-placement-history-20260923/',
+    # Published in Chinese while English and Japanese translations are reviewed.
+    'features/social-observation/chen-shangjie-defense-testimony-20260924/',
     'hearing-records/chen-shangjie-prep-hearing-20260917/',
     'news/chen-shangjie-high-court-protest-20260916/',
     'news/daily-child-protection-brief-20260918/',
