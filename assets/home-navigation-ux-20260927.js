@@ -34,10 +34,16 @@
     var track=viewport&&viewport.querySelector('.home-pinned-reports-track');
     if(track){
       var cards=[].slice.call(track.querySelectorAll('.home-pinned-report-card:not([data-pinned-clone])'));
+      cards.sort(function(a,b){
+        function key(card){var text=(card.querySelector('small')||{}).textContent||'';var match=text.match(/(\d{2})\.(\d{2})/);return match?Number(match[1])*100+Number(match[2]):0;}
+        return key(b)-key(a);
+      });
+      cards.forEach(function(card){track.appendChild(card);});
       cards.forEach(function(card){card.classList.remove('is-latest-report');});
       if(cards[0]){cards[0].classList.add('is-latest-report');cards[0].setAttribute('aria-label',(hans?'最新：':'最新：')+(cards[0].querySelector('strong')||{}).textContent);}
       requestAnimationFrame(function(){viewport.scrollLeft=0;});
     }
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+  init();
+  window.setTimeout(init,500);
 }());
