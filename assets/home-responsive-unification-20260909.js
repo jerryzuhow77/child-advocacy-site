@@ -92,7 +92,7 @@
     const viewport = section?.querySelector('.home-media-report-viewport');
     const track = viewport?.querySelector('.home-media-report-track');
     const controls = section?.querySelector('.home-media-report-controls');
-    const cards = track ? [...track.querySelectorAll('.home-media-report-card')] : [];
+    let cards = track ? [...track.querySelectorAll('.home-media-report-card')] : [];
     const buttons = controls ? [...controls.querySelectorAll('button')] : [];
     if (!viewport || !track || !controls || !cards.length || buttons.length < 2) return;
 
@@ -112,6 +112,11 @@
     const current = progress.querySelector('b');
     const total = progress.querySelector('small span');
     total.textContent = String(cards.length);
+
+    const refreshCards = () => {
+      cards = [...track.querySelectorAll('.home-media-report-card')];
+      total.textContent = String(cards.length);
+    };
 
     const nearestIndex = () => {
       const max = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
@@ -160,6 +165,12 @@
         show(nearestIndex() + (event.key === 'ArrowRight' ? 1 : -1));
       });
     }
+
+    const cardObserver = new MutationObserver(() => {
+      refreshCards();
+      update();
+    });
+    cardObserver.observe(track, { childList: true });
 
     let frame = 0;
     let settleTimer = 0;
