@@ -46,4 +46,6 @@
   }
   init();
   window.setTimeout(init,500);
+  window.setTimeout(init,2500);
+  window.addEventListener('load',init,{once:true});
 }());
