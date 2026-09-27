@@ -29,7 +29,7 @@
     var next = controls.querySelector('.is-next');
     var dotsHost = controls.querySelector('.home-pinned-dots');
     var progress = controls.querySelector('.home-pinned-progress i');
-    var active = 0, timer = 0, scrollTimer = 0, dragging = false, dragged = false, startX = 0, startScroll = 0, suppressUntil = 0;
+    var active = 0, timer = 0, scrollTimer = 0, dragging = false, dragged = false, startX = 0, startScroll = 0, suppressUntil = 0, userPaused = false;
     var progressTween = null;
     var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var dots = cards.map(function (_, index) {
@@ -70,7 +70,7 @@
         window.gsap.fromTo(cards[active], { y: 12, scale: .985, boxShadow: '0 8px 18px rgba(70,52,47,.08)' }, { y: 0, scale: 1, boxShadow: '0 18px 34px rgba(70,52,47,.16)', duration: .65, ease: 'power3.out', clearProps: 'transform,boxShadow' });
         window.gsap.fromTo(dots[active], { scale: .72 }, { scale: 1, duration: .42, ease: 'back.out(2.2)', clearProps: 'transform' });
       }
-      if (manual) restart();
+      if (manual) { userPaused = true; stop(); }
     }
     function stop() {
       window.clearInterval(timer); timer = 0;
@@ -78,18 +78,18 @@
     }
     function restart() {
       stop();
-      if (!reduceMotion && !document.hidden) {
+      if (!reduceMotion && !document.hidden && !userPaused) {
         if (window.gsap && progress) {
           window.gsap.set(progress, { scaleX: 0, transformOrigin: 'left center' });
-          progressTween = window.gsap.to(progress, { scaleX: 1, duration: 5.5, ease: 'none' });
+          progressTween = window.gsap.to(progress, { scaleX: 1, duration: 8, ease: 'none' });
         }
         timer = window.setInterval(function () {
           show(active + 1, false);
           if (window.gsap && progress) {
             window.gsap.set(progress, { scaleX: 0 });
-            progressTween = window.gsap.to(progress, { scaleX: 1, duration: 5.5, ease: 'none' });
+            progressTween = window.gsap.to(progress, { scaleX: 1, duration: 8, ease: 'none' });
           }
-        }, 5500);
+        }, 8000);
       }
     }
     previous.addEventListener('click', function () { show(active - 1, true); });
@@ -99,7 +99,7 @@
     section.addEventListener('focusin', stop);
     section.addEventListener('focusout', function (event) { if (!section.contains(event.relatedTarget)) restart(); });
     section.addEventListener('touchstart', stop, { passive: true });
-    section.addEventListener('touchend', restart, { passive: true });
+    section.addEventListener('touchend', function () { userPaused = true; stop(); }, { passive: true });
     document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else restart(); });
     viewport.addEventListener('pointerdown', function (event) {
       if (event.button !== 0 || event.target.closest('button,input,select,textarea,[role="button"]')) return;
@@ -118,7 +118,7 @@
       dragging = false; viewport.classList.remove('is-dragging');
       if (viewport.hasPointerCapture(event.pointerId)) viewport.releasePointerCapture(event.pointerId);
       if (dragged) suppressUntil = Date.now() + 420;
-      show(nearestIndex(), false); restart();
+      userPaused = true; show(nearestIndex(), false); stop();
     }
     viewport.addEventListener('pointerup', finish);
     viewport.addEventListener('pointercancel', finish);
