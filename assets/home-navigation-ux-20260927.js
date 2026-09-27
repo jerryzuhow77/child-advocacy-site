@@ -48,4 +48,9 @@
   window.setTimeout(init,500);
   window.setTimeout(init,2500);
   window.addEventListener('load',init,{once:true});
+  var retries=0;
+  var navigationRetry=window.setInterval(function(){
+    if(document.querySelector('.cpa-primary-nav')||retries++>=30){window.clearInterval(navigationRetry);return;}
+    init();
+  },1000);
 }());
