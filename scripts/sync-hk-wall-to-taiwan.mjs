@@ -14,7 +14,7 @@ const CONTENT_KINDS = new Set(["guardian", "official", "bulletin"]);
 const USER_AGENT = "GuardianWallScheduledSync/1";
 
 const [sourcePublic, targetPublic] = await Promise.all([
-  getPublicSnapshot(sourceOrigin, "hong-kong-data-site", "Hong Kong"),
+  getPublicSnapshot(sourceOrigin, "taiwan-hong-kong-shared", "Hong Kong"),
   getPublicSnapshot(targetOrigin, "taiwan-hong-kong-shared", "Taiwan"),
 ]);
 
@@ -112,7 +112,7 @@ if (apply) {
 
 const [verifiedSource, verifiedTarget] = apply
   ? await Promise.all([
-      getPublicSnapshot(sourceOrigin, "hong-kong-data-site", "verified Hong Kong"),
+      getPublicSnapshot(sourceOrigin, "taiwan-hong-kong-shared", "verified Hong Kong"),
       getPublicSnapshot(targetOrigin, "taiwan-hong-kong-shared", "verified Taiwan"),
     ])
   : [sourcePublic, targetPublic];
