@@ -27,6 +27,11 @@ INTENTIONALLY_SINGLE_LANGUAGE = {
     'news/chen-shangjie-high-court-protest-20260916/',
     'news/daily-child-protection-brief-20260918/',
     'news/taichung-infant-rescue-20260919/',
+    # Published with Chinese editions only; English/Japanese editions have not been released.
+    'features/social-observation/chen-shangjie-defense-testimony-20260924/',
+    'news/guardian-alliance-statement-20260925/',
+    'news/daily-child-protection-brief-20260926/',
+    'news/daily-child-protection-brief-20260927/',
 }
 BESPOKE_TOOLBAR_ROUTES = {'court-comics/episode-05/'}
 routes = json.loads((ROOT / 'data/four-language-routes.json').read_text())['routes']
