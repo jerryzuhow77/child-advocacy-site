@@ -1,5 +1,48 @@
 (function(){
   'use strict';
+
+  function articleDate(card){
+    var explicit=card.getAttribute('data-date')||card.getAttribute('data-published')||card.getAttribute('data-published-at');
+    var time=card.querySelector('time[datetime]');
+    var value=explicit||(time&&time.getAttribute('datetime'))||'';
+    var match=String(value).match(/(20\d{2})[-\/.](\d{1,2})[-\/.](\d{1,2})/);
+    if(match)return Date.UTC(Number(match[1]),Number(match[2])-1,Number(match[3]));
+
+    var link=card.matches('a[href]')?card:card.querySelector('a[href]');
+    var href=link&&link.getAttribute('href')||'';
+    match=href.match(/(20\d{2})(\d{2})(\d{2})/);
+    if(match)return Date.UTC(Number(match[1]),Number(match[2])-1,Number(match[3]));
+
+    var sample=((time&&time.textContent)||card.textContent||'').trim().slice(0,180);
+    match=sample.match(/(20\d{2})[-\/.年](\d{1,2})[-\/.月](\d{1,2})/);
+    if(match)return Date.UTC(Number(match[1]),Number(match[2])-1,Number(match[3]));
+    match=sample.match(/(?:^|\s)(\d{1,2})[.\/]([0-3]?\d)(?:\s|·|$)/);
+    if(match)return Date.UTC(new Date().getUTCFullYear(),Number(match[1])-1,Number(match[2]));
+    return NaN;
+  }
+
+  function sortHomepageArticles(){
+    var parents=[];
+    document.querySelectorAll('main, body').forEach(function(root){
+      root.querySelectorAll('a, article, li').forEach(function(card){
+        if(card.hasAttribute('data-pinned-clone')||!Number.isFinite(articleDate(card)))return;
+        var parent=card.parentElement;
+        if(parent&&parents.indexOf(parent)===-1)parents.push(parent);
+      });
+    });
+    parents.forEach(function(parent){
+      var cards=[].slice.call(parent.children).filter(function(card){
+        return (card.matches('a, article, li'))&&!card.hasAttribute('data-pinned-clone')&&Number.isFinite(articleDate(card));
+      });
+      if(cards.length<2)return;
+      var ordered=cards.slice().sort(function(a,b){return articleDate(b)-articleDate(a);});
+      var changed=cards.some(function(card,index){return card!==ordered[index];});
+      if(!changed)return;
+      var markers=cards.map(function(card){var marker=document.createComment('article-date-slot');parent.insertBefore(marker,card);return marker;});
+      ordered.forEach(function(card,index){parent.replaceChild(card,markers[index]);});
+    });
+  }
+
   function init(){
     var html=document.documentElement;
     var lang=(html.lang||'zh-Hant').toLowerCase();
@@ -30,15 +73,11 @@
       var items=english?[[contentBase,'⌂','Home'],['#news-flash','✦','Latest'],[contentBase+'cases/kaikai/','♡','Kaikai'],['#','⌕','Search'],['#','☰','More']]:japanese?[[contentBase,'⌂','ホーム'],['#news-flash','✦','速報'],[contentBase+'cases/kaikai/','♡','剴剴'],['#','⌕','検索'],['#','☰','その他']]:hans?[[contentBase,'⌂','首页'],['#news-flash','✦','快报'],[contentBase+'cases/kaikai/','♡','剀剀案'],['#','⌕','搜索'],['#','☰','更多']]:[[contentBase,'⌂','首頁'],['#news-flash','✦','快報'],[contentBase+'cases/kaikai/','♡','剴剴案'],['#','⌕','搜尋'],['#','☰','更多']];
       mobile.replaceChildren();items.forEach(function(item,index){var a=document.createElement('a');a.href=item[0];a.innerHTML='<span aria-hidden="true">'+item[1]+'</span><b>'+item[2]+'</b>';if(index===0)a.setAttribute('aria-current','page');if(index===3)a.addEventListener('click',function(e){e.preventDefault();var original=document.querySelector('.site-search-btn');if(original)original.click();});if(index===4)a.addEventListener('click',function(e){e.preventDefault();if(menuButton)menuButton.click();});mobile.appendChild(a);});
     }
+    sortHomepageArticles();
     var viewport=document.querySelector('.home-pinned-reports-viewport');
     var track=viewport&&viewport.querySelector('.home-pinned-reports-track');
     if(track){
       var cards=[].slice.call(track.querySelectorAll('.home-pinned-report-card:not([data-pinned-clone])'));
-      cards.sort(function(a,b){
-        function key(card){var text=(card.querySelector('small')||{}).textContent||'';var match=text.match(/(\d{2})\.(\d{2})/);return match?Number(match[1])*100+Number(match[2]):0;}
-        return key(b)-key(a);
-      });
-      cards.forEach(function(card){track.appendChild(card);});
       cards.forEach(function(card){card.classList.remove('is-latest-report');});
       if(cards[0]){cards[0].classList.add('is-latest-report');cards[0].setAttribute('aria-label',(hans?'最新：':'最新：')+(cards[0].querySelector('strong')||{}).textContent);}
       requestAnimationFrame(function(){viewport.scrollLeft=0;});
