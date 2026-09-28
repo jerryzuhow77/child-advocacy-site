@@ -1,8 +1,29 @@
 {
-  "version": 26,
-  "generatedAt": "2026-09-20T11:15:00+08:00",
+  "version": 27,
+  "generatedAt": "2026-09-28T22:00:00+08:00",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
+    {
+      "id": "daily-child-protection-brief-20260928",
+      "publishedAt": "2026-09-28",
+      "title": {
+        "zh-Hant": "不是一句「沒看見」：從證據鏈檢驗剴剴的求救警訊",
+        "zh-Hans": "不是一句“没看见”：从证据链检验剀剀的求救警讯"
+      },
+      "summary": {
+        "zh-Hant": "每日護童快報｜把知悉、能力、行動與結果分開檢驗；不以動機猜測取代證據。",
+        "zh-Hans": "每日护童快报｜把知悉、能力、行动与结果分开检验；不以动机猜测取代证据。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260928/",
+        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/news/daily-child-protection-brief-20260928/zh-Hans/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/kaikai-intercountry-midautumn-qi-baishi-20260922.png",
+      "imageAlt": {
+        "zh-Hant": "秋季彩墨守護意象，非事件現場。",
+        "zh-Hans": "秋季彩墨守护意象，非事件现场。"
+      }
+    },
     {
       "id": "daily-child-protection-brief-20260920",
       "publishedAt": "2026-09-20",

@@ -32,6 +32,7 @@ INTENTIONALLY_SINGLE_LANGUAGE = {
     'news/guardian-alliance-statement-20260925/',
     'news/daily-child-protection-brief-20260926/',
     'news/daily-child-protection-brief-20260927/',
+    'news/daily-child-protection-brief-20260928/',
 }
 BESPOKE_TOOLBAR_ROUTES = {'court-comics/episode-05/'}
 routes = json.loads((ROOT / 'data/four-language-routes.json').read_text())['routes']
