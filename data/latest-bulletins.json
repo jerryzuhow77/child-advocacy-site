@@ -1,16 +1,49 @@
 {
-  "version": 28,
-  "generatedAt": "2026-09-29T08:33:08+08:00",
+  "version": 29,
+  "generatedAt": "2026-09-29T09:20:00+08:00",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
     {
+      "id": "liu-zongxin-hearing-20261022",
+      "publishedAt": "2026-09-29",
+      "title": {
+        "zh-Hant": "10/22 劉宗鑫所長開庭",
+        "zh-Hans": "10/22 刘宗鑫所长开庭"
+      },
+      "summary": {
+        "zh-Hant": "公開旁聽資訊｜10/22（週四）15:30，博愛路127號專一法庭。",
+        "zh-Hans": "公开旁听资讯｜10/22（周四）15:30，博爱路127号专一法庭。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/features/social-observation/liu-zongxin-hearing-20261022/",
+        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/features/social-observation/liu-zongxin-hearing-20261022/zh-Hans/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/features/social-observation/liu-zongxin-hearing-20261022/assets/morandi-paper-clay-police-hearing-hero-20261022.webp",
+      "imageAlt": {
+        "zh-Hant": "穿深藍與淺藍上衣孩童與警察守護的非辨識性紙雕陶土意象，非事件現場。",
+        "zh-Hans": "穿深蓝与浅蓝上衣孩童与警察守护的非辨识性纸雕陶土意象，非事件现场。"
+      }
+    },
+    {
       "id": "jiajia-hearing-20261007",
       "publishedAt": "2026-10-07",
-      "title": {"zh-Hant": "10/7 兩瓶牛奶・嘉嘉開庭提醒", "zh-Hans": "10/7 两瓶牛奶・嘉嘉开庭提醒"},
-      "summary": {"zh-Hant": "週三 16:45・博愛路 127 號十五法庭・約 16:30 集合。", "zh-Hans": "周三 16:45・博爱路 127 号十五法庭・约 16:30 集合。"},
-      "url": {"zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/liangping-naimilk-jiajia-hearing-20261007/", "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/news/liangping-naimilk-jiajia-hearing-20261007/zh-Hans/"},
+      "title": {
+        "zh-Hant": "10/7 兩瓶牛奶・嘉嘉開庭提醒",
+        "zh-Hans": "10/7 两瓶牛奶・嘉嘉开庭提醒"
+      },
+      "summary": {
+        "zh-Hant": "週三 16:45・博愛路 127 號十五法庭・約 16:30 集合。",
+        "zh-Hans": "周三 16:45・博爱路 127 号十五法庭・约 16:30 集合。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/liangping-naimilk-jiajia-hearing-20261007/",
+        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/news/liangping-naimilk-jiajia-hearing-20261007/zh-Hans/"
+      },
       "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/liangping-naimilk-jiajia-hearing-20261007-paperclay.png",
-      "imageAlt": {"zh-Hant": "紙雕與陶土藝術的孩童、兩瓶牛奶與法院意象，非事件現場。", "zh-Hans": "纸雕与陶土艺术的孩童、两瓶牛奶与法院意象，非事件现场。"}
+      "imageAlt": {
+        "zh-Hant": "紙雕與陶土藝術的孩童、兩瓶牛奶與法院意象，非事件現場。",
+        "zh-Hans": "纸雕与陶土艺术的孩童、两瓶牛奶与法院意象，非事件现场。"
+      }
     },
     {
       "id": "daily-child-protection-brief-20260928",
