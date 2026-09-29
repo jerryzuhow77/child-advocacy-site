@@ -61,3 +61,6 @@
   .art-header .pwa-mobile-header-install{display:inline-flex!important;margin-inline:8px!important}
   .pwa-install-launcher{display:none!important}
 }
+
+/* Respect PWA runtime visibility when the app is already installed. */
+.art-header .pwa-mobile-header-install[hidden]{display:none!important}
