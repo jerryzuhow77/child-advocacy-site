@@ -52,7 +52,7 @@
 }
 /* The compact first screen is safe only while the hero remains two columns. */
 @media (min-width:801px){
-  .premium-home-hero{min-height:500px!important;height:min(62vh,620px)!important}
+  .premium-home-hero{min-height:620px!important;height:min(72vh,720px)!important}
   .premium-home-hero .premium-hero-grid{padding-top:44px!important;padding-bottom:38px!important}
   .premium-home-hero .premium-hero-copy{padding-block:26px!important}
 }
