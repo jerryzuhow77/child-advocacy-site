@@ -17,7 +17,7 @@
 @media (max-width:1099px){.cpa-primary-nav{display:none!important}}
 
 @media (min-width:761px){
-  .premium-home-hero{min-height:620px!important;height:min(72vh,720px)!important}
+  .premium-home-hero{min-height:720px!important;height:auto!important}
   .premium-home-hero .premium-hero-grid{min-height:100%!important;padding-top:64px!important;padding-bottom:54px!important}
   .premium-home-hero .premium-hero-copy{padding-block:34px!important}
   .home-priority-strip{padding-top:22px!important}
