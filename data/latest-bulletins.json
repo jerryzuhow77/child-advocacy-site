@@ -1,6 +1,6 @@
 {
-  "version": 29,
-  "generatedAt": "2026-09-29T09:20:00+08:00",
+  "version": 30,
+  "generatedAt": "2026-09-30T10:33:58.817+08:00",
   "source": "https://jerryzuhow77.github.io/child-advocacy-site/#news-flash",
   "pinned": [
     {
@@ -43,6 +43,27 @@
       "imageAlt": {
         "zh-Hant": "紙雕與陶土藝術的孩童、兩瓶牛奶與法院意象，非事件現場。",
         "zh-Hans": "纸雕与陶土艺术的孩童、两瓶牛奶与法院意象，非事件现场。"
+      }
+    },
+    {
+      "id": "daily-child-protection-brief-20260930",
+      "publishedAt": "2026-09-30",
+      "title": {
+        "zh-Hant": "三重女童被迫掛牌遊街：保護令之後，孩子真的安全了嗎？",
+        "zh-Hans": "三重女童被迫挂牌游街：保护令之后，孩子真的安全吗？"
+      },
+      "summary": {
+        "zh-Hant": "每日護童快報｜從保護令、親職課程到安置後追蹤，檢視制度如何持續確認孩子安全。",
+        "zh-Hans": "每日护童快报｜从保护令、亲职课程到安置后追踪，检视制度如何持续确认孩子安全。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260930/",
+        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/news/daily-child-protection-brief-20260930/zh-Hans/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/sanchong-child-dignity-autumn-20260930.webp",
+      "imageAlt": {
+        "zh-Hant": "秋日山水中大人牽著孩子走向暖光居所的彩墨守護意象，非事件現場。",
+        "zh-Hans": "秋日山水中大人牵着孩子走向暖光居所的彩墨守护意象，非事件现场。"
       }
     },
     {
@@ -597,6 +618,37 @@
     }
   ],
   "items": [
+    {
+      "id": "daily-child-protection-brief-20260930",
+      "publishedAt": "2026-09-30",
+      "title": {
+        "zh-Hant": "三重女童被迫掛牌遊街：保護令之後，孩子真的安全了嗎？",
+        "zh-Hans": "三重女童被迫挂牌游街：保护令之后，孩子真的安全吗？"
+      },
+      "summary": {
+        "zh-Hant": "每日護童快報｜追蹤保護令、親職課程與孩子安置後的安全支持；區分報導、程序進度與待查事項。",
+        "zh-Hans": "每日护童快报｜追踪保护令、亲职课程与孩子安置后的安全支持；区分报道、程序进度与待查事项。"
+      },
+      "url": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/news/daily-child-protection-brief-20260930/",
+        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/news/daily-child-protection-brief-20260930/zh-Hans/"
+      },
+      "image": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/sanchong-child-dignity-autumn-20260930.webp",
+      "imageByLocale": {
+        "zh-Hant": "https://jerryzuhow77.github.io/child-advocacy-site/assets/art/sanchong-child-dignity-autumn-20260930.webp",
+        "zh-Hans": "https://cn.globalprotectionwall.com/child-advocacy-site/assets/art/sanchong-child-dignity-autumn-20260930.webp"
+      },
+      "imageAlt": {
+        "zh-Hant": "秋日山水中大人牽著孩子走向暖光居所的彩墨守護意象，非事件現場。",
+        "zh-Hans": "秋日山水中大人牵着孩子走向暖光居所的彩墨守护意象，非事件现场。"
+      },
+      "tag": "DAILY CHILD PROTECTION BRIEF",
+      "className": "is-daily-brief-20260930",
+      "badge": {
+        "zh-Hant": "每日護童快報",
+        "zh-Hans": "每日护童快报"
+      }
+    },
     {
       "id": "daily-child-protection-brief-20260918",
       "publishedAt": "2026-09-18",
