@@ -8,9 +8,41 @@
 
   const priorityStrip = document.querySelector(".home-priority-strip");
   if (priorityStrip) {
-    gsap.from(priorityStrip, { autoAlpha: 0, y: 20, duration: .7, ease: "power3.out" });
-    const priorityItems = priorityStrip.querySelectorAll("h1, h2, h3, p, a, article, li");
-    if (priorityItems.length) gsap.from(priorityItems, { autoAlpha: 0, y: 14, duration: .5, stagger: .055, ease: "power2.out", delay: .12 });
+    const priorityHeader = priorityStrip.querySelector(".home-priority-shell > header");
+    const priorityCards = [...priorityStrip.querySelectorAll(".home-priority-links > a")];
+    const compactMotion = window.matchMedia("(max-width: 760px)").matches;
+    let priorityRevealed = false;
+    const revealPriority = () => {
+      if (priorityRevealed) return;
+      priorityRevealed = true;
+      if (priorityHeader) {
+        gsap.fromTo(priorityHeader, { autoAlpha: 0, y: compactMotion ? 8 : 16 }, {
+          autoAlpha: 1, y: 0, duration: compactMotion ? .38 : .56, ease: "power3.out",
+          clearProps: "transform,opacity,visibility"
+        });
+      }
+      if (priorityCards.length) {
+        gsap.fromTo(priorityCards, {
+          autoAlpha: 0, y: compactMotion ? 12 : 22, z: compactMotion ? 0 : -24,
+          rotateY: compactMotion ? 0 : 4
+        }, {
+          autoAlpha: 1, y: 0, z: 0, rotateY: 0, duration: compactMotion ? .46 : .66,
+          stagger: compactMotion ? .065 : .11, ease: "power3.out",
+          clearProps: "transform,opacity,visibility"
+        });
+      }
+    };
+    if (ScrollTrigger) {
+      ScrollTrigger.create({ trigger: priorityStrip, start: "top 86%", once: true, onEnter: revealPriority });
+    } else if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(entries => {
+        if (entries.some(entry => entry.isIntersecting)) {
+          observer.disconnect();
+          revealPriority();
+        }
+      }, { rootMargin: "0px 0px -12% 0px" });
+      observer.observe(priorityStrip);
+    }
   }
 
   const hero = document.querySelector(".brief-embroidered .hero");

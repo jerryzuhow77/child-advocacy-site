@@ -1,0 +1,38 @@
+/* Homepage hero depth and staged priority links — 2026-09-30 */
+.premium-home-hero .premium-hero-art{
+  perspective:1180px;
+  transform-style:preserve-3d;
+}
+.premium-home-hero .premium-art-card{
+  transform-style:preserve-3d;
+  transform-origin:50% 50%;
+  backface-visibility:hidden;
+}
+.home-priority-links>a{
+  transform-style:preserve-3d;
+  backface-visibility:hidden;
+}
+@media(max-width:760px){
+  .premium-home-hero .premium-hero-art{perspective:760px}
+}
+@media(prefers-reduced-motion:reduce){
+  .premium-home-hero .premium-hero-art,
+  .premium-home-hero .premium-art-card,
+  .premium-home-hero .premium-art-orbit,
+  .premium-home-hero .premium-floating-tag,
+  .premium-home-hero .premium-art-glow,
+  .home-priority-shell>header,
+  .home-priority-links>a{
+    transform:none!important;
+    opacity:1!important;
+    visibility:visible!important;
+    transition:none!important;
+    animation:none!important;
+  }
+  .premium-home-hero .premium-hero-art,
+  .premium-home-hero .premium-art-card{
+    perspective:none!important;
+    transform-style:flat!important;
+    backface-visibility:visible!important;
+  }
+}

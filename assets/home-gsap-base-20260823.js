@@ -90,17 +90,31 @@
 
     var copy = all('.premium-kicker, .seo-brand-name, .premium-hero-copy > .art-eyebrow, .premium-hero-copy h1, .premium-hero-lead, .premium-hero-actions, .premium-hero-note, .home-view-counter', hero);
     var art = hero.querySelector('.premium-hero-art');
+    var artCard = hero.querySelector('.premium-art-card');
     var bottomline = hero.querySelector('.premium-hero-bottomline');
+    if (art && !liteMotion) { art.style.perspective = '1180px'; art.style.transformStyle = 'preserve-3d'; }
+    if (artCard && !liteMotion) { artCard.style.transformStyle = 'preserve-3d'; artCard.style.backfaceVisibility = 'hidden'; }
     markActive(copy.concat([art, bottomline].filter(Boolean)));
 
     var timeline = gsap.timeline({ defaults: { ease: 'power3.out' } });
     if (header) timeline.fromTo(header, { y: -24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.65, clearProps: 'transform,opacity,visibility' });
     timeline
       .fromTo(copy, { y: 30, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.72, stagger: 0.075, clearProps: 'opacity,visibility' }, header ? '-=0.25' : 0)
-      .fromTo(art, { x: 72, rotateY: -9, scale: 0.94, autoAlpha: 0 }, { x: 0, rotateY: 0, scale: 1, autoAlpha: 1, duration: 1.05, clearProps: 'opacity,visibility' }, '-=0.72')
-      .fromTo(bottomline, { scaleX: 0.76, autoAlpha: 0 }, { scaleX: 1, autoAlpha: 1, duration: 0.8, clearProps: 'transform,opacity,visibility' }, '-=0.45');
+      .fromTo(art, { x: 72, rotateY: -9, scale: 0.94, autoAlpha: 0 }, { x: 0, rotateY: 0, scale: 1, autoAlpha: 1, duration: 1.05, clearProps: 'opacity,visibility' }, '-=0.72');
+
+    if (artCard && !liteMotion) {
+      timeline.fromTo(artCard,
+        { z: -64, rotateX: 5, rotateY: -5, scale: 0.92, autoAlpha: 0 },
+        { z: 0, rotateX: 0, rotateY: 0, scale: 1, autoAlpha: 1, duration: 0.92, ease: 'power3.out', clearProps: 'opacity,visibility' },
+        '-=0.82'
+      );
+    }
+    timeline.fromTo(bottomline, { scaleX: 0.76, autoAlpha: 0 }, { scaleX: 1, autoAlpha: 1, duration: 0.8, clearProps: 'transform,opacity,visibility' }, '-=0.45');
 
     if (!liteMotion) {
+      if (art) {
+        gsap.to(art, { yPercent: 7, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.65, invalidateOnRefresh: true } });
+      }
       all('.premium-art-orbit', hero).forEach(function (orbit, index) {
         gsap.to(orbit, { rotate: index % 2 ? -360 : 360, duration: index % 2 ? 26 : 21, repeat: -1, ease: 'none' });
       });
