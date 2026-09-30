@@ -490,7 +490,7 @@ try {
       const groups = {
         news: '#home-media-reports .home-media-report-card',
         pinned: '#news-flash .home-pinned-report-card',
-        special: '#home-special-features .home-crafted-card',
+        special: '#home-special-features .home-special-grid .home-crafted-card',
         cases: '.home-social-cases-section .home-case-reel-card'
       };
       return Object.fromEntries(Object.entries(groups).map(([name, selector]) => {
