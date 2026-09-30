@@ -40,6 +40,9 @@ INTENTIONALLY_SINGLE_LANGUAGE = {
     # Court logistics supplied for this release have Chinese editions only;
     # English and Japanese editions are not yet formally published.
     'features/social-observation/liu-zongxin-hearing-20261022/',
+    # Hong Kong-only Simplified Chinese wrapper around the hosted multiview report.
+    # It has no Taiwanese, English, or Japanese physical editions to declare.
+    'news/kaikai-multiview-report/',
 }
 BESPOKE_TOOLBAR_ROUTES = {'court-comics/episode-05/'}
 routes = json.loads((ROOT / 'data/four-language-routes.json').read_text())['routes']
