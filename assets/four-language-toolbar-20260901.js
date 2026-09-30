@@ -201,6 +201,7 @@
     if(document.getElementById("cpa-four-language-toolbar"))return;
     const route=neutralRoute();
     if(!route && location.pathname.replace(/\/+$/, "") !== "/child-advocacy-site") {document.documentElement.classList.remove("cpa-four-language-toolbar-active");return;}
+    if(!route) document.documentElement.classList.add("cpa-four-language-toolbar-active");
     document.documentElement.classList.add("cpa-four-language-toolbar-active");
     document.getElementById("cpa-mobile-bar")?.remove();
     document.getElementById("cpa-mobile-menu")?.remove();
