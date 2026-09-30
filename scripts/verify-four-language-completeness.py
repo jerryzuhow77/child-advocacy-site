@@ -33,6 +33,7 @@ INTENTIONALLY_SINGLE_LANGUAGE = {
     'news/daily-child-protection-brief-20260926/',
     'news/daily-child-protection-brief-20260927/',
     'news/daily-child-protection-brief-20260928/',
+    'news/daily-child-protection-brief-20260930/',
     # Court logistics supplied for this release have Chinese editions only;
     # English and Japanese editions are not yet formally published.
     'news/liangping-naimilk-jiajia-hearing-20261007/',
