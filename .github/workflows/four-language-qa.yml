@@ -236,6 +236,10 @@ jobs:
           done
           test -s assets/images/autumn-20260908/ferris-wheel-paper-clay.webp
           test -s assets/images/autumn-20260908/ink-background.webp
+          if grep -E '#cpa-four-language-toolbar\\{display:none' assets/home-mobile-polish-20260907.css; then
+            echo 'The homepage mobile stylesheet must keep the four-language toolbar visible.' >&2
+            exit 1
+          fi
           if grep -E 'html body #cpa-four-language-toolbar.*display:none' assets/autumn-mobile-v2-20260908.css; then
             echo 'The language toolbar must remain visible on mobile.' >&2
             exit 1
