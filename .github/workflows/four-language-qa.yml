@@ -104,6 +104,7 @@ jobs:
           node --check assets/home-ia-bootstrap-20260823.js
           node --check assets/global-protection-wall-portal.js
           node --check assets/four-language-toolbar-20260901.js
+          node --check assets/home-media-thumbnail-fallback-20260930.js
           node .github/scripts/test-four-language-cross-origin-routing.mjs
           node --check assets/article-comments-20260828.js
           node --check assets/home-view-counter-20260811.js
