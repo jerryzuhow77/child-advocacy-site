@@ -317,7 +317,7 @@ try {
       assert(initial.mobileFooter.height >= 60, `[${width}] 手機底部導覽過矮`, initial.mobileFooter);
       assert(!/^rgba?\(0, 0, 0(?:, 0)?\)$/.test(initial.mobileFooter.background), `[${width}] 手機底部導覽背景透明`, initial.mobileFooter);
     }
-    assert(!initial.toolbarPresent && initial.toolbarHidden, `[${width}] 頂端語言工具列未從首頁移除`);
+    assert(initial.toolbarPresent && !initial.toolbarHidden, `[${width}] 頂端語言工具列未顯示`);
     assert(initial.criticalThumbnailSources.length >= 3
       && initial.criticalThumbnailSources.every((source) => /critical-seventeen-days-20260904\.webp(?:\?|$)/.test(source))
       && initial.criticalThumbnailSources.every((source) => !/chen-shangjie-hearing/i.test(source)),

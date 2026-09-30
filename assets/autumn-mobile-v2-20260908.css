@@ -13,7 +13,6 @@ body.art-site.home-medium-palette{color:var(--autumn-ink);background-color:#f8ec
 .home-pinned-report-card>span:not(.home-post-engagement),.home-news-card-copy,.home-case-reel-copy{min-width:0!important}
 
 @media(max-width:1024px){
-  html body #cpa-four-language-toolbar{display:none!important;visibility:hidden!important;position:absolute!important;height:0!important;min-height:0!important;padding:0!important;border:0!important;overflow:hidden!important}
   html body{padding-top:0!important;background-attachment:scroll;background-size:auto max(100svh,900px)!important;background-repeat:no-repeat!important}
   html body .art-header{position:sticky!important;z-index:2147483002!important;top:0!important;padding-top:env(safe-area-inset-top,0px)!important}
   html body .art-header .container.nav{display:flex!important;flex-wrap:nowrap!important;align-items:center!important;width:100%!important;max-width:none!important;height:60px!important;min-height:60px!important;padding:6px 10px!important;gap:8px!important}
