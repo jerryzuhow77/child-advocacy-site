@@ -6,3 +6,20 @@
 
 /* Case explanation and verified-public-information timeline — 2026-09-29 */
 .case-detail{margin-top:36px}.detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}.detail-grid article{padding:22px;border:1px solid rgba(52,68,82,.14);border-radius:18px;background:rgba(255,255,255,.64);box-shadow:0 10px 26px rgba(70,79,82,.07);backdrop-filter:blur(8px)}.detail-grid h3{margin:0 0 10px;font-size:1.05rem;color:#294350}.detail-grid p{margin:0;line-height:1.78}.case-timeline{margin:46px 0}.case-timeline ol{position:relative;display:grid;gap:14px;margin:22px 0 0;padding:0;list-style:none}.case-timeline ol:before{content:"";position:absolute;left:105px;top:12px;bottom:12px;width:2px;background:linear-gradient(var(--clay),rgba(185,123,105,.16))}.case-timeline li{display:grid;grid-template-columns:88px 1fr;gap:22px;position:relative}.case-timeline time{padding-top:5px;font-size:.86rem;font-weight:800;color:#6d584e;text-align:right}.case-timeline li>div{position:relative;padding:17px 20px;border-radius:16px;background:rgba(255,255,255,.67);border:1px solid rgba(52,68,82,.12);box-shadow:0 8px 22px rgba(70,79,82,.06)}.case-timeline li>div:before{content:"";position:absolute;left:-30px;top:22px;width:14px;height:14px;border:3px solid #f5f0e8;border-radius:50%;background:var(--clay);box-shadow:0 0 0 1px rgba(185,123,105,.45)}.case-timeline strong{color:#294350}.case-timeline p{margin:.45rem 0 0;line-height:1.75}@media(max-width:720px){.detail-grid{grid-template-columns:1fr}.case-timeline ol:before{left:12px}.case-timeline li{grid-template-columns:1fr;gap:6px;padding-left:30px}.case-timeline time{text-align:left;padding:0;font-size:.82rem}.case-timeline li>div:before{left:-25px;top:20px}}
+
+
+/* GSAP depth and progressive reveal enhancement — 2026-09-30 */
+.hero{perspective:1200px;perspective-origin:58% 48%}
+.hero-image{inset:-5% -3%;transform-origin:62% 48%;backface-visibility:hidden}
+.hero-copy{transform-style:preserve-3d;backface-visibility:hidden}
+.hero-copy .kicker,.hero-copy h1,.hero-copy>p,.hero-copy .tag,.hero-facts,.hero-facts>*{backface-visibility:hidden}
+.hero-facts{transform-style:preserve-3d}
+.info-grid,.detail-grid,.case-timeline ol,.timeline{perspective:900px}
+.info-grid .card,.detail-grid article,.case-timeline li>div,.timeline li,.reminder{backface-visibility:hidden;transform-style:preserve-3d}
+@media(min-width:721px){.hero-copy{box-shadow:0 28px 72px rgba(38,55,65,.18)}}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  .hero-image,.hero-copy,.hero-copy>*,.hero-facts,.hero-facts>*,.content>section,.content>.note,.info-grid .card,.detail-grid article,.case-timeline li,.case-timeline li>div,.timeline li,.reminder{
+    animation:none!important;transition:none!important;transform:none!important;filter:none!important;opacity:1!important;visibility:visible!important;will-change:auto!important
+  }
+}
