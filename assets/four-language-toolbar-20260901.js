@@ -6,7 +6,7 @@
 
   const ROOT = "/child-advocacy-site/";
   const TOOLBAR_STYLE = `${ROOT}assets/four-language-toolbar-20260901.css?v=20260930-home-toolbar-2`;
-  if (!document.querySelector('link[data-cpa-four-language-toolbar-style]')) {
+  if (document.createElement && !document.querySelector('link[data-cpa-four-language-toolbar-style]')) {
     const style = document.createElement("link");
     style.rel = "stylesheet";
     style.href = TOOLBAR_STYLE;
