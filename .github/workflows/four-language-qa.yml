@@ -235,7 +235,10 @@ jobs:
           done
           test -s assets/images/autumn-20260908/ferris-wheel-paper-clay.webp
           test -s assets/images/autumn-20260908/ink-background.webp
-          grep -F 'html body #cpa-four-language-toolbar' assets/autumn-mobile-v2-20260908.css
+          if grep -E 'html body #cpa-four-language-toolbar.*display:none' assets/autumn-mobile-v2-20260908.css; then
+            echo 'The language toolbar must remain visible on mobile.' >&2
+            exit 1
+          fi
           grep -F 'aspect-ratio:4/3!important' assets/autumn-mobile-v2-20260908.css
           grep -F 'ferris-wheel-paper-clay.webp' assets/autumn-mobile-v2-20260908.css
 
