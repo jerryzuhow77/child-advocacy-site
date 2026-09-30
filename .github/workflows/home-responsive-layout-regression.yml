@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - '.github/workflows/four-language-qa.yml'
       - 'assets/**'
       - '.github/scripts/verify-home-responsive-layout.mjs'
       - '.github/workflows/home-responsive-layout-regression.yml'
