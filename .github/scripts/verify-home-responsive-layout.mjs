@@ -161,7 +161,7 @@ try {
       };
       const roleLinks = Object.fromEntries(Object.entries(roleSelectors).map(([role, selector]) => [
         role,
-        [...document.querySelectorAll(selector)].map((link) => canonical(link.href))
+        [...new Set([...document.querySelectorAll(selector)].map((link) => canonical(link.href)))]
       ]));
       const duplicates = [];
       Object.entries(roleLinks).forEach(([role, hrefs]) => {
