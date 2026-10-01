@@ -138,6 +138,28 @@ try {
     await page.waitForTimeout(1_700);
     console.log(`[${width}] auditing layout`);
 
+    const expectedLatestOrbit = [
+      'daily-child-protection-brief-20261001',
+      'daily-child-protection-brief-20260930',
+      'daily-child-protection-brief-20260928',
+      'daily-child-protection-brief-20260927',
+      'daily-child-protection-brief-20260926',
+      'guardian-alliance-statement-20260925',
+      'chen-shangjie-defense-testimony-20260924',
+      'taiwan-child-placement-history-20260923',
+      'kaikai-warning-signals-review-20260922',
+      'daily-child-protection-brief-20260921'
+    ];
+    const latestOrbit = await page.locator('#news-flash .home-document-disc-orbit .home-document-disc-card').evaluateAll((cards) => cards.map((card) => ({
+      href: card.getAttribute('href'),
+      hansHref: card.getAttribute('data-hans-href')
+    })));
+    assert(latestOrbit.length === expectedLatestOrbit.length, `[${width}] 摩天輪不是十篇最新發布文章`, latestOrbit);
+    assert(latestOrbit.map((card) => card.href?.split('/').filter(Boolean).at(-1))
+      .every((slug, index) => slug === expectedLatestOrbit[index]), `[${width}] 摩天輪發布順序錯誤`, latestOrbit);
+    assert(latestOrbit.every((card) => /^https:\/\/cn\.globalprotectionwall\.com\/child-advocacy-site\/.+\/zh-Hans\/$/.test(card.hansHref || '')),
+      `[${width}] 摩天輪缺少已驗證的簡中實體頁路由`, latestOrbit);
+
     const initial = await page.evaluate((currentWidth) => {
       const visible = (element) => {
         if (!element) return false;
