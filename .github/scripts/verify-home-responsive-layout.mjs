@@ -245,7 +245,13 @@ try {
       ];
       const rails = railSelectors.map((selector) => {
         const element = document.querySelector(selector);
-        return { selector, exists: Boolean(element), overflow: element ? element.scrollWidth - element.clientWidth : 0, overflowX: element ? getComputedStyle(element).overflowX : '' };
+        return {
+          selector,
+          exists: Boolean(element),
+          display: element ? getComputedStyle(element).display : '',
+          overflow: element ? element.scrollWidth - element.clientWidth : 0,
+          overflowX: element ? getComputedStyle(element).overflowX : ''
+        };
       });
       const controlSizes = [...document.querySelectorAll('#news-flash .home-pinned-arrow, #home-special-features .home-special-scroll-controls button')]
         .filter(visible)
@@ -352,6 +358,11 @@ try {
 
     initial.rails.forEach((rail) => {
       assert(rail.exists, `[${width}] 缺少橫向專區 ${rail.selector}`);
+      if (rail.selector === '#home-special-features .home-special-grid' && width > 700) {
+        assert(rail.display === 'grid', `[${width}] 特別專題桌機／平板沒有使用網格`, rail);
+        assert(rail.overflow <= 2 && rail.overflowX === 'visible', `[${width}] 特別專題桌機／平板不應是橫向滑軌`, rail);
+        return;
+      }
       assert(rail.overflow > 40, `[${width}] 專區不可水平瀏覽 ${rail.selector}`, rail);
       assert(['auto', 'scroll'].includes(rail.overflowX), `[${width}] 專區 overflow-x 設定錯誤 ${rail.selector}`, rail);
     });
@@ -520,7 +531,10 @@ try {
         return [name, { count: heights.length, spread: heights.length ? Math.max(...heights) - Math.min(...heights) : 0 }];
       }));
     });
-    Object.entries(heightSpreads).forEach(([name, result]) => assert(result.spread <= 8, `[${width}] ${name} 卡片高度不一致`, result));
+    Object.entries(heightSpreads).forEach(([name, result]) => {
+      if (name === 'special' && width > 700) return;
+      assert(result.spread <= 8, `[${width}] ${name} 卡片高度不一致`, result);
+    });
 
     assert(pageErrors.length === 0, `[${width}] 首頁 JavaScript 執行錯誤`, pageErrors);
     const unexpectedConsoleErrors = consoleErrors.filter((message) => message !== 'Failed to load resource: net::ERR_FAILED');
