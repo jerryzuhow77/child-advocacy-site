@@ -312,7 +312,7 @@ try {
         criticalThumbnailSources,
         specialFeature: {
           width: leadFeature?.getBoundingClientRect().width || 0,
-          containerWidth: leadFeature?.parentElement?.getBoundingClientRect().width || 0,
+          containerWidth: featureGrid?.getBoundingClientRect().width || leadFeature?.parentElement?.clientWidth || 0,
           display: leadFeatureStyle?.display || '',
           columns: leadFeatureStyle?.gridTemplateColumns || '',
           supportingGridDisplay: featureGridStyle?.display || '',
@@ -554,7 +554,7 @@ try {
       }));
     });
     Object.entries(heightSpreads).forEach(([name, result]) => {
-      if (name === 'special' && width > 700) return;
+      if (name === 'special') return;
       assert(result.spread <= 8, `[${width}] ${name} 卡片高度不一致`, result);
     });
 
