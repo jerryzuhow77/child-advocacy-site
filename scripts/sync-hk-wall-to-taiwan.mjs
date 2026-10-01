@@ -12,6 +12,17 @@ const THEMES = new Set(["support", "listen", "system", "courage", "official", "b
 const COLORS = new Set(["moon", "lotus", "apricot", "sage", "indigo", "clay", "lilac"]);
 const CONTENT_KINDS = new Set(["guardian", "official", "bulletin"]);
 const USER_AGENT = "GuardianWallScheduledSync/1";
+const IMAGE_FETCH_MAX_ATTEMPTS = 3;
+const RETRYABLE_IMAGE_FETCH_CODES = new Set([
+  "ECONNRESET",
+  "ECONNREFUSED",
+  "ETIMEDOUT",
+  "EAI_AGAIN",
+  "UND_ERR_CONNECT_TIMEOUT",
+  "UND_ERR_HEADERS_TIMEOUT",
+  "UND_ERR_BODY_TIMEOUT",
+  "UND_ERR_SOCKET",
+]);
 
 const [sourcePublic, targetPublic] = await Promise.all([
   getPublicSnapshot(sourceOrigin, "taiwan-hong-kong-shared", "Hong Kong"),
@@ -208,9 +219,47 @@ async function imageHash(origin, image) {
   const id = uuid(image.id, "image id");
   const url = new URL(string(image.url, "image url"), origin);
   if (url.origin !== origin || url.pathname !== `/api/images/${id}`) throw new Error("Unexpected image URL");
-  const response = await fetch(url, { headers: { accept: "image/webp", "user-agent": USER_AGENT }, cache: "no-store" });
-  if (!response.ok) throw new Error(`Image fetch failed ${response.status}`);
-  return createHash("sha256").update(Buffer.from(await response.arrayBuffer())).digest("hex");
+  return fetchImageHash(url);
+}
+
+async function fetchImageHash(url) {
+  for (let attempt = 1; attempt <= IMAGE_FETCH_MAX_ATTEMPTS; attempt += 1) {
+    let response;
+    try {
+      response = await fetch(url, { headers: { accept: "image/webp", "user-agent": USER_AGENT }, cache: "no-store" });
+    } catch (error) {
+      if (!isRetryableImageFetchError(error) || attempt === IMAGE_FETCH_MAX_ATTEMPTS) throw error;
+      await imageFetchBackoff(attempt);
+      continue;
+    }
+
+    if (response.status >= 500 && response.status <= 599) {
+      if (attempt === IMAGE_FETCH_MAX_ATTEMPTS) throw new Error(`Image fetch failed ${response.status}`);
+      if (response.body) await response.body.cancel().catch(() => {});
+      await imageFetchBackoff(attempt);
+      continue;
+    }
+
+    if (!response.ok) throw new Error(`Image fetch failed ${response.status}`);
+
+    try {
+      return createHash("sha256").update(Buffer.from(await response.arrayBuffer())).digest("hex");
+    } catch (error) {
+      if (!isRetryableImageFetchError(error) || attempt === IMAGE_FETCH_MAX_ATTEMPTS) throw error;
+      await imageFetchBackoff(attempt);
+    }
+  }
+
+  throw new Error("Image fetch retry loop exhausted");
+}
+
+function isRetryableImageFetchError(error) {
+  const code = error?.cause?.code ?? error?.code;
+  return typeof code === "string" && RETRYABLE_IMAGE_FETCH_CODES.has(code);
+}
+
+function imageFetchBackoff(attempt) {
+  return new Promise((resolve) => setTimeout(resolve, 250 * (2 ** (attempt - 1))));
 }
 
 function deterministicVersionId(messageId) {
