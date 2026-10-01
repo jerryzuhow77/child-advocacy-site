@@ -362,7 +362,7 @@ try {
     assert(initial.specialFeature.display === 'grid'
       && initial.specialFeature.width >= initial.specialFeature.containerWidth - 2,
     `[${width}] 特別專題主打卡片沒有展開至內容寬度`, initial.specialFeature);
-    assert(initial.specialFeature.columns.trim().split(/\s+/).length === (width <= 700 ? 1 : 2),
+    assert(initial.specialFeature.columns.trim().split(/\s+/).length === (width <= 980 ? 1 : 2),
     `[${width}] 特別專題主打卡片欄數錯誤`, initial.specialFeature);
     const expectedFeatureColumns = width <= 700 ? 1 : width <= 980 ? 2 : 3;
     assert(initial.specialFeature.supportingGridDisplay === 'grid'
