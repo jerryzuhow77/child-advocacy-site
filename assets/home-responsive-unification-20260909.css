@@ -969,7 +969,7 @@ body.art-site.home-medium-palette #home-special-features .home-crafted-card>.hom
 
 /* This stylesheet is loaded after the shared toolbar stylesheet, so it is the
    final authority for the homepage layout.  Keep feature stories in a grid on
-   tablet and desktop; only the small-screen presentation is a horizontal rail. */
+   tablet and desktop, with a single-column reading flow on smaller screens. */
 @media (min-width:701px){
   #home-special-features .home-special-grid{
     display:grid!important;
@@ -996,3 +996,85 @@ body.art-site.home-medium-palette #home-special-features .home-crafted-card>.hom
   }
 }
 
+
+/* Homepage special features: give the lead story a full-width editorial stage. */
+#home-special-features>.container>.home-crafted-card.is-kai-kai-multiview-report{
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1.18fr) minmax(320px,.82fr)!important;
+  align-items:stretch!important;
+  width:100%!important;
+  max-width:none!important;
+  min-height:0!important;
+  flex:none!important;
+  margin:0 0 28px!important;
+}
+#home-special-features>.container>.home-crafted-card.is-kai-kai-multiview-report>.home-crafted-art{
+  height:auto!important;
+  min-height:0!important;
+  aspect-ratio:16/10!important;
+  align-self:stretch!important;
+}
+#home-special-features>.container>.home-crafted-card.is-kai-kai-multiview-report>.home-crafted-copy{
+  justify-content:center!important;
+  gap:14px!important;
+  padding:clamp(24px,3.2vw,44px)!important;
+}
+#home-special-features>.container>.home-crafted-card.is-kai-kai-multiview-report .home-crafted-copy small{
+  font-size:.78rem!important;
+}
+#home-special-features>.container>.home-crafted-card.is-kai-kai-multiview-report .home-crafted-copy strong{
+  font-size:clamp(1.5rem,2.8vw,2.35rem)!important;
+  line-height:1.3!important;
+}
+#home-special-features>.container>.home-crafted-card.is-kai-kai-multiview-report .home-crafted-copy em{
+  font-size:1rem!important;
+  line-height:1.75!important;
+}
+#home-special-features>.container>.home-crafted-card.is-kai-kai-multiview-report .home-crafted-copy>b{
+  font-size:.95rem!important;
+}
+@media (min-width:701px) and (max-width:980px){
+  #home-special-features>.container>.home-crafted-card.is-kai-kai-multiview-report{
+    grid-template-columns:minmax(0,1fr)!important;
+    min-height:0!important;
+  }
+  #home-special-features .home-special-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+@media (max-width:700px){
+  #home-special-features>.container>.home-crafted-card.is-kai-kai-multiview-report{
+    grid-template-columns:minmax(0,1fr)!important;
+    width:100%!important;
+    min-height:0!important;
+    margin:0 0 20px!important;
+  }
+  #home-special-features>.container>.home-crafted-card.is-kai-kai-multiview-report>.home-crafted-art{
+    height:auto!important;
+    min-height:0!important;
+    aspect-ratio:16/10!important;
+  }
+  #home-special-features>.container>.home-crafted-card.is-kai-kai-multiview-report>.home-crafted-copy{
+    gap:10px!important;
+    padding:20px!important;
+  }
+  #home-special-features .home-special-grid{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    flex-direction:column!important;
+    flex-wrap:nowrap!important;
+    gap:16px!important;
+    width:100%!important;
+    margin:0!important;
+    padding:4px 0 18px!important;
+    overflow:visible!important;
+    scroll-snap-type:none!important;
+  }
+  #home-special-features .home-special-grid>.home-crafted-card{
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+    flex:none!important;
+  }
+}

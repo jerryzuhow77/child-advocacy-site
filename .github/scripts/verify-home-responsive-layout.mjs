@@ -249,6 +249,7 @@ try {
           selector,
           exists: Boolean(element),
           display: element ? getComputedStyle(element).display : '',
+          columns: element ? getComputedStyle(element).gridTemplateColumns : '',
           overflow: element ? element.scrollWidth - element.clientWidth : 0,
           overflowX: element ? getComputedStyle(element).overflowX : ''
         };
@@ -270,6 +271,10 @@ try {
       const historicalStyle = historicalGrid ? getComputedStyle(historicalGrid) : null;
       const criticalThumbnailSources = [...document.querySelectorAll('a[href*="critical-seventeen-days"] img')]
         .map((image) => image.getAttribute('src') || '');
+      const leadFeature = document.querySelector('#home-special-features>.container>.home-crafted-card.is-kai-kai-multiview-report');
+      const featureGrid = document.querySelector('#home-special-features .home-special-grid');
+      const leadFeatureStyle = leadFeature ? getComputedStyle(leadFeature) : null;
+      const featureGridStyle = featureGrid ? getComputedStyle(featureGrid) : null;
 
       return {
         width: currentWidth,
@@ -305,6 +310,14 @@ try {
         toolbarPresent: Boolean(toolbar),
         toolbarHidden: !toolbar || !visible(toolbar),
         criticalThumbnailSources,
+        specialFeature: {
+          width: leadFeature?.getBoundingClientRect().width || 0,
+          containerWidth: featureGrid?.getBoundingClientRect().width || leadFeature?.parentElement?.clientWidth || 0,
+          display: leadFeatureStyle?.display || '',
+          columns: leadFeatureStyle?.gridTemplateColumns || '',
+          supportingGridDisplay: featureGridStyle?.display || '',
+          supportingGridColumns: featureGridStyle?.gridTemplateColumns || ''
+        },
         media: {
           overflow: mediaViewport.scrollWidth - mediaViewport.clientWidth,
           visibleCards: visibleMediaCards,
@@ -346,6 +359,15 @@ try {
       assert(!/^rgba?\(0, 0, 0(?:, 0)?\)$/.test(initial.mobileFooter.background), `[${width}] 手機底部導覽背景透明`, initial.mobileFooter);
     }
     assert(initial.toolbarPresent && !initial.toolbarHidden, `[${width}] 頂端語言工具列未顯示`);
+    assert(initial.specialFeature.display === 'grid'
+      && initial.specialFeature.width >= initial.specialFeature.containerWidth - 2,
+    `[${width}] 特別專題主打卡片沒有展開至內容寬度`, initial.specialFeature);
+    assert(initial.specialFeature.columns.trim().split(/\s+/).length === (width <= 980 ? 1 : 2),
+    `[${width}] 特別專題主打卡片欄數錯誤`, initial.specialFeature);
+    const expectedFeatureColumns = width <= 700 ? 1 : width <= 980 ? 2 : 3;
+    assert(initial.specialFeature.supportingGridDisplay === 'grid'
+      && initial.specialFeature.supportingGridColumns.trim().split(/\s+/).length === expectedFeatureColumns,
+    `[${width}] 特別專題卡片欄數錯誤`, initial.specialFeature);
     assert(initial.criticalThumbnailSources.length >= 3
       && initial.criticalThumbnailSources.every((source) => /critical-seventeen-days-20260904\.webp(?:\?|$)/.test(source))
       && initial.criticalThumbnailSources.every((source) => !/chen-shangjie-hearing/i.test(source)),
@@ -358,9 +380,9 @@ try {
 
     initial.rails.forEach((rail) => {
       assert(rail.exists, `[${width}] 缺少橫向專區 ${rail.selector}`);
-      if (rail.selector === '#home-special-features .home-special-grid' && width > 700) {
-        assert(rail.display === 'grid', `[${width}] 特別專題桌機／平板沒有使用網格`, rail);
-        assert(rail.overflow <= 2 && rail.overflowX === 'visible', `[${width}] 特別專題桌機／平板不應是橫向滑軌`, rail);
+      if (rail.selector === '#home-special-features .home-special-grid') {
+        assert(rail.display === 'grid', `[${width}] 特別專題卡片沒有使用網格`, rail);
+        assert(rail.overflow <= 2 && rail.overflowX === 'visible', `[${width}] 特別專題卡片不應橫向溢位`, rail);
         return;
       }
       assert(rail.overflow > 40, `[${width}] 專區不可水平瀏覽 ${rail.selector}`, rail);
@@ -532,7 +554,7 @@ try {
       }));
     });
     Object.entries(heightSpreads).forEach(([name, result]) => {
-      if (name === 'special' && width > 700) return;
+      if (name === 'special') return;
       assert(result.spread <= 8, `[${width}] ${name} 卡片高度不一致`, result);
     });
 
