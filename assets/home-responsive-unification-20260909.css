@@ -969,7 +969,7 @@ body.art-site.home-medium-palette #home-special-features .home-crafted-card>.hom
 
 /* This stylesheet is loaded after the shared toolbar stylesheet, so it is the
    final authority for the homepage layout.  Keep feature stories in a grid on
-   tablet and desktop; only the small-screen presentation is a horizontal rail. */
+   tablet and desktop, with a single-column reading flow on smaller screens. */
 @media (min-width:701px){
   #home-special-features .home-special-grid{
     display:grid!important;
@@ -1035,7 +1035,7 @@ body.art-site.home-medium-palette #home-special-features .home-crafted-card>.hom
 }
 @media (min-width:701px) and (max-width:980px){
   #home-special-features>.container>.home-crafted-card.is-kai-kai-multiview-report{
-    grid-template-columns:minmax(0,1.05fr) minmax(290px,.95fr)!important;
+    grid-template-columns:minmax(0,1fr)!important;
     min-height:0!important;
   }
   #home-special-features .home-special-grid{
