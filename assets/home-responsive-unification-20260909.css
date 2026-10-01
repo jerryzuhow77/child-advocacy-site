@@ -999,6 +999,7 @@ body.art-site.home-medium-palette #home-special-features .home-crafted-card>.hom
 
 /* Homepage special features: give the lead story a full-width editorial stage. */
 #home-special-features>.container>.home-crafted-card.is-kai-kai-multiview-report{
+  box-sizing:border-box!important;
   display:grid!important;
   grid-template-columns:minmax(0,1.18fr) minmax(320px,.82fr)!important;
   align-items:stretch!important;
