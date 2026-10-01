@@ -967,4 +967,32 @@ body.art-site.home-medium-palette #home-special-features .home-crafted-card>.hom
   .home-priority-links .home-post-stat{font-size:.68rem!important}
 }
 
+/* This stylesheet is loaded after the shared toolbar stylesheet, so it is the
+   final authority for the homepage layout.  Keep feature stories in a grid on
+   tablet and desktop; only the small-screen presentation is a horizontal rail. */
+@media (min-width:701px){
+  #home-special-features .home-special-grid{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    align-items:stretch;
+    gap:14px;
+    overflow:visible!important;
+    padding:8px 8px 16px;
+  }
+  #home-special-features .home-special-grid .home-crafted-card{
+    width:100%!important;
+    flex:none!important;
+  }
+}
+@media (min-width:701px) and (max-width:980px){
+  #home-special-features .home-special-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:700px){
+  #home-special-features .home-special-grid{
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+  }
+}
 
