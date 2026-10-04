@@ -34,10 +34,6 @@ INTENTIONALLY_SINGLE_LANGUAGE = {
     'news/daily-child-protection-brief-20260927/',
     'news/daily-child-protection-brief-20260928/',
     'news/daily-child-protection-brief-20260930/',
-    # The 2026 social-safety-net feature is publicly available in Chinese
-    # editions only. Do not represent missing English/Japanese translations as
-    # published; keep this exception explicit until physical editions exist.
-    'features/social-observation/social-safety-net-2026/',
     # Court logistics supplied for this release have Chinese editions only;
     # English and Japanese editions are not yet formally published.
     'news/liangping-naimilk-jiajia-hearing-20261007/',
