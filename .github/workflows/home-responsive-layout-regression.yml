@@ -29,6 +29,10 @@ jobs:
         with:
           node-version: '22'
       - run: npm install --no-save --no-package-lock playwright-core@1.55.0
+      - name: Verify hearing qualifiers and physical language pages
+        run: |
+          python3 scripts/verify-jiajia-hearing-qualifiers.py
+          python3 scripts/verify-four-language-completeness.py
       - name: Check homepage JavaScript syntax
         run: |
           node --check assets/home-feed-integrity-20260911.js
