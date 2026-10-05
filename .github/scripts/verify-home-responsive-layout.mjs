@@ -1,6 +1,21 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import vm from 'node:vm';
 import { createRequire } from 'node:module';
+
+// Reject damaged source before a browser can silently repair its DOM.
+const homepageSource = await fs.readFile(new URL('../../index.html', import.meta.url), 'utf8');
+if (!/^\s*<!DOCTYPE html>/i.test(homepageSource) ||
+    /Warning: truncated output|(?:tokens|lines) truncated/.test(homepageSource) ||
+    !/<\/header>/.test(homepageSource) ||
+    !/id="home-media-reports"/.test(homepageSource) ||
+    !/id="news-hearing"/.test(homepageSource)) {
+  throw new Error('Homepage source is incomplete or contains truncated tool output');
+}
+for (const match of homepageSource.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
+  if (/\bsrc\s*=|application\/ld\+json|application\/json/i.test(match[1])) continue;
+  new vm.Script(match[2], { filename: 'index.html inline script' });
+}
 
 const require = createRequire(import.meta.url);
 const playwrightModule = process.env.PLAYWRIGHT_MODULE || 'playwright-core';
