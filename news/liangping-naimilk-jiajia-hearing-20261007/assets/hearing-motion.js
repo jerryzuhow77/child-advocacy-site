@@ -136,4 +136,4 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initMotion, { once: true });
   else initMotion();
-})();
+})();(()=>{if(document.documentElement.lang.toLowerCase().includes("hans"))document.documentElement.style.setProperty("--notice-art","url(../../../assets/art/jiajia-hearing-reminder-20261006-zh-Hans.jpg)")})();
