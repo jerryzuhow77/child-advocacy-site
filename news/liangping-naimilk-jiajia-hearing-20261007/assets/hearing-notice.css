@@ -33,3 +33,13 @@
 .case-timeline{margin:54px 0}.case-timeline ol{gap:20px}.case-timeline ol:before{left:122px;top:15px;bottom:15px;background:linear-gradient(#a8644e,rgba(168,100,78,.14))}.case-timeline li{grid-template-columns:104px minmax(0,1fr);gap:30px}.case-timeline time{font-size:.9rem;line-height:1.5;color:#6b4739}.case-timeline li>div{padding:22px 24px;border:1px solid rgba(102,65,47,.18);background:rgba(255,253,248,.82);box-shadow:0 14px 30px rgba(70,53,42,.09)}.case-timeline li>div:before{left:-38px;top:24px;width:16px;height:16px;background:#aa624c;box-shadow:0 0 0 4px #f7f1e8,0 0 0 5px rgba(168,100,78,.38)}.case-timeline strong{font-size:1.08rem}.case-timeline p{font-size:1rem;line-height:1.85}
 @media(max-width:720px){.notice-bg{opacity:.17;background-position:70% center}.hero-image{background-position:60% center}.hero-image:after{background:linear-gradient(180deg,rgba(247,244,237,.18) 0%,rgba(247,244,237,.80) 48%,rgba(247,244,237,.97) 100%)}.case-timeline{margin:42px 0}.case-timeline ol{gap:16px}.case-timeline ol:before{left:13px}.case-timeline li{grid-template-columns:1fr;gap:7px;padding-left:35px}.case-timeline li>div{padding:18px 18px}.case-timeline li>div:before{left:-30px;top:19px}.case-timeline time{font-size:.84rem}}
 
+
+/* Desktop timeline: give each content card the full readable width. */
+@media(min-width:721px){
+  .case-timeline ol:before{left:16px}
+  .case-timeline li{display:block;padding-left:44px}
+  .case-timeline time{display:block;padding:0 0 9px;text-align:left;font-size:.9rem;letter-spacing:.03em}
+  .case-timeline li>div{width:100%;padding:24px 28px}
+  .case-timeline li>div:before{left:-36px;top:27px}
+}
+
