@@ -1,0 +1,10 @@
+﻿(() => {
+  const run = () => {
+    const hans = location.hostname === 'cn.globalprotectionwall.com' || new URLSearchParams(location.search).get('lang') === 'zh-Hans' || document.documentElement.lang.toLowerCase().includes('hans');
+    const c = hans ? {kicker:'二审程序 · 到场提醒',title:'两瓶牛奶・嘉嘉案｜10/7 开庭提醒',text:'新海报标示 16:30，但未注明是集合或开庭时间；目前未取得可直接核对本案庭期细节的法院公告。',d1:'海报标示｜16:30（用途未注明）',s1:'博爱路127号',d2:'出发前确认',s2:'时间、法庭与入场规则以法院当日公告为准',action:'查看案件与开庭信息 →',url:'https://cn.globalprotectionwall.com/child-advocacy-site/news/liangping-naimilk-jiajia-hearing-20261007/zh-Hans/',alt:'用户提供的两瓶牛奶嘉嘉案开庭提醒海报，非事件现场',pin:'既有资料将 16:45 标为开庭、约 16:30 为集合；新海报仅标 16:30，均待法院公告确认。'} : {kicker:'二審程序 · 到場提醒',title:'兩瓶牛奶・嘉嘉案｜10/7 開庭提醒',text:'新海報標示 16:30，但未註明是集合或開庭時間；目前未取得可直接核對本案庭期細節的法院公告。',d1:'海報標示｜16:30（用途未註明）',s1:'博愛路127號',d2:'出發前確認',s2:'時間、法庭與入場規則以法院當日公告為準',action:'查看案件與開庭資訊 →',url:'./news/liangping-naimilk-jiajia-hearing-20261007/',alt:'使用者提供的兩瓶牛奶嘉嘉案開庭提醒海報，非事件現場',pin:'既有資料將 16:45 標為開庭、約 16:30 為集合；新海報僅標 16:30，均待法院公告確認。'};
+    const poster = './assets/art/jiajia-hearing-reminder-20261006.jpg', card = document.querySelector('.is-liangping-jiajia-hearing');
+    if (card) card.innerHTML='<a class="court-clean-poster-wrap" href="'+c.url+'" aria-label="'+c.alt+'"><img class="court-clean-poster" src="'+poster+'" alt="'+c.alt+'" loading="lazy" decoding="async"></a><div><span class="court-clean-kicker">'+c.kicker+'</span><h3>'+c.title+'</h3><p>'+c.text+'</p><div class="court-clean-actions"><a href="'+c.url+'">'+c.action+'</a></div></div><div class="court-clean-dates"><div class="court-clean-date"><b>'+c.d1+'</b><span>'+c.s1+'</span></div><div class="court-clean-date"><b>'+c.d2+'</b><span>'+c.s2+'</span></div></div>';
+    const pinned=document.querySelector('a.home-pinned-report-card[href*="liangping-naimilk-jiajia"]'); if(pinned){const image=pinned.querySelector('img'),note=pinned.querySelector('em');if(image){image.src=poster;image.alt=c.alt}if(note)note.textContent=c.pin}
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
+})();

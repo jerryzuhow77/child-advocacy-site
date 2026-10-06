@@ -8,6 +8,10 @@ on:
     - cron: '53 * * * *'
   push:
     paths:
+      - 'index.html'
+      - 'en/index.html'
+      - 'ja/index.html'
+      - 'assets/home-view-counter-20260811.js'
       - '.github/workflows/page-view-counter-smoke.yml'
       - 'cloudflare/page-view-counter/**'
       - 'assets/site.js'
