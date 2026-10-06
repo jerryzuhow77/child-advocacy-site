@@ -23,6 +23,8 @@ on:
       - '.github/scripts/test-four-language-cross-origin-routing.mjs'
       - '.github/scripts/sync-zh-hans-content.py'
       - 'scripts/verify-four-language-completeness.py'
+      - 'scripts/verify-jiajia-hearing-qualifiers.py'
+      - 'assets/news-desk-20260903.js'
       - 'data/latest-bulletins.json'
       - 'data/four-language-routes.json'
       - 'assets/four-language-toolbar-20260901.css'
@@ -222,6 +224,9 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/verify-four-language-completeness.py
+
+      - name: Verify unconfirmed Jiajia hearing display units
+        run: python3 scripts/verify-jiajia-hearing-qualifiers.py
 
       - name: Chapter Two publication hold contract
         run: python3 .github/scripts/verify-chapter-two-publication.py
