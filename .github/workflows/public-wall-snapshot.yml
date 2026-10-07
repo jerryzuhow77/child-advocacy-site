@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   snapshot:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 8
     steps:
       - name: Collect sanitized public signals
@@ -76,7 +76,7 @@ jobs:
               f.write("Public message bodies are discarded; only fingerprints are retained.\n")
               f.write("Collection completion is not a health verdict. Compare with prior evidence before alerting.\n\n")
               f.write("\u0060\u0060\u0060json\n" + json.dumps(result, indent=2) + "\n\u0060\u0060\u0060\n")
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: public-wall-snapshot
           path: snapshot/public-wall.json
