@@ -11,10 +11,10 @@ permissions:
 
 jobs:
   final-live-proof:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Confirm corrected public revision
         run: |
@@ -51,7 +51,7 @@ jobs:
 
       - name: Upload final browser evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: kaikai-standard-policy-final-browser-proof-v2
           path: browser-proof
