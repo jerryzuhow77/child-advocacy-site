@@ -21,11 +21,11 @@ concurrency:
 
 jobs:
   responsive-layout:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: '22'
       - run: npm install --no-save --no-package-lock playwright-core@1.55.0
@@ -55,7 +55,7 @@ jobs:
           done
           test "${ready:-0}" = 1
           node .github/scripts/verify-home-responsive-layout.mjs
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: always()
         with:
           name: home-responsive-layout
