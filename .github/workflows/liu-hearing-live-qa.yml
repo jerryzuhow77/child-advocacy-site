@@ -1,0 +1,50 @@
+name: Liu hearing four-language live QA
+on:
+  push:
+    branches: [codex/liu-hearing-live-qa-20261008]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock playwright-core@1.55.0
+      - name: Verify four locales on Taiwan and Hong Kong at six widths
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+        run: |
+          mkdir -p browser-validation/liu-hearing
+          node --input-type=module <<'JS'
+          import { chromium } from 'playwright-core';
+          import fs from 'node:fs/promises';
+          const route='features/social-observation/liu-zongxin-hearing-20261022/';
+          const targets=[['hant','https://jerryzuhow77.github.io/child-advocacy-site/'+route],['hans','https://jerryzuhow77.github.io/child-advocacy-site/'+route+'zh-Hans/'],['en','https://jerryzuhow77.github.io/child-advocacy-site/en/'+route],['ja','https://jerryzuhow77.github.io/child-advocacy-site/ja/'+route],['hk','https://cn.globalprotectionwall.com/child-advocacy-site/'+route+'zh-Hans/']];
+          const browser=await chromium.launch({executablePath:process.env.CHROME_PATH,headless:true});
+          const results=[],failures=[];
+          try {
+            for (const [locale,url] of targets) for (const width of [390,760,761,1024,1180,1440]) {
+              const page=await browser.newPage({viewport:{width,height:900},reducedMotion:'reduce'});
+              const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:60000});
+              await page.waitForSelector('#cpa-four-language-toolbar',{timeout:30000}).catch(()=>{});
+              await page.waitForTimeout(1500);
+              const result=await page.evaluate(()=>({title:document.title,width:innerWidth,scrollWidth:document.documentElement.scrollWidth,notice:document.querySelector('.notice')?.textContent,alternates:[...document.querySelectorAll('link[hreflang]')].map(e=>e.hreflang),canonical:document.querySelector('link[rel=canonical]')?.href,toolbar:!!document.querySelector('#cpa-four-language-toolbar'),factsColumns:getComputedStyle(document.querySelector('.facts')).gridTemplateColumns,links:[...document.querySelectorAll('a')].map(a=>a.href)}));
+              result.locale=locale;result.status=response.status();result.url=url;results.push(result);
+              if(result.status!==200||result.scrollWidth>width+2||!result.toolbar||result.alternates.length!==4||!result.notice||!(/未取得|未了|not obtained/.test(result.notice))) failures.push({locale,width,result});
+              await page.screenshot({path:`browser-validation/liu-hearing/${locale}-${width}.png`,fullPage:true});
+              await page.close();
+            }
+          } finally {await browser.close(); await fs.writeFile('browser-validation/liu-hearing/results.json',JSON.stringify({results,failures},null,2));}
+          if(failures.length)throw new Error(JSON.stringify(failures));
+          console.log('PASS: 30 live page/viewport combinations');
+          JS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: liu-hearing-four-language-live-qa
+          path: browser-validation/liu-hearing/
