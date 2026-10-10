@@ -196,9 +196,11 @@ try {
         recent: '#news-flash .home-document-disc-orbit .home-document-disc-card',
         activity: '#news-activity a.home-activity-feature'
       };
+      // Keep every link here.  Turning this into a Set before inspecting it
+      // made the duplicate check below a no-op.
       const roleLinks = Object.fromEntries(Object.entries(roleSelectors).map(([role, selector]) => [
         role,
-        [...new Set([...document.querySelectorAll(selector)].map((link) => canonical(link.href)))]
+        [...document.querySelectorAll(selector)].map((link) => canonical(link.href))
       ]));
       const duplicates = [];
       Object.entries(roleLinks).forEach(([role, hrefs]) => {
@@ -208,6 +210,19 @@ try {
           seen.add(href);
         });
       });
+      const pinnedEntries = [...document.querySelectorAll('#news-flash .home-pinned-reports-track .home-pinned-report-card')]
+        .filter((card) => !card.hasAttribute('data-pinned-clone'))
+        .map((card) => {
+          const image = card.querySelector('img');
+          return {
+            href: card.getAttribute('href') || '',
+            canonicalHref: canonical(card.href),
+            title: card.querySelector('strong')?.textContent?.trim() || '',
+            summary: card.querySelector('em')?.textContent?.trim() || '',
+            imageSrc: image?.getAttribute('src') || '',
+            imageAlt: image?.getAttribute('alt')?.trim() || ''
+          };
+        });
 
       const toolbar = document.getElementById('cpa-four-language-toolbar');
       const mobileFooter = document.querySelector('.home-footer-mobile-bar');
@@ -299,12 +314,13 @@ try {
         },
         counts: {
           media: mediaCards.length,
-          pinned: document.querySelectorAll('#news-flash .home-pinned-reports-track .home-pinned-report-card').length,
+          pinned: pinnedEntries.length,
           recent: document.querySelectorAll('#news-flash .home-document-disc-orbit .home-document-disc-card').length,
           seasonal: document.querySelectorAll('section[data-seasonal-art]').length,
           engagement: bars.length
         },
         duplicates,
+        pinnedEntries,
         visibleTextArtifacts: {
           escapedNewline: document.body.innerText.includes('\\\\n'),
           encodedSpace: document.body.innerHTML.toLowerCase().includes('&#x20;')
@@ -359,7 +375,11 @@ try {
 
     assert(initial.order.media < initial.order.latest, `[${width}] 新聞專區必須位於最新快報之前`, initial.order);
     assert(initial.counts.media >= 8, `[${width}] 新聞專區文章數不足`, initial.counts.media);
-    assert(initial.counts.pinned === 44, `[${width}] 置頂入口數量應為 44`, initial.counts.pinned);
+    assert(initial.counts.pinned > 0, `[${width}] 置頂入口未建立`, initial.counts.pinned);
+    assert(initial.pinnedEntries.every((entry) => entry.href && entry.title && entry.summary && entry.imageSrc && entry.imageAlt),
+      `[${width}] 置頂入口缺少連結、標題、摘要或替代文字`, initial.pinnedEntries);
+    assert(new Set(initial.pinnedEntries.map((entry) => entry.canonicalHref)).size === initial.pinnedEntries.length,
+      `[${width}] 置頂入口含有重複連結`, initial.pinnedEntries);
     assert(initial.counts.recent === 10, `[${width}] 摩天輪最新文章數量應為 10`, initial.counts.recent);
     assert(initial.counts.seasonal === 17, `[${width}] 秋季水墨專區數量應為 17`, initial.counts.seasonal);
     assert(initial.counts.engagement >= 45, `[${width}] 互動控制列未完整建立`, initial.counts.engagement);
@@ -573,11 +593,56 @@ try {
       assert(result.spread <= 8, `[${width}] ${name} 卡片高度不一致`, result);
     });
 
+    // The Hong Kong mirror uses the same source with hostname/query-driven
+    // Simplified-Chinese routing. Exercise that rendered mode too: count is
+    // intentionally content-driven, while every card must still be complete,
+    // unique, locally routable and free of a Taiwan-site destination.
+    const hongKongUrl = new URL(baseUrl);
+    hongKongUrl.searchParams.set('lang', 'zh-Hans');
+    await page.goto(hongKongUrl.href, { waitUntil: 'domcontentloaded', timeout: 45_000 });
+    await page.waitForFunction(() => document.querySelectorAll('#news-flash .home-pinned-reports-track .home-pinned-report-card').length > 0, undefined, { timeout: 15_000 });
+    await page.waitForTimeout(700);
+    const hongKongPinned = await page.evaluate(() => {
+      const cards = [...document.querySelectorAll('#news-flash .home-pinned-reports-track .home-pinned-report-card:not([data-pinned-clone])')];
+      const viewport = document.querySelector('#news-flash .home-pinned-reports-viewport');
+      const toolbar = document.getElementById('cpa-four-language-toolbar');
+      const visible = (element) => {
+        if (!element) return false;
+        const style = getComputedStyle(element);
+        const rect = element.getBoundingClientRect();
+        return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+      };
+      return {
+        entries: cards.map((card) => {
+          const image = card.querySelector('img');
+          return {
+            href: card.href,
+            title: card.querySelector('strong')?.textContent?.trim() || '',
+            summary: card.querySelector('em')?.textContent?.trim() || '',
+            imageSrc: image?.getAttribute('src') || '',
+            imageAlt: image?.getAttribute('alt')?.trim() || ''
+          };
+        }),
+        toolbarVisible: visible(toolbar),
+        railOverflow: viewport ? viewport.scrollWidth - viewport.clientWidth : 0,
+        horizontalOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth
+      };
+    });
+    assert(hongKongPinned.entries.length === initial.counts.pinned, `[${width}] 香港首頁置頂入口數量與台灣首頁不一致`, hongKongPinned);
+    assert(hongKongPinned.entries.every((entry) => entry.href && entry.title && entry.summary && entry.imageSrc && entry.imageAlt),
+      `[${width}] 香港首頁置頂入口缺少內容或替代文字`, hongKongPinned.entries);
+    assert(new Set(hongKongPinned.entries.map((entry) => entry.href)).size === hongKongPinned.entries.length,
+      `[${width}] 香港首頁置頂入口含有重複連結`, hongKongPinned.entries);
+    assert(hongKongPinned.entries.every((entry) => !/jerryzuhow77\.github\.io\/child-advocacy-site/i.test(entry.href)),
+      `[${width}] 香港首頁仍指向台灣本站路由`, hongKongPinned.entries);
+    assert(hongKongPinned.toolbarVisible && hongKongPinned.railOverflow > 40 && hongKongPinned.horizontalOverflow <= 2,
+      `[${width}] 香港首頁工具列或置頂滑軌版面回退`, hongKongPinned);
+
     assert(pageErrors.length === 0, `[${width}] 首頁 JavaScript 執行錯誤`, pageErrors);
     const unexpectedConsoleErrors = consoleErrors.filter((message) => message !== 'Failed to load resource: net::ERR_FAILED');
     assert(unexpectedConsoleErrors.length === 0, `[${width}] 首頁主控台錯誤`, unexpectedConsoleErrors);
     assert(sameOriginResourceErrors.length === 0, `[${width}] 首頁本機資源載入失敗`, sameOriginResourceErrors);
-    reports.push({ width, initial, mediaMove: { before: mediaBefore, after: mediaAfter }, ferrisMove: { before: ferrisBefore, after: ferrisAfter }, ferrisLayout, seasonal, heightSpreads, consoleErrors, unexpectedConsoleErrors, sameOriginResourceErrors, pageErrors });
+    reports.push({ width, initial, hongKongPinned, mediaMove: { before: mediaBefore, after: mediaAfter }, ferrisMove: { before: ferrisBefore, after: ferrisAfter }, ferrisLayout, seasonal, heightSpreads, consoleErrors, unexpectedConsoleErrors, sameOriginResourceErrors, pageErrors });
     await context.close();
     console.log(`[${width}] complete`);
   }
