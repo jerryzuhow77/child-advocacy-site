@@ -24,7 +24,7 @@ concurrency:
 jobs:
   probe:
     name: Read-only DNS, origin and credential probe
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 12
     env:
       DEFAULT_HOST: 150.109.69.104
@@ -35,7 +35,7 @@ jobs:
       WORKER_URL: https://global-protection-sync.jerryzuhow77.workers.dev/
     steps:
       - name: Check out probe files
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Run read-only infrastructure probe
         shell: bash
@@ -226,7 +226,7 @@ jobs:
 
       - name: Upload sanitized probe evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: global-protection-runtime-probe
           path: probe-output/

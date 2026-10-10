@@ -20,10 +20,10 @@ permissions:
   contents: read
 jobs:
   responsive:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 12
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: npm install --no-save playwright-core@1.55.0
       - name: Check four editions at desktop and Android widths
         run: |
@@ -31,7 +31,7 @@ jobs:
           trap 'kill $!' EXIT
           node .github/scripts/verify-advocacy-september.mjs
           node .github/scripts/verify-grandmother-motion.mjs
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: always()
         with:
           name: september-advocacy-qa

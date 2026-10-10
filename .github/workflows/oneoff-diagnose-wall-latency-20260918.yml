@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   diagnose:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 8
     env:
       HK_HOST: ${{ secrets.TENCENT_SSH_HOST }}
