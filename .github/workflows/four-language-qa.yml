@@ -23,6 +23,7 @@ on:
       - '.github/scripts/test-four-language-cross-origin-routing.mjs'
       - '.github/scripts/sync-zh-hans-content.py'
       - 'scripts/verify-four-language-completeness.py'
+      - 'scripts/test-liu-hearing-localization.py'
       - 'scripts/verify-jiajia-hearing-qualifiers.py'
       - 'assets/news-desk-20260903.js'
       - 'data/latest-bulletins.json'
@@ -223,6 +224,7 @@ jobs:
       - name: Verify four-language toolbar and physical editions
         run: |
           set -euo pipefail
+          python3 scripts/test-liu-hearing-localization.py -v
           python3 scripts/verify-four-language-completeness.py
 
       - name: Verify unconfirmed Jiajia hearing display units
