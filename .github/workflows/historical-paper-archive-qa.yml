@@ -122,9 +122,20 @@ jobs:
           assert 'home-map-paper-current.is-current-one' in weather_css
           assert 'home-map-paper-cloud.is-near' in weather_css
           assert 'transform-style: preserve-3d' in weather_css
-          assert 'home-bundle-zh-20260905.css' in home_html
+          if 'data-home-layout="20261012-static-v2"' in home_html:
+              assert 'class="archive-directory"' in home_html
+              for href in (
+                  './hearing-records/prison-watch/kaikai-final-chapter/',
+                  './historical-cases/regions/taiwan/wanghao/',
+                  './historical-cases/regions/mainland-china/fujian-qiqi/',
+                  './historical-cases/regions/japan/kurihara-mia/',
+              ):
+                  assert f'href="{href}"' in home_html, f'Static archive entry missing: {href}'
+              assert 'home-history-paper-weather-20260825.js' not in home_html
+          else:
+              assert 'home-bundle-zh-20260905.css' in home_html
+              assert 'home-history-paper-weather-20260825.js' in home_html
           assert weather_css.strip() in Path('assets/home-bundle-zh-20260905.css').read_text(encoding='utf-8')
-          assert 'home-history-paper-weather-20260825.js' in home_html
           assert 'home-bundle-intl-20260905.css' in home_en_html
           assert weather_css.strip() in Path('assets/home-bundle-intl-20260905.css').read_text(encoding='utf-8')
           assert 'home-history-paper-weather-20260825.js' in home_en_html
