@@ -633,8 +633,14 @@ try {
       `[${width}] 香港首頁置頂入口缺少內容或替代文字`, hongKongPinned.entries);
     assert(new Set(hongKongPinned.entries.map((entry) => entry.href)).size === hongKongPinned.entries.length,
       `[${width}] 香港首頁置頂入口含有重複連結`, hongKongPinned.entries);
-    assert(hongKongPinned.entries.every((entry) => !/jerryzuhow77\.github\.io\/child-advocacy-site/i.test(entry.href)),
-      `[${width}] 香港首頁仍指向台灣本站路由`, hongKongPinned.entries);
+    const taiwanDestinationHosts = new Set(['jerryzuhow77.github.io']);
+    assert(hongKongPinned.entries.every((entry) => {
+      try {
+        return !taiwanDestinationHosts.has(new URL(entry.href).hostname.toLowerCase());
+      } catch {
+        return false;
+      }
+    }), `[${width}] 香港首頁仍指向台灣站點`, hongKongPinned.entries);
     assert(hongKongPinned.toolbarVisible && hongKongPinned.railOverflow > 40 && hongKongPinned.horizontalOverflow <= 2,
       `[${width}] 香港首頁工具列或置頂滑軌版面回退`, hongKongPinned);
 
