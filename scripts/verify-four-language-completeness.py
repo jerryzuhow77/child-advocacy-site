@@ -37,9 +37,6 @@ INTENTIONALLY_SINGLE_LANGUAGE = {
     # Court logistics supplied for this release have Chinese editions only;
     # English and Japanese editions are not yet formally published.
     'news/liangping-naimilk-jiajia-hearing-20261007/',
-    # Court logistics supplied for this release have Chinese editions only;
-    # English and Japanese editions are not yet formally published.
-    'features/social-observation/liu-zongxin-hearing-20261022/',
     # Hong Kong-only Simplified Chinese wrapper around the hosted multiview report.
     # It has no Taiwanese, English, or Japanese physical editions to declare.
     'news/kaikai-multiview-report/',
@@ -122,3 +119,4 @@ for route in full_routes:
 if errors:
     raise SystemExit('\n'.join(errors))
 print(f'PASS: {len(routes)} four-language route groups; {len(physical)} physical public pages; full-record anchors preserved.')
+
