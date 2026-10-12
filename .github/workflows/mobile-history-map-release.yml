@@ -67,6 +67,10 @@ jobs:
           entrypoint_versions = {}
           for path in ('index.html', 'en/index.html', 'ja/index.html'):
               html = Path(path).read_text(encoding='utf-8')
+              if path == 'index.html' and 'data-home-layout="20261012-static-v2"' in html:
+                  assert 'class="archive-directory"' in html
+                  assert 'home-gsap-map-20260824.js' not in html
+                  continue  # The static root has no interactive-map dependency chain.
               match = re.search(r'home-gsap-map-20260824\.js\?v=([^"\']+)', html)
               assert match, f'map loader entrypoint missing in {path}'
               entrypoint_versions[path] = match.group(1)
