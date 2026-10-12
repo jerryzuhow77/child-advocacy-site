@@ -25,6 +25,7 @@
     var parents=[];
     document.querySelectorAll('main, body').forEach(function(root){
       root.querySelectorAll('a, article, li').forEach(function(card){
+        if(card.closest('#ink-home-20261012'))return;
         if(card.hasAttribute('data-pinned-clone')||!Number.isFinite(articleDate(card)))return;
         var parent=card.parentElement;
         if(parent&&parents.indexOf(parent)===-1)parents.push(parent);
