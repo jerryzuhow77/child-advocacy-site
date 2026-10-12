@@ -1301,9 +1301,9 @@ const hearing=document.getElementById('news-hearing');
 const header=document.querySelector('header.art-header');
 header.insertAdjacentElement('afterend',root);
 if(hearing){document.getElementById('ink-hearing-slot').replaceWith(hearing);hearing.classList.add('ink-existing-hearing');hearing.querySelector('h2').textContent=tr('開庭資訊','开庭资讯');hearing.querySelector('.home-court-horizontal-reel')?.setAttribute('aria-label',tr('近期開庭資訊','近期开庭资讯'));hearing.querySelectorAll('.court-clean-poster-wrap').forEach(a=>a.setAttribute('aria-label',a.closest('article')?.querySelector('h3')?.textContent||''));const past=hearing.querySelector('.is-liangping-jiajia-hearing');if(past)past.remove();if(hans){hearing.querySelector('.home-news-stream-head p')?.replaceChildren(document.createTextNode('整理近期公开庭期与旁听提醒；出发前请确认法院当日公告。'));}}
-[...document.querySelectorAll('body > section,body > main')].forEach(e=>{if(e!==root&&!root.contains(e)){e.hidden=true;e.setAttribute('data-ink-archived','true')}});
+[...document.querySelectorAll('body > section,body > main')].forEach(e=>{if(e!==root&&!root.contains(e)){e.hidden=true;e.style.setProperty('display','none','important');e.setAttribute('data-ink-archived','true')}});
 document.querySelectorAll('.home-priority-strip,.premium-home-hero,.activity-brief-zone').forEach(e=>{if(!root.contains(e))e.hidden=true});
 document.documentElement.lang=hans?'zh-Hans':'zh-Hant';
-document.body.classList.add('ink-home-active');
+document.body.classList.add('ink-home-active');const footer=document.querySelector('footer.art-footer');if(footer){footer.style.setProperty('min-height','0','important');footer.style.setProperty('padding','24px','important');footer.style.setProperty('height','auto','important');}
 };if(document.readyState==='complete')run();else window.addEventListener('load',run,{once:true});})();
 </script></body></html>
