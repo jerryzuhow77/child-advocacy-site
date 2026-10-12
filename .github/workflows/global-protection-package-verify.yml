@@ -20,11 +20,11 @@ permissions:
 jobs:
   verify:
     name: Reconstruct and verify repository-relative patches
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 8
     steps:
       - name: Check out
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Restore and verify payloads
         shell: bash
@@ -60,7 +60,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload reconstructed patches
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: global-protection-durable-patches
           path: handoffs/global-protection-archive-20260823/package/patches/

@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   chrome-regression:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
       - name: Wait for corrected Pages content
@@ -134,7 +134,7 @@ jobs:
 
       - name: Upload regression report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: kaikai-medical-witness-regression
           path: browser-validation/kaikai-medical-witness

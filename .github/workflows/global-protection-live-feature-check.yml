@@ -20,13 +20,13 @@ permissions:
 jobs:
   check:
     name: Read-only homepage, PWA and public API check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 12
     env:
       SITE_URL: https://cn.globalprotectionwall.com/
     steps:
       - name: Check out
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Inspect live public frontend without mutations
         shell: bash
@@ -211,7 +211,7 @@ jobs:
 
       - name: Upload sanitized live check
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: global-protection-live-feature-check
           path: live-check-output/

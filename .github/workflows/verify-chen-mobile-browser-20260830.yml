@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   browser-proof:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Install Playwright driver
@@ -245,7 +245,7 @@ jobs:
 
       - name: Upload browser proof
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: chen-mobile-browser-proof-20260830-v2
           path: browser-proof

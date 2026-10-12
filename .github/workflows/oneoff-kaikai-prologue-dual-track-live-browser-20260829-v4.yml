@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   live-chrome-proof:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - name: Install Playwright driver
@@ -328,7 +328,7 @@ jobs:
 
       - name: Upload browser proof
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: definitive-kaikai-prologue-dual-track-browser-proof
           path: browser-proof

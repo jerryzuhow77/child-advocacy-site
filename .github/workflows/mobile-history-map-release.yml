@@ -23,10 +23,10 @@ permissions:
 
 jobs:
   verify-entrypoints:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Verify mobile history version chain
         run: |

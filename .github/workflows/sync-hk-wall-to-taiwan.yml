@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   reconcile:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 12
     env:
       HK_KEY_A: ${{ secrets.TENCENT_SSH_PRIVATE_KEY }}
@@ -31,7 +31,7 @@ jobs:
       SOURCE_ORIGIN: https://cn.globalprotectionwall.com
       TARGET_ORIGIN: https://global-protection.jerryzuhow77.chatgpt.site
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Unseal synchronization credential
         shell: bash

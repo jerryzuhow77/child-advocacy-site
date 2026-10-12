@@ -21,10 +21,10 @@ concurrency:
 
 jobs:
   package:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Verify nginx route isolation and rollback
         run: |
@@ -107,7 +107,7 @@ jobs:
           assert "window.location.search+window.location.hash" in redirect
           print(f"Validated {len(list(root.rglob('*.html')))} HTML files and all sitemap routes.")
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: hk-child-advocacy-site
           path: hk-child-advocacy-site.tgz
@@ -116,7 +116,7 @@ jobs:
   deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: package
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 12
     env:
       HK_HOST: ${{ secrets.TENCENT_SSH_HOST }}
@@ -126,7 +126,7 @@ jobs:
       HK_KEY_B: ${{ secrets.TENCENT_CVM_SSH_KEY }}
       HK_KEY_C: ${{ secrets.SSH_PRIVATE_KEY }}
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: hk-child-advocacy-site
 
