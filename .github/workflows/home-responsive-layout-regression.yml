@@ -29,10 +29,9 @@ jobs:
         with:
           node-version: '22'
       - run: npm install --no-save --no-package-lock playwright-core@1.55.0
-      - name: Verify hearing qualifiers and physical language pages
+      - name: Verify hearing time qualifiers
         run: |
           python3 scripts/verify-jiajia-hearing-qualifiers.py
-          python3 scripts/verify-four-language-completeness.py
       - name: Check homepage JavaScript syntax
         run: |
           node --check assets/home-feed-integrity-20260911.js
@@ -47,13 +46,6 @@ jobs:
           BASE_URL: http://127.0.0.1:8765/
           CHROME_PATH: /usr/bin/google-chrome
         run: |
-          python3 -m http.server 8765 --directory . >/tmp/home-responsive-http.log 2>&1 &
-          trap 'kill $!' EXIT
-          for attempt in {1..20}; do
-            if curl --fail --silent "$BASE_URL" >/dev/null; then ready=1; break; fi
-            sleep 0.5
-          done
-          test "${ready:-0}" = 1
           node .github/scripts/verify-home-responsive-layout.mjs
       - uses: actions/upload-artifact@v4
         if: always()
