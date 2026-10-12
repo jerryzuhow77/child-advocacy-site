@@ -1280,7 +1280,7 @@ const news=extract('#home-media-reports .home-media-report-card',6);
 const features=extract('#home-special-features .home-crafted-card',3);
 const activities=extract('#news-activity .home-activity-feature',3);
 const notes=card(tr('陳尚潔案｜二審第一次準備庭','陈尚洁案｜二审第一次准备庭'),'./hearing-records/chen-shangjie-prep-hearing-20260917/'+(hans?'zh-Hans/':''),'./assets/art/chen-shangjie-prep-hearing-autumn-20260917.png','2026.09.17',tr('庭訊紀錄、檢辯主張與後續程序。','庭讯纪录、检辩主张与后续程序。'))+
-extract('#news-hearing-notes a[href*="prison-watch"],#news-hearing-notes .home-hearing-compact-card',2);
+extract('#news-hearing-notes a[href*="hearing-records/prison"],#news-hearing-notes .home-hearing-compact-card',2);
 const tTitle=tr('漁人碼頭宣傳・關注剴剴案','渔人码头宣传・关注剀剀案');
 const lTitle=tr('劉宗鑫所長開庭・到庭關注','刘宗鑫所长开庭・到庭关注');
 const tUrl='./activity-records/20261022-tamsui-fishermans-wharf-advocacy/',lUrl='./activity-records/20261022-liu-zongxin-hearing/';
@@ -1293,10 +1293,10 @@ section('ink-pinned',tr('置頂快報','置顶快报'),tr('近期重要活動與
 section('ink-news',tr('新聞快報','新闻快报'),tr('最新報導與兒少保護制度觀察','最新报道与儿少保护制度观察'),news,'./news/')+
 section('activity-brief',tr('活動快報專區','活动快报专区'),tr('一起走入公共空間，讓守護孩子的聲音被看見','一起走入公共空间，让守护孩子的声音被看见'),card(tTitle,tUrl,ti,tr('10/22（週四）10:30 · 淡水漁人碼頭','10/22（周四）10:30 · 淡水渔人码头'),tr('查看完整活動文案與海報，掃描 QR Code 加入護童行動聯盟社群。','查看完整活动文案与海报，扫描 QR Code 加入护童行动联盟社群。'),true),'./activity-records/','ink-autumn')+
 '<div id="ink-hearing-slot"></div>'+
-section('ink-cases',tr('案件與精選專題','案件与精选专题'),tr('案件背景、司法進度與制度責任','案件背景、司法进度与制度责任'),features,'./social-cases/')+
+section('ink-cases',tr('案件與精選專題','案件与精选专题'),tr('案件背景、司法進度與制度責任','案件背景、司法进度与制度责任'),features,'./cases/')+
 section('ink-notes',tr('旁聽紀錄','旁听纪录'),tr('讓公開程序有可查閱的紀錄','让公开程序有可查阅的纪录'),notes,'./hearing-records/')+
 section('ink-records',tr('活動紀錄','活动纪录'),tr('記下每一次宣傳、聲援與陪伴','记下每一次宣传、声援与陪伴'),activities,'./activity-records/')+
-'<section class="ink-section ink-about"><div><h2>'+tr('讓關心成為持續的行動','让关心成为持续的行动')+'</h2><p>'+tr('護童行動聯盟持續參與法院旁聽、案件追蹤、公共倡議與被害者支持。歡迎加入社群，共同關注每一個需要被看見的孩子。','护童行动联盟持续参与法院旁听、案件追踪、公共倡议与被害者支持。欢迎加入社群，共同关注每一个需要被看见的孩子。')+'</p><div class="ink-actions"><a href="https://line.me/ti/g2/0P5NIUSmC4jRXC5aQrgIIfRywBptTBuyhyhmYg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default">'+tr('加入 LINE 社群','加入 LINE 社群')+'</a><a href="./about/">'+tr('認識聯盟與行動成果','认识联盟与行动成果')+'</a><a href="./historical-cases/">'+tr('歷史案件','历史案件')+'</a></div></div></section>';
+'<section class="ink-section ink-about"><div><h2>'+tr('讓關心成為持續的行動','让关心成为持续的行动')+'</h2><p>'+tr('護童行動聯盟持續參與法院旁聽、案件追蹤、公共倡議與被害者支持。歡迎加入社群，共同關注每一個需要被看見的孩子。','护童行动联盟持续参与法院旁听、案件追踪、公共倡议与被害者支持。欢迎加入社群，共同关注每一个需要被看见的孩子。')+'</p><div class="ink-actions"><a href="https://line.me/ti/g2/0P5NIUSmC4jRXC5aQrgIIfRywBptTBuyhyhmYg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default">'+tr('加入 LINE 社群','加入 LINE 社群')+'</a><a href="./about/">'+tr('認識聯盟與行動成果','认识联盟与行动成果')+'</a><a href="./cases/">'+tr('歷史案件','历史案件')+'</a></div></div></section>';
 const hearing=document.getElementById('news-hearing');
 const header=document.querySelector('header.art-header');
 header.insertAdjacentElement('afterend',root);
