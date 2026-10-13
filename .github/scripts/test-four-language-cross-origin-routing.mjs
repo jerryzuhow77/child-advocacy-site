@@ -149,3 +149,26 @@ for (const [group, editions] of Object.entries(manifest.routes)) {
 }
 
 console.log('Four-language cross-origin routing regression checks passed.');
+
+// October activity metadata must agree with the regional routing manifest.
+for (const group of ['news/anti-child-abuse-rally-20261017/',
+                     'activity-records/20261022-liu-zongxin-hearing/',
+                     'activity-records/20261022-tamsui-fishermans-wharf-advocacy/']) {
+  const editions = manifest.routes[group];
+  for (const [locale, href] of Object.entries(editions)) {
+    const expected = new URL(href, 'https://jerryzuhow77.github.io').href;
+    const relative = new URL(expected).pathname.replace('/child-advocacy-site/', '');
+    const html = fs.readFileSync(new URL('../../' + relative + 'index.html', import.meta.url), 'utf8');
+    const links = [...html.matchAll(/<link\b[^>]*>/gi)].map(([tag]) =>
+      Object.fromEntries([...tag.matchAll(/([\w-]+)=["']([^"']*)["']/g)].map(([, k, v]) => [k, v])));
+    const canonicals = links.filter(link => link.rel === 'canonical');
+    assert.equal(canonicals.length, 1, `${group}/${locale}: exactly one canonical required`);
+    assert.equal(canonicals[0].href, expected, `${group}/${locale}: incorrect canonical`);
+    for (const [language, destination] of Object.entries(editions)) {
+      assert.equal(links.find(link => link.hreflang === language)?.href,
+        new URL(destination, 'https://jerryzuhow77.github.io').href,
+        `${group}/${locale}: incorrect ${language} alternate`);
+    }
+  }
+}
+console.log('October activity canonical and hreflang checks passed.');
