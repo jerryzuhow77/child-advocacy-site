@@ -117,8 +117,8 @@ for (const [language, route] of [
 }
 assert.equal(
   hongKongRuntime.languageUrl('en', null),
-  'https://jerryzuhow77.github.io/child-advocacy-site/en/',
-  'The English fallback must leave the Hong Kong host.',
+  '',
+  'A missing English edition must be disabled, never silently redirect to the homepage.',
 );
 
 assert.match(
@@ -126,10 +126,10 @@ assert.match(
   /location\.hostname===HK_MIRROR_HOST&&target\.hostname===TW_SITE_HOST\)target\.searchParams\.set\('lang',language\)/,
   'Hong Kong-to-Taiwan toolbar navigation must carry an explicit locale hint.',
 );
-assert.match(
-  toolbarSource,
-  /"zh-Hant":TW_SITE_BASE,"zh-Hans":HK_SITE_BASE,en:TW_SITE_BASE\+"en\/",ja:TW_SITE_BASE\+"ja\/"/,
-  'Fallback toolbar destinations must leave the Hong Kong host for non-Simplified editions.',
-);
+for (const language of ['zh-Hant', 'zh-Hans', 'en', 'ja']) {
+  assert.equal(hongKongRuntime.languageUrl(language, undefined), '', 'All missing editions remain unavailable.');
+}
+assert.match(toolbarSource, /routes=manifest\?\.routes\?\.\[route\]\|\|pageAlternateRoutes\(\)/,
+  'The manifest must override stale or guessed alternate links for known groups.');
 
 console.log('Four-language cross-origin routing regression checks passed.');

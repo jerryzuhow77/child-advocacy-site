@@ -184,7 +184,7 @@
   }
   function languageUrl(key,href){
     if(!href){
-      return {"zh-Hant":TW_SITE_BASE,"zh-Hans":HK_SITE_BASE,en:TW_SITE_BASE+"en/",ja:TW_SITE_BASE+"ja/"}[key]||TW_SITE_BASE;
+      return "";
     }
     if(key!=="zh-Hans"){
       try{return new URL(href,TW_SITE_BASE).href}catch(_){return href}
@@ -215,7 +215,8 @@
     document.getElementById("cpa-mobile-bar")?.remove();
     document.getElementById("cpa-mobile-menu")?.remove();
     document.documentElement.classList.remove("cpa-menu-open");
-    const language=locale(),words=copy[language],routes={...pageAlternateRoutes(),...(manifest?.routes?.[route]||{})},toolbar=document.createElement("aside");
+    // A declared route group is authoritative; unavailable editions stay visibly disabled.
+    const language=locale(),words=copy[language],routes=manifest?.routes?.[route]||pageAlternateRoutes(),toolbar=document.createElement("aside");
     toolbar.id="cpa-four-language-toolbar";
     toolbar.setAttribute("aria-label",words.aria);
     const options=Object.keys(localeNames).map(k=>{
