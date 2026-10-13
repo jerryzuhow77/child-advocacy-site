@@ -5,6 +5,7 @@ The source snapshot contains 125 route groups and, after this change, 412 physic
 ## Implemented
 
 - English and Japanese homepages now preserve the current 15-section homepage, latest news dates, case collections, memorial, social channels and activity entrances. Chinese-only article links are labelled rather than presented as translated editions.
+- Shared article language menus now disable missing editions with an unavailable label instead of silently redirecting readers to a homepage; the route manifest overrides stale alternate links.
 - Homepage language selection keeps the regional origin and respects explicit Traditional/Simplified choices. Mobile brand text wraps instead of forcing overflow.
 - Three October activity notices now have full Simplified Chinese, English and Japanese pages. The Liu Zongxin observation notice qualifies the supplied date and courtroom as unverified in every edition. Chinese posters remain originals and are identified as such in translated alternative text.
 - Memorial English/Japanese editions now retain all source paragraphs and the three protective-action cards, with four-language toolbars and their existing view-count integration.

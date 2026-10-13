@@ -38,6 +38,7 @@ jobs:
       - name: Check homepage JavaScript syntax
         run: |
           node .github/scripts/verify-home-locale-parity.mjs
+          node .github/scripts/test-four-language-cross-origin-routing.mjs
           node --check assets/home-feed-integrity-20260911.js
           node --check assets/home-responsive-unification-20260909.js
           node --check assets/home-media-reports-gsap-20260909.js
