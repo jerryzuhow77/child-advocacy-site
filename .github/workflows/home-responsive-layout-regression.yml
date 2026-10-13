@@ -12,6 +12,7 @@ on:
       - '.github/workflows/four-language-qa.yml'
       - 'assets/**'
       - '.github/scripts/verify-home-responsive-layout.mjs'
+      - '.github/scripts/test-home-language-links.py'
       - '.github/workflows/home-responsive-layout-regression.yml'
   workflow_dispatch:
 
@@ -37,6 +38,8 @@ jobs:
       - name: Verify hearing time qualifiers
         run: |
           python3 scripts/verify-jiajia-hearing-qualifiers.py
+      - name: Verify explicit homepage language links and synchronization
+        run: python3 .github/scripts/test-home-language-links.py -v
       - name: Check homepage JavaScript syntax
         run: |
           node .github/scripts/verify-home-locale-parity.mjs
