@@ -8,14 +8,14 @@ if(!/^<!DOCTYPE html>/i.test(source)||!source.includes('data-home-layout="202610
 for(const m of source.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi))if(!/\bsrc\s*=|application\//i.test(m[1]))new vm.Script(m[2]);
 const require=createRequire(import.meta.url);
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright-core');
-const widths=(process.env.QA_WIDTHS||'390,760,761,1024,1180,1440').split(',').map(Number);
+const widths=(process.env.QA_WIDTHS||'320,375,390,768,1024,1440').split(',').map(Number);
 const output=path.resolve(process.env.QA_OUTPUT||'browser-validation/home-responsive-layout');
 await fs.mkdir(output,{recursive:true});
 const browser=await chromium.launch({headless:true,...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{})});
 const reports=[],failures=[];
 const assert=(ok,msg)=>{if(!ok)failures.push(msg)};
 try{
- for(const region of ['tw','hk'])for(const width of widths){
+ for(const region of ['tw','hk'])for(const locale of ['zh-Hant','zh-Hans','en','ja'])for(const width of widths){
   const host=region==='hk'?'cn.globalprotectionwall.com':'jerryzuhow77.github.io';
   const context=await browser.newContext({viewport:{width,height:900},serviceWorkers:'block',reducedMotion:'reduce'});
   let release;const gate=new Promise(resolve=>release=resolve);
@@ -37,12 +37,13 @@ try{
   const page=await context.newPage();
   page.on('pageerror',e=>errors.push(e.message));
   page.on('load',()=>loadObserved=true);
-  await page.goto('https://'+host+'/child-advocacy-site/',{waitUntil:'commit'});
+  const homePath='/child-advocacy-site/'+(['en','ja'].includes(locale)?locale+'/':'?lang='+locale);
+  await page.goto('https://'+host+homePath,{waitUntil:'commit'});
   await page.waitForFunction(()=>window.__cpaStaticHomeReady===true);
   const early=await page.evaluate(()=>({lang:document.documentElement.lang,lead:document.querySelector('#news-flash h3')?.textContent,nav:document.querySelector('.section-nav')?.getBoundingClientRect().height,languages:document.querySelectorAll('.cpa-language-select option').length}));
-  assert(!loadObserved,`${region}/${width}: failed to test delayed resources`);
-  assert(early.lang===(region==='hk'?'zh-Hans':'zh-Hant'),`${region}/${width}: locale waits for resource loading`);
-  assert(early.lead?.trim().length>0&&early.nav>0&&early.languages===4,`${region}/${width}: headline or navigation unavailable before load`);
+  assert(!loadObserved,`${region}/${locale}/${width}: failed to test delayed resources`);
+  assert(early.lang===locale,`${region}/${locale}/${width}: locale waits for resource loading`);
+  assert(early.lead?.trim().length>0&&early.nav>0&&early.languages===4,`${region}/${locale}/${width}: headline or navigation unavailable before load`);
   blocked=false;release();
   await page.waitForLoadState('load');
   // Decode every restored cover, including images initially below the viewport.
@@ -52,33 +53,33 @@ try{
   const inspect=()=>{
    const visible=e=>e&&getComputedStyle(e).display!=='none'&&getComputedStyle(e).visibility!=='hidden'&&Number(getComputedStyle(e).opacity)!==0&&e.getBoundingClientRect().width>0&&e.getBoundingClientRect().height>0;
    const main=document.querySelector('main');
-   return {lang:document.documentElement.lang,width:innerWidth,height:document.documentElement.scrollHeight,overflow:document.documentElement.scrollWidth>innerWidth+1,mainCount:document.querySelectorAll('main').length,h1:document.querySelectorAll('h1').length,pinned:document.querySelectorAll('#news-flash .home-card').length,news:document.querySelectorAll('#home-media-reports .news-card').length,dates:[...document.querySelectorAll('#home-media-reports [data-date]')].map(e=>e.dataset.date),counter:document.querySelectorAll('main [data-home-view-counter]').length,desktopNav:visible(document.querySelector('.primary-nav')),mobileMenu:visible(document.querySelector('.mobile-menu')),legacy:document.querySelectorAll('[data-ink-archived],.home-priority-strip,.home-document-disc-orbit,.home-news-reel').length,sections:[...main.querySelectorAll(':scope>section')].map(e=>({id:e.id,height:Math.round(e.getBoundingClientRect().height)})),anchors:[...document.querySelectorAll('a[href^="#"]')].filter(a=>a.hash.length>1&&!document.getElementById(decodeURIComponent(a.hash.slice(1)))).map(a=>a.hash),externalTopics:[...document.querySelectorAll('a[data-external-topic]')].map(a=>({href:a.href,text:a.textContent})),routes:[...document.querySelectorAll('a[href]')].map(a=>a.href),images:[...main.querySelectorAll('img')].filter(i=>i.complete&&!i.naturalWidth).map(i=>i.src),qualifier:document.querySelector('#news-hearing').textContent.includes(document.documentElement.lang==='zh-Hans'?'官方庭期待核':'官方庭期待核')};
+   return {lang:document.documentElement.lang,width:innerWidth,height:document.documentElement.scrollHeight,overflow:document.documentElement.scrollWidth>innerWidth+1,mainCount:document.querySelectorAll('main').length,h1:document.querySelectorAll('h1').length,pinned:document.querySelectorAll('#news-flash .home-card').length,news:document.querySelectorAll('#home-media-reports .news-card').length,dates:[...document.querySelectorAll('#home-media-reports [data-date]')].map(e=>e.dataset.date),counter:document.querySelectorAll('main [data-home-view-counter]').length,desktopNav:visible(document.querySelector('.primary-nav')),mobileMenu:visible(document.querySelector('.mobile-menu')),legacy:document.querySelectorAll('[data-ink-archived],.home-priority-strip,.home-document-disc-orbit,.home-news-reel').length,sections:[...main.querySelectorAll(':scope>section')].map(e=>({id:e.id,height:Math.round(e.getBoundingClientRect().height)})),anchors:[...document.querySelectorAll('a[href^="#"]')].filter(a=>a.hash.length>1&&!document.getElementById(decodeURIComponent(a.hash.slice(1)))).map(a=>a.hash),externalTopics:[...document.querySelectorAll('a[data-external-topic]')].map(a=>({href:a.href,text:a.textContent})),routes:[...document.querySelectorAll('a[href]')].map(a=>a.href),images:[...main.querySelectorAll('img')].filter(i=>i.complete&&!i.naturalWidth).map(i=>i.src),qualifier:document.querySelector('#news-hearing').textContent.includes(({en:'Official court schedule unverified',ja:'公式裁判日程は未確認','zh-Hant':'官方庭期待核','zh-Hans':'官方庭期待核'})[document.documentElement.lang])};
   };
   const report=await page.evaluate(inspect);
-  assert(!report.overflow,`${region}/${width}: horizontal overflow`);
-  assert(report.mainCount===1&&report.h1===1&&report.legacy===0,`${region}/${width}: legacy homepage remains in DOM`);
-  assert(report.pinned>=3&&report.news>=6&&report.counter===1,`${region}/${width}: content or shared counter missing`);
+  assert(!report.overflow,`${region}/${locale}/${width}: horizontal overflow`);
+  assert(report.mainCount===1&&report.h1===1&&report.legacy===0,`${region}/${locale}/${width}: legacy homepage remains in DOM`);
+  assert(report.pinned>=3&&report.news>=6&&report.counter===1,`${region}/${locale}/${width}: content or shared counter missing`);
   const newsSource=source.match(/<section\b[^>]*\bid="home-media-reports"[^>]*>([\s\S]*?)<\/section>/)[1];
   const latestDate=[...newsSource.matchAll(/data-date="(\d{4}-\d{2}-\d{2})"/g)].map(m=>m[1]).sort().at(-1);
-  assert(report.dates[0]===latestDate,`${region}/${width}: latest published story missing`);
-  assert(report.dates.every((d,i)=>i===0||d<=report.dates[i-1]),`${region}/${width}: news dates out of order`);
-  assert(report.qualifier,`${region}/${width}: court qualifier missing`);
-  assert(report.desktopNav===(width>=1024)&&report.mobileMenu===(width<1024),`${region}/${width}: primary navigation not accessible`);
-  assert(!report.anchors.length&&!report.images.length&&!errors.length,`${region}/${width}: broken anchors, images, or scripts: ${JSON.stringify({anchors:report.anchors,images:report.images,errors})}`);
+  assert(report.dates[0]===latestDate,`${region}/${locale}/${width}: latest published story missing`);
+  assert(report.dates.every((d,i)=>i===0||d<=report.dates[i-1]),`${region}/${locale}/${width}: news dates out of order`);
+  assert(report.qualifier,`${region}/${locale}/${width}: court qualifier missing`);
+  assert(report.desktopNav===(width>=1024)&&report.mobileMenu===(width<1024),`${region}/${locale}/${width}: primary navigation not accessible`);
+  assert(!report.anchors.length&&!report.images.length&&!errors.length,`${region}/${locale}/${width}: broken anchors, images, or scripts: ${JSON.stringify({anchors:report.anchors,images:report.images,errors})}`);
   // Restored collections need room; visibility and per-section structure are the acceptance criteria.
-  assert(report.height<(width<=760?16000:11500),`${region}/${width}: excessive page height ${report.height}`);
+  assert(report.height<(width<=760?16000:11500),`${region}/${locale}/${width}: excessive page height ${report.height}`);
   const collections=await page.evaluate(()=>({portals:document.querySelectorAll('#home-sections .portal-card').length,chapters:document.querySelectorAll('.chapter-grid .chapter-card').length,topics:document.querySelectorAll('#observation-directory a').length,history:document.querySelectorAll('#home-historical-cases .history-card').length,cases:document.querySelectorAll('#home-social-cases a').length,comics:document.querySelectorAll('#home-court-comics .comic-card').length,hidden:['home-sections','case-reading','home-special-features','home-social-cases','home-historical-cases','home-court-comics','home-memorial','social'].filter(id=>{const e=document.getElementById(id);return !e||e.closest('details:not([open])')||getComputedStyle(e).display==='none'||e.getBoundingClientRect().height===0;})}));
-  assert(collections.portals===8&&collections.chapters===4&&collections.topics>=19&&collections.history>=8&&collections.cases>=9&&collections.comics>=4&&!collections.hidden.length,`${region}/${width}: restored collection missing or hidden ${JSON.stringify(collections)}`);
-  for(const href of report.routes){const u=new URL(href);if(region==='hk')assert(u.hostname!=='jerryzuhow77.github.io'||['/child-advocacy-site/','/child-advocacy-site/en/','/child-advocacy-site/ja/'].includes(u.pathname)||report.externalTopics.some(a=>a.href===href&&a.text.includes('台湾外部专题')),`${region}/${width}: unintended Taiwan article route ${href}`);if(u.hostname===host&&u.pathname.startsWith('/child-advocacy-site/')){const p=u.pathname.slice('/child-advocacy-site/'.length);try{await fs.access(path.join(root,p.endsWith('/')||!p?p+'index.html':p))}catch{failures.push(`${region}/${width}: missing article route ${href}`)}}}
-  if(width<1024){await page.locator('.mobile-menu summary').click();assert(await page.locator('.mobile-menu nav').isVisible(),`${region}/${width}: mobile menu fails to open`);await page.locator('.mobile-menu nav a[href="#home-media-reports"]').click();assert(!await page.locator('.mobile-menu nav').isVisible(),`${region}/${width}: mobile menu fails to close`);}
+  assert(collections.portals===8&&collections.chapters===4&&collections.topics>=19&&collections.history>=8&&collections.cases>=9&&collections.comics>=4&&!collections.hidden.length,`${region}/${locale}/${width}: restored collection missing or hidden ${JSON.stringify(collections)}`);
+  for(const href of report.routes){const u=new URL(href);if(region==='hk')assert(u.hostname!=='jerryzuhow77.github.io'||['/child-advocacy-site/','/child-advocacy-site/en/','/child-advocacy-site/ja/'].includes(u.pathname)||report.externalTopics.some(a=>a.href===href&&a.text.trim().length>0),`${region}/${locale}/${width}: unintended Taiwan article route ${href}`);if(u.hostname===host&&u.pathname.startsWith('/child-advocacy-site/')){const p=u.pathname.slice('/child-advocacy-site/'.length);try{await fs.access(path.join(root,p.endsWith('/')||!p?p+'index.html':p))}catch{failures.push(`${region}/${locale}/${width}: missing article route ${href}`)}}}
+  if(width<1024){await page.locator('.mobile-menu summary').click();assert(await page.locator('.mobile-menu nav').isVisible(),`${region}/${locale}/${width}: mobile menu fails to open`);await page.locator('.mobile-menu nav a[href="#home-media-reports"]').click();assert(!await page.locator('.mobile-menu nav').isVisible(),`${region}/${locale}/${width}: mobile menu fails to close`);}
   await page.evaluate(()=>window.scrollTo(0,document.documentElement.scrollHeight));
   await page.waitForTimeout(400);
   const after=await page.evaluate(inspect);
-  assert(after.height===report.height&&after.legacy===0,`${region}/${width}: scrolling resurrects legacy content`);
+  assert(after.height===report.height&&after.legacy===0,`${region}/${locale}/${width}: scrolling resurrects legacy content`);
   await page.evaluate(()=>window.scrollTo(0,0));
-  await page.screenshot({path:path.join(output,`${region}-${width}.png`),fullPage:true,animations:'disabled'});
-  reports.push({region,...report,routes:undefined,errors});
-  console.log(`${region}/${width}: height=${report.height}, no overflow, early locale and navigation ready`);
+  await page.screenshot({path:path.join(output,`${region}-${locale}-${width}.png`),fullPage:true,animations:'disabled'});
+  reports.push({region,locale,...report,routes:undefined,errors});
+  console.log(`${region}/${locale}/${width}: height=${report.height}, no overflow, early locale and navigation ready`);
   await context.close();
  }
 }finally{await browser.close();await fs.writeFile(path.join(output,'report.json'),JSON.stringify({reports,failures},null,2));}

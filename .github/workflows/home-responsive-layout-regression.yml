@@ -6,6 +6,9 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - 'en/index.html'
+      - 'ja/index.html'
+      - 'data/four-language-routes.json'
       - '.github/workflows/four-language-qa.yml'
       - 'assets/**'
       - '.github/scripts/verify-home-responsive-layout.mjs'
@@ -34,6 +37,7 @@ jobs:
           python3 scripts/verify-jiajia-hearing-qualifiers.py
       - name: Check homepage JavaScript syntax
         run: |
+          node .github/scripts/verify-home-locale-parity.mjs
           node --check assets/home-feed-integrity-20260911.js
           node --check assets/home-responsive-unification-20260909.js
           node --check assets/home-media-reports-gsap-20260909.js

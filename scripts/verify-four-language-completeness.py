@@ -2,6 +2,7 @@
 """Check public locale coverage and full-record structural preservation."""
 import json
 import re
+import sys
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -37,9 +38,6 @@ INTENTIONALLY_SINGLE_LANGUAGE = {
     # Court logistics supplied for this release have Chinese editions only;
     # English and Japanese editions are not yet formally published.
     'news/liangping-naimilk-jiajia-hearing-20261007/',
-    # Court logistics supplied for this release have Chinese editions only;
-    # English and Japanese editions are not yet formally published.
-    'features/social-observation/liu-zongxin-hearing-20261022/',
     # Hong Kong-only Simplified Chinese wrapper around the hosted multiview report.
     # It has no Taiwanese, English, or Japanese physical editions to declare.
     'news/kaikai-multiview-report/',
@@ -70,7 +68,7 @@ def read(url):
     return path, path.read_text(encoding='utf-8')
 
 for route, editions in routes.items():
-    single_language = route in INTENTIONALLY_SINGLE_LANGUAGE
+    single_language = '--strict' not in sys.argv and route in INTENTIONALLY_SINGLE_LANGUAGE
     if not single_language and set(editions) != LOCALES:
         errors.append(f'{route}: missing locales {LOCALES-set(editions)}')
     for locale, url in editions.items():
@@ -121,4 +119,5 @@ for route in full_routes:
 
 if errors:
     raise SystemExit('\n'.join(errors))
-print(f'PASS: {len(routes)} four-language route groups; {len(physical)} physical public pages; full-record anchors preserved.')
+incomplete = sum(set(editions) != LOCALES for editions in routes.values())
+print(f'PASS: {len(routes)} route groups; {len(physical)} physical public pages; full-record anchors preserved; {incomplete} incomplete groups remain under legacy exceptions. Use --strict to reject all missing locales.')
