@@ -2,7 +2,8 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import vm from 'node:vm';
 import {createRequire} from 'node:module';
-const root=path.resolve(path.dirname(new URL(import.meta.url).pathname),'../..');
+import {fileURLToPath} from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
 const source=await fs.readFile(path.join(root,'index.html'),'utf8');
 if(!/^<!DOCTYPE html>/i.test(source)||!source.includes('data-home-layout="20261012-static-v2"')||/Warning: truncated output/.test(source))throw new Error('Incomplete homepage source');
 for(const m of source.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi))if(!/\bsrc\s*=|application\//i.test(m[1]))new vm.Script(m[2]);
@@ -57,6 +58,24 @@ try{
   };
   const report=await page.evaluate(inspect);
   assert(!report.overflow,`${region}/${locale}/${width}: horizontal overflow`);
+  const media=await page.evaluate(()=>({loopSource:document.querySelector('.cinema-loop')?.getAttribute('src'),filmSource:document.querySelector('.cinema-dialog video')?.getAttribute('src'),poster:document.querySelector('.cinema-poster')?.naturalWidth}));
+  assert(!media.loopSource&&!media.filmSource&&media.poster>0,`${region}/${locale}/${width}: reduced-motion poster or deferred full film failed`);
+  if(width===390){
+   await page.locator('[data-cinema-open]').click();
+   const expected=locale==='zh-Hans'||(!['zh-Hant','zh-Hans'].includes(locale)&&region==='hk')?'zh-Hans':'zh-Hant';
+   assert(await page.locator('.cinema-dialog').isVisible(),`${region}/${locale}: film dialog failed to open`);
+   assert((await page.locator('.cinema-dialog video').getAttribute('src')).includes(`kaikai-cinema-${expected}-`),`${region}/${locale}: wrong subtitle edition`);
+   await page.locator('[data-cinema-close]').click();
+   await page.waitForFunction(()=>!document.querySelector('.cinema-dialog').open&&!document.querySelector('.cinema-dialog video').hasAttribute('src'));
+   assert(!await page.locator('.cinema-dialog').isVisible()&&!await page.locator('.cinema-dialog video').getAttribute('src'),`${region}/${locale}: film dialog did not close and unload`);
+  }
+  if(region==='hk'&&locale==='zh-Hans'&&width===1440){
+   await page.locator('[data-cinema-toggle]').click();
+   await page.waitForFunction(()=>document.querySelector('.cinema-loop').currentTime>0);
+   assert(await page.locator('[data-cinema-toggle]').textContent()==='暂停动画','Manual animation playback must show the Simplified Chinese pause label');
+   await page.locator('[data-cinema-toggle]').click();
+   await page.waitForFunction(()=>document.querySelector('.cinema-loop').paused);
+  }
   assert(report.mainCount===1&&report.h1===1&&report.legacy===0,`${region}/${locale}/${width}: legacy homepage remains in DOM`);
   assert(report.pinned>=3&&report.news>=6&&report.counter===1,`${region}/${locale}/${width}: content or shared counter missing`);
   const newsSource=source.match(/<section\b[^>]*\bid="home-media-reports"[^>]*>([\s\S]*?)<\/section>/)[1];
