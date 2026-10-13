@@ -132,4 +132,20 @@ for (const language of ['zh-Hant', 'zh-Hans', 'en', 'ja']) {
 assert.match(toolbarSource, /routes=manifest\?\.routes\?\.\[route\]\|\|pageAlternateRoutes\(\)/,
   'The manifest must override stale or guessed alternate links for known groups.');
 
+// Validate the generated destinations, including trailing activity editions.
+const manifest = JSON.parse(fs.readFileSync(new URL('../../data/four-language-routes.json', import.meta.url), 'utf8'));
+for (const [group, editions] of Object.entries(manifest.routes)) {
+  for (const [language, href] of Object.entries(editions)) {
+    const actual = new URL(hongKongRuntime.languageUrl(language, href));
+    assert.equal(actual.hostname, language === 'zh-Hans' ? 'cn.globalprotectionwall.com' : 'jerryzuhow77.github.io',
+      `${group}/${language}: wrong regional destination`);
+    if (language === 'zh-Hans') {
+      assert.equal(new URL(href).hostname, 'cn.globalprotectionwall.com', `${group}: manifest must itself target Hong Kong`);
+    }
+    const relative = actual.pathname.replace(/^\/child-advocacy-site\//, '').replace(/^\//, '');
+    const filename = relative.endsWith('/') || !relative ? relative + 'index.html' : relative;
+    assert.ok(fs.existsSync(new URL('../../' + filename, import.meta.url)), `${group}/${language}: missing physical destination`);
+  }
+}
+
 console.log('Four-language cross-origin routing regression checks passed.');

@@ -30,6 +30,7 @@ for route in routes:
     if 'liu-zongxin' in route:
         source=source.replace('（官方庭期待核）','').replace('10/22時間與法庭為本站依提供資訊整理，尚待官方核對；','')
     editions={l:BASE+route+('' if l=='zh-Hant' else l+'/') for l in ('zh-Hant','zh-Hans','en','ja')}
+    editions['zh-Hans']='https://cn.globalprotectionwall.com'+editions['zh-Hans']
     manifest['routes'][route]=editions
     for locale in ('zh-Hant','zh-Hans','en','ja'):
         soup=BeautifulSoup(source,'html.parser')

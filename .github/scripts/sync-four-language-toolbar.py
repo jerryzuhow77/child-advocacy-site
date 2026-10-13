@@ -180,6 +180,9 @@ def localize_links(path: Path, text: str, routes: dict) -> str:
         url = urlsplit(urljoin(base, html.unescape(href.group(2))))
         if url.netloc != 'jerryzuhow77.github.io':
             return match.group()
+        # Explicit regional/language home links must keep their stated target.
+        if url.path == BASE and re.search(r'Traditional Chinese|繁[體体]', label, re.I):
+            return match.group()
         route = reverse.get(re.sub(r'index\.html$', '', url.path))
         fragment = url.fragment
         if route == '' and fragment == 'news-hearing-notes':
