@@ -54,9 +54,12 @@
     event.preventDefault();dialog.showModal();document.documentElement.classList.add('cinema-modal-open');loop.pause();selectEdition(edition);
   });
   editions.forEach(button=>button.addEventListener('click',()=>selectEdition(button.dataset.cinemaEdition,true)));
-  dialog.querySelector('[data-cinema-close]').addEventListener('click',()=>dialog.close());
-  dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const box=dialog.getBoundingClientRect();if(event.clientX<box.left||event.clientX>box.right||event.clientY<box.top||event.clientY>box.bottom)dialog.close();});
-  dialog.addEventListener('close',()=>{player.pause();player.removeAttribute('src');player.load();error.hidden=true;document.documentElement.classList.remove('cinema-modal-open');opener.focus();syncLoop();});
+  const unloadFilm=()=>{player.pause();if(player.hasAttribute('src')){player.removeAttribute('src');player.load();}error.hidden=true;};
+  const closeFilm=()=>{unloadFilm();dialog.close();};
+  dialog.querySelector('[data-cinema-close]').addEventListener('click',closeFilm);
+  dialog.addEventListener('cancel',unloadFilm);
+  dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const box=dialog.getBoundingClientRect();if(event.clientX<box.left||event.clientX>box.right||event.clientY<box.top||event.clientY>box.bottom)closeFilm();});
+  dialog.addEventListener('close',()=>{unloadFilm();document.documentElement.classList.remove('cinema-modal-open');opener.focus();syncLoop();});
   player.addEventListener('error',()=>{if(player.hasAttribute('src')){error.textContent=words.error;error.hidden=false;}});
   syncLoop();
 })();

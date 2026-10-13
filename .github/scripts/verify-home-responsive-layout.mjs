@@ -66,7 +66,15 @@ try{
    assert(await page.locator('.cinema-dialog').isVisible(),`${region}/${locale}: film dialog failed to open`);
    assert((await page.locator('.cinema-dialog video').getAttribute('src')).includes(`kaikai-cinema-${expected}-`),`${region}/${locale}: wrong subtitle edition`);
    await page.locator('[data-cinema-close]').click();
+   await page.waitForFunction(()=>!document.querySelector('.cinema-dialog').open&&!document.querySelector('.cinema-dialog video').hasAttribute('src'));
    assert(!await page.locator('.cinema-dialog').isVisible()&&!await page.locator('.cinema-dialog video').getAttribute('src'),`${region}/${locale}: film dialog did not close and unload`);
+  }
+  if(region==='hk'&&locale==='zh-Hans'&&width===1440){
+   await page.locator('[data-cinema-toggle]').click();
+   await page.waitForFunction(()=>document.querySelector('.cinema-loop').currentTime>0);
+   assert(await page.locator('[data-cinema-toggle]').textContent()==='暂停动画','Manual animation playback must show the Simplified Chinese pause label');
+   await page.locator('[data-cinema-toggle]').click();
+   await page.waitForFunction(()=>document.querySelector('.cinema-loop').paused);
   }
   assert(report.mainCount===1&&report.h1===1&&report.legacy===0,`${region}/${locale}/${width}: legacy homepage remains in DOM`);
   assert(report.pinned>=3&&report.news>=6&&report.counter===1,`${region}/${locale}/${width}: content or shared counter missing`);
