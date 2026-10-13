@@ -35,6 +35,11 @@ for route in routes:
     for locale in ('zh-Hant','zh-Hans','en','ja'):
         soup=BeautifulSoup(source,'html.parser')
         alternates(soup,editions)
+        canonical=soup.select_one('link[rel="canonical"]')
+        if canonical is None:
+            canonical=soup.new_tag('link',rel='canonical')
+            soup.head.append(canonical)
+        canonical['href']=editions[locale] if locale=='zh-Hans' else 'https://jerryzuhow77.github.io'+editions[locale]
         if locale!='zh-Hant':
             soup.html['lang']=locale
             for script in soup.select('script:not([src])'): script.decompose()
