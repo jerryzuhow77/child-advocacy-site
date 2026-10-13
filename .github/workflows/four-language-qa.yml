@@ -20,6 +20,7 @@ on:
       - '.github/scripts/verify-chapter-two-publication.py'
       - '.github/scripts/protect-chapter-two-hold.py'
       - '.github/scripts/sync-four-language-toolbar.py'
+      - '.github/scripts/test-home-language-links.py'
       - '.github/scripts/test-four-language-cross-origin-routing.mjs'
       - '.github/scripts/sync-zh-hans-content.py'
       - 'scripts/verify-four-language-completeness.py'
@@ -67,6 +68,9 @@ jobs:
       - name: Install Simplified Chinese converter
         run: python3 -m pip install --disable-pip-version-check opencc-python-reimplemented==0.1.7
 
+      - name: Verify explicit homepage language links before synchronization
+        run: python3 .github/scripts/test-home-language-links.py -v
+
       - name: Synchronize language routes from a fresh main snapshot
         run: |
           set -euo pipefail
@@ -77,6 +81,8 @@ jobs:
             git reset --hard origin/main
             python3 .github/scripts/sync-zh-hans-content.py
             python3 .github/scripts/sync-four-language-toolbar.py
+            # Do not publish a bot edit that breaks explicit language switches.
+            python3 .github/scripts/test-home-language-links.py -v
             if git diff --quiet; then
               break
             fi
