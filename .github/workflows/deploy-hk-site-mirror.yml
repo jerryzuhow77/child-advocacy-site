@@ -25,6 +25,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Verify nginx route isolation and rollback
         run: |
@@ -35,6 +37,9 @@ jobs:
         shell: bash
         run: |
           set -Eeuo pipefail
+          # A bot-generated sitemap commit may follow the triggering push.
+          # Build discovery from this release's pages before creating the archive.
+          python3 scripts/sync_sitemap.py
           root="mirror/child-advocacy-site"
           mkdir -p "$root"
           find . -maxdepth 1 -type f \
