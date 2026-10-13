@@ -60,6 +60,10 @@ try{
   const footerLanguages=await page.locator('.footer-regions a').evaluateAll(links=>links.map(a=>({path:new URL(a.href).pathname,host:new URL(a.href).hostname,label:a.textContent.trim()})));
   assert(footerLanguages.length===4&&footerLanguages[0].host==='jerryzuhow77.github.io'&&footerLanguages[0].path==='/child-advocacy-site/'&&footerLanguages[1].host==='cn.globalprotectionwall.com'&&footerLanguages[1].path==='/child-advocacy-site/'&&footerLanguages[2].path==='/child-advocacy-site/en/'&&footerLanguages[2].label==='English'&&footerLanguages[3].path==='/child-advocacy-site/ja/'&&footerLanguages[3].label==='日本語',`${region}/${locale}/${width}: explicit footer language target mismatch ${JSON.stringify(footerLanguages)}`);
   assert(!report.overflow,`${region}/${locale}/${width}: horizontal overflow`);
+  if(source.includes('data-home-ink-edition="20261013-scroll-v1"')){
+   const ink=await page.evaluate(()=>({edition:document.body.dataset.homeInkEdition,hero:document.querySelector('.ink-hero-image')?.naturalWidth,portals:document.querySelectorAll('#home-sections .ink-vignette').length,chapters:document.querySelectorAll('.chapter-grid .ink-vignette').length,atlas:document.querySelector('#home-sections .ink-vignette img').currentSrc,film:!!document.querySelector('#home-film .cinema-loop'),heroHasLoop:!!document.querySelector('.ink-scroll-hero .cinema-loop')}));
+   assert(ink.edition==='20261013-scroll-v1'&&ink.hero>0&&ink.portals===8&&ink.chapters===4&&ink.atlas.includes('home-ink-album-atlas-20261013.webp')&&ink.film&&!ink.heroHasLoop,`${region}/${locale}/${width}: watercolor imagery or preserved film section missing ${JSON.stringify(ink)}`);
+  }
   const media=await page.evaluate(()=>({loopSource:document.querySelector('.cinema-loop')?.getAttribute('src'),filmSource:document.querySelector('.cinema-dialog video')?.getAttribute('src'),poster:document.querySelector('.cinema-poster')?.naturalWidth}));
   assert(!media.loopSource&&!media.filmSource&&media.poster>0,`${region}/${locale}/${width}: reduced-motion poster or deferred full film failed`);
   if(width===390){
@@ -71,13 +75,14 @@ try{
    await page.waitForFunction(()=>!document.querySelector('.cinema-dialog').open&&!document.querySelector('.cinema-dialog video').hasAttribute('src'));
    assert(!await page.locator('.cinema-dialog').isVisible()&&!await page.locator('.cinema-dialog video').getAttribute('src'),`${region}/${locale}: film dialog did not close and unload`);
   }
-  if(region==='hk'&&locale==='zh-Hans'&&width===1440){
+  if(region==='hk'&&locale==='zh-Hans'&&width===1440&&process.env.QA_SKIP_CODEC_PLAYBACK!=='1'){
    await page.locator('[data-cinema-toggle]').click();
    await page.waitForFunction(()=>document.querySelector('.cinema-loop').currentTime>0);
    assert(await page.locator('[data-cinema-toggle]').textContent()==='暂停动画','Manual animation playback must show the Simplified Chinese pause label');
    await page.locator('[data-cinema-toggle]').click();
    await page.waitForFunction(()=>document.querySelector('.cinema-loop').paused);
   }
+  if(region==='hk'&&locale==='zh-Hans'&&width===1440&&process.env.QA_SKIP_CODEC_PLAYBACK==='1')console.log('Local environment: codec playback omitted explicitly; CI runs this check in Google Chrome.');
   assert(report.mainCount===1&&report.h1===1&&report.legacy===0,`${region}/${locale}/${width}: legacy homepage remains in DOM`);
   assert(report.pinned>=3&&report.news>=6&&report.counter===1,`${region}/${locale}/${width}: content or shared counter missing`);
   const newsSource=source.match(/<section\b[^>]*\bid="home-media-reports"[^>]*>([\s\S]*?)<\/section>/)[1];
@@ -91,7 +96,8 @@ try{
   // Full translations take more lines. Compare their height with the same regional
   // Chinese layout instead of applying a Chinese-only pixel ceiling to English.
   const baseline=reports.find(r=>r.region===region&&r.locale==='zh-Hant'&&r.width===width);
-  const heightBudget=baseline?baseline.height*(width<=760?1.6:1.35):(width<=760?16000:11500);
+  // The independent advocacy-film section adds room without hiding any of the restored collections.
+  const heightBudget=baseline?baseline.height*(width<=760?1.6:1.35):(width<=760?17000:12500);
   assert(report.height<heightBudget,`${region}/${locale}/${width}: excessive page height ${report.height} (budget ${Math.round(heightBudget)})`);
   const collections=await page.evaluate(()=>({portals:document.querySelectorAll('#home-sections .portal-card').length,chapters:document.querySelectorAll('.chapter-grid .chapter-card').length,topics:document.querySelectorAll('#observation-directory a').length,history:document.querySelectorAll('#home-historical-cases .history-card').length,cases:document.querySelectorAll('#home-social-cases a').length,comics:document.querySelectorAll('#home-court-comics .comic-card').length,hidden:['home-sections','case-reading','home-special-features','home-social-cases','home-historical-cases','home-court-comics','home-memorial','social'].filter(id=>{const e=document.getElementById(id);return !e||e.closest('details:not([open])')||getComputedStyle(e).display==='none'||e.getBoundingClientRect().height===0;})}));
   assert(collections.portals===8&&collections.chapters===4&&collections.topics>=19&&collections.history>=8&&collections.cases>=9&&collections.comics>=4&&!collections.hidden.length,`${region}/${locale}/${width}: restored collection missing or hidden ${JSON.stringify(collections)}`);

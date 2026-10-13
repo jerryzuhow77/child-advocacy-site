@@ -16,7 +16,8 @@
   const reduce=matchMedia('(prefers-reduced-motion: reduce)');
   const connection=navigator.connection;
   let wantsMotion=!reduce.matches&&!connection?.saveData&&!/^(slow-)?2g$/.test(connection?.effectiveType||'');
-  let visible=true;
+  // The advocacy preview can live below the watercolor hero; don't load it until it is in view.
+  let visible=loop.getBoundingClientRect().top<innerHeight&&loop.getBoundingClientRect().bottom>0;
   const startLoop=()=>{
     if(!loop.getAttribute('src')){loop.src=asset('guardian-loop-20261013.mp4');loop.load();}
     loop.muted=true;
@@ -28,7 +29,7 @@
   loop.addEventListener('pause',syncToggle);
   loop.addEventListener('error',()=>{loop.classList.remove('is-ready');toggle.hidden=true;});
   toggle.hidden=false;
-  toggle.addEventListener('click',()=>{wantsMotion=loop.paused;syncLoop();});
+  toggle.addEventListener('click',()=>{wantsMotion=loop.paused;if(wantsMotion){visible=true;startLoop();}else syncLoop();});
   reduce.addEventListener('change',()=>{wantsMotion=!reduce.matches&&!connection?.saveData;if(reduce.matches)loop.classList.remove('is-ready');syncLoop();});
   document.addEventListener('visibilitychange',syncLoop);
   if('IntersectionObserver' in window)new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;syncLoop();},{threshold:.05}).observe(loop);
