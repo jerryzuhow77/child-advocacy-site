@@ -76,8 +76,9 @@ for locale in ('en', 'ja'):
         option['value']=destinations[language]
         if language==locale: option['selected']=''
     # Region is kept for all language switches. Explicit regional footer links remain cross-region.
-    for a in soup.select('.footer-regions a')[-2:]:
-        a['href']=BASE+('en/' if a.get_text()=='English' else 'ja/')
+    for a, language in zip(soup.select('.footer-regions a')[-2:], ('en', 'ja')):
+        a['href']=BASE+language+'/'
+        a.string='English' if language=='en' else '日本語'
     flag=soup.new_tag('script', attrs={'data-cpa-four-language-toolbar-flag':''})
     flag.string="window.__cpaFourLanguageToolbar=true;document.documentElement.classList.add('cpa-four-language-toolbar-active');"
     soup.head.append(flag)

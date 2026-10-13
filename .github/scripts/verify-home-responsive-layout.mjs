@@ -102,7 +102,7 @@ try{
   const after=await page.evaluate(inspect);
   assert(after.height===report.height&&after.legacy===0,`${region}/${locale}/${width}: scrolling resurrects legacy content`);
   await page.evaluate(()=>window.scrollTo(0,0));
-  await page.screenshot({path:path.join(output,`${region}-${locale}-${width}.png`),fullPage:true,animations:'disabled'});
+  await page.screenshot({path:path.join(output,`${region}-${locale}-${width}.jpg`),type:'jpeg',quality:90,fullPage:true,animations:'disabled'});
   reports.push({region,locale,...report,routes:undefined,errors});
   console.log(`${region}/${locale}/${width}: height=${report.height}, no overflow, early locale and navigation ready`);
   await context.close();
