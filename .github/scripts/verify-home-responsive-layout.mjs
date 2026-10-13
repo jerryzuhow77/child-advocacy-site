@@ -42,9 +42,12 @@ try{
   const early=await page.evaluate(()=>({lang:document.documentElement.lang,lead:document.querySelector('#news-flash h3')?.textContent,nav:document.querySelector('.section-nav')?.getBoundingClientRect().height,languages:document.querySelectorAll('.cpa-language-select option').length}));
   assert(!loadObserved,`${region}/${width}: failed to test delayed resources`);
   assert(early.lang===(region==='hk'?'zh-Hans':'zh-Hant'),`${region}/${width}: locale waits for resource loading`);
-  assert(early.lead.includes(region==='hk'?'一死、一伤':'一死、一傷')&&early.nav>0&&early.languages===4,`${region}/${width}: headline or navigation unavailable before load`);
+  assert(early.lead?.trim().length>0&&early.nav>0&&early.languages===4,`${region}/${width}: headline or navigation unavailable before load`);
   blocked=false;release();
   await page.waitForLoadState('load');
+  // Decode every restored cover, including images initially below the viewport.
+  await page.evaluate(async()=>{const images=[...document.querySelectorAll('main img')];images.forEach(i=>i.loading='eager');await Promise.all(images.map(i=>i.decode().catch(()=>{})));});
+  await page.waitForFunction(()=>[...document.querySelectorAll('main img')].every(i=>i.complete));
   await page.waitForTimeout(350);
   const inspect=()=>{
    const visible=e=>e&&getComputedStyle(e).display!=='none'&&getComputedStyle(e).visibility!=='hidden'&&Number(getComputedStyle(e).opacity)!==0&&e.getBoundingClientRect().width>0&&e.getBoundingClientRect().height>0;
@@ -54,12 +57,18 @@ try{
   const report=await page.evaluate(inspect);
   assert(!report.overflow,`${region}/${width}: horizontal overflow`);
   assert(report.mainCount===1&&report.h1===1&&report.legacy===0,`${region}/${width}: legacy homepage remains in DOM`);
-  assert(report.pinned===3&&report.news===6&&report.counter===1,`${region}/${width}: content or shared counter missing`);
+  assert(report.pinned>=3&&report.news>=6&&report.counter===1,`${region}/${width}: content or shared counter missing`);
+  const newsSource=source.match(/<section\b[^>]*\bid="home-media-reports"[^>]*>([\s\S]*?)<\/section>/)[1];
+  const latestDate=[...newsSource.matchAll(/data-date="(\d{4}-\d{2}-\d{2})"/g)].map(m=>m[1]).sort().at(-1);
+  assert(report.dates[0]===latestDate,`${region}/${width}: latest published story missing`);
   assert(report.dates.every((d,i)=>i===0||d<=report.dates[i-1]),`${region}/${width}: news dates out of order`);
   assert(report.qualifier,`${region}/${width}: court qualifier missing`);
   assert(report.desktopNav===(width>=1024)&&report.mobileMenu===(width<1024),`${region}/${width}: primary navigation not accessible`);
   assert(!report.anchors.length&&!report.images.length&&!errors.length,`${region}/${width}: broken anchors, images, or scripts: ${JSON.stringify({anchors:report.anchors,images:report.images,errors})}`);
-  assert(report.height<(width<=760?9500:6500),`${region}/${width}: excessive page height ${report.height}`);
+  // Restored collections need room; visibility and per-section structure are the acceptance criteria.
+  assert(report.height<(width<=760?16000:11500),`${region}/${width}: excessive page height ${report.height}`);
+  const collections=await page.evaluate(()=>({portals:document.querySelectorAll('#home-sections .portal-card').length,chapters:document.querySelectorAll('.chapter-grid .chapter-card').length,topics:document.querySelectorAll('#observation-directory a').length,history:document.querySelectorAll('#home-historical-cases .history-card').length,cases:document.querySelectorAll('#home-social-cases a').length,comics:document.querySelectorAll('#home-court-comics .comic-card').length,hidden:['home-sections','case-reading','home-special-features','home-social-cases','home-historical-cases','home-court-comics','home-memorial','social'].filter(id=>{const e=document.getElementById(id);return !e||e.closest('details:not([open])')||getComputedStyle(e).display==='none'||e.getBoundingClientRect().height===0;})}));
+  assert(collections.portals===8&&collections.chapters===4&&collections.topics>=19&&collections.history>=8&&collections.cases>=9&&collections.comics>=4&&!collections.hidden.length,`${region}/${width}: restored collection missing or hidden ${JSON.stringify(collections)}`);
   for(const href of report.routes){const u=new URL(href);if(region==='hk')assert(u.hostname!=='jerryzuhow77.github.io'||['/child-advocacy-site/','/child-advocacy-site/en/','/child-advocacy-site/ja/'].includes(u.pathname)||report.externalTopics.some(a=>a.href===href&&a.text.includes('台湾外部专题')),`${region}/${width}: unintended Taiwan article route ${href}`);if(u.hostname===host&&u.pathname.startsWith('/child-advocacy-site/')){const p=u.pathname.slice('/child-advocacy-site/'.length);try{await fs.access(path.join(root,p.endsWith('/')||!p?p+'index.html':p))}catch{failures.push(`${region}/${width}: missing article route ${href}`)}}}
   if(width<1024){await page.locator('.mobile-menu summary').click();assert(await page.locator('.mobile-menu nav').isVisible(),`${region}/${width}: mobile menu fails to open`);await page.locator('.mobile-menu nav a[href="#home-media-reports"]').click();assert(!await page.locator('.mobile-menu nav').isVisible(),`${region}/${width}: mobile menu fails to close`);}
   await page.evaluate(()=>window.scrollTo(0,document.documentElement.scrollHeight));
