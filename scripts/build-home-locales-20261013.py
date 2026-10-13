@@ -84,7 +84,8 @@ for locale in ('en', 'ja'):
     soup.select_one('#home-static-layout-20261012')['data-cpa-four-language-toolbar-style']=''
     script=soup.new_tag('script',attrs={'data-cpa-four-language-toolbar-script':''})
     script.string="document.querySelectorAll('.mobile-menu a').forEach(a=>a.addEventListener('click',()=>document.querySelector('.mobile-menu').open=false));window.__cpaStaticHomeReady=true;"
-    soup.body.append(script)
+    # Keep menu readiness before optional external scripts, including when they stall.
+    soup.body.find('script', src=True).insert_before(script)
     path=ROOT/locale/'index.html'
     path.write_text(str(soup))
     print('Built',path.relative_to(ROOT))

@@ -16,6 +16,7 @@ for (const locale of ['en', 'ja']) {
   assert.match(source, new RegExp(`<option[^>]*selected[^>]*value="/child-advocacy-site/${locale}/"`));
   assert.match(source, /data-cpa-four-language-toolbar-script/);
   assert.ok(!source.includes('home-static-locale-20261012'), 'Chinese converter must not overwrite a translated homepage');
+  assert.ok(source.indexOf('window.__cpaStaticHomeReady=true') < source.indexOf('src="/child-advocacy-site/assets/legal-notice.js'), 'Optional scripts must not block homepage readiness');
   for (const m of source.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
     if (!/\bsrc\s*=|application\//i.test(m[1])) new vm.Script(m[2]);
   }
