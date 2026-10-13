@@ -35,7 +35,8 @@
   if('IntersectionObserver' in window)new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;syncLoop();},{threshold:.05}).observe(loop);
   const dialog=document.querySelector('.cinema-dialog');
   const player=dialog.querySelector('video');
-  const opener=document.querySelector('[data-cinema-open]');
+  const openers=[...document.querySelectorAll('[data-cinema-open]')];
+  let opener=openers[0];
   const download=dialog.querySelector('[data-cinema-file]');
   const error=dialog.querySelector('[data-cinema-error]');
   const editions=[...dialog.querySelectorAll('[data-cinema-edition]')];
@@ -49,11 +50,11 @@
     if(resume)player.addEventListener('loadedmetadata',()=>{player.currentTime=Math.min(time,player.duration);},{once:true});
     player.play().catch(()=>{});
   };
-  opener.href=film();download.href=film();
-  opener.addEventListener('click',event=>{
+  openers.forEach(button=>button.href=film());download.href=film();
+  openers.forEach(button=>button.addEventListener('click',event=>{
     if(typeof dialog.showModal!=='function')return;
-    event.preventDefault();dialog.showModal();document.documentElement.classList.add('cinema-modal-open');loop.pause();selectEdition(edition);
-  });
+    event.preventDefault();opener=button;dialog.showModal();document.documentElement.classList.add('cinema-modal-open');loop.pause();selectEdition(edition);
+  }));
   editions.forEach(button=>button.addEventListener('click',()=>selectEdition(button.dataset.cinemaEdition,true)));
   const unloadFilm=()=>{player.pause();if(player.hasAttribute('src')){player.removeAttribute('src');player.load();}error.hidden=true;};
   const closeFilm=()=>{unloadFilm();dialog.close();};
@@ -64,3 +65,4 @@
   player.addEventListener('error',()=>{if(player.hasAttribute('src')){error.textContent=words.error;error.hidden=false;}});
   syncLoop();
 })();
+

@@ -72,14 +72,20 @@ try{
   }
   const media=await page.evaluate(()=>({loopSource:document.querySelector('.cinema-loop')?.getAttribute('src'),filmSource:document.querySelector('.cinema-dialog video')?.getAttribute('src'),poster:document.querySelector('.cinema-poster')?.naturalWidth}));
   assert(!media.loopSource&&!media.filmSource&&media.poster>0,`${region}/${locale}/${width}: reduced-motion poster or deferred full film failed`);
+  const artwork=await page.evaluate(()=>({cells:[...new Set([...document.querySelectorAll('.ink-vignette:not(:has(.ink-standalone))')].map(e=>Number(e.dataset.inkCell)))].sort(),banners:[...document.querySelectorAll('.ink-section-vignette')].map(e=>({width:e.getBoundingClientRect().width,height:e.getBoundingClientRect().height,image:e.querySelector('img').naturalWidth})),early:[...document.querySelector('main').children].filter(e=>e.tagName==='SECTION')[1]?.id}));
+  assert(artwork.cells.join(',')==='0,1,2,3,4,5,6,7'&&artwork.banners.length===4&&artwork.banners.every(e=>e.width>0&&e.height>0&&e.image>0)&&artwork.early==='home-film',`${region}/${locale}/${width}: sixteen paintings or early film placement incomplete ${JSON.stringify(artwork)}`);
+  assert(await page.locator('#home-film .cinema-poster').isVisible(),`${region}/${locale}/${width}: mobile film poster hidden`);
   if(width===390){
-   await page.locator('[data-cinema-open]').click();
+   await page.locator('[data-cinema-open]').first().click();
    const expected=locale==='zh-Hans'||(!['zh-Hant','zh-Hans'].includes(locale)&&region==='hk')?'zh-Hans':'zh-Hant';
    assert(await page.locator('.cinema-dialog').isVisible(),`${region}/${locale}: film dialog failed to open`);
    assert((await page.locator('.cinema-dialog video').getAttribute('src')).includes(`kaikai-cinema-${expected}-`),`${region}/${locale}: wrong subtitle edition`);
    await page.locator('[data-cinema-close]').click();
    await page.waitForFunction(()=>!document.querySelector('.cinema-dialog').open&&!document.querySelector('.cinema-dialog video').hasAttribute('src'));
    assert(!await page.locator('.cinema-dialog').isVisible()&&!await page.locator('.cinema-dialog video').getAttribute('src'),`${region}/${locale}: film dialog did not close and unload`);
+   await page.locator('#home-film [data-cinema-open]').click();
+   assert(await page.locator('.cinema-dialog').isVisible(),`${region}/${locale}: early film button failed`);
+   await page.locator('[data-cinema-close]').click();
   }
   if(region==='hk'&&locale==='zh-Hans'&&width===1440&&process.env.QA_SKIP_CODEC_PLAYBACK!=='1'){
    await page.locator('[data-cinema-toggle]').click();
@@ -123,3 +129,4 @@ try{
 }finally{await browser.close();await fs.writeFile(path.join(output,'report.json'),JSON.stringify({reports,failures},null,2));}
 if(failures.length)throw new Error(failures.join('\n'));
 console.log('All regional homepage checks passed.');
+

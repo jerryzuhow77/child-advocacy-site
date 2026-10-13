@@ -1,4 +1,7 @@
 /* Original watercolor imagery; all navigation and editorial content remain live HTML. */
+.ink-film-zone img.cinema-poster{display:block}
+.section-heading:has(>.ink-section-vignette){position:relative;padding-right:146px;min-height:94px}.section-heading>.ink-section-vignette{position:absolute;right:0;top:8px;width:128px;height:80px;border-radius:3px;border:1px solid #d8ccb8}.ink-section-vignette>img{position:absolute;left:var(--ink-x,0%);top:50%;width:400%;max-width:none;height:auto;transform:translateY(var(--ink-y,-25%));object-fit:initial;border-radius:0}
+@media(max-width:760px){.section-heading:has(>.ink-section-vignette){padding-right:110px;min-height:96px}.section-heading>.ink-section-vignette{width:96px;height:70px;top:12px}}
 :root{--paper:#f7f2e7;--white:#fffcf4;--ink:#233e39;--muted:#4d5c52;--accent:#934c38;--gold:#a08963;--line:#d8ccb8}
 body{background-color:var(--paper);background-image:url('./home-paper-grain-20261013.svg'),radial-gradient(ellipse at 85% 18%,#d9e3dc35,transparent 55%)}
 .site-header{background:#faf6ecf7;box-shadow:none;border-color:#cfc5b2}.brand strong{letter-spacing:.06em}.primary-nav a{color:#31453b}.primary-nav a:hover{color:#934c38}.primary-nav a:first-child{border-color:#738575}.cpa-language-select{border-radius:3px;background:#fffcf5}
@@ -28,3 +31,4 @@ main{padding-top:16px}.ink-scroll-hero.editorial-hero{display:block;position:rel
 .ink-vignette{position:relative;overflow:hidden;background-image:none}
 .portal-card .ink-vignette>img,.chapter-card .ink-vignette>img{position:absolute;left:var(--ink-x,0%);top:50%;width:400%;max-width:none;height:auto;margin:0;padding:0;border-radius:0;transform:translateY(var(--ink-y,-25%));object-fit:initial}
 .ink-vignette[data-ink-cell="0"]{--ink-x:0%;--ink-y:-25%}.ink-vignette[data-ink-cell="1"]{--ink-x:-100%;--ink-y:-25%}.ink-vignette[data-ink-cell="2"]{--ink-x:-200%;--ink-y:-25%}.ink-vignette[data-ink-cell="3"]{--ink-x:-300%;--ink-y:-25%}.ink-vignette[data-ink-cell="4"]{--ink-x:0%;--ink-y:-75%}.ink-vignette[data-ink-cell="5"]{--ink-x:-100%;--ink-y:-75%}.ink-vignette[data-ink-cell="6"]{--ink-x:-200%;--ink-y:-75%}.ink-vignette[data-ink-cell="7"]{--ink-x:-300%;--ink-y:-75%}
+
