@@ -237,7 +237,13 @@ jobs:
           set -euo pipefail
 
           for page in index.html en/index.html ja/index.html; do
-            grep -F 'autumn-mobile-v2-20260908.css?v=20260908-3' "$page"
+            if grep -q 'data-home-layout="20261012-static-v2"' "$page"; then
+              grep -q 'class="mobile-menu"' "$page"
+              grep -q 'cpa-language-select' "$page"
+              grep -q 'data-home-view-counter' "$page"
+            else
+              grep -F 'autumn-mobile-v2-20260908.css?v=20260908-3' "$page"
+            fi
           done
           test -s assets/images/autumn-20260908/ferris-wheel-paper-clay.webp
           test -s assets/images/autumn-20260908/ink-background.webp
@@ -252,8 +258,12 @@ jobs:
           grep -F 'aspect-ratio:4/3!important' assets/autumn-mobile-v2-20260908.css
           grep -F 'ferris-wheel-paper-clay.webp' assets/autumn-mobile-v2-20260908.css
 
-          grep -F 'data-qa916-card="true"' index.html
-          grep -F '一起寫下剴剴的故事' index.html
+          if grep -q 'data-home-layout="20261012-static-v2"' index.html; then
+            node .github/scripts/verify-home-locale-parity.mjs
+          else
+            grep -F 'data-qa916-card="true"' index.html
+            grep -F '一起寫下剴剴的故事' index.html
+          fi
           grep -F '一起写下剀剀的故事' assets/home-ia-hearing-campaign-20260823.js
           grep -F 'Let Us Write Kaikai’s Story Together' assets/home-ia-hearing-campaign-20260823.js
           if grep -F 'Mainland China' en/index.html; then

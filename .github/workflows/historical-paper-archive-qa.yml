@@ -57,6 +57,8 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           from PIL import Image
+          import re
+          from urllib.parse import urljoin
 
           loader = Path('assets/home-archive-layout-20260823.js').read_text(encoding='utf-8')
           history_js = Path('assets/home-ia-history-20260823.js').read_text(encoding='utf-8')
@@ -136,20 +138,31 @@ jobs:
               assert 'home-bundle-zh-20260905.css' in home_html
               assert 'home-history-paper-weather-20260825.js' in home_html
           assert weather_css.strip() in Path('assets/home-bundle-zh-20260905.css').read_text(encoding='utf-8')
-          assert 'home-bundle-intl-20260905.css' in home_en_html
           assert weather_css.strip() in Path('assets/home-bundle-intl-20260905.css').read_text(encoding='utf-8')
-          assert 'home-history-paper-weather-20260825.js' in home_en_html
           assert Path('assets/home-post-engagement-20260826.css').read_text(encoding='utf-8').strip() in Path('assets/home-bundle-intl-20260905.css').read_text(encoding='utf-8')
-          assert 'home-post-engagement-20260826.js' in home_en_html
           assert 'Other Regions' not in home_en_html
-          assert 'id="home-historical-cases"' in home_ja_html
-          assert home_ja_html.count('class="home-historical-card"') == 6
-          assert 'data-view-counter-key="historical-fujian-qiqi-shared"' in home_ja_html
-          assert 'data-view-counter-key="historical-fu-junxiang-shared"' in home_ja_html
-          assert 'home-bundle-intl-20260905.css' in home_ja_html
-          assert 'home-post-engagement-20260826.js' in home_ja_html
-          assert 'home-bundle-intl-20260905.css' in home_ja_html
-          assert 'home-history-paper-weather-20260825.js' in home_ja_html
+          for locale, html in (('en', home_en_html), ('ja', home_ja_html)):
+              assert 'id="home-historical-cases"' in html, f'{locale}: historical section missing'
+              if 'data-home-layout="20261012-static-v2"' in html:
+                  assert 'class="archive-directory"' in html
+                  assert html.count('class="history-card"') >= 8, f'{locale}: static history cards missing'
+                  base = f'https://jerryzuhow77.github.io/child-advocacy-site/{locale}/'
+                  destinations = {urljoin(base, href) for href in re.findall(r'<a\b[^>]*\bhref=["\']([^"\']+)', html)}
+                  for route in ('historical-cases/regions/taiwan/wanghao/',
+                                'historical-cases/regions/taiwan/fu-junxiang/',
+                                'historical-cases/regions/mainland-china/fujian-qiqi/',
+                                'historical-cases/regions/japan/kurihara-mia/'):
+                      assert base + route in destinations, f'{locale}: history destination missing: {route}'
+                  assert 'home-history-paper-weather-20260825.js' not in html
+                  assert 'data-home-view-counter' in html
+              else:
+                  assert 'home-bundle-intl-20260905.css' in html
+                  assert 'home-history-paper-weather-20260825.js' in html
+                  assert 'home-post-engagement-20260826.js' in html
+                  if locale == 'ja':
+                      assert html.count('class="home-historical-card"') == 6
+                      assert 'data-view-counter-key="historical-fujian-qiqi-shared"' in html
+                      assert 'data-view-counter-key="historical-fu-junxiang-shared"' in html
           assert image_path.exists() and image_path.stat().st_size > 50000
           with Image.open(image_path) as image:
               assert image.width >= 1000 and image.height >= 560

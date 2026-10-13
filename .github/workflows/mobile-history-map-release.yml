@@ -67,15 +67,17 @@ jobs:
           entrypoint_versions = {}
           for path in ('index.html', 'en/index.html', 'ja/index.html'):
               html = Path(path).read_text(encoding='utf-8')
-              if path == 'index.html' and 'data-home-layout="20261012-static-v2"' in html:
+              if 'data-home-layout="20261012-static-v2"' in html:
                   assert 'class="archive-directory"' in html
                   assert 'home-gsap-map-20260824.js' not in html
-                  continue  # The static root has no interactive-map dependency chain.
+                  assert 'id="home-historical-cases"' in html
+                  assert html.count('class="history-card"') >= 8, f'Static history entries missing: {path}'
+                  continue  # Static editions have no interactive-map dependency chain.
               match = re.search(r'home-gsap-map-20260824\.js\?v=([^"\']+)', html)
               assert match, f'map loader entrypoint missing in {path}'
               entrypoint_versions[path] = match.group(1)
 
-          assert set(entrypoint_versions.values()) == {map_dependency_version}, (
+          assert not entrypoint_versions or set(entrypoint_versions.values()) == {map_dependency_version}, (
               entrypoint_versions,
               map_dependency_version,
           )
@@ -84,7 +86,7 @@ jobs:
           assert "url.pathname.includes('/assets/home-history-')" in sw
           assert "url.pathname.endsWith('/assets/home-gsap-map-20260824.js')" in sw
           print('Validated mobile history cache scopes:', {
-              'entrypoint': next(iter(entrypoint_versions.values())),
+              'entrypoint': next(iter(entrypoint_versions.values()), 'static-homepages'),
               'map_dependencies': map_dependency_version,
               'archive_modules': archive_module_version,
               'paper_stylesheet': paper_stylesheet_version,

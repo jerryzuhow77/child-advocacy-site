@@ -3,6 +3,8 @@
 
 from pathlib import Path
 from xml.etree import ElementTree as ET
+from html.parser import HTMLParser
+from urllib.parse import urljoin
 import json
 import re
 
@@ -44,14 +46,23 @@ for ids, section in ((pinned_ids, "pinned"), (item_ids, "items")):
     if ids.count("kaikai-chapter-one-20260828") != 1:
         raise SystemExit(f"Chapter One must remain exactly once in {section}")
 
-homepage_entries = {
-    ROOT / "index.html": "./hearing-records/prison-watch/kaikai-final-chapter/",
-    ROOT / "en/index.html": "hearing-records/prison-watch/kaikai-final-chapter/",
-    ROOT / "ja/index.html": "hearing-records/prison-watch/kaikai-final-chapter/",
-}
-for path, href in homepage_entries.items():
+class HomepageLinks(HTMLParser):
+    def __init__(self, source):
+        super().__init__()
+        self.hrefs = []
+        self.feed(source)
+
+    def handle_starttag(self, tag, attrs):
+        if tag == 'a' and 'href' in dict(attrs):
+            self.hrefs.append(dict(attrs)['href'])
+
+
+for locale in ('', 'en/', 'ja/'):
+    path = ROOT / locale / 'index.html'
     source = path.read_text(encoding="utf-8")
-    if f'href="{href}"' not in source:
+    expected = BASE_URL + locale + 'hearing-records/prison-watch/kaikai-final-chapter/'
+    if expected not in {urljoin(BASE_URL + locale, href).split('#', 1)[0].split('?', 1)[0]
+                        for href in HomepageLinks(source).hrefs}:
         raise SystemExit(f"Chapter Two public entry is missing from {path}")
 
 expected_urls = {
