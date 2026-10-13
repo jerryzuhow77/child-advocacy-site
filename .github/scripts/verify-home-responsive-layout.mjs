@@ -67,7 +67,8 @@ try{
   assert(editorial.seriesHeight<(width<=760?1900:1000),`${region}/${locale}/${width}: ten-hearing section is unnecessarily tall`);
   if(source.includes('data-home-ink-edition="20261013-scroll-v1"')){
    const ink=await page.evaluate(()=>({edition:document.body.dataset.homeInkEdition,hero:document.querySelector('.ink-hero-image')?.naturalWidth,portals:document.querySelectorAll('#home-sections .ink-vignette').length,chapters:document.querySelectorAll('.chapter-grid .ink-vignette').length,atlas:document.querySelector('#home-sections .ink-vignette img').currentSrc,film:!!document.querySelector('#home-film .cinema-loop'),heroHasLoop:!!document.querySelector('.ink-scroll-hero .cinema-loop')}));
-   assert(ink.edition==='20261013-scroll-v1'&&ink.hero>0&&ink.portals===8&&ink.chapters===4&&ink.atlas.includes('home-ink-album-atlas-20261013.webp')&&ink.film&&!ink.heroHasLoop,`${region}/${locale}/${width}: watercolor imagery or preserved film section missing ${JSON.stringify(ink)}`);
+   const portalArt=await page.locator('#home-sections .ink-vignette img').evaluateAll(imgs=>imgs.map(i=>({src:i.currentSrc,width:i.naturalWidth,height:i.naturalHeight})));
+   assert(ink.edition==='20261013-scroll-v1'&&ink.hero>0&&ink.portals===8&&ink.chapters===4&&new Set(portalArt.map(i=>i.src)).size===8&&portalArt.every(i=>/home-ink-[a-z]+-20261013-v2\.webp/.test(i.src)&&i.width>0&&i.height>0)&&ink.film&&!ink.heroHasLoop,`${region}/${locale}/${width}: watercolor imagery or preserved film section missing ${JSON.stringify(ink)}`);
   }
   const media=await page.evaluate(()=>({loopSource:document.querySelector('.cinema-loop')?.getAttribute('src'),filmSource:document.querySelector('.cinema-dialog video')?.getAttribute('src'),poster:document.querySelector('.cinema-poster')?.naturalWidth}));
   assert(!media.loopSource&&!media.filmSource&&media.poster>0,`${region}/${locale}/${width}: reduced-motion poster or deferred full film failed`);
@@ -102,7 +103,6 @@ try{
   // Chinese layout instead of applying a Chinese-only pixel ceiling to English.
   const baseline=reports.find(r=>r.region===region&&r.locale==='zh-Hant'&&r.width===width);
   // The independent advocacy-film section adds room without hiding any of the restored collections.
-  // Added records and real covers expand the homepage; their allowance is count-bound.
   const newEditorialAllowance=editorial.seriesHeight+editorial.added*(width<=760?65:40);
   const heightBudget=baseline?baseline.height*(width<=760?1.6:1.35):(width<=760?17000:12500)+newEditorialAllowance;
   assert(report.height<heightBudget,`${region}/${locale}/${width}: excessive page height ${report.height} (budget ${Math.round(heightBudget)})`);
