@@ -124,8 +124,7 @@ function syncLocalizedImages(isHans, root=document){
   root.querySelectorAll('img[data-hans-src]').forEach(img=>images.push(img));
   images.forEach(img=>{
     if(!img.dataset.hantSrc) img.dataset.hantSrc=img.getAttribute('src');
-    const keepDistinctHomeRecordThumbnail=isHans&&img.closest('#news-hearing-notes')&&['./assets/home-thumbnails-20261013/362e817c03a8.webp','./assets/home-thumbnails-20261013/ef1eab0697cb.webp'].includes(img.dataset.hansSrc);
-    img.setAttribute('src',keepDistinctHomeRecordThumbnail ? img.dataset.hantSrc : (isHans ? img.dataset.hansSrc : img.dataset.hantSrc));
+    img.setAttribute('src',isHans ? img.dataset.hansSrc : img.dataset.hantSrc);
   });
 }
 
