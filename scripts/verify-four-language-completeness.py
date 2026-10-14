@@ -17,17 +17,11 @@ INTENTIONALLY_SINGLE_LANGUAGE = {
     'activity-records/20260908-kaikai-cemetery-memorial/',
     'activity-records/20260908-chen-shangjie-hearing-street-advocacy/',
     'cases/kaikai/features/liu-sisters-dialogues/',
-    'news/reporting-threshold-20260911/',
     # Published with Chinese editions only; English/Japanese editions have not been released.
-    'features/social-observation/adoption-social-work-child-safety-20260918/',
-    'features/social-observation/kaikai-intercountry-adoption-choices-20260920/',
-    'features/social-observation/reporting-duty-question-20260919/',
     'features/social-observation/kaikai-warning-signals-review-20260922/',
     'features/social-observation/taiwan-child-placement-history-20260923/',
     'hearing-records/chen-shangjie-prep-hearing-20260917/',
-    'news/chen-shangjie-high-court-protest-20260916/',
     'news/daily-child-protection-brief-20260918/',
-    'news/taichung-infant-rescue-20260919/',
     # Published with Chinese editions only; English/Japanese editions have not been released.
     'features/social-observation/chen-shangjie-defense-testimony-20260924/',
     'news/guardian-alliance-statement-20260925/',
@@ -94,6 +88,12 @@ for route, editions in routes.items():
 # These formerly missing or summary-only editions must retain every source
 # section/record anchor. Translations may add accessible controls, never omit IDs.
 full_routes = [
+    'news/reporting-threshold-20260911/',
+    'features/social-observation/adoption-social-work-child-safety-20260918/',
+    'features/social-observation/kaikai-intercountry-adoption-choices-20260920/',
+    'features/social-observation/reporting-duty-question-20260919/',
+    'news/chen-shangjie-high-court-protest-20260916/',
+    'news/taichung-infant-rescue-20260919/',
     'activity-records/20260825-111-surplus-donation/',
     'cases/kaikai/a4-dossier/', 'cases/luo-brothers/',
     'cases/tucheng-domestic-violence-double-homicide/',
