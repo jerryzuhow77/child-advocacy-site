@@ -5632,3 +5632,19 @@ header .nav>nav>a.guardian-wall-nav-link:focus-visible{
 @media(max-width:760px){.home-bottom-article-section{padding:42px 0}.home-bottom-article-head{display:block}.home-bottom-article-head p{margin-top:10px}.home-bottom-article-card{grid-template-columns:1fr}.home-bottom-article-card>figure{min-height:240px;height:240px}.home-bottom-article-card>figure img{min-height:240px;height:240px}.home-bottom-article-card>figure figcaption{left:20px;bottom:18px}.home-bottom-article-card>span{padding:28px 24px;border-left:0;border-top:6px solid #82342b}.home-bottom-article-card strong{font-size:2rem}}
 
 .home-pinned-report-card.is-kaikai-guide>img{object-position:center bottom}
+
+/* 2026-10-14 — Simplified Chinese typography: use SC glyphs and prevent
+   browser-synthesized bold from making strokes uneven. */
+html[lang="zh-Hans"]{
+  --site-font:"Noto Sans SC","Source Han Sans SC","Source Han Sans CN","Microsoft YaHei","PingFang SC","Hiragino Sans GB",sans-serif;
+  font-synthesis:none;
+}
+html[lang="zh-Hans"] body,
+html[lang="zh-Hans"] body :where(h1,h2,h3,h4,h5,h6,p,a,button,input,select,textarea,label,span,strong,b,small,li,dt,dd,time,figcaption,blockquote,table,th,td,div,section,article,aside,nav){
+  font-family:var(--site-font)!important;
+  font-synthesis:none!important;
+}
+html[lang="zh-Hans"] :where(h1,h2,h3,h4,h5,h6,strong,b){
+  font-weight:650!important;
+  letter-spacing:.018em;
+}
