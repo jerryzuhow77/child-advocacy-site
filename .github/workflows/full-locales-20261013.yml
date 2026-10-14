@@ -1,0 +1,50 @@
+name: Full article translations and regional layout
+on:
+  pull_request:
+    paths:
+      - 'scripts/*full-locales*'
+      - '**/adoption-social-work-child-safety-20260918/**'
+      - '**/reporting-duty-question-20260919/**'
+      - '**/kaikai-intercountry-adoption-choices-20260920/**'
+      - '**/chen-shangjie-high-court-protest-20260916/**'
+      - '**/taichung-infant-rescue-20260919/**'
+      - '**/reporting-threshold-20260911/**'
+      - 'data/four-language-routes.json'
+      - '.github/workflows/full-locales-20261013.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  article-checks:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Install verification dependencies
+        run: |
+          python -m pip install -r scripts/locale-build-requirements.txt
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+      - name: Verify complete records and reciprocal metadata
+        run: |
+          python scripts/verify-full-locales-20261013.py
+          node .github/scripts/test-four-language-cross-origin-routing.mjs
+          python .github/scripts/audit-page-view-coverage.py
+      - name: Verify both regions, four locales and six widths
+        run: node scripts/verify-full-locales-layout-20261013.mjs
+      - name: Report all remaining strict-mode gaps
+        id: strict
+        if: always()
+        continue-on-error: true
+        run: python scripts/verify-four-language-completeness.py --strict
+      - name: Explain strict status
+        if: always()
+        run: |
+          echo 'Strict check outcome: ${{ steps.strict.outcome }}. A failure means remaining untranslated routes; it is not an all-site PASS.' >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: full-article-regional-layout
+          path: browser-validation/full-locales-20261013/
