@@ -88,6 +88,26 @@
     if (lang.startsWith('zh-hant') && widget.dataset[`${field}Hant`]) {
       return widget.dataset[`${field}Hant`];
     }
+    if (lang.startsWith('en')) {
+      return ({
+        counterLabel: 'Total homepage views (both regions, including history)',
+        counterUnit: 'views',
+        counterTitle: 'Total homepage views across both regions, including historical data',
+        counterLocale: 'en-US',
+        counterError: 'View count is temporarily unavailable',
+        counterKey: HOMEPAGE_CANONICAL_KEY
+      })[field] || widget.dataset[field] || '';
+    }
+    if (lang.startsWith('ja')) {
+      return ({
+        counterLabel: 'ホーム累計閲覧数（2地域共通・履歴を含む）',
+        counterUnit: '回',
+        counterTitle: '2地域共通・履歴を含むホーム累計閲覧数',
+        counterLocale: 'ja-JP',
+        counterError: '閲覧数を一時的に取得できません',
+        counterKey: HOMEPAGE_CANONICAL_KEY
+      })[field] || widget.dataset[field] || '';
+    }
     return widget.dataset[field] || widget.dataset[`${field}Hant`] || '';
   }
 
@@ -309,3 +329,4 @@
   script.dataset.qiqiClassicalLoader = '';
   document.head.appendChild(script);
 })();
+
