@@ -1,7 +1,7 @@
 (()=>{'use strict';
 const E='https://sweet-art-bed8child-advocacy-page-views.jerryzuhow77.workers.dev/weekly';
 const A=[
-['case-xuanxuan-shared','cases/xuanxuan/',['小璇案','小璇案','Xuan Xuan case','小璇さんの事案'],46],
+['case-xuanxuan-shared','cases/xuanxuan/',['萱萱案','萱萱案','Xuan Xuan case','萱萱さんの事案'],46],
 ['historical-fujian-qiqi-shared','historical-cases/regions/mainland-china/fujian-qiqi/',['福建琪琪案','福建琪琪案','Fujian Qiqi case','福建・琪琪さんの事案'],36],
 ['historical-tian-tian-shared','historical-cases/regions/mainland-china/tian-tian/',['甜甜案','甜甜案','Tian Tian case','甜甜さんの事案'],64],
 ['historical-wanghao-shared','historical-cases/regions/taiwan/wanghao/',['王昊案','王昊案','Wang Hao case','王昊さんの事案'],70],
@@ -16,7 +16,7 @@ const start=async h=>{let l=L(),c=C[l],p=l===2?'../en/':l===3?'../ja/':'./',esti
 h.className='home-section weekly-reading';
 h.innerHTML='<div class="section-heading"><div><span class="weekly-kicker">'+c[3]+'</span><h2 id="weekly-reading-title">'+c[0]+'</h2><p>'+c[1]+'</p></div></div><ol class="weekly-list" aria-labelledby="weekly-reading-title"></ol>';
 let list=h.querySelector('ol'),v=[];
-try{let r=await fetch(E+'?keys='+encodeURIComponent(A.map(x=>x[0]).join(','))+'&ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;let d=await r.json(),m=new Map((d.items||[]).map(x=>[x.key,+x.count||0]));v=A.map(x=>({key:x[0],path:x[1],title:x[2],actual:m.get(x[0])||0,estimate:x[3]})).filter(x=>x.actual).sort((a,b)=>b.actual-a.actual)}catch(_){}
+try{let r=await fetch(E+'?keys='+encodeURIComponent(A.map(x=>x[0]).join(','))+'&ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;let d=await r.json(),m=new Map((d.items||[]).map(x=>[x.key,+x.count||0])),raw=A.map(x=>({key:x[0],path:x[1],title:x[2],actual:m.get(x[0])||0,estimate:x[3]})),total=raw.reduce((sum,x)=>sum+x.actual,0),covered=raw.filter(x=>x.actual).length;v=total>=10&&covered>=2?raw.filter(x=>x.actual).sort((a,b)=>b.actual-a.actual):[]}catch(_){}
 if(!v.length){estimated=true;v=A.map(x=>({key:x[0],path:x[1],title:x[2],estimate:x[3]})).sort((a,b)=>b.estimate-a.estimate)}
 if(estimated){h.querySelector('.weekly-kicker').textContent=c[4];h.querySelector('.section-heading p').textContent=c[4]}
 for(let[x,i]of v.map((x,i)=>[x,i])){let q=document.createElement('li'),a=document.createElement('a'),n=estimated?x.estimate:x.actual;a.href=p+x.path;a.innerHTML='<b>'+String(i+1)+'</b><span><strong>'+x.title[l]+'</strong><em>'+new Intl.NumberFormat().format(n)+' '+(estimated?c[5]:c[2])+'</em></span>';q.append(a);list.append(q)}};
