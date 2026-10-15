@@ -40,7 +40,11 @@ html[lang="ja"] #news-flash .section-heading h2::before{content:"報"}html[lang=
 
 /* Mobile: badges remain decorative and never cover live copy or actions. */
 @media(max-width:760px){
-  .ink-scroll-hero::after,.ink-film-zone::before,.join-zone::after{display:none}
+  .ink-film-zone::before,.join-zone::after{display:none}
+  .ink-scroll-hero::after{
+    display:block;left:auto;right:18px;top:auto;
+    bottom:calc(225px + 20px);width:48px;border-width:2px;
+  }
   .ink-film-zone>.section-heading{position:relative;z-index:3;padding-right:0}
   .join-zone{padding-bottom:22px}
 
