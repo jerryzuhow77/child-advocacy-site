@@ -30,11 +30,10 @@ html[lang="ja"] #news-flash .section-heading h2::before{content:"報"}html[lang=
 
 /* Keep section seals decorative: generated glyphs must not be announced twice by assistive technology. */
 #home-court-comics .section-heading h2::before,#home-historical-cases .section-heading h2::before,#home-special-features .section-heading h2::before,#news-flash .section-heading h2::before{content:""!important;background:radial-gradient(circle at 50% 50%,currentColor 0 13%,transparent 15% 100%),#fffaf0}
-/* Prominent brand-avatar art rail */
-.brand-avatar-gallery{position:relative;z-index:3;max-width:1180px;margin:-62px auto 28px;padding:0 38px;pointer-events:none}
-.brand-avatar-track{display:flex;justify-content:flex-end;align-items:flex-end;gap:clamp(10px,1.8vw,24px);min-height:110px}
-.brand-avatar{position:relative;display:block;flex:0 0 auto;margin:0;border:5px solid #fff9ec;border-radius:50%;background:#f7edda;box-shadow:0 12px 28px #19383128,0 0 0 2px #b9975d;overflow:hidden}
-.brand-avatar img{display:block;width:clamp(82px,9vw,130px);height:clamp(82px,9vw,130px);object-fit:cover}
-.brand-avatar-family{transform:rotate(-7deg) translateY(13px)}.brand-avatar-lantern{transform:rotate(3deg) translateY(-15px);box-shadow:0 16px 34px #102e4b40,0 0 0 3px #c8a45c}.brand-avatar-umbrella{transform:rotate(8deg) translateY(8px)}
-.brand-avatar::after{content:"";position:absolute;inset:7px;border:1px solid #fff8;pointer-events:none;border-radius:50%}
-@media(max-width:760px){.brand-avatar-gallery{margin:-22px auto 22px;padding:0 18px}.brand-avatar-track{justify-content:center;gap:12px;min-height:90px}.brand-avatar img{width:82px;height:82px}.brand-avatar-family{transform:rotate(-7deg) translateY(8px)}.brand-avatar-lantern{transform:rotate(3deg) translateY(-8px)}.brand-avatar-umbrella{transform:rotate(8deg) translateY(7px)}}
+/* Dispersed brand-avatar artwork */
+.ink-scroll-hero,.ink-film-zone,.join-zone{position:relative;isolation:isolate}
+.ink-scroll-hero::after,.ink-film-zone::before,.join-zone::after{content:"";position:absolute;z-index:2;display:block;width:clamp(76px,9vw,128px);aspect-ratio:1;border:4px solid #fff9ec;border-radius:50%;background-position:center;background-size:cover;box-shadow:0 12px 26px #19383135,0 0 0 2px #b9975d;pointer-events:none}
+.ink-scroll-hero::after{right:clamp(16px,5vw,72px);bottom:clamp(18px,5vw,58px);background-image:url("./brand/avatars/umbrella-circle.jpg");transform:rotate(7deg)}
+.ink-film-zone::before{right:clamp(18px,6vw,92px);top:34px;background-image:url("./brand/avatars/lantern-circle.png");transform:rotate(-6deg)}
+.join-zone::after{right:clamp(20px,5vw,76px);bottom:24px;background-image:url("./brand/avatars/family-circle.jpg");transform:rotate(5deg)}
+@media(max-width:760px){.ink-scroll-hero::after,.ink-film-zone::before,.join-zone::after{width:74px;border-width:3px}.ink-scroll-hero::after{right:14px;bottom:14px}.ink-film-zone::before{right:16px;top:22px}.join-zone::after{right:16px;bottom:16px}}
