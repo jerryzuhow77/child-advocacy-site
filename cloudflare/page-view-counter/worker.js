@@ -5,6 +5,17 @@ const ALLOWED_ORIGINS = new Set([
   'https://www.globalprotectionwall.com'
 ]);
 
+const HOMEPAGE_KEYS = new Set(['homepage-all-languages-v1','homepage-zh-hant','homepage-zh-hans','homepage-en','homepage-ja','homepage-shared','page-home']);
+
+function isoWeek(date = new Date()) {
+  const utc = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  const day = utc.getUTCDay() || 7;
+  utc.setUTCDate(utc.getUTCDate() + 4 - day);
+  const yearStart = new Date(Date.UTC(utc.getUTCFullYear(), 0, 1));
+  const week = Math.ceil((((utc - yearStart) / 86400000) + 1) / 7);
+  return `${utc.getUTCFullYear()}-W${String(week).padStart(2, '0')}`;
+}
+
 function cors(request) {
   const origin = request.headers.get('Origin') || '';
   const allowOrigin = ALLOWED_ORIGINS.has(origin)
@@ -70,6 +81,19 @@ export default {
       });
     }
 
+    if (url.pathname === '/weekly') {
+      if (request.method !== 'GET') return json(request, { error: 'method_not_allowed' }, 405);
+      const keys = [...new Set(String(url.searchParams.get('keys') || '').split(',').map(cleanKey).filter(Boolean))].slice(0, 20);
+      if (!keys.length) return json(request, { error: 'missing_keys' }, 400);
+      const week = isoWeek();
+      const items = await Promise.all(keys.map(async key => ({
+        key,
+        count: Number.parseInt((await env.PAGE_VIEWS.get(`weekly:${week}:${key}`)) || '0', 10) || 0
+      })));
+      items.sort((a, b) => b.count - a.count || a.key.localeCompare(b.key));
+      return json(request, { ok: true, week, items });
+    }
+
     if (url.pathname !== '/views') {
       return json(request, { error: 'not_found' }, 404);
     }
@@ -105,6 +129,11 @@ export default {
     if (shouldIncrement) {
       count += 1;
       await env.PAGE_VIEWS.put(storageKey, String(count));
+      if (!HOMEPAGE_KEYS.has(key)) {
+        const weeklyKey = `weekly:${isoWeek()}:${key}`;
+        const weeklyCount = Number.parseInt((await env.PAGE_VIEWS.get(weeklyKey)) || '0', 10) || 0;
+        await env.PAGE_VIEWS.put(weeklyKey, String(weeklyCount + 1));
+      }
     }
 
     return json(request, {
