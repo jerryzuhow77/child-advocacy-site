@@ -62,3 +62,12 @@ html[lang="ja"] #news-flash .section-heading h2::before{content:"報"}html[lang=
     min-width:0;padding:14px 14px 14px 0;
   }
 }
+
+/* Homepage brand-avatar positions are intentionally separate by viewport. */
+.ink-scroll-hero,.ink-film-zone,.join-zone{position:relative;isolation:isolate}
+.ink-scroll-hero::after,.ink-film-zone::before,.join-zone::after{content:"";position:absolute;z-index:2;display:block;aspect-ratio:1;border:4px solid #fff9ec;border-radius:50%;background-position:center;background-size:cover;box-shadow:0 12px 26px #19383135,0 0 0 2px #b9975d;pointer-events:none}
+.ink-scroll-hero::after{left:clamp(36px,4vw,58px);bottom:16px;width:clamp(58px,5vw,74px);background-image:url("./brand/avatars/umbrella-circle.jpg");transform:rotate(-7deg)}
+.ink-film-zone::before{right:clamp(22px,4vw,60px);top:16px;width:clamp(76px,7vw,108px);background-image:url("./brand/avatars/lantern-circle.png");transform:rotate(-6deg)}
+.join-zone::after{right:clamp(20px,5vw,76px);bottom:24px;width:clamp(76px,9vw,128px);background-image:url("./brand/avatars/family-circle.jpg");transform:rotate(5deg)}
+.home-light-impression{display:grid;grid-template-columns:minmax(260px,.86fr) minmax(0,1.14fr);align-items:stretch;min-height:240px;margin:30px 0;padding:0;overflow:hidden;border:1px solid #bfa984;border-radius:5px;background:#112c38;box-shadow:0 16px 34px #142a3326;color:#fff9e8}.home-light-impression img{width:100%;height:100%;min-height:240px;object-fit:cover;filter:saturate(.78) contrast(1.06)}.home-light-impression>div{display:flex;flex-direction:column;justify-content:center;padding:clamp(28px,4vw,58px);background:radial-gradient(circle at 10% 20%,#d9b6653a,transparent 30%),linear-gradient(125deg,#112c38,#1b4550)}.home-light-impression-kicker{margin:0 0 11px;color:#f6d98e;font:800 .72rem/1.4 system-ui;letter-spacing:.15em}.home-light-impression h2{margin:0 0 14px;color:#fff9e8;font-size:clamp(25px,3vw,41px);line-height:1.25}.home-light-impression p:last-child{max-width:38rem;margin:0;color:#e3edf0;line-height:1.85}
+@media(max-width:760px){.ink-scroll-hero::after,.ink-film-zone::before,.join-zone::after{width:74px;border-width:3px}.ink-scroll-hero::after{left:auto;right:14px;bottom:14px}.ink-film-zone::before{right:16px;top:16px}.join-zone::after{right:16px;bottom:16px}.home-light-impression{grid-template-columns:1fr;margin:24px 0}.home-light-impression img{min-height:185px;height:185px}.home-light-impression>div{padding:25px 22px}.home-light-impression h2{font-size:27px}}
