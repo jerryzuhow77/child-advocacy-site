@@ -37,3 +37,27 @@ html[lang="ja"] #news-flash .section-heading h2::before{content:"報"}html[lang=
 .ink-film-zone::before{right:clamp(22px,4vw,60px);top:16px;width:clamp(76px,7vw,108px);background-image:url("./brand/avatars/lantern-circle.png");transform:rotate(-6deg)}
 .join-zone::after{right:clamp(20px,5vw,76px);bottom:24px;background-image:url("./brand/avatars/family-circle.jpg");transform:rotate(5deg)}
 @media(max-width:760px){.ink-scroll-hero::after,.ink-film-zone::before,.join-zone::after{width:74px;border-width:3px}.ink-scroll-hero::after{left:auto;right:14px;bottom:14px}.ink-film-zone::before{right:16px;top:16px}.join-zone::after{right:16px;bottom:16px}}
+
+/* Mobile: badges remain decorative and never cover live copy or actions. */
+@media(max-width:760px){
+  .ink-scroll-hero::after,.ink-film-zone::before,.join-zone::after{width:54px;border-width:2px}
+  .ink-scroll-hero::after{right:16px;bottom:16px}
+  .ink-film-zone::before{right:18px;top:18px}
+  .ink-film-zone>.section-heading{position:relative;z-index:3;padding-right:76px}
+  .join-zone{padding-bottom:100px}
+  .join-zone::after{right:18px;bottom:20px}
+
+  /* Reserve a dedicated thumbnail column; dates and headings stay clear. */
+  .news-card .card-link,.feature-card .card-link{
+    grid-template-columns:76px minmax(0,1fr);
+    column-gap:14px;
+    align-items:start;
+  }
+  .news-card .card-link>img,.feature-card .card-link>img{
+    width:76px;height:88px;margin:14px 0 0 12px;
+    object-fit:cover;border-radius:7px;
+  }
+  .news-card .card-copy,.feature-card .card-copy{
+    min-width:0;padding:14px 14px 14px 0;
+  }
+}
