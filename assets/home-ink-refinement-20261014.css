@@ -40,12 +40,9 @@ html[lang="ja"] #news-flash .section-heading h2::before{content:"報"}html[lang=
 
 /* Mobile: badges remain decorative and never cover live copy or actions. */
 @media(max-width:760px){
-  .ink-scroll-hero::after,.ink-film-zone::before,.join-zone::after{width:54px;border-width:2px}
-  .ink-scroll-hero::after{right:16px;bottom:16px}
-  .ink-film-zone::before{right:18px;top:18px}
-  .ink-film-zone>.section-heading{position:relative;z-index:3;padding-right:76px}
-  .join-zone{padding-bottom:100px}
-  .join-zone::after{right:18px;bottom:20px}
+  .ink-scroll-hero::after,.ink-film-zone::before,.join-zone::after{display:none}
+  .ink-film-zone>.section-heading{position:relative;z-index:3;padding-right:0}
+  .join-zone{padding-bottom:22px}
 
   /* Reserve a dedicated thumbnail column; dates and headings stay clear. */
   .news-card .card-link,.feature-card .card-link{
