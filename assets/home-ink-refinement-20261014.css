@@ -250,3 +250,24 @@ html[lang="ja"] #news-flash .section-heading h2::before{content:"報"}html[lang=
   .october-focus-card:hover,
   .ink-priority-rail>a:hover{transform:none}
 }
+
+
+/* Mobile-only avatar placement · 2026-10-16
+   Desktop artwork keeps the coordinates above. On narrow screens, preserve one
+   small hero seal in the clear edge zone and remove the other decorative seals
+   so no live copy, controls, or media are covered. */
+@media(max-width:760px){
+  .ink-film-zone::before,
+  .join-zone::after{
+    display:none!important;
+  }
+  .ink-scroll-hero::after{
+    display:block!important;
+    left:auto!important;
+    top:auto!important;
+    right:max(14px,env(safe-area-inset-right))!important;
+    bottom:calc(205px + 26px)!important;
+    width:44px!important;
+    border-width:2px!important;
+  }
+}
