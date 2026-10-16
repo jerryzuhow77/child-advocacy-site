@@ -266,7 +266,7 @@ html[lang="ja"] #news-flash .section-heading h2::before{content:"報"}html[lang=
     left:auto!important;
     top:auto!important;
     right:max(14px,env(safe-area-inset-right))!important;
-    bottom:calc(205px + 26px)!important;
+    bottom:calc(205px + 122px)!important;
     width:44px!important;
     border-width:2px!important;
   }
