@@ -250,3 +250,48 @@ html[lang="ja"] #news-flash .section-heading h2::before{content:"報"}html[lang=
   .october-focus-card:hover,
   .ink-priority-rail>a:hover{transform:none}
 }
+
+/* Homepage density recovery · 2026-10-16
+   Keep every section and action visible while restoring a compact reading rhythm. */
+@media (min-width:761px) and (max-width:1100px){
+  .home-section{margin-block:26px}
+  .october-action-focus{margin-top:16px;padding:20px 22px 22px}
+  .october-focus-head{margin-bottom:12px}
+  .october-focus-grid{gap:12px}
+  .october-focus-card{min-height:196px;padding:16px;grid-template-columns:96px minmax(0,1fr);column-gap:14px}
+  .october-focus-poster{width:96px;height:144px}
+  .october-focus-card h3{margin:9px 0 5px;font-size:22px}
+  .october-focus-card p{margin-bottom:9px;line-height:1.6}
+  .weekly-reading{padding:24px}
+  .weekly-list a{min-height:108px;padding:13px 12px}
+}
+@media (min-width:1101px){
+  .october-focus-card{min-height:204px;padding:18px}
+  .october-focus-card h3{margin-top:10px}
+  .weekly-reading{padding:26px}
+  .weekly-list a{min-height:112px;padding:14px 12px}
+}
+@media (max-width:760px){
+  .home-section{margin-block:16px}
+  .section-heading{padding-top:9px;margin-bottom:11px}
+  .october-action-focus{margin:10px 0 4px;padding:14px 12px 13px}
+  .october-focus-head{margin-bottom:9px}
+  .october-focus-head h2{font-size:22px;line-height:1.35;margin-bottom:3px}
+  .october-focus-all{margin-top:5px;font-size:13px}
+  .october-focus-grid{gap:8px}
+  .october-focus-card{grid-template-columns:68px minmax(0,1fr);column-gap:10px;padding:10px;min-height:0}
+  .october-focus-poster{width:68px;height:104px;padding:2px}
+  .october-focus-time{font-size:14px}
+  .october-focus-type{margin-left:5px;padding:1px 5px;font-size:11px}
+  .october-focus-card h3{margin:5px 0 3px;font-size:18px;line-height:1.35}
+  .october-focus-card p{margin:0 0 5px;font-size:13px;line-height:1.52}
+  .october-focus-card small{margin-top:4px;line-height:1.45}
+  .home-light-impression img{height:154px;min-height:154px}
+  .home-light-impression>div{padding:18px 16px}
+  .home-light-impression h2{margin-bottom:8px;font-size:24px}
+  .weekly-reading{padding:18px 14px}
+  .weekly-reading .section-heading{margin-bottom:10px}
+  .weekly-list{gap:6px}
+  .weekly-list a{padding:10px;gap:8px}
+  .weekly-list em{margin-top:5px}
+}
