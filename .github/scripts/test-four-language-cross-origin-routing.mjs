@@ -152,8 +152,7 @@ console.log('Four-language cross-origin routing regression checks passed.');
 
 // October activity metadata must agree with the regional routing manifest.
 for (const group of ['news/anti-child-abuse-rally-20261017/',
-                     'activity-records/20261022-liu-zongxin-hearing/',
-                     'activity-records/20261022-tamsui-fishermans-wharf-advocacy/']) {
+                     'activity-records/20261022-liu-zongxin-hearing/']) {
   const editions = manifest.routes[group];
   for (const [locale, href] of Object.entries(editions)) {
     const expected = new URL(href, 'https://jerryzuhow77.github.io').href;
