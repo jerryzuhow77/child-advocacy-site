@@ -16,7 +16,7 @@ for filename in ('home-locales-20261013.tsv','activity-locales-20261013.tsv'):
     for line in (ROOT/'scripts'/filename).read_text().splitlines():
         source,en,ja=line.split('\t');words[source]={'en':en,'ja':ja}
 converter=OpenCC('t2s')
-routes=['news/anti-child-abuse-rally-20261017/','activity-records/20261022-liu-zongxin-hearing/','activity-records/20261022-tamsui-fishermans-wharf-advocacy/']
+routes=['news/anti-child-abuse-rally-20261017/','activity-records/20261022-liu-zongxin-hearing/']
 
 def alternates(soup,editions):
     for e in soup.select('link[rel="alternate"][hreflang]'): e.decompose()
