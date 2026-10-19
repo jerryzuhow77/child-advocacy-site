@@ -125,6 +125,7 @@ try{
     const e=section(id),cards=[...e.querySelectorAll(selector)];
     const tops=[...new Set(cards.map(c=>Math.round(c.getBoundingClientRect().top)))];
     return {height:e.getBoundingClientRect().height,rows:tops.length,
+     headings:[...e.querySelectorAll('.section-heading,.topic-group>h3')].map(h=>h.getBoundingClientRect().height),
      cards:cards.map((c,i)=>({height:c.getBoundingClientRect().height,text:c.textContent.trim().length,kind:c.matches('.topic-group a')?'topic':i===0?'lead':'card',top:Math.round(c.getBoundingClientRect().top)}))};
    };
    return {news:metrics('home-media-reports','.news-card'),
@@ -139,7 +140,11 @@ try{
    assert(group.cards.every(c=>c.text>0&&c.height>0&&c.height<cardLimit(c)),`${region}/${locale}/${width}: ${name} card is empty, hidden, or excessively tall`);
    const rowHeights=new Map();
    for(const c of group.cards)rowHeights.set(c.top,Math.max(rowHeights.get(c.top)||0,c.height));
-   assert(group.height<500+[...rowHeights.values()].reduce((a,b)=>a+b,0),`${region}/${locale}/${width}: ${name} has excessive internal whitespace`);
+   // Translated section/group headings wrap independently of article cards.
+   assert(group.headings.every(h=>h<260*translationFactor),`${region}/${locale}/${width}: ${name} heading is excessively tall`);
+   const headingHeight=group.headings.reduce((a,b)=>a+b,0);
+   const spacingBudget=48*(group.headings.length+2);
+   assert(group.height<headingHeight+spacingBudget+[...rowHeights.values()].reduce((a,b)=>a+b,0),`${region}/${locale}/${width}: ${name} has excessive internal whitespace`);
   }
   assert(density.gaps.every(g=>g<160),`${region}/${locale}/${width}: excessive gap between homepage sections`);
   const baseline=reports.find(r=>r.region===region&&r.locale==='zh-Hant'&&r.width===width);
