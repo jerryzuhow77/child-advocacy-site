@@ -11,6 +11,8 @@ on:
       - 'data/four-language-routes.json'
       - '.github/workflows/four-language-qa.yml'
       - 'assets/**'
+      - 'sw.js'
+      - '.github/scripts/verify-pwa-update.mjs'
       - '.github/scripts/verify-home-responsive-layout.mjs'
       - '.github/scripts/test-home-language-links.py'
       - '.github/workflows/home-responsive-layout-regression.yml'
@@ -51,7 +53,12 @@ jobs:
           node --check assets/home-autumn-motion-20260908.js
           node --check assets/home-post-engagement-20260826.js
           node --check .github/scripts/verify-home-responsive-layout.mjs
+      - name: Verify installed PWA upgrades and offline fallback
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+        run: node .github/scripts/verify-pwa-update.mjs
       - name: Verify homepage at six responsive widths
+        if: ${{ !cancelled() }}
         env:
           BASE_URL: http://127.0.0.1:8765/
           CHROME_PATH: /usr/bin/google-chrome
