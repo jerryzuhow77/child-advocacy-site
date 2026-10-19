@@ -58,6 +58,7 @@ jobs:
           CHROME_PATH: /usr/bin/google-chrome
         run: node .github/scripts/verify-pwa-update.mjs
       - name: Verify homepage at six responsive widths
+        if: ${{ !cancelled() }}
         env:
           BASE_URL: http://127.0.0.1:8765/
           CHROME_PATH: /usr/bin/google-chrome

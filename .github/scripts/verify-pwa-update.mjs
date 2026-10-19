@@ -43,10 +43,10 @@ try{
  await page.reload();
  await page.waitForFunction(async()=>{
   const keys=await caches.keys();
-  return keys.some(k=>k.includes('cpa-alliance-pwa-shell-')&&!k.endsWith('pwa-upgrade-fixture-old'))&&!keys.some(k=>k.endsWith('pwa-upgrade-fixture-old'));
+  console.log('PWA caches',keys);return keys.some(k=>k.includes('cpa-alliance-pwa-shell-')&&!k.endsWith('pwa-upgrade-fixture-old'))&&!keys.some(k=>k.endsWith('pwa-upgrade-fixture-old'));
  });
  const keys=await page.evaluate(()=>caches.keys());
- assert(keys.includes(`cpa-alliance-pwa-shell-${version}`));
+ assert(keys.includes(`cpa-alliance-pwa-shell-${version}`),JSON.stringify({version,keys}));
  // Prime the new thumbnail through the worker, then prove it is available offline.
  const image='/assets/art/childcare-video-preservation-20261019-refined.svg?v=20261019e';
  await page.evaluate(async p=>{const i=new Image();i.src=p;await i.decode();},image);
