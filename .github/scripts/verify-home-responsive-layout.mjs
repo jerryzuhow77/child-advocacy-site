@@ -143,7 +143,8 @@ try{
    // Translated section/group headings wrap independently of article cards.
    assert(group.headings.every(h=>h<260*translationFactor),`${region}/${locale}/${width}: ${name} heading is excessively tall`);
    const headingHeight=group.headings.reduce((a,b)=>a+b,0);
-   const spacingBudget=48*(group.headings.length+2);
+   // Grid/list rows retain their 16–22px editorial gutters.
+   const spacingBudget=48*(group.headings.length+2)+24*Math.max(0,group.rows-1);
    assert(group.height<headingHeight+spacingBudget+[...rowHeights.values()].reduce((a,b)=>a+b,0),`${region}/${locale}/${width}: ${name} has excessive internal whitespace`);
   }
   assert(density.gaps.every(g=>g<160),`${region}/${locale}/${width}: excessive gap between homepage sections`);
