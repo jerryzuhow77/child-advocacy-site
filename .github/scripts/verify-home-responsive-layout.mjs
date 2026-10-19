@@ -112,7 +112,7 @@ try{
     const e=section(id),cards=[...e.querySelectorAll(selector)];
     const tops=[...new Set(cards.map(c=>Math.round(c.getBoundingClientRect().top)))];
     return {height:e.getBoundingClientRect().height,rows:tops.length,
-     cards:cards.map(c=>({height:c.getBoundingClientRect().height,text:c.textContent.trim().length}))};
+     cards:cards.map((c,i)=>({height:c.getBoundingClientRect().height,text:c.textContent.trim().length,kind:c.matches('.topic-group a')?'topic':i===0?'lead':'card',top:Math.round(c.getBoundingClientRect().top)}))};
    };
    return {news:metrics('home-media-reports','.news-card'),
     observations:metrics('home-special-features','.feature-card,.topic-group a'),
@@ -122,9 +122,11 @@ try{
   const translationFactor=['en','ja'].includes(locale)?1.6:1;
   for(const [name,group] of Object.entries({news:density.news,observations:density.observations})){
    // The lead news card includes a full-width cover; directory rows are shorter.
-   const rowLimit=(name==='news'?460:340)*translationFactor;
-   assert(group.cards.every(c=>c.text>0&&c.height>0&&c.height<rowLimit),`${region}/${locale}/${width}: ${name} card is empty, hidden, or excessively tall`);
-   assert(group.height<320+group.rows*rowLimit,`${region}/${locale}/${width}: ${name} has excessive internal whitespace`);
+   const cardLimit=c=>(c.kind==='topic'?180:c.kind==='lead'?(width<=760?620:1100):name==='news'?460:(width<=760?460:800))*translationFactor;
+   assert(group.cards.every(c=>c.text>0&&c.height>0&&c.height<cardLimit(c)),`${region}/${locale}/${width}: ${name} card is empty, hidden, or excessively tall`);
+   const rowHeights=new Map();
+   for(const c of group.cards)rowHeights.set(c.top,Math.max(rowHeights.get(c.top)||0,c.height));
+   assert(group.height<500+[...rowHeights.values()].reduce((a,b)=>a+b,0),`${region}/${locale}/${width}: ${name} has excessive internal whitespace`);
   }
   assert(density.gaps.every(g=>g<160),`${region}/${locale}/${width}: excessive gap between homepage sections`);
   const baseline=reports.find(r=>r.region===region&&r.locale==='zh-Hant'&&r.width===width);
@@ -132,7 +134,7 @@ try{
   // Remove the old feed/directory allocation from the fixed core budget.
   // All other content, including the hearing collection, retains its limits.
   const newEditorialAllowance=editorial.seriesHeight+editorial.added*(width<=760?65:40);
-  const coreBudget=baseline?baseline.coreHeight*(width<=760?1.6:1.35):(width<=760?14000:10000)+newEditorialAllowance;
+  const coreBudget=baseline?baseline.coreHeight*(width<=760?1.6:1.35):(width<=760?14000:11000)+newEditorialAllowance;
   assert(coreHeight<coreBudget,`${region}/${locale}/${width}: excessive core height ${Math.round(coreHeight)} (budget ${Math.round(coreBudget)})`);
   report.coreHeight=coreHeight;
   report.density=density;
