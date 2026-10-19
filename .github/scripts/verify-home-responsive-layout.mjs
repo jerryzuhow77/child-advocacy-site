@@ -14,11 +14,12 @@ const output=path.resolve(process.env.QA_OUTPUT||'browser-validation/home-respon
 await fs.mkdir(output,{recursive:true});
 const browser=await chromium.launch({headless:true,...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{})});
 const reports=[],failures=[];
+const live=process.env.QA_LIVE==='1';
 const assert=(ok,msg)=>{if(!ok)failures.push(msg)};
 try{
  for(const region of ['tw','hk'])for(const locale of ['zh-Hant','zh-Hans','en','ja'])for(const width of widths){
   const host=region==='hk'?'cn.globalprotectionwall.com':'jerryzuhow77.github.io';
-  const context=await browser.newContext({viewport:{width,height:900},serviceWorkers:'block',reducedMotion:'reduce'});
+  const context=await browser.newContext({viewport:{width,height:900},serviceWorkers:live?'allow':'block',reducedMotion:'reduce'});
   let release;const gate=new Promise(resolve=>release=resolve);
   let blocked=true,loadObserved=false;
   const errors=[];
@@ -27,6 +28,10 @@ try{
    // Both regional origins render the exact checkout; third-party APIs are not a layout dependency.
    if(u.hostname!==host){await route.abort();return;}
    if(!u.pathname.startsWith('/child-advocacy-site/')){await route.abort();return;}
+   if(live){
+    if(blocked&&['image','script'].includes(route.request().resourceType()))await gate;
+    await route.continue();return;
+   }
    const rel=decodeURIComponent(u.pathname.slice('/child-advocacy-site/'.length));
    const filename=path.join(root,rel.endsWith('/')||!rel?rel+'index.html':rel);
    if(!filename.startsWith(root+path.sep)){await route.abort();return;}
@@ -51,6 +56,14 @@ try{
   await page.evaluate(async()=>{const images=[...document.querySelectorAll('main img')];images.forEach(i=>i.loading='eager');await Promise.all(images.map(i=>i.decode().catch(()=>{})));});
   await page.waitForFunction(()=>[...document.querySelectorAll('main img')].every(i=>i.complete));
   await page.waitForTimeout(350);
+  if(live){
+   const pwa=await page.evaluate(async()=>{
+    const registration=await Promise.race([navigator.serviceWorker.ready,new Promise((_,reject)=>setTimeout(()=>reject(new Error('Deployed PWA did not activate within 45 seconds')),45000))]);
+    return {script:registration.active?.scriptURL,caches:await caches.keys()};
+   });
+   const version=(await fs.readFile(path.join(root,'sw.js'),'utf8')).match(/const VERSION = '([^']+)'/)[1];
+   assert(pwa.script?.endsWith('sw.js?v='+version)&&pwa.caches.includes('cpa-alliance-pwa-shell-'+version),`${region}/${locale}/${width}: deployed PWA version/cache mismatch ${JSON.stringify(pwa)}`);
+  }
   const inspect=()=>{
    const visible=e=>e&&getComputedStyle(e).display!=='none'&&getComputedStyle(e).visibility!=='hidden'&&Number(getComputedStyle(e).opacity)!==0&&e.getBoundingClientRect().width>0&&e.getBoundingClientRect().height>0;
    const main=document.querySelector('main');
