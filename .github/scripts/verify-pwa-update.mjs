@@ -12,9 +12,10 @@ const version=sw.match(/const VERSION = '([^']+)'/)[1];
 const installer=await fs.readFile(path.join(root,'assets/pwa-install.js'),'utf8');
 assert(installer.includes(`sw.js?v=${version}'`));
 for(const file of ['index.html','en/index.html','ja/index.html'])assert((await fs.readFile(path.join(root,file),'utf8')).includes(`pwa-install.js?v=${version}`),file);
-let old=true;
+let old=true,offline=false;
 const mime={'.js':'application/javascript','.css':'text/css','.html':'text/html','.webmanifest':'application/manifest+json','.png':'image/png','.webp':'image/webp','.svg':'image/svg+xml','.json':'application/json'};
 const server=http.createServer(async(req,res)=>{
+ if(offline){req.socket.destroy();return;}
  try{
   const u=new URL(req.url,'http://localhost');
   if(u.pathname==='/probe.html'){res.setHeader('Content-Type','text/html');res.end(`<html><body>PWA upgrade probe<script src="/assets/pwa-install.js?v=${version}"></script></body></html>`);return;}
@@ -54,9 +55,11 @@ try{
  const image='/assets/art/childcare-video-preservation-20261019-refined.svg?v=20261019e';
  await page.evaluate(async p=>{const i=new Image();i.src=p;await i.decode();},image);
  await page.waitForFunction(async p=>!!(await caches.match(new URL(p,location.href).href)),image);
+ offline=true;
  await context.setOffline(true);
- await page.goto(origin+image);
- assert((await page.content()).includes('svg'));
+ // A distinct URL bypasses the browser image cache; the worker deliberately
+ // matches the primed thumbnail while ignoring its query string.
+ await page.evaluate(async p=>{const i=new Image();i.src=p+'&offline-probe=1';await i.decode();},image);
  await page.goto(origin+'/not-cached-article/');
  assert((await page.content()).includes('offline')||(await page.content()).includes('離線'));
  console.log(`PWA upgrade passed: old namespace removed, ${version} activated, thumbnail cached, offline fallback preserved.`);
