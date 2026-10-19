@@ -73,7 +73,7 @@ try{
   const media=await page.evaluate(()=>({loopSource:document.querySelector('.cinema-loop')?.getAttribute('src'),filmSource:document.querySelector('.cinema-dialog video')?.getAttribute('src'),poster:document.querySelector('.cinema-poster')?.naturalWidth}));
   assert(!media.loopSource&&!media.filmSource&&media.poster>0,`${region}/${locale}/${width}: reduced-motion poster or deferred full film failed`);
   const artwork=await page.evaluate(()=>{const sections=[...document.querySelector('main').children].filter(e=>e.tagName==='SECTION').map(e=>e.id);const actionFocus=sections.indexOf('october-action-focus');return{cells:[...new Set([...document.querySelectorAll('.ink-vignette:not(:has(.ink-standalone))')].map(e=>Number(e.dataset.inkCell)))].sort(),banners:[...document.querySelectorAll('.ink-section-vignette')].map(e=>({width:e.getBoundingClientRect().width,height:e.getBoundingClientRect().height,image:e.querySelector('img').naturalWidth})),sections,actionFocus};});
-  assert(artwork.cells.join(',')==='0,1,2,3,4,5,6,7'&&artwork.banners.length===4&&artwork.banners.every(e=>e.width>0&&e.height>0&&e.image>0)&&artwork.actionFocus>=0&&artwork.sections[artwork.actionFocus+1]==='home-film',`${region}/${locale}/${width}: sixteen paintings or action-focus/film placement incomplete ${JSON.stringify(artwork)}`);
+  assert(artwork.cells.join(',')==='0,1,2,3,4,5,6,7'&&artwork.banners.length===4&&artwork.banners.every(e=>e.width>0&&e.height>0&&e.image>0)&&artwork.actionFocus>=0&&artwork.sections[artwork.actionFocus+1]==='home-xuanxuan-followup'&&artwork.sections[artwork.actionFocus+2]==='home-film',`${region}/${locale}/${width}: sixteen paintings or action-focus/film placement incomplete ${JSON.stringify(artwork)}`);
   assert(await page.locator('#home-film .cinema-poster').isVisible(),`${region}/${locale}/${width}: mobile film poster hidden`);
   if(width===390){
    await page.locator('[data-cinema-open]').first().click();
@@ -104,14 +104,38 @@ try{
   assert(report.qualifier,`${region}/${locale}/${width}: court qualifier missing`);
   assert(report.desktopNav===(width>=1024)&&report.mobileMenu===(width<1024),`${region}/${locale}/${width}: primary navigation not accessible`);
   assert(!report.anchors.length&&!report.images.length&&!errors.length,`${region}/${locale}/${width}: broken anchors, images, or scripts: ${JSON.stringify({anchors:report.anchors,images:report.images,errors})}`);
-  // Restored collections need room; visibility and per-section structure are the acceptance criteria.
-  // Full translations take more lines. Compare their height with the same regional
-  // Chinese layout instead of applying a Chinese-only pixel ceiling to English.
+  // The news feed and observation directory grow with publication. Give each
+  // its own bounded row budget instead of raising every viewport's page ceiling.
+  const density=await page.evaluate(()=>{
+   const section=id=>document.getElementById(id);
+   const metrics=(id,selector)=>{
+    const e=section(id),cards=[...e.querySelectorAll(selector)];
+    const tops=[...new Set(cards.map(c=>Math.round(c.getBoundingClientRect().top)))];
+    return {height:e.getBoundingClientRect().height,rows:tops.length,
+     cards:cards.map(c=>({height:c.getBoundingClientRect().height,text:c.textContent.trim().length}))};
+   };
+   return {news:metrics('home-media-reports','.news-card'),
+    observations:metrics('home-special-features','.feature-card,.topic-group a'),
+    gaps:[...document.querySelector('main').children].filter(e=>e.getBoundingClientRect().height>0)
+     .map((e,i,a)=>i?e.getBoundingClientRect().top-a[i-1].getBoundingClientRect().bottom:0)};
+  });
+  const translationFactor=['en','ja'].includes(locale)?1.6:1;
+  for(const [name,group] of Object.entries({news:density.news,observations:density.observations})){
+   // The lead news card includes a full-width cover; directory rows are shorter.
+   const rowLimit=(name==='news'?460:340)*translationFactor;
+   assert(group.cards.every(c=>c.text>0&&c.height>0&&c.height<rowLimit),`${region}/${locale}/${width}: ${name} card is empty, hidden, or excessively tall`);
+   assert(group.height<320+group.rows*rowLimit,`${region}/${locale}/${width}: ${name} has excessive internal whitespace`);
+  }
+  assert(density.gaps.every(g=>g<160),`${region}/${locale}/${width}: excessive gap between homepage sections`);
   const baseline=reports.find(r=>r.region===region&&r.locale==='zh-Hant'&&r.width===width);
-  // The independent advocacy-film section adds room without hiding any of the restored collections.
+  const coreHeight=report.height-density.news.height-density.observations.height;
+  // Remove the old feed/directory allocation from the fixed core budget.
+  // All other content, including the hearing collection, retains its limits.
   const newEditorialAllowance=editorial.seriesHeight+editorial.added*(width<=760?65:40);
-  const heightBudget=baseline?baseline.height*(width<=760?1.6:1.35):(width<=760?17000:12500)+newEditorialAllowance;
-  assert(report.height<heightBudget,`${region}/${locale}/${width}: excessive page height ${report.height} (budget ${Math.round(heightBudget)})`);
+  const coreBudget=baseline?baseline.coreHeight*(width<=760?1.6:1.35):(width<=760?14000:10000)+newEditorialAllowance;
+  assert(coreHeight<coreBudget,`${region}/${locale}/${width}: excessive core height ${Math.round(coreHeight)} (budget ${Math.round(coreBudget)})`);
+  report.coreHeight=coreHeight;
+  report.density=density;
   const collections=await page.evaluate(()=>({portals:document.querySelectorAll('#home-sections .portal-card').length,chapters:document.querySelectorAll('.chapter-grid .chapter-card').length,topics:document.querySelectorAll('#observation-directory a').length,history:document.querySelectorAll('#home-historical-cases .history-card').length,cases:document.querySelectorAll('#home-social-cases a').length,comics:document.querySelectorAll('#home-court-comics .comic-card').length,hidden:['home-sections','case-reading','home-special-features','home-social-cases','home-historical-cases','home-court-comics','home-memorial','social'].filter(id=>{const e=document.getElementById(id);return !e||e.closest('details:not([open])')||getComputedStyle(e).display==='none'||e.getBoundingClientRect().height===0;})}));
   assert(collections.portals===8&&collections.chapters===4&&collections.topics>=19&&collections.history>=8&&collections.cases>=9&&collections.comics===3&&!collections.hidden.length,`${region}/${locale}/${width}: restored collection missing or hidden ${JSON.stringify(collections)}`);
   for(const href of report.routes){const u=new URL(href);if(region==='hk')assert(u.hostname!=='jerryzuhow77.github.io'||['/child-advocacy-site/','/child-advocacy-site/en/','/child-advocacy-site/ja/'].includes(u.pathname)||report.externalTopics.some(a=>a.href===href&&a.text.trim().length>0),`${region}/${locale}/${width}: unintended Taiwan article route ${href}`);if(u.hostname===host&&u.pathname.startsWith('/child-advocacy-site/')){const p=u.pathname.slice('/child-advocacy-site/'.length);try{await fs.access(path.join(root,p.endsWith('/')||!p?p+'index.html':p))}catch{failures.push(`${region}/${locale}/${width}: missing article route ${href}`)}}}
