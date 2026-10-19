@@ -52,7 +52,7 @@ try{
  assert(keys.includes(`cpa-alliance-pwa-shell-${version}`),JSON.stringify({version,keys}));
  assert(!keys.some(k=>k.endsWith('pwa-upgrade-fixture-old')),JSON.stringify(keys));
  // Prime the new thumbnail through the worker, then prove it is available offline.
- const image='/assets/art/childcare-video-preservation-20261019-refined.svg?v=20261019e';
+ const image='/assets/art/childcare-video-preservation-20261019-hero-20261019.jpg?v=20261019h';
  await page.evaluate(async p=>{const i=new Image();i.src=p;await i.decode();},image);
  await page.waitForFunction(async p=>!!(await caches.match(new URL(p,location.href).href)),image);
  offline=true;
