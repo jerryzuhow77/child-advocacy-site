@@ -1,0 +1,44 @@
+name: Deployed homepage mobile verification
+
+on:
+  workflow_run:
+    workflows: [Deploy Hong Kong child advocacy mirror]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deployed-home-mobile
+  cancel-in-progress: true
+
+jobs:
+  live-mobile:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock playwright-core@1.55.0
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-cjk
+      - name: Verify deployed regional mobile pages and PWA cache namespace
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+          QA_LIVE: '1'
+          QA_WIDTHS: '320,390'
+          QA_OUTPUT: browser-validation/home-live-mobile
+        run: node .github/scripts/verify-home-responsive-layout.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: home-live-mobile
+          path: browser-validation/home-live-mobile/
+          retention-days: 14
+          if-no-files-found: error
