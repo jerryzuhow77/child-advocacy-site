@@ -157,7 +157,7 @@
         reloadingForUpdate = true;
         window.location.reload();
       });
-      navigator.serviceWorker.register(new URL('sw.js?v=20260915-home-counter-baseline-2987-v15', siteBase).href, {
+      navigator.serviceWorker.register(new URL('sw.js?v=20261019-footage-thumbnail-refresh-v16', siteBase).href, {
         scope: siteBase.pathname,
         updateViaCache: 'none'
       })
