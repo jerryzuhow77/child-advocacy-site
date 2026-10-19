@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="t d">
+<title id="t">Preserved preschool footage</title><desc id="d">A calm paper-cut illustration of a camera, secured video archive, and review record.</desc>
+<defs>
+ <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#F5F0E3"/><stop offset="1" stop-color="#E1EBDD"/></linearGradient>
+ <linearGradient id="archive" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2D5A5D"/><stop offset="1" stop-color="#183D45"/></linearGradient>
+ <pattern id="fibres" width="22" height="22" patternUnits="userSpaceOnUse"><path d="M2 5h4M13 15h3M18 3h2" stroke="#8FA59A" stroke-width="1" opacity=".16"/></pattern>
+</defs>
+<rect width="1600" height="900" fill="url(#paper)"/><rect width="1600" height="900" fill="url(#fibres)"/>
+<path d="M0 684C220 596 436 634 656 737C888 845 1232 776 1600 619V900H0Z" fill="#C3D8CE"/>
+<path d="M0 710C301 646 492 810 782 766C1040 728 1263 755 1600 644" fill="none" stroke="#E4C87F" stroke-width="15" opacity=".8"/>
+<!-- empty classroom -->
+<g transform="translate(88 118)">
+ <path d="M0 53H446V492H0Z" fill="#F9F5E9" stroke="#315C5B" stroke-width="13"/>
+ <path d="M25 53V25H421V53M50 111H396M56 445H390" fill="none" stroke="#B77A59" stroke-width="11"/>
+ <path d="M86 285H347V391H86Z" fill="#D3AA71"/><path d="M170 285V391M259 285V391" stroke="#8A6F53" stroke-width="9"/>
+ <path d="M92 245C145 190 194 190 243 245S340 300 391 238" fill="none" stroke="#79A49A" stroke-width="24"/>
+ <g fill="#B76D51"><path d="M116 422h50l-12 44h-26z"/><path d="M318 422h50l-12 44h-26z"/></g>
+ <g fill="#E7BE72"><circle cx="115" cy="179" r="25"/><circle cx="336" cy="168" r="25"/></g>
+</g>
+<!-- camera -->
+<g transform="translate(252 45)">
+ <path d="M70 0H220L252 42V89H37V42Z" fill="#E7E3D7"/><path d="M61 89H225V147H61Z" fill="#F6F3E9"/>
+ <path d="M89 141H203L234 184V254H58V184Z" fill="#245159"/>
+ <circle cx="146" cy="198" r="50" fill="#132F39"/><circle cx="146" cy="198" r="29" fill="#91C0B0"/><circle cx="128" cy="181" r="9" fill="#F7E7B3"/>
+ <path d="M140 258L310 413" stroke="#BCD7C6" stroke-width="11" stroke-dasharray="12 15" opacity=".9"/>
+</g>
+<!-- secured archive -->
+<g transform="translate(550 294)">
+ <path d="M0 103C0 68 28 40 63 40H244L303 0H617C652 0 680 28 680 63V416C680 451 652 479 617 479H63C28 479 0 451 0 416Z" fill="url(#archive)"/>
+ <path d="M0 104H680" stroke="#C97F58" stroke-width="15"/>
+ <g fill="#EEE7D9"><rect x="83" y="180" width="255" height="204" rx="13"/><rect x="116" y="208" width="188" height="21" rx="10"/><rect x="116" y="254" width="156" height="17" rx="8"/><rect x="116" y="295" width="191" height="17" rx="8"/><rect x="116" y="336" width="119" height="17" rx="8"/></g>
+ <path d="M485 178V151A67 67 0 0 0 351 151V178" fill="none" stroke="#EBC477" stroke-width="30" stroke-linecap="round"/>
+ <rect x="330" y="173" width="180" height="176" rx="23" fill="#EBC477"/><circle cx="420" cy="254" r="19" fill="#234A52"/><path d="M420 274V306" stroke="#234A52" stroke-width="17" stroke-linecap="round"/>
+</g>
+<!-- review window -->
+<g transform="translate(1195 301)">
+ <rect width="310" height="228" rx="23" fill="#254F57"/><rect x="20" y="20" width="270" height="163" rx="11" fill="#DDEADD"/>
+ <path d="M35 154L93 102L139 128L193 76L276 130V163H35Z" fill="#76A69A"/>
+ <circle cx="91" cy="75" r="20" fill="#E4B969"/><path d="M42 202H247" stroke="#E9C77D" stroke-width="12" stroke-linecap="round"/>
+ <circle cx="83" cy="202" r="13" fill="#E9C77D"/>
+ <path d="M247 247l27 29 52-73" fill="none" stroke="#C47051" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<!-- verification seals -->
+<g fill="#C77856"><circle cx="1121" cy="721" r="24"/><circle cx="1183" cy="721" r="24"/><circle cx="1245" cy="721" r="24"/></g>
+<path d="M1113 721l7 8 16-20M1175 721l7 8 16-20M1237 721l7 8 16-20" fill="none" stroke="#FFF6E8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
