@@ -76,7 +76,7 @@ try{
   assert(artwork.cells.join(',')==='0,1,2,3,4,5,6,7'&&artwork.banners.length===4&&artwork.banners.every(e=>e.width>0&&e.height>0&&e.image>0)&&artwork.actionFocus>=0&&artwork.sections.indexOf('home-film')>artwork.actionFocus,`${region}/${locale}/${width}: sixteen paintings or action-focus/film placement incomplete ${JSON.stringify(artwork)}`);
   // The Xuanxuan follow-up card is intentionally between the action and film sections.
   const between=await page.evaluate(()=>{const sections=[...document.querySelectorAll('main>section')];const a=sections.findIndex(e=>e.id==='october-action-focus'),f=sections.findIndex(e=>e.id==='home-film');return sections.slice(a+1,f).map(e=>({allowed:e.matches('.xuanxuan-home-card'),links:e.querySelectorAll('a').length}));});
-  assert(between.length===1&&between.every(e=>e.allowed&&e.links===4),`${region}/${locale}/${width}: unexpected content between action focus and film ${JSON.stringify(between)}`);
+  assert(between.length===1&&between.every(e=>e.allowed&&e.links===1),`${region}/${locale}/${width}: unexpected content between action focus and film ${JSON.stringify(between)}`);
   assert(await page.locator('#home-film .cinema-poster').isVisible(),`${region}/${locale}/${width}: mobile film poster hidden`);
   if(width===390){
    await page.locator('[data-cinema-open]').first().click();

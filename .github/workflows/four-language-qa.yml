@@ -48,6 +48,8 @@ on:
       - 'assets/home-ia-bootstrap-20260823.js'
       - 'assets/global-protection-wall-portal.js'
       - 'sw.js'
+      - 'assets/pwa-install.js'
+      - '.github/scripts/verify-pwa-update.mjs'
       - '.github/workflows/four-language-qa.yml'
   workflow_dispatch:
 
@@ -121,6 +123,7 @@ jobs:
           node --check assets/recognition-blind-spots-20260913.js
           node --check features/kaikai-grandmother-rescue-barriers/page-motion.js
           node --check sw.js
+          node --check assets/pwa-install.js
 
       - name: Static synchronization assertions
         run: |

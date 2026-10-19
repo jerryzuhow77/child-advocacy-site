@@ -41,12 +41,15 @@ try{
  // must still detect new bytes and activate the new namespace.
  old=false;
  await page.reload();
- await page.waitForFunction(async()=>{
-  const keys=await caches.keys();
-  console.log('PWA caches',keys);return keys.some(k=>k.includes('cpa-alliance-pwa-shell-')&&!k.endsWith('pwa-upgrade-fixture-old'))&&!keys.some(k=>k.endsWith('pwa-upgrade-fixture-old'));
- });
- const keys=await page.evaluate(()=>caches.keys());
+ await page.evaluate(async()=>{const r=await navigator.serviceWorker.getRegistration();await r.update();});
+ let keys=[];
+ for(let attempt=0;attempt<120;attempt++){
+  try{keys=await page.evaluate(()=>caches.keys());}catch{await page.waitForLoadState('load');continue;}
+  if(keys.includes(`cpa-alliance-pwa-shell-${version}`)&&!keys.some(k=>k.endsWith('pwa-upgrade-fixture-old')))break;
+  await page.waitForTimeout(250);
+ }
  assert(keys.includes(`cpa-alliance-pwa-shell-${version}`),JSON.stringify({version,keys}));
+ assert(!keys.some(k=>k.endsWith('pwa-upgrade-fixture-old')),JSON.stringify(keys));
  // Prime the new thumbnail through the worker, then prove it is available offline.
  const image='/assets/art/childcare-video-preservation-20261019-refined.svg?v=20261019e';
  await page.evaluate(async p=>{const i=new Image();i.src=p;await i.decode();},image);
