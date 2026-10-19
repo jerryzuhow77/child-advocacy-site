@@ -157,7 +157,7 @@
         reloadingForUpdate = true;
         window.location.reload();
       });
-      navigator.serviceWorker.register(new URL('sw.js?v=20261019-footage-thumbnail-refresh-v16', siteBase).href, {
+      navigator.serviceWorker.register(new URL('sw.js?v=20261019-thumbnail-force-refresh-v17', siteBase).href, {
         scope: siteBase.pathname,
         updateViaCache: 'none'
       })
