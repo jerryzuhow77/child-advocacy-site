@@ -86,10 +86,12 @@ jobs:
           old = "window.setTimeout(() => controller.abort(), 7000)"
           new = "window.setTimeout(() => controller.abort(), 20000)"
           count = text.count(old)
-          if count < 2:
-              raise SystemExit(f"expected at least two public-request timeouts, found {count}")
-          path.write_text(text.replace(old, new))
-          print(f"updated_timeouts={count}")
+          already_updated = text.count(new)
+          if count < 2 and already_updated < 2:
+              raise SystemExit(f"expected at least two public-request timeouts, found old={count}, updated={already_updated}")
+          if count:
+              path.write_text(text.replace(old, new))
+          print(f"updated_timeouts={count}; already_updated={already_updated}")
           PY
           cd "$app"
           npm run build
