@@ -112,7 +112,7 @@ try{
   // bounded measured footprints; keep the original core-content ceiling intact.
   const additions=await page.evaluate(()=>{
    const footprint=e=>{const r=e.getBoundingClientRect(),s=getComputedStyle(e);return r.height?Math.ceil(r.height+parseFloat(s.marginTop)+parseFloat(s.marginBottom)):0;};
-   const modules=[...document.querySelectorAll('main>.daily-brief-20261018,main>.mobile-daily-brief,main>.home-light-impression,main>#weekly-reading,main>#home-case-patterns')].map(e=>({name:e.id||e.className,height:footprint(e)}));
+   const modules=[...document.querySelectorAll('main>.daily-brief-20261018,main>.mobile-daily-brief,main>.home-light-impression,main>#weekly-reading,main>#home-case-patterns,main>#chen-nov6-hearing,main>#child-family-support-administration-20261020')].map(e=>({name:e.id||e.className,height:footprint(e)}));
    const cards=[...document.querySelectorAll('#home-media-reports .news-card')];
    // Measure only rows beyond the original six cards, including their grid gaps.
    const original=cards.slice(0,6),extra=cards.slice(6);
