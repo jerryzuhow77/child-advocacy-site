@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>剴剴為何走向跨國收出養？｜多元觀察</title>
+    <meta
+      name="description"
+      content="從家外安置、寄養、國內收養與跨國收出養的制度路徑，釐清不能倒推的問題與應被檢驗的決策。"
+    />
+    <style>
+      :root {
+        --ink: #263746;
+        --blue: #7f98a7;
+        --sage: #aab7a9;
+        --clay: #b79a8d;
+        --paper: #f1eee7;
+        --mist: #d9e2e1;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background:
+          linear-gradient(rgba(244, 238, 219, 0.86), rgba(244, 238, 219, 0.91)),
+          url("../../../assets/images/kaikai-intercountry-adoption-choices-20260920/midautumn-kaikai-symbolic-hero-20260922.jpg")
+            center / cover fixed;
+        color: var(--ink);
+        font-family: system-ui, "Noto Sans TC", sans-serif;
+        line-height: 1.8;
+      }
+      .hero {
+        min-height: 78vh;
+        padding: clamp(5rem, 11vw, 10rem) 8%;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 42%);
+        gap: 2rem;
+        align-items: center;
+        overflow: hidden;
+        background:
+          linear-gradient(
+            115deg,
+            rgba(244, 238, 219, 0.93),
+            rgba(224, 231, 209, 0.62)
+          ),
+          url("../../../assets/images/kaikai-intercountry-adoption-choices-20260920/midautumn-kaikai-symbolic-hero-20260922.jpg")
+            center / cover;
+      }
+      .eyebrow {
+        letter-spacing: 0.12em;
+        font-size: 0.78rem;
+        color: #506b7a;
+      }
+      .hero h1 {
+        font-size: clamp(2.5rem, 5.6vw, 5rem);
+        line-height: 1.18;
+        margin: 0.25rem 0 1rem;
+      }
+      .hero figure {
+        margin: 0;
+        background: rgba(241, 238, 231, 0.58);
+        padding: 1rem;
+        border-radius: 45% 55% 42% 58%;
+      }
+      .hero img {
+        width: 100%;
+        display: block;
+        border-radius: 48% 52% 38% 62%;
+        box-shadow: none;
+        filter: none;
+      }
+      .hero figure {
+        box-shadow: none;
+        filter: none;
+      }
+      .notice {
+        font-size: 0.88rem;
+        color: #53646b;
+      }
+      .wrap {
+        max-width: 960px;
+        margin: auto;
+        padding: 4.5rem 1.4rem;
+      }
+      .lead {
+        font-size: 1.2rem;
+      }
+      .mark {
+        background: linear-gradient(
+          transparent 53%,
+          rgba(239, 213, 84, 0.58) 0,
+          rgba(239, 213, 84, 0.58) 91%,
+          transparent 91%
+        );
+      }
+      section {
+        margin: 3.3rem 0;
+        padding: 2rem;
+        background: rgba(217, 226, 225, 0.34);
+        border-left: 4px solid var(--blue);
+      }
+      h2 {
+        line-height: 1.35;
+      }
+      .route {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+      }
+      .route div {
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.46);
+      }
+      .reading-spine {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+        margin: 1.5rem 0 0;
+      }
+      .spine-card {
+        padding: 1.2rem;
+        background: rgba(244, 238, 219, 0.72);
+        border-top: 2px solid rgba(192, 118, 57, 0.65);
+      }
+      .spine-card strong {
+        display: block;
+        color: #375565;
+        letter-spacing: 0.08em;
+        font-size: 0.85rem;
+      }
+      .source-boundary {
+        padding: 1.15rem 1.25rem;
+        background: rgba(255, 255, 255, 0.42);
+        border: 1px solid rgba(88, 119, 138, 0.35);
+      }
+      .decision-tree {
+        display: grid;
+        gap: 0.8rem;
+        margin: 1.5rem 0;
+      }
+      .tree-node {
+        position: relative;
+        padding: 0.95rem 1.05rem;
+        background: rgba(244, 238, 219, 0.8);
+        border: 1px solid rgba(88, 119, 138, 0.35);
+      }
+      .tree-root {
+        background: rgba(222, 231, 217, 0.8);
+        border-left: 4px solid #5d7c6c;
+      }
+      .tree-branches {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.8rem;
+      }
+      .tree-node::before {
+        content: "↓";
+        display: block;
+        color: #b47438;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+      }
+      .tree-root::before {
+        content: "";
+        display: none;
+      }
+      .tree-node strong {
+        display: block;
+        color: #375565;
+        margin-bottom: 0.25rem;
+      }
+      .tree-stop {
+        background: rgba(255, 255, 255, 0.55);
+      }
+      .tree-action {
+        background: rgba(239, 228, 192, 0.58);
+      }
+      .audit-panel {
+        margin: 1.25rem 0 1.8rem;
+        padding: 1.25rem;
+        background: rgba(255, 255, 255, 0.44);
+        border: 1px solid rgba(88, 119, 138, 0.35);
+      }
+      .audit-panel h3 {
+        margin: 0 0 0.9rem;
+        line-height: 1.45;
+      }
+      .audit-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.8rem;
+      }
+      .audit-card {
+        padding: 1rem;
+        background: rgba(244, 238, 219, 0.72);
+        border-top: 2px solid rgba(192, 118, 57, 0.65);
+      }
+      .audit-card strong {
+        display: block;
+        color: #375565;
+        margin-bottom: 0.3rem;
+      }
+      @media (max-width: 700px) {
+        .audit-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 700px) {
+        .tree-branches {
+          grid-template-columns: 1fr;
+        }
+      }
+      dt {
+        font-weight: 700;
+      }
+      dd {
+        margin: 0.35rem 0 0;
+      }
+      a {
+        color: #30576d;
+      }
+      footer {
+        padding: 3rem 8%;
+        background: #334b5a;
+        color: #eef1ee;
+      }
+      @media (max-width: 700px) {
+        .hero {
+          grid-template-columns: 1fr;
+          padding-top: 6rem;
+        }
+        .route {
+          grid-template-columns: 1fr;
+        }
+        .reading-spine {
+          grid-template-columns: 1fr;
+        }
+        .hero figure {
+          max-width: 440px;
+          justify-self: center;
+        }
+      }
+
+      /* Keep the Mid-Autumn ink illustration visible on first mobile viewport. */
+      .hero {
+        background:
+          linear-gradient(115deg, rgba(244, 238, 219, 0.78), rgba(224, 231, 209, 0.36)),
+          url("/child-advocacy-site/assets/images/kaikai-intercountry-adoption-choices-20260920/midautumn-kaikai-symbolic-hero-20260922.jpg") center / cover;
+      }
+      @media (max-width: 700px) {
+        .hero { grid-template-areas: "art" "copy"; gap: 1.1rem; padding-top: 4.2rem; }
+        .hero > div { grid-area: copy; }
+        .hero figure { grid-area: art; width: min(100%, 410px); }
+      }
+      /* 強化桌機水墨主視覺與可掃讀重點：不使用陰影。 */
+      .hero {
+        background:
+          linear-gradient(112deg, rgba(244, 238, 219, 0.58), rgba(224, 231, 209, 0.14)),
+          url("/child-advocacy-site/assets/images/kaikai-intercountry-adoption-choices-20260920/midautumn-kaikai-symbolic-hero-20260922.jpg") center / cover;
+      }
+      .hero figure {
+        width: min(100%, 540px);
+        justify-self: end;
+        padding: 0.7rem;
+        border: 2px solid rgba(48, 87, 109, 0.74);
+        border-radius: 2px;
+        background: rgba(248, 240, 220, 0.9);
+        box-shadow: none;
+      }
+      .hero img {
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .mark {
+        padding: 0.04em 0.15em;
+        font-weight: 760;
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+        background: linear-gradient(transparent 31%, rgba(255, 225, 70, 0.88) 31%, rgba(255, 225, 70, 0.88) 92%, transparent 92%);
+      }
+      .decision-tree {
+        padding: 1.25rem;
+        background: rgba(255, 250, 231, 0.56);
+        border-left: 4px solid #bd6b35;
+      }
+      .audit-panel {
+        border-left: 4px solid #bd6b35;
+        background: rgba(255, 250, 231, 0.58);
+      }
+      @media (max-width: 700px) {
+        .hero figure { justify-self: center; }
+        .hero img { aspect-ratio: 16 / 10; }
+      }
+
+    </style>
+    <link data-cpa-four-language-toolbar-style rel="stylesheet" href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5">
+    <script data-cpa-four-language-toolbar-flag>
+      window.__cpaFourLanguageToolbar = true;
+    </script>
+    <link rel="canonical" href="https://jerryzuhow77.github.io/child-advocacy-site/features/social-observation/kaikai-intercountry-adoption-choices-20260920/">
+<link rel="alternate" hreflang="en" href="https://jerryzuhow77.github.io/child-advocacy-site/en/features/social-observation/kaikai-intercountry-adoption-choices-20260920/">
+<link rel="alternate" hreflang="ja" href="https://jerryzuhow77.github.io/child-advocacy-site/ja/features/social-observation/kaikai-intercountry-adoption-choices-20260920/">
+<link rel="alternate" hreflang="zh-Hans" href="https://cn.globalprotectionwall.com/child-advocacy-site/features/social-observation/kaikai-intercountry-adoption-choices-20260920/zh-Hans/">
+<link rel="alternate" hreflang="zh-Hant" href="https://jerryzuhow77.github.io/child-advocacy-site/features/social-observation/kaikai-intercountry-adoption-choices-20260920/">
+</head>
+  <body>
+    <main>
+      <header class="hero">
+        <div>
+          <p class="eyebrow">MULTIPLE PERSPECTIVES · CARE CONTINUITY</p>
+          <h1>剴剴為何走向<br />跨國收出養？</h1>
+          <p class="lead">
+            不是「其他選項都不行」；而是必須回到當時的安置、媒合與追蹤決策，逐一問清楚：孩子的最佳利益有沒有被具體評估與持續守住。
+          </p>
+          <p class="notice">主視覺為中秋水墨象徵畫面，非案件現場或真實人物。</p>
+        </div>
+        <figure>
+          <img
+            src="../../../assets/images/kaikai-intercountry-adoption-choices-20260920/midautumn-kaikai-symbolic-hero-20260922.jpg"
+            alt="中秋水墨畫中的非辨識性幼兒背影，穿深藍與淺藍條紋上衣，象徵守住孩子的安全與照顧連續性"
+          />
+        </figure>
+      </header>
+      <div class="wrap">
+        <p class="lead">
+          社會常問：「為什麼不去育幼院、寄養家庭，或由台灣家庭收養？」這些問題值得追問，但<span
+            class="mark"
+            >不能在缺少完整個案評估資料時，反推任何一條路徑必然不可行，或把跨國收出養說成唯一出路。</span
+          >
+        </p>
+        <section>
+          <h2>不是「有另一條路」就能立刻改走</h2>
+          <p>育幼院、寄養家庭與台灣島內收養都可能是重要選項，但不是按下按鈕即可完成的替代方案。機構安置須評估孩子年齡、健康與發展需求、是否需要密集照顧、可用床位與專業人力；寄養需經招募、訓練、評估與配對，並考量創傷、醫療、手足、就學與親屬聯繫；收養則涉及出養必要性、可收養性、收養人資格與適配，以及後續支持。</p>
+          <p>因此，不能因為事後看見某一條路徑，就倒推它在當時必然可立即啟動，也不能因此免除決策者比較替代照顧選項、記錄理由與持續保護孩子的責任。<span class="mark">真正應被檢驗的是：風險出現時，安全評估是否及時完成、替代安排是否被完整比較、誰能升級決策，以及孩子在等待與轉換期間有沒有被安全接住。</span></p>
+          <p class="notice">制度參考：<a href="https://adoptinfo.sfaa.gov.tw/">衛福部兒童及少年收養資訊中心</a>強調被收養人、收養人與出養人三方權益平衡；社家署另設<a href="https://www.sfaa.gov.tw/sfaa/youtube/detail/5la/5hE">兒少家外安置專區</a>。本段為制度說明，不以未公開個案資料推論個別決策。</p>
+        </section>
+        <section>
+          <h2>剴剴案與寄養家庭：不能把兩種照顧混為一談</h2>
+          <p>
+            依公開報導，剴剴在收出養媒合等待期間，由收出養服務機構安排居家托育人員照顧。這種「等待收養期間的居家照顧」，與地方政府依兒少保護或家外安置程序安排的<span class="mark">寄養家庭</span>並非同一制度：前者位於收出養服務與托育照顧的交界，後者則須經寄養家庭招募、家庭整體評估、訓練、配對、訪視與安置管理。
+          </p>
+          <dl class="route" aria-label="居家托育與寄養家庭的制度差異">
+            <div>
+              <dt>當時實際照顧安排</dt>
+              <dd>公開資訊所指的是收出養等待期的居家托育照顧；不能因為照顧發生在家庭住宅，就稱為寄養安置。</dd>
+            </div>
+            <div>
+              <dt>寄養家庭制度</dt>
+              <dd>是家外安置的一種，由主管機關評估兒童需求、寄養家庭條件與適配性，並配套訪視、督導及安置計畫。</dd>
+            </div>
+            <div>
+              <dt>量能不足的制度背景</dt>
+              <dd>寄養家庭招募困難、照顧需求複雜與資源吃緊，可解釋制度為何容易塞車，<span class="mark">但不能直接證明本案曾詢問寄養而無名額</span>。</dd>
+            </div>
+            <div>
+              <dt>本案仍缺的證據</dt>
+              <dd>必須看新北市當時的安置評估、實際詢問與配對紀錄、未採寄養或機構的理由，以及等待期安全計畫。</dd>
+            </div>
+          </dl>
+          <div class="source-boundary">
+            <strong>因果鏈應這樣寫</strong>
+            <p>
+              可以確認的是「孩子處於媒合等待期，接受居家托育照顧」；可以提出的制度問題是「這類等待期照顧如何評估、監督與在風險出現時轉換」；尚不能確認的則是「因寄養家庭不足，所以本案只能交由居家托育」。<span class="mark">制度壅塞是背景，不是個案因果證明。</span>
+            </p>
+          </div>
+          <p>
+            事件後的制度檢討，重點也不應只是把孩子從一種照顧名稱移到另一種名稱，而是讓主管機關對等待收養兒童的照顧需求、安置適切性與風險負起可追溯的評估及安排責任。無論最後採居家托育、寄養或機構照顧，都必須有明確的安全標準、訪視頻率、異常通報、督導複核與替代安排。
+          </p>
+          <p class="notice">
+            延伸閱讀：<a href="https://www.cw.com.tw/article/5135286">《天下雜誌》專題</a>、<a href="https://www.twreporter.org/a/opinion-a-boy-death-in-nanny-care">《報導者》評論</a>、<a href="https://rightplus.org/2024/08/28/children-care1/">Right Plus 制度分析</a>。這些資料用於釐清制度與公開事件脈絡；本頁仍以原始公文、評估及轉介紀錄作為判斷本案因果的必要證據。
+          </p>
+        </section>
+        <section>
+          <h2>先釐清：四種路徑不是同一件事</h2>
+          <dl class="route">
+            <div>
+              <dt>育幼院／機構照顧</dt>
+              <dd>
+                是家外安置選項之一，須評估孩子年齡、健康、需求與可得資源。
+              </dd>
+            </div>
+            <div>
+              <dt>寄養家庭</dt>
+              <dd>
+                提供家庭式暫時照顧；是否可安排與可維持多久，需依當時名額、評估與配對決定。
+              </dd>
+            </div>
+            <div>
+              <dt>國內收養</dt>
+              <dd>
+                以可收養性確認、適配家庭與法定程序為前提；等待與媒合過程也應以兒童利益為核心。
+              </dd>
+            </div>
+            <div>
+              <dt>跨國收出養</dt>
+              <dd>
+                不是較低標準的替代方案；必須依法律與主管機關程序、收養資格及必要的追蹤保障辦理。
+              </dd>
+            </div>
+          </dl>
+        </section>
+        <section>
+          <h2>「走向跨國」應被問的，不是標籤</h2>
+          <p>
+            依收出養制度，媒合與後續服務應圍繞兒童最佳利益。若當時規劃跨國收出養，合理的公共檢視應包括：原生家庭支持與出養必要性是否完成評估；國內媒合的可能性、等待與適配條件如何判斷；照顧空窗期由誰承接；每次訪視是否記錄可核對的安全觀察；一旦出現傷勢、就醫或照顧異常，是否即時升級、通報與重新評估。
+          </p>
+          <div class="source-boundary">
+            <strong>制度上，為何可能走向跨國收出養？</strong>
+            <p>
+              這不是把孩子送往國外的單一步驟。依法，父母或監護人因故無法盡扶養義務而擬出養時，媒合服務者須先做<span
+                class="mark"
+                >出養必要性</span
+              >訪視調查；若評估不宜出養，應提供或轉介家庭支持、托育、生活扶助或醫療等服務。原生家庭支持是否足夠，原本就是第一道檢驗。
+            </p>
+            <p>
+              若確認有出養必要，法律以<span class="mark"
+                >台灣島內收養人優先</span
+              >為原則。跨國收出養不是國內媒合的簡化替代，而是在可收養性與台灣島內媒合可能性經審慎考量後，才可能進入的路徑；孩子的年齡、健康與發展需求、手足關係、可等待時間，以及適配家庭能否提供長期穩定照顧，都是應被記錄與說明的因素。
+            </p>
+            <p>
+              國際上也採相近原則：應優先協助孩子留在原生家庭；在原屬國找不到合適永久家庭時，跨國收養才可能成為選項，且須核對孩子需求、收養人適格性與兩地主管機關的保障。<span
+                class="mark"
+                >本段是制度分析，不是對本案未公開評估資料的倒推。</span
+              >
+            </p>
+            <p class="notice">
+              來源：<a
+                href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=D0050001"
+                >《兒童及少年福利與權益保障法》第 15 至 17、23 條</a
+              >；<a
+                href="https://www.hcch.net/en/instruments/conventions/full-text/?cid=69"
+                >《海牙跨國收養公約》序言及第 4、16 條</a
+              >。
+            </p>
+          </div>
+          <div class="decision-tree" role="group" aria-label="跨國收出養的制度決策樹">
+            <div class="tree-node tree-root">
+              <strong>本案當時是否「只能」走向跨國收出養？</strong>
+              公開資料尚不足以下定論；必須逐層檢視正式評估與交接紀錄。
+            </div>
+            <div class="tree-node">
+              <strong>第一層：出養必要性是否成立？</strong>
+              若家庭支持、托育、生活或醫療協助足以維持照顧，制度上不應直接進入收出養。
+            </div>
+            <div class="tree-branches">
+              <div class="tree-node tree-stop">
+                <strong>否／尚無充分紀錄</strong>
+                不能說其他路徑必然不可行；應回到家庭支持與安全評估。
+              </div>
+              <div class="tree-node">
+                <strong>是</strong>
+                才進入收養人評估與媒合。
+              </div>
+            </div>
+            <div class="tree-node">
+              <strong>第二層：台灣島內媒合是否有適配家庭？</strong>
+              法律以<span class="mark">台灣島內收養人優先</span>；年齡、健康與發展需求、手足、等待時間及照顧穩定性，都應有可回看的判斷。
+            </div>
+            <div class="tree-branches">
+              <div class="tree-node tree-stop">
+                <strong>有適配家庭</strong>
+                應優先走台灣島內收養，並依程序與法院認可評估。
+              </div>
+              <div class="tree-node">
+                <strong>無／不適配／等待風險需說明</strong>
+                才能進一步評估跨國收出養是否符合孩子最佳利益。
+              </div>
+            </div>
+            <div class="tree-node tree-action">
+              <strong>第三層：跨國收出養是否符合孩子最佳利益？</strong>
+              必須核對孩子需求、收養人適格性與兩地主管機關保障；<span class="mark">等待永久家庭期間，安全訪視與風險升級不能暫停。</span>
+            </div>
+          </div>
+          <p class="notice">
+            這張樹狀圖呈現制度上需要成立的判斷鏈，不是對本案未公開個案評估資料的倒推，也不以任何單一結果推定個人責任。
+          </p>
+          <div class="audit-panel">
+            <h3>要確認為何未採寄養或機構安置，應公開四組決策軌跡</h3>
+            <div class="audit-grid">
+              <article class="audit-card">
+                <strong>一、新北市安置需求與風險評估</strong>
+                不只要看有沒有填表，而要回答：誰在何時評估孩子是否需要家外安置？評估使用哪些家庭、照顧與安全資訊？若未啟動寄養或機構安置，理由、複核者與再次評估日期為何？
+              </article>
+              <article class="audit-card">
+                <strong>二、寄養家庭與機構資源紀錄</strong>
+                應提出當時實際可用名額、詢問對象、配對條件與回覆結果。若曾認為不適配，必須區分是孩子需求不符、資源不足、等待時間過長，還是根本未進行完整詢問。
+              </article>
+              <article class="audit-card">
+                <strong>三、2022、2023 年出養必要性評估</strong>
+                兩次程序之間，監護、家庭支持與照顧條件如何改變？重新轉介時是否重新評估出養必要性及台灣島內媒合可能性，而非沿用先前結論？這些都應由原始評估報告證明。
+              </article>
+              <article class="audit-card">
+                <strong>四、等待媒合期間的安全計畫</strong>
+                永久安置尚未完成，不代表暫時照顧可以降級。應核對照顧者遴選、訪視頻率、督導複核、醫療與外觀異常紀錄，以及警訊由誰查證、通報、交接並啟動保護措施。
+              </article>
+            </div>
+            <p>
+              <span class="mark">真正的問題不是「最後選了哪一條路」，而是每一條未採用的路徑是否真的被評估、留下理由並受到複核。</span>
+              在完整紀錄公開或經合法調閱前，不能把最終走向跨國收出養倒推成寄養、機構安置或台灣島內收養必然不可行。
+            </p>
+          </div>
+          <div class="reading-spine" aria-label="安全檢視三步驟">
+            <article class="spine-card">
+              <strong>看見警訊</strong
+              >把受傷、就醫、照顧異常與聯繫困難視為可查證的風險訊號，而非各自孤立的片段。
+            </article>
+            <article class="spine-card">
+              <strong>立即行動</strong
+              >釐清誰接到資訊、誰負責查證、何時要通報或調整照顧安排，避免「已知悉」卻沒有下一步。
+            </article>
+            <article class="spine-card">
+              <strong>持續守護</strong
+              >讓訪視、督導、醫療與安置交接留下可回看的紀錄，直到孩子進入安全且穩定的生活。
+            </article>
+          </div>
+        </section>
+        <section>
+          <h2>決策不只一次，安全也不能只評估一次</h2>
+          <p>
+            把選項排成清單，不能取代一份能被回看、追問與更新的決策紀錄。至少應能辨識三個節點：<span
+              class="mark"
+              >進入等待期前的需求與支持評估、等待期中的照顧與訪視頻率、風險訊號出現後的重新評估與升級處理。</span
+            >任何一個節點若只留下結論、沒有理由與交接軌跡，事後就難以確認孩子是否真的被看見。
+          </p>
+        </section>
+        <section>
+          <h2>照顧連續性，本身就是安全問題</h2>
+          <p>
+            從公開討論可知，剴剴在等待收養期間被安排於居家照顧。這不等於其他安置選項已被證明不可用；更不能把「等待收養」誤寫成「只能選擇風險較高的安排」。每一項安排都應有可追溯的風險評估、決策理由、督導與跨機關交接。<span
+              class="mark"
+              >孩子在等待永久家庭時，當下的安全不應被當成次要事項。</span
+            >
+          </p>
+        </section>
+        <section>
+          <h2>這篇專題的結論</h2>
+          <p>
+            我們無法、也不應在未公開的完整資料外替任何單位下結論。能被清楚提出的是：跨國收出養是法律容許、但高度程序化的兒童照顧與永久安置路徑；它不排除對國內收養、寄養或機構照顧可能性的審慎評估。公共監督應要求每個關鍵決策留下可檢驗依據，並在風險訊號出現時，把安全置於流程與職稱之前。
+          </p>
+        </section>
+        <section class="source-boundary">
+          <h2>閱讀這個議題時，應分開看三件事</h2>
+          <p>
+            <strong>制度原則</strong
+            >回答每一種安置或收出養路徑本來應如何被評估；<strong>公開可核對資料</strong>回答已有哪些庭訊、判決或官方資料可供檢視；<strong>尚未公開的個案決策資料</strong>則不能由旁觀者補寫。這三者不能互相取代，也不應把合理追問直接寫成已成立的責任。
+          </p>
+        </section>
+        <section>
+          <h2>監察院調查：失守不是單一環節</h2>
+          <p>
+            監察院 114 社調 0008
+            調查報告將焦點放在行政體系是否踐行兒童最佳利益，而非只問某一個人是否曾看見某一項警訊。報告通過後，監察院糾正衛生福利部、新北市政府與臺北市政府；對兒盟社工的違失情形，則移請司法機關參酌。<span
+              class="mark"
+              >這是行政調查與糾正意旨，不等同法院對個別人作成的刑事責任判斷。</span
+            >
+          </p>
+          <div class="reading-spine" aria-label="監察院報告的制度分析">
+            <article class="spine-card">
+              <strong>前因：<span class="mark">等待期不是空白期</span></strong
+              >孩子尚未進入永久家庭前，安置、照顧、訪視與醫療資訊更需要被交叉核對；每次安排都應留下選擇理由、複核者與重新評估時間。
+            </article>
+            <article class="spine-card">
+              <strong>過程：<span class="mark">流程不能取代安全</span></strong
+              >資格、訪視或表單完成，不當然代表風險已被排除。異常照顧、就醫、外觀變化或聯繫困難，應被<span
+                class="mark"
+                >記錄、查證、交接</span
+              >並在必要時升級處理。
+            </article>
+            <article class="spine-card">
+              <strong>後果：<span class="mark">督導必須能改變安排</span></strong
+              >制度改革的重點，是建立<span class="mark"
+                >等待期風險分級、跨專業紀錄核對與強制複核門檻</span
+              >，讓安全訊號出現時能即刻調整照顧與保護措施。
+            </article>
+          </div>
+          <p>
+            因此，制度檢討的衡量標準不應只是「有沒有做過訪視」，而是<span
+              class="mark"
+              >訪視是否改變了風險判斷與下一步保護</span
+            >。
+          </p>
+          <div class="source-boundary">
+            <strong>制度有沒有改變，可以用四個問題驗證</strong>
+            <p>
+              改革不是新增一份指引就完成：風險分級是否真正改變訪視頻率？跨機關紀錄能否在異常出現時互相核對？誰有權且有義務啟動複核？調整照顧安排後，是否持續追蹤結果？<span
+                class="mark"
+                >如果每一題都只剩「已完成程序」，孩子仍可能在流程中被遺漏。</span
+              >
+            </p>
+          </div>
+          <p class="notice">
+            引用界線：本段概述監察院行政調查與糾正所揭示的制度問題；醫療觀察、個別通報或訪視內容仍須依原始紀錄及司法程序分別核對，本站不以行政報告替代法院認定。
+          </p>
+        </section>
+        <p class="notice">
+          資料與界線：本頁以公開制度資料與已知討論為基礎，未將未公開的個案文件、責任歸屬或司法爭點視為既定事實；後續以主管機關、法院及可查證資料為準。
+        </p>
+      </div>
+    </main>
+    <footer>護童行動聯盟・多元觀察</footer>
+    <script src="../../../assets/vendor/gsap-3.13.0.min.js"></script>
+    <script src="../../../assets/vendor/ScrollTrigger-3.13.0.min.js"></script>
+    <script>
+      if (
+        window.gsap &&
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ) {
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.from(".hero>*", {
+          opacity: 0,
+          y: 32,
+          stagger: 0.18,
+          duration: 1,
+          ease: "power3.out",
+        });
+        gsap.utils.toArray("section").forEach((s) =>
+          gsap.from(s, {
+            opacity: 0,
+            y: 28,
+            duration: 0.65,
+            scrollTrigger: { trigger: s, start: "top 84%", once: true },
+          }),
+        );
+        gsap.from(".spine-card", {
+          opacity: 0,
+          y: 22,
+          stagger: 0.14,
+          duration: 0.58,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".reading-spine",
+            start: "top 82%",
+            once: true,
+          },
+        });
+        gsap.to(".hero figure", {
+          y: -8,
+          duration: 3.8,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+      }
+    </script>
+    <script data-cpa-four-language-toolbar-script src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"></script>
+    <script data-cpa-legal-notice-script src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"></script>
+  </body>
+</html>

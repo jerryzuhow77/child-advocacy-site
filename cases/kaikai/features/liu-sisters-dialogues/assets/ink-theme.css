@@ -1,0 +1,35 @@
+/* Flower-and-bird ink visual · 2026-09-08 */
+body {
+  background-color: var(--paper);
+  background-image: linear-gradient(rgba(247, 239, 220, .84), rgba(247, 239, 220, .9)), url("./ink-birds-hero-v2.webp");
+  background-position: center top;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.hero {
+  background: linear-gradient(90deg, rgba(247, 239, 220, .94) 0%, rgba(247, 239, 220, .72) 42%, rgba(247, 239, 220, .1) 72%), url("./ink-birds-hero-v2.webp") center / cover no-repeat;
+}
+
+.record-body,
+.other-grid article,
+.issue-grid article,
+.archive details,
+.notice,
+.overview article,
+.legal {
+  background-color: rgba(255, 252, 243, .84);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+@media (max-width: 760px) {
+  body {
+    background-attachment: scroll;
+    background-size: auto 100vh;
+  }
+
+  .hero {
+    background: linear-gradient(180deg, rgba(247, 239, 220, .58), rgba(247, 239, 220, .95) 74%), url("./ink-birds-hero-v2.webp") center / cover no-repeat;
+  }
+}

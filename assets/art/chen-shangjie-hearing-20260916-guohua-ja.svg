@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" role="img" aria-labelledby="title desc">
+  <title id="title">陳尚潔事件・第二審開廷情報ポスター</title>
+  <desc id="desc">2026年9月16日水曜日午後2時30分、台湾高等法院・専一法廷。第14法廷から変更。</desc>
+  <defs>
+    <linearGradient id="paperFade" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffaf0" stop-opacity=".18"/>
+      <stop offset=".58" stop-color="#fffaf0" stop-opacity=".04"/>
+      <stop offset="1" stop-color="#e9dcc2" stop-opacity=".34"/>
+    </linearGradient>
+    <linearGradient id="inkPanel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f8f0de" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#f0e5cf" stop-opacity=".76"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#263f3c" flood-opacity=".16"/>
+    </filter>
+  </defs>
+
+  <image href="chen-shangjie-hearing-20260916-guohua-bg.png" width="1080" height="1350" preserveAspectRatio="xMidYMid slice"/>
+  <rect width="1080" height="1350" fill="url(#paperFade)"/>
+  <rect x="54" y="54" width="972" height="1242" rx="8" fill="none" stroke="#9b7740" stroke-opacity=".45" stroke-width="2"/>
+  <rect x="68" y="68" width="944" height="1214" rx="4" fill="none" stroke="#9b7740" stroke-opacity=".18"/>
+
+  <g font-family="Noto Serif JP, Yu Mincho, serif" fill="#243d3d">
+    <text x="116" y="138" font-size="24" font-weight="700" letter-spacing="7">COURT HEARING · UPDATED</text>
+    <line x1="116" y1="163" x2="680" y2="163" stroke="#9d3f34" stroke-width="5"/>
+
+    <text x="112" y="285" font-size="82" font-weight="800" letter-spacing="9">陳尚潔事件</text>
+    <text x="112" y="382" font-size="92" font-weight="800" letter-spacing="12">第二審開廷</text>
+    <text x="118" y="440" font-size="26" font-weight="700" letter-spacing="8" fill="#8f392f">開廷情報更新</text>
+  </g>
+
+  <g transform="translate(838 112) rotate(-4)">
+    <rect width="112" height="112" rx="7" fill="#a94436" opacity=".94"/>
+    <rect x="9" y="9" width="94" height="94" rx="4" fill="none" stroke="#f5e8cf" stroke-width="3" opacity=".82"/>
+    <text x="56" y="75" text-anchor="middle" font-family="Noto Serif JP, Yu Mincho, serif" font-size="55" font-weight="800" fill="#f8edda">庭</text>
+  </g>
+
+  <g transform="translate(112 510)" filter="url(#softShadow)">
+    <rect width="856" height="532" rx="12" fill="url(#inkPanel)" stroke="#806b4b" stroke-opacity=".42"/>
+    <rect x="22" y="22" width="812" height="488" rx="7" fill="none" stroke="#806b4b" stroke-opacity=".18"/>
+
+    <g font-family="Noto Sans JP, Hiragino Kaku Gothic ProN, Yu Gothic, sans-serif">
+      <text x="54" y="84" font-size="22" font-weight="800" letter-spacing="7" fill="#9a4438">開廷日</text>
+      <text x="52" y="164" font-size="58" font-weight="800" fill="#223e3f">2026.09.16</text>
+      <text x="565" y="160" font-size="31" font-weight="700" fill="#526460">水曜日</text>
+
+      <line x1="54" y1="202" x2="802" y2="202" stroke="#8e795b" stroke-opacity=".45"/>
+
+      <text x="54" y="259" font-size="22" font-weight="800" letter-spacing="7" fill="#9a4438">開廷時刻</text>
+      <text x="52" y="332" font-size="52" font-weight="800" fill="#223e3f">午後 2:30</text>
+      <text x="406" y="326" font-size="25" font-weight="700" fill="#66746e">14:30</text>
+
+      <line x1="54" y1="366" x2="802" y2="366" stroke="#8e795b" stroke-opacity=".45"/>
+
+      <text x="54" y="423" font-size="22" font-weight="800" letter-spacing="7" fill="#9a4438">開廷場所</text>
+      <text x="52" y="474" font-size="32" font-weight="800" fill="#223e3f">台湾高等法院・専一法廷</text>
+      <text x="610" y="470" font-size="21" font-weight="700" fill="#9a4438">第14法廷から変更</text>
+    </g>
+  </g>
+
+  <g font-family="Noto Sans JP, Hiragino Kaku Gothic ProN, Yu Gothic, sans-serif">
+    <text x="112" y="1094" font-size="26" font-weight="700" fill="#314a48">台北市中正区博愛路127号</text>
+    <text x="112" y="1144" font-size="21" font-weight="600" fill="#5c6c66">傍聴は当日の裁判所公告と現場案内に従ってください</text>
+    <line x1="112" y1="1180" x2="968" y2="1180" stroke="#8b7653" stroke-opacity=".45"/>
+    <text x="112" y="1227" font-size="20" font-weight="600" fill="#5c6c66">本件は審理中です。司法手続と無罪推定を尊重してください。</text>
+    <text x="966" y="1227" text-anchor="end" font-size="20" font-weight="800" letter-spacing="3" fill="#8f392f">児童保護行動連盟</text>
+  </g>
+</svg>
+

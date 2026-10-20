@@ -1,0 +1,91 @@
+name: Repair Hong Kong guardian wall browser timeout
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-repair-hk-wall-timeout-20260918.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      HK_HOST: ${{ secrets.TENCENT_SSH_HOST }}
+      HK_USER: ${{ secrets.TENCENT_SSH_USER }}
+      HK_PORT: ${{ secrets.TENCENT_SSH_PORT }}
+      HK_KEY_A: ${{ secrets.TENCENT_SSH_PRIVATE_KEY }}
+      HK_KEY_B: ${{ secrets.TENCENT_CVM_SSH_KEY }}
+      HK_KEY_C: ${{ secrets.SSH_PRIVATE_KEY }}
+      HK_ORIGIN: https://cn.globalprotectionwall.com
+    steps:
+      - name: Configure SSH
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          host="${HK_HOST:-150.109.69.104}"
+          user="${HK_USER:-ubuntu}"
+          port="${HK_PORT:-22}"
+          key="${HK_KEY_A:-${HK_KEY_B:-${HK_KEY_C:-}}}"
+          test -n "$key"
+          mkdir -p ~/.ssh
+          printf '%s\n' "$key" > ~/.ssh/hk_key
+          chmod 600 ~/.ssh/hk_key
+          ssh-keyscan -p "$port" "$host" > ~/.ssh/known_hosts
+          printf 'HOST=%s\nUSER=%s\nPORT=%s\n' "$host" "$user" "$port" >> "$GITHUB_ENV"
+
+      - name: Raise public-message browser timeout and rebuild safely
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'sudo bash -s' <<'REMOTE'
+          set -Eeuo pipefail
+          app=/opt/global-protection
+          source="$app/components/guardian-wall.tsx"
+          backup="$source.wall-timeout-$(date +%s).bak"
+          cp "$source" "$backup"
+          rollback() {
+            status=$?
+            if [ "$status" -ne 0 ]; then
+              cp "$backup" "$source"
+              cd "$app"
+              npm run build || true
+              systemctl restart global-protection.service || true
+            fi
+            exit "$status"
+          }
+          trap rollback EXIT
+          python3 - "$source" <<'PY'
+          from pathlib import Path
+          import sys
+          path = Path(sys.argv[1])
+          text = path.read_text()
+          old = "window.setTimeout(() => controller.abort(), 7000)"
+          new = "window.setTimeout(() => controller.abort(), 20000)"
+          count = text.count(old)
+          if count < 2:
+              raise SystemExit(f"expected at least two public-request timeouts, found {count}")
+          path.write_text(text.replace(old, new))
+          print(f"updated_timeouts={count}")
+          PY
+          cd "$app"
+          npm run build
+          systemctl restart global-protection.service
+          systemctl is-active global-protection.service
+          grep -n "controller.abort(), 20000" "$source"
+          trap - EXIT
+          REMOTE
+
+      - name: Verify public Hong Kong wall read path
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          messages="$(curl --silent --show-error --fail-with-body --max-time 25 "$HK_ORIGIN/api/public/messages?limit=5")"
+          printf '%s' "$messages" | python3 -c 'import json,sys; assert isinstance(json.load(sys.stdin).get("messages"), list)'
+          stats="$(curl --silent --show-error --fail-with-body --max-time 25 "$HK_ORIGIN/api/public/submission-stats")"
+          printf '%s' "$stats" | python3 -c 'import json,sys; x=json.load(sys.stdin); assert x.get("scope") == "taiwan-hong-kong-shared"; assert isinstance(x.get("published"), int)'

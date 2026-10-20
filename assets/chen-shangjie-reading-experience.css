@@ -1,0 +1,36 @@
+/* Chen Shangjie case page: reading rhythm and motion */
+.chen-case-page{background:linear-gradient(180deg,#f7f1e8 0,#fffdf8 22rem,#f8f4ec 100%)}
+.chen-case-page .chen-case-hero{position:relative;isolation:isolate;overflow:hidden}
+.chen-case-page .chen-case-hero:after{content:"";position:absolute;inset:auto -8% -8rem auto;width:24rem;height:24rem;border-radius:50%;background:radial-gradient(circle,#efd49a80 0,transparent 68%);pointer-events:none;z-index:-1}
+.chen-case-page .case-profile-hero-copy{max-width:46rem}
+.chen-case-page .case-status-row{gap:.55rem;margin-block:1.4rem}
+.chen-case-page .case-status-row span{border:1px solid color-mix(in srgb,currentColor 18%,transparent);border-radius:999px;padding:.45rem .72rem;line-height:1.35}
+.chen-case-page .case-status-row .is-current{background:#0b4d6e;color:#fff;border-color:#0b4d6e}
+.chen-case-page .case-profile-poster{align-self:center;transform-origin:center}
+.chen-case-page .case-profile-poster img{border-radius:1.35rem;box-shadow:none}
+.chen-case-page .case-connection-section{position:relative;z-index:3}
+.chen-case-page .case-connection-nav{border:1px solid #d9cba9;border-radius:1.1rem;background:#fffdf8;box-shadow:0 12px 30px #27445c12}
+.chen-case-page .case-profile-toc-inner{border-left:3px solid #d7a82f}
+.chen-case-page .case-profile-article{max-width:52rem}
+.chen-case-page .case-story-section{scroll-margin-top:6rem}
+.chen-case-page .case-story-section>h2{line-height:1.28;letter-spacing:.015em}
+.chen-case-page .case-large-quote{font-size:clamp(1.18rem,2.4vw,1.55rem);line-height:1.72;text-wrap:balance}
+.chen-case-page .case-fact-grid>div,.chen-case-page .case-judgment-card,.chen-case-page .case-duty-grid article,.chen-case-page .case-negligence-list article,.chen-case-page .case-visit-list article{border-radius:1rem}
+.chen-case-page .case-timeline-list article{transition:background-color .25s ease,transform .25s ease}
+.chen-case-page .case-timeline-list article:hover{background:#fff8e9;transform:translateX(.25rem)}
+.chen-case-page .case-emphasis-card,.chen-case-page .case-date-card,.chen-case-page .case-legal-label{box-shadow:0 10px 22px #234b6510}
+@media (max-width:760px){
+ .chen-case-page .case-profile-hero{padding-bottom:1rem}
+ .chen-case-page .case-connection-section .container{padding-inline:0}
+ .chen-case-page .case-connection-nav{border-radius:0;border-inline:0}
+ .chen-case-page .case-connection-links{overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:.35rem}
+ .chen-case-page .case-connection-links>a,.chen-case-page .case-connection-pending{min-width:10.5rem;scroll-snap-align:start}
+ .chen-case-page .case-profile-toc{position:relative;top:auto}
+ .chen-case-page .case-profile-toc-inner{display:flex;gap:.55rem;overflow-x:auto;white-space:nowrap;padding:.8rem 1rem;border-left:0;border-top:3px solid #d7a82f}
+ .chen-case-page .case-profile-toc-inner small,.chen-case-page .case-profile-toc-inner>strong,.chen-case-page .case-profile-toc-inner span{display:none}
+ .chen-case-page .case-profile-toc-inner a{flex:0 0 auto;border:1px solid #d9cba9;border-radius:999px;padding:.38rem .7rem}
+ .chen-case-page .case-profile-article{min-width:0}
+}
+@media (prefers-reduced-motion:reduce){
+ .chen-case-page *, .chen-case-page *:before,.chen-case-page *:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}

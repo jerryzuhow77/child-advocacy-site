@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Why was intercountry adoption pursued for Kaikai? | Multiple perspectives</title>
+<meta content="Examining out-of-home placement, foster care, domestic and intercountry adoption to distinguish impermissible retrospective inferences from decisions that should be scrutinized." name="description"/>
+<style>
+      :root {
+        --ink: #263746;
+        --blue: #7f98a7;
+        --sage: #aab7a9;
+        --clay: #b79a8d;
+        --paper: #f1eee7;
+        --mist: #d9e2e1;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background:
+          linear-gradient(rgba(244, 238, 219, 0.86), rgba(244, 238, 219, 0.91)),
+          url("/child-advocacy-site/assets/images/kaikai-intercountry-adoption-choices-20260920/midautumn-kaikai-symbolic-hero-20260922.jpg")
+            center / cover fixed;
+        color: var(--ink);
+        font-family: system-ui, "Noto Sans TC", sans-serif;
+        line-height: 1.8;
+      }
+      .hero {
+        min-height: 78vh;
+        padding: clamp(5rem, 11vw, 10rem) 8%;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 42%);
+        gap: 2rem;
+        align-items: center;
+        overflow: hidden;
+        background:
+          linear-gradient(
+            115deg,
+            rgba(244, 238, 219, 0.93),
+            rgba(224, 231, 209, 0.62)
+          ),
+          url("/child-advocacy-site/assets/images/kaikai-intercountry-adoption-choices-20260920/midautumn-kaikai-symbolic-hero-20260922.jpg")
+            center / cover;
+      }
+      .eyebrow {
+        letter-spacing: 0.12em;
+        font-size: 0.78rem;
+        color: #506b7a;
+      }
+      .hero h1 {
+        font-size: clamp(2.5rem, 5.6vw, 5rem);
+        line-height: 1.18;
+        margin: 0.25rem 0 1rem;
+      }
+      .hero figure {
+        margin: 0;
+        background: rgba(241, 238, 231, 0.58);
+        padding: 1rem;
+        border-radius: 45% 55% 42% 58%;
+      }
+      .hero img {
+        width: 100%;
+        display: block;
+        border-radius: 48% 52% 38% 62%;
+        box-shadow: none;
+        filter: none;
+      }
+      .hero figure {
+        box-shadow: none;
+        filter: none;
+      }
+      .notice {
+        font-size: 0.88rem;
+        color: #53646b;
+      }
+      .wrap {
+        max-width: 960px;
+        margin: auto;
+        padding: 4.5rem 1.4rem;
+      }
+      .lead {
+        font-size: 1.2rem;
+      }
+      .mark {
+        background: linear-gradient(
+          transparent 53%,
+          rgba(239, 213, 84, 0.58) 0,
+          rgba(239, 213, 84, 0.58) 91%,
+          transparent 91%
+        );
+      }
+      section {
+        margin: 3.3rem 0;
+        padding: 2rem;
+        background: rgba(217, 226, 225, 0.34);
+        border-left: 4px solid var(--blue);
+      }
+      h2 {
+        line-height: 1.35;
+      }
+      .route {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+      }
+      .route div {
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.46);
+      }
+      .reading-spine {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+        margin: 1.5rem 0 0;
+      }
+      .spine-card {
+        padding: 1.2rem;
+        background: rgba(244, 238, 219, 0.72);
+        border-top: 2px solid rgba(192, 118, 57, 0.65);
+      }
+      .spine-card strong {
+        display: block;
+        color: #375565;
+        letter-spacing: 0.08em;
+        font-size: 0.85rem;
+      }
+      .source-boundary {
+        padding: 1.15rem 1.25rem;
+        background: rgba(255, 255, 255, 0.42);
+        border: 1px solid rgba(88, 119, 138, 0.35);
+      }
+      .decision-tree {
+        display: grid;
+        gap: 0.8rem;
+        margin: 1.5rem 0;
+      }
+      .tree-node {
+        position: relative;
+        padding: 0.95rem 1.05rem;
+        background: rgba(244, 238, 219, 0.8);
+        border: 1px solid rgba(88, 119, 138, 0.35);
+      }
+      .tree-root {
+        background: rgba(222, 231, 217, 0.8);
+        border-left: 4px solid #5d7c6c;
+      }
+      .tree-branches {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.8rem;
+      }
+      .tree-node::before {
+        content: "↓";
+        display: block;
+        color: #b47438;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+      }
+      .tree-root::before {
+        content: "";
+        display: none;
+      }
+      .tree-node strong {
+        display: block;
+        color: #375565;
+        margin-bottom: 0.25rem;
+      }
+      .tree-stop {
+        background: rgba(255, 255, 255, 0.55);
+      }
+      .tree-action {
+        background: rgba(239, 228, 192, 0.58);
+      }
+      .audit-panel {
+        margin: 1.25rem 0 1.8rem;
+        padding: 1.25rem;
+        background: rgba(255, 255, 255, 0.44);
+        border: 1px solid rgba(88, 119, 138, 0.35);
+      }
+      .audit-panel h3 {
+        margin: 0 0 0.9rem;
+        line-height: 1.45;
+      }
+      .audit-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.8rem;
+      }
+      .audit-card {
+        padding: 1rem;
+        background: rgba(244, 238, 219, 0.72);
+        border-top: 2px solid rgba(192, 118, 57, 0.65);
+      }
+      .audit-card strong {
+        display: block;
+        color: #375565;
+        margin-bottom: 0.3rem;
+      }
+      @media (max-width: 700px) {
+        .audit-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 700px) {
+        .tree-branches {
+          grid-template-columns: 1fr;
+        }
+      }
+      dt {
+        font-weight: 700;
+      }
+      dd {
+        margin: 0.35rem 0 0;
+      }
+      a {
+        color: #30576d;
+      }
+      footer {
+        padding: 3rem 8%;
+        background: #334b5a;
+        color: #eef1ee;
+      }
+      @media (max-width: 700px) {
+        .hero {
+          grid-template-columns: 1fr;
+          padding-top: 6rem;
+        }
+        .route {
+          grid-template-columns: 1fr;
+        }
+        .reading-spine {
+          grid-template-columns: 1fr;
+        }
+        .hero figure {
+          max-width: 440px;
+          justify-self: center;
+        }
+      }
+
+      /* Keep the Mid-Autumn ink illustration visible on first mobile viewport. */
+      .hero {
+        background:
+          linear-gradient(115deg, rgba(244, 238, 219, 0.78), rgba(224, 231, 209, 0.36)),
+          url("/child-advocacy-site/assets/images/kaikai-intercountry-adoption-choices-20260920/midautumn-kaikai-symbolic-hero-20260922.jpg") center / cover;
+      }
+      @media (max-width: 700px) {
+        .hero { grid-template-areas: "art" "copy"; gap: 1.1rem; padding-top: 4.2rem; }
+        .hero > div { grid-area: copy; }
+        .hero figure { grid-area: art; width: min(100%, 410px); }
+      }
+      /* 強化桌機水墨主視覺與可掃讀重點：不使用陰影。 */
+      .hero {
+        background:
+          linear-gradient(112deg, rgba(244, 238, 219, 0.58), rgba(224, 231, 209, 0.14)),
+          url("/child-advocacy-site/assets/images/kaikai-intercountry-adoption-choices-20260920/midautumn-kaikai-symbolic-hero-20260922.jpg") center / cover;
+      }
+      .hero figure {
+        width: min(100%, 540px);
+        justify-self: end;
+        padding: 0.7rem;
+        border: 2px solid rgba(48, 87, 109, 0.74);
+        border-radius: 2px;
+        background: rgba(248, 240, 220, 0.9);
+        box-shadow: none;
+      }
+      .hero img {
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .mark {
+        padding: 0.04em 0.15em;
+        font-weight: 760;
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+        background: linear-gradient(transparent 31%, rgba(255, 225, 70, 0.88) 31%, rgba(255, 225, 70, 0.88) 92%, transparent 92%);
+      }
+      .decision-tree {
+        padding: 1.25rem;
+        background: rgba(255, 250, 231, 0.56);
+        border-left: 4px solid #bd6b35;
+      }
+      .audit-panel {
+        border-left: 4px solid #bd6b35;
+        background: rgba(255, 250, 231, 0.58);
+      }
+      @media (max-width: 700px) {
+        .hero figure { justify-self: center; }
+        .hero img { aspect-ratio: 16 / 10; }
+      }
+
+    </style>
+<link data-cpa-four-language-toolbar-style rel="stylesheet" href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5">
+<script data-cpa-four-language-toolbar-flag="">
+      window.__cpaFourLanguageToolbar = true;
+    </script>
+<link href="https://jerryzuhow77.github.io/child-advocacy-site/en/features/social-observation/kaikai-intercountry-adoption-choices-20260920/" rel="canonical"/>
+<style data-cpa-translated-layout="">html[lang="en"] h1,html[lang="en"] .wrap{overflow-wrap:anywhere}html[lang="en"] .hero h1{font-size:clamp(2rem,5.6vw,5rem)}html[lang="en"] .hero>div,html[lang="en"] .tree-node,html[lang="en"] .spine-card,html[lang="en"] .audit-card{min-width:0}</style><link rel="alternate" hreflang="en" href="https://jerryzuhow77.github.io/child-advocacy-site/en/features/social-observation/kaikai-intercountry-adoption-choices-20260920/">
+<link rel="alternate" hreflang="ja" href="https://jerryzuhow77.github.io/child-advocacy-site/ja/features/social-observation/kaikai-intercountry-adoption-choices-20260920/">
+<link rel="alternate" hreflang="zh-Hans" href="https://cn.globalprotectionwall.com/child-advocacy-site/features/social-observation/kaikai-intercountry-adoption-choices-20260920/zh-Hans/">
+<link rel="alternate" hreflang="zh-Hant" href="https://jerryzuhow77.github.io/child-advocacy-site/features/social-observation/kaikai-intercountry-adoption-choices-20260920/">
+</head>
+<body>
+<main>
+<header class="hero">
+<div>
+<p class="eyebrow">MULTIPLE PERSPECTIVES · CARE CONTINUITY</p>
+<h1>Why was<br/>intercountry adoption pursued for Kaikai?</h1>
+<p class="lead">
+            It is not a conclusion that “all other options were impossible.” We must revisit the placement, matching and follow-up decisions at the time and ask, step by step, whether the child's best interests were specifically assessed and continuously protected.
+          </p>
+<p class="notice">The main visual is symbolic Mid-Autumn ink artwork, not the scene of the case or a depiction of real people.</p>
+</div>
+<figure>
+<img alt="An unidentifiable young child's back in Mid-Autumn ink artwork, wearing dark- and light-blue stripes, symbolizing child safety and continuity of care" src="/child-advocacy-site/assets/images/kaikai-intercountry-adoption-choices-20260920/midautumn-kaikai-symbolic-hero-20260922.jpg"/>
+</figure>
+</header>
+<div class="wrap">
+<p class="lead">
+          People often ask: “Why not a children's home, a foster family, or adoption by a family in Taiwan?” These are questions worth pursuing, but<span class="mark">without complete case assessment records, we cannot infer retrospectively that any pathway was necessarily unavailable or portray intercountry adoption as the only way forward.</span>
+</p>
+<section>
+<h2>Another pathway cannot necessarily be taken immediately</h2>
+<p>Children's homes, foster families and adoption within Taiwan may all be important options, but are not alternatives available at the push of a button. Institutional placement requires assessing the child's age, health and developmental needs, need for intensive care, available beds and professional staff. Foster care requires recruitment, training, assessment and matching, with consideration of trauma, medical care, siblings, schooling and contact with relatives. Adoption involves the necessity of placing the child for adoption, adoptability, adopters' eligibility and suitability, and subsequent support.</p>
+<p>Seeing a pathway in hindsight therefore does not establish that it could necessarily have been activated immediately at the time. Nor does this release decision-makers from comparing alternative care options, recording their reasons and continuously protecting the child.<span class="mark">What should be examined is whether safety assessments were completed in time when risk appeared, whether alternative arrangements were fully compared, who could escalate decisions, and whether the child was kept safe while waiting and during transitions.</span></p>
+<p class="notice">System references:<a href="https://adoptinfo.sfaa.gov.tw/">Ministry of Health and Welfare Child and Youth Adoption Information Centre</a>stresses a balance among the rights and interests of adoptees, adopters and those placing children for adoption; the Social and Family Affairs Administration also provides an<a href="https://www.sfaa.gov.tw/sfaa/youtube/detail/5la/5hE">out-of-home placement section for children and youth</a>. This paragraph explains the system; it does not infer individual decisions from unpublished case records.</p>
+</section>
+<section>
+<h2>Kaikai and foster families: two forms of care must not be conflated</h2>
+<p>
+            According to public reporting, while Kaikai awaited adoption matching, the adoption service organization arranged care by a home-based childcare provider. This “home-based care while awaiting adoption” is not the same system as a<span class="mark">foster family</span>arranged by local government under child protection or out-of-home placement procedures. The former sits at the intersection of adoption services and childcare; the latter requires foster family recruitment, whole-family assessment, training, matching, visits and placement management.
+          </p>
+<dl aria-label="System differences between home-based childcare and foster families" class="route">
+<div>
+<dt>The actual care arrangement at the time</dt>
+<dd>Public information refers to home-based childcare during the adoption waiting period; care in a private home cannot simply be called a foster placement.</dd>
+</div>
+<div>
+<dt>The foster family system</dt>
+<dd>This is a form of out-of-home placement in which the competent authority assesses the child's needs, the foster family's conditions and suitability, alongside visits, supervision and a placement plan.</dd>
+</div>
+<div>
+<dt>The background of insufficient capacity</dt>
+<dd>Difficulty recruiting foster families, complex care needs and stretched resources may explain bottlenecks in the system,<span class="mark">but do not directly prove that foster care was sought in this case and no place was available</span>。</dd>
+</div>
+<div>
+<dt>Evidence still missing in this case</dt>
+<dd>We need New Taipei City's placement assessment at the time, actual inquiries and matching records, reasons for not using foster or institutional care, and the safety plan for the waiting period.</dd>
+</div>
+</dl>
+<div class="source-boundary">
+<strong>How to describe the causal chain</strong>
+<p>
+              What can be confirmed is that “the child was awaiting matching and receiving home-based childcare.” The systemic question is “how this waiting-period care is assessed, supervised and changed when risks emerge.” What cannot yet be confirmed is that “a shortage of foster families meant home-based childcare was the only option in this case.”<span class="mark">System congestion is background, not proof of causation in an individual case.</span>
+</p>
+</div>
+<p>
+            Post-event review should not merely move children from one care label to another. It should make the competent authorities accountable for traceable assessments and arrangements concerning the needs, placement suitability and risks of children awaiting adoption. Whether home-based childcare, foster care or institutional care is ultimately used, clear safety standards, visit frequency, abnormality reporting, supervisory review and alternative arrangements are required.
+          </p>
+<p class="notice">
+            Further reading:<a href="https://www.cw.com.tw/article/5135286">CommonWealth Magazine feature</a>、<a href="https://www.twreporter.org/a/opinion-a-boy-death-in-nanny-care">The Reporter commentary</a>、<a href="https://rightplus.org/2024/08/28/children-care1/">Right Plus systemic analysis</a>. These materials clarify the system and the public context of the event; this page still regards original official documents, assessments and referral records as necessary evidence for assessing causation in this case.
+          </p>
+</section>
+<section>
+<h2>First clarify: four different pathways</h2>
+<dl class="route">
+<div>
+<dt>Children's homes / institutional care</dt>
+<dd>
+                One out-of-home placement option, requiring assessment of the child's age, health, needs and available resources.
+              </dd>
+</div>
+<div>
+<dt>foster family</dt>
+<dd>
+                Provides temporary family-based care; availability and duration depend on places available at the time, assessment and matching.
+              </dd>
+</div>
+<div>
+<dt>Domestic adoption</dt>
+<dd>
+                Requires confirmation of adoptability, a suitable family and legal procedures; waiting and matching should also centre on the child's interests.
+              </dd>
+</div>
+<div>
+<dt>Intercountry adoption</dt>
+<dd>
+                Not a lower-standard alternative; it must follow the law, competent authorities' procedures, adoption eligibility requirements and necessary follow-up safeguards.
+              </dd>
+</div>
+</dl>
+</section>
+<section>
+<h2>Questions about pursuing intercountry adoption should go beyond labels</h2>
+<p>
+            Under the adoption system, matching and subsequent services should centre on the child's best interests. If intercountry adoption was planned, reasonable public scrutiny should ask whether birth-family support and the necessity of adoption were assessed; how domestic matching opportunities, waiting and suitability were evaluated; who cared for the child in the interim; whether each visit recorded verifiable safety observations; and whether injury, medical visits or abnormal care triggered timely escalation, reporting and reassessment.
+          </p>
+<div class="source-boundary">
+<strong>Why might the system lead to intercountry adoption?</strong>
+<p>
+              This is not a single step of sending a child abroad. Under the law, when parents or guardians propose adoption because they cannot fulfil their support obligations, matching service providers must first investigate through visits the<span class="mark">necessity of placing the child for adoption</span>. If adoption is assessed as unsuitable, they should provide or refer the family to support, childcare, living assistance or medical services. Adequacy of support for the birth family is the first test.
+            </p>
+<p>
+              If adoption is found necessary, the law takes as its principle<span class="mark">priority for adopters within Taiwan</span>. Intercountry adoption is not a simplified replacement for domestic matching; it is a pathway that may be considered only after careful examination of adoptability and matching possibilities within Taiwan. The child's age, health and developmental needs, sibling relationships, acceptable waiting time and whether a suitable family can provide stable long-term care should all be recorded and explained.
+            </p>
+<p>
+              International principles are similar: priority should be given to helping children remain with their birth families. Intercountry adoption may become an option when a suitable permanent family cannot be found in the country of origin, with checks on the child's needs, adopters' eligibility and safeguards by the authorities in both places.<span class="mark">This is systemic analysis, not a retrospective inference about this case's unpublished assessments.</span>
+</p>
+<p class="notice">
+              Sources:<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=D0050001">Articles 15–17 and 23 of the Protection of Children and Youths Welfare and Rights Act</a>；<a href="https://www.hcch.net/en/instruments/conventions/full-text/?cid=69">Preamble and Articles 4 and 16 of the Hague Intercountry Adoption Convention</a>。
+            </p>
+</div>
+<div aria-label="System decision tree for intercountry adoption" class="decision-tree" role="group">
+<div class="tree-node tree-root">
+<strong>Was intercountry adoption the “only” option in this case at the time?</strong>
+              Public material is insufficient for a conclusion; formal assessments and handover records must be examined at each stage.
+            </div>
+<div class="tree-node">
+<strong>Stage 1: was placing the child for adoption necessary?</strong>
+              If family support, childcare, living or medical assistance can sustain care, the system should not proceed directly to adoption.
+            </div>
+<div class="tree-branches">
+<div class="tree-node tree-stop">
+<strong>No / insufficient records</strong>
+                Other pathways cannot be declared necessarily unworkable; return to family support and safety assessment.
+              </div>
+<div class="tree-node">
+<strong>Yes</strong>
+                Only then proceed to adopter assessment and matching.
+              </div>
+</div>
+<div class="tree-node">
+<strong>Stage 2: was a suitable family available through matching within Taiwan?</strong>
+              The law provides<span class="mark">priority for adopters within Taiwan</span>; assessments of age, health and developmental needs, siblings, waiting time and care stability should all be reviewable.
+            </div>
+<div class="tree-branches">
+<div class="tree-node tree-stop">
+<strong>A suitable family is available</strong>
+                Prioritize adoption within Taiwan, with assessment under the procedures and for court approval.
+              </div>
+<div class="tree-node">
+<strong>None / unsuitable / waiting risks need explanation</strong>
+                Only then further assess whether intercountry adoption serves the child's best interests.
+              </div>
+</div>
+<div class="tree-node tree-action">
+<strong>Stage 3: does intercountry adoption serve the child's best interests?</strong>
+              The child's needs, adopters' eligibility and safeguards by both places' authorities must be checked;<span class="mark">safety visits and risk escalation cannot be suspended while awaiting a permanent family.</span>
+</div>
+</div>
+<p class="notice">
+            This tree shows the chain of assessments the system requires. It is not a retrospective inference about unpublished case assessments and does not infer individual responsibility from any single outcome.
+          </p>
+<div class="audit-panel">
+<h3>Four sets of decision records should be disclosed to establish why foster or institutional placement was not used</h3>
+<div class="audit-grid">
+<article class="audit-card">
+<strong>1. New Taipei City's placement-needs and risk assessment</strong>
+                The question is not merely whether a form was completed. Who assessed the need for out-of-home placement, and when? What family, care and safety information was used? If foster or institutional placement was not initiated, what were the reasons, who reviewed them, and when was reassessment scheduled?
+              </article>
+<article class="audit-card">
+<strong>2. Foster family and institutional resource records</strong>
+                Records should show the actual places available then, whom inquiries were made to, matching conditions and responses. If an option was considered unsuitable, distinguish a mismatch with the child's needs, insufficient resources, excessive waiting, or a failure to make complete inquiries at all.
+              </article>
+<article class="audit-card">
+<strong>3. Necessity-of-adoption assessments in 2022 and 2023</strong>
+                How did guardianship, family support and care conditions change between the two procedures? On re-referral, were the necessity of adoption and matching possibilities within Taiwan reassessed rather than carrying forward earlier conclusions? Original assessment reports should establish all of this.
+              </article>
+<article class="audit-card">
+<strong>4. The safety plan while awaiting matching</strong>
+                An unfinished permanent placement does not justify lower standards for temporary care. Check caregiver selection, visit frequency, supervisory review, records of medical and visible abnormalities, and who verified, reported and handed over warning signs and initiated protection.
+              </article>
+</div>
+<p>
+<span class="mark">The real question is not “which pathway was ultimately chosen,” but whether each unused pathway was actually assessed, with reasons recorded and reviewed.</span>
+              Until complete records are disclosed or lawfully accessed, the eventual pursuit of intercountry adoption cannot be used to infer that foster care, institutional placement or adoption within Taiwan was necessarily impossible.
+            </p>
+</div>
+<div aria-label="Three steps for checking safety" class="reading-spine">
+<article class="spine-card">
+<strong>Recognize warning signs</strong>Treat injury, medical visits, abnormal care and difficulty making contact as verifiable risk signals rather than isolated fragments.
+            </article>
+<article class="spine-card">
+<strong>Act immediately</strong>Clarify who received information, who must verify it, and when to report or adjust care, so that “being aware” is followed by action.
+            </article>
+<article class="spine-card">
+<strong>Protect continuously</strong>Keep reviewable records of visits, supervision, medical care and placement handovers until the child has a safe, stable life.
+            </article>
+</div>
+</section>
+<section>
+<h2>Decisions recur; safety cannot be assessed only once</h2>
+<p>
+            A list of options cannot replace a decision record that can be reviewed, questioned and updated. At least three stages should be identifiable:<span class="mark">assessment of needs and support before the waiting period, care and visit frequency during that period, and reassessment and escalation when risk signals appear.</span>If any stage records only a conclusion without reasons and handover history, it becomes difficult to establish afterwards whether the child was truly seen.
+          </p>
+</section>
+<section>
+<h2>Continuity of care is itself a safety issue</h2>
+<p>
+            Public discussion indicates that Kaikai was placed in home-based care while awaiting adoption. This does not establish that other placement options were unavailable; nor should “awaiting adoption” be misrepresented as “having to choose a higher-risk arrangement.” Every arrangement should have traceable risk assessment, decision reasons, supervision and interagency handover.<span class="mark">A child's immediate safety must not become secondary while awaiting a permanent family.</span>
+</p>
+</section>
+<section>
+<h2>This feature's conclusion</h2>
+<p>
+            We cannot and should not draw conclusions for any organization without the complete, unpublished material. What can be stated clearly is that intercountry adoption is a legally permitted but highly procedural pathway for child care and permanent placement; it does not exclude careful assessment of domestic adoption, foster care or institutional care. Public oversight should require a verifiable basis for each key decision and, when risk signals emerge, put safety ahead of procedures and job titles.
+          </p>
+</section>
+<section class="source-boundary">
+<h2>Three things to distinguish when reading about this issue</h2>
+<p>
+<strong>System principles</strong>explain how each placement or adoption pathway should be assessed;<strong>public, verifiable material</strong>shows which hearings, judgments or official records are available for examination;<strong>unpublished individual decision records</strong>cannot be filled in by outside observers. These three cannot substitute for one another, and reasonable questions should not be presented as established responsibility.
+          </p>
+</section>
+<section>
+<h2>Control Yuan investigation: failure was not confined to one stage</h2>
+<p>
+            Control Yuan investigation report 114 She-Diao 0008 focuses on whether the administrative system upheld the child's best interests, rather than only whether one person saw one warning. Following approval of the report, the Control Yuan issued corrective measures against the Ministry of Health and Welfare and the New Taipei and Taipei city governments; the failures concerning Child Welfare League Foundation social workers were referred to judicial authorities for consideration.<span class="mark">This is the purpose of an administrative investigation and corrective action, not a court's determination of an individual's criminal responsibility.</span>
+</p>
+<div aria-label="System analysis of the Control Yuan report" class="reading-spine">
+<article class="spine-card">
+<strong>Background:<span class="mark">The waiting period is not a blank period</span></strong>Before a child enters a permanent family, placement, care, visit and medical information needs even more cross-checking. Each arrangement should record the reasons for selection, the reviewer and the reassessment time.
+            </article>
+<article class="spine-card">
+<strong>Process:<span class="mark">Procedures cannot replace safety</span></strong>Completion of eligibility checks, visits or forms does not necessarily mean risk has been eliminated. Abnormal care, medical visits, changes in appearance or difficulty making contact should be<span class="mark">recorded, verified and handed over</span>and escalated when necessary.
+            </article>
+<article class="spine-card">
+<strong>Consequences:<span class="mark">Supervision must be able to change arrangements</span></strong>The focus of reform is to establish<span class="mark">waiting-period risk classification, cross-professional record checks and mandatory review thresholds</span>, allowing immediate changes in care and protection when safety signals appear.
+            </article>
+</div>
+<p>
+            The measure of systemic review should therefore not simply be “whether a visit took place,” but<span class="mark">whether the visit changed the assessment of risk and the next protective action</span>。
+          </p>
+<div class="source-boundary">
+<strong>Four questions can test whether the system has changed</strong>
+<p>
+              Reform is not completed by adding a guideline: does risk classification actually change visit frequency? Can agencies cross-check records when abnormalities arise? Who has both the authority and duty to initiate review? Are outcomes followed up after care arrangements change?<span class="mark">If every answer is merely “the procedure was completed,” children may still be overlooked within the process.</span>
+</p>
+</div>
+<p class="notice">
+            Scope of citation: this section outlines systemic issues identified by the Control Yuan's administrative investigation and corrective action. Medical observations, individual reports and visits still require separate checking against original records and judicial procedures; this site does not substitute administrative reports for judicial findings.
+          </p>
+</section>
+<p class="notice">
+          Sources and limits: this page draws on public systemic material and known discussion. It does not treat unpublished case documents, attribution of responsibility or judicial disputes as settled facts; subsequent information is subject to the competent authorities, courts and verifiable material.
+        </p>
+</div>
+</main>
+<footer>Child Protection Action Alliance · Multiple perspectives</footer>
+<script src="/child-advocacy-site/assets/vendor/gsap-3.13.0.min.js"></script>
+<script src="/child-advocacy-site/assets/vendor/ScrollTrigger-3.13.0.min.js"></script>
+<script>
+      if (
+        window.gsap &&
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ) {
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.from(".hero>*", {
+          opacity: 0,
+          y: 32,
+          stagger: 0.18,
+          duration: 1,
+          ease: "power3.out",
+        });
+        gsap.utils.toArray("section").forEach((s) =>
+          gsap.from(s, {
+            opacity: 0,
+            y: 28,
+            duration: 0.65,
+            scrollTrigger: { trigger: s, start: "top 84%", once: true },
+          }),
+        );
+        gsap.from(".spine-card", {
+          opacity: 0,
+          y: 22,
+          stagger: 0.14,
+          duration: 0.58,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".reading-spine",
+            start: "top 82%",
+            once: true,
+          },
+        });
+        gsap.to(".hero figure", {
+          y: -8,
+          duration: 3.8,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+      }
+    </script>
+<script data-cpa-four-language-toolbar-script src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"></script>
+<script data-cpa-legal-notice-script src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"></script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+.cpa-article-comments{box-sizing:border-box;position:relative;isolation:isolate;margin:clamp(48px,8vw,96px) 0 0;padding:clamp(44px,7vw,80px) 20px;background:linear-gradient(180deg,#f7f1e8 0%,#fffaf3 46%,#f4ebe1 100%);color:#3f312c;font-family:system-ui,-apple-system,"Noto Sans TC","Noto Sans SC",sans-serif}
+.cpa-article-comments::before{content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,rgba(133,83,69,.38),transparent)}
+.cpa-article-comments__inner{width:min(1120px,100%);margin:auto}
+.cpa-article-comments header{max-width:700px;margin-bottom:30px}
+.cpa-article-comments header small{display:block;margin-bottom:9px;color:#9c5260;font-size:.75rem;font-weight:900;letter-spacing:.14em}
+.cpa-article-comments header h2{margin:0;color:#342722;font:900 clamp(1.75rem,4vw,2.65rem)/1.25 "Noto Serif TC","Noto Serif SC",serif;letter-spacing:.02em}
+.cpa-article-comments header p{margin:12px 0 0;color:#6c5a52;font-size:.97rem;line-height:1.8}
+.cpa-article-comments__layout{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(330px,.92fr);gap:24px;align-items:start}
+.cpa-comment-list,.cpa-comment-form{box-sizing:border-box;border:1px solid rgba(115,78,65,.17);border-radius:24px;background:rgba(255,253,249,.88);box-shadow:0 14px 42px rgba(72,48,39,.07)}
+.cpa-comment-list{padding:22px;min-height:360px}
+.cpa-comment-list__heading{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:15px;border-bottom:1px solid rgba(115,78,65,.13)}
+.cpa-comment-list__heading h3{margin:0;font-size:1rem}
+.cpa-comment-list__heading span{display:grid;place-items:center;min-width:34px;height:26px;padding:0 8px;border-radius:999px;background:#efe1d8;color:#824555;font-weight:900}
+.cpa-comment-list__items{display:grid;gap:11px;max-height:430px;margin-top:16px;overflow:auto;overscroll-behavior:contain}
+.cpa-comment-list__items article{display:grid;grid-template-columns:38px 1fr;gap:12px;padding:14px;border-radius:16px;background:#f6eee6}
+.cpa-comment-list__items article>span{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#8d5260;color:#fff;font-weight:900}
+.cpa-comment-list__items strong{display:block;color:#503933;font-size:.9rem}
+.cpa-comment-list__items p{margin:5px 0 0;color:#5f504a;line-height:1.7;overflow-wrap:anywhere}
+.cpa-comment-state{margin:0;padding:38px 12px;color:#7b6961;text-align:center;line-height:1.7}
+.cpa-comment-form{position:sticky;top:20px;display:grid;gap:15px;padding:24px}
+.cpa-comment-form label{display:grid;gap:7px;color:#503933;font-size:.88rem;font-weight:850}
+.cpa-comment-form input,.cpa-comment-form textarea{box-sizing:border-box;width:100%;border:1px solid #ccb8aa;border-radius:13px;background:#fff;padding:12px 14px;color:#342722;font:inherit;line-height:1.6;resize:vertical}
+.cpa-comment-form input:focus,.cpa-comment-form textarea:focus{border-color:#985060;outline:3px solid rgba(152,80,96,.13)}
+.cpa-comment-note{display:flex;gap:8px;margin:0;color:#75645d;font-size:.78rem;line-height:1.6}
+.cpa-comment-note span{color:#a2475b;font-size:1rem}
+.cpa-comment-form button{display:flex;align-items:center;justify-content:center;gap:12px;min-height:48px;border:0;border-radius:999px;background:#824555;color:#fff;font:900 .95rem/1 system-ui,sans-serif;cursor:pointer;box-shadow:0 8px 20px rgba(130,69,85,.2)}
+.cpa-comment-form button:hover,.cpa-comment-form button:focus-visible{background:#6f3545;outline:3px solid rgba(130,69,85,.2);outline-offset:2px}
+.cpa-comment-form button:disabled{cursor:wait;opacity:.65}
+.cpa-comment-form output{min-height:1.4em;color:#824555;font-size:.84rem;font-weight:800;line-height:1.5}
+.cpa-comment-form output[data-state=success]{color:#356c57}.cpa-comment-form output[data-state=error]{color:#a33e43}
+.cpa-comment-hp{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;overflow:hidden!important}
+@media(max-width:780px){.cpa-article-comments{padding-inline:14px}.cpa-article-comments__layout{grid-template-columns:1fr}.cpa-comment-form{position:static;order:-1}.cpa-comment-list{min-height:250px}.cpa-comment-list__items{max-height:none}.cpa-article-comments header{margin-bottom:22px}}
+@media(max-width:480px){.cpa-comment-list,.cpa-comment-form{border-radius:19px}.cpa-comment-list,.cpa-comment-form{padding:17px}.cpa-comment-list__items article{grid-template-columns:32px 1fr;padding:12px}.cpa-comment-list__items article>span{width:32px;height:32px;font-size:.78rem}}
+@media(prefers-reduced-motion:reduce){.cpa-comment-form button{transition:none}}

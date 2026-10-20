@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>カイカイはなぜ国際養子縁組へ進んだのか？｜多角的考察</title>
+<meta content="家庭外措置、里親、国内・国際養子縁組の経路から、逆算できない問題と検証すべき判断を区別します。" name="description"/>
+<style>
+      :root {
+        --ink: #263746;
+        --blue: #7f98a7;
+        --sage: #aab7a9;
+        --clay: #b79a8d;
+        --paper: #f1eee7;
+        --mist: #d9e2e1;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background:
+          linear-gradient(rgba(244, 238, 219, 0.86), rgba(244, 238, 219, 0.91)),
+          url("/child-advocacy-site/assets/images/kaikai-intercountry-adoption-choices-20260920/midautumn-kaikai-symbolic-hero-20260922.jpg")
+            center / cover fixed;
+        color: var(--ink);
+        font-family: system-ui, "Noto Sans TC", sans-serif;
+        line-height: 1.8;
+      }
+      .hero {
+        min-height: 78vh;
+        padding: clamp(5rem, 11vw, 10rem) 8%;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 42%);
+        gap: 2rem;
+        align-items: center;
+        overflow: hidden;
+        background:
+          linear-gradient(
+            115deg,
+            rgba(244, 238, 219, 0.93),
+            rgba(224, 231, 209, 0.62)
+          ),
+          url("/child-advocacy-site/assets/images/kaikai-intercountry-adoption-choices-20260920/midautumn-kaikai-symbolic-hero-20260922.jpg")
+            center / cover;
+      }
+      .eyebrow {
+        letter-spacing: 0.12em;
+        font-size: 0.78rem;
+        color: #506b7a;
+      }
+      .hero h1 {
+        font-size: clamp(2.5rem, 5.6vw, 5rem);
+        line-height: 1.18;
+        margin: 0.25rem 0 1rem;
+      }
+      .hero figure {
+        margin: 0;
+        background: rgba(241, 238, 231, 0.58);
+        padding: 1rem;
+        border-radius: 45% 55% 42% 58%;
+      }
+      .hero img {
+        width: 100%;
+        display: block;
+        border-radius: 48% 52% 38% 62%;
+        box-shadow: none;
+        filter: none;
+      }
+      .hero figure {
+        box-shadow: none;
+        filter: none;
+      }
+      .notice {
+        font-size: 0.88rem;
+        color: #53646b;
+      }
+      .wrap {
+        max-width: 960px;
+        margin: auto;
+        padding: 4.5rem 1.4rem;
+      }
+      .lead {
+        font-size: 1.2rem;
+      }
+      .mark {
+        background: linear-gradient(
+          transparent 53%,
+          rgba(239, 213, 84, 0.58) 0,
+          rgba(239, 213, 84, 0.58) 91%,
+          transparent 91%
+        );
+      }
+      section {
+        margin: 3.3rem 0;
+        padding: 2rem;
+        background: rgba(217, 226, 225, 0.34);
+        border-left: 4px solid var(--blue);
+      }
+      h2 {
+        line-height: 1.35;
+      }
+      .route {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+      }
+      .route div {
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.46);
+      }
+      .reading-spine {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+        margin: 1.5rem 0 0;
+      }
+      .spine-card {
+        padding: 1.2rem;
+        background: rgba(244, 238, 219, 0.72);
+        border-top: 2px solid rgba(192, 118, 57, 0.65);
+      }
+      .spine-card strong {
+        display: block;
+        color: #375565;
+        letter-spacing: 0.08em;
+        font-size: 0.85rem;
+      }
+      .source-boundary {
+        padding: 1.15rem 1.25rem;
+        background: rgba(255, 255, 255, 0.42);
+        border: 1px solid rgba(88, 119, 138, 0.35);
+      }
+      .decision-tree {
+        display: grid;
+        gap: 0.8rem;
+        margin: 1.5rem 0;
+      }
+      .tree-node {
+        position: relative;
+        padding: 0.95rem 1.05rem;
+        background: rgba(244, 238, 219, 0.8);
+        border: 1px solid rgba(88, 119, 138, 0.35);
+      }
+      .tree-root {
+        background: rgba(222, 231, 217, 0.8);
+        border-left: 4px solid #5d7c6c;
+      }
+      .tree-branches {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.8rem;
+      }
+      .tree-node::before {
+        content: "↓";
+        display: block;
+        color: #b47438;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+      }
+      .tree-root::before {
+        content: "";
+        display: none;
+      }
+      .tree-node strong {
+        display: block;
+        color: #375565;
+        margin-bottom: 0.25rem;
+      }
+      .tree-stop {
+        background: rgba(255, 255, 255, 0.55);
+      }
+      .tree-action {
+        background: rgba(239, 228, 192, 0.58);
+      }
+      .audit-panel {
+        margin: 1.25rem 0 1.8rem;
+        padding: 1.25rem;
+        background: rgba(255, 255, 255, 0.44);
+        border: 1px solid rgba(88, 119, 138, 0.35);
+      }
+      .audit-panel h3 {
+        margin: 0 0 0.9rem;
+        line-height: 1.45;
+      }
+      .audit-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.8rem;
+      }
+      .audit-card {
+        padding: 1rem;
+        background: rgba(244, 238, 219, 0.72);
+        border-top: 2px solid rgba(192, 118, 57, 0.65);
+      }
+      .audit-card strong {
+        display: block;
+        color: #375565;
+        margin-bottom: 0.3rem;
+      }
+      @media (max-width: 700px) {
+        .audit-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 700px) {
+        .tree-branches {
+          grid-template-columns: 1fr;
+        }
+      }
+      dt {
+        font-weight: 700;
+      }
+      dd {
+        margin: 0.35rem 0 0;
+      }
+      a {
+        color: #30576d;
+      }
+      footer {
+        padding: 3rem 8%;
+        background: #334b5a;
+        color: #eef1ee;
+      }
+      @media (max-width: 700px) {
+        .hero {
+          grid-template-columns: 1fr;
+          padding-top: 6rem;
+        }
+        .route {
+          grid-template-columns: 1fr;
+        }
+        .reading-spine {
+          grid-template-columns: 1fr;
+        }
+        .hero figure {
+          max-width: 440px;
+          justify-self: center;
+        }
+      }
+
+      /* Keep the Mid-Autumn ink illustration visible on first mobile viewport. */
+      .hero {
+        background:
+          linear-gradient(115deg, rgba(244, 238, 219, 0.78), rgba(224, 231, 209, 0.36)),
+          url("/child-advocacy-site/assets/images/kaikai-intercountry-adoption-choices-20260920/midautumn-kaikai-symbolic-hero-20260922.jpg") center / cover;
+      }
+      @media (max-width: 700px) {
+        .hero { grid-template-areas: "art" "copy"; gap: 1.1rem; padding-top: 4.2rem; }
+        .hero > div { grid-area: copy; }
+        .hero figure { grid-area: art; width: min(100%, 410px); }
+      }
+      /* 強化桌機水墨主視覺與可掃讀重點：不使用陰影。 */
+      .hero {
+        background:
+          linear-gradient(112deg, rgba(244, 238, 219, 0.58), rgba(224, 231, 209, 0.14)),
+          url("/child-advocacy-site/assets/images/kaikai-intercountry-adoption-choices-20260920/midautumn-kaikai-symbolic-hero-20260922.jpg") center / cover;
+      }
+      .hero figure {
+        width: min(100%, 540px);
+        justify-self: end;
+        padding: 0.7rem;
+        border: 2px solid rgba(48, 87, 109, 0.74);
+        border-radius: 2px;
+        background: rgba(248, 240, 220, 0.9);
+        box-shadow: none;
+      }
+      .hero img {
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .mark {
+        padding: 0.04em 0.15em;
+        font-weight: 760;
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+        background: linear-gradient(transparent 31%, rgba(255, 225, 70, 0.88) 31%, rgba(255, 225, 70, 0.88) 92%, transparent 92%);
+      }
+      .decision-tree {
+        padding: 1.25rem;
+        background: rgba(255, 250, 231, 0.56);
+        border-left: 4px solid #bd6b35;
+      }
+      .audit-panel {
+        border-left: 4px solid #bd6b35;
+        background: rgba(255, 250, 231, 0.58);
+      }
+      @media (max-width: 700px) {
+        .hero figure { justify-self: center; }
+        .hero img { aspect-ratio: 16 / 10; }
+      }
+
+    </style>
+<link data-cpa-four-language-toolbar-style rel="stylesheet" href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5">
+<script data-cpa-four-language-toolbar-flag="">
+      window.__cpaFourLanguageToolbar = true;
+    </script>
+<link href="https://jerryzuhow77.github.io/child-advocacy-site/ja/features/social-observation/kaikai-intercountry-adoption-choices-20260920/" rel="canonical"/>
+<link rel="alternate" hreflang="en" href="https://jerryzuhow77.github.io/child-advocacy-site/en/features/social-observation/kaikai-intercountry-adoption-choices-20260920/">
+<link rel="alternate" hreflang="ja" href="https://jerryzuhow77.github.io/child-advocacy-site/ja/features/social-observation/kaikai-intercountry-adoption-choices-20260920/">
+<link rel="alternate" hreflang="zh-Hans" href="https://cn.globalprotectionwall.com/child-advocacy-site/features/social-observation/kaikai-intercountry-adoption-choices-20260920/zh-Hans/">
+<link rel="alternate" hreflang="zh-Hant" href="https://jerryzuhow77.github.io/child-advocacy-site/features/social-observation/kaikai-intercountry-adoption-choices-20260920/">
+</head>
+<body>
+<main>
+<header class="hero">
+<div>
+<p class="eyebrow">MULTIPLE PERSPECTIVES · CARE CONTINUITY</p>
+<h1>カイカイはなぜ<br/>国際養子縁組へ進んだのか？</h1>
+<p class="lead">
+            「ほかの選択肢はすべて不可能だった」という結論ではありません。当時の措置、マッチング、追跡の判断に立ち返り、子どもの最善の利益が具体的に評価され、継続して守られたかを一つずつ問う必要があります。
+          </p>
+<p class="notice">主画像は中秋を象徴する水墨画で、事件現場や実在の人物を描いたものではありません。</p>
+</div>
+<figure>
+<img alt="中秋の水墨画に描かれた、紺色と水色の縞模様の服を着た特定できない幼児の後ろ姿。子どもの安全と養育の連続性を象徴" src="/child-advocacy-site/assets/images/kaikai-intercountry-adoption-choices-20260920/midautumn-kaikai-symbolic-hero-20260922.jpg"/>
+</figure>
+</header>
+<div class="wrap">
+<p class="lead">
+          「なぜ児童養護施設や里親家庭に行かなかったのか、台湾の家庭に養子として迎えられなかったのか」と社会はよく問います。問い続ける価値はありますが、<span class="mark">完全な個別評価資料がないまま、ある経路が必ず不可能だったと逆算したり、国際養子縁組を唯一の道としたりすることはできません。</span>
+</p>
+<section>
+<h2>「別の道がある」だけで直ちに切り替えられるわけではない</h2>
+<p>児童養護施設、里親家庭、台湾域内の養子縁組はいずれも重要な選択肢になり得ますが、ボタン一つで実現する代替策ではありません。施設措置では、年齢、健康・発達上の必要、集中的なケアの要否、空床、専門人員の評価が必要です。里親養育には募集、研修、評価、マッチングが必要で、トラウマ、医療、きょうだい、就学、親族との連絡も考慮します。養子縁組には、子どもを養子に出す必要性、養子となり得る条件、養親の資格と適合性、その後の支援が関わります。</p>
+<p>したがって、後からある経路が見えるからといって、当時直ちに利用できたはずだと逆算することはできません。それによって、代替養育の比較、理由の記録、継続的な保護という判断者の責任が免除されるわけでもありません。<span class="mark">検証すべきなのは、リスクが現れた際に安全評価が適時に行われたか、代替策が十分に比較されたか、誰が判断を上位の対応につなげられるか、待機や移行の間に子どもが安全に守られたかです。</span></p>
+<p class="notice">制度の参考資料：<a href="https://adoptinfo.sfaa.gov.tw/">衛生福利部・児童少年養子縁組情報センター</a>は、養子、養親、子どもを養子に出す側の三者の権益の均衡を重視しています。社会及家庭署は別に、<a href="https://www.sfaa.gov.tw/sfaa/youtube/detail/5la/5hE">児童少年の家庭外措置専用ページ</a>を設けています。本段落は制度の説明であり、未公開の個別資料から特定の判断を推論するものではありません。</p>
+</section>
+<section>
+<h2>カイカイ事件と里親家庭：二つの養育を混同しない</h2>
+<p>
+            公開報道によると、カイカイは養子縁組のマッチング待機中、養子縁組サービス機関が手配した家庭内保育者に養育されていました。この「養子縁組待機中の家庭での養育」は、地方政府が児童保護または家庭外措置の手続で手配する<span class="mark">里親家庭</span>とは同じ制度ではありません。前者は養子縁組サービスと保育の接点にあり、後者には里親家庭の募集、家庭全体の評価、研修、マッチング、訪問、措置管理が必要です。
+          </p>
+<dl aria-label="家庭内保育と里親家庭の制度の違い" class="route">
+<div>
+<dt>当時の実際の養育体制</dt>
+<dd>公開情報が示すのは、養子縁組待機中の家庭内保育です。家庭の住居で養育されたことだけで、里親措置とは呼べません。</dd>
+</div>
+<div>
+<dt>里親家庭制度</dt>
+<dd>家庭外措置の一種で、主管機関が子どもの必要、里親家庭の条件、適合性を評価し、訪問、監督、措置計画を組み合わせます。</dd>
+</div>
+<div>
+<dt>受入れ能力不足という制度的背景</dt>
+<dd>里親家庭の募集の難しさ、複雑な養育ニーズ、資源の不足は、制度が滞りやすい理由を説明し得ますが、<span class="mark">本件で里親受入れを問い合わせたが空きがなかったことを直接証明はしません</span>。</dd>
+</div>
+<div>
+<dt>本件でなお不足する証拠</dt>
+<dd>当時の新北市の措置評価、実際の問い合わせとマッチング記録、里親・施設を採用しなかった理由、待機中の安全計画を確認する必要があります。</dd>
+</div>
+</dl>
+<div class="source-boundary">
+<strong>因果関係はこう記述すべき</strong>
+<p>
+              確認できるのは「子どもはマッチング待機中、家庭内保育を受けていた」ことです。制度上の問いは「待機中の養育をどう評価・監督し、リスク発生時に変更するか」です。まだ確認できないのは「里親家庭不足のため、本件では家庭内保育しかなかった」という因果です。<span class="mark">制度の滞りは背景であって、個別事件の因果関係の証明ではありません。</span>
+</p>
+</div>
+<p>
+            事件後の制度検討は、養育の名称を変えることだけを中心にすべきではありません。養子縁組を待つ子どもの養育ニーズ、措置の適切性、リスクについて、主管機関が追跡可能な評価と手配の責任を負うことが重要です。家庭内保育、里親、施設のいずれでも、明確な安全基準、訪問頻度、異常通報、監督者の再確認、代替策が必要です。
+          </p>
+<p class="notice">
+            関連資料：<a href="https://www.cw.com.tw/article/5135286">『天下雑誌』の特集</a>、<a href="https://www.twreporter.org/a/opinion-a-boy-death-in-nanny-care">『報導者』の論評</a>、<a href="https://rightplus.org/2024/08/28/children-care1/">Right Plusの制度分析</a>。これらは制度と公開された事件の背景を明らかにする資料です。本ページでは、本件の因果判断には原公文書、評価、紹介記録が必要だと考えます。
+          </p>
+</section>
+<section>
+<h2>まず区別する：四つの経路は同じではない</h2>
+<dl class="route">
+<div>
+<dt>児童養護施設／施設養育</dt>
+<dd>
+                家庭外措置の選択肢の一つで、年齢、健康、必要、利用可能な資源の評価が必要です。
+              </dd>
+</div>
+<div>
+<dt>里親家庭</dt>
+<dd>
+                家庭的な一時養育を提供します。手配の可否や期間は、当時の受入れ枠、評価、マッチングによって決まります。
+              </dd>
+</div>
+<div>
+<dt>国内養子縁組</dt>
+<dd>
+                養子となり得る条件の確認、適合する家庭、法定手続が前提です。待機とマッチングも子どもの利益を中心にすべきです。
+              </dd>
+</div>
+<div>
+<dt>国際養子縁組</dt>
+<dd>
+                基準の低い代替策ではありません。法律、主管機関の手続、養親の資格、必要な追跡保障に従って行う必要があります。
+              </dd>
+</div>
+</dl>
+</section>
+<section>
+<h2>「国際養子縁組へ進む」際に問うべきは名称ではない</h2>
+<p>
+            養子縁組制度では、マッチングとその後の支援は子どもの最善の利益を中心にすべきです。当時国際養子縁組が計画されていたなら、実親家庭への支援と出養の必要性の評価、国内マッチングの可能性・待機・適合条件の判断、養育の空白期の引受先、各訪問での確認可能な安全観察の記録、傷害・受診・養育異常の発生時の適時の対応引上げ・通報・再評価が、合理的な公共検証の対象です。
+          </p>
+<div class="source-boundary">
+<strong>制度上、なぜ国際養子縁組に進む可能性があるのか？</strong>
+<p>
+              子どもを海外に送る単一の手順ではありません。法律上、父母や後見人が事情により扶養義務を果たせず出養を考える場合、マッチングサービス提供者はまず訪問調査で、<span class="mark">出養の必要性</span>を確認する必要があります。出養が適当でないと評価した場合は、家庭支援、保育、生活扶助、医療などを提供または紹介すべきです。実親家庭への支援が十分かが、最初の検討事項です。
+            </p>
+<p>
+              出養が必要だと確認された場合、法律は<span class="mark">台湾域内の養親を優先すること</span>を原則とします。国際養子縁組は国内マッチングの簡略な代替ではなく、養子となり得る条件と台湾域内のマッチング可能性を慎重に検討した後に進み得る経路です。年齢、健康・発達上の必要、きょうだい関係、待てる期間、適合する家庭が長期に安定した養育を提供できるかは、記録と説明が必要な要素です。
+            </p>
+<p>
+              国際的にも類似の原則が採られます。まず実親家庭にとどまれるよう支援すべきです。出身国で適切な恒久的家庭が見つからない場合に国際養子縁組が選択肢となり得ますが、子どもの必要、養親の適格性、両地域の主管機関による保障の確認が必要です。<span class="mark">本段落は制度分析であり、本件の未公開評価資料を逆算するものではありません。</span>
+</p>
+<p class="notice">
+              出典：<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=D0050001">『児童及少年福利与権益保障法』第15～17条、第23条</a>；<a href="https://www.hcch.net/en/instruments/conventions/full-text/?cid=69">『ハーグ国際養子縁組条約』前文、第4条、第16条</a>。
+            </p>
+</div>
+<div aria-label="国際養子縁組の制度上の判断ツリー" class="decision-tree" role="group">
+<div class="tree-node tree-root">
+<strong>本件では当時、国際養子縁組に進む「しかなかった」のか？</strong>
+              公開資料だけでは結論を出せません。正式な評価と引継ぎ記録を各段階で検討する必要があります。
+            </div>
+<div class="tree-node">
+<strong>第1段階：出養の必要性は認められるか？</strong>
+              家庭支援、保育、生活・医療支援で養育を維持できる場合、制度上、直ちに養子縁組に進むべきではありません。
+            </div>
+<div class="tree-branches">
+<div class="tree-node tree-stop">
+<strong>否／十分な記録がない</strong>
+                ほかの経路が必ず不可能とは言えません。家庭支援と安全評価に立ち返るべきです。
+              </div>
+<div class="tree-node">
+<strong>是</strong>
+                その場合に養親の評価とマッチングに進みます。
+              </div>
+</div>
+<div class="tree-node">
+<strong>第2段階：台湾域内のマッチングで適合する家庭はあったか？</strong>
+              法律は<span class="mark">台湾域内の養親を優先すること</span>を定めています。年齢、健康・発達上の必要、きょうだい、待機期間、養育の安定性について、後から確認できる判断が必要です。
+            </div>
+<div class="tree-branches">
+<div class="tree-node tree-stop">
+<strong>適合する家庭がある</strong>
+                台湾域内の養子縁組を優先し、手続と裁判所の認可に従って評価すべきです。
+              </div>
+<div class="tree-node">
+<strong>なし／不適合／待機リスクの説明が必要</strong>
+                そこで初めて、国際養子縁組が子どもの最善の利益にかなうか、さらに評価できます。
+              </div>
+</div>
+<div class="tree-node tree-action">
+<strong>第3段階：国際養子縁組は子どもの最善の利益にかなうか？</strong>
+              子どもの必要、養親の適格性、両地域の主管機関の保障を確認する必要があります。<span class="mark">恒久的家庭を待つ間も、安全確認の訪問とリスク対応の引上げを停止してはなりません。</span>
+</div>
+</div>
+<p class="notice">
+            この樹形図は、制度上必要な判断の連鎖を示します。本件の未公開評価資料を逆算するものではなく、単一の結果から個人の責任を推定するものでもありません。
+          </p>
+<div class="audit-panel">
+<h3>里親・施設措置を採らなかった理由を確認するため、四組の意思決定経過を公開すべき</h3>
+<div class="audit-grid">
+<article class="audit-card">
+<strong>1．新北市の措置ニーズとリスク評価</strong>
+                記入の有無だけでなく、誰がいつ家庭外措置の必要性を評価したか、どの家庭・養育・安全情報を使ったかを答える必要があります。里親・施設措置を開始しなかった場合の理由、再確認した人、再評価の日付は何かも問われます。
+              </article>
+<article class="audit-card">
+<strong>2．里親家庭と施設の資源記録</strong>
+                当時実際に利用できた枠、問い合わせ先、マッチング条件、回答結果を示すべきです。不適合と考えた場合、子どもの必要との不一致、資源不足、長すぎる待機、そもそも十分な問い合わせがなかったことを区別する必要があります。
+              </article>
+<article class="audit-card">
+<strong>3．2022年・2023年の出養必要性評価</strong>
+                二つの手続の間で、後見、家庭支援、養育条件はどう変化したか。再紹介時に以前の結論を流用せず、出養の必要性と台湾域内マッチングの可能性を再評価したか。すべて原評価報告による裏付けが必要です。
+              </article>
+<article class="audit-card">
+<strong>4．マッチング待機中の安全計画</strong>
+                恒久的措置が未完了でも、一時養育の基準を下げてよいわけではありません。養育者の選定、訪問頻度、監督者の再確認、医療・外見上の異常記録、誰が兆候を確認・通報・引継ぎし保護を開始したかを確認すべきです。
+              </article>
+</div>
+<p>
+<span class="mark">本当の問いは「最後にどの道を選んだか」ではなく、採らなかった各経路が実際に評価され、理由が記録され、再確認されたかです。</span>
+              完全な記録が公開され、または適法に閲覧される前に、最終的に国際養子縁組へ進んだことから、里親、施設措置、台湾域内の養子縁組が必ず不可能だったと逆算はできません。
+            </p>
+</div>
+<div aria-label="安全確認の三つの段階" class="reading-spine">
+<article class="spine-card">
+<strong>兆候に気づく</strong>傷害、受診、養育の異常、連絡の困難を、孤立した断片ではなく確認可能なリスクの兆候として扱います。
+            </article>
+<article class="spine-card">
+<strong>直ちに行動する</strong>誰が情報を受け、誰が確認し、いつ通報や養育の調整を行うかを明確にし、「知っている」だけで次の対応がない状況を避けます。
+            </article>
+<article class="spine-card">
+<strong>継続して守る</strong>子どもが安全で安定した生活に入るまで、訪問、監督、医療、措置の引継ぎについて確認可能な記録を残します。
+            </article>
+</div>
+</section>
+<section>
+<h2>判断は一度ではない。安全評価も一度で終えない</h2>
+<p>
+            選択肢の一覧は、後から確認し、問い直し、更新できる意思決定記録に代わりません。少なくとも三つの段階を識別できる必要があります。<span class="mark">待機前のニーズと支援の評価、待機中の養育と訪問頻度、リスクの兆候が現れた後の再評価と対応の引上げです。</span>どの段階でも結論だけが残り、理由と引継ぎ経過がなければ、子どもが実際に見てもらえていたかを後から確認することは困難です。
+          </p>
+</section>
+<section>
+<h2>養育の連続性自体が安全の問題</h2>
+<p>
+            公開の議論では、カイカイは養子縁組待機中に家庭での養育を手配されていました。それはほかの措置が利用不能と証明されたことを意味せず、「養子縁組待機」を「より高リスクの体制しか選べない」と誤記してはなりません。どの体制にも追跡可能なリスク評価、判断理由、監督、機関間の引継ぎが必要です。<span class="mark">恒久的家庭を待つ間、現在の安全を二次的なことと扱ってはなりません。</span>
+</p>
+</section>
+<section>
+<h2>本特集の結論</h2>
+<p>
+            未公開の完全な資料なしに、どの機関についても結論を出すことはできず、出すべきでもありません。明確に言えるのは、国際養子縁組が法律上認められた、厳格な手続を伴う養育・恒久的措置の経路であり、国内養子縁組、里親、施設養育の可能性の慎重な評価を排除しないことです。公共監督は各重要判断の検証可能な根拠を求め、兆候が現れた際には手順や職名より安全を優先させるべきです。
+          </p>
+</section>
+<section class="source-boundary">
+<h2>この問題では三つを分けて読む</h2>
+<p>
+<strong>制度の原則</strong>は、各措置・養子縁組経路を本来どう評価すべきかを示します。<strong>公開された確認可能な資料</strong>は、検討できる審理、判決、公式資料を示します。<strong>未公開の個別意思決定資料</strong>を外部の観察者が補って書くことはできません。三者は互いに代替できず、合理的な問いを成立済みの責任として書くべきでもありません。
+          </p>
+</section>
+<section>
+<h2>監察院調査：失敗は一つの段階だけではない</h2>
+<p>
+            監察院の114社調0008調査報告は、特定の人が特定の兆候を見たかだけでなく、行政体制が子どもの最善の利益を実践したかに焦点を当てています。報告承認後、監察院は衛生福利部、新北市政府、台北市政府に糾正を行い、児童福利連盟のソーシャルワーカーの不適切な対応については、司法機関の参考とするため送付しました。<span class="mark">これは行政調査と糾正の趣旨であり、裁判所が個人の刑事責任を判断したこととは同じではありません。</span>
+</p>
+<div aria-label="監察院報告の制度分析" class="reading-spine">
+<article class="spine-card">
+<strong>背景：<span class="mark">待機期間は空白期間ではない</span></strong>恒久的家庭に入る前こそ、措置、養育、訪問、医療の情報を相互に確認する必要があります。各手配には選択理由、再確認者、再評価の時期を記録すべきです。
+            </article>
+<article class="spine-card">
+<strong>過程：<span class="mark">手順は安全に代わらない</span></strong>資格確認、訪問、書類が完了しても、リスクが排除されたとは限りません。養育の異常、受診、外見の変化、連絡困難は、<span class="mark">記録・確認・引継ぎを行い、</span>必要に応じて対応を引き上げるべきです。
+            </article>
+<article class="spine-card">
+<strong>結果：<span class="mark">監督は体制を変更できるものでなければならない</span></strong>制度改革の要点は、<span class="mark">待機中のリスク分類、専門分野を越えた記録確認、必須の再確認基準を設けること</span>であり、安全に関する兆候が現れたとき、直ちに養育と保護措置を調整できるようにすることです。
+            </article>
+</div>
+<p>
+            したがって、制度検討の基準は単に「訪問したか」ではなく、<span class="mark">訪問がリスク判断と次の保護行動を変えたか</span>。
+          </p>
+<div class="source-boundary">
+<strong>制度の変化は四つの問いで検証できる</strong>
+<p>
+              指針を一つ追加すれば改革完了ではありません。リスク分類は実際に訪問頻度を変えるか。異常時に機関間で記録を相互確認できるか。誰に再確認を開始する権限と義務があるか。養育体制の変更後、結果を継続して追跡するか。<span class="mark">どの答えも「手続は完了した」だけなら、子どもはなお手順の中で見落とされる可能性があります。</span>
+</p>
+</div>
+<p class="notice">
+            引用の範囲：本段落は監察院の行政調査と糾正が示した制度上の問題を概述します。医療観察、個別通報、訪問内容は、原記録と司法手続によって別々に確認する必要があります。当サイトは行政報告で裁判所の認定を代替しません。
+          </p>
+</section>
+<p class="notice">
+          資料と範囲：本ページは公開された制度資料と既知の議論に基づき、未公開の個別文書、責任の帰属、司法上の争点を確定した事実と扱いません。今後は主管機関、裁判所、確認可能な資料に従います。
+        </p>
+</div>
+</main>
+<footer>児童保護行動連盟・多角的考察</footer>
+<script src="/child-advocacy-site/assets/vendor/gsap-3.13.0.min.js"></script>
+<script src="/child-advocacy-site/assets/vendor/ScrollTrigger-3.13.0.min.js"></script>
+<script>
+      if (
+        window.gsap &&
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ) {
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.from(".hero>*", {
+          opacity: 0,
+          y: 32,
+          stagger: 0.18,
+          duration: 1,
+          ease: "power3.out",
+        });
+        gsap.utils.toArray("section").forEach((s) =>
+          gsap.from(s, {
+            opacity: 0,
+            y: 28,
+            duration: 0.65,
+            scrollTrigger: { trigger: s, start: "top 84%", once: true },
+          }),
+        );
+        gsap.from(".spine-card", {
+          opacity: 0,
+          y: 22,
+          stagger: 0.14,
+          duration: 0.58,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".reading-spine",
+            start: "top 82%",
+            once: true,
+          },
+        });
+        gsap.to(".hero figure", {
+          y: -8,
+          duration: 3.8,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+      }
+    </script>
+<script data-cpa-four-language-toolbar-script src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"></script>
+<script data-cpa-legal-notice-script src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"></script>
+</body>
+</html>

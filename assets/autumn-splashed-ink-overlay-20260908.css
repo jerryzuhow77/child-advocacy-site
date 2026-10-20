@@ -1,0 +1,54 @@
+/* Original autumn splashed-ink wash used as a quiet, translucent reading backdrop. */
+:root{--autumn-splashed-ink:url("./art/autumn-splashed-ink-20260908.webp")}
+
+body.art-site #news-activity,
+body.art-site #news-hearing{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+}
+
+body.art-site #news-activity::before,
+body.art-site #news-hearing::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:0;
+  pointer-events:none;
+  background-image:
+    linear-gradient(118deg,rgba(255,251,241,.78),rgba(249,239,220,.72)),
+    var(--autumn-splashed-ink);
+  background-position:center,center;
+  background-size:cover,cover;
+  background-repeat:no-repeat;
+  opacity:.72;
+}
+
+body.campaign-page{
+  position:relative;
+  isolation:isolate;
+  background-image:
+    linear-gradient(118deg,rgba(255,252,244,.80),rgba(245,237,221,.76)),
+    url("./art/autumn-splashed-ink-20260908.webp")!important;
+  background-position:center,center!important;
+  background-size:cover,cover!important;
+  background-repeat:no-repeat,no-repeat!important;
+  background-attachment:fixed,fixed!important;
+}
+
+body.campaign-page :is(.campaign-hero,.campaign-section,.campaign-court-card,.campaign-closing){
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+}
+
+@media(max-width:760px){
+  body.art-site #news-activity::before,
+  body.art-site #news-hearing::before{
+    background-position:center,68% center;
+    background-size:cover,auto 100%;
+    opacity:.60;
+  }
+  body.campaign-page{background-position:center,66% center!important;background-attachment:scroll,scroll!important}
+}
+
+@media(prefers-reduced-motion:reduce){body.campaign-page{background-attachment:scroll,scroll!important}}

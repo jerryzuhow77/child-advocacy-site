@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title description">
+  <title id="title">悲劇を忘れない — 第10回公判期日</title>
+  <desc id="description">第10回公判期日の量刑弁論と被告2人の責任を扱う日本語メインビジュアル。</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9c69a"/><stop offset="1" stop-color="#ad8a59"/></linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#244f59"/><stop offset=".52" stop-color="#3f7274"/><stop offset="1" stop-color="#183e4b"/></linearGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#sky)"/>
+  <rect y="580" width="1600" height="420" fill="url(#water)"/>
+  <path d="M0 690C260 610 480 735 760 650s560 90 840 10v340H0Z" fill="#4f7d78" opacity=".55"/>
+  <path d="M0 790C300 700 530 830 810 748s510 76 790 5v247H0Z" fill="#163f4e" opacity=".78"/>
+  <path d="M170 565h1260l-95 110H260z" fill="#6f4a31"/><path d="M300 390h1000v195H300z" fill="#806043"/><path d="M345 430h910v118H345z" fill="#263c3f"/>
+  <path d="M460 585 305 860h310l120-275zm680 0 155 275H985l-120-275z" fill="#ece0bf" opacity=".9"/>
+  <path d="M480 610C650 720 730 705 800 850 870 705 950 720 1120 610" fill="none" stroke="#9d3d2b" stroke-width="12"/>
+  <circle cx="800" cy="790" r="62" fill="#2d2b27"/><path d="M695 1000V875c0-62 48-112 108-112s108 50 108 112v125Z" fill="#315f78"/>
+  <rect width="1600" height="360" fill="#efe3c4" opacity=".98"/>
+  <path d="M0 340c320-20 520 25 800-2s520 20 800-5v27H0Z" fill="#c8ae7c" opacity=".75"/>
+  <text x="800" y="142" text-anchor="middle" fill="#173f3a" font-family="'Noto Serif JP', 'Yu Mincho', serif" font-size="104" font-weight="700" letter-spacing="12">悲劇を忘れない</text>
+  <text x="800" y="250" text-anchor="middle" fill="#873b26" font-family="'Noto Serif JP', 'Yu Mincho', serif" font-size="64" font-weight="700" letter-spacing="12">第10回公判期日</text>
+  <text x="800" y="310" text-anchor="middle" fill="#5f5039" font-family="'Noto Sans JP', sans-serif" font-size="25" letter-spacing="4">量刑に関する弁論と2人の責任を比較</text>
+</svg>

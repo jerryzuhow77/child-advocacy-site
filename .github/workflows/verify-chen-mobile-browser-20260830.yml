@@ -1,0 +1,252 @@
+name: Verify Chen mobile readability live
+
+on:
+  push:
+    branches:
+      - 'fix/chen-live-verifier-selector'
+    paths:
+      - '.github/workflows/verify-chen-mobile-browser-20260830.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  browser-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Install Playwright driver
+        run: npm install --no-save playwright-core@1.55.0
+
+      - name: Verify live desktop and mobile rendering
+        run: |
+          mkdir -p browser-proof
+          node --input-type=module <<'JS'
+          import { chromium } from 'playwright-core';
+          import fs from 'node:fs';
+
+          const output = 'browser-proof';
+          const sites = {
+            'zh-Hans': 'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/',
+            'zh-Hant': 'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/'
+          };
+          const viewports = {
+            desktop: { width: 1440, height: 1000 },
+            mobile360: { width: 360, height: 800 },
+            mobile390: { width: 390, height: 844 },
+            mobile412: { width: 412, height: 915 }
+          };
+
+          const rgb = (value) => {
+            const m = value?.match(/rgba?\((\d+)[, ]+(\d+)[, ]+(\d+)(?:[, /]+([\d.]+))?\)/);
+            return m ? [Number(m[1]), Number(m[2]), Number(m[3]), m[4] == null ? 1 : Number(m[4])] : null;
+          };
+          const luminance = ([r, g, b]) => {
+            const c = [r, g, b].map((v) => {
+              const s = v / 255;
+              return s <= .03928 ? s / 12.92 : ((s + .055) / 1.055) ** 2.4;
+            });
+            return .2126 * c[0] + .7152 * c[1] + .0722 * c[2];
+          };
+          const contrast = (fgValue, bgValue) => {
+            const fg = rgb(fgValue);
+            const bg = rgb(bgValue);
+            if (!fg || !bg || fg[3] < .99 || bg[3] < .99) return null;
+            const a = luminance(fg), b = luminance(bg);
+            return (Math.max(a, b) + .05) / (Math.min(a, b) + .05);
+          };
+
+          const browser = await chromium.launch({
+            headless: true,
+            executablePath: '/usr/bin/google-chrome',
+            args: ['--no-sandbox', '--disable-dev-shm-usage']
+          });
+
+          // Wait until GitHub Pages serves the latest contrast patch rather than
+          // accidentally proving an older cached deployment.
+          {
+            const context = await browser.newContext({ viewport: viewports.mobile390, locale: 'zh-CN' });
+            const page = await context.newPage();
+            const deadline = Date.now() + 300000;
+            let deployed = false;
+            while (Date.now() < deadline) {
+              await page.goto(`${sites['zh-Hans']}?deployment-proof=${Date.now()}#chen-226-full`, { waitUntil: 'domcontentloaded', timeout: 60000 });
+              await page.waitForTimeout(900);
+              deployed = await page.evaluate(() => {
+                const finalCopy = document.querySelector('#chen-final-statement-20260226 .final-statement-record > section > div p');
+                const summaryNote = document.querySelector('#chen-226-full > summary small');
+                if (!finalCopy || !summaryNote) return false;
+                return getComputedStyle(finalCopy).color === 'rgb(255, 248, 238)' &&
+                  getComputedStyle(summaryNote).color === 'rgb(255, 232, 189)';
+              });
+              if (deployed) break;
+              await page.waitForTimeout(10000);
+            }
+            await context.close();
+            if (!deployed) throw new Error('Latest contrast patch was not visible on GitHub Pages within 5 minutes');
+          }
+
+          const results = [];
+          for (const [locale, baseUrl] of Object.entries(sites)) {
+            for (const [viewportName, viewport] of Object.entries(viewports)) {
+              const context = await browser.newContext({ viewport, locale: locale === 'zh-Hans' ? 'zh-CN' : 'zh-TW' });
+              const page = await context.newPage();
+              const result = {
+                locale, viewportName, viewport, status: null, overflow: null,
+                widths: {}, colors: {}, contrast: {}, content: {},
+                pageErrors: [], sameOriginErrors: [], fatal: []
+              };
+              results.push(result);
+              page.on('pageerror', (error) => result.pageErrors.push(String(error)));
+              page.on('response', (response) => {
+                try {
+                  const url = new URL(response.url());
+                  if (url.hostname === 'jerryzuhow77.github.io' && response.status() >= 400) {
+                    result.sameOriginErrors.push({ url: response.url(), status: response.status() });
+                  }
+                } catch {}
+              });
+
+              try {
+                const response = await page.goto(`${baseUrl}?browser-proof=${Date.now()}-${locale}-${viewportName}#chen-226-full`, {
+                  waitUntil: 'domcontentloaded', timeout: 60000
+                });
+                result.status = response?.status() ?? null;
+                await page.waitForTimeout(1500);
+                await page.evaluate(() => {
+                  document.body.classList.remove('prologue-active');
+                  const overlay = document.querySelector('[data-entry-prologue]');
+                  if (overlay) overlay.setAttribute('hidden', '');
+                  for (const id of ['chen-223-full', 'chen-226-full']) {
+                    const el = document.getElementById(id);
+                    if (el) el.open = true;
+                  }
+                });
+
+                result.content = await page.evaluate(() => {
+                  const judgment = document.querySelector('#chen-judgment-accountability')?.textContent || '';
+                  return {
+                    transcript223: document.querySelectorAll('#chen-223-full').length,
+                    transcript226: document.querySelectorAll('#chen-226-full').length,
+                    judgment: document.querySelectorAll('#chen-judgment-accountability').length,
+                    guarantor: /保證人地位|保证人地位/.test(judgment),
+                    individual: /個案|个案/.test(judgment),
+                    firstInstance: /一審|一审|臺北地院|台北地院/.test(judgment),
+                    replacementGlyphs: ((document.documentElement.textContent || '').match(/\uFFFD/g) || []).length
+                  };
+                });
+
+                const metrics = await page.evaluate(() => {
+                  const inspect = (selector) => {
+                    const el = document.querySelector(selector);
+                    if (!el) return null;
+                    const rect = el.getBoundingClientRect();
+                    const style = getComputedStyle(el);
+                    return {
+                      width: rect.width,
+                      color: style.color,
+                      background: style.backgroundColor,
+                      fontSize: style.fontSize,
+                      lineHeight: style.lineHeight
+                    };
+                  };
+                  return {
+                    viewportWidth: innerWidth,
+                    overflow: Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) - innerWidth,
+                    transcript223: inspect('#chen-223-full'),
+                    transcript226: inspect('#chen-226-full'),
+                    turn226: inspect('#chen-226-full .transcript-turn'),
+                    warning: inspect('#chen-226-full .transcript-disclaimer.warning'),
+                    warningText: inspect('#chen-226-full .transcript-disclaimer.warning p'),
+                    recordBoundary: inspect('#chen-final-statement-20260226 .record-boundary'),
+                    recordBoundaryText: inspect('#chen-final-statement-20260226 .record-boundary p'),
+                    finalCopy: inspect('#chen-final-statement-20260226 .final-statement-record > section > div p'),
+                    summaryNote: inspect('#chen-226-full > summary small'),
+                    guarantor: inspect('#chen-judgment-accountability > .nonfinal-banner'),
+                    guarantorText: inspect('#chen-judgment-accountability > .nonfinal-banner p')
+                  };
+                });
+
+                result.overflow = Math.round(metrics.overflow * 100) / 100;
+                for (const key of ['transcript223', 'transcript226', 'turn226']) {
+                  result.widths[key] = metrics[key] ? metrics[key].width / metrics.viewportWidth : null;
+                }
+                result.colors = {
+                  warningText: metrics.warningText?.color,
+                  warningBackground: metrics.warning?.background,
+                  recordBoundaryText: metrics.recordBoundaryText?.color,
+                  recordBoundaryBackground: metrics.recordBoundary?.background,
+                  finalCopy: metrics.finalCopy?.color,
+                  summaryNote: metrics.summaryNote?.color,
+                  guarantorText: metrics.guarantorText?.color
+                };
+                result.contrast.warning = contrast(metrics.warningText?.color, metrics.warning?.background);
+                result.contrast.recordBoundary = contrast(metrics.recordBoundaryText?.color, metrics.recordBoundary?.background);
+
+                const shots = [
+                  ['chen-226', '#chen-226-full'],
+                  ['chen-223', '#chen-223-full'],
+                  ['final-statement', '#chen-final-statement-20260226 .final-statement-record'],
+                  ['guarantor', '#chen-judgment-accountability > .nonfinal-banner']
+                ];
+                for (const [name, selector] of shots) {
+                  const target = page.locator(selector);
+                  await target.scrollIntoViewIfNeeded();
+                  await page.waitForTimeout(200);
+                  await target.screenshot({ path: `${output}/${locale}_${viewportName}_${name}.png` });
+                }
+
+                if (result.status !== 200) result.fatal.push(`HTTP ${result.status}`);
+                if (result.overflow > 2) result.fatal.push(`horizontal overflow ${result.overflow}px`);
+                if (result.content.transcript223 !== 1 || result.content.transcript226 !== 1 || result.content.judgment !== 1) result.fatal.push('required section count failed');
+                if (!result.content.guarantor || !result.content.individual || !result.content.firstInstance) result.fatal.push('guarantor-status legal label incomplete');
+                if (result.content.replacementGlyphs) result.fatal.push(`replacement glyphs ${result.content.replacementGlyphs}`);
+                if (result.pageErrors.length) result.fatal.push(`${result.pageErrors.length} page error(s)`);
+                if (result.sameOriginErrors.length) result.fatal.push(`${result.sameOriginErrors.length} same-origin HTTP error(s)`);
+                if (result.colors.finalCopy !== 'rgb(255, 248, 238)') result.fatal.push(`final-statement copy color ${result.colors.finalCopy}`);
+                if (result.colors.summaryNote !== 'rgb(255, 232, 189)') result.fatal.push(`summary descriptor color ${result.colors.summaryNote}`);
+                if ((result.contrast.warning ?? 0) < 4.5) result.fatal.push(`warning contrast ${(result.contrast.warning ?? 0).toFixed(2)}`);
+                if ((result.contrast.recordBoundary ?? 0) < 4.5) result.fatal.push(`record-boundary contrast ${(result.contrast.recordBoundary ?? 0).toFixed(2)}`);
+
+                if (viewport.width <= 640) {
+                  if ((result.widths.transcript223 ?? 0) < .86) result.fatal.push(`223 card too narrow ${(result.widths.transcript223 ?? 0).toFixed(3)}`);
+                  if ((result.widths.transcript226 ?? 0) < .86) result.fatal.push(`226 card too narrow ${(result.widths.transcript226 ?? 0).toFixed(3)}`);
+                  if ((result.widths.turn226 ?? 0) < .80) result.fatal.push(`dialogue too narrow ${(result.widths.turn226 ?? 0).toFixed(3)}`);
+                }
+              } catch (error) {
+                result.fatal.push(`exception: ${error?.message || error}`);
+                result.exception = String(error?.stack || error);
+                await page.screenshot({ path: `${output}/${locale}_${viewportName}_exception.png`, fullPage: false }).catch(() => {});
+              }
+              await context.close();
+            }
+          }
+
+          await browser.close();
+          fs.writeFileSync(`${output}/report.json`, JSON.stringify({ generatedAt: new Date().toISOString(), results }, null, 2));
+          const lines = ['# Chen mobile readability browser proof', ''];
+          for (const r of results) {
+            lines.push(`## ${r.locale} · ${r.viewportName} (${r.viewport.width}×${r.viewport.height})`);
+            lines.push(`- HTTP ${r.status}; overflow ${r.overflow}px`);
+            lines.push(`- Width ratios: 223=${r.widths.transcript223?.toFixed(3)}, 226=${r.widths.transcript226?.toFixed(3)}, dialogue=${r.widths.turn226?.toFixed(3)}`);
+            lines.push(`- Contrast: warning=${r.contrast.warning?.toFixed(2)}, record boundary=${r.contrast.recordBoundary?.toFixed(2)}`);
+            lines.push(`- Final copy=${r.colors.finalCopy}; summary note=${r.colors.summaryNote}`);
+            lines.push(`- Legal label: guarantor=${r.content.guarantor}, individual=${r.content.individual}, first-instance=${r.content.firstInstance}`);
+            lines.push(`- Browser errors: page=${r.pageErrors.length}, same-origin=${r.sameOriginErrors.length}`);
+            lines.push(`- Fatal: ${r.fatal.length ? r.fatal.join(' | ') : 'none'}`);
+            lines.push('');
+          }
+          const fatalCount = results.reduce((sum, item) => sum + item.fatal.length, 0);
+          lines.push(`**Total fatal checks: ${fatalCount}**`);
+          fs.writeFileSync(`${output}/summary.md`, lines.join('\n'));
+          console.log(lines.join('\n'));
+          if (fatalCount) process.exit(1);
+          JS
+
+      - name: Upload browser proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chen-mobile-browser-proof-20260830-v2
+          path: browser-proof
+          retention-days: 14

@@ -1,0 +1,123 @@
+#!/usr/bin/env python3
+"""Check public locale coverage and full-record structural preservation."""
+import json
+import re
+import sys
+from html.parser import HTMLParser
+from pathlib import Path
+from urllib.parse import urlsplit
+
+ROOT = Path(__file__).resolve().parents[1]
+BASE = '/child-advocacy-site/'
+LOCALES = {'zh-Hant', 'zh-Hans', 'en', 'ja'}
+INTENTIONALLY_SINGLE_LANGUAGE = {
+    'cases/kaikai/features/final-24-hours/',
+    'cases/kaikai/features/final-24-hours/dialogues/',
+    'cases/kaikai/features/rescue-windows/',
+    'activity-records/20260908-kaikai-cemetery-memorial/',
+    'activity-records/20260908-chen-shangjie-hearing-street-advocacy/',
+    'cases/kaikai/features/liu-sisters-dialogues/',
+    # Published with Chinese editions only; English/Japanese editions have not been released.
+    'features/social-observation/kaikai-warning-signals-review-20260922/',
+    'features/social-observation/taiwan-child-placement-history-20260923/',
+    'hearing-records/chen-shangjie-prep-hearing-20260917/',
+    'news/daily-child-protection-brief-20260918/',
+    # Published with Chinese editions only; English/Japanese editions have not been released.
+    'features/social-observation/chen-shangjie-defense-testimony-20260924/',
+    'news/guardian-alliance-statement-20260925/',
+    'news/daily-child-protection-brief-20260926/',
+    'news/daily-child-protection-brief-20260927/',
+    'news/daily-child-protection-brief-20260928/',
+    'news/daily-child-protection-brief-20260930/',
+    # Court logistics supplied for this release have Chinese editions only;
+    # English and Japanese editions are not yet formally published.
+    'news/liangping-naimilk-jiajia-hearing-20261007/',
+    # Hong Kong-only Simplified Chinese wrapper around the hosted multiview report.
+    # It has no Taiwanese, English, or Japanese physical editions to declare.
+    'news/kaikai-multiview-report/',
+}
+BESPOKE_TOOLBAR_ROUTES = {'court-comics/episode-05/'}
+routes = json.loads((ROOT / 'data/four-language-routes.json').read_text())['routes']
+errors = []
+physical = set()
+
+class Document(HTMLParser):
+    def __init__(self, text):
+        super().__init__()
+        self.ids = set()
+        self.lang = ''
+        self.feed(text)
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if 'id' in attrs:
+            self.ids.add(attrs['id'])
+        if tag == 'html':
+            self.lang = attrs.get('lang', '')
+
+def read(url):
+    relative = urlsplit(url).path.removeprefix(BASE).lstrip('/')
+    path = ROOT / relative
+    if path.suffix != '.html':
+        path = path / 'index.html'
+    return path, path.read_text(encoding='utf-8')
+
+for route, editions in routes.items():
+    single_language = '--strict' not in sys.argv and route in INTENTIONALLY_SINGLE_LANGUAGE
+    if not single_language and set(editions) != LOCALES:
+        errors.append(f'{route}: missing locales {LOCALES-set(editions)}')
+    for locale, url in editions.items():
+        path, text = read(url)
+        physical.add(path)
+        doc = Document(text)
+        if not urlsplit(url).query and doc.lang != locale:
+            errors.append(f'{path.relative_to(ROOT)}: expected lang={locale}, got {doc.lang}')
+        if urlsplit(url).query and locale == 'zh-Hans' and 'assets/site.js' not in text and 'data-hans' not in text:
+            errors.append(f'{route}: query-language route lacks a converter')
+        # The root homepage deliberately uses compact in-page navigation; the
+        # shared four-language toolbar remains mandatory on article pages.
+        if path != ROOT / 'index.html' and route not in BESPOKE_TOOLBAR_ROUTES:
+            for marker in ('data-cpa-four-language-toolbar-style', 'data-cpa-four-language-toolbar-flag', 'data-cpa-four-language-toolbar-script'):
+                if marker not in text:
+                    errors.append(f'{path.relative_to(ROOT)}: missing {marker}')
+        if route in BESPOKE_TOOLBAR_ROUTES and not re.search(r'class=["\'](?:top-lang-links|langs)["\']', text):
+            errors.append(f'{path.relative_to(ROOT)}: missing bespoke four-language toolbar')
+        for alternate in editions:
+            if f'hreflang="{alternate}"' not in text:
+                errors.append(f'{path.relative_to(ROOT)}: missing alternate {alternate}')
+
+# These formerly missing or summary-only editions must retain every source
+# section/record anchor. Translations may add accessible controls, never omit IDs.
+full_routes = [
+    'news/reporting-threshold-20260911/',
+    'features/social-observation/adoption-social-work-child-safety-20260918/',
+    'features/social-observation/kaikai-intercountry-adoption-choices-20260920/',
+    'features/social-observation/reporting-duty-question-20260919/',
+    'news/chen-shangjie-high-court-protest-20260916/',
+    'news/taichung-infant-rescue-20260919/',
+    'activity-records/20260825-111-surplus-donation/',
+    'cases/kaikai/a4-dossier/', 'cases/luo-brothers/',
+    'cases/tucheng-domestic-violence-double-homicide/',
+    'features/social-observation/child-abuse-recognition-blind-spots/',
+    'features/social-observation/guarantor-status/',
+    'hearing-records/tucheng-domestic-violence-double-homicide-20260821/',
+    'hearing-records/prison-watch/kaikai-final-chapter/',
+    'hearing-records/prison-watch/kaikai-final-chapter/witnesses/',
+] + [f'hearing-records/prison-watch/kaikai-day{day}-{date}/' for day,date in [(1,'20250422'),(2,'20250423'),(3,'20250425'),(4,'20250428'),(5,'20250429'),(6,'20250430'),(7,'20250502'),(8,'20250505'),(9,'20250506'),(10,'20250507')]]
+for route in full_routes:
+    editions = routes[route]
+    _, source = read(editions['zh-Hant'])
+    required = Document(source).ids
+    for locale in ('zh-Hans', 'en', 'ja'):
+        if locale not in editions:
+            continue
+        path, text = read(editions[locale])
+        missing = required - Document(text).ids
+        if missing:
+            errors.append(f'{path.relative_to(ROOT)}: omitted source anchors {sorted(missing)}')
+        if re.search(r'A complete English translation is not currently published|Chapter Two remains unpublished|第2章は未公開です', text):
+            errors.append(f'{path.relative_to(ROOT)}: stale summary/publication notice')
+
+if errors:
+    raise SystemExit('\n'.join(errors))
+incomplete = sum(set(editions) != LOCALES for editions in routes.values())
+print(f'PASS: {len(routes)} route groups; {len(physical)} physical public pages; full-record anchors preserved; {incomplete} incomplete groups remain under legacy exceptions. Use --strict to reject all missing locales.')

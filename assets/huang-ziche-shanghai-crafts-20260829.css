@@ -1,0 +1,1844 @@
+/* Shanghai Huang Ziche case — Haipai craft art direction */
+:root{
+  --hz-night:#071c26;--hz-indigo:#0d2e3b;--hz-teal:#174f55;--hz-jade:#b9d4c7;
+  --hz-celadon:#dce8dc;--hz-ivory:#f3ead7;--hz-amber:#d5a44f;--hz-cinnabar:#9b3c35;
+  --hz-rose:#b97978;--hz-ink:#14282e;
+}
+.hz-page{background:var(--hz-night);color:var(--hz-ivory)}
+.hz-page:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:
+ radial-gradient(circle at 78% 9%,rgba(213,164,79,.16),transparent 23rem),
+ repeating-linear-gradient(28deg,rgba(220,232,220,.025) 0 1px,transparent 1px 7px),
+ linear-gradient(145deg,#061820,#0a2a34 52%,#071c26)}
+.hz-page .tt-topbar{background:rgba(5,22,29,.88);border-bottom:1px solid rgba(185,212,199,.25);backdrop-filter:blur(16px)}
+.hz-page .tt-brand,.hz-page .tt-brand small,.hz-page .tt-language a,.hz-page .tt-breadcrumb,.hz-page .tt-breadcrumb a{color:var(--hz-ivory)}
+.hz-page .tt-language a{border-color:rgba(185,212,199,.35)}
+.hz-page .tt-language a[aria-current=true]{background:var(--hz-jade);color:var(--hz-ink)}
+.hz-page .tt-hero{position:relative;overflow:hidden;background:
+ radial-gradient(ellipse at 75% 40%,rgba(185,212,199,.11),transparent 35%),
+ linear-gradient(180deg,#071b25,#0c303b)}
+.hz-page .tt-hero:after{content:"顧繡 · 玉雕 · 燈彩 · 絨繡";position:absolute;right:2vw;bottom:1rem;color:rgba(243,234,215,.18);font-family:serif;letter-spacing:.34em;writing-mode:vertical-rl}
+.hz-page .tt-kicker{color:var(--hz-amber)}
+.hz-page .tt-hero h1{color:var(--hz-ivory);text-shadow:0 1px 0 #fff,0 0 36px rgba(213,164,79,.18)}
+.hz-page .tt-subtitle{color:var(--hz-jade)}
+.hz-page .tt-deck{color:#dce7e2}
+.hz-page .tt-meta span{border-color:rgba(185,212,199,.28);color:#c8d9d3}
+.hz-page .tt-hero-art{position:relative;padding:11px;background:linear-gradient(135deg,rgba(185,212,199,.85),rgba(243,234,215,.35) 38%,rgba(213,164,79,.75));box-shadow:0 30px 80px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,255,255,.4)}
+.hz-page .tt-hero-art:before{content:"";position:absolute;inset:-18px;border:1px solid rgba(185,212,199,.3);border-radius:42% 4% 42% 4%/7% 42% 7% 42%;pointer-events:none}
+.hz-page .tt-hero-art img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;filter:saturate(.9) contrast(1.04)}
+.hz-page .tt-hero-art figcaption{background:#081d27;color:#cddbd5;border-top:1px solid rgba(185,212,199,.35)}
+.hz-page .tt-hero-art figcaption b{color:var(--hz-amber)}
+.hz-craft-key{display:flex;flex-wrap:wrap;gap:.55rem;margin:1.2rem 0}
+.hz-craft-key span{padding:.42rem .7rem;border:1px solid rgba(185,212,199,.32);border-radius:999px;color:#dce8dc;background:rgba(4,19,26,.34);font-size:.78rem;letter-spacing:.08em}
+.hz-page .tt-guide{background:#0c2933}
+.hz-page .tt-guide-card{position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(243,234,215,.96),rgba(220,232,220,.94));color:var(--hz-ink);border:1px solid var(--hz-jade);box-shadow:0 24px 60px rgba(0,0,0,.32)}
+
+/* v19 — named Chinese traditional palette and Shanghai cultural landmarks. */
+.hz-page .hz-shanghai-culture{position:relative;padding:clamp(3.5rem,7vw,6.5rem) 0;background:radial-gradient(circle at 78% 8%,rgba(213,164,79,.12),transparent 28%),linear-gradient(155deg,#071c26 0%,#0d2e3b 54%,#123943 100%);color:var(--hz-ivory);overflow:hidden}
+.hz-page .hz-shanghai-culture:before{content:"";position:absolute;inset:0;opacity:.1;background:repeating-linear-gradient(118deg,transparent 0 17px,rgba(243,234,215,.32) 18px,transparent 19px 34px);mask-image:linear-gradient(90deg,#000,transparent 74%);pointer-events:none}
+.hz-page .hz-shanghai-culture-head{position:relative;max-width:58rem;margin-bottom:clamp(1.6rem,4vw,2.8rem)}
+.hz-page .hz-shanghai-culture-head small{display:block;color:var(--hz-amber);font-weight:850;letter-spacing:.18em}
+.hz-page .hz-shanghai-culture-head h2{margin:.5rem 0 .8rem;color:var(--hz-ivory);font-size:clamp(2rem,4.3vw,4.2rem);line-height:1.08}
+.hz-page .hz-shanghai-culture-head p{max-width:52rem;color:var(--hz-jade);font-size:1.02rem;line-height:1.85}
+.hz-page .hz-traditional-palette{position:relative;display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:1px;margin-bottom:clamp(2rem,5vw,3.8rem);border:1px solid rgba(243,234,215,.14);background:rgba(243,234,215,.16);box-shadow:0 20px 50px rgba(0,0,0,.2)}
+.hz-page .hz-traditional-palette span{position:relative;min-height:8.6rem;padding:4.8rem .7rem .8rem;background:rgba(7,28,38,.86);overflow:hidden}
+.hz-page .hz-traditional-palette span:before{content:"";position:absolute;inset:0 0 auto;height:4.25rem;background:var(--swatch);box-shadow:inset 0 -1px rgba(255,255,255,.15)}
+.hz-page .hz-traditional-palette b,.hz-page .hz-traditional-palette small{display:block;position:relative;overflow-wrap:anywhere}
+.hz-page .hz-traditional-palette b{color:var(--hz-ivory);font-size:.9rem;line-height:1.2}.hz-page .hz-traditional-palette small{margin-top:.25rem;color:var(--hz-jade);font-size:.68rem;line-height:1.25}
+.hz-page .hz-landmark-grid{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.hz-page .hz-landmark-grid article{position:relative;min-width:0;min-height:22rem;padding:calc(clamp(1.25rem,2.6vw,2rem) + 9.2rem) clamp(1.25rem,2.6vw,2rem) clamp(1.25rem,2.6vw,2rem);border:1px solid rgba(185,212,199,.2);background:linear-gradient(145deg,rgba(243,234,215,.1),rgba(7,28,38,.7));clip-path:polygon(0 0,calc(100% - 1.4rem) 0,100% 1.4rem,100% 100%,0 100%);box-shadow:inset 3px 0 var(--landmark-accent,var(--hz-jade));transition:transform .25s ease,border-color .25s ease}
+.hz-page .hz-landmark-grid article:before{content:"";position:absolute;inset:0 0 auto;height:9.2rem;background-repeat:no-repeat;background-size:cover;background-position:center;filter:saturate(.96) contrast(.93);border-bottom:1px solid rgba(185,212,199,.2);box-shadow:inset 0 -30px 32px -32px rgba(7,28,38,.66)}
+.hz-page .hz-landmark-grid [data-landmark="bund"]:before{background-image:url("./art/huang-ziche-shanghai-landmarks-cards-20260830/bund.webp")}.hz-page .hz-landmark-grid [data-landmark="yuyuan"]:before{background-image:url("./art/huang-ziche-shanghai-landmarks-cards-20260830/yuyuan.webp")}.hz-page .hz-landmark-grid [data-landmark="shikumen"]:before{background-image:url("./art/huang-ziche-shanghai-landmarks-cards-20260830/shikumen.webp")}.hz-page .hz-landmark-grid [data-landmark="wukang"]:before{background-image:url("./art/huang-ziche-shanghai-landmarks-cards-20260830/wukang.webp")}.hz-page .hz-landmark-grid [data-landmark="museum"]:before{background-image:url("./art/huang-ziche-shanghai-landmarks-cards-20260830/museum.webp")}.hz-page .hz-landmark-grid [data-landmark="sihang"]:before{background-image:url("./art/huang-ziche-shanghai-landmarks-cards-20260830/sihang.webp")}.hz-page .hz-landmark-grid [data-landmark="longhua"]:before{background-image:url("./art/huang-ziche-shanghai-landmarks-cards-20260830/longhua.webp")}.hz-page .hz-landmark-grid [data-landmark="lujiazui"]:before{background-image:url("./art/huang-ziche-shanghai-landmarks-cards-20260830/lujiazui.webp")}.hz-page .hz-landmark-grid [data-landmark="tianzifang"]:before{background-image:url("./art/huang-ziche-shanghai-landmarks-cards-20260830/tianzifang.webp")}.hz-page .hz-landmark-grid [data-landmark="city-god"]:before{background-image:url("./art/huang-ziche-shanghai-landmarks-cards-20260830/city-god.webp")}
+.hz-page .hz-landmark-grid article:hover{transform:translateY(-4px);border-color:rgba(213,164,79,.48)}
+.hz-page .hz-landmark-grid article:after{content:"";position:absolute;right:1rem;bottom:1rem;width:3.8rem;height:3.8rem;border:1px solid var(--landmark-accent,var(--hz-jade));border-radius:50%;opacity:.16}
+.hz-page .hz-landmark-grid [data-landmark="bund"]{--landmark-accent:#84aaa7}.hz-page .hz-landmark-grid [data-landmark="yuyuan"]{--landmark-accent:#a9b99a}.hz-page .hz-landmark-grid [data-landmark="shikumen"]{--landmark-accent:#d6a29a}.hz-page .hz-landmark-grid [data-landmark="wukang"]{--landmark-accent:#c9a38f}.hz-page .hz-landmark-grid [data-landmark="museum"]{--landmark-accent:#e0c58f}.hz-page .hz-landmark-grid [data-landmark="sihang"]{--landmark-accent:#b7a4ad}.hz-page .hz-landmark-grid [data-landmark="longhua"]{--landmark-accent:#d9bc83}.hz-page .hz-landmark-grid [data-landmark="lujiazui"]{--landmark-accent:#93b7bf}.hz-page .hz-landmark-grid [data-landmark="tianzifang"]{--landmark-accent:#d5a09b}.hz-page .hz-landmark-grid [data-landmark="city-god"]{--landmark-accent:#d8a3ad}
+.hz-page .hz-landmark-grid small{color:var(--landmark-accent,var(--hz-amber));font-weight:850;letter-spacing:.15em}.hz-page .hz-landmark-grid h3{margin:.55rem 0 .65rem;color:var(--hz-ivory);font-size:1.5rem}.hz-page .hz-landmark-grid p{margin:0;max-width:30rem;color:#dce8dc;line-height:1.75}
+.hz-page .hz-shanghai-culture-note{position:relative;margin:1.3rem 0 0;color:rgba(220,232,220,.72);font-size:.78rem;line-height:1.65}
+@media(max-width:960px){.hz-page .hz-traditional-palette{grid-template-columns:repeat(5,minmax(0,1fr))}.hz-page .hz-landmark-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.hz-page .hz-shanghai-culture{padding:3rem 0}.hz-page .hz-traditional-palette{grid-template-columns:repeat(2,minmax(0,1fr))}.hz-page .hz-traditional-palette span{min-height:7.6rem;padding-top:4.2rem}.hz-page .hz-traditional-palette span:before{height:3.7rem}.hz-page .hz-landmark-grid{grid-template-columns:1fr}.hz-page .hz-landmark-grid article{min-height:0;padding:calc(1.25rem + 11.5rem) 1.25rem 1.25rem;clip-path:none;background:linear-gradient(145deg,rgba(243,234,215,.13),rgba(7,28,38,.72))}.hz-page .hz-landmark-grid article:before{height:11.5rem;background-size:cover;background-position:center}}
+.hz-page .tt-guide-card:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.3;background:repeating-radial-gradient(ellipse at 10% 10%,transparent 0 9px,rgba(23,79,85,.13) 10px 11px)}
+.hz-page .tt-guide-copy small,.hz-page .tt-guide-links b{color:var(--hz-cinnabar)}
+.hz-page .tt-guide-links a{border-color:rgba(20,40,46,.17);color:var(--hz-ink);background:rgba(255,255,255,.25)}
+.hz-page .tt-guide-links a:hover{background:rgba(185,212,199,.45);transform:translateY(-2px)}
+.hz-page .tt-content{background:
+ linear-gradient(90deg,transparent 0 3%,rgba(213,164,79,.08) 3% calc(3% + 1px),transparent calc(3% + 1px) 97%,rgba(213,164,79,.08) 97% calc(97% + 1px),transparent calc(97% + 1px)),
+ #f1eadb;color:var(--hz-ink)}
+.hz-page .tt-chapter:nth-of-type(even){background:linear-gradient(135deg,rgba(185,212,199,.22),transparent 55%)}
+.hz-page .tt-chapter-mark b{color:rgba(23,79,85,.25);font-family:Georgia,serif}
+.hz-page .tt-chapter-mark small{color:var(--hz-cinnabar)}
+.hz-page .tt-prose h2{color:#123943;text-wrap:balance}
+.hz-page .tt-prose h2:after{content:"";display:block;width:6rem;height:3px;margin-top:.65rem;background:linear-gradient(90deg,var(--hz-cinnabar),var(--hz-amber),transparent)}
+.hz-page .tt-lead{border-left-color:var(--hz-cinnabar)}
+.hz-page .tt-box{background:rgba(255,255,255,.62);border-color:rgba(23,79,85,.24);box-shadow:inset 4px 0 0 var(--hz-jade)}
+.hz-page .tt-box-label{color:var(--hz-cinnabar)}
+.hz-page .tt-editorial-rule span{background:#123943;color:var(--hz-celadon);border-color:rgba(185,212,199,.24)}
+.hz-page .tt-timeline article:before{background:var(--hz-amber)}
+.hz-page .tt-timeline time{color:var(--hz-cinnabar)}
+.hz-page .tt-action-grid article{background:linear-gradient(145deg,#fffdf7,#dce8dc);border-color:rgba(23,79,85,.22);box-shadow:0 8px 24px rgba(9,45,55,.08)}
+.hz-page .tt-action-grid small{color:var(--hz-cinnabar)}
+.hz-page .tt-transition{position:relative;background:
+ linear-gradient(90deg,#071c26,#123d47 47%,#071c26);color:var(--hz-ivory);border-block:1px solid rgba(213,164,79,.25)}
+.hz-page .tt-transition:before,.hz-page .tt-transition:after{content:"";position:absolute;top:0;bottom:0;width:18%;opacity:.42;background:
+ repeating-linear-gradient(45deg,transparent 0 8px,rgba(185,212,199,.14) 9px 10px)}
+.hz-page .tt-transition:before{left:0}.hz-page .tt-transition:after{right:0;transform:scaleX(-1)}
+.hz-page .tt-shadow-dialogue{background:rgba(3,16,22,.68);border:1px solid rgba(213,164,79,.26);backdrop-filter:blur(8px)}
+.hz-page .tt-shadow-dialogue small{color:var(--hz-amber)}
+.hz-page .tt-sources{background:#071c26;color:#d7e2dd;border-top:1px solid rgba(185,212,199,.2)}
+.hz-page .tt-sources h2{color:var(--hz-ivory)}
+.hz-page .tt-source-grid a{background:rgba(19,61,71,.5);color:#dce8dc;border-color:rgba(185,212,199,.2)}
+.hz-page .tt-source-grid strong{color:var(--hz-amber)}
+.hz-page .tt-ending{background:
+ radial-gradient(circle at 50% 27%,rgba(213,164,79,.2),transparent 22rem),
+ linear-gradient(180deg,#071c26,#040f15);color:var(--hz-ivory)}
+.hz-page .tt-ending-theatre{border-color:rgba(213,164,79,.32);box-shadow:0 0 70px rgba(213,164,79,.08)}
+.hz-page .tt-ending-copy h2{color:var(--hz-ivory)}
+.hz-page .tt-ending-question{color:var(--hz-jade)}
+.hz-page .tt-ending-seal{background:var(--hz-cinnabar);color:var(--hz-ivory)}
+.hz-page .tt-opening{background:radial-gradient(circle at 50% 50%,#214d52,#06161e 68%)}
+.hz-page .tt-stage{border-color:rgba(213,164,79,.4);box-shadow:0 0 0 1px rgba(185,212,199,.15),0 40px 100px rgba(0,0,0,.5)}
+.hz-page .tt-stage-copy{background:rgba(4,18,24,.62);backdrop-filter:blur(8px)}
+.hz-page .tt-opening-kicker{color:var(--hz-amber)}
+.hz-page .tt-opening-controls button{border-color:rgba(213,164,79,.42);color:var(--hz-ivory)}
+.hz-page .tt-opening-controls button:first-child{background:var(--hz-cinnabar)}
+@media(max-width:760px){
+ .hz-page .tt-hero-art{order:-1;margin:0 0 1rem;padding:7px}
+ .hz-page .tt-hero-art:before{inset:-8px}
+ .hz-page .tt-hero:after{display:none}
+ .hz-page .tt-content{background:#f1eadb}
+ .hz-page .tt-guide-card{border-radius:1rem}
+ .hz-craft-key{gap:.35rem}
+ .hz-craft-key span{font-size:.7rem}
+}
+@media(prefers-reduced-motion:reduce){.hz-page *{scroll-behavior:auto!important}}
+
+
+/* Complete responsive Haipai experience — 2026-08-29 */
+.hz-page .tt-shell{max-width:1440px}
+.hz-page .tt-hero-grid{grid-template-columns:minmax(0,44fr) minmax(0,56fr);gap:clamp(2rem,4vw,4.5rem);align-items:center}
+.hz-page .tt-hero-copy{max-width:37rem}
+.hz-page .tt-hero-visual{min-width:0}
+.hz-page .tt-hero-art{aspect-ratio:auto;contain:layout paint}
+.hz-page .tt-hero-art img{aspect-ratio:16/9;background:#0a252f}
+.hz-page .tt-hero-art figcaption{padding:1rem 1.15rem}
+.hz-page .hz-craft-key{margin:.85rem .2rem 0;display:flex;flex-wrap:wrap;gap:.45rem}
+.hz-page .hz-craft-key:before{content:"CRAFT LEGEND";align-self:center;color:var(--hz-amber);font-size:.7rem;letter-spacing:.16em;margin-right:.25rem}
+.hz-page .hz-mobile-summary,.hz-page .hz-mobile-detail{display:none}
+.hz-page .tt-guide-links{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.55rem}
+.hz-page .tt-guide-links a{min-height:4.7rem;display:flex;align-items:center;gap:.6rem}
+.hz-page .tt-chapter-mark{position:relative}
+.hz-page .tt-chapter-mark b{display:grid;place-items:center;aspect-ratio:1;min-width:5.2rem;border:1px solid rgba(23,79,85,.22);border-radius:38% 7% 38% 7%;background:linear-gradient(145deg,rgba(255,255,255,.58),rgba(185,212,199,.42));box-shadow:inset 0 0 18px rgba(255,255,255,.55),0 14px 28px rgba(14,55,64,.09);text-shadow:0 1px 0 rgba(255,255,255,.65)}
+.hz-page .tt-box[data-kind="court"]{border-left:4px solid #2f6f76;box-shadow:inset 8px 0 22px rgba(185,212,199,.18)}
+.hz-page .tt-box[data-kind="medical"]{border-left:4px solid #9b3c35;box-shadow:inset 8px 0 22px rgba(155,60,53,.08)}
+.hz-page .tt-box[data-kind="question"]{border-left:4px solid #b98842}
+.hz-page #unseen .tt-question-list{position:relative}
+.hz-page #unseen .tt-question-list:before{content:"";position:absolute;left:-1.05rem;top:.3rem;bottom:.3rem;width:4px;background:repeating-linear-gradient(to bottom,var(--hz-cinnabar) 0 12px,transparent 12px 19px);filter:drop-shadow(1px 0 0 rgba(255,255,255,.6))}
+.hz-page #hospital .tt-chapter-mark b:after{content:"";position:absolute;width:1rem;height:1rem;border-radius:50%;background:var(--hz-amber);box-shadow:0 0 0 6px rgba(213,164,79,.15),0 0 22px rgba(213,164,79,.75)}
+.hz-page .hz-lantern-rail{position:fixed;z-index:70;right:max(.55rem,env(safe-area-inset-right));top:50%;transform:translateY(-50%);width:42px;padding:8px 5px;display:flex;flex-direction:column;align-items:center;gap:7px;border:1px solid rgba(185,212,199,.26);border-radius:24px;background:rgba(4,19,26,.78);backdrop-filter:blur(12px);box-shadow:0 14px 38px rgba(0,0,0,.28)}
+.hz-page .hz-rail-link{position:relative;width:28px;height:28px;border:0;background:transparent;text-decoration:none;display:grid;place-items:center}
+.hz-page .hz-rail-link:before{content:"";width:10px;height:15px;border:1px solid rgba(213,164,79,.65);border-radius:45% 45% 35% 35%;background:#513a24;box-shadow:inset 0 0 0 2px rgba(7,28,38,.55);transition:.25s ease}
+.hz-page .hz-rail-link:after{content:"";position:absolute;top:4px;width:5px;height:2px;background:rgba(213,164,79,.55)}
+.hz-page .hz-rail-link.is-read:before{background:#b88336;box-shadow:0 0 11px rgba(213,164,79,.65)}
+.hz-page .hz-rail-link.is-current:before{background:#e0b967;border-color:#f2d69a;box-shadow:0 0 0 4px rgba(185,212,199,.25),0 0 18px rgba(213,164,79,.9);transform:scale(1.12)}
+.hz-page .hz-back-top{position:fixed;right:max(.75rem,env(safe-area-inset-right));bottom:max(.8rem,env(safe-area-inset-bottom));z-index:72;width:44px;height:44px;border:1px solid rgba(213,164,79,.48);border-radius:50%;background:rgba(7,28,38,.9);color:var(--hz-ivory);box-shadow:0 10px 28px rgba(0,0,0,.28);opacity:0;pointer-events:none;transform:translateY(8px);transition:.25s ease}
+.hz-page .hz-back-top.is-visible{opacity:1;pointer-events:auto;transform:none}
+.hz-page .hz-back-top span{font-size:0}
+.hz-page .hz-back-top span:before{content:"↑";font-size:1.2rem}
+.hz-page .hz-ending-craft{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.hz-page .hz-wool-water{position:absolute;inset:auto -10% 0;height:42%;opacity:.66;background:repeating-radial-gradient(ellipse at 50% 100%,transparent 0 15px,rgba(32,94,101,.42) 16px 18px,transparent 19px 28px);transform:translateY(20%);filter:blur(.2px)}
+.hz-page .hz-jade-door{position:absolute;left:50%;top:9%;width:min(34vw,350px);height:min(48vw,480px);transform:translateX(-50%);border:clamp(8px,1.2vw,17px) solid rgba(185,212,199,.32);border-radius:48% 48% 6% 6%/17% 17% 4% 4%;box-shadow:inset 0 0 30px rgba(185,212,199,.16),0 0 0 1px rgba(255,255,255,.18),0 0 55px rgba(185,212,199,.08);opacity:.3}
+.hz-page .hz-carousel-lantern{position:absolute;left:50%;top:17%;width:106px;height:142px;transform:translateX(-50%) scale(.78);border:2px solid #87682f;border-radius:44% 44% 35% 35%;background:radial-gradient(circle,#f4ce78 0 15%,#ce8d37 48%,rgba(80,45,18,.92));box-shadow:0 0 10px #d5a44f,0 0 65px rgba(213,164,79,.28);opacity:.35}
+.hz-page .hz-carousel-lantern:before{content:"";position:absolute;inset:8px 16px;border-inline:1px solid rgba(68,40,18,.72);border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(255,236,177,.32) 0 8deg,transparent 8deg 25deg)}
+.hz-page .hz-carousel-lantern:after{content:"";position:absolute;left:50%;bottom:-30px;width:1px;height:30px;background:#b8893e;box-shadow:-7px 9px 0 #b8893e,7px 9px 0 #b8893e}
+.hz-page .hz-lantern-words{position:absolute;left:50%;top:56%;transform:translateX(-50%);display:flex;gap:.75rem;color:#f2d69a;font-family:serif;letter-spacing:.2em}
+.hz-page .hz-lantern-words span{opacity:0;transform:translateY(9px);padding:.3rem .5rem;border-bottom:1px solid rgba(213,164,79,.45)}
+.hz-page .hz-gu-embroidery{position:absolute;left:50%;bottom:5%;width:min(90%,780px);height:31%;transform:translateX(-50%);overflow:visible}
+.hz-page .hz-gu-embroidery path{fill:none;stroke:#cda690;stroke-width:2;stroke-linecap:round;stroke-dasharray:540;stroke-dashoffset:540}
+.hz-page .hz-ending-curtain{position:absolute;inset:0;display:flex;z-index:7;pointer-events:none}
+.hz-page .hz-ending-curtain i{width:50%;background:linear-gradient(90deg,#260f16,#6a2630 70%,#35131a);transform:scaleX(0);transform-origin:left}
+.hz-page .hz-ending-curtain i+ i{transform-origin:right;background:linear-gradient(90deg,#35131a,#6a2630 30%,#260f16)}
+.hz-page .hz-ending-final{position:absolute;z-index:9;inset:22% 8% auto;text-align:center;opacity:0;color:var(--hz-ivory)}
+.hz-page .hz-ending-final p{font-family:serif;font-size:clamp(1.25rem,2.2vw,2rem);line-height:1.8;text-shadow:0 2px 22px #000}
+.hz-page .hz-ending-final b{display:inline-grid;place-items:center;margin-top:1rem;width:3.3rem;height:3.3rem;background:var(--hz-cinnabar);border:2px solid rgba(243,234,215,.7);color:#fff;font-family:serif}
+.hz-page .tt-ending-theatre{position:relative;min-height:clamp(420px,58vw,660px);overflow:hidden}
+.hz-page .tt-ending-theatre-script{position:relative;z-index:5;background:rgba(3,16,22,.62);backdrop-filter:blur(7px)}
+.hz-page .tt-ending-actions a{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+.hz-page .tt-ending.is-haipai-playing .hz-carousel-lantern{opacity:1}
+.hz-page .tt-ending.is-haipai-complete .hz-ending-final{opacity:1}
+@media(max-width:900px){
+ .hz-page .hz-lantern-rail{display:none}
+ .hz-page .tt-hero-grid{display:flex;flex-direction:column;gap:1.1rem}
+ .hz-page .tt-hero-visual{order:1;width:100%}
+ .hz-page .tt-hero-copy{display:contents}
+ .hz-page .tt-kicker{order:2}
+ .hz-page .tt-hero h1{order:3;margin-bottom:0}
+ .hz-page .tt-subtitle{order:4}
+ .hz-page .hz-mobile-summary{display:block;order:5;margin:0;color:#dce7e2;font-size:1.05rem;line-height:1.7}
+ .hz-page .tt-meta{order:6}
+ .hz-page .tt-view-counter{order:7}
+ .hz-page .tt-deck{display:none}
+ .hz-page .hz-mobile-detail{display:block;order:8;width:100%;margin:.2rem 0 0}
+ .hz-page .hz-mobile-detail summary{min-height:44px;display:flex;align-items:center;color:var(--hz-amber);cursor:pointer}
+ .hz-page .hz-mobile-detail p{color:#dce7e2;line-height:1.8}
+ .hz-page .tt-hero-art{margin:0;padding:7px}
+ .hz-page .tt-hero-art figcaption{display:none}
+ .hz-page .hz-craft-key{margin-top:.75rem;overflow-x:auto;flex-wrap:nowrap;padding:0 0 .4rem;scroll-snap-type:x proximity;scrollbar-width:thin}
+ .hz-page .hz-craft-key:before{position:sticky;left:0;background:#0b2933;padding:.4rem .5rem;z-index:1}
+ .hz-page .hz-craft-key span{flex:0 0 auto;scroll-snap-align:start}
+ .hz-page .tt-guide-links{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:.45rem}
+ .hz-page .tt-guide-links a{flex:0 0 78%;scroll-snap-align:center}
+ .hz-page .tt-timeline{display:block}
+ .hz-page .tt-timeline article{position:relative;padding-left:5.8rem;min-height:5.4rem}
+ .hz-page .tt-timeline article time{position:absolute;left:0;top:0;width:5rem}
+ .hz-page .tt-action-grid{grid-template-columns:1fr}
+ .hz-page .tt-chapter-grid{grid-template-columns:1fr}
+ .hz-page .tt-chapter-mark{display:flex;align-items:center;gap:.8rem}
+ .hz-page .tt-chapter-mark b{min-width:3.8rem;width:3.8rem}
+ .hz-page .tt-ending-theatre{min-height:540px}
+ .hz-page .hz-jade-door{width:68vw;height:83vw}
+ .hz-page .hz-carousel-lantern{top:13%;transform:translateX(-50%) scale(.68)}
+ .hz-page .hz-lantern-words{top:48%;gap:.2rem;font-size:.84rem}
+ .hz-page .hz-ending-final{top:19%;inset-inline:7%}
+ .hz-page .tt-replay{width:44px;height:44px;border-radius:50%;font-size:0;right:.8rem;bottom:4.3rem}
+ .hz-page .tt-replay:before{content:"燈";font-size:1rem}
+}
+
+/* 2026-08-29 phone repair: keep the opening duet visible before and after
+   the sprite sheets finish loading, enlarge the proscenium outwards, and
+   leave the actors inside the clear stage aperture. */
+.hz-page .tt-stage>.tt-stage-craft{
+ position:absolute!important;z-index:2!important;inset:0 0 auto!important;
+ display:block!important;width:100%!important;height:var(--hz-opening-art)!important;
+ margin:0!important;opacity:.94;transition:opacity .25s ease
+}
+html.tt-pose-ready .hz-page .tt-stage>.tt-stage-craft{opacity:0;visibility:hidden}
+.hz-page .tt-stage>.tt-pose-layer--opening{
+ z-index:3!important;opacity:1!important;visibility:visible!important
+}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-sprite{
+ opacity:1!important;mix-blend-mode:normal!important;
+ filter:brightness(1.13) saturate(1.08) contrast(1.04)!important
+}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor{
+ bottom:1.5%!important;width:min(33%,370px)!important;max-height:92%!important
+}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--woman{left:9%!important}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--scribe{right:9%!important}
+.hz-page .tt-stage .tt-carved-stage-frame--opening{
+ z-index:4!important;inset:-2.8%!important;width:105.6%!important;height:calc(var(--hz-opening-art) * 1.056)!important;
+ max-width:none!important;transform:none!important;background-size:100% 100%!important
+}
+.hz-page .tt-transition[data-shadow-scene] .tt-shadow-stage{overflow:visible!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-carved-stage-frame--transition{
+ inset:-3.25%!important;width:106.5%!important;height:106.5%!important;background-size:100% 100%!important
+}
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor{bottom:1%!important;width:min(32%,430px)!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--woman{left:8%!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--scribe{right:8%!important}
+
+/* A permanent, labelled replay control replaces the ambiguous lantern-only dot. */
+.hz-page .tt-replay{
+ position:fixed!important;z-index:160!important;left:max(.85rem,env(safe-area-inset-left))!important;right:auto!important;
+ bottom:max(.85rem,env(safe-area-inset-bottom))!important;width:auto!important;height:46px!important;min-width:124px!important;
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:.55rem!important;
+ padding:.55rem 1rem!important;border:1px solid rgba(213,164,79,.62)!important;border-radius:999px!important;
+ background:rgba(7,28,38,.94)!important;color:var(--hz-ivory)!important;font-size:.82rem!important;letter-spacing:.08em!important;
+ box-shadow:0 12px 30px rgba(0,0,0,.34)!important;backdrop-filter:blur(12px);cursor:pointer
+}
+.hz-page .tt-replay::before{content:"↻"!important;font-size:1.15rem!important;color:var(--hz-amber)}
+.hz-page .tt-replay span{display:inline!important;font:inherit!important;color:inherit!important}
+body.tt-opening-active.hz-page .tt-replay{opacity:0!important;pointer-events:none!important;transform:translateY(8px)!important}
+body.hz-page:not(.tt-opening-active) .tt-replay{opacity:1!important;pointer-events:auto!important;transform:none!important}
+
+/* Dedicated Shanghai layered-paper curtain. Each half reads the corresponding
+   half of one transparent 16:9 artwork, so GSAP can close it without a seam jump. */
+.hz-page .hz-ending-curtain i,
+.hz-page .hz-ending-curtain i+i{
+ background-color:rgba(75,17,29,.93)!important;
+ background-image:url("./art/huang-ziche-shanghai-papercut-curtain-20260829.png")!important;
+ background-repeat:no-repeat!important;background-size:200% 100%!important;
+ box-shadow:inset -12px 0 30px rgba(22,5,11,.32),0 0 0 1px rgba(218,169,80,.12)!important
+}
+.hz-page .hz-ending-curtain i{background-position:left center!important}
+.hz-page .hz-ending-curtain i+i{background-position:right center!important;box-shadow:inset 12px 0 30px rgba(22,5,11,.32),0 0 0 1px rgba(218,169,80,.12)!important}
+
+@media(max-width:900px){
+ body.hz-page{--hz-stage-art:min(44svh,calc((100vw - 16px) * .61))}
+ .hz-page .tt-stage{--hz-opening-art:var(--hz-stage-art)}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor{bottom:0!important;width:39%!important;max-height:90%!important}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--woman{left:7%!important}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--scribe{right:7%!important}
+ .hz-page .tt-stage>.tt-stage-craft .tt-puppet--girl{left:10%!important}
+ .hz-page .tt-stage>.tt-stage-craft .tt-puppet--scribe{right:10%!important}
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor{width:34%!important}
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--woman{left:7%!important}
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--scribe{right:7%!important}
+ .hz-page .tt-replay{min-width:116px!important;height:44px!important;font-size:.76rem!important}
+}
+
+@media(max-width:390px), (max-height:690px) and (max-width:900px){
+ .hz-page .tt-stage{--hz-opening-art:min(38svh,calc((100vw - 16px) * .61))}
+}
+
+@media(prefers-reduced-motion:reduce){
+ body.hz-page:not(.tt-opening-active) .tt-replay{opacity:1!important;transform:none!important}
+}
+@media(max-width:560px){
+ .hz-page .tt-hero-art{aspect-ratio:16/9}
+ .hz-page .tt-hero-art img{position:absolute;inset:7px;width:calc(100% - 14px);height:calc(100% - 14px)}
+ .hz-page .tt-guide-card{padding-inline:.8rem}
+ .hz-page .tt-guide-links a{flex-basis:84%}
+ .hz-page .tt-ending-actions{padding-bottom:calc(1rem + env(safe-area-inset-bottom))}
+}
+@media(prefers-reduced-motion:reduce){
+ .hz-page .hz-carousel-lantern,.hz-page .hz-gu-embroidery path,.hz-page .hz-ending-curtain i,.hz-page .hz-ending-final{animation:none!important;transition:none!important}
+ .hz-page .hz-ending-final{opacity:1}
+ .hz-page .hz-lantern-words span{opacity:1;transform:none}
+ .hz-page .hz-jade-door,.hz-page .hz-carousel-lantern{opacity:1}
+}
+
+/* Classical echoes: Gu-embroidery restraint, no additional hard card frame. */
+.hz-page .hz-region-badge{
+ display:inline-flex;align-items:center;min-height:28px;margin:0 .7rem .35rem 0;padding:.18rem .7rem;
+ border-radius:999px;background:var(--hz-cinnabar);color:#fff7e8;font-weight:800;letter-spacing:.12em;
+ box-shadow:0 5px 16px rgba(84,18,22,.22)
+}
+.hz-page .hz-classical-echo{
+ position:relative;margin:1.2rem 0 1.75rem;padding:.45rem 0 .35rem clamp(1.15rem,2.5vw,2rem);
+ border:0;border-inline-start:2px solid rgba(152,70,63,.72);background:transparent;color:inherit;
+ isolation:isolate
+}
+.hz-page .hz-classical-echo::before{
+ content:"";position:absolute;z-index:-1;inset:-.75rem -1rem -1rem -.35rem;opacity:.72;pointer-events:none;
+ background:
+  radial-gradient(circle at 92% 16%,rgba(185,212,199,.16),transparent 22%),
+  repeating-linear-gradient(108deg,rgba(155,60,53,.038) 0 1px,transparent 1px 9px),
+  linear-gradient(90deg,rgba(185,212,199,.1),transparent 74%)
+}
+.hz-page .hz-classical-echo::after{
+ content:"繡";position:absolute;right:.15rem;top:-.45rem;width:2rem;height:2rem;display:grid;place-items:center;
+ border:1px solid rgba(155,60,53,.45);border-radius:45% 55% 52% 48%;color:rgba(155,60,53,.72);
+ font:700 .72rem/1 serif;transform:rotate(-6deg)
+}
+.hz-page .hz-classical-echo p{
+ margin:0 2.6rem .35rem 0!important;color:var(--hz-cinnabar)!important;
+ font-family:"Noto Serif TC","Noto Serif SC","Songti TC","STSong",serif!important;
+ font-size:clamp(1.1rem,2vw,1.42rem)!important;line-height:1.7!important;letter-spacing:.035em
+}
+.hz-page .hz-classical-echo cite{display:block;margin:0 0 .75rem;font-style:normal;font-size:.78rem;letter-spacing:.14em}
+.hz-page .hz-classical-echo cite a{color:var(--hz-teal);text-decoration-color:rgba(23,79,85,.35);text-underline-offset:4px}
+.hz-page .hz-classical-echo>span{display:block;max-width:48rem;color:rgba(20,40,46,.82);font-size:.96rem;line-height:1.82}
+.hz-page .tt-chapter:nth-of-type(even) .hz-classical-echo p{color:#875148!important}
+
+/* Share poster: one generous image plane, not another nested box. */
+.hz-page .hz-social-poster{
+ position:relative;overflow:hidden;padding:clamp(3.25rem,7vw,7rem) 0;
+ background:
+  radial-gradient(circle at 18% 20%,rgba(213,164,79,.13),transparent 28rem),
+  repeating-linear-gradient(28deg,rgba(220,232,220,.024) 0 1px,transparent 1px 8px),
+  linear-gradient(145deg,#061820,#0d333d)
+}
+.hz-page .hz-social-poster::before{
+ content:"";position:absolute;inset:0;pointer-events:none;opacity:.52;
+ background:radial-gradient(ellipse at 84% 66%,rgba(185,212,199,.12),transparent 28rem)
+}
+.hz-page .hz-social-poster-grid{position:relative;display:grid;grid-template-columns:minmax(0,.82fr) minmax(300px,.58fr);align-items:center;gap:clamp(2rem,6vw,6rem)}
+.hz-page .hz-social-poster h2{margin:.45rem 0 1rem;color:var(--hz-ivory);font-size:clamp(2rem,4.8vw,4.6rem);line-height:1.05}
+.hz-page .hz-social-poster small{color:var(--hz-amber);font-weight:800;letter-spacing:.2em}
+.hz-page .hz-social-poster p{max-width:34rem;color:rgba(243,234,215,.8);font-size:1.05rem;line-height:1.9}
+.hz-page .hz-social-poster a{display:inline-flex;align-items:center;min-height:46px;margin-top:1rem;padding:.65rem 1.1rem;border:1px solid rgba(213,164,79,.55);border-radius:999px;color:var(--hz-ivory);text-decoration:none;background:rgba(7,28,38,.58)}
+.hz-page .hz-social-poster a:hover{background:var(--hz-amber);color:var(--hz-night)}
+.hz-page .hz-social-poster figure{margin:0;filter:drop-shadow(0 24px 44px rgba(0,0,0,.38))}
+.hz-page .hz-social-poster img{display:block;width:100%;height:auto;border-radius:2px}
+
+@media(min-width:901px){
+ .hz-page .tt-opening-lines{min-height:clamp(230px,28vh,320px)!important}
+ .hz-page .tt-opening-line span{max-width:48rem!important;font-size:clamp(1.22rem,2vw,1.78rem)!important;line-height:1.68!important}
+ .hz-page .tt-shadow-dialogue>p{max-width:52rem}
+}
+@media(max-width:900px){
+ .hz-page .tt-kicker{display:flex;flex-wrap:wrap;align-items:center}
+ .hz-page .hz-region-badge{min-height:24px;margin-bottom:.25rem;font-size:.7rem}
+ .hz-page .hz-classical-echo{margin:1rem 0 1.5rem;padding-left:1rem}
+ .hz-page .hz-classical-echo::before{inset:-.55rem -.25rem -.75rem -.2rem}
+ .hz-page .hz-classical-echo p{margin-right:2rem!important;font-size:clamp(1.03rem,5vw,1.25rem)!important}
+ .hz-page .hz-classical-echo>span{font-size:.91rem;line-height:1.75}
+ .hz-page .hz-social-poster-grid{grid-template-columns:1fr;gap:1.6rem}
+ .hz-page .hz-social-poster figure{width:min(100%,28rem);margin-inline:auto}
+ .hz-page .hz-social-poster a{width:100%;justify-content:center}
+}
+
+/* Mobile stage, Shanghai craft atmosphere and GSAP finale polish — v2 */
+body.hz-page{
+ --hz-paper:#f2ead9;
+ --hz-paper-deep:#ddd9c6;
+ --hz-curtain:#6e2530;
+ --hz-stage-art:min(52svh,calc((100vw - 32px) * .5625));
+ overflow-x:clip;
+ background:
+  radial-gradient(circle at 86% 13%,rgba(213,164,79,.16),transparent 26rem),
+  linear-gradient(145deg,#061820,#0b303a 52%,#071c26);
+}
+body.hz-page::after{
+ content:"";
+ position:fixed;
+ z-index:-1;
+ inset:0;
+ pointer-events:none;
+ opacity:.18;
+ background:
+ repeating-linear-gradient(19deg,transparent 0 11px,rgba(222,232,220,.12) 12px 13px),
+  repeating-linear-gradient(109deg,transparent 0 16px,rgba(213,164,79,.08) 17px 18px);
+ -webkit-mask-image:linear-gradient(90deg,transparent,#000 18% 82%,transparent);
+ mask-image:linear-gradient(90deg,transparent,#000 18% 82%,transparent);
+}
+
+/* Each chapter receives one quiet craft register: wool, jade, lantern, Gu embroidery. */
+.hz-page .tt-chapter{--hz-craft-x:0px;position:relative;isolation:isolate;overflow:hidden}
+.hz-page .tt-chapter::after{
+ content:"";
+ position:absolute;
+ z-index:-1;
+ inset:0;
+ pointer-events:none;
+ opacity:.32;
+ transform:translate3d(var(--hz-craft-x),0,0);
+}
+.hz-page .tt-chapter[data-hz-craft="rongxiu"]::after{
+ background:repeating-linear-gradient(24deg,transparent 0 10px,rgba(30,91,97,.11) 11px 13px,transparent 14px 22px);
+ mask-image:linear-gradient(90deg,#000,transparent 54%);
+}
+.hz-page .tt-chapter[data-hz-craft="jade"]::after{
+ background:radial-gradient(ellipse at 92% 36%,rgba(155,202,184,.36),rgba(185,212,199,.12) 26%,transparent 54%);
+ mask-image:linear-gradient(90deg,transparent 38%,#000);
+}
+.hz-page .tt-chapter[data-hz-craft="lantern"]::after{
+ background:radial-gradient(circle at 12% 42%,rgba(219,164,67,.34),rgba(188,102,54,.08) 17%,transparent 37%);
+ mask-image:linear-gradient(90deg,#000,transparent 52%);
+}
+.hz-page .tt-chapter[data-hz-craft="guxiu"]::after{
+ background:
+  repeating-linear-gradient(62deg,transparent 0 14px,rgba(155,60,53,.08) 15px 16px),
+  repeating-linear-gradient(118deg,transparent 0 18px,rgba(23,79,85,.09) 19px 20px);
+ mask-image:linear-gradient(90deg,transparent 32%,#000);
+}
+.hz-page .tt-chapter-grid,.hz-page .tt-prose{position:relative;z-index:1}
+
+/* Keep one carved proscenium and one manuscript surface; no nested framing. */
+.hz-page .tt-opening{
+ overflow-y:auto;
+ overflow-x:hidden;
+ align-items:center;
+ padding:clamp(14px,2.5vw,30px);
+ background:
+  radial-gradient(ellipse at 50% 34%,rgba(213,164,79,.23),transparent 42%),
+  linear-gradient(145deg,#071c26,#17464c 46%,#06161e)!important;
+}
+.hz-page .tt-opening::after{content:none!important;display:none!important}
+.hz-page .tt-stage{
+ --hz-opening-art:min(54svh,clamp(300px,43vw,520px));
+ position:relative!important;
+ width:min(1120px,calc(100vw - 48px))!important;
+ min-height:0!important;
+ height:min(760px,calc(100svh - 34px))!important;
+ display:grid!important;
+ grid-template:var(--hz-opening-art) minmax(0,1fr)/1fr!important;
+ align-items:stretch!important;
+ gap:0!important;
+ padding:0!important;
+ overflow:hidden!important;
+ border:0!important;
+ border-radius:2px!important;
+ box-shadow:0 32px 92px rgba(0,0,0,.5)!important;
+}
+.hz-page .tt-stage>.tt-pose-layer--opening{
+ z-index:2!important;
+ inset:0 0 auto!important;
+ width:100%!important;
+ height:var(--hz-opening-art)!important;
+ overflow:hidden!important;
+}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor{
+ bottom:2.5%!important;
+ width:min(37%,420px)!important;
+ max-height:94%!important;
+}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--woman{left:2%!important}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--scribe{right:2%!important}
+.hz-page .tt-stage .tt-carved-stage-frame--opening{
+ z-index:3!important;
+ inset:0 0 auto!important;
+ width:100%!important;
+ height:var(--hz-opening-art)!important;
+ aspect-ratio:auto!important;
+ background-size:100% 100%!important;
+ filter:drop-shadow(0 8px 6px rgba(12,5,2,.48))!important;
+}
+.hz-page .tt-stage-copy{
+ z-index:5!important;
+ grid-area:2/1!important;
+ align-self:stretch!important;
+ width:100%!important;
+ max-width:none!important;
+ margin:0!important;
+ padding:clamp(20px,2.5vw,34px) clamp(24px,5vw,72px)!important;
+ overflow:hidden!important;
+ border:0!important;
+ border-top:1px solid rgba(213,164,79,.34)!important;
+ border-radius:0!important;
+ background:
+  repeating-linear-gradient(112deg,rgba(185,212,199,.025) 0 1px,transparent 1px 9px),
+  linear-gradient(135deg,rgba(3,16,22,.96),rgba(12,42,49,.94))!important;
+ box-shadow:none!important;
+ backdrop-filter:none!important;
+}
+.hz-page .tt-opening-kicker{margin-bottom:10px!important}
+.hz-page .tt-opening-lines{min-height:clamp(128px,17vh,190px)!important}
+.hz-page .tt-opening-line span{font-size:clamp(19px,2.25vw,28px)!important;line-height:1.62!important}
+.hz-page .tt-opening-controls{margin-top:12px!important}
+.hz-page .tt-opening-note{right:clamp(20px,3vw,38px)!important;bottom:12px!important}
+
+/* The large translucent rectangle in the supplied phone capture came from two pseudo frames. */
+.hz-page .tt-transition::before,
+.hz-page .tt-transition::after{content:none!important;display:none!important}
+.hz-page .tt-transition-inner{border:0!important;box-shadow:none!important;background:transparent!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-shadow-stage{border:0!important}
+.hz-page .tt-transition.is-visible .tt-shadow-stage{animation:none!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-shadow-dialogue{
+ border:0!important;
+ border-top:1px solid rgba(213,164,79,.32)!important;
+ border-radius:0!important;
+ box-shadow:none!important;
+ background:
+  repeating-linear-gradient(107deg,rgba(185,212,199,.026) 0 1px,transparent 1px 9px),
+  linear-gradient(135deg,rgba(3,16,22,.94),rgba(8,30,37,.92))!important;
+ backdrop-filter:none!important;
+}
+.hz-page .tt-transition[data-hz-craft="rongxiu"]{background:linear-gradient(110deg,#061b25,#174a51 48%,#09222c)}
+.hz-page .tt-transition[data-hz-craft="jade"]{background:linear-gradient(110deg,#08232d,#356966 48%,#102c35)}
+.hz-page .tt-transition[data-hz-craft="guxiu"]{background:linear-gradient(110deg,#071e29,#214e52 48%,#3a252d)}
+.hz-page .tt-transition[data-hz-craft="lantern"]{background:radial-gradient(circle at 50% 24%,rgba(213,164,79,.17),transparent 30%),linear-gradient(110deg,#061a22,#123e46 48%,#271a20)}
+
+/* Finale: stage and puppets retain a true 16:9 silhouette, then the curtain falls. */
+.hz-page .tt-ending{display:block!important;min-height:0!important;overflow:hidden!important}
+.hz-page .tt-ending::before{content:none!important;display:none!important}
+.hz-page .tt-ending-theatre,
+.hz-page .tt-ending.is-visible .tt-ending-theatre{
+ position:relative!important;
+ z-index:2!important;
+ inset:auto!important;
+ width:100%!important;
+ min-height:0!important;
+ display:grid!important;
+ grid-template: auto auto / 1fr!important;
+ overflow:hidden!important;
+ border:0!important;
+ border-radius:0!important;
+ background:#071c26!important;
+ box-shadow:none!important;
+ opacity:1!important;
+ visibility:visible!important;
+ pointer-events:auto!important;
+ animation:none!important;
+}
+.hz-page .tt-ending-theatre-stage{
+ position:relative!important;
+ z-index:1!important;
+ inset:auto!important;
+ width:100%!important;
+ height:auto!important;
+ min-height:0!important;
+ aspect-ratio:16/9!important;
+ overflow:hidden!important;
+ border:0!important;
+ box-shadow:none!important;
+ animation:none!important;
+}
+.hz-page .tt-ending-theatre-stage .tt-carved-stage-frame--ending{
+ inset:0!important;
+ width:100%!important;
+ height:100%!important;
+ aspect-ratio:auto!important;
+ background-size:100% 100%!important;
+ animation:none!important;
+}
+.hz-page .tt-ending-theatre-light,
+.hz-page .tt-ending-theatre-bloom,
+.hz-page .tt-ending-theatre-puppet,
+.hz-page .tt-ending-theatre-puppet>i{animation:none!important;transition:none!important}
+.hz-page .tt-ending-theatre-puppet{
+ bottom:3%!important;
+ width:min(38%,460px)!important;
+ opacity:.94!important;
+ transform:none!important;
+}
+.hz-page .tt-ending-theatre-puppet--woman{left:2%!important}
+.hz-page .tt-ending-theatre-puppet--scribe{right:2%!important}
+.hz-page .tt-ending-theatre-script{
+ position:relative!important;
+ z-index:5!important;
+ inset:auto!important;
+ min-height:0!important;
+ display:grid!important;
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ gap:10px 18px!important;
+ padding:clamp(20px,3vw,34px) clamp(22px,5vw,72px) clamp(24px,4vw,42px)!important;
+ border:0!important;
+ border-top:1px solid rgba(213,164,79,.34)!important;
+ background:
+  repeating-linear-gradient(108deg,rgba(185,212,199,.024) 0 1px,transparent 1px 10px),
+  linear-gradient(135deg,rgba(3,16,22,.98),rgba(11,39,46,.96))!important;
+ box-shadow:none!important;
+ backdrop-filter:none!important;
+}
+.hz-page .tt-ending-theatre-script>small{
+ position:relative!important;
+ inset:auto!important;
+ grid-column:1/-1!important;
+ margin:0 0 4px!important;
+ color:var(--hz-amber)!important;
+ text-align:left!important;
+ opacity:1!important;
+ transform:none!important;
+ animation:none!important;
+}
+.hz-page .tt-ending-theatre-script>p{
+ position:relative!important;
+ inset:auto!important;
+ display:block!important;
+ min-height:0!important;
+ max-width:none!important;
+ margin:0!important;
+ padding:12px 0!important;
+ border:0!important;
+ border-top:1px solid rgba(185,212,199,.15)!important;
+ background:transparent!important;
+ box-shadow:none!important;
+ font-size:clamp(16px,1.65vw,22px)!important;
+ line-height:1.65!important;
+ text-align:left!important;
+ opacity:0;
+ transform:translateY(10px);
+ animation:none!important;
+}
+.hz-page .tt-ending-theatre-script>p b{display:block!important;margin:0 0 4px!important;color:var(--hz-amber)!important}
+.hz-page .hz-ending-craft{z-index:3!important}
+.hz-page .hz-ending-curtain{z-index:7!important}
+.hz-page .hz-ending-curtain i{
+ position:relative;
+ overflow:hidden;
+ background:
+  repeating-linear-gradient(90deg,rgba(255,236,198,.04) 0 1px,transparent 1px 13px),
+  linear-gradient(90deg,#260f16,#742b35 70%,#35131a)!important;
+ box-shadow:inset -18px 0 34px rgba(16,5,9,.36);
+}
+.hz-page .hz-ending-curtain i+i{
+ background:
+  repeating-linear-gradient(90deg,rgba(255,236,198,.04) 0 1px,transparent 1px 13px),
+  linear-gradient(90deg,#35131a,#742b35 30%,#260f16)!important;
+ box-shadow:inset 18px 0 34px rgba(16,5,9,.36);
+}
+.hz-page .hz-ending-reveal{
+ position:absolute;
+ z-index:8;
+ inset:0;
+ margin:0;
+ overflow:hidden;
+ background:#491b25;
+ opacity:0;
+ pointer-events:none;
+}
+.hz-page .hz-ending-reveal img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;opacity:.48;filter:saturate(.78) contrast(1.06) sepia(.08);transform:scale(1.045)}
+.hz-page .hz-ending-reveal::after{
+ content:"";
+ position:absolute;
+ inset:0;
+ background:
+  radial-gradient(ellipse at 50% 42%,transparent 18%,rgba(40,9,18,.18) 62%,rgba(22,7,12,.62)),
+  linear-gradient(180deg,rgba(80,25,36,.18),rgba(7,28,38,.48));
+}
+.hz-page .hz-ending-final{
+ z-index:9!important;
+ inset:0!important;
+ display:grid!important;
+ place-content:center!important;
+ padding:clamp(28px,7vw,88px)!important;
+ color:var(--hz-ivory)!important;
+ opacity:0;
+ transform:translateY(12px);
+}
+.hz-page .hz-ending-final p{width:min(100%,44rem);margin:0 auto!important;font-size:clamp(1.2rem,2.4vw,2.05rem)!important;line-height:1.8!important;white-space:normal!important;overflow-wrap:anywhere!important}
+.hz-page .tt-ending-theatre-skip{z-index:12!important;animation:none!important;opacity:1!important}
+.hz-page .tt-ending-copy{position:relative!important;z-index:3!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;animation:none!important}
+.hz-page .tt-ending-copy>*{opacity:1!important;transform:none!important;animation:none!important}
+.hz-page .tt-ending.is-haipai-complete .hz-ending-reveal,
+.hz-page .tt-ending.is-haipai-complete .hz-ending-final{opacity:1}
+
+/* Compact music control; browser-blocked autoplay is released on the first gesture. */
+.hz-page .hz-background-audio{display:none}
+.hz-page .hz-audio-toggle{
+ position:fixed;
+ z-index:73;
+ right:max(4.15rem,calc(env(safe-area-inset-right) + 4.15rem));
+ bottom:max(.8rem,env(safe-area-inset-bottom));
+ min-width:44px;
+ height:44px;
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ gap:.45rem;
+ padding:0 .85rem;
+ border:1px solid rgba(213,164,79,.48);
+ border-radius:999px;
+ background:rgba(7,28,38,.92);
+ color:var(--hz-ivory);
+ box-shadow:0 10px 28px rgba(0,0,0,.28);
+ cursor:pointer;
+ backdrop-filter:blur(10px);
+}
+.hz-page .hz-audio-toggle::before{content:"♫";color:var(--hz-amber);font-size:1rem}
+.hz-page .hz-audio-toggle[aria-pressed="true"]::before{filter:drop-shadow(0 0 7px rgba(213,164,79,.85))}
+.hz-page .hz-audio-toggle[aria-pressed="true"]{border-color:rgba(242,214,154,.78);background:rgba(18,60,65,.94)}
+.hz-page .hz-audio-toggle:focus-visible,.hz-page .hz-back-top:focus-visible{outline:3px solid var(--hz-amber);outline-offset:3px}
+
+@media(max-width:900px){
+ body.hz-page{--hz-stage-art:min(42svh,calc((100vw - 16px) * .5625))}
+ .hz-page .tt-opening{align-items:start;padding:calc(78px + env(safe-area-inset-top)) 8px max(10px,env(safe-area-inset-bottom))}
+ .hz-page .tt-stage{
+  --hz-opening-art:var(--hz-stage-art);
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  grid-template:var(--hz-opening-art) auto/1fr!important;
+  margin:0 auto 12px!important;
+ }
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor{bottom:2%!important;width:min(43%,250px)!important}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--woman{left:1%!important}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--scribe{right:1%!important}
+ .hz-page .tt-stage-copy{padding:18px clamp(17px,5vw,28px) 16px!important}
+ .hz-page .tt-opening-kicker{font-size:9px!important;line-height:1.55!important;letter-spacing:.15em!important}
+ .hz-page .tt-opening-lines{min-height:clamp(152px,24svh,205px)!important}
+ .hz-page .tt-opening-line span{font-size:clamp(17px,4.8vw,21px)!important;line-height:1.56!important;text-wrap:pretty!important}
+ .hz-page .tt-opening-controls{gap:8px!important;margin-top:8px!important}
+ .hz-page .tt-opening-controls button{min-height:42px!important;padding:8px 14px!important}
+ .hz-page .tt-opening-steps{flex-basis:100%;margin:4px 0 0!important;justify-content:center!important}
+ .hz-page .tt-opening-steps button{width:clamp(30px,13vw,52px)!important;height:4px!important;min-height:4px!important;padding:0!important}
+ .hz-page .tt-opening-note{display:none!important}
+ .hz-page .tt-transition[data-shadow-scene]{padding:12px 0 32px!important}
+ .hz-page .tt-transition[data-shadow-scene] .tt-transition-inner{width:calc(100% - 16px)!important;gap:0!important}
+ .hz-page .tt-transition[data-shadow-scene] .tt-shadow-stage{width:100%!important;height:auto!important;min-height:0!important;aspect-ratio:16/9!important;margin:0!important}
+ .hz-page .tt-transition[data-shadow-scene] .tt-shadow-dialogue{width:100%!important;margin:0!important;padding:19px 17px 22px!important}
+ .hz-page .tt-transition[data-shadow-scene] .tt-shadow-dialogue>p{font-size:clamp(16px,4.5vw,19px)!important;line-height:1.72!important}
+ .hz-page .tt-ending-theatre-script{grid-template-columns:1fr!important;gap:0!important;padding:18px 18px 24px!important}
+ .hz-page .tt-ending-theatre-script>p{padding:10px 0!important;font-size:clamp(15px,4.25vw,18px)!important;line-height:1.62!important}
+ .hz-page .tt-ending-theatre-puppet{bottom:1%!important;width:43%!important}
+ .hz-page .hz-jade-door{top:3%!important;width:50vw!important;height:36vw!important;border-width:7px!important}
+ .hz-page .hz-carousel-lantern{top:8%!important;width:64px!important;height:86px!important;transform:translateX(-50%) scale(.68)!important}
+ .hz-page .hz-lantern-words{top:31%!important;font-size:.76rem!important}
+ .hz-page .hz-gu-embroidery{bottom:42%!important;height:18%!important}
+ .hz-page .hz-ending-final{padding:24px 22px calc(24px + env(safe-area-inset-bottom))!important}
+ .hz-page .hz-ending-final p{font-size:clamp(1.05rem,5vw,1.45rem)!important;line-height:1.72!important}
+ .hz-page .tt-ending-theatre-skip{top:10px!important;right:10px!important;padding:8px 12px!important;font-size:11px!important}
+ .hz-page .hz-audio-toggle{width:44px;padding:0;font-size:0}
+ .hz-page .tt-replay{right:.75rem!important;bottom:max(4.25rem,calc(env(safe-area-inset-bottom) + 4.25rem))!important}
+}
+
+@media(max-width:390px), (max-height:690px) and (max-width:900px){
+ .hz-page .tt-opening{padding-top:calc(68px + env(safe-area-inset-top))}
+ .hz-page .tt-stage{--hz-opening-art:min(35svh,calc((100vw - 16px) * .5625))}
+ .hz-page .tt-opening-lines{min-height:140px!important}
+ .hz-page .tt-opening-line span{font-size:16px!important;line-height:1.5!important}
+ .hz-page .tt-opening-controls button{min-height:40px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+ .hz-page .tt-opening,.hz-page .tt-stage,.hz-page .tt-stage *,.hz-page .tt-transition,.hz-page .tt-transition *,.hz-page .tt-ending,.hz-page .tt-ending *{animation:none!important;transition:none!important}
+ .hz-page .tt-ending-theatre-script>p,.hz-page .hz-ending-reveal,.hz-page .hz-ending-final{opacity:1!important;transform:none!important}
+ .hz-page .hz-ending-curtain{display:none!important}
+}
+
+/* Final cascade: supplied-phone stage visibility and proportion repair. */
+.hz-page .tt-stage>.tt-stage-craft{position:absolute!important;z-index:2!important;inset:0 0 auto!important;display:block!important;width:100%!important;height:var(--hz-opening-art)!important;margin:0!important;opacity:.94;transition:opacity .25s ease}
+html.tt-pose-ready .hz-page .tt-stage>.tt-stage-craft{opacity:0;visibility:hidden}
+.hz-page .tt-stage>.tt-pose-layer--opening{z-index:3!important;opacity:1!important;visibility:visible!important}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-sprite{opacity:1!important;mix-blend-mode:normal!important;filter:brightness(1.13) saturate(1.08) contrast(1.04)!important}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor{bottom:1.5%!important;width:min(33%,370px)!important;max-height:92%!important}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--woman{left:9%!important}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--scribe{right:9%!important}
+.hz-page .tt-stage .tt-carved-stage-frame--opening{z-index:4!important;inset:-2.8%!important;width:105.6%!important;height:calc(var(--hz-opening-art) * 1.056)!important;max-width:none!important;transform:none!important;background-size:100% 100%!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-shadow-stage{overflow:visible!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-carved-stage-frame--transition{inset:-3.25%!important;width:106.5%!important;height:106.5%!important;background-size:100% 100%!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor{bottom:1%!important;width:min(32%,430px)!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--woman{left:8%!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--scribe{right:8%!important}
+.hz-page .tt-replay{position:fixed!important;z-index:160!important;left:max(.85rem,env(safe-area-inset-left))!important;right:auto!important;bottom:max(.85rem,env(safe-area-inset-bottom))!important;width:auto!important;height:46px!important;min-width:124px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:.55rem!important;padding:.55rem 1rem!important;border:1px solid rgba(213,164,79,.62)!important;border-radius:999px!important;background:rgba(7,28,38,.94)!important;color:var(--hz-ivory)!important;font-size:.82rem!important;letter-spacing:.08em!important;box-shadow:0 12px 30px rgba(0,0,0,.34)!important;backdrop-filter:blur(12px);cursor:pointer}
+.hz-page .tt-replay::before{content:"↻"!important;font-size:1.15rem!important;color:var(--hz-amber)}
+.hz-page .tt-replay span{display:inline!important;font:inherit!important;color:inherit!important}
+body.tt-opening-active.hz-page .tt-replay{opacity:0!important;pointer-events:none!important;transform:translateY(8px)!important}
+body.hz-page:not(.tt-opening-active) .tt-replay{opacity:1!important;pointer-events:auto!important;transform:none!important}
+.hz-page .hz-ending-curtain i,.hz-page .hz-ending-curtain i+i{background-color:rgba(75,17,29,.93)!important;background-image:url("./art/huang-ziche-shanghai-papercut-curtain-20260829.png")!important;background-repeat:no-repeat!important;background-size:200% 100%!important;box-shadow:inset -12px 0 30px rgba(22,5,11,.32),0 0 0 1px rgba(218,169,80,.12)!important}
+.hz-page .hz-ending-curtain i{background-position:left center!important}
+.hz-page .hz-ending-curtain i+i{background-position:right center!important;box-shadow:inset 12px 0 30px rgba(22,5,11,.32),0 0 0 1px rgba(218,169,80,.12)!important}
+@media(max-width:900px){
+ body.hz-page{--hz-stage-art:min(44svh,calc((100vw - 16px) * .61))}
+ .hz-page .tt-stage{--hz-opening-art:var(--hz-stage-art)}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor{bottom:0!important;width:39%!important;max-height:90%!important}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--woman{left:7%!important}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--scribe{right:7%!important}
+ .hz-page .tt-stage>.tt-stage-craft .tt-puppet--girl{left:10%!important}
+ .hz-page .tt-stage>.tt-stage-craft .tt-puppet--scribe{right:10%!important}
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor{width:34%!important}
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--woman{left:7%!important}
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--scribe{right:7%!important}
+ .hz-page .tt-replay{min-width:116px!important;height:44px!important;font-size:.76rem!important}
+}
+@media(max-width:390px), (max-height:690px) and (max-width:900px){.hz-page .tt-stage{--hz-opening-art:min(38svh,calc((100vw - 16px) * .61))}}
+
+/* Opening theatre: lift the lantern light so the puppets and enlarged frame read clearly. */
+.hz-page .tt-stage,
+html.tt-pose-ready body.hz-page .tt-stage{
+ background:
+  linear-gradient(90deg,rgba(35,13,7,.38),transparent 20% 80%,rgba(35,13,7,.38)),
+  radial-gradient(ellipse at 50% 43%,#fae9bb 0%,#e2b975 43%,#9a6137 72%,#3b1d10 100%)!important;
+}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-sprite{
+ filter:brightness(1.72) saturate(1.38) contrast(1.1) drop-shadow(0 8px 9px rgba(48,16,5,.34))!important;
+}
+.hz-page .tt-stage .tt-carved-stage-frame--opening{
+ filter:brightness(1.42) saturate(1.2) contrast(1.08) drop-shadow(0 14px 24px rgba(16,6,3,.62))!important;
+}
+.hz-page .tt-stage>.tt-stage-craft{
+ filter:brightness(1.24) saturate(1.16) contrast(1.05)!important;
+}
+@media(max-width:900px){
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-sprite{
+  filter:brightness(1.82) saturate(1.42) contrast(1.1) drop-shadow(0 6px 7px rgba(48,16,5,.3))!important;
+ }
+ .hz-page .tt-stage .tt-carved-stage-frame--opening{filter:brightness(1.5) saturate(1.22) contrast(1.07) drop-shadow(0 9px 15px rgba(16,6,3,.55))!important}
+}
+
+/* Keep the final character inside the mobile title box at every supported width. */
+.hz-page .tt-ending-copy h2{overflow:visible!important;padding-inline:.12em!important;text-wrap:balance!important}
+@media(max-width:900px){
+ html[lang="zh-Hant"] .hz-page .tt-ending-copy h2,
+ html[lang="zh-Hans"] .hz-page .tt-ending-copy h2{
+  width:100%!important;
+  max-width:100%!important;
+  font-size:clamp(25px,7.3vw,38px)!important;
+  line-height:1.35!important;
+  letter-spacing:0!important;
+  white-space:normal!important;
+  overflow-wrap:normal!important;
+ }
+}
+
+/* Visible inner-stage plane: the supplied carved artwork includes an opaque
+   amber paper screen. Keep its ornament, but render performers above that
+   screen and clip them to the proscenium aperture. */
+.hz-page .tt-stage .tt-carved-stage-frame--opening{z-index:3!important}
+.hz-page .tt-stage>.tt-pose-layer--opening{
+ z-index:4!important;
+ clip-path:inset(7% 9% 6% 9% round 1px)!important;
+}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor{
+ bottom:5%!important;
+ width:min(34%,380px)!important;
+ max-height:84%!important;
+}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--woman{left:11%!important}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--scribe{right:11%!important}
+
+.hz-page .tt-transition[data-shadow-scene] .tt-carved-stage-frame--transition{z-index:10!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-layer{
+ z-index:12!important;
+ clip-path:inset(7% 9% 6% 9% round 1px)!important;
+}
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor{
+ bottom:5%!important;
+ width:min(34%,400px)!important;
+ max-height:84%!important;
+}
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--woman{left:11%!important}
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--scribe{right:11%!important}
+
+.hz-page .tt-ending-theatre-stage .tt-carved-stage-frame--ending{z-index:11!important}
+.hz-page .tt-ending-theatre-puppet{z-index:13!important}
+
+@media(max-width:900px){
+ .hz-page .tt-stage>.tt-pose-layer--opening,
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-layer{clip-path:inset(6% 8% 5% 8% round 1px)!important}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor,
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor{
+  bottom:4%!important;
+  width:36%!important;
+  max-height:86%!important;
+ }
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--woman,
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--woman{left:10%!important}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--scribe,
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--scribe{right:10%!important}
+}
+
+/* Complete Haipai theatre restoration: dark carved timber, a translucent
+   Shanghai paper-cut craft scrim, visible pose-sheet performers and warm
+   footlights. The craft scrim stays inside the stage aperture. */
+.hz-page .tt-stage .tt-carved-stage-frame--opening,
+.hz-page .tt-transition[data-shadow-scene] .tt-carved-stage-frame--transition,
+.hz-page .tt-ending-theatre-stage .tt-carved-stage-frame--ending{
+ opacity:1!important;
+ filter:brightness(.76) saturate(1.28) contrast(1.3) drop-shadow(0 13px 15px rgba(12,5,2,.72))!important;
+}
+.hz-page .tt-stage>.tt-pose-layer--opening,
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-layer{
+ --hz-stage-craft-x:0%;
+ --hz-stage-craft-glow:.34;
+ isolation:isolate!important;
+}
+.hz-page .tt-stage>.tt-pose-layer--opening::before,
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-layer::before{
+ content:"";
+ position:absolute;
+ z-index:0;
+ inset:3% 4% 2%;
+ display:block;
+ pointer-events:none;
+ opacity:var(--hz-stage-craft-glow);
+ background:url("./art/huang-ziche-shanghai-papercut-curtain-20260829.png") center/cover no-repeat;
+ mix-blend-mode:screen;
+ filter:saturate(.86) brightness(1.08) sepia(.08) drop-shadow(0 0 12px rgba(218,169,80,.24));
+ transform:translate3d(var(--hz-stage-craft-x),0,0) scale(1.035);
+ transform-origin:center;
+ will-change:transform,opacity,filter;
+}
+.hz-page .tt-stage>.tt-pose-layer--opening::after,
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-layer::after{
+ content:"";
+ position:absolute;
+ z-index:1;
+ left:13%;right:13%;bottom:4%;height:9%;
+ pointer-events:none;
+ opacity:.84;
+ background:
+  radial-gradient(ellipse at 18% 100%,rgba(242,205,118,.7),transparent 40%),
+  radial-gradient(ellipse at 50% 100%,rgba(242,205,118,.58),transparent 42%),
+  radial-gradient(ellipse at 82% 100%,rgba(242,205,118,.7),transparent 40%);
+ filter:blur(5px);
+}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor,
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor{z-index:2!important}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-sprite,
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-sprite{
+ opacity:1!important;
+ visibility:visible!important;
+ mix-blend-mode:normal!important;
+ filter:brightness(1.52) saturate(1.42) contrast(1.18) drop-shadow(0 9px 8px rgba(45,15,6,.42))!important;
+}
+@media(max-width:900px){
+ .hz-page .tt-stage .tt-carved-stage-frame--opening,
+ .hz-page .tt-transition[data-shadow-scene] .tt-carved-stage-frame--transition{filter:brightness(.8) saturate(1.3) contrast(1.28) drop-shadow(0 9px 10px rgba(12,5,2,.66))!important}
+ .hz-page .tt-stage>.tt-pose-layer--opening::before,
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-layer::before{inset:2% 3% 1%;opacity:var(--hz-stage-craft-glow);background-size:auto 100%}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-sprite,
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-sprite{filter:brightness(1.65) saturate(1.5) contrast(1.2) drop-shadow(0 7px 6px rgba(45,15,6,.4))!important}
+}
+
+/* Final carved-stage correction.
+   A previous background-size override enlarged the timber highlight stripe to
+   the full canvas, hiding the transparent carved artwork behind a brown panel.
+   Restore each background layer explicitly, then keep the Shanghai paper-cut
+   scrim inside the aperture and above the illuminated paper screen. */
+.hz-page .tt-stage .tt-carved-stage-frame--opening,
+.hz-page .tt-transition[data-shadow-scene] .tt-carved-stage-frame--transition,
+.hz-page .tt-ending-theatre-stage .tt-carved-stage-frame--ending{
+ background:
+  linear-gradient(180deg,rgba(57,29,16,.74),rgba(154,105,51,.72)) 50% 88.45%/71.8% .65% no-repeat,
+  url("./art/tian-tian-carved-wood-stage-frame-20260826.webp") center/100% 100% no-repeat!important;
+ filter:brightness(1.08) saturate(1.2) contrast(1.14) drop-shadow(0 13px 15px rgba(12,5,2,.72))!important;
+}
+.hz-page .tt-stage>.tt-pose-layer--opening,
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-layer{
+ --hz-stage-craft-glow:.6;
+ box-shadow:
+  inset 0 0 0 1px rgba(145,191,174,.24),
+  inset 0 0 30px rgba(35,106,98,.16)!important;
+}
+.hz-page .tt-stage>.tt-pose-layer--opening::before,
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-layer::before{
+ inset:2.5% 3.5% 1.5%!important;
+ opacity:var(--hz-stage-craft-glow)!important;
+ background-position:center!important;
+ background-size:100% 100%!important;
+ mix-blend-mode:normal!important;
+ filter:brightness(.92) saturate(1.08) contrast(1.04) drop-shadow(0 0 13px rgba(218,169,80,.3))!important;
+ transform:translate3d(var(--hz-stage-craft-x),0,0) scale(1.012)!important;
+}
+.hz-page .tt-stage>.tt-pose-layer--opening::after,
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-layer::after{
+ opacity:.94!important;
+ filter:blur(4px) saturate(1.08)!important;
+}
+@media(max-width:900px){
+ .hz-page .tt-stage .tt-carved-stage-frame--opening,
+ .hz-page .tt-transition[data-shadow-scene] .tt-carved-stage-frame--transition{
+  filter:brightness(1.14) saturate(1.24) contrast(1.13) drop-shadow(0 9px 10px rgba(12,5,2,.66))!important;
+ }
+ .hz-page .tt-stage>.tt-pose-layer--opening,
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-layer{--hz-stage-craft-glow:.64}
+ .hz-page .tt-stage>.tt-pose-layer--opening::before,
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-layer::before{
+  inset:2% 3% 1%!important;
+  background-size:100% 100%!important;
+  filter:brightness(.96) saturate(1.12) contrast(1.04) drop-shadow(0 0 10px rgba(218,169,80,.28))!important;
+ }
+}
+
+
+/* Case-comparison chapter — jade evidence plane with restrained Gu-embroidery detail.
+   Information is grouped by soft paper surfaces and hairline rules, without nested frames. */
+.hz-page .hz-precedent{
+ background:
+  radial-gradient(circle at 88% 12%,rgba(181,211,197,.33),transparent 21rem),
+  repeating-linear-gradient(122deg,transparent 0 23px,rgba(122,73,61,.025) 24px 25px),
+  linear-gradient(145deg,rgba(223,234,222,.82),rgba(244,237,220,.94) 48%,rgba(231,222,202,.82));
+}
+.hz-page .hz-precedent::before{
+ content:"";position:absolute;z-index:0;right:clamp(1rem,4vw,4rem);top:clamp(2rem,7vw,6rem);
+ width:clamp(8rem,18vw,15rem);aspect-ratio:1;pointer-events:none;opacity:.2;
+ background:
+  radial-gradient(circle at 50% 50%,transparent 0 29%,rgba(30,79,78,.34) 30% 31%,transparent 32%),
+  conic-gradient(from 15deg at 50% 50%,transparent 0 8%,rgba(155,60,53,.22) 8% 9%,transparent 9% 21%,rgba(30,79,78,.18) 21% 22%,transparent 22% 100%);
+ border-radius:47% 53% 45% 55%;
+ transform:rotate(-9deg);
+}
+.hz-page .hz-precedent .tt-prose{min-width:0}
+.hz-page .hz-precedent .tt-prose>h2{max-width:42rem}
+.hz-page .hz-case-legend{
+ display:flex;flex-wrap:wrap;gap:.55rem;margin:1.25rem 0 1.5rem;
+}
+.hz-page .hz-case-legend span{
+ display:inline-flex;align-items:center;gap:.45rem;min-height:2rem;padding:.3rem .72rem;
+ border-radius:999px;background:rgba(255,253,246,.66);color:#24444a;
+ font-size:.78rem;font-weight:750;letter-spacing:.04em;
+ box-shadow:0 5px 16px rgba(11,44,48,.055);
+}
+.hz-page .hz-case-legend span::before{
+ content:"";width:.52rem;height:.52rem;border-radius:50%;background:var(--hz-jade);
+ box-shadow:0 0 0 3px rgba(185,212,199,.2);
+}
+.hz-page .hz-case-legend [data-kind="current"]::before{background:var(--hz-cinnabar)}
+.hz-page .hz-case-legend [data-kind="guiding"]::before{background:#2f766e}
+.hz-page .hz-case-legend [data-kind="typical"]::before{background:var(--hz-amber)}
+.hz-page .hz-case-legend [data-kind="final"]::before{background:#263f55}
+.hz-page .hz-case-compare{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1rem,2.2vw,1.6rem);
+ margin:1.4rem 0 1.7rem;
+}
+.hz-page .hz-case-card{
+ --hz-case-accent:var(--hz-jade);position:relative;min-width:0;padding:clamp(1.15rem,2.4vw,1.7rem);
+ background:linear-gradient(150deg,rgba(255,254,249,.9),rgba(236,232,217,.76));
+ border:0;border-inline-start:3px solid var(--hz-case-accent);
+ border-radius:0 .8rem .8rem 0;box-shadow:0 12px 32px rgba(18,54,57,.085);
+ overflow:hidden;
+}
+.hz-page .hz-case-card::after{
+ content:"";position:absolute;right:-1rem;top:-1rem;width:6rem;height:6rem;pointer-events:none;opacity:.11;
+ background:repeating-radial-gradient(ellipse at center,transparent 0 6px,var(--hz-case-accent) 7px 8px);
+ -webkit-mask-image:linear-gradient(135deg,#000,transparent 72%);
+ mask-image:linear-gradient(135deg,#000,transparent 72%);
+}
+.hz-page .hz-case-card[data-status="current"]{--hz-case-accent:var(--hz-cinnabar)}
+.hz-page .hz-case-card[data-status="typical"]{--hz-case-accent:var(--hz-amber)}
+.hz-page .hz-case-card[data-status="guiding"]{--hz-case-accent:#2f766e}
+.hz-page .hz-case-card[data-status="final"]{--hz-case-accent:#263f55}
+.hz-page .hz-case-card header{position:relative;z-index:1;margin:0 0 .8rem;padding:0 0 .65rem;border-bottom:1px solid rgba(25,69,69,.13)}
+.hz-page .hz-case-card header small{
+ display:block;margin:0 0 .28rem;color:var(--hz-case-accent);
+ font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+}
+.hz-page .hz-case-card h3{
+ margin:0;color:#153f45;font-family:"Noto Serif TC","Noto Serif SC","Songti TC","STSong",serif;
+ font-size:clamp(1.16rem,2vw,1.42rem);line-height:1.38;text-wrap:balance;
+}
+.hz-page .hz-case-card>p{margin:.62rem 0;line-height:1.75}
+.hz-page .hz-case-card dl{margin:.9rem 0}
+.hz-page .hz-case-card dl>div{
+ display:grid;grid-template-columns:minmax(5.2rem,.32fr) minmax(0,1fr);gap:.75rem;
+ padding:.52rem 0;border-top:1px solid rgba(25,69,69,.12);
+}
+.hz-page .hz-case-card dl>div:last-child{border-bottom:1px solid rgba(25,69,69,.12)}
+.hz-page .hz-case-card dt{color:#6f3e3b;font-size:.78rem;font-weight:800;letter-spacing:.04em}
+.hz-page .hz-case-card dd{margin:0;color:#1c383d;font-weight:650;overflow-wrap:anywhere}
+.hz-page .hz-case-key{
+ margin:.8rem 0!important;padding:.8rem .9rem;
+ background:rgba(185,212,199,.22);border-radius:.45rem;color:#213b40;
+}
+.hz-page .hz-case-key b{display:block;margin-bottom:.18rem;color:#7e403b;font-size:.78rem;letter-spacing:.08em}
+.hz-page .hz-case-source,.hz-page .hz-case-note>a{
+ display:inline-flex;margin-top:.45rem;color:#1d625d;font-weight:750;font-size:.86rem;
+ text-underline-offset:4px;overflow-wrap:anywhere;
+}
+.hz-page .hz-case-note{
+ position:relative;margin:1.6rem 0;padding:clamp(1.1rem,2vw,1.45rem) clamp(1.1rem,2.5vw,1.7rem);
+ background:linear-gradient(90deg,rgba(23,79,85,.11),rgba(255,255,255,.3));
+ border-inline-start:2px solid rgba(23,79,85,.55);color:#203b40;
+}
+.hz-page .hz-case-note strong{display:block;color:#623b38;font-family:serif;font-size:1.02rem}
+.hz-page .hz-case-note p{margin:.55rem 0 0;line-height:1.78}
+.hz-page .hz-law-axis{
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;margin:1.8rem 0 0;
+ background:rgba(30,70,70,.16);box-shadow:0 12px 32px rgba(18,54,57,.06);
+}
+.hz-page .hz-law-axis article{
+ min-width:0;padding:clamp(1rem,2vw,1.35rem);background:rgba(250,247,238,.93);
+}
+.hz-page .hz-law-axis small{display:block;color:var(--hz-cinnabar);font-size:.68rem;font-weight:850;letter-spacing:.12em}
+.hz-page .hz-law-axis strong{display:block;margin:.35rem 0;color:#164149;font-family:serif;font-size:1.05rem}
+.hz-page .hz-law-axis p{margin:0;font-size:.88rem;line-height:1.72;overflow-wrap:anywhere}
+
+@media(max-width:980px){
+ .hz-page .hz-law-axis{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:720px){
+ .hz-page .hz-precedent::before{right:-2.5rem;top:5rem;width:10rem;opacity:.13}
+ .hz-page .hz-case-compare{grid-template-columns:1fr;gap:.9rem}
+ .hz-page .hz-case-card{padding:1.05rem 1rem;border-radius:0 .65rem .65rem 0}
+ .hz-page .hz-case-card dl>div{grid-template-columns:minmax(4.6rem,.31fr) minmax(0,1fr);gap:.55rem}
+ .hz-page .hz-law-axis{grid-template-columns:1fr;gap:0;background:transparent;box-shadow:none}
+ .hz-page .hz-law-axis article{border-top:1px solid rgba(30,70,70,.16);padding:1rem .2rem;background:transparent}
+ .hz-page .hz-law-axis article:last-child{border-bottom:1px solid rgba(30,70,70,.16)}
+}
+@media(max-width:380px){
+ .hz-page .hz-case-legend{gap:.4rem}
+ .hz-page .hz-case-legend span{font-size:.7rem;padding:.28rem .58rem}
+ .hz-page .hz-case-card dl>div{display:block}
+ .hz-page .hz-case-card dt{display:block;margin-bottom:.16rem}
+}
+
+
+/* Legal-comparison enhancement v11 — jade matrix, evidence gates and lantern path.
+   Uses open paper planes and hairline rules so the page does not accumulate extra frames. */
+.hz-page .hz-judgment-strip,
+.hz-page .hz-case-meta{
+ display:flex;align-items:center;justify-content:space-between;gap:.8rem;flex-wrap:wrap;
+ margin:1rem 0 1.25rem;padding:.72rem .9rem;
+ background:linear-gradient(90deg,rgba(155,60,53,.11),rgba(185,212,199,.2));
+ border-inline-start:3px solid var(--hz-cinnabar);color:#173b42;
+}
+.hz-page .hz-judgment-strip strong,.hz-page .hz-case-meta span{font-size:.88rem;letter-spacing:.04em;color:#7b3935}
+.hz-page .hz-judgment-strip span,.hz-page .hz-case-meta time{font-size:.76rem;color:#526a6c}
+
+.hz-page .hz-matrix-zone{margin:1.5rem 0 2rem}
+.hz-page .hz-matrix-zone>header,
+.hz-page .hz-intent-panel>header,
+.hz-page .hz-evidence-panel>header,
+.hz-page .hz-intervention-panel>header{
+ display:flex;align-items:end;justify-content:space-between;gap:1rem;margin-bottom:1rem
+}
+.hz-page .hz-matrix-zone header small,
+.hz-page .hz-intent-panel header small,
+.hz-page .hz-evidence-panel header small,
+.hz-page .hz-intervention-panel header small{
+ display:block;color:var(--hz-cinnabar);font-size:.68rem;font-weight:850;letter-spacing:.16em
+}
+.hz-page .hz-matrix-zone h3,
+.hz-page .hz-intent-panel h3,
+.hz-page .hz-evidence-panel h3,
+.hz-page .hz-intervention-panel h3{
+ margin:.25rem 0 0;color:#164149;font-family:"Noto Serif TC","Noto Serif SC","Songti TC","STSong",serif;
+ font-size:clamp(1.18rem,2.2vw,1.55rem);line-height:1.4
+}
+.hz-page .hz-matrix-zone header p{margin:.35rem 0 0;max-width:42rem;font-size:.9rem;color:#506466}
+.hz-page .hz-filter-count{
+ flex:0 0 auto;padding:.35rem .65rem;border-radius:999px;background:#1b5054;color:#edf3e8;
+ font-size:.75rem;font-weight:750;white-space:nowrap
+}
+.hz-page .hz-case-filters{
+ display:flex;gap:.48rem;margin:0 0 .85rem;padding:.12rem 0 .35rem;overflow-x:auto;scrollbar-width:thin;
+ -webkit-overflow-scrolling:touch
+}
+.hz-page .hz-case-filters button{
+ flex:0 0 auto;min-height:36px;padding:.42rem .72rem;border:1px solid rgba(23,79,85,.2);
+ border-radius:999px;background:rgba(255,253,246,.72);color:#24454a;font:inherit;font-size:.76rem;font-weight:760;
+ cursor:pointer;transition:background .2s,color .2s,border-color .2s,transform .2s
+}
+.hz-page .hz-case-filters button:hover{transform:translateY(-1px);border-color:rgba(23,79,85,.45)}
+.hz-page .hz-case-filters button[aria-pressed="true"]{background:#174f55;color:#f7efdc;border-color:#174f55}
+.hz-page .hz-compare-matrix{
+ overflow-x:auto;max-width:100%;background:rgba(255,254,248,.72);
+ box-shadow:0 14px 38px rgba(18,54,57,.07);scrollbar-color:rgba(23,79,85,.35) transparent
+}
+.hz-page .hz-compare-matrix:focus-visible{outline:3px solid rgba(213,164,79,.55);outline-offset:3px}
+.hz-page .hz-compare-matrix table{width:100%;min-width:1050px;border-collapse:collapse;table-layout:fixed}
+.hz-page .hz-compare-matrix th,.hz-page .hz-compare-matrix td{
+ padding:.78rem .7rem;border-bottom:1px solid rgba(23,79,85,.13);border-inline-end:1px solid rgba(23,79,85,.08);
+ text-align:start;vertical-align:top;font-size:.78rem;line-height:1.55;overflow-wrap:anywhere
+}
+.hz-page .hz-compare-matrix thead th{background:#16464c;color:#eef3e8;font-size:.7rem;letter-spacing:.05em}
+.hz-page .hz-compare-matrix tbody th{color:#7c3d38;background:rgba(185,212,199,.2);font-weight:820}
+.hz-page .hz-compare-matrix tbody tr:hover>*{background-color:rgba(213,164,79,.1)}
+.hz-page [data-case-tags][hidden]{display:none!important}
+
+.hz-page .hz-intent-panel,.hz-page .hz-evidence-panel,.hz-page .hz-intervention-panel{
+ position:relative;margin:2rem 0;padding:clamp(1.1rem,2.5vw,1.7rem);
+ background:linear-gradient(145deg,rgba(255,254,248,.76),rgba(208,226,214,.36));
+ box-shadow:0 14px 38px rgba(18,54,57,.065);overflow:hidden
+}
+.hz-page .hz-intent-panel::after,.hz-page .hz-evidence-panel::after,.hz-page .hz-intervention-panel::after{
+ content:"";position:absolute;right:-3rem;top:-3rem;width:10rem;height:10rem;pointer-events:none;opacity:.1;
+ background:repeating-radial-gradient(circle,transparent 0 9px,#24645f 10px 11px)
+}
+.hz-page .hz-intent-scale{
+ position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;
+ background:rgba(23,79,85,.17)
+}
+.hz-page .hz-intent-scale::before{
+ content:"";position:absolute;left:7%;right:7%;top:2.25rem;height:2px;
+ background:linear-gradient(90deg,var(--hz-cinnabar),var(--hz-amber),#263f55);opacity:.5
+}
+.hz-page .hz-intent-scale article{position:relative;z-index:1;padding:1.05rem;background:rgba(250,247,238,.95)}
+.hz-page .hz-intent-scale article>span{
+ display:grid;place-items:center;width:2.35rem;height:2.35rem;margin-bottom:.7rem;border-radius:50%;
+ background:#e7ded0;border:2px solid #7b9389;color:#4b615d;font-size:.72rem;font-weight:850
+}
+.hz-page .hz-intent-scale article[aria-current="step"]>span{
+ background:var(--hz-cinnabar);border-color:#f0c07a;color:#fff7e8;box-shadow:0 0 0 5px rgba(155,60,53,.1)
+}
+.hz-page .hz-intent-scale strong{display:block;color:#17464c;font-family:serif}
+.hz-page .hz-intent-scale p{margin:.38rem 0 0;font-size:.84rem;line-height:1.7}
+.hz-page .hz-intent-marker{
+ display:flex;align-items:center;gap:.55rem;margin:.9rem 0 0;color:#733d39;font-size:.82rem;font-weight:760
+}
+.hz-page .hz-intent-marker i{width:.72rem;height:.72rem;border-radius:50%;background:var(--hz-cinnabar);box-shadow:0 0 0 4px rgba(155,60,53,.12)}
+
+.hz-page .hz-evidence-tree{
+ list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin:0;padding:0;counter-reset:none
+}
+.hz-page .hz-evidence-tree li{position:relative;display:flex;gap:.72rem;min-width:0;padding:1rem;background:rgba(255,253,246,.78)}
+.hz-page .hz-evidence-tree li::after{
+ content:"";position:absolute;left:2.05rem;top:3.15rem;bottom:-1.05rem;width:1px;background:rgba(23,79,85,.22)
+}
+.hz-page .hz-evidence-tree li:nth-child(n+4)::after{display:none}
+.hz-page .hz-evidence-tree li>span{
+ position:relative;z-index:1;display:grid;place-items:center;flex:0 0 2rem;height:2rem;
+ border:1px solid rgba(23,79,85,.32);border-radius:48% 52% 45% 55%;background:#dce8dc;color:#6f3d39;
+ font-size:.68rem;font-weight:850
+}
+.hz-page .hz-evidence-tree strong{display:block;color:#17464c}
+.hz-page .hz-evidence-tree p{margin:.32rem 0 0;font-size:.82rem;line-height:1.65}
+.hz-page .hz-evidence-foot,.hz-page .hz-intervention-foot{
+ margin:1rem 0 0;padding:.72rem .85rem;background:rgba(155,60,53,.08);color:#5b4541;font-size:.82rem
+}
+
+.hz-page .hz-intervention-path{list-style:none;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));margin:0;padding:0}
+.hz-page .hz-intervention-path li{position:relative;min-width:0;padding:0 .75rem 1rem}
+.hz-page .hz-intervention-path li::before{
+ content:"";position:absolute;left:0;right:0;top:1.15rem;height:2px;background:linear-gradient(90deg,#7b9990,#d5a44f)
+}
+.hz-page .hz-intervention-path li:first-child::before{left:50%}.hz-page .hz-intervention-path li:last-child::before{right:50%}
+.hz-page .hz-intervention-path li>span{
+ position:relative;z-index:1;display:grid;place-items:center;width:2.35rem;height:2.35rem;margin:0 auto .65rem;
+ border-radius:50%;background:#174f55;color:#f7efdc;border:2px solid #d5a44f;font-size:.68rem;font-weight:850
+}
+.hz-page .hz-intervention-path strong{display:block;text-align:center;color:#17464c;font-size:.9rem}
+.hz-page .hz-intervention-path p{margin:.32rem 0 0;text-align:center;font-size:.78rem;line-height:1.58}
+
+.hz-page .hz-source-open{
+ display:inline-flex;align-items:center;justify-content:center;min-height:34px;margin:.55rem .55rem 0 0;padding:.38rem .68rem;
+ border:1px solid rgba(23,79,85,.32);border-radius:999px;background:rgba(220,232,220,.58);color:#175954;
+ font:inherit;font-size:.78rem;font-weight:780;cursor:pointer
+}
+.hz-page .hz-source-open:hover{background:#174f55;color:#f7efdc}
+.hz-page .hz-source-open:focus-visible{outline:3px solid rgba(213,164,79,.55);outline-offset:2px}
+.hz-page .hz-source-drawer{
+ inset:0 0 0 auto;width:min(92vw,31rem);max-width:none;height:100dvh;max-height:none;margin:0;padding:0;
+ border:0;background:transparent;color:#18383d;overflow:visible
+}
+.hz-page .hz-source-drawer::backdrop{background:rgba(4,18,24,.67);backdrop-filter:blur(4px)}
+.hz-page .hz-source-drawer-panel{
+ position:relative;height:100%;overflow-y:auto;padding:clamp(1.35rem,4vw,2.4rem);
+ background:
+  radial-gradient(circle at 88% 8%,rgba(213,164,79,.18),transparent 16rem),
+  repeating-linear-gradient(117deg,transparent 0 12px,rgba(23,79,85,.025) 13px 14px),
+  #f3ead7;box-shadow:-22px 0 60px rgba(0,0,0,.28)
+}
+.hz-page .hz-source-drawer-panel>small{color:var(--hz-cinnabar);font-weight:800;letter-spacing:.14em}
+.hz-page .hz-source-drawer-panel h2{margin:.7rem 2.5rem 1.35rem 0;color:#123f46;font-family:serif;line-height:1.4}
+.hz-page .hz-source-drawer-close{
+ position:absolute;right:1rem;top:1rem;display:grid;place-items:center;width:44px;height:44px;border:1px solid rgba(23,79,85,.2);
+ border-radius:50%;background:rgba(255,255,255,.5);color:#193f45;font-size:1.55rem;cursor:pointer
+}
+.hz-page .hz-source-drawer dl{margin:0 0 1.4rem}
+.hz-page .hz-source-drawer dl>div{display:grid;grid-template-columns:7rem 1fr;gap:.7rem;padding:.72rem 0;border-top:1px solid rgba(23,79,85,.16)}
+.hz-page .hz-source-drawer dt{color:#7b3e39;font-size:.78rem;font-weight:800}.hz-page .hz-source-drawer dd{margin:0}
+.hz-page .hz-source-drawer-panel>p{padding:1rem;background:rgba(185,212,199,.22);line-height:1.75}
+.hz-page .hz-source-drawer-panel>p b,.hz-page .hz-source-drawer-panel>p span{display:block}
+.hz-page .hz-source-drawer-panel>p b{margin-bottom:.35rem;color:#713d39}
+.hz-page .hz-source-drawer-panel>a{display:inline-flex;min-height:44px;align-items:center;margin-top:.7rem;padding:.55rem .85rem;background:#174f55;color:#fff8e7;font-weight:780;text-decoration:none}
+.hz-page .hz-source-drawer-backdrop{display:none}
+
+@media(max-width:980px){
+ .hz-page .hz-evidence-tree{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .hz-page .hz-evidence-tree li:nth-child(n+4)::after{display:block}
+ .hz-page .hz-evidence-tree li:nth-child(n+5)::after{display:none}
+ .hz-page .hz-intervention-path{grid-template-columns:1fr}
+ .hz-page .hz-intervention-path li{display:grid;grid-template-columns:2.5rem 1fr;gap:.8rem;padding:0 0 1rem}
+ .hz-page .hz-intervention-path li::before{left:1.15rem!important;right:auto!important;top:0;bottom:0;width:2px;height:auto}
+ .hz-page .hz-intervention-path li:last-child::before{bottom:50%}
+ .hz-page .hz-intervention-path li>span{margin:0}
+ .hz-page .hz-intervention-path strong,.hz-page .hz-intervention-path p{text-align:start}
+}
+@media(max-width:720px){
+ .hz-page .hz-matrix-zone>header,.hz-page .hz-intent-panel>header,.hz-page .hz-evidence-panel>header,.hz-page .hz-intervention-panel>header{align-items:start;flex-direction:column}
+ .hz-page .hz-filter-count{align-self:flex-start}
+ .hz-page .hz-compare-matrix{overflow:visible;background:transparent;box-shadow:none}
+ .hz-page .hz-compare-matrix table,.hz-page .hz-compare-matrix tbody,.hz-page .hz-compare-matrix tr,.hz-page .hz-compare-matrix th,.hz-page .hz-compare-matrix td{display:block;width:100%;min-width:0}
+ .hz-page .hz-compare-matrix thead{display:none}
+ .hz-page .hz-compare-matrix tr{margin:0 0 .85rem;padding:.6rem .9rem;background:rgba(255,254,248,.8);border-inline-start:3px solid #7ba196;box-shadow:0 8px 22px rgba(18,54,57,.06)}
+ .hz-page .hz-compare-matrix th,.hz-page .hz-compare-matrix td{display:grid;grid-template-columns:minmax(5.6rem,.34fr) 1fr;gap:.65rem;padding:.5rem 0;border:0;border-bottom:1px solid rgba(23,79,85,.1);background:transparent!important}
+ .hz-page .hz-compare-matrix th::before,.hz-page .hz-compare-matrix td::before{content:attr(data-label);color:#77403c;font-size:.7rem;font-weight:820}
+ .hz-page .hz-intent-scale{grid-template-columns:1fr;background:transparent;gap:.65rem}
+ .hz-page .hz-intent-scale::before{left:1.15rem;right:auto;top:1.2rem;bottom:1.2rem;width:2px;height:auto;background:linear-gradient(#9b3c35,#d5a44f,#263f55)}
+ .hz-page .hz-intent-scale article{display:grid;grid-template-columns:2.35rem 1fr;column-gap:.75rem}
+ .hz-page .hz-intent-scale article>span{grid-row:1/3;margin:0}.hz-page .hz-intent-scale article p{grid-column:2}
+ .hz-page .hz-evidence-tree{grid-template-columns:1fr}
+ .hz-page .hz-evidence-tree li::after{display:block!important}.hz-page .hz-evidence-tree li:last-child::after{display:none!important}
+ .hz-page .hz-source-drawer{width:min(96vw,31rem)}
+}
+@media(prefers-reduced-motion:reduce){
+ .hz-page .hz-case-filters button,.hz-page .hz-source-open{transition:none}
+}
+
+
+/* v12 — unified Gu embroidery, Haipai jade and Shanghai lantern puppet system. */
+.hz-page .tt-stage>.tt-pose-layer--opening,
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-layer{
+ clip-path:inset(4.5% 6% 4% 6% round 2px)!important;
+ overflow:hidden!important;
+}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor,
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor{
+ bottom:4.5%!important;width:min(31%,360px)!important;max-height:86%!important;z-index:3!important;
+}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--woman,
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--woman{left:12%!important}
+.hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--scribe,
+.hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--scribe{right:12%!important}
+
+.hz-page .hz-puppet-craft-layer{
+ --hz-thread-shimmer:.38;position:absolute;z-index:1;inset:3.5% 5% 2.5%;pointer-events:none;
+ overflow:hidden;isolation:isolate;opacity:1
+}
+.hz-page .hz-stage-jade-aura{
+ position:absolute;left:50%;top:9%;width:46%;height:74%;transform:translateX(-50%);
+ border:clamp(3px,.55vw,8px) double rgba(182,220,203,.52);border-bottom-width:clamp(7px,1vw,15px);
+ border-radius:48% 48% 10% 10%/22% 22% 8% 8%;
+ background:
+  radial-gradient(ellipse at 50% 18%,rgba(244,250,232,.3),transparent 39%),
+  linear-gradient(105deg,rgba(91,157,145,.12),rgba(212,234,217,.3) 42%,rgba(88,146,139,.1));
+ box-shadow:inset 0 0 26px rgba(210,239,222,.22),0 0 30px rgba(97,181,160,.16);
+ filter:saturate(.86);transform-origin:50% 90%
+}
+.hz-page .hz-stage-lantern-core{
+ position:absolute;z-index:2;left:50%;top:4%;width:clamp(34px,5.8vw,72px);aspect-ratio:1;
+ transform:translateX(-50%);border:1px solid rgba(240,197,112,.7);border-radius:44% 44% 50% 50%;
+ background:
+  linear-gradient(90deg,transparent 44%,rgba(76,38,22,.55) 46% 54%,transparent 56%),
+  radial-gradient(circle,rgba(255,225,150,.92),rgba(201,113,55,.7) 46%,rgba(89,34,23,.18) 69%,transparent 71%);
+ box-shadow:0 0 15px rgba(230,164,76,.62),0 0 38px rgba(230,164,76,.24)
+}
+.hz-page .hz-stage-lantern-core::before,.hz-page .hz-stage-lantern-core::after{
+ content:"";position:absolute;left:14%;right:14%;height:3px;background:#7d4a2e;border-radius:50%
+}
+.hz-page .hz-stage-lantern-core::before{top:7%}.hz-page .hz-stage-lantern-core::after{bottom:7%}
+.hz-page .hz-stage-lantern-orbit{
+ position:absolute;z-index:1;left:50%;top:1.2%;width:clamp(48px,7.6vw,96px);aspect-ratio:1;
+ transform:translateX(-50%);border:1px dashed rgba(218,176,91,.46);border-radius:50%;
+ box-shadow:inset 0 0 16px rgba(219,164,67,.12)
+}
+.hz-page .hz-stage-guxiu-thread{
+ position:absolute;z-index:2;bottom:8%;height:2px;width:42%;opacity:calc(.36 + var(--hz-thread-shimmer) * .42);
+ background:linear-gradient(90deg,transparent,rgba(205,158,140,.92) 22%,rgba(226,194,144,.78) 61%,transparent);
+ box-shadow:0 0 6px rgba(205,158,140,.22);transform-origin:center
+}
+.hz-page .hz-stage-guxiu-thread::after{
+ content:"";position:absolute;right:17%;top:-5px;width:10px;height:10px;border:1px solid rgba(205,158,140,.7);
+ border-radius:65% 35% 60% 40%;transform:rotate(33deg)
+}
+.hz-page .hz-stage-guxiu-thread--one{left:4%;transform:rotate(-8deg)}
+.hz-page .hz-stage-guxiu-thread--two{right:4%;transform:rotate(8deg) scaleX(-1)}
+.hz-page .hz-stage-guxiu-thread--three{left:29%;bottom:4%;width:42%;transform:rotate(-1deg)}
+
+.hz-page .hz-ending-master-craft{
+ position:absolute;z-index:12;inset:4.5% 6% 4%;pointer-events:none;overflow:hidden;opacity:0;isolation:isolate
+}
+.hz-page .hz-ending-jade-arch{
+ position:absolute;left:50%;top:8%;width:49%;height:78%;transform:translateX(-50%);
+ border:clamp(5px,.8vw,12px) double rgba(190,225,209,.64);border-bottom-width:clamp(10px,1.3vw,20px);
+ border-radius:48% 48% 8% 8%/23% 23% 7% 7%;
+ background:linear-gradient(110deg,rgba(68,124,120,.12),rgba(226,240,222,.28) 43%,rgba(86,144,136,.11));
+ box-shadow:inset 0 0 34px rgba(226,244,224,.25),0 0 44px rgba(132,206,183,.2);transform-origin:50% 90%
+}
+.hz-page .hz-ending-paper-canopy{
+ position:absolute;z-index:2;inset:-2% 0 auto;height:34%;opacity:0;
+ background:
+  linear-gradient(180deg,rgba(85,18,24,.72),transparent 92%),
+  url("./art/huang-ziche-shanghai-papercut-curtain-20260829.png") center top/100% auto no-repeat;
+ filter:saturate(1.12) brightness(1.08) drop-shadow(0 9px 10px rgba(21,6,8,.35))
+}
+.hz-page .hz-ending-lantern-node{
+ position:absolute;z-index:4;top:7%;width:clamp(28px,4vw,54px);aspect-ratio:1;border-radius:44%;
+ border:1px solid rgba(240,197,112,.72);
+ background:radial-gradient(circle,rgba(255,231,163,.95),rgba(197,103,47,.72) 48%,transparent 73%);
+ box-shadow:0 0 18px rgba(225,156,67,.6),0 0 45px rgba(225,156,67,.22)
+}
+.hz-page .hz-ending-lantern-node::before{
+ content:"";position:absolute;left:44%;top:-33%;width:12%;height:32%;background:rgba(104,58,34,.8)
+}
+.hz-page .hz-ending-lantern-node--one{left:20%}.hz-page .hz-ending-lantern-node--two{left:50%;transform:translateX(-50%);top:3%}.hz-page .hz-ending-lantern-node--three{right:20%}
+.hz-page .hz-ending-guxiu-vine{
+ position:absolute;z-index:5;bottom:10%;width:47%;height:3px;
+ background:linear-gradient(90deg,transparent,rgba(211,164,142,.9) 24%,rgba(235,199,145,.82) 64%,transparent);
+ box-shadow:0 0 7px rgba(211,164,142,.26);transform-origin:center
+}
+.hz-page .hz-ending-guxiu-vine::before,.hz-page .hz-ending-guxiu-vine::after{
+ content:"";position:absolute;width:17px;height:10px;border:1px solid rgba(211,164,142,.82);border-radius:70% 30% 70% 30%
+}
+.hz-page .hz-ending-guxiu-vine::before{left:35%;top:-10px;transform:rotate(-25deg)}
+.hz-page .hz-ending-guxiu-vine::after{right:23%;top:3px;transform:rotate(155deg)}
+.hz-page .hz-ending-guxiu-vine--one{left:2%;transform:rotate(-7deg)}
+.hz-page .hz-ending-guxiu-vine--two{right:2%;transform:rotate(7deg) scaleX(-1)}
+
+.hz-page .tt-ending-theatre-puppet{
+ bottom:4.5%!important;width:min(31%,380px)!important;max-height:84%!important;filter:brightness(1.24) saturate(1.26) contrast(1.1) drop-shadow(0 9px 8px rgba(48,18,7,.42))!important
+}
+.hz-page .tt-ending-theatre-puppet--woman{left:11%!important}
+.hz-page .tt-ending-theatre-puppet--scribe{right:11%!important}
+.hz-page .hz-ending-curtain i{
+ background:
+  linear-gradient(90deg,rgba(38,10,17,.94),rgba(111,31,42,.88) 74%,rgba(47,12,20,.95)),
+  url("./art/huang-ziche-shanghai-papercut-curtain-20260829.png") left center/200% 100% no-repeat!important;
+ background-blend-mode:multiply,normal!important;
+ filter:drop-shadow(12px 0 17px rgba(0,0,0,.35))
+}
+.hz-page .hz-ending-curtain i+i{
+ background:
+  linear-gradient(90deg,rgba(47,12,20,.95),rgba(111,31,42,.88) 26%,rgba(38,10,17,.94)),
+  url("./art/huang-ziche-shanghai-papercut-curtain-20260829.png") right center/200% 100% no-repeat!important;
+ filter:drop-shadow(-12px 0 17px rgba(0,0,0,.35))
+}
+.hz-page .hz-ending-reveal::after{
+ content:"";position:absolute;inset:0;pointer-events:none;
+ background:linear-gradient(180deg,rgba(7,28,38,.08),rgba(7,28,38,.34)),radial-gradient(circle at 50% 43%,transparent 20%,rgba(7,28,38,.35) 88%)
+}
+.hz-page .hz-ending-reveal img{opacity:.72!important;filter:saturate(.88) contrast(1.04) brightness(.94)}
+.hz-page .hz-ending-final{z-index:10!important}
+
+@media(max-width:900px){
+ .hz-page .tt-stage>.tt-pose-layer--opening,
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-layer{clip-path:inset(3.5% 4.5% 3% 4.5% round 1px)!important}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor,
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor{width:30%!important;max-height:84%!important}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--woman,
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--woman{left:13%!important}
+ .hz-page .tt-stage>.tt-pose-layer--opening .tt-pose-actor--scribe,
+ .hz-page .tt-transition[data-shadow-scene] .tt-pose-actor--scribe{right:13%!important}
+ .hz-page .hz-puppet-craft-layer{inset:2.5% 3.5% 2%}
+ .hz-page .hz-stage-jade-aura{width:48%;height:73%}
+ .hz-page .hz-stage-lantern-core{top:3%}
+ .hz-page .hz-ending-master-craft{inset:3% 4.5% 3%}
+ .hz-page .hz-ending-jade-arch{width:51%;height:76%}
+ .hz-page .tt-ending-theatre-puppet{width:29%!important;max-height:82%!important}
+ .hz-page .tt-ending-theatre-puppet--woman{left:13%!important}
+ .hz-page .tt-ending-theatre-puppet--scribe{right:13%!important}
+ .hz-page .hz-ending-lantern-node--one{left:15%}.hz-page .hz-ending-lantern-node--three{right:15%}
+}
+@media(prefers-reduced-motion:reduce){
+ .hz-page .hz-puppet-craft-layer,.hz-page .hz-ending-master-craft{opacity:1!important}
+ .hz-page .hz-stage-jade-aura,.hz-page .hz-stage-lantern-core,.hz-page .hz-stage-lantern-orbit,
+ .hz-page .hz-stage-guxiu-thread,.hz-page .hz-ending-jade-arch,.hz-page .hz-ending-paper-canopy,
+ .hz-page .hz-ending-lantern-node,.hz-page .hz-ending-guxiu-vine{opacity:.78!important;transform:none!important}
+}
+
+
+/* v13 — readable hero art, jade/paper puppet ornaments, ambient Haipai craft corners */
+.hz-page .hz-ambient-crafts{position:fixed;z-index:0;inset:0;overflow:hidden;pointer-events:none}
+.hz-page .hz-ambient-craft{position:absolute;display:block;background-repeat:no-repeat;background-size:cover;opacity:.2;filter:saturate(.86) contrast(1.04)}
+.hz-page .hz-ambient-craft--guxiu{left:-5rem;top:10%;width:min(34vw,430px);aspect-ratio:1;background-image:linear-gradient(90deg,transparent 8%,rgba(245,235,211,.05)),url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp");background-position:12% 48%;clip-path:ellipse(43% 46% at 45% 50%)}
+.hz-page .hz-ambient-craft--rongxiu{right:-8rem;top:34%;width:min(40vw,520px);aspect-ratio:1;background-image:linear-gradient(rgba(6,31,41,.08),rgba(6,31,41,.08)),url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp");background-position:86% 72%;clip-path:ellipse(47% 42% at 52% 50%);filter:saturate(.8) contrast(1.08) blur(.2px)}
+.hz-page .hz-ambient-craft--jade{left:-7rem;bottom:13%;width:min(38vw,470px);aspect-ratio:1;background-image:url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp");background-position:35% 48%;clip-path:ellipse(36% 49% at 50% 50%);filter:hue-rotate(10deg) saturate(.66) brightness(1.08);opacity:.18}
+.hz-page .hz-ambient-craft--lantern{right:1.5%;bottom:5%;width:min(22vw,250px);aspect-ratio:1;background-image:url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp");background-position:63% 41%;clip-path:circle(37% at 50% 50%);filter:saturate(1.08) brightness(1.08);opacity:.22}
+.hz-page>main,.hz-page>.tt-opening,.hz-page>.tt-topbar,.hz-page>.hz-lantern-rail{position:relative;z-index:1}
+
+.hz-page .hz-stage-paper-wing{position:absolute;z-index:3;top:0;width:33%;height:24%;background:url("./art/huang-ziche-shanghai-papercut-curtain-20260829.png") center top/cover no-repeat;opacity:.72;filter:saturate(.78) brightness(.95);transform-origin:top center}
+.hz-page .hz-stage-paper-wing--left{left:0}
+.hz-page .hz-stage-paper-wing--right{right:0;transform:scaleX(-1)}
+.hz-page .hz-stage-jade-medallion{position:absolute;z-index:4;top:12%;width:clamp(22px,3.6vw,48px);aspect-ratio:1;border:2px double rgba(214,237,220,.72);border-radius:48% 52% 46% 54%;background:radial-gradient(circle at 35% 28%,rgba(244,251,232,.72),rgba(105,171,151,.46) 42%,rgba(24,77,74,.2) 70%);box-shadow:inset 0 0 12px rgba(242,252,231,.5),0 0 18px rgba(141,211,185,.22)}
+.hz-page .hz-stage-jade-medallion::after{content:"";position:absolute;inset:24%;border:1px solid rgba(236,244,214,.7);border-radius:50%;box-shadow:0 0 8px rgba(232,246,219,.4)}
+.hz-page .hz-stage-jade-medallion--left{left:7%}
+.hz-page .hz-stage-jade-medallion--right{right:7%}
+
+.hz-page .hz-social-poster figure{display:block!important;width:min(100%,36rem)!important;aspect-ratio:3/2!important;min-height:clamp(210px,58vw,390px)!important;overflow:hidden!important;background:#071c26!important;border:1px solid rgba(213,164,79,.42)!important}
+.hz-page .hz-social-poster figure img{display:block!important;width:100%!important;height:100%!important;min-height:100%!important;object-fit:cover!important;object-position:center!important;opacity:1!important;visibility:visible!important}
+
+.hz-page .tt-ending-theatre{isolation:isolate}
+.hz-page .hz-ending-reveal{position:absolute!important;z-index:8!important;inset:0!important;width:100%!important;height:100%!important;min-height:100%!important;margin:0!important;overflow:hidden!important;background:#071c26!important}
+.hz-page .hz-ending-reveal img{display:block!important;width:100%!important;height:100%!important;max-width:none!important;object-fit:cover!important;object-position:center 45%!important;opacity:.58!important;visibility:visible!important}
+.hz-page .tt-ending-copy{position:relative;isolation:isolate;overflow:hidden}
+.hz-page .tt-ending-copy::before{content:"";position:absolute;z-index:-2;inset:-1rem;background:linear-gradient(90deg,rgba(3,20,28,.9),rgba(3,20,28,.48) 52%,rgba(3,20,28,.82)),url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp") center 42%/cover no-repeat;opacity:.42;filter:saturate(.82) contrast(1.06)}
+.hz-page .tt-ending-copy::after{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(180deg,rgba(3,20,28,.28),rgba(3,20,28,.72))}
+.hz-page .tt-ending-copy>*{position:relative;z-index:1}
+
+@media(max-width:900px){
+ .hz-page .hz-ambient-craft{opacity:.16}
+ .hz-page .hz-ambient-craft--guxiu{left:-8rem;top:12%;width:78vw}
+ .hz-page .hz-ambient-craft--rongxiu{right:-10rem;top:42%;width:88vw}
+ .hz-page .hz-ambient-craft--jade{left:-9rem;bottom:19%;width:82vw}
+ .hz-page .hz-ambient-craft--lantern{right:-2rem;bottom:4%;width:48vw;opacity:.2}
+ .hz-page .hz-stage-paper-wing{width:38%;height:22%}
+ .hz-page .hz-stage-jade-medallion{top:11%;width:26px}
+ .hz-page .hz-social-poster figure{min-height:230px!important;aspect-ratio:3/2!important}
+ .hz-page .tt-ending-copy::before{inset:0;background-position:58% center;opacity:.5}
+ .hz-page .hz-ending-reveal img{object-position:center!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .hz-page .hz-stage-paper-wing,.hz-page .hz-stage-jade-medallion{opacity:.74!important;transform:none!important;filter:none!important}
+}
+
+
+/* v14 — supplied Huang Ziche key visual, opening audio control and refined theatre motion */
+.hz-page .hz-case-key-visual{position:relative;padding:clamp(2.2rem,6vw,6rem) 0;background:linear-gradient(180deg,#061b25,#0b3038);overflow:hidden;isolation:isolate}
+.hz-page .hz-case-key-visual::before{content:"";position:absolute;z-index:-2;inset:-12%;background:linear-gradient(90deg,rgba(3,22,30,.92),rgba(3,22,30,.55),rgba(3,22,30,.9)),url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp") center 52%/cover no-repeat;filter:blur(8px) saturate(.84);opacity:.48;transform:scale(1.05)}
+.hz-page .hz-case-key-visual-grid{display:grid;grid-template-columns:minmax(280px,.72fr) minmax(0,1fr);align-items:center;gap:clamp(2rem,7vw,7rem)}
+.hz-page .hz-case-key-visual figure{margin:0;max-width:36rem;justify-self:center;filter:drop-shadow(0 28px 55px rgba(0,0,0,.42))}
+.hz-page .hz-case-key-visual img{display:block;width:100%;height:auto;aspect-ratio:1229/1536;object-fit:cover;border:1px solid rgba(216,172,93,.46);background:#051d27}
+.hz-page .hz-case-key-visual-copy small{color:#d7aa61;font-weight:800;letter-spacing:.18em}
+.hz-page .hz-case-key-visual-copy h2{margin:.55rem 0 1.2rem;color:#f2ead9;font-size:clamp(2rem,5vw,4.5rem);line-height:1.12;text-wrap:balance}
+.hz-page .hz-case-key-visual-copy p{max-width:42rem;margin:.8rem 0;color:rgba(243,236,220,.86);font-size:clamp(1rem,1.55vw,1.2rem);line-height:1.9}
+.hz-page .hz-case-key-visual-note{display:block;margin-top:1.35rem;padding-left:1rem;border-left:3px solid #a43c34;color:#d9c7a3!important}
+
+.hz-page .hz-opening-audio{display:inline-flex!important;align-items:center;justify-content:center;gap:.5rem;min-height:46px;padding:.68rem 1.05rem!important;border:1px solid rgba(218,175,93,.62)!important;border-radius:999px!important;background:rgba(5,29,39,.82)!important;color:#f3ead7!important;font-weight:800!important}
+.hz-page .hz-opening-audio::before{content:"♫";color:#e2b35f;font-size:1.1rem}
+.hz-page .hz-opening-audio[aria-pressed="true"]{box-shadow:0 0 22px rgba(226,179,95,.24);background:rgba(37,83,79,.88)!important}
+
+.hz-page .tt-ending-copy::before{background-image:linear-gradient(90deg,rgba(3,20,28,.88),rgba(3,20,28,.44) 52%,rgba(3,20,28,.82)),url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp")!important;background-position:center 52%!important;background-size:cover!important;opacity:.58!important;filter:saturate(.82) contrast(1.08)!important}
+.hz-page .tt-ending-copy::after{background:linear-gradient(180deg,rgba(3,20,28,.28),rgba(3,20,28,.64))!important}
+.hz-page .hz-ending-reveal img{object-position:center 52%!important}
+.hz-page .hz-ambient-craft{will-change:transform,opacity}
+.hz-page .hz-stage-paper-wing,.hz-page .hz-stage-jade-medallion,.hz-page .hz-stage-lantern-core,.hz-page .hz-stage-guxiu-thread{will-change:transform,opacity,filter}
+
+@media(max-width:900px){
+ .hz-page .hz-case-key-visual{padding:2.2rem 0 3rem}
+ .hz-page .hz-case-key-visual-grid{grid-template-columns:1fr;gap:1.5rem}
+ .hz-page .hz-case-key-visual figure{width:min(88vw,29rem)}
+ .hz-page .hz-case-key-visual-copy{text-align:left}
+ .hz-page .hz-case-key-visual-copy h2{font-size:clamp(1.8rem,8vw,2.8rem)}
+ .hz-page .tt-opening-controls{align-items:center}
+ .hz-page .hz-opening-audio{width:auto!important;min-width:138px}
+ .hz-page .tt-ending-copy::before{background-position:center 48%!important;opacity:.54!important}
+ .hz-page .tt-ending-copy{padding-top:clamp(3rem,10vw,5rem)!important;padding-bottom:clamp(5rem,16vw,8rem)!important}
+}
+
+
+/* v15 — six distinct Haipai puppet plays and a visible Gu-embroidery ending layer */
+.hz-page .hz-stage-guxiu-art{position:absolute;z-index:0;inset:4% 3%;background-image:linear-gradient(rgba(6,27,36,.25),rgba(6,27,36,.44)),url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp");background-size:cover;background-repeat:no-repeat;opacity:.6;filter:saturate(.76) contrast(1.08)}
+.hz-page .hz-stage-paper-filigree{position:absolute;z-index:3;left:50%;top:3%;width:38%;height:22%;transform:translateX(-50%);background:url("./art/huang-ziche-shanghai-papercut-curtain-20260829.png") center top/cover no-repeat;opacity:.74;filter:sepia(.2) saturate(.72) brightness(1.08);transform-origin:50% 0}
+.hz-page .hz-stage-lantern-beads{position:absolute;z-index:5;left:50%;top:23%;display:flex;gap:clamp(8px,1.6vw,22px);transform:translateX(-50%)}
+.hz-page .hz-stage-lantern-beads i{display:block;width:clamp(7px,1vw,13px);aspect-ratio:1;border:1px solid rgba(237,195,111,.68);border-radius:50%;background:radial-gradient(circle,#fff1bd 0 12%,#d9a14d 28%,rgba(154,79,35,.4) 62%,transparent 65%);box-shadow:0 0 10px rgba(227,168,75,.48)}
+.hz-page .hz-puppet-craft-layer::after{content:"";position:absolute;z-index:0;inset:0;pointer-events:none;border:1px solid rgba(213,174,97,.16);box-shadow:inset 0 0 42px rgba(8,37,44,.4)}
+
+/* 00 — jade doorway and centred lantern */
+.hz-page .hz-craft-scene-0 .hz-stage-guxiu-art{background-position:50% 46%;opacity:.48}
+.hz-page .hz-craft-scene-0 .hz-stage-jade-aura{width:48%;height:78%;border-radius:48% 48% 9% 9%/19% 19% 7% 7%}
+.hz-page .hz-craft-scene-0 .hz-stage-paper-wing{width:29%;height:20%}
+.hz-page .hz-craft-scene-0 .hz-stage-lantern-core{top:7%}
+
+/* 01 — asymmetrical paper magnolia */
+.hz-page .hz-craft-scene-1 .hz-stage-guxiu-art{background-position:15% 73%;opacity:.64;mix-blend-mode:screen}
+.hz-page .hz-craft-scene-1 .hz-stage-paper-wing--left{width:46%;height:31%;transform:rotate(-4deg)}
+.hz-page .hz-craft-scene-1 .hz-stage-paper-wing--right{width:25%;height:19%;transform:scaleX(-1) rotate(-7deg);opacity:.52}
+.hz-page .hz-craft-scene-1 .hz-stage-jade-aura{left:42%;top:14%;width:35%;height:63%;border-radius:42% 58% 16% 11%}
+.hz-page .hz-craft-scene-1 .hz-stage-lantern-core{left:68%;top:12%}
+.hz-page .hz-craft-scene-1 .hz-stage-lantern-orbit{left:68%;top:8%;width:28%}
+
+/* 02 — moon disc and paired jade seals */
+.hz-page .hz-craft-scene-2 .hz-stage-guxiu-art{background-position:84% 17%;filter:saturate(.62) brightness(.9);opacity:.54}
+.hz-page .hz-craft-scene-2 .hz-stage-jade-aura{top:15%;width:36%;height:58%;border-radius:50%;border-width:5px}
+.hz-page .hz-craft-scene-2 .hz-stage-paper-filigree{width:24%;height:17%;border-radius:50%;filter:sepia(.6) brightness(1.15)}
+.hz-page .hz-craft-scene-2 .hz-stage-jade-medallion--left{left:22%;top:24%}
+.hz-page .hz-craft-scene-2 .hz-stage-jade-medallion--right{right:22%;top:24%}
+.hz-page .hz-craft-scene-2 .hz-stage-lantern-core{top:30%;width:clamp(28px,4.2vw,55px)}
+
+/* 03 — river-thread lantern procession */
+.hz-page .hz-craft-scene-3 .hz-stage-guxiu-art{background-position:50% 87%;opacity:.72}
+.hz-page .hz-craft-scene-3 .hz-stage-guxiu-thread--one{top:48%;transform:rotate(5deg)}
+.hz-page .hz-craft-scene-3 .hz-stage-guxiu-thread--two{top:61%;transform:rotate(-4deg)}
+.hz-page .hz-craft-scene-3 .hz-stage-guxiu-thread--three{top:75%;transform:rotate(6deg)}
+.hz-page .hz-craft-scene-3 .hz-stage-lantern-core{left:27%;top:16%}
+.hz-page .hz-craft-scene-3 .hz-stage-lantern-orbit{left:27%;top:10%;width:31%}
+.hz-page .hz-craft-scene-3 .hz-stage-lantern-beads{left:72%;top:18%;flex-direction:column}
+
+/* 04 — embroidered birds crossing the gate */
+.hz-page .hz-craft-scene-4 .hz-stage-guxiu-art{background-position:85% 5%;opacity:.78;mix-blend-mode:screen}
+.hz-page .hz-craft-scene-4 .hz-stage-jade-aura{left:58%;top:10%;width:38%;height:69%;border-radius:56% 44% 13% 13%}
+.hz-page .hz-craft-scene-4 .hz-stage-paper-filigree{left:31%;top:8%;width:32%;transform:rotate(-9deg)}
+.hz-page .hz-craft-scene-4 .hz-stage-lantern-core{left:76%;top:12%}
+.hz-page .hz-craft-scene-4 .hz-stage-lantern-beads{left:31%;top:28%;transform:rotate(-12deg)}
+
+/* 05 — open jade door and descending paper curtain */
+.hz-page .hz-craft-scene-5 .hz-stage-guxiu-art{background-position:50% 54%;opacity:.58}
+.hz-page .hz-craft-scene-5 .hz-stage-jade-aura{top:6%;width:56%;height:83%;border-width:7px;border-radius:44% 44% 8% 8%/17% 17% 6% 6%;box-shadow:inset 0 0 38px rgba(229,248,226,.34),0 0 38px rgba(111,199,173,.28)}
+.hz-page .hz-craft-scene-5 .hz-stage-paper-wing{width:42%;height:34%}
+.hz-page .hz-craft-scene-5 .hz-stage-paper-filigree{top:0;width:45%;height:26%}
+.hz-page .hz-craft-scene-5 .hz-stage-lantern-core{top:4%}
+.hz-page .hz-craft-scene-5 .hz-stage-lantern-beads{top:19%}
+
+.hz-page .hz-ending-guxiu-overlay{position:absolute;z-index:0;inset:0;overflow:hidden;pointer-events:none;opacity:.88}
+.hz-page .hz-ending-guxiu-art{position:absolute;display:block;background-image:url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp");background-size:clamp(560px,92vw,1120px) auto;background-repeat:no-repeat;mix-blend-mode:screen;filter:saturate(.68) brightness(1.18) contrast(1.08)}
+.hz-page .hz-ending-guxiu-art--magnolia{left:-7%;bottom:-5%;width:48%;height:58%;background-position:left bottom;opacity:.7}
+.hz-page .hz-ending-guxiu-art--birds{right:-8%;top:2%;width:46%;height:43%;background-position:right top;opacity:.62}
+.hz-page .hz-ending-guxiu-threadwork{position:absolute;left:2%;right:2%;bottom:8%;height:22%;border-bottom:2px solid rgba(224,197,139,.32);border-radius:50%;box-shadow:0 10px 24px rgba(219,173,89,.1);transform:rotate(-2deg)}
+.hz-page .tt-ending-copy>*:not(.hz-ending-guxiu-overlay){position:relative;z-index:2}
+.hz-page .tt-ending-copy::before{opacity:.46!important}
+
+@media(max-width:900px){
+ .hz-page .hz-stage-guxiu-art{inset:3% 2%;opacity:.54}
+ .hz-page .hz-stage-paper-filigree{width:42%;height:19%}
+ .hz-page .hz-stage-lantern-beads{top:25%}
+ .hz-page .hz-craft-scene-1 .hz-stage-lantern-core{left:67%}
+ .hz-page .hz-craft-scene-3 .hz-stage-lantern-core{left:29%}
+ .hz-page .hz-ending-guxiu-overlay{opacity:.96}
+ .hz-page .hz-ending-guxiu-art{background-size:760px auto}
+ .hz-page .hz-ending-guxiu-art--magnolia{left:-22%;bottom:-2%;width:70%;height:53%;opacity:.66}
+ .hz-page .hz-ending-guxiu-art--birds{right:-24%;top:0;width:70%;height:38%;opacity:.58}
+}
+@media(prefers-reduced-motion:reduce){
+ .hz-page .hz-stage-guxiu-art,.hz-page .hz-stage-paper-filigree,.hz-page .hz-stage-lantern-beads i,.hz-page .hz-ending-guxiu-overlay{opacity:.72!important;transform:none!important}
+}
+
+
+/* v16 — textless stage/background art; preserve the supplied poster only as foreground editorial art */
+.hz-page .hz-stage-guxiu-art,
+.hz-page .hz-ending-guxiu-art,
+.hz-page .hz-ambient-craft,
+.hz-page .tt-ending-copy::before,
+.hz-page .hz-case-key-visual::before{background-image:linear-gradient(rgba(4,25,33,.12),rgba(4,25,33,.32)),url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp")!important}
+.hz-page .hz-stage-guxiu-art{background-size:cover!important}
+.hz-page .tt-ending-copy::before{background-image:linear-gradient(90deg,rgba(3,20,28,.86),rgba(3,20,28,.43) 52%,rgba(3,20,28,.8)),url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp")!important;background-position:center 52%!important}
+.hz-page .hz-ending-guxiu-art{background-image:url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp")!important;background-size:clamp(650px,100vw,1280px) auto!important}
+.hz-page .hz-ending-guxiu-art--magnolia{background-position:left bottom!important}
+.hz-page .hz-ending-guxiu-art--birds{background-position:right top!important}
+.hz-page .hz-case-key-visual::before{background-size:cover!important;background-position:center!important}
+
+
+/* v17 — remove synthetic geometry; use photographed-material Haipai stage art */
+.hz-page .hz-stage-jade-medallion,
+.hz-page .hz-stage-lantern-orbit,
+.hz-page .hz-stage-lantern-beads,
+.hz-page .hz-stage-lantern-core{display:none!important}
+.hz-page .hz-stage-jade-aura{border:0!important;background:radial-gradient(ellipse at 50% 46%,rgba(225,239,214,.16),rgba(129,176,157,.07) 44%,transparent 72%)!important;box-shadow:none!important;filter:none!important;opacity:.26!important}
+.hz-page .hz-stage-paper-wing{opacity:.42!important;filter:sepia(.18) saturate(.58) brightness(.88)!important;mix-blend-mode:screen}
+.hz-page .hz-stage-paper-filigree{opacity:.34!important;filter:sepia(.22) saturate(.52) brightness(.92)!important;mix-blend-mode:screen}
+.hz-page .hz-stage-guxiu-art{inset:0!important;background-image:linear-gradient(180deg,rgba(4,21,28,.05),rgba(4,21,28,.22)),url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp")!important;background-size:cover!important;background-position:center!important;opacity:.9!important;mix-blend-mode:normal!important;filter:saturate(.88) contrast(1.03) brightness(.9)!important}
+.hz-page .hz-puppet-craft-layer::after{border:0!important;box-shadow:inset 0 0 54px rgba(3,18,25,.48)!important}
+.hz-page .hz-stage-guxiu-thread{opacity:.28!important;filter:none!important}
+.hz-page .hz-craft-scene-0 .hz-stage-guxiu-art{background-position:center 46%!important}
+.hz-page .hz-craft-scene-1 .hz-stage-guxiu-art{background-position:38% 52%!important}
+.hz-page .hz-craft-scene-2 .hz-stage-guxiu-art{background-position:62% 48%!important}
+.hz-page .hz-craft-scene-3 .hz-stage-guxiu-art{background-position:44% 58%!important}
+.hz-page .hz-craft-scene-4 .hz-stage-guxiu-art{background-position:57% 43%!important}
+.hz-page .hz-craft-scene-5 .hz-stage-guxiu-art{background-position:center 54%!important}
+.hz-page .hz-ending-guxiu-art,
+.hz-page .hz-ambient-craft,
+.hz-page .tt-ending-copy::before,
+.hz-page .hz-case-key-visual::before{background-image:linear-gradient(rgba(4,25,33,.12),rgba(4,25,33,.32)),url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp")!important}
+.hz-page .hz-ending-guxiu-art{background-image:url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp")!important}
+@media(max-width:900px){
+ .hz-page .hz-stage-paper-wing{opacity:.34!important}
+ .hz-page .hz-stage-paper-filigree{opacity:.28!important}
+ .hz-page .hz-stage-jade-aura{opacity:.2!important}
+ .hz-page .hz-stage-guxiu-thread{opacity:.22!important}
+}
+
+
+/* v18 — locale-matched poster finale with a visibly new, material-led GSAP sequence */
+.hz-page .hz-ending-master-craft{
+ inset:0!important;
+ z-index:12!important;
+ overflow:hidden!important;
+ background:#061923;
+}
+.hz-page .hz-ending-stage-backdrop{
+ position:absolute;
+ z-index:0;
+ inset:0;
+ display:block;
+ background:
+  linear-gradient(180deg,rgba(4,19,26,.1),rgba(4,19,26,.34)),
+  url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp") center/cover no-repeat;
+ opacity:0;
+ transform:scale(1.08);
+ filter:saturate(.88) brightness(.82) contrast(1.06);
+}
+.hz-page .hz-ending-jade-arch{
+ z-index:2!important;
+ left:50%!important;
+ top:13%!important;
+ width:49%!important;
+ height:70%!important;
+ border:0!important;
+ border-radius:48% 48% 8% 8%/22% 22% 7% 7%!important;
+ background:radial-gradient(ellipse at 50% 49%,rgba(255,241,184,.32),rgba(206,232,211,.14) 42%,transparent 70%)!important;
+ box-shadow:0 0 62px rgba(180,221,199,.12)!important;
+ mix-blend-mode:screen;
+ filter:blur(.2px);
+}
+.hz-page .hz-ending-paper-canopy{
+ z-index:5!important;
+ inset:-2% 10% auto!important;
+ height:31%!important;
+ background:
+  linear-gradient(180deg,rgba(85,18,24,.38),transparent 91%),
+  url("./art/huang-ziche-shanghai-papercut-curtain-20260829.png") center top/100% 100% no-repeat!important;
+ opacity:0;
+ filter:sepia(.18) saturate(.68) brightness(.88) drop-shadow(0 10px 13px rgba(16,5,8,.42))!important;
+}
+.hz-page .hz-ending-paper-panel{
+ position:absolute;
+ z-index:4;
+ top:0;
+ bottom:0;
+ width:38%;
+ display:block;
+ background:
+  linear-gradient(90deg,rgba(74,20,28,.18),transparent),
+  url("./art/huang-ziche-shanghai-papercut-curtain-20260829.png") center/cover no-repeat;
+ opacity:0;
+ filter:sepia(.2) saturate(.62) brightness(.8) drop-shadow(0 0 18px rgba(11,4,6,.42));
+ mix-blend-mode:screen;
+}
+.hz-page .hz-ending-paper-panel--left{left:-5%;transform-origin:0 50%;clip-path:polygon(0 0,100% 0,79% 100%,0 100%)}
+.hz-page .hz-ending-paper-panel--right{right:-5%;transform-origin:100% 50%;transform:scaleX(-1);clip-path:polygon(0 0,100% 0,100% 100%,21% 100%)}
+.hz-page .hz-ending-lantern-node{
+ z-index:6!important;
+ width:clamp(44px,6.4vw,86px)!important;
+ border:0!important;
+ border-radius:50%!important;
+ background:radial-gradient(circle,rgba(255,232,169,.42) 0 9%,rgba(222,163,78,.16) 31%,transparent 69%)!important;
+ box-shadow:0 0 28px rgba(231,177,83,.18)!important;
+ mix-blend-mode:screen;
+}
+.hz-page .hz-ending-lantern-node::before{display:none!important}
+.hz-page .hz-ending-lantern-node--one{left:1.6%!important;top:18%!important}
+.hz-page .hz-ending-lantern-node--two{left:auto!important;right:1.6%!important;top:18%!important;transform:none!important}
+.hz-page .hz-ending-lantern-node--three{left:1.6%!important;top:55%!important}
+.hz-page .hz-ending-lantern-node--four{right:1.6%!important;top:55%!important}
+.hz-page .hz-ending-guxiu-vine{
+ z-index:3!important;
+ bottom:0!important;
+ width:43%!important;
+ height:64%!important;
+ background-image:url("./art/huang-ziche-haipai-stage-backdrop-clean-20260830.webp")!important;
+ background-size:233% auto!important;
+ background-repeat:no-repeat!important;
+ box-shadow:none!important;
+ opacity:0;
+ -webkit-mask-image:linear-gradient(90deg,#000 0 70%,transparent 100%);
+ mask-image:linear-gradient(90deg,#000 0 70%,transparent 100%);
+}
+.hz-page .hz-ending-guxiu-vine::before,
+.hz-page .hz-ending-guxiu-vine::after{display:none!important}
+.hz-page .hz-ending-guxiu-vine--one{left:0!important;background-position:left bottom!important;transform:none!important;transform-origin:0 70%!important}
+.hz-page .hz-ending-guxiu-vine--two{right:0!important;background-position:right bottom!important;transform:scaleX(-1)!important;transform-origin:100% 70%!important}
+.hz-page .tt-ending-theatre-puppet{z-index:13!important}
+.hz-page .hz-ending-curtain{z-index:16!important}
+.hz-page .hz-ending-reveal{
+ z-index:17!important;
+ display:grid!important;
+ place-items:center!important;
+ background:#061923!important;
+}
+.hz-page .hz-ending-reveal img{
+ position:absolute!important;
+ inset:0!important;
+ width:100%!important;
+ height:100%!important;
+ max-width:none!important;
+ visibility:visible!important;
+}
+.hz-page .hz-ending-reveal .hz-ending-reveal-backdrop{
+ z-index:0!important;
+ object-fit:cover!important;
+ object-position:center!important;
+ opacity:.28!important;
+ filter:blur(16px) saturate(.72) brightness(.7)!important;
+ transform:scale(1.13);
+}
+.hz-page .hz-ending-reveal .hz-ending-reveal-poster{
+ z-index:1!important;
+ object-fit:contain!important;
+ object-position:center!important;
+ opacity:.78!important;
+ filter:saturate(.88) contrast(1.04) brightness(.92) drop-shadow(0 0 34px rgba(0,0,0,.46))!important;
+ transform:scale(1.08);
+}
+.hz-page .hz-ending-reveal::after{
+ z-index:2!important;
+ background:
+  radial-gradient(ellipse at 50% 50%,transparent 28%,rgba(4,19,26,.26) 76%,rgba(4,19,26,.72)),
+  linear-gradient(180deg,rgba(4,19,26,.04),rgba(4,19,26,.34))!important;
+}
+.hz-page .hz-ending-final{z-index:18!important}
+.hz-page .hz-ending-copy-poster{
+ position:absolute!important;
+ z-index:0!important;
+ inset:0!important;
+ margin:0!important;
+ display:grid!important;
+ place-items:center!important;
+ overflow:hidden!important;
+ pointer-events:none!important;
+ opacity:.2!important;
+}
+.hz-page .hz-ending-copy-poster img{
+ display:block;
+ width:100%;
+ height:100%;
+ object-fit:contain;
+ object-position:center;
+ filter:saturate(.68) brightness(.68) contrast(1.06);
+}
+.hz-page .tt-ending-copy>.hz-ending-guxiu-overlay{z-index:1!important}
+.hz-page .tt-ending-copy>*:not(.hz-ending-guxiu-overlay):not(.hz-ending-copy-poster){
+ position:relative!important;
+ z-index:3!important;
+}
+.hz-page .tt-ending-copy::before{opacity:.32!important}
+.hz-page .tt-ending-copy::after{z-index:2!important;background:linear-gradient(90deg,rgba(3,20,28,.78),rgba(3,20,28,.52) 52%,rgba(3,20,28,.76))!important}
+
+@media(max-width:900px){
+ .hz-page .hz-ending-stage-backdrop{background-position:center!important}
+ .hz-page .hz-ending-jade-arch{top:14%!important;width:57%!important;height:68%!important}
+ .hz-page .hz-ending-paper-canopy{inset:-2% 3% auto!important;height:29%!important}
+ .hz-page .hz-ending-paper-panel{width:48%}
+ .hz-page .hz-ending-lantern-node{width:48px!important}
+ .hz-page .hz-ending-lantern-node--one,.hz-page .hz-ending-lantern-node--three{left:.5%!important}
+ .hz-page .hz-ending-lantern-node--two,.hz-page .hz-ending-lantern-node--four{right:.5%!important}
+ .hz-page .hz-ending-guxiu-vine{width:51%!important;height:57%!important}
+ .hz-page .hz-ending-reveal .hz-ending-reveal-poster{opacity:.84!important}
+ .hz-page .hz-ending-copy-poster{opacity:.16!important}
+ .hz-page .hz-ending-copy-poster img{object-fit:cover;object-position:center}
+}
+@media(prefers-reduced-motion:reduce){
+ .hz-page .hz-ending-stage-backdrop,
+ .hz-page .hz-ending-paper-canopy,
+ .hz-page .hz-ending-paper-panel,
+ .hz-page .hz-ending-jade-arch,
+ .hz-page .hz-ending-lantern-node,
+ .hz-page .hz-ending-guxiu-vine,
+ .hz-page .hz-ending-reveal,
+ .hz-page .hz-ending-final{opacity:1!important;transform:none!important}
+ .hz-page .hz-ending-reveal .hz-ending-reveal-poster{transform:none!important}
+}
+
+.hz-page .hz-case-key-visual img{height:auto!important;aspect-ratio:auto!important;object-fit:contain!important}
+.hz-page .hz-case-key-visual img.hz-key-visual--textless{aspect-ratio:16/9!important;object-fit:cover!important}
+.hz-page .hz-social-poster figure{aspect-ratio:auto!important;min-height:0!important;overflow:visible!important;background:transparent!important}
+.hz-page .hz-social-poster figure img{height:auto!important;min-height:0!important;object-fit:contain!important}

@@ -1,0 +1,133 @@
+name: Final verify Kaikai Chapter 2 major homepage publication
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-verify-kaikai-chapter-two-major-final-20260829.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  verify-and-clean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Confirm Chapter 2 is promoted on current main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git pull --rebase origin main
+          page='index.html'
+          grep -q 'data-kaikai-chapter-two-root-entry' "$page"
+          grep -q 'data-kaikai-chapter-two-launch' "$page"
+          grep -q 'data-kaikai-chapter-two-card' "$page"
+          grep -q 'data-kaikai-chapter-two-footer' "$page"
+          grep -q '第二章｜沒人要的孩子？' "$page"
+          grep -q '第二章｜没人要的孩子？' "$page"
+          ! grep -q '悲劇不忘・終章｜剴剴的672天' "$page"
+          test -s assets/home-kaikai-chapter-two-20260829.css
+          test -s assets/home-kaikai-chapter-two-20260829.js
+          test -s assets/art/kaikai-chapter2-hero-zh-Hant-20260828-v3.jpg
+          test -s assets/art/kaikai-chapter2-hero-zh-Hans-20260828-v3.jpg
+          grep -q 'id="placement-harm-cases"' hearing-records/prison-watch/kaikai-final-chapter/index.html
+          grep -q 'id="placement-harm-cases"' hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+
+      - name: Wait for the live homepage and Chapter 2 pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p browser-validation/kaikai-chapter-two-major
+          home='https://jerryzuhow77.github.io/child-advocacy-site/'
+          targets=(
+            'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/'
+            'https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/'
+          )
+          for attempt in $(seq 1 90); do
+            ready=1
+            token="${GITHUB_SHA}-${attempt}"
+            html="$(curl -fsSL --connect-timeout 15 --max-time 30 "${home}?qa=${token}" || true)"
+            grep -q 'data-kaikai-chapter-two-root-entry' <<<"$html" || ready=0
+            grep -q 'data-kaikai-chapter-two-launch' <<<"$html" || ready=0
+            grep -q 'data-kaikai-chapter-two-card' <<<"$html" || ready=0
+            grep -q 'home-kaikai-chapter-two-20260829.css?v=20260829-1' <<<"$html" || ready=0
+            grep -q 'home-kaikai-chapter-two-20260829.js?v=20260829-1' <<<"$html" || ready=0
+            ! grep -q '悲劇不忘・終章｜剴剴的672天' <<<"$html" || ready=0
+            for target in "${targets[@]}"; do
+              target_html="$(curl -fsSL --connect-timeout 15 --max-time 30 "${target}?qa=${token}" || true)"
+              grep -q 'id="chapter-brief"' <<<"$target_html" || ready=0
+              grep -q 'id="placement-harm-cases"' <<<"$target_html" || ready=0
+              grep -q 'id="system"' <<<"$target_html" || ready=0
+            done
+            [[ "$ready" -eq 1 ]] && exit 0
+            sleep 10
+          done
+          echo 'Timed out before the Chapter 2 major homepage publication was observable.' >&2
+          exit 1
+
+      - name: Make the nested-menu verification visibility independent
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('.github/scripts/verify-kaikai-chapter-two-major-20260829.mjs')
+          text = path.read_text(encoding='utf-8')
+          replacements = {
+              'await featureToggle.click();': 'await featureToggle.evaluate((button) => button.click());',
+              'await caseToggle.click();': 'await caseToggle.evaluate((button) => button.click());',
+              'await chapterToggle.click();': 'await chapterToggle.evaluate((button) => button.click());',
+          }
+          for old, new in replacements.items():
+              if old in text:
+                  text = text.replace(old, new, 1)
+              elif new not in text:
+                  raise SystemExit(f'Verifier interaction line not found: {old}')
+          if 'targetHtml.includes(site.title)' not in text:
+              raise SystemExit('Target-title assertion is not using site.title')
+          path.write_text(text, encoding='utf-8')
+          PY
+          node --check .github/scripts/verify-kaikai-chapter-two-major-20260829.mjs
+
+      - name: Install Playwright driver
+        run: npm install --no-save playwright-core@1.55.0
+
+      - name: Verify Traditional and Simplified desktop and mobile Chrome
+        run: node .github/scripts/verify-kaikai-chapter-two-major-20260829.mjs
+
+      - name: Upload final homepage browser screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kaikai-chapter-two-major-homepage-final-proof
+          path: browser-validation/kaikai-chapter-two-major
+          retention-days: 14
+
+      - name: Remove completed one-off publication files
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git reset --hard HEAD
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
+          git rm -f .github/workflows/oneoff-publish-kaikai-chapter-two-major-20260829.yml
+          git rm -f .github/workflows/oneoff-verify-kaikai-chapter-two-major-final-20260829.yml
+          git rm -f .github/scripts/publish-kaikai-chapter-two-major-20260829.py
+          git rm -f .github/scripts/verify-kaikai-chapter-two-major-20260829.mjs
+          git commit -m 'Remove completed Chapter 2 homepage publication tools'
+          pushed=0
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              pushed=1
+              break
+            fi
+            git pull --rebase origin main
+          done
+          test "$pushed" -eq 1

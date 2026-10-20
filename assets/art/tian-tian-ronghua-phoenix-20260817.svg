@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Ronghua phoenix ornament</title>
+  <desc id="desc">An original coral, moon-white, pale-gold, stone-blue and sage velvet-flower phoenix ornament.</desc>
+  <defs>
+    <linearGradient id="coral" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff0e4"/><stop offset=".45" stop-color="#f6a59b"/><stop offset="1" stop-color="#c83e49"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff0bd"/><stop offset=".55" stop-color="#e3b552"/><stop offset="1" stop-color="#a86a1f"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e2e8eb"/><stop offset=".55" stop-color="#7f98ae"/><stop offset="1" stop-color="#405e78"/>
+    </linearGradient>
+    <linearGradient id="sage" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d9e0ca"/><stop offset=".55" stop-color="#718978"/><stop offset="1" stop-color="#34584c"/>
+    </linearGradient>
+    <radialGradient id="pearl" cx="32%" cy="28%" r="72%">
+      <stop offset="0" stop-color="#fff"/><stop offset=".48" stop-color="#f5ecdc"/><stop offset=".8" stop-color="#c9bdab"/><stop offset="1" stop-color="#776f69"/>
+    </radialGradient>
+    <filter id="velvet" x="-7%" y="-7%" width="114%" height="114%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".04 .62" numOctaves="2" seed="29" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.8" xChannelSelector="R" yChannelSelector="B"/>
+    </filter>
+    <path id="flowerPetal" d="M0 3C-32-21-40-78 0-110C40-78 32-21 0 3Z"/>
+    <path id="leaf" d="M0 0C27-45 86-48 120-9C83 25 31 28 0 0Z"/>
+    <g id="flower" filter="url(#velvet)">
+      <g fill="url(#coral)" stroke="#ffe6d7" stroke-width="2.5">
+        <use href="#flowerPetal" transform="rotate(0)"/><use href="#flowerPetal" transform="rotate(45)"/>
+        <use href="#flowerPetal" transform="rotate(90)"/><use href="#flowerPetal" transform="rotate(135)"/>
+        <use href="#flowerPetal" transform="rotate(180)"/><use href="#flowerPetal" transform="rotate(225)"/>
+        <use href="#flowerPetal" transform="rotate(270)"/><use href="#flowerPetal" transform="rotate(315)"/>
+      </g>
+      <g fill="url(#gold)" transform="scale(.55) rotate(22.5)" opacity=".92">
+        <use href="#flowerPetal" transform="rotate(0)"/><use href="#flowerPetal" transform="rotate(60)"/>
+        <use href="#flowerPetal" transform="rotate(120)"/><use href="#flowerPetal" transform="rotate(180)"/>
+        <use href="#flowerPetal" transform="rotate(240)"/><use href="#flowerPetal" transform="rotate(300)"/>
+      </g>
+      <circle r="24" fill="url(#pearl)" stroke="#d0a24d" stroke-width="4"/>
+      <g fill="#e3a93c" stroke="#9a6419" stroke-width="2">
+        <circle cx="0" cy="-47" r="6"/><circle cx="33" cy="-33" r="6"/><circle cx="47" cy="0" r="6"/>
+        <circle cx="33" cy="33" r="6"/><circle cx="0" cy="47" r="6"/><circle cx="-33" cy="33" r="6"/>
+        <circle cx="-47" cy="0" r="6"/><circle cx="-33" cy="-33" r="6"/>
+      </g>
+    </g>
+  </defs>
+
+  <!-- Long velvet tail feathers. -->
+  <g fill="none" stroke-linecap="round" filter="url(#velvet)">
+    <path d="M882 424C703 425 579 281 354 189C218 134 108 159 70 225" stroke="#8c5723" stroke-width="34" opacity=".28"/>
+    <path d="M882 412C705 411 575 270 356 180C218 124 107 151 65 218" stroke="url(#coral)" stroke-width="27"/>
+    <path d="M850 448C657 475 520 384 281 344C151 322 60 357 29 421" stroke="url(#gold)" stroke-width="24"/>
+    <path d="M870 476C661 542 516 491 295 487C165 484 79 526 57 590" stroke="url(#blue)" stroke-width="25"/>
+    <path d="M897 500C731 599 573 606 378 644C260 668 192 698 178 732" stroke="url(#coral)" stroke-width="22"/>
+    <path d="M837 382C700 337 637 185 515 79C438 12 371 16 339 61" stroke="url(#gold)" stroke-width="20"/>
+    <path d="M915 468C754 522 650 548 506 548C421 548 348 531 295 505" stroke="#d0a24d" stroke-width="4" opacity=".75"/>
+    <path d="M868 402C710 376 604 255 443 184C337 137 231 140 156 178" stroke="#f8d778" stroke-width="4" opacity=".72"/>
+  </g>
+  <g fill="none" stroke="#d3a13f" stroke-width="5" stroke-linecap="round">
+    <path d="M320 196C245 184 209 202 205 240C204 274 246 285 266 261C286 237 260 214 238 229"/>
+    <path d="M295 347C207 340 165 363 163 405C162 442 208 453 230 427C250 401 223 377 198 394"/>
+    <path d="M322 486C231 487 190 519 196 561C202 597 249 600 267 570C284 542 251 521 229 542"/>
+  </g>
+
+  <!-- Phoenix body and wing. -->
+  <g filter="url(#velvet)">
+    <path d="M825 451C850 362 925 316 1011 344C1084 368 1116 449 1079 518C1048 576 960 594 888 550C843 523 815 488 825 451Z" fill="url(#coral)" stroke="#8e3d31" stroke-width="5"/>
+    <path d="M905 448C881 357 841 286 824 205C811 142 835 89 879 70C917 53 952 67 959 96C965 122 937 139 917 124C896 108 907 89 925 91" fill="none" stroke="url(#coral)" stroke-width="31" stroke-linecap="round"/>
+    <path d="M873 72C910 39 963 44 987 75C1007 102 1001 138 971 157C943 175 916 174 894 154" fill="url(#gold)" stroke="#b77928" stroke-width="4"/>
+    <path d="M979 79L1041 91L990 121Z" fill="#b53b3e" stroke="#7e2d2f" stroke-width="3"/>
+    <circle cx="967" cy="82" r="14" fill="#f5efe3" stroke="#a87328" stroke-width="4"/>
+    <circle cx="970" cy="82" r="6" fill="#172321"/>
+    <path d="M874 375C799 296 755 210 744 119C817 147 887 205 929 283C956 333 943 380 874 375Z" fill="url(#blue)" stroke="#49677e" stroke-width="4"/>
+    <path d="M892 386C829 317 802 244 800 183C857 223 901 271 927 326" fill="none" stroke="#edf0e9" stroke-width="7" opacity=".54"/>
+    <path d="M914 496C842 494 782 466 745 418C824 413 883 429 932 465" fill="url(#gold)" stroke="#bd842c" stroke-width="4"/>
+  </g>
+
+  <!-- Crest wires and pearl beads. -->
+  <g fill="none" stroke="#c9902b" stroke-width="5" stroke-linecap="round">
+    <path d="M887 79C866 24 884 2 907 16"/><path d="M910 73C911 17 938 4 956 23"/>
+    <path d="M932 76C957 24 986 21 997 47"/><path d="M950 91C996 58 1023 73 1018 101"/>
+  </g>
+  <g fill="url(#pearl)" stroke="#d0a24d" stroke-width="3">
+    <circle cx="906" cy="16" r="10"/><circle cx="956" cy="23" r="10"/>
+    <circle cx="997" cy="47" r="10"/><circle cx="1018" cy="101" r="10"/>
+  </g>
+  <g fill="#c9484e" stroke="#9b3035" stroke-width="2">
+    <circle cx="886" cy="49" r="9"/><circle cx="932" cy="41" r="9"/><circle cx="981" cy="68" r="9"/>
+  </g>
+
+  <!-- Ronghua bloom and sage leaves anchor the ornament. -->
+  <g fill="url(#sage)" stroke="#45665b" stroke-width="3" filter="url(#velvet)">
+    <use href="#leaf" transform="translate(886 506) rotate(190) scale(.75)"/>
+    <use href="#leaf" transform="translate(944 523) rotate(225) scale(.74)"/>
+    <use href="#leaf" transform="translate(1007 502) rotate(269) scale(.68)"/>
+    <use href="#leaf" transform="translate(1049 452) rotate(305) scale(.56)"/>
+    <use href="#leaf" transform="translate(900 562) rotate(141) scale(.57)"/>
+  </g>
+  <g transform="translate(955 487) scale(.8)"><use href="#flower"/></g>
+  <g transform="translate(1061 421) scale(.34)"><use href="#flower"/></g>
+  <g transform="translate(852 521) scale(.3)"><use href="#flower"/></g>
+  <g fill="url(#pearl)" stroke="#d0a24d" stroke-width="3">
+    <circle cx="1042" cy="505" r="12"/><circle cx="1084" cy="466" r="10"/><circle cx="892" cy="574" r="10"/>
+  </g>
+  <path d="M971 570L968 733" fill="none" stroke="#b78530" stroke-width="13"/>
+  <path d="M971 576L969 729" fill="none" stroke="#f0c45e" stroke-width="4" stroke-dasharray="3 7"/>
+  <circle cx="970" cy="585" r="12" fill="url(#pearl)" stroke="#d0a24d" stroke-width="3"/>
+  <circle cx="969" cy="617" r="11" fill="#c7484c" stroke="#922f34" stroke-width="3"/>
+</svg>

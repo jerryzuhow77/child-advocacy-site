@@ -1,0 +1,79 @@
+/* English and Japanese homepage view counter — 2026-08-11 */
+.home-view-counter{
+  position:relative;
+  isolation:isolate;
+  display:inline-flex;
+  align-items:center;
+  gap:11px;
+  width:max-content;
+  max-width:100%;
+  margin-top:18px;
+  padding:10px 15px 10px 12px;
+  overflow:hidden;
+  color:#f8ead0;
+  border:1px solid rgba(229,199,142,.46);
+  border-radius:14px;
+  background:
+    linear-gradient(115deg,rgba(255,255,255,.08),transparent 38%),
+    linear-gradient(135deg,rgba(16,42,61,.95),rgba(24,52,74,.9));
+  box-shadow:0 9px 24px rgba(11,35,51,.18),inset 0 1px 0 rgba(255,255,255,.09);
+  font-variant-numeric:tabular-nums;
+}
+.home-view-counter::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:-90% -38%;
+  background:linear-gradient(105deg,transparent 42%,rgba(234,211,159,.2) 49%,transparent 56%);
+  transform:translateX(-34%);
+  animation:homeViewCounterGleam 7s ease-in-out infinite;
+  pointer-events:none;
+}
+.home-view-counter-icon{
+  display:grid;
+  place-items:center;
+  width:34px;
+  height:34px;
+  flex:0 0 34px;
+  border:1px solid rgba(229,199,142,.42);
+  border-radius:50%;
+  background:rgba(229,199,142,.09);
+}
+.home-view-counter-icon svg{width:19px;height:19px;fill:#e5c78e}
+.home-view-counter-copy{display:grid;gap:4px;min-width:0}
+.home-view-counter-label{
+  color:#c7d1d2;
+  font-size:10px;
+  line-height:1;
+  font-weight:700;
+  letter-spacing:.1em;
+}
+.home-view-counter-value{display:flex;align-items:baseline;gap:6px;line-height:1}
+.home-view-counter-value strong{
+  color:#e5c78e;
+  background:linear-gradient(100deg,#b9965f 0%,#f4deb0 42%,#c39a58 72%,#ead39f 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:.025em;
+  text-shadow:0 4px 18px rgba(229,199,142,.12);
+}
+.home-view-counter-value span{color:#d7dfdf;font-size:11px;font-weight:700}
+.home-view-counter.is-unavailable::after{display:none}
+.home-view-counter.is-unavailable .home-view-counter-value strong{
+  color:#aebbbc;
+  background:none;
+  -webkit-text-fill-color:currentColor;
+}
+@keyframes homeViewCounterGleam{
+  0%,68%{transform:translateX(-34%)}
+  86%,100%{transform:translateX(34%)}
+}
+@media (prefers-reduced-motion:reduce){.home-view-counter::after{animation:none}}
+@media (max-width:560px){
+  .home-view-counter{margin-top:15px;padding:9px 13px 9px 10px;gap:9px;border-radius:12px}
+  .home-view-counter-icon{width:31px;height:31px;flex-basis:31px}
+  .home-view-counter-value strong{font-size:20px}
+}

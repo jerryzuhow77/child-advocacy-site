@@ -1,0 +1,323 @@
+/* Homepage editorial refinement · 2026-10-14
+   Keeps current content and ink imagery intact while clarifying the reading path. */
+:root{--seal:#9a4e38;--jade:#31534a;--mist:#f7f0e4;--gold-line:#b69763}
+.ink-priority-rail{display:grid;grid-template-columns:auto repeat(3,minmax(0,1fr));gap:12px;align-items:stretch;max-width:1180px;margin:18px auto 34px;padding:0 20px}
+.ink-priority-label{display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;letter-spacing:.18em;color:#7d5a3f;font-size:12px;font-weight:700}
+.ink-priority-rail>a{position:relative;display:grid;grid-template-columns:28px 1fr;column-gap:9px;align-content:center;min-height:78px;padding:13px 15px;border:1px solid #d6c8ae;border-radius:4px;background:linear-gradient(115deg,#fffaf0,#f0e7d5);color:var(--jade);text-decoration:none;overflow:hidden;isolation:isolate;transition:transform .24s ease,border-color .24s ease,box-shadow .24s ease}
+.ink-priority-rail>a::after{content:"";position:absolute;inset:auto -12% -70% 42%;height:110%;z-index:-1;background:radial-gradient(ellipse,#cfaf7240,transparent 68%);transform:rotate(-12deg)}
+.ink-priority-rail>a>span{grid-row:1 / span 2;align-self:center;color:var(--seal);font-size:19px}.ink-priority-rail b{font-size:16px;letter-spacing:.04em}.ink-priority-rail small{margin-top:3px;color:#53655b;font-size:12px;line-height:1.45}
+.ink-priority-rail>a:hover,.ink-priority-rail>a:focus-visible{transform:translateY(-2px);border-color:#9a815d;box-shadow:0 8px 22px #33483b14}
+#news-flash .pinned-grid{display:grid;grid-template-columns:minmax(0,1.22fr) minmax(230px,.78fr);grid-auto-flow:row dense;gap:15px}
+#news-flash .pinned-lead{grid-row:span 3;background:#fffaf0}#news-flash .pinned-lead img{aspect-ratio:16/9;object-fit:cover}
+#news-flash .pinned-secondary{display:grid;min-height:0}#news-flash .pinned-secondary .card-link{display:grid;grid-template-columns:132px 1fr;align-items:stretch}
+#news-flash .pinned-secondary img{width:100%;height:100%;min-height:132px;object-fit:cover}#news-flash .pinned-secondary .card-copy{padding:14px}
+#news-flash .pinned-secondary .card-summary{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.archive-directory .chapter-grid{position:relative;padding-top:30px}.archive-directory .chapter-grid::before{content:"";position:absolute;left:7%;right:7%;top:12px;height:1px;background:linear-gradient(90deg,transparent,#b49362 9%,#b49362 91%,transparent)}
+.archive-directory .chapter-card{position:relative}.archive-directory .chapter-card::before{content:counter(chapter);counter-increment:chapter;position:absolute;z-index:2;top:-30px;left:50%;transform:translateX(-50%);display:grid;place-items:center;width:25px;height:25px;border-radius:50%;border:1px solid #a88859;background:#fff9ed;color:#7c563b;font-size:11px;font-weight:800}
+.archive-directory .chapter-grid{counter-reset:chapter}.archive-directory .chapter-card .collection-copy{border-top:2px solid #caa466}
+#home-court-comics .section-heading h2::before,#home-historical-cases .section-heading h2::before,#home-special-features .section-heading h2::before,#news-flash .section-heading h2::before{display:inline-grid;place-items:center;vertical-align:middle;width:26px;height:26px;margin-right:10px;border:1px solid currentColor;border-radius:50%;font-size:11px;color:#8b613f;background:#fffaf0}
+#news-flash .section-heading h2::before{content:"快"}#home-special-features .section-heading h2::before{content:"觀"}#home-historical-cases .section-heading h2::before{content:"史"}#home-court-comics .section-heading h2::before{content:"讀"}
+html[lang="en"] #news-flash .section-heading h2::before{content:"N"}html[lang="en"] #home-special-features .section-heading h2::before{content:"O"}html[lang="en"] #home-historical-cases .section-heading h2::before{content:"H"}html[lang="en"] #home-court-comics .section-heading h2::before{content:"C"}
+html[lang="zh-Hans"] #home-special-features .section-heading h2::before{content:"观"}html[lang="zh-Hans"] #home-court-comics .section-heading h2::before{content:"读"}
+html[lang="ja"] #news-flash .section-heading h2::before{content:"報"}html[lang="ja"] #home-special-features .section-heading h2::before{content:"観"}html[lang="ja"] #home-historical-cases .section-heading h2::before{content:"史"}html[lang="ja"] #home-court-comics .section-heading h2::before{content:"読"}
+.home-section :is(.card-copy h3,.collection-copy h3){display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+.ink-film-zone .cinema-frame::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 80% 20%,#f5d99330,transparent 23%),linear-gradient(125deg,#fff6df12,transparent 46%)}
+.ink-film-zone [data-cinema-open]{position:relative}.ink-film-zone [data-cinema-open] .play-mark{display:inline-grid;place-items:center;width:21px;height:21px;margin-right:4px;border:1px solid #a48961;border-radius:50%;font-size:9px}
+@media(prefers-reduced-motion:no-preference){.ink-film-zone [data-cinema-open] .play-mark{animation:inkPulse 2.8s ease-in-out infinite}.ink-motion .ink-motion-target{transform:translateY(8px);transition:transform .55s cubic-bezier(.22,.65,.28,1)}.ink-motion .ink-motion-target.ink-motion-in{transform:translateY(0)}}
+@keyframes inkPulse{50%{box-shadow:0 0 0 7px #c69e5c1c;color:#6a482d}}
+@media(max-width:760px){.ink-priority-rail{display:flex;overflow-x:auto;gap:10px;margin:12px 0 24px;padding:0 18px 4px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}.ink-priority-label{display:none}.ink-priority-rail>a{flex:0 0 224px;min-height:76px;scroll-snap-align:start}.ink-priority-rail b{font-size:15px}#news-flash .pinned-grid{display:flex;overflow-x:auto;gap:12px;padding-bottom:5px;scroll-snap-type:x mandatory}#news-flash .pinned-grid>.home-card{flex:0 0 min(85vw,330px);scroll-snap-align:start}#news-flash .pinned-lead{grid-row:auto}#news-flash .pinned-secondary .card-link{grid-template-columns:1fr}#news-flash .pinned-secondary img{height:auto;min-height:0;aspect-ratio:16/9}.archive-directory .chapter-grid{padding-top:0}.archive-directory .chapter-grid::before,.archive-directory .chapter-card::before{display:none}.archive-directory .chapter-card .collection-copy{border-top:0;border-left:3px solid #caa466}}
+@media(prefers-reduced-motion:reduce){.ink-priority-rail>a{transition:none}.ink-motion .ink-motion-target{transform:none!important;transition:none!important}.ink-film-zone [data-cinema-open] .play-mark{animation:none}}
+
+/* Keep section seals decorative: generated glyphs must not be announced twice by assistive technology. */
+#home-court-comics .section-heading h2::before,#home-historical-cases .section-heading h2::before,#home-special-features .section-heading h2::before,#news-flash .section-heading h2::before{content:""!important;background:radial-gradient(circle at 50% 50%,currentColor 0 13%,transparent 15% 100%),#fffaf0}
+/* Dispersed brand-avatar artwork */
+.ink-scroll-hero,.ink-film-zone,.join-zone{position:relative;isolation:isolate}
+.ink-scroll-hero::after,.ink-film-zone::before,.join-zone::after{content:"";position:absolute;z-index:2;display:block;width:clamp(76px,9vw,128px);aspect-ratio:1;border:4px solid #fff9ec;border-radius:50%;background-position:center;background-size:cover;box-shadow:0 12px 26px #19383135,0 0 0 2px #b9975d;pointer-events:none}
+.ink-scroll-hero::after{left:clamp(36px,4vw,58px);bottom:16px;width:clamp(58px,5vw,74px);background-image:url("./brand/avatars/umbrella-circle.jpg");transform:rotate(-7deg)}
+.ink-film-zone::before{right:clamp(22px,4vw,60px);top:16px;width:clamp(76px,7vw,108px);background-image:url("./brand/avatars/lantern-circle.png");transform:rotate(-6deg)}
+.join-zone::after{right:clamp(20px,5vw,76px);bottom:24px;background-image:url("./brand/avatars/family-circle.jpg");transform:rotate(5deg)}
+@media(max-width:760px){.ink-scroll-hero::after,.ink-film-zone::before,.join-zone::after{width:74px;border-width:3px}.ink-scroll-hero::after{left:auto;right:14px;bottom:14px}.ink-film-zone::before{right:16px;top:16px}.join-zone::after{right:16px;bottom:16px}}
+
+/* Mobile: badges remain decorative and never cover live copy or actions. */
+@media(max-width:760px){
+  .ink-film-zone::before,.join-zone::after{display:none}
+  .ink-scroll-hero::after{
+    display:block;left:auto;right:18px;top:auto;
+    bottom:calc(225px + 20px);width:48px;border-width:2px;
+  }
+  .ink-film-zone>.section-heading{position:relative;z-index:3;padding-right:0}
+  .join-zone{padding-bottom:22px}
+
+  /* Reserve a dedicated thumbnail column; dates and headings stay clear. */
+  .news-card .card-link,.feature-card .card-link{
+    grid-template-columns:76px minmax(0,1fr);
+    column-gap:14px;
+    align-items:start;
+  }
+  .news-card .card-link>img,.feature-card .card-link>img{
+    width:76px;height:88px;margin:14px 0 0 12px;
+    object-fit:cover;border-radius:7px;
+  }
+  .news-card .card-copy,.feature-card .card-copy{
+    min-width:0;padding:14px 14px 14px 0;
+  }
+}
+
+/* Homepage brand-avatar positions are intentionally separate by viewport. */
+.ink-scroll-hero,.ink-film-zone,.join-zone{position:relative;isolation:isolate}
+.ink-scroll-hero::after,.ink-film-zone::before,.join-zone::after{content:"";position:absolute;z-index:2;display:block;aspect-ratio:1;border:4px solid #fff9ec;border-radius:50%;background-position:center;background-size:cover;box-shadow:0 12px 26px #19383135,0 0 0 2px #b9975d;pointer-events:none}
+.ink-scroll-hero::after{left:clamp(34px,3vw,46px);bottom:14px;width:clamp(48px,4vw,60px);background-image:url("./brand/avatars/umbrella-circle.jpg");transform:rotate(-7deg)}
+.ink-film-zone::before{right:clamp(24px,3vw,44px);top:14px;width:clamp(60px,5vw,76px);background-image:url("./brand/avatars/lantern-circle.png");transform:rotate(-6deg)}
+.join-zone::after{right:clamp(20px,5vw,76px);bottom:24px;width:clamp(76px,9vw,128px);background-image:url("./brand/avatars/family-circle.jpg");transform:rotate(5deg)}
+.home-light-impression{display:grid;grid-template-columns:minmax(260px,.86fr) minmax(0,1.14fr);align-items:stretch;min-height:240px;margin:30px 0;padding:0;overflow:hidden;border:1px solid #bfa984;border-radius:5px;background:#112c38;box-shadow:0 16px 34px #142a3326;color:#fff9e8}.home-light-impression img{width:100%;height:100%;min-height:240px;object-fit:cover;filter:saturate(.78) contrast(1.06)}.home-light-impression>div{display:flex;flex-direction:column;justify-content:center;padding:clamp(28px,4vw,58px);background:radial-gradient(circle at 10% 20%,#d9b6653a,transparent 30%),linear-gradient(125deg,#112c38,#1b4550)}.home-light-impression-kicker{margin:0 0 11px;color:#f6d98e;font:800 .72rem/1.4 system-ui;letter-spacing:.15em}.home-light-impression h2{margin:0 0 14px;color:#fff9e8;font-size:clamp(25px,3vw,41px);line-height:1.25}.home-light-impression p:last-child{max-width:38rem;margin:0;color:#e3edf0;line-height:1.85}
+@media(max-width:760px){.ink-scroll-hero::after,.ink-film-zone::before,.join-zone::after{width:74px;border-width:3px}.ink-scroll-hero::after{left:auto;right:14px;bottom:14px}.ink-film-zone::before{right:16px;top:16px}.join-zone::after{right:16px;bottom:16px}.home-light-impression{grid-template-columns:1fr;margin:24px 0}.home-light-impression img{min-height:185px;height:185px}.home-light-impression>div{padding:25px 22px}.home-light-impression h2{font-size:27px}}
+@media(min-width:761px){.ink-scroll-hero .cinema-copy{padding-bottom:88px}.ink-scroll-hero::after{left:42px;bottom:12px;width:48px}}
+
+
+/* Homepage hierarchy and responsive polish · 2026-10-16
+   Shared by Traditional Chinese, Simplified Chinese, English and Japanese homepages. */
+:root{
+  --home-jade:#284940;
+  --home-umber:#87533d;
+  --home-gold:#b78b50;
+  --home-mist:#fbf6eb;
+}
+#october-action-focus,
+.ink-priority-rail,
+#news-hearing{
+  scroll-margin-top:96px;
+}
+/* The first reading path is visually explicit without duplicating content:
+   action focus → quick choices → verified court information. */
+.october-action-focus{
+  position:relative;
+  border-top:4px solid var(--home-gold);
+  box-shadow:0 14px 34px rgba(63,47,29,.08);
+}
+.ink-priority-rail{
+  position:relative;
+  margin-top:14px;
+  margin-bottom:26px;
+}
+.ink-priority-rail>a{
+  min-height:82px;
+  border-radius:6px;
+}
+#news-hearing.hearing-strip{
+  border-left:4px solid var(--home-umber);
+  border-radius:5px;
+  background:linear-gradient(105deg,#fffaf0,#eef3e8);
+}
+/* Long-form index sections read as distinct paper chapters on wide screens. */
+@media(min-width:761px){
+  .home-section{
+    scroll-margin-top:96px;
+  }
+  #home-media-reports,
+  #home-special-features,
+  #home-social-cases,
+  #home-historical-cases,
+  #home-court-comics{
+    padding-block:clamp(10px,1.5vw,22px);
+  }
+  #home-media-reports .section-heading,
+  #home-special-features .section-heading,
+  #home-social-cases .section-heading,
+  #home-historical-cases .section-heading,
+  #home-court-comics .section-heading{
+    border-top:1px solid #d8c8ad;
+    padding-top:18px;
+  }
+  .ten-hearings{
+    margin-top:30px;
+  }
+  .ten-hearing-card{
+    border-radius:6px;
+  }
+  .ten-hearing-card:focus-visible,
+  .october-focus-card:focus-visible,
+  .ink-priority-rail>a:focus-visible{
+    outline:3px solid #a6653e;
+    outline-offset:4px;
+  }
+}
+/* Mobile preserves the complete content but makes the first screen decisively actionable. */
+@media(max-width:760px){
+  main{padding-bottom:86px}
+  .ink-scroll-hero>.cinema-copy{
+    padding:25px 20px 21px;
+  }
+  .ink-scroll-hero h1{
+    max-width:11em;
+    font-size:clamp(28px,7.2vw,34px);
+    line-height:1.46;
+  }
+  .ink-scroll-hero .cinema-intro{
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    overflow:hidden;
+  }
+  .ink-scroll-hero .actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    width:100%;
+  }
+  .ink-scroll-hero .actions .button{
+    min-height:46px;
+    padding-inline:10px;
+  }
+  .ink-scroll-hero .cinema-text-link{
+    display:inline-flex;
+    min-height:40px;
+    align-items:center;
+  }
+  .ink-scroll-hero>.ink-hero-stage{
+    height:205px;
+  }
+  .ink-scroll-hero::after{
+    bottom:calc(205px + 16px);
+  }
+  .home-light-impression{
+    margin-block:20px;
+    box-shadow:none;
+  }
+  .october-action-focus{
+    margin-top:16px;
+    padding:18px 15px 17px;
+    box-shadow:none;
+  }
+  .october-focus-head h2{
+    font-size:25px;
+  }
+  .october-focus-card{
+    border-radius:6px;
+  }
+  .ink-priority-rail{
+    margin-top:10px;
+    margin-bottom:20px;
+    padding-left:16px;
+    padding-right:16px;
+  }
+  .ink-priority-rail>a{
+    flex-basis:216px;
+    min-height:74px;
+  }
+  #news-hearing.hearing-strip{
+    margin-top:0;
+    margin-bottom:22px;
+    padding:16px 14px;
+  }
+  .ten-hearings{
+    padding-inline:14px;
+  }
+  .ten-hearing-grid{
+    gap:9px;
+  }
+  .ten-hearing-card>img{
+    height:78px;
+  }
+  .ten-card-copy{
+    padding:10px 9px 11px;
+  }
+  .ten-card-copy h3{
+    font-size:13px;
+    -webkit-line-clamp:2;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+  /* Keep dense archives legible, but never hide them: cards retain their full index. */
+  .case-grid,.history-grid,.comic-grid{
+    row-gap:10px;
+  }
+  .home-footer-mobile-bar{
+    box-shadow:0 -8px 22px rgba(45,55,44,.08);
+  }
+  .home-footer-mobile-bar a{
+    min-width:0;
+    flex:1;
+  }
+}
+@media(max-width:380px){
+  .ink-scroll-hero>.cinema-copy{padding-inline:17px}
+  .ink-scroll-hero .actions{gap:8px}
+  .ink-scroll-hero .actions .button{font-size:12px}
+  .october-focus-card{padding:14px}
+  .home-footer-mobile-bar a{font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){
+  .october-focus-card:hover,
+  .ink-priority-rail>a:hover{transform:none}
+}
+
+
+/* Mobile-only avatar placement · 2026-10-16
+   Desktop artwork keeps the coordinates above. On narrow screens, preserve one
+   small hero seal in the clear edge zone and remove the other decorative seals
+   so no live copy, controls, or media are covered. */
+@media(max-width:760px){
+  .ink-film-zone::before,
+  .join-zone::after{
+    display:none!important;
+  }
+  .ink-scroll-hero::after{
+    display:block!important;
+    left:auto!important;
+    top:auto!important;
+    right:max(14px,env(safe-area-inset-right))!important;
+    bottom:calc(205px + 122px)!important;
+    width:44px!important;
+    border-width:2px!important;
+  }
+}
+
+
+/* Mobile avatar layout · 2026-10-16
+   Keep all three decorative portraits visible without covering copy, controls,
+   counters, or primary imagery. Desktop coordinates above remain untouched. */
+@media(max-width:760px){
+  .ink-scroll-hero::after,
+  .ink-film-zone::before,
+  .join-zone::after{
+    display:block!important;
+    width:clamp(36px,10vw,42px)!important;
+    border-width:2px!important;
+  }
+  /* Hero portrait sits in the clear gutter between copy and the art stage. */
+  .ink-scroll-hero::after{
+    left:auto!important;
+    top:auto!important;
+    right:max(12px,env(safe-area-inset-right))!important;
+    bottom:calc(205px + 14px)!important;
+  }
+  /* Film portrait has its own heading-side reserve, clear of title and media. */
+  .ink-film-zone::before{
+    top:10px!important;
+    right:max(12px,env(safe-area-inset-right))!important;
+    bottom:auto!important;
+  }
+  .ink-film-zone>.section-heading{
+    padding-right:54px!important;
+  }
+  /* Join portrait uses a reserved top-right margin; actions remain unobstructed. */
+  .join-zone::after{
+    top:12px!important;
+    right:max(12px,env(safe-area-inset-right))!important;
+    bottom:auto!important;
+  }
+  .join-zone>.section-heading,
+  .join-zone>p,
+  .join-zone>.actions{
+    margin-right:54px;
+  }
+}
+@media(max-width:380px){
+  .ink-scroll-hero::after,
+  .ink-film-zone::before,
+  .join-zone::after{width:34px!important}
+  .ink-film-zone>.section-heading{padding-right:46px!important}
+  .join-zone>.section-heading,
+  .join-zone>p,
+  .join-zone>.actions{margin-right:46px}
+}

@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta data-hans="https://cn.globalprotectionwall.com/child-advocacy-site/features/taiwan-darknet-minor-crime/?lang=zh-Hans">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="近十年台灣暗網犯罪：以未成年受害事件為核心的查核型專題，整理 12 案判決、時間軸、受害者保護與制度改革。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="看不見的網，留下的傷｜台灣近十年暗網犯罪">
+  <meta property="og:description" content="12 案判決狀態、案件始末、時間軸與社會影響；不獵奇、不重複計數，優先保護未成年受害者。">
+  <meta property="og:url" content="https://jerryzuhow77.github.io/child-advocacy-site/features/taiwan-darknet-minor-crime/">
+  <meta property="og:image" content="https://jerryzuhow77.github.io/child-advocacy-site/features/taiwan-darknet-minor-crime/images/autumn-paper-clay-hero.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="看不見的網，留下的傷｜12 案判決與社會影響">
+  <meta name="twitter:description" content="台灣近十年匿名網絡犯罪查核型專題，區分偵查、起訴、審級與定讞。">
+  <title>看不見的網，留下的傷｜台灣近十年暗網犯罪</title>
+  <style>
+    :root{--paper:#eee8de;--ink:#42443f;--sage:#929b87;--clay:#b57f68;--blue:#748793;--wine:#795f63;--gold:#b49a68;--cream:#f7f2e9;--shadow:0 18px 48px rgba(70,61,52,.15)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:var(--paper);font-family:"Noto Serif TC","PingFang TC",serif;line-height:1.85;overflow-x:hidden}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.26;background-image:radial-gradient(#665b4f 0.55px,transparent .65px);background-size:6px 6px;mix-blend-mode:multiply}
+    a{color:#4f6871;text-underline-offset:4px}.wrap{width:min(1120px,calc(100% - 34px));margin:auto}.hero{min-height:92vh;display:grid;place-items:center;position:relative;isolation:isolate;padding:90px 0;background:linear-gradient(90deg,rgba(238,232,222,.5),rgba(238,232,222,.12)),url("images/autumn-paper-clay-hero.webp") center/cover no-repeat}
+    .hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(247,242,233,.08),rgba(66,68,63,.24));z-index:-1}
+    .wash{position:absolute;border-radius:50%;filter:blur(2px);opacity:.68;z-index:-2}.w1{width:52vw;height:34vw;background:#c8b5a3;left:-12vw;top:8vh;transform:rotate(-12deg)}.w2{width:44vw;height:38vw;background:#9ca9a0;right:-10vw;bottom:2vh}.w3{width:30vw;height:22vw;background:#c9a07f;left:40%;top:10%;opacity:.45}
+    .mountains{position:absolute;inset:auto 0 0;height:43%;z-index:-1;background:linear-gradient(155deg,transparent 32%,rgba(116,135,147,.42) 33% 47%,transparent 48%),linear-gradient(25deg,transparent 36%,rgba(121,95,99,.32) 37% 57%,transparent 58%);clip-path:polygon(0 35%,15% 14%,29% 42%,43% 18%,57% 50%,72% 11%,86% 40%,100% 22%,100% 100%,0 100%)}
+    .hero-card{max-width:820px;padding:clamp(34px,7vw,76px);background:rgba(247,242,233,.83);border:1px solid rgba(255,255,255,.8);box-shadow:var(--shadow);clip-path:polygon(2% 0,98% 1%,100% 96%,95% 100%,3% 98%,0 5%);backdrop-filter:blur(9px)}
+    .eyebrow{font:700 .78rem/1.2 system-ui;letter-spacing:.22em;color:var(--wine);text-transform:uppercase}.hero h1{font-size:clamp(2.5rem,7.4vw,6rem);line-height:1.08;margin:.28em 0}.lead{font-size:clamp(1.05rem,2vw,1.35rem);max-width:42em}.tag{display:inline-block;background:var(--clay);color:#fff;border-radius:999px;padding:8px 16px;margin-top:16px;font:700 .8rem system-ui}
+    section{padding:84px 0}.section-head{display:grid;grid-template-columns:.7fr 1.3fr;gap:36px;align-items:start;margin-bottom:36px}.section-head h2{font-size:clamp(2rem,4.8vw,4rem);line-height:1.12;margin:0}.section-head p{margin:0;font-size:1.06rem}.answer{background:#48514b;color:#f4eee5;position:relative;overflow:hidden}.answer:after{content:"12";position:absolute;right:-.03em;bottom:-.32em;font:800 28rem/1 system-ui;color:rgba(255,255,255,.045)}
+    .answer-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;position:relative;z-index:1}.number-card{padding:30px;border-radius:30px;background:#59625b;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}.number-card strong{display:block;font:800 clamp(3rem,8vw,6rem)/1 system-ui;color:#e0c59a}.number-card h3{margin:.7em 0 .25em}.number-card p{margin:0;color:#eee8de}
+    .definition{background:var(--cream)}.compare{display:grid;grid-template-columns:1fr 1fr;gap:20px}.clay{padding:28px;border-radius:34px 24px 38px 20px;background:#d2b39f;box-shadow:inset 10px 10px 22px rgba(255,255,255,.34),inset -10px -10px 22px rgba(89,61,47,.14),var(--shadow)}.clay h3{margin-top:0}.clay.dark{background:#9ca9a0}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:30px 0}.toolbar button{border:1px solid #aaa093;background:#f4eee5;color:#4f514c;padding:10px 16px;border-radius:999px;cursor:pointer;font-weight:700}.toolbar button.active{background:#59625b;color:white}
+    .cases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.case{position:relative;background:#f5efe5;padding:28px;border-radius:10px 34px 16px 28px;box-shadow:var(--shadow);border:1px solid rgba(94,80,69,.12);transition:.3s transform}.case:hover{transform:translateY(-5px)}.case:before{content:"";position:absolute;inset:-7px 14px 9px -8px;border:2px solid rgba(181,127,104,.25);border-radius:18px 28px 10px 34px;z-index:-1}.case small{font:700 .72rem system-ui;letter-spacing:.1em;color:var(--wine)}.case h3{font-size:1.35rem;line-height:1.35;margin:.5em 0}.case p{margin:.4em 0}.status{display:inline-block;margin-top:10px;padding:4px 10px;border-radius:99px;background:#ded2be;font:700 .72rem system-ui}.source-list{columns:2;column-gap:34px}.source-list li{break-inside:avoid;margin-bottom:14px}.ethics{background:#d7d0c2}.ethics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.leaf{padding:24px;background:rgba(247,242,233,.72);border-radius:60% 30% 55% 25%/35% 55% 35% 55%;min-height:220px;display:grid;place-content:center}.leaf h3{margin:.2em 0}.footer{padding:48px 0 80px;font-size:.9rem}.reveal{opacity:0;transform:translateY(30px)}
+    .story{margin:18px 0 14px;padding:16px 18px;border-radius:18px;background:rgba(255,255,255,.48);border-left:4px solid var(--clay)}.story strong,.warning strong{display:block;font:800 .74rem/1.4 system-ui;letter-spacing:.12em;color:var(--wine);margin-bottom:6px}.timeline{list-style:none;margin:18px 0;padding:0 0 0 10px;border-left:2px solid rgba(121,95,99,.28)}.timeline li{position:relative;padding:0 0 15px 20px}.timeline li:last-child{padding-bottom:2px}.timeline li:before{content:"";position:absolute;width:11px;height:11px;border-radius:50%;left:-6.5px;top:.55em;background:var(--gold);box-shadow:0 0 0 4px #f5efe5}.timeline time{display:block;font:800 .75rem/1.4 system-ui;color:#6f5c53;letter-spacing:.04em}.timeline span{display:block;font-size:.92rem;line-height:1.65}.warning{margin:14px 0;padding:15px 17px;border-radius:20px;background:#e2d8c8;font-size:.92rem}.relation{font:700 .74rem/1.5 system-ui;color:#6a7169;margin-top:12px}.case details{margin-top:16px}.case summary{cursor:pointer;list-style:none;border-top:1px solid rgba(90,75,62,.16);padding-top:14px;font:800 .84rem system-ui;color:#586963}.case summary::-webkit-details-marker{display:none}.case summary:after{content:"＋";float:right}.case details[open] summary:after{content:"－"}
+    .pattern-section{position:relative;background:linear-gradient(rgba(247,242,233,.87),rgba(238,232,222,.91)),url("images/autumn-paper-clay-hero.webp") center 58%/cover fixed}.chain{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:chain}.chain-card{position:relative;padding:26px 24px 24px;background:rgba(247,242,233,.83);border:1px solid rgba(255,255,255,.85);border-radius:28px 10px 34px 14px;box-shadow:var(--shadow);backdrop-filter:blur(8px)}.chain-card:before{counter-increment:chain;content:"0" counter(chain);display:block;font:800 2.4rem/1 system-ui;color:rgba(181,127,104,.58);margin-bottom:12px}.chain-card h3{margin:.2em 0}.chain-card p{margin:.35em 0}.policy-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}.policy{padding:26px;background:#eee5d8;border-radius:14px 38px 18px 30px;border-top:5px solid var(--sage)}.policy b{color:var(--wine)}.evidence-table{width:100%;border-collapse:separate;border-spacing:0 10px}.evidence-table th{text-align:left;font:800 .78rem system-ui;letter-spacing:.08em}.evidence-table td{padding:14px;background:rgba(255,255,255,.55)}.evidence-table td:first-child{border-radius:14px 0 0 14px;font-weight:800}.evidence-table td:last-child{border-radius:0 14px 14px 0}
+    .impact-section{background:#555d56;color:#f5efe5}.impact-section .section-head p{color:#e3ddd4}.impact-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;counter-reset:impact}.impact-card{position:relative;padding:28px;background:rgba(247,242,233,.1);border:1px solid rgba(255,255,255,.15);border-radius:12px 34px 18px 30px;backdrop-filter:blur(8px)}.impact-card:before{counter-increment:impact;content:counter(impact,decimal-leading-zero);position:absolute;right:20px;top:16px;font:800 2.8rem/1 system-ui;color:rgba(224,197,154,.25)}.impact-card h3{padding-right:54px;margin:.1em 0 .8em;color:#fff}.verdict,.impact{padding:15px 16px;border-radius:16px;margin-top:12px}.verdict{background:rgba(224,197,154,.13);border-left:4px solid #e0c59a}.impact{background:rgba(116,135,147,.18);border-left:4px solid #9eb1bb}.verdict b,.impact b{display:block;font:800 .72rem system-ui;letter-spacing:.1em;margin-bottom:5px;color:#e8cfaa}.impact b{color:#bfd0d7}.level{display:inline-flex;margin-top:12px;padding:5px 10px;border-radius:999px;background:#e0c59a;color:#4b4e49;font:800 .7rem system-ui}
+    .case-audit{background:#eee5d8}.audit-wrap{overflow:auto;border-radius:20px}.audit-table{width:100%;min-width:760px;border-collapse:separate;border-spacing:0 8px}.audit-table th{text-align:left;padding:0 12px;font:800 .74rem system-ui;letter-spacing:.08em;color:#6f5c53}.audit-table td{padding:13px 12px;background:rgba(255,255,255,.58);vertical-align:top}.audit-table td:first-child{border-radius:12px 0 0 12px;font-weight:800}.audit-table td:last-child{border-radius:0 12px 12px 0}.audit-table a{font-weight:700}.audit-note{margin-top:16px;font-size:.9rem;color:#675f58}.map-section{background:linear-gradient(rgba(238,232,222,.86),rgba(238,232,222,.94)),url("images/autumn-paper-clay-hero.webp") center/cover}.map-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.map-node{position:relative;padding:24px;background:rgba(247,242,233,.82);border:1px solid rgba(121,95,99,.2);border-radius:28px 12px 30px 14px;box-shadow:var(--shadow)}.map-node h3{margin:.15em 0 .35em}.map-node p{margin:.3em 0}.map-node .map-label{font:800 .7rem system-ui;letter-spacing:.1em;color:var(--wine)}.support-section{background:#d7d0c2}.support-grid,.questions-grid,.method-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.support-card,.question-card,.method-card{padding:24px;background:rgba(247,242,233,.74);border-radius:22px 12px 28px 16px;border-top:4px solid var(--sage)}.support-card h3,.question-card h3,.method-card h3{margin:.1em 0 .4em}.support-card p,.question-card p,.method-card p{margin:.3em 0}.questions-section{background:#59625b;color:#f5efe5}.questions-section .section-head p{color:#e3ddd4}.question-card{background:rgba(247,242,233,.12);border-top-color:#e0c59a}.question-card h3{color:#fff}.method-card{min-height:170px}.reading-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}.reading-links a{display:inline-block;padding:9px 14px;border-radius:999px;background:#e2d8c8;color:#586963;font-weight:700;text-decoration:none}.checked{display:block;margin-top:8px;font:700 .7rem system-ui;color:#756c62}
+    .deep-case-section{background:#4d5450;color:#f7f1e8;position:relative;overflow:hidden}.deep-case-section:after{content:"12";position:absolute;right:-.05em;top:-.14em;font:900 24rem/1 system-ui;color:rgba(255,255,255,.035);pointer-events:none}.deep-case-section .section-head,.deep-case-grid{position:relative;z-index:1}.deep-case-section .section-head p{color:#e4ddd2}.deep-case-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.deep-case{padding:26px;background:rgba(247,242,233,.1);border:1px solid rgba(255,255,255,.16);border-radius:14px 34px 18px 30px;box-shadow:0 18px 44px rgba(25,28,26,.16)}.deep-case h3{margin:.1em 0 .75em;color:#fff;font-size:1.15rem}.deep-case p{margin:.55em 0;color:#eee8de}.deep-case b{color:#edcf9c}.deep-case .count{display:inline-flex;padding:5px 11px;margin-bottom:8px;border-radius:999px;background:#e0c59a;color:#42443f;font:800 .72rem/1.4 system-ui}.deep-case .voice{margin-top:14px;padding:14px 15px;border-left:4px solid #b9c8bd;background:rgba(255,255,255,.07);border-radius:0 14px 14px 0}.deep-case .voice em{display:block;margin-top:5px;color:#d9d4ca;font-size:.88rem}.deep-case-note{position:relative;z-index:1;margin-top:18px;padding:16px 18px;border-radius:16px;background:rgba(224,197,154,.13);color:#eee8de}.deep-case-note strong{color:#edcf9c}
+    .verification-section{background:#272d2a;color:#f6efe6}.verification-section .section-head p{color:#ddd7cf}.verification-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.verification-card{padding:27px;background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.14);border-radius:10px 34px 16px 28px;border-top:5px solid #b57f68}.verification-card h3{margin:.1em 0 .7em;color:#fff}.verification-card p{margin:.6em 0;color:#e9e2d9}.verification-card b{color:#edcf9c}.verification-card .verdict-tag{display:inline-block;margin-bottom:8px;padding:5px 11px;border-radius:999px;background:#b57f68;color:#fff;font:800 .72rem/1.4 system-ui}.verification-card.caution{border-top-color:#e0c59a}.verification-card.caution .verdict-tag{background:#e0c59a;color:#3f433f}.verification-foot{margin-top:18px;padding:16px 18px;border-radius:16px;background:rgba(255,255,255,.07);color:#ddd7cf}.verification-foot strong{color:#edcf9c}
+    @media(max-width:760px){.section-head,.answer-grid,.compare,.cases,.ethics-grid,.chain,.policy-grid,.impact-grid,.map-grid,.support-grid,.questions-grid,.method-grid,.deep-case-grid,.verification-grid{grid-template-columns:1fr}.hero{min-height:84vh;background-position:62% center}.hero-card{padding:38px 26px}.source-list{columns:1}section{padding:62px 0}.answer:after{font-size:16rem}.case{padding:24px 20px}.timeline span{font-size:.9rem}.pattern-section{background-attachment:scroll}.evidence-table,.evidence-table tbody,.evidence-table tr,.evidence-table td{display:block}.evidence-table thead{position:absolute;clip:rect(0 0 0 0)}.evidence-table tr{margin-bottom:14px}.evidence-table td{border-radius:0!important;padding:10px 14px}.evidence-table td:first-child{border-radius:14px 14px 0 0!important}.evidence-table td:last-child{border-radius:0 0 14px 14px!important}}
+
+    .context-section{background:#f3ece1}.context-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.context-case{padding:22px 24px;background:rgba(255,255,255,.66);border:1px solid rgba(121,95,99,.16);border-radius:14px 30px 18px 26px}.context-case summary{cursor:pointer;font-weight:800;color:#4f5e57}.context-case summary::marker{color:var(--clay)}.context-case p{margin:.65em 0}.context-case b{color:var(--wine)}.context-case .open-question{padding:10px 12px;border-left:4px solid var(--gold);background:#eee3d3;border-radius:0 12px 12px 0}.rumor-audit{margin-top:18px;padding:16px 18px;background:#1e2421;border-radius:16px;color:#ddd7cf}.rumor-audit b{color:#edcf9c}@media(max-width:760px){.context-grid{grid-template-columns:1fr}.context-case{padding:20px 18px}}
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.reveal{opacity:1;transform:none}}
+    @media print{.reveal{opacity:1!important;transform:none!important}.toolbar{display:none}.hero{min-height:auto}.wash{filter:none}a{color:inherit}}
+    .case-reflection-section{background:#ece4d7}.case-reflection-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.case-reflection{padding:24px;background:rgba(247,242,233,.82);border-radius:26px 12px 30px 16px;border-top:4px solid var(--clay);box-shadow:var(--shadow)}.case-reflection h3{margin:.1em 0 .5em;font-size:1.1rem}.case-reflection p{margin:.55em 0;font-size:.96rem}.case-reflection b{color:var(--wine)}@media(max-width:760px){.case-reflection-grid{grid-template-columns:1fr}}
+  </style>
+<link data-cpa-four-language-toolbar-style rel="stylesheet" href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5">
+<script data-cpa-four-language-toolbar-flag>window.__cpaFourLanguageToolbar=true;</script>
+<link rel="canonical" href="https://jerryzuhow77.github.io/child-advocacy-site/features/taiwan-darknet-minor-crime/">
+<link rel="alternate" hreflang="en" href="https://jerryzuhow77.github.io/child-advocacy-site/en/features/taiwan-darknet-minor-crime/">
+<link rel="alternate" hreflang="ja" href="https://jerryzuhow77.github.io/child-advocacy-site/ja/features/taiwan-darknet-minor-crime/">
+<link rel="alternate" hreflang="zh-Hans" href="https://cn.globalprotectionwall.com/child-advocacy-site/features/taiwan-darknet-minor-crime/zh-Hans/">
+<link rel="alternate" hreflang="zh-Hant" href="https://jerryzuhow77.github.io/child-advocacy-site/features/taiwan-darknet-minor-crime/">
+</head>
+<body>
+  <header class="hero">
+    <div class="wash w1"></div><div class="wash w2"></div><div class="wash w3"></div><div class="mountains"></div>
+    <div class="hero-card reveal">
+      <div class="eyebrow">數位兒少保護・查核型獨立專題</div>
+      <h1>看不見的網，<br>留下的傷</h1>
+      <p class="lead">近十年台灣「暗網」重大犯罪，應從名詞開始查核。真正需要被看見的，不是獵奇細節，而是未成年受害者的影像如何被製造、交易、複製，以及制度在哪一站沒有及時阻斷。</p>
+      <span class="tag">秋季專題｜資料更新至 2026.09</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="answer">
+      <div class="wrap">
+        <div class="section-head reveal"><h2>本篇完整收錄<br>12 個案件群</h2><p>十二案均保留，但採「平台主案、犯罪上游、會員責任、司法追訴」分層呈現。部分案件源自同一平台生態系，因此不把涉案人數、受害人數或查緝波次直接相加，避免製造虛高總數。</p></div>
+        <div class="answer-grid">
+          <article class="number-card reveal"><strong>12</strong><h3>完整案件群</h3><p>呈現平台、製造、勒索、販售、購買與追訴六個環節，每案各自標示證據與程序界線。</p></article>
+          <article class="number-card reveal"><strong>0</strong><h3>不重複加總</h3><p>同一影像、同一受害者或同一平台的不同查緝支線，不因分成十二張卡片而重複計數。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="impact-section">
+      <div class="wrap">
+        <div class="section-head reveal"><h2>十二案的判決結果<br>與社會影響</h2><p>「沒有判決」也是重要結果：它可能代表仍在偵查、僅有起訴，或公開資料不足以確認獨立審判。以下更新至 2026 年 9 月，平台主案與支線不得重複理解為十二次獨立定罪。</p></div>
+        <div class="impact-grid">
+          <article class="impact-card reveal"><h3>創意私房平台主案</h3><div class="verdict"><b>司法結果</b>11 名平台協力者與會員的二審刑度介於 1 年 5 月至 12 年；截至 2025 年 5 月，10 人分別因未上訴、撤回上訴或最高法院駁回而定讞，另 1 人被撤銷發回。境外主使與其他支線仍未形成單一「全案判決」。</div><div class="impact"><b>社會影響</b>把付費論壇、虛擬貨幣、偷拍供應者與兒少影像買方視為同一產業鏈，推動社會從「外流影片」轉向「數位性暴力與性剝削市場」的理解。</div><span class="level">部分定讞／部分續審</span></article>
+          <article class="impact-card reveal"><h3>SCP／台版 N 號房</h3><div class="verdict"><b>司法結果</b>台中地院 2024 年 12 月一審判 6 名被告 1 年 5 月至 12 年不等；公開資料需再核對二、三審最新結果，不能寫成已定讞。</div><div class="impact"><b>社會影響</b>86 名少女受害的規模，使「網路認識—影像勒索—群組販售」成為兒少數位安全教育與平台即時通報的核心案例。</div><span class="level">一審判決</span></article>
+          <article class="impact-card reveal"><h3>自動跟車加密群組</h3><div class="verdict"><b>司法結果</b>高檢署資料確認曾破獲此案件群，但公開資訊不足以辨識一個完全獨立於 SCP 的判決與刑度；本頁不另行宣稱定罪人數。</div><div class="impact"><b>社會影響</b>凸顯自動轉傳、鏡像與跨群備份能使單點下架失效，促使執法必須同時處理帳號網絡、雲端副本與付款關係。</div><span class="level">判決資料不足</span></article>
+          <article class="impact-card reveal"><h3>跨縣市店家偷拍案</h3><div class="verdict"><b>司法結果</b>中檢 2024 年 11 月就相關被告提起公訴；本頁目前沒有足以確認全案確定刑度的官方資料，故維持「已起訴」。</div><div class="impact"><b>社會影響</b>833 名被害人、其中 20 名未成年，讓公共場所防偷拍不再只是現場管理問題，而是匿名影像市場的上游治理問題。</div><span class="level">已起訴／審理中</span></article>
+          <article class="impact-card reveal"><h3>補教人員偷拍與散布</h3><div class="verdict"><b>司法結果</b>公開報導記載刑事一、二審均判 12 年，部分判決已確定；另有發回或後續審理資訊，不能把所有罪項概括寫成全部定讞。民事一審另判賠部分被害人共 200 萬元。</div><div class="impact"><b>社會影響</b>使補教與校園場域重新面對「高信任職業＋隱密設備＋長期接近兒少」的複合風險，也凸顯刑事判決之外的賠償與長期復原。</div><span class="level">部分確定／部分續審</span></article>
+          <article class="impact-card reveal"><h3>知名藝人持有案</h3><div class="verdict"><b>司法結果</b>最高法院 2026 年 5 月駁回雙方上訴，1 年 6 月、緩刑 4 年定讞；附保護管束、180 小時義務勞務及 3 場法治教育。</div><div class="impact"><b>社會影響</b>引發社會對大量付費持有、和解與緩刑比例是否相稱的激烈討論，也明確傳達「沒有拍攝、只是購買」仍是剝削鏈的一環。</div><span class="level">定讞</span></article>
+          <article class="impact-card reveal"><h3>警職會員與再販售</h3><div class="verdict"><b>司法結果</b>這是多名被告的案件群：公開報導包括前北市警員偷拍案一審合計 13 年 2 月，以及前屏東警員取得 3 名未成年影像後販售案一審 1 年 10 月；不得合併為單一判決。</div><div class="impact"><b>社會影響</b>衝擊民眾對公權力的信任，尤其當涉案者可能接觸報案、被害者或下架資訊時，更凸顯資料存取稽核與職務停調標準。</div><span class="level">多案一審／續查審級</span></article>
+          <article class="impact-card reveal"><h3>教師高階會員與帳房</h3><div class="verdict"><b>司法結果</b>前教師被判 6 年 3 月，二審後未再上訴而確定；同一批平台案件中另有多名會員分別定讞。</div><div class="impact"><b>社會影響</b>顯示高階會員可能同時負責浮水印、帳務或平台維運，不能只用「私人觀看」理解其責任；亦引發兒少工作者持續適任監督的討論。</div><span class="level">定讞</span></article>
+          <article class="impact-card reveal"><h3>5F 自拍網站</h3><div class="verdict"><b>司法結果</b>橋頭地檢署 2025 年 12 月起訴網站營運相關 3 人，檢方並分別具體求刑；截至本頁更新日，起訴與求刑都不等於法院已判決。</div><div class="impact"><b>社會影響</b>網站曾被通知下架大量內容卻仍持續更新，使「通知—保存證據—阻斷存取—追究平台」能否真正連動，成為制度焦點。</div><span class="level">已起訴／尚無確定判決</span></article>
+          <article class="impact-card reveal"><h3>男版創意私房</h3><div class="verdict"><b>司法結果</b>刑事局公布 2025 年 7 月至 2026 年 6 月五波行動，20 名犯嫌陸續起訴；尚不能把查扣規模或起訴人數寫成定罪結果。</div><div class="impact"><b>社會影響</b>使長期被忽略的男童與男性性影像被害者進入公共討論，提醒支持服務、教材與通報語言不能只以女性受害者為預設。</div><span class="level">陸續起訴</span></article>
+          <article class="impact-card reveal"><h3>80 名高級會員分案</h3><div class="verdict"><b>司法結果</b>中檢與北檢於 2025 年 3 月分案偵辦；「80 名」源自媒體所稱高級會員規模，不代表 80 人均已起訴或定罪。</div><div class="impact"><b>社會影響</b>把追訴焦點推向需求端：高額會員是否能指定內容、是否刺激新的偷拍或製造，成為判斷平台經濟結構的重要問題。</div><span class="level">偵查中／無罪推定</span></article>
+          <article class="impact-card reveal"><h3>北投湯屋偷拍販售</h3><div class="verdict"><b>司法結果</b>公開報導記載主嫌二審被判應執行 6 年 10 月；目前仍應持續查核是否上訴與定讞，不以二審判決冒充最終結果。</div><div class="impact"><b>社會影響</b>促使旅宿、湯屋等高度隱私場所檢討巡檢與報案程序，也證明匿名平台的影像供應不只來自網路誘騙，還包括實體場所偷拍。</div><span class="level">二審判決／追蹤定讞</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-audit">
+      <div class="wrap">
+        <div class="section-head reveal"><h2>判決狀態<br>逐案核對</h2><p>把偵查、起訴、審級與定讞拆開；沒有裁判就不補寫刑度。每列保留來源與最後查核日期。</p></div>
+          <div class="audit-wrap reveal"><table class="audit-table"><thead><tr><th scope="col">案件群</th><th scope="col">目前狀態</th><th scope="col">可公開結論</th><th scope="col">來源／查核</th></tr></thead><tbody>
+          <tr><td>01 創意私房主案</td><td>部分定讞／續審</td><td>10 人定讞，1 人發回；不宣稱境外主使結果。</td><td><a href="https://www.cna.com.tw/news/asoc/202505100110.aspx">中央社</a><span class="checked">2026-09-14</span></td></tr>
+          <tr><td>02 SCP／台版 N 號房</td><td>一審後續審級待核</td><td>6 人一審 1 年 5 月至 12 年；不得寫成定讞。</td><td><a href="https://www.cna.com.tw/news/asoc/202412250189.aspx">中央社</a><span class="checked">2026-09-14</span></td></tr>
+          <tr><td>03 自動跟車群組</td><td>判決資料不足</td><td>官方確認查緝輪廓，無法拆出獨立刑度。</td><td><a href="https://www.tph.moj.gov.tw/4421/4447/853423/1292696/post">高檢署</a><span class="checked">2026-09-14</span></td></tr>
+          <tr><td>04 跨縣市店家偷拍</td><td>已起訴／審理中</td><td>833 名被害人，其中 20 名未成年；未確認全案確定刑度。</td><td><a href="https://www.tcc.moj.gov.tw/295804/295830/657577/1229261/post">臺中地檢</a><span class="checked">2026-09-14</span></td></tr>
+          <tr><td>05 補教人員支線</td><td>部分確定／續審</td><td>30 名被害人，其中 25 名未成年；刑事與民事結果分開。</td><td><a href="https://www.cna.com.tw/news/asoc/202511250151.aspx">中央社</a><span class="checked">2026-09-14</span></td></tr>
+          <tr><td>06 知名藝人持有案</td><td>定讞</td><td>1 年 6 月、緩刑 4 年，附保護管束、180 小時勞務及法治教育。</td><td><a href="https://news.pts.org.tw/article/807212">公視</a><span class="checked">2026-09-14</span></td></tr>
+          <tr><td>07 警職會員支線</td><td>多案多審級</td><td>前北市警一審合計 13 年 2 月；前屏東警一審 1 年 10 月。</td><td><a href="https://www.cna.com.tw/news/asoc/202511250151.aspx">中央社</a><span class="checked">2026-09-14</span></td></tr>
+          <tr><td>08 教師高階會員</td><td>定讞</td><td>6 年 3 月，未再上訴而確定。</td><td><a href="https://www.cna.com.tw/news/asoc/202505100110.aspx">中央社</a><span class="checked">2026-09-14</span></td></tr>
+          <tr><td>09 5F 自拍網站</td><td>已起訴</td><td>3 名營運相關人遭起訴；求刑不等於判決。</td><td><a href="https://www.qtc.moj.gov.tw/10181/10255/10257/1351455/post">橋頭地檢</a><span class="checked">2026-09-14</span></td></tr>
+          <tr><td>10 男版創意私房</td><td>陸續起訴</td><td>5 波、20 名犯嫌、逾 170 名未成年影像被害人；未宣稱定罪。</td><td><a href="https://www.cib.npa.gov.tw/ch/app/news/view?id=1885&amp;module=news&amp;serno=586857aa-c619-4b1c-872b-fa21ff9f0685">刑事局</a><span class="checked">2026-09-14</span></td></tr>
+          <tr><td>11 80 名高級會員</td><td>偵查中／無罪推定</td><td>「80 名」是媒體規模，不代表均已起訴或定罪。</td><td><a href="https://www.tcc.moj.gov.tw/295804/295830/657577/1271413/post">臺中地檢</a><span class="checked">2026-09-14</span></td></tr>
+          <tr><td>12 北投湯屋偷拍</td><td>二審／追蹤定讞</td><td>公開報導為應執行 6 年 10 月；仍需查核是否上訴。</td><td><a href="https://www.cna.com.tw/news/asoc/202511250151.aspx">中央社</a><span class="checked">2026-09-14</span></td></tr>
+        </tbody></table></div>
+        <p class="audit-note">起訴不等於有罪；一審、二審不等於定讞；「資料不足」也不等於不存在犯罪，而是目前不宜替法院補上結論。</p>
+      </div>
+    </section>
+
+    <section class="map-section">
+      <div class="wrap">
+        <div class="section-head reveal"><h2>十二案的<br>關聯地圖</h2><p>案件可能共享平台、會員、影像或金流，但不能因此把所有受害者、被告與刑度相加。</p></div>
+        <div class="map-grid"><article class="map-node reveal"><span class="map-label">核心平台</span><h3>01／02／03</h3><p>創意私房、SCP 與自動跟車群組；交疊關係須回到起訴書與裁判確認。</p></article><article class="map-node reveal"><span class="map-label">供應端</span><h3>04／05／09／12</h3><p>店家、補教、網站與湯屋等場景，形成偷拍、製作、上架與販售上游。</p></article><article class="map-node reveal"><span class="map-label">需求與協力</span><h3>06／07／08／11</h3><p>付費持有、轉售、帳務、浮水印與高額會員需求，把責任推向買方與協力者。</p></article><article class="map-node reveal"><span class="map-label">被害可見性</span><h3>10</h3><p>男童與男性受害者同樣需要辨識、下架與支持服務；查扣量不等於定罪量。</p></article><article class="map-node reveal"><span class="map-label">不應相加</span><h3>影像／人數／刑度</h3><p>同一影像可能多次轉傳，同一人可能出現在不同支線，本頁維持分層不加總。</p></article><article class="map-node reveal"><span class="map-label">查核出口</span><h3>官方裁判優先</h3><p>每一條關聯都要回到官方新聞稿、起訴資訊或法院裁判確認。</p></article></div>
+      </div>
+    </section>
+
+    <section class="support-section">
+      <div class="wrap"><div class="section-head reveal"><h2>受害者支持<br>與司法以外的結果</h2><p>判決不是故事終點；下架、保密、心理支持、法律協助與長期陪伴同樣重要。</p></div><div class="support-grid"><article class="support-card reveal"><h3>影像下架與再出現</h3><p>單一窗口、跨平台證據保全與再次出現的快速回報，不能讓下架破壞偵查證據。</p></article><article class="support-card reveal"><h3>刑事之外的救濟</h3><p>民事賠償、法律扶助、心理治療、校園支持與長期陪伴，不能只以刑期衡量正義。</p></article><article class="support-card reveal"><h3>最小揭露原則</h3><p>不公開姓名、學校、住居、帳號、檔名或可拼湊身分的細節。</p></article></div></div>
+    </section>
+
+    <section class="questions-section">
+      <div class="wrap"><div class="section-head reveal"><h2>仍待回答的<br>爭議問題</h2><p>保留未解問題，不替法院或主管機關預先下結論。</p></div><div class="questions-grid"><article class="question-card reveal"><h3>刑度與比例</h3><p>大量付費持有、和解、緩刑與附帶處分，應以個案裁判理由逐案比較。</p></article><article class="question-card reveal"><h3>平台責任界線</h3><p>何時從使用者上傳進入平台經營、收費、分類、推薦與協力，關鍵在控制能力與獲利。</p></article><article class="question-card reveal"><h3>統計能否互通</h3><p>不同機關定義不一，應建立案件識別碼與去重規則後再公布總量。</p></article></div></div>
+    </section>
+
+    <section class="method-section">
+      <div class="wrap"><div class="section-head reveal"><h2>研究方法與<br>更新規則</h2><p>為每個數字與判決狀態保留來源、時間與不確定性；本輪查核日為 2026-09-14。</p></div><div class="method-grid"><article class="method-card reveal"><h3>01｜案件納入</h3><p>納入 2016–2026 年具重大公共性且與匿名／加密網絡或其供應鏈有公開連結的案件群。</p></article><article class="method-card reveal"><h3>02｜程序標籤</h3><p>區分偵查、起訴、一審、二審、發回、部分確定與定讞；沒有裁判就不補寫刑度。</p></article><article class="method-card reveal"><h3>03｜數字去重</h3><p>受害者、檔案、被告與查緝波次分開記錄；可能重疊就不自行相加。</p></article><article class="method-card reveal"><h3>04｜來源分級</h3><p>A 級法院裁判；B 級檢方起訴與官方稿；C 級警方資料；D 級可信媒體。</p></article><article class="method-card reveal"><h3>05｜更新週期</h3><p>判決、上訴、發回與不起訴等程序變化應重新核對。</p></article><article class="method-card reveal"><h3>06｜倫理門檻</h3><p>任何可能導向搜尋、辨識、下載或重現兒少影像的資訊均不列入。</p></article></div></div>
+    </section>
+
+    <section class="case-reflection-section">
+      <div class="wrap">
+        <div class="section-head reveal"><h2>每一案背後<br>都有人必須被接住</h2><p>以下感想不替個案補寫未公開細節，也不把受害經驗當成素材；它提醒我們，判決之外仍有下架、復原、支持與制度責任。</p></div>
+        <div class="case-reflection-grid">
+          <article class="case-reflection reveal"><h3>01｜平台主案</h3><p><b>受害者視角：</b>被反覆交易的不是數字；每一次轉傳，都可能讓原本努力回到日常的人再度不安。</p><p><b>改革呼籲：</b>建立跨境平台保存令、金流追蹤與單一被害者下架窗口，讓平台關閉不等於責任中斷。</p></article>
+          <article class="case-reflection reveal"><h3>02｜勒索製造</h3><p><b>受害者視角：</b>當影像被用來威脅，求助不應成為另一道風險；每位未成年人都應被相信、被保密、被及時保護。</p><p><b>改革呼籲：</b>要求平台限時保全證據並啟動兒少風險通報，串接校園、社政與心理支持。</p></article>
+          <article class="case-reflection reveal"><h3>03｜自動化擴散</h3><p><b>受害者視角：</b>一份影像被自動複製，可能使「事情已經結束了嗎」成為長久無法安心回答的問題。</p><p><b>改革呼籲：</b>建立跨平台雜湊比對、快速阻斷與再上傳警示機制，不能只靠單點刪除。</p></article>
+          <article class="case-reflection reveal"><h3>04｜大規模偷拍</h3><p><b>受害者視角：</b>在日常場所被侵犯隱私，失去的不只是一次安全感，而是對公共空間的信任。</p><p><b>改革呼籲：</b>將場所巡檢、設備異常通報、影像下架與上游金流追查納入同一責任鏈。</p></article>
+          <article class="case-reflection reveal"><h3>05｜職務接近</h3><p><b>受害者視角：</b>原本應讓孩子安心學習的關係，一旦被濫用，傷害也會落在家庭與社群的信任上。</p><p><b>改革呼籲：</b>補教與教育場域應有不預警稽核、異常設備通報、停職風險評估與被害者支持流程。</p></article>
+          <article class="case-reflection reveal"><h3>06｜會員責任</h3><p><b>受害者視角：</b>「只是購買」不是沒有後果；需求存在，剝削市場就有繼續運作的理由。</p><p><b>改革呼籲：</b>對需求端追訴、教育處遇與被害復原支持須同步推進，並清楚說明程序與判決界線。</p></article>
+          <article class="case-reflection reveal"><h3>07｜公權力風險</h3><p><b>受害者視角：</b>當本應協助報案與保護的人失守，受害者可能更難相信求助會被妥善接住。</p><p><b>改革呼籲：</b>對高權限資料存取建立不可竄改紀錄、外部稽核、利益衝突申報與即時停調標準。</p></article>
+          <article class="case-reflection reveal"><h3>08｜教育場域</h3><p><b>受害者視角：</b>兒少工作者本應守護界線；一旦協力維繫剝削鏈，信任破裂需要更長時間修復。</p><p><b>改革呼籲：</b>提升持續適任監督、跨機關通報與專業倫理教育，不能只在聘任當下做一次檢查。</p></article>
+          <article class="case-reflection reveal"><h3>09｜平台經營</h3><p><b>受害者視角：</b>當平台從內容、收費到推薦皆持續運作，受害者承受的是長期、不確定的再次傳播風險。</p><p><b>改革呼籲：</b>明確平台經營者的保存、下架、帳號凍結與證據移交時限，並公開合規成效。</p></article>
+          <article class="case-reflection reveal"><h3>10｜新近案件群</h3><p><b>受害者視角：</b>性別不同不會減少傷害；每位未成年受害者都值得被辨識、被支持，而不是被沉默。</p><p><b>改革呼籲：</b>建構不以性別刻板印象為前提的求助、醫療、心理與法律服務，並強化跨境下架。</p></article>
+          <article class="case-reflection reveal"><h3>11｜追訴擴張</h3><p><b>受害者視角：</b>追查每一個需求端，不是為了獵巫，而是讓受害者知道：傷害不會被當成無人負責的資料流。</p><p><b>改革呼籲：</b>分案偵辦應有可公開的進度說明、程序監督與受害者通知機制，同時嚴守無罪推定。</p></article>
+          <article class="case-reflection reveal"><h3>12｜比較案例</h3><p><b>受害者視角：</b>即使主要受害者為成年人，隱私被偷拍、販售與反覆觀看的恐懼，同樣不該被輕忽。</p><p><b>改革呼籲：</b>將旅宿與私密場所的預防巡檢、快速報案、下架及金流追查連成完整的保護流程。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-reflection-section" aria-labelledby="case-reading-title">
+      <div class="wrap">
+        <div class="section-head reveal"><h2 id="case-reading-title">十二案逐案讀法<br>看見各自的來龍去脈</h2><p>這不是十二個可以互相替代的標籤。每一案的接觸方式、影像如何流動、受害者面臨的風險與司法所在階段都不同；以下以已公開資料整理閱讀重點，不補述可辨識受害者的細節。</p></div>
+        <div class="case-reflection-grid">
+          <article class="case-reflection reveal"><h3>01｜創意私房平台主案</h3><p><b>脈絡：</b>付費論壇把供應者、分級會員、帳務與加密支付串成市場。<br><b>追蹤重點：</b>部分被告已定讞、部分仍續審；不能以單一「全案判決」取代逐人程序。</p></article>
+          <article class="case-reflection reveal"><h3>02｜SCP／台版 N 號房</h3><p><b>脈絡：</b>從社群接觸、誘騙或威脅，到群組交換與販售，影像成為反覆控制工具。<br><b>追蹤重點：</b>一審不是終點；受害者的下架、保全與支持必須同步進行。</p></article>
+          <article class="case-reflection reveal"><h3>03｜自動跟車加密群組</h3><p><b>脈絡：</b>自動轉傳與鏡像讓單一檔案快速成為多個副本。<br><b>追蹤重點：</b>公開資料尚難完全切開與其他群組的重疊，故不另行堆高受害或定罪數。</p></article>
+          <article class="case-reflection reveal"><h3>04｜跨縣市店家偷拍</h3><p><b>脈絡：</b>實體店家中的隱密設備成為上游供應，之後再流入匿名群組販售。<br><b>追蹤重點：</b>場所巡檢、設備保全與網路追查必須視為同一條責任鏈。</p></article>
+          <article class="case-reflection reveal"><h3>05｜補教人員偷拍與散布</h3><p><b>脈絡：</b>高信任工作帶來接近兒少的機會，涉嫌行為再與偷拍、重製或散布交織。<br><b>追蹤重點：</b>目前以起訴內容為界；聘任、通報與數位設備管理不能彼此斷裂。</p></article>
+          <article class="case-reflection reveal"><h3>06｜知名藝人付費持有</h3><p><b>脈絡：</b>從搜索取得的影像與會員線索，延伸出持有兒少性影像的偵審。<br><b>追蹤重點：</b>買方的付費、下載與持有，是供應鏈得以延續的需求端。</p></article>
+          <article class="case-reflection reveal"><h3>07｜警職會員與再販售</h3><p><b>脈絡：</b>公開案件涉及不同人、不同事實與不同審級，包含付費觀看、偷拍或再販售指控。<br><b>追蹤重點：</b>不得合併成一個刑度；更須檢視資料存取與職務風險控管。</p></article>
+          <article class="case-reflection reveal"><h3>08｜教師高階會員與帳房</h3><p><b>脈絡：</b>角色不只可能是觀看者，亦涉及浮水印、帳務等平台協力環節。<br><b>追蹤重點：</b>此案顯示兒少工作者的適任監督需要持續、可稽核的機制。</p></article>
+          <article class="case-reflection reveal"><h3>09｜5F 自拍網站</h3><p><b>脈絡：</b>網站的收費、分類與營運，使「使用者上傳」不能單獨切斷經營責任。<br><b>追蹤重點：</b>已起訴不等於定罪，後續裁判仍須逐次更新。</p></article>
+          <article class="case-reflection reveal"><h3>10｜男版創意私房系列群組</h3><p><b>脈絡：</b>分級群組、金流與協力帳戶共同支撐影像交易；男性未成年受害也需被看見。<br><b>追蹤重點：</b>多波查緝與陸續起訴，不能寫成全數被告或全部罪責已確定。</p></article>
+          <article class="case-reflection reveal"><h3>11｜80 名高級會員分案</h3><p><b>脈絡：</b>平台掃蕩取得的會員與金流資料，讓追訴延伸到可能的客製化需求端。<br><b>追蹤重點：</b>分案偵辦僅表示程序啟動，必須嚴守無罪推定並等待個案處分。</p></article>
+          <article class="case-reflection reveal"><h3>12｜北投湯屋偷拍販售</h3><p><b>脈絡：</b>高度隱私場所遭偷拍後，影像可被剪輯並流入匿名市場；本案以成人受害為主。<br><b>追蹤重點：</b>它不納入兒少人數，卻能說明實體偷拍與網路販售如何互相接續。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="definition">
+      <div class="wrap">
+        <div class="section-head reveal"><h2>先拆開<br>「暗網」</h2><p>Tor 隱藏服務、一般會員論壇與 Telegram 並不是同一種技術。若不區分，案件數會被放大，也會讓讀者誤以為所有加密通訊都屬於暗網。</p></div>
+        <div class="compare">
+          <article class="clay reveal"><h3>嚴格定義：暗網</h3><p>須透過特殊軟體或匿名網路存取、未被一般搜尋引擎索引的隱藏服務。依目前公開證據，能確定歸入這一欄的台灣重大案件群有限。</p></article>
+          <article class="clay dark reveal"><h3>廣義定義：匿名／加密犯罪網絡</h3><p>包括封閉論壇、Telegram 群組、虛擬貨幣付費與跨境操控。多數台灣重大兒少數位性剝削案，較精確地屬於這一欄。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="pattern-section">
+      <div class="wrap">
+        <div class="section-head reveal"><h2>十二案不是孤島，<br>而是一條供應鏈</h2><p>從取得第一份影像，到分級販售與反覆轉傳，每一站都可能產生新的加害與新的副本。只查平台主嫌、只要求單一網站下架，往往不足以停止傷害。</p></div>
+        <div class="chain">
+          <article class="chain-card reveal"><h3>接近與鎖定</h3><p>透過社群、教育工作、公共場所或既有影像，接近未成年受害者與其他被害人。</p></article>
+          <article class="chain-card reveal"><h3>誘騙、威脅或偷拍</h3><p>以信任、利益、假身分或隱蔽設備取得影像；第一個檔案常成為後續控制的起點。</p></article>
+          <article class="chain-card reveal"><h3>分類與加工</h3><p>檔名、浮水印、合成、剪輯與身分資料，使影像變成可搜尋、可交易的商品。</p></article>
+          <article class="chain-card reveal"><h3>加密社群擴散</h3><p>封閉論壇、Telegram、匿名網路與自動化轉傳，讓副本跨群組快速增加。</p></article>
+          <article class="chain-card reveal"><h3>分級收費與洗錢</h3><p>會員等級、虛擬貨幣與人頭帳戶遮蔽金流，也讓高額需求反向刺激上游製造。</p></article>
+          <article class="chain-card reveal"><h3>永久性二次傷害</h3><p>即使原站關閉，副本仍可能重新出現；被害人承受長期辨識、搜尋與再散布風險。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head reveal"><h2>完整收錄的<br>十二個案件群</h2><p>以下不是十二宗彼此完全無關的犯罪；部分是「創意私房」產業鏈衍生支線。每案均以「涉嫌／起訴／一審／定讞」標示程序，其中第 12 案屬成年受害為主的比較案例，不併入未成年受害統計。</p></div>
+        <div class="toolbar" aria-label="案件篩選"><button class="active" data-filter="all">全部</button><button data-filter="platform">平台</button><button data-filter="production">製造／勒索</button><button data-filter="buyer">買方／持有</button></div>
+        <div class="cases">
+          <article class="case reveal" data-kind="platform"><small>01｜平台主案</small><h3>「創意私房」跨境性影像論壇</h3><p>逾 5,000 名會員、虛擬貨幣收費、匿名網路與跨境操控，是近年最具代表性的案件群。</p><div class="story"><strong>案件始末</strong>平台長期聚合偷拍與兒少性影像，並依會員等級提供內容或個資。檢警從個別檢舉與金流逐步回溯供應者、管理者及買方，2024 年展開全台掃蕩。</div><details open><summary>展開時間軌與制度警訊</summary><ol class="timeline"><li><time>2012 年起</time><span>公開報導所述論壇開始運作，逐步形成付費會員與自售者生態。</span></li><li><time>2021 年起</time><span>中檢自檢舉線索著手追查網路性影像產業鏈。</span></li><li><time>2024 年 7–8 月</time><span>檢警多波同步搜索，溯源偷拍者、製造者、賣家與買家。</span></li><li><time>截至 2024 年 10–11 月</time><span>官方資料記載起訴 13 人、緩起訴 247 人；各人程序結果不得混為一談。</span></li><li><time>2025–2026 年</time><span>會員、職業身分與跨境主使等支線持續偵審。</span></li></ol><div class="warning"><strong>制度警訊</strong>匿名、分級會員、虛擬貨幣與跨境操控，使下架、身分辨識和追贓同時受阻。</div></details><p class="relation">關聯：02、04–08、11、12 均可能與此生態系交疊，不重複加總。</p><span class="status">多案多審級｜逐案標示</span></article>
+          <article class="case reveal" data-kind="production"><small>02｜勒索製造</small><h3>「SCP／台版 N 號房」社群</h3><p>公開起訴與判決報導記載，共有 86 名未成年少女受害。</p><div class="story"><strong>案件始末</strong>集團被控在社群平台鎖定少女，以欺騙或威脅方式要求拍攝，再將影像放入 Telegram 社群販售、交換，形成「取得—控制—營利」鏈條。</div><details open><summary>展開時間軌與制度警訊</summary><ol class="timeline"><li><time>2021 年起</time><span>檢方指控主要被告開始透過社群接觸未成年少女。</span></li><li><time>2021–2023 年</time><span>陸續招募成員、經營群組並以影像牟利，受害者遍及全台。</span></li><li><time>2023 年 12 月</time><span>中檢依組織犯罪及兒少性剝削等罪起訴 6 人。</span></li><li><time>2024 年 12 月 25 日</time><span>台中地院一審判處 6 人不同刑度；當時仍可上訴。</span></li></ol><div class="warning"><strong>制度警訊</strong>第一張影像一旦成為控制工具，傳播與威脅會反覆發生；預防必須前移到平台通報和即時保全。</div></details><span class="status">一審判決｜後續審級須再查</span></article>
+          <article class="case reveal" data-kind="platform"><small>03｜自動化擴散</small><h3>「自動跟車」加密群組支線</h3><p>利用自動化轉傳或跟隨機制，使影像在群組間快速流動。</p><div class="story"><strong>案件始末</strong>高檢署公開事蹟將「台版 N 號房自動跟車群組」與 SCP、創意私房並列為破獲對象，但公開資料尚不足以把所有被告、受害者與其他群組完全切開。</div><details open><summary>展開時間軌與制度警訊</summary><ol class="timeline"><li><time>2021 年後</time><span>檢方在追查網路性影像犯罪時，發現自動化擴散型群組。</span></li><li><time>2021–2024 年</time><span>透過帳號、群組、付款與轉傳關係追查經營者及參與者。</span></li><li><time>2024 年前後</time><span>官方將其列入已破獲的重大加密群組案件。</span></li><li><time>目前</time><span>仍應以個別起訴書與判決確認它和 SCP 案的重疊範圍。</span></li></ol><div class="warning"><strong>制度警訊</strong>自動化讓一份影像瞬間形成大量副本；單點下架無法等同於阻斷傳播。</div></details><span class="status">公開輪廓有限｜不另計受害總數</span></article>
+          <article class="case reveal" data-kind="production"><small>04｜大規模偷拍</small><h3>跨縣市店家偷拍案</h3><p>中檢清查 833 名受害者，其中 20 名未成年。</p><div class="story"><strong>案件始末</strong>被告被控在小吃店、桌遊店等處放置微型攝影設備，取得影像後於 SCP、OAT 等群組上架販售，呈現匿名市場的上游供應方式。</div><details open><summary>展開時間軌與制度警訊</summary><ol class="timeline"><li><time>2023 年起</time><span>檢方指控偷拍行為在南投、台中等地展開。</span></li><li><time>2024 年 7 月</time><span>專案小組搜索並查扣相關設備，部分被告遭羈押。</span></li><li><time>2024 年 11 月 7 日</time><span>甲案偵查終結，相關被告被提起公訴。</span></li><li><time>公布時</time><span>清查 833 名受害者，兒少 20 人、成人 813 人。</span></li></ol><div class="warning"><strong>制度警訊</strong>實體場所的防偷拍管理，與網路平台的販售查緝必須被視為同一條犯罪鏈。</div></details><span class="status">已起訴｜等待法院認定</span></article>
+          <article class="case reveal" data-kind="production"><small>05｜職務接近</small><h3>補教人員偷拍與散布支線</h3><p>中檢清查 30 名受害者，其中 25 名未成年。</p><div class="story"><strong>案件始末</strong>檢方追查創意私房買方時，發現曾任補習班教師者被控利用工作接近兒少，並涉及猥褻、偷拍、重製、散布及合成影像。</div><details open><summary>展開時間軌與制度警訊</summary><ol class="timeline"><li><time>2015 年起</time><span>檢方指控相關行為可追溯至此時期。</span></li><li><time>2024 年 7 月</time><span>檢警搜索並查扣偽裝設備，向法院聲請羈押獲准。</span></li><li><time>2024 年 11 月 11 日</time><span>乙案偵查終結並提起公訴。</span></li><li><time>公布時</time><span>30 名受害者中有 25 名未成年；不得揭露學校或可辨識線索。</span></li></ol><div class="warning"><strong>制度警訊</strong>教育與補教場域需建立從聘任、異常通報到數位設備管理的連續防線。</div></details><span class="status">已起訴｜無罪推定</span></article>
+          <article class="case reveal" data-kind="buyer"><small>06｜會員責任</small><h3>知名藝人付費持有案</h3><p>此案使社會看見：購買與持有本身會持續支撐兒少性剝削市場。</p><div class="story"><strong>案件始末</strong>司法機關偵辦其他指控時搜索住處，查得大量影像並追出論壇會員關係，後就持有兒少性影像部分另行偵審。</div><details open><summary>展開時間軌與制度警訊</summary><ol class="timeline"><li><time>2023 年</time><span>搜索過程查得相關影像與平台使用線索。</span></li><li><time>2024 年</time><span>檢方就持有兒少性影像部分提起公訴。</span></li><li><time>2025 年 11 月</time><span>高院判刑 1 年 6 月、緩刑 4 年；當時仍可上訴。</span></li><li><time>2026 年 5 月</time><span>依公開報導，最高法院駁回上訴而定讞。</span></li></ol><div class="warning"><strong>制度警訊</strong>報導不應停在名人效應；買方付費、下載與持有，正是市場得以延續的需求端。</div></details><span class="status">已定讞｜依最新公開裁判</span></article>
+          <article class="case reveal" data-kind="buyer"><small>07｜公權力風險</small><h3>警職會員與影像再販售支線</h3><p>多名警職涉案的行為與審級不同，不能合成單一刑度。</p><div class="story"><strong>案件始末</strong>平台會員追查擴及現職或前警職人員，公開資料涉及付費觀看、偷拍，亦有個案被控以協助下架為由取得未成年影像後再販售。</div><details open><summary>展開時間軌與制度警訊</summary><ol class="timeline"><li><time>2024 年大掃蕩後</time><span>檢警從會員、金流與裝置資料辨識具公職身分的涉案者。</span></li><li><time>2024–2025 年</time><span>不同地檢署陸續起訴或偵辦個案，事實範圍各不相同。</span></li><li><time>2025 年公開判決</time><span>部分偷拍或再販售案件已有一審判決。</span></li><li><time>目前</time><span>仍須逐人核對上訴、定讞及職務處分狀態。</span></li></ol><div class="warning"><strong>制度警訊</strong>掌握報案、被害人或下架資訊者必須受到更高強度的存取稽核與利益衝突監督。</div></details><span class="status">多名被告｜多案多審級</span></article>
+          <article class="case reveal" data-kind="buyer"><small>08｜教育場域</small><h3>教師高階會員與帳房支線</h3><p>角色從會員延伸至浮水印、帳務等平台協力工作。</p><div class="story"><strong>案件始末</strong>公開判決報導指一名前國小教師早期即與平台主使交換影像，後來協助製作浮水印及處理帳務，使案件超越單純持有。</div><details open><summary>展開時間軌與制度警訊</summary><ol class="timeline"><li><time>2013 年起</time><span>公開報導所述，開始與平台交換影像並逐漸成為高階會員。</span></li><li><time>平台運作期間</time><span>協助防止會員盜賣的浮水印與帳務工作。</span></li><li><time>2024 年後</time><span>隨平台產業鏈遭瓦解而進入司法程序。</span></li><li><time>2025 年公開進度</time><span>高院判處 6 年 3 月，因未上訴而定讞。</span></li></ol><div class="warning"><strong>制度警訊</strong>兒少工作者的數位犯罪風險，不應只靠無前科證明；需有持續監督與明確通報機制。</div></details><span class="status">公開報導指已定讞</span></article>
+          <article class="case reveal" data-kind="platform"><small>09｜另一平台</small><h3>「5F 自拍」網站案</h3><p>另一個以網站形式傳播性影像的案件，可比較平台經營者責任。</p><div class="story"><strong>案件始末</strong>橋頭地檢署偵辦網站負責人等人，指其平台涉及兒少性影像的重製、付費持有、觀覽或散布，並依法提起公訴。</div><details open><summary>展開時間軌與制度警訊</summary><ol class="timeline"><li><time>偵辦前期</time><span>檢警蒐集網站營運、會員與影像流通證據。</span></li><li><time>2025 年</time><span>案件偵查終結，網站負責人等 3 人遭起訴。</span></li><li><time>2025 年 12 月 9 日</time><span>橋頭地檢署公開說明案情與兒少性影像相關刑責。</span></li><li><time>目前</time><span>法院是否定罪與最終刑度仍應依後續裁判更新。</span></li></ol><div class="warning"><strong>制度警訊</strong>平台不能以「使用者自行上傳」切割經營、收費、分類與推薦所形成的風險。</div></details><span class="status">已起訴｜審理進度待更新</span></article>
+          <article class="case reveal" data-kind="platform"><small>10｜新近案件群</small><h3>「男版創意私房」系列群組</h3><p>刑事局公布未成年影像被害人逾 170 名。</p><div class="story"><strong>案件始末</strong>主嫌被指在 Telegram 設立多個分級群組，以累計消費金額區分會員等級；另一支線則涉及購買影像後轉售及利用帳戶收款、提領、轉匯。</div><details open><summary>展開時間軌與制度警訊</summary><ol class="timeline"><li><time>2025 年 7 月起</time><span>專案小組開始多波拘搜，追查群組經營、金流與協力者。</span></li><li><time>2025–2026 年</time><span>共發動 5 波行動，陸續查緝 20 名犯嫌。</span></li><li><time>截至 2026 年 6 月</time><span>警方公布查扣逾 20 萬個檔案、上萬部影片。</span></li><li><time>2026 年公布</time><span>未成年影像被害人逾 170 名；涉案者陸續起訴。</span></li></ol><div class="warning"><strong>制度警訊</strong>性別不同不改變影像剝削本質；男童與男性受害者同樣需要辨識、下架及支持服務。</div></details><span class="status">陸續起訴｜不得視為全數定罪</span></article>
+          <article class="case reveal" data-kind="buyer"><small>11｜追訴擴張</small><h3>80 名高級會員分案偵辦</h3><p>「80 人」是媒體所稱會員規模，不代表 80 人均已定罪。</p><div class="story"><strong>案件始末</strong>媒體揭露高級會員可能具有「指定內容」等權限後，高檢署協調中檢與北檢另行分案，將追訴視線從平台與供應者延伸到高額付費會員。</div><details open><summary>展開時間軌與制度警訊</summary><ol class="timeline"><li><time>2024 年平台掃蕩</time><span>檢警取得會員、金流及裝置資料，形成後續追查基礎。</span></li><li><time>2025 年 3 月 28 日</time><span>媒體報導高級會員名單與可能權限，引發追訴疑問。</span></li><li><time>2025 年 3 月 31 日</time><span>中檢公告與北檢針對案關人等剪報分案。</span></li><li><time>目前</time><span>分案偵辦不等於起訴或有罪，應等待個別處分與裁判。</span></li></ol><div class="warning"><strong>制度警訊</strong>高額會員是否形成客製化需求，以及平台如何回應需求，是釐清產業鏈責任的核心。</div></details><span class="status">偵查階段｜嚴守無罪推定</span></article>
+          <article class="case reveal" data-kind="production"><small>12｜比較案例</small><h3>北投湯屋偷拍販售支線</h3><p>成年受害為主的比較案例，不列入兒少受害人數。</p><div class="story"><strong>案件始末</strong>偷拍者在湯屋等具有高度隱私期待的場所取得影像，剪輯後透過創意私房等社群販售，呈現實體偷拍如何成為匿名平台的供應端。</div><details open><summary>展開時間軌與制度警訊</summary><ol class="timeline"><li><time>犯罪期間</time><span>集團被控在北投多處湯屋以手機等設備偷拍顧客。</span></li><li><time>2024 年</time><span>相關影像外流後，檢警溯源偵辦偷拍及販售網絡。</span></li><li><time>一審</time><span>法院就多項妨害性隱私等犯行作成有罪判決。</span></li><li><time>2025 年 10 月</time><span>公開報導記載二審改判應執行 6 年 10 月；是否定讞仍須追蹤。</span></li></ol><div class="warning"><strong>制度警訊</strong>旅宿與湯屋的巡檢、設備異常辨識和快速報案，必須與網路下架及金流追查接軌。</div></details><span class="status">二審判決報導｜追蹤定讞</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="deep-case-section" aria-labelledby="deep-case-title">
+      <div class="wrap">
+        <div class="section-head reveal"><h2 id="deep-case-title">十二案深讀<br>人數、內容與餘波</h2><p>以下只描述理解案件所必需的犯罪類型，不重現影像、不列檔名、不提供搜尋或存取線索。人數以公開資料可獨立確認者為限；同一平台、影像或受害者可能跨案重疊，不自行相加。</p></div>
+        <div class="deep-case-grid">
+          <article class="deep-case reveal"><span class="count">受害人數｜未公布可去重總數</span><h3>01｜創意私房平台主案</h3><p><b>涉及內容：</b>平台被查出聚合偷拍影像、兒少性剝削影像，並以會員分級、付費及跨境方式流通；部分支線另涉及個資與供應者協力。</p><p><b>案件餘波：</b>官方公布的是查獲 441 名被告、起訴及緩起訴人數，不能當成受害人數。受害者可能同時出現在偷拍、製造、買方或會員支線，現有公開資料不足以安全去重。</p><div class="voice"><b>受害者處境：</b>平台關閉不代表影像消失；反覆轉傳可能讓被害人長期擔心影像再次出現。<em>公開資料未見可核實、可安全引用的匿名受害者原話；本段不是本人引述。</em></div></article>
+          <article class="deep-case reveal"><span class="count">受害人數｜86 名未成年少女</span><h3>02｜SCP／台版 N 號房</h3><p><b>涉及內容：</b>依起訴與判決報導，包含透過社群接觸未成年人、以誘騙或威脅取得性影像，再於加密群組交換或販售；暴力核心是持續控制、恐嚇與散布威脅。</p><p><b>案件餘波：</b>影像被用作控制工具後，受害者可能害怕求助、遭責怪或被再次辨識；保全證據、下架及心理支持必須同時進行。</p><div class="voice"><b>受害者處境：</b>求助不該讓孩子再次交代或重述所有細節。<em>未使用無法核實的網路「心聲」；本段為保護需求整理。</em></div></article>
+          <article class="deep-case reveal"><span class="count">受害人數｜未獨立公布，可能與 SCP 重疊</span><h3>03｜自動跟車加密群組</h3><p><b>涉及內容：</b>性影像透過自動轉傳、鏡像或跨群備份快速擴散，包含兒少性剝削內容；現有資料不足以把它與 SCP 等案件的被告及受害者完全切開。</p><p><b>案件餘波：</b>單點刪除後仍可能從其他群組再次出現，增加長期下架與辨識負擔。</p><div class="voice"><b>受害者處境：</b>最難承受的可能是無法確認「事情是否真的結束」。<em>這是依傳播機制整理的風險，不是受害者直接引述。</em></div></article>
+          <article class="deep-case reveal"><span class="count">受害人數｜833 人；20 名未成年</span><h3>04｜跨縣市店家偷拍案</h3><p><b>涉及內容：</b>檢方指控在小吃店、桌遊店等處架設微型攝影設備，竊錄身體隱私部位及性影像，再於群組上架販售；其餘 813 名為成年人。</p><p><b>案件餘波：</b>日常場所變成影像供應端，受害者面對的不只是外流，也可能失去對公共場所與周遭環境的信任。</p><div class="voice"><b>官方描述：</b>臺中地檢署指出，影像在網路空間輾轉流傳，造成被害人難以磨滅的創傷。<em>這是官方新聞稿概述，不是個別受害者原話。</em></div></article>
+          <article class="deep-case reveal"><span class="count">受害人數｜30 人；25 名未成年</span><h3>05｜補教人員偷拍與散布</h3><p><b>涉及內容：</b>檢方起訴內容涉及利用補教工作接近未成年人、猥褻指控、在私密空間偷拍、重製與散布性影像，以及製作、散布不實合成性影像；其餘 5 名為成年人。</p><p><b>案件餘波：</b>傷害延伸到教育場域與家庭對專業者的信任；刑事程序外，仍有下架、賠償、心理支持與復學生活等長期需求。</p><div class="voice"><b>受害者處境：</b>孩子原本應該安心學習，卻可能必須重新建立對大人、場所與鏡頭的安全感。<em>本段為影響整理，不冒充個別心聲。</em></div></article>
+          <article class="deep-case reveal"><span class="count">受害人數｜扣案影像未公布可去重被害人數</span><h3>06｜知名藝人付費持有案</h3><p><b>涉及內容：</b>司法程序針對付費取得、下載及持有兒少性剝削影像；購買者未必參與拍攝，仍構成維繫需求端的重要環節。</p><p><b>案件餘波：</b>社會焦點集中在名人與刑度，但對被害人而言，任何一次付費與下載都可能延長影像生命週期。</p><div class="voice"><b>受害者處境：</b>「只是觀看」不代表沒有再次傷害。<em>公開裁判與報導未提供可安全引用的受害者原話。</em></div></article>
+          <article class="deep-case reveal"><span class="count">受害人數｜多案混合；其中一支線涉及 3 名未成年</span><h3>07｜警職會員與再販售</h3><p><b>涉及內容：</b>不同個案分別涉及付費觀看、偷拍，或被控以協助下架為由取得未成年人性影像後再販售；不是同一名被告或同一判決。</p><p><b>案件餘波：</b>當涉案者具有公權力或可能接觸報案、被害者與下架資訊，傷害也會動搖求助者對制度的信任。</p><div class="voice"><b>受害者處境：</b>求助資料若被濫用，受害者可能更害怕再次報案。<em>未把三名未成年擴張成整個案件群的總數。</em></div></article>
+          <article class="deep-case reveal"><span class="count">受害人數｜與平台影像重疊，未公布獨立總數</span><h3>08｜教師高階會員與帳房</h3><p><b>涉及內容：</b>公開判決報導涉及交換兒少性剝削影像，並協助浮水印、帳務等平台運作；責任範圍超過單純觀看或持有。</p><p><b>案件餘波：</b>案件引發兒少工作者持續適任監督、跨機關通報與數位犯罪風險稽核的討論。</p><div class="voice"><b>受害者處境：</b>高信任職業者加入剝削鏈，會使受害者對原應提供保護的角色產生更深的不安。<em>未見公開、可核實的被害者直接引述。</em></div></article>
+          <article class="deep-case reveal"><span class="count">受害人數｜官方公開稿未列可去重總數</span><h3>09｜5F 自拍網站案</h3><p><b>涉及內容：</b>起訴內容涉及兒少性影像的重製、付費持有、觀覽與散布；平台的營運、收費與分類是責任判斷的重要部分。</p><p><b>案件餘波：</b>案件仍須等待法院逐項認定，不能把起訴罪名寫成確定有罪；被害者則持續面對內容再上傳的可能。</p><div class="voice"><b>受害者處境：</b>平台仍能被找到或重新建立時，安全感很難只靠一次下架恢復。<em>公開資料未提供可安全引用的個別心聲。</em></div></article>
+          <article class="deep-case reveal"><span class="count">受害人數｜逾 170 名未成年影像被害人</span><h3>10｜男版創意私房系列群組</h3><p><b>涉及內容：</b>刑事局公布的案情包括誘騙、竊錄、購買及販售性影像，並以 Telegram 分級群組、金融帳戶和雲端儲存運作；查扣逾 20 萬個影像檔案、上萬部影片。</p><p><b>案件餘波：</b>男童與男性未成年受害者可能因性別刻板印象更難開口，支持服務不能預設受害者性別。</p><div class="voice"><b>受害者處境：</b>沉默不等於沒有傷害；不同性別都需要保密、下架、醫療、心理與法律支持。<em>人數採刑事局「逾 170 名」，不拿檔案數代替受害人數。</em></div></article>
+          <article class="deep-case reveal"><span class="count">受害人數｜未公布；80 是會員規模，不是受害者</span><h3>11｜80 名高級會員分案</h3><p><b>涉及內容：</b>偵查重點在高額付費會員、可能的指定內容權限、金流及裝置資料；是否形成客製化需求，仍待個別偵查與裁判釐清。</p><p><b>案件餘波：</b>追訴從平台經營者延伸到需求端，但分案不等於起訴，更不等於定罪。</p><div class="voice"><b>受害者處境：</b>逐一追查需求端，才能避免傷害被當成無人負責的資料流。<em>本段保留無罪推定，也不把 80 人錯寫為 80 名受害者。</em></div></article>
+          <article class="deep-case reveal"><span class="count">受害人數｜成人為主；未公布獨立兒少人數</span><h3>12｜北投湯屋偷拍販售</h3><p><b>涉及內容：</b>被告被控在高度隱私場所偷拍顧客，剪輯性影像後透過匿名平台販售；本案是說明實體偷拍如何成為網路市場供應端的比較案例。</p><p><b>案件餘波：</b>受害者可能長期擔心影像仍存在、被重新交易或被熟人辨識；旅宿巡檢與網路下架必須接軌。</p><div class="voice"><b>受害者處境：</b>即使主要受害者為成年人，隱私遭販售與反覆觀看的恐懼同樣不能被輕忽。<em>不併入未成年受害統計。</em></div></article>
+        </div>
+        <p class="deep-case-note"><strong>關於「受害者心聲」：</strong>本頁只引用可核實且不會增加辨識風險的公開資料。沒有公開原話時，以「受害者處境／官方描述」呈現，並清楚標明不是本人引述；不為了渲染效果替任何孩子說話。</p>
+      </div>
+    </section>
+
+
+    <section class="context-section" aria-labelledby="case-context-title">
+      <div class="wrap">
+        <div class="section-head reveal"><h2 id="case-context-title">十二案完整脈絡<br>從起點到未解問題</h2><p>以下把同一犯罪生態中的平台、供應者、會員與衍生偵查拆開閱讀。每案均交代案件如何被發現、涉案角色、司法進度、受害人數口徑與仍待確認事項；不同支線可能使用同一批影像或受害者，因此不得直接相加。</p></div>
+        <div class="context-grid">
+          <details class="context-case reveal" open><summary>01｜創意私房平台主案</summary><p><b>起點與運作：</b>公開調查指平台自早年開始經營，以會員分級、付費權限、影像上架及個資標註形成市場；境外主使、站務、金流、供應者與買方分工，使案件不是單一持有行為，而是一套持續營利的犯罪結構。</p><p><b>查緝與審判：</b>2021 年後不同地檢署由個案向平台、供應端及會員端擴查；11 名協力者與會員已有二審結果，多數後續定讞，仍有被告續審及境外主使未到案問題。</p><p><b>受害口徑與餘波：</b>公開資料曾以「逾百人」描述整體影像被害者，但與 SCP、OAT 及各製造支線重疊，不能視為獨立總數。平台曝光後，影像仍可能存在於備份或轉傳群組。</p><p class="open-question"><b>仍待釐清：</b>境外主使追緝、完整犯罪所得、影像去重、跨平台永久下架及每名受害者的長期支持。</p></details>
+          <details class="context-case reveal"><summary>02｜SCP 誘騙、勒索與販售支線</summary><p><b>案件形成：</b>SCP 被查出與創意私房影像市場相連，部分來源涉及以社群接觸、取得私密影像，再以散布威脅控制受害者，最後進入付費或交換群組。</p><p><b>責任鏈：</b>影像取得者、勒索者、群組管理員、轉傳者與付費持有人可能各自觸犯不同罪責；不能把所有成員都寫成拍攝者，也不能把會員數當成受害人數。</p><p><b>案件餘波：</b>即使原帳號消失，備份與跨群轉傳仍可能延續控制。受害者需要同步取得證據保全、下架、法律協助與心理支持。</p><p class="open-question"><b>仍待釐清：</b>哪些被害者與其他支線重疊、各被告參與層級，以及匿名帳號背後的實際控制人。</p></details>
+          <details class="context-case reveal"><summary>03｜自動跟車加密群組</summary><p><b>運作方式：</b>所謂「跟車」指影像在不同加密群組間被快速複製或搬運；自動化帳號與鏡像儲存使單一群組被移除後，內容仍可能在其他節點重新出現。</p><p><b>查緝難點：</b>管理者、機器人操作者、一般轉傳者與僅在群組中的成員責任不同，必須以裝置鑑識、權限、訊息紀錄與金流個別認定。</p><p><b>案件餘波：</b>平台移除不等於影像消失，受害者可能長期無法確認內容是否已被清除。</p><p class="open-question"><b>仍待釐清：</b>群組間的控制關係、備份位置、實際下載者，以及與 SCP／創意私房的重疊範圍。</p></details>
+          <details class="context-case reveal"><summary>04｜跨縣市店家偷拍案</summary><p><b>案件方式：</b>檢方指控涉案者在小吃店、桌遊店等日常場所設置微型設備，竊錄身體隱私與性影像，再透過群組分類、上架與販售。</p><p><b>受害者：</b>官方起訴資料列 833 名被害者，其中 20 名未成年；這是該支線的偵查口徑，不應與補教或平台主案重複加總。</p><p><b>案件餘波：</b>受害者可能直到偵查通知才知道自己被拍攝，並面臨場所信任崩解、影像持續流通與辨識風險。</p><p class="open-question"><b>仍待釐清：</b>所有影像是否已完成被害者辨識、下架範圍、場所管理責任及後續賠償。</p></details>
+          <details class="context-case reveal"><summary>05｜補教人員偷拍與散布案</summary><p><b>案件方式：</b>起訴內容涉及利用補教工作接近未成年人、在私密空間偷拍，以及重製、散布性影像與製作不實合成性影像等不同指控。</p><p><b>受害者：</b>官方資料列 30 名被害者，其中 25 名未成年、5 名成年人。人數與前一支線分列，但仍須注意平台影像可能重疊。</p><p><b>案件餘波：</b>事件不只傷害個人，也動搖學生、家長對補教與兒少工作者的信任；涉案場所遭勒令停業或廢止立案，刑事責任仍須依程序認定。</p><p class="open-question"><b>仍待釐清：</b>影像流向、是否仍有未辨識受害者、教育主管機關先前查核及被害支持是否持續。</p></details>
+          <details class="context-case reveal"><summary>06｜知名藝人付費持有案</summary><p><b>案件起點：</b>檢警從平台會員、購買紀錄與扣案裝置追查到付費取得及持有兒少性影像的行為；焦點在需求端如何支撐剝削市場。</p><p><b>司法進度：</b>案件歷經偵查、起訴及審級變化，頁面只依最新可核實裁判標示是否可上訴，不以社群聲量代替法律狀態。</p><p><b>受害口徑：</b>檔案數、購買項目與可去重受害人數不是同一概念；和解人數亦不等於全部影像中的受害者。</p><p class="open-question"><b>仍待釐清：</b>每份影像的來源與重複情形、平台獲利鏈，以及下架與賠償能否涵蓋未被辨識者。</p></details>
+          <details class="context-case reveal"><summary>07｜警職會員、偷拍與再販售支線</summary><p><b>案件範圍：</b>公開資料中的警職涉案並非單一被告或單一犯罪模式，分別涉及付費持有、偷拍，或被控利用協助下架等機會取得影像後再販售。</p><p><b>制度風險：</b>若公權力身分可接觸報案、被害者或下架資料，案件便涉及資料存取、內控及求助信任，而不只是個人持有。</p><p><b>受害口徑：</b>其中一支線公開資料涉及 3 名未成年，但不能擴張為全部警職案件的總數。</p><p class="open-question"><b>仍待釐清：</b>是否濫用職務資料、內部稽核何時發現異常，以及相關被害資料是否已隔離保護。</p></details>
+          <details class="context-case reveal"><summary>08｜教師高階會員與平台帳務</summary><p><b>涉案角色：</b>案件不只涉及交換或持有影像，公開判決報導亦提到浮水印、帳務或平台協力等工作；這些行為可能讓平台持續營運並分配收益。</p><p><b>司法認定：</b>應逐項區分法院已認定的參與行為、檢方指控與媒體所稱「高階會員」，避免把職業身分本身當作犯罪證據。</p><p><b>案件餘波：</b>引發教師適任、停聘程序、兒少工作者數位犯罪風險及跨機關通報問題。</p><p class="open-question"><b>仍待釐清：</b>帳務所涵蓋的實際交易量、上游聯絡關係及教育主管機關後續處置。</p></details>
+          <details class="context-case reveal"><summary>09｜5F 自拍網站案</summary><p><b>案件性質：</b>檢方起訴內容涉及兒少性影像的重製、付費持有、觀覽與散布；平台營運、收費、分類與會員權限是判斷責任的重要線索。</p><p><b>程序界線：</b>起訴代表檢方認為證據足以交由法院審理，不等於被告已被判決有罪；每一罪名仍待法院逐項認定。</p><p><b>受害者：</b>官方公開稿未列可安全去重的總數，不能以網站檔案量或會員規模替代。</p><p class="open-question"><b>仍待釐清：</b>最終裁判、影像來源、平台收益、管理權限及被害者辨識與通知狀況。</p></details>
+          <details class="context-case reveal"><summary>10｜「男版創意私房」系列群組</summary><p><b>案件方式：</b>刑事局公布案件涉及誘騙、竊錄、購買與販售，並透過分級群組、金融帳戶及雲端空間運作；供應、管理與買方構成完整鏈條。</p><p><b>規模口徑：</b>官方公布逾 170 名未成年影像被害人，並查扣大量檔案；檔案數可能包含重複內容，不能當成人數。</p><p><b>案件餘波：</b>男性與男童受害者可能因性別刻板印象更難求助，支持服務不應預設受害者性別或性傾向。</p><p class="open-question"><b>仍待釐清：</b>跨群組去重、尚未辨識者、金流受益人、境外節點及長期下架成效。</p></details>
+          <details class="context-case reveal"><summary>11｜80 名高級會員分案追查</summary><p><b>案件起點：</b>檢方從平台資料、金流與裝置紀錄，把高額付費或具特殊權限的會員分案調查，重點包括是否購買、持有、轉傳或提出指定需求。</p><p><b>程序界線：</b>80 是被列為調查對象的會員規模，不是受害者數，也不表示 80 人均已起訴或有罪。</p><p><b>案件餘波：</b>偵辦向需求端延伸，有助辨識市場如何被付費行為維持；但社會公開名單前仍須遵守無罪推定與個資界線。</p><p class="open-question"><b>仍待釐清：</b>各分案處分、起訴及判決結果，是否存在客製化需求，以及會員與供應者的直接聯絡。</p></details>
+          <details class="context-case reveal"><summary>12｜北投湯屋偷拍販售案</summary><p><b>案件起點：</b>高度隱私場所內的偷拍影像遭上傳販售，檢警循影像、設備與平台交易追查供應者；案件呈現實體偷拍如何進入匿名市場。</p><p><b>受害者與審判：</b>公開資料至少涉及 4 男、6 女，主要為成年人；案件已有地方法院判決資訊，但仍須依最新審級標示是否確定。</p><p><b>案件餘波：</b>受害者面臨影像被備份、再次交易或被熟人辨識的長期恐懼；場所業者亦有巡檢、保存證據及通報責任問題。</p><p class="open-question"><b>仍待釐清：</b>影像是否完全下架、平台端收益、其他未辨識受害者及場所防偷拍措施是否改善。</p></details>
+        </div>
+        <p class="rumor-audit"><b>脆上傳聞查核（2026-09-14）：</b>以「創意私房、SCP、OAT、受害者、精神創傷、墜樓」等組合檢索，目前未找到能同時核對發文者身分、當事人授權、醫療或司法依據，且可確定對應本案受害者的公開原始貼文。因此只記錄「社群存在相關說法」，不刊帳號、截圖，不寫成確診事實。若日後出現當事人自主公開且可核實的陳述，仍須去識別化後再評估引用。</p>
+      </div>
+    </section>
+
+    <section class="verification-section" aria-labelledby="death-rumor-title">
+      <div class="wrap">
+        <div class="section-head reveal"><h2 id="death-rumor-title">墜樓死亡與精神創傷<br>事實、疑點、傳聞分開</h2><p>死亡與心理健康資訊最容易在社群上被放大。本節只保留可核實資料，並把尚無證據支持的說法清楚標出；不把墜樓原因、動機或個別受害者診斷自行補成結論。</p></div>
+        <div class="verification-grid">
+          <article class="verification-card reveal"><span class="verdict-tag">已確認｜兩起墜樓死亡</span><h3>兩名涉案者在查緝期間先後死亡</h3><p><b>第一起：</b>2024 年 7 月上旬，檢警搜索新北板橋一名 24 歲林姓工程師住處。公開報導指他是 SCP 社群管理員，負責架站、管理及金流系統；搜索過程中從高樓墜下死亡。</p><p><b>第二起：</b>同月，檢警搜索並拘提一名 41 歲蘇姓補教業者。報導指他涉嫌持有兒少性影像及在補習班偷拍；法院以管轄權為由未羈押，返家後數日墜樓死亡。</p><p><b>程序餘波：</b>涉案者死亡使其個人刑事責任無法繼續審判，也可能中斷裝置、帳號、金流與其他共犯的追查。死亡不等於法院已認定全部指控成立。</p></article>
+          <article class="verification-card caution reveal"><span class="verdict-tag">仍待證據｜「自殺疑雲」</span><h3>可以追問，但不能寫成陰謀結論</h3><p>兩起死亡接連發生，確實引起外界對查緝、羈押、風險評估與證據保全的疑問；但目前可查公開資料只支持「涉案者墜樓死亡」，不足以證實遭人滅口、另有共犯介入或其他陰謀說法。</p><p><b>本頁採用原則：</b>不以「畏罪」直接推定內心動機，也不以「疑雲」暗示已有犯罪證據。若司法或警方日後公布相驗、偵查結果，再依正式資料更新。</p><p><b>應被檢討的制度問題：</b>重大網路性剝削搜索期間，是否完成自傷風險辨識、陪同與危機轉介；關鍵涉案者死亡後，如何保全數位證據並延續共犯追查。</p></article>
+          <article class="verification-card reveal"><span class="verdict-tag">有來源｜長期創傷風險</span><h3>官方確認影像反覆流傳會造成創傷</h3><p>臺中地檢署在 SCP、OAT 衍生案件新聞稿中指出，性影像在網路空間不斷輾轉流傳，會造成被害人難以磨滅的創傷。這支持「可能出現長期心理傷害」的風險說明，但不是對每一名受害者的個別醫療診斷。</p><p><b>可能的案件餘波：</b>受害者可能長期擔心影像再次出現、遭熟人辨識、被責怪或被迫反覆說明經過；下架、心理支持、法律協助與生活復原不應在判決後停止。</p><p><b>用詞界線：</b>除非有本人授權或正式醫療、司法資料，不寫特定受害者罹患 PTSD、憂鬱症或其他診斷。</p></article>
+          <article class="verification-card caution reveal"><span class="verdict-tag">未證實｜脆上傳聞（查核至 2026-09-14）</span><h3>社群貼文不能直接成為受害者診斷</h3><p>脆及其他社群出現「受害者精神受損」等說法，目前未見足以核對發文者身分、當事人授權、診斷來源與案件對應關係的公開資料。本頁不轉貼帳號、截圖或可能反向辨識受害者的內容。</p><p><b>可以寫的：</b>社群上有相關說法，反映大眾對受害者長期創傷的擔憂；官方亦確認影像反覆流傳可能造成深遠創傷。</p><p><b>不能寫的：</b>把傳聞改寫成「已有受害者確診」或替當事人補寫心聲。若取得本人公開授權陳述，仍須去識別化並避免二次傷害。</p></article>
+        </div>
+        <p class="verification-foot"><strong>生命安全提醒：</strong>若自己或身邊的人出現自傷危機，請立即聯絡當地緊急服務；在台灣可撥 1925 安心專線、1995 生命線、1980 張老師，緊急危險請撥 110 或 119。兒少、性暴力或家庭暴力求助可撥 113。</p>
+      </div>
+    </section>
+
+    <section class="definition">
+      <div class="wrap">
+        <div class="section-head reveal"><h2>從十二案看見的<br>六項制度缺口</h2><p>司法查緝發生在傷害之後。真正的兒少保護，必須把阻斷點前移，並把平台、教育現場、金流與被害支持接成一個可以追蹤的責任鏈。</p></div>
+        <div class="policy-grid">
+          <article class="policy reveal"><b>01｜統一案件識別碼</b><p>跨地檢、跨警局與跨平台共享案件關聯，避免同一影像、受害者或帳號被重複統計，卻沒有完整追蹤。</p></article>
+          <article class="policy reveal"><b>02｜平台保存與緊急通報</b><p>建立兒少性影像的快速保全、下架、帳號凍結和證據移交時限，不能讓下架與偵查互相抵銷。</p></article>
+          <article class="policy reveal"><b>03｜需求端追訴</b><p>除主嫌與賣家外，持續追查付費會員、客製化需求、轉傳者與協助收款者，切斷市場誘因。</p></article>
+          <article class="policy reveal"><b>04｜高信任職業監督</b><p>教育、警政與兒少工作者需有更嚴格的資料存取紀錄、異常行為稽核與停職風險評估。</p></article>
+          <article class="policy reveal"><b>05｜長期下架與陪伴</b><p>提供被害者單一窗口，持續處理跨平台下架、法律協助、心理支持及再度出現時的快速回應。</p></article>
+          <article class="policy reveal"><b>06｜透明但不辨識</b><p>政府公布案件進度、平台規模與處理成效時，應採最小揭露，不公開可拼湊未成年身分的資訊。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="ethics">
+      <div class="wrap">
+        <div class="section-head reveal"><h2>資料可信度<br>怎麼閱讀？</h2><p>時間軌不是把新聞日期排在一起而已。每個節點都應清楚區分「檢方指控、法院認定與媒體追蹤」，避免用偵查數字替代確定判決。</p></div>
+        <table class="evidence-table reveal">
+          <thead><tr><th scope="col">標示</th><th scope="col">代表資料</th><th scope="col">網頁使用原則</th></tr></thead>
+          <tbody>
+            <tr><td>A｜司法確定</td><td>定讞裁判、正式判決書</td><td>可寫「法院認定」，仍不揭露受害者身分。</td></tr>
+            <tr><td>B｜司法進行中</td><td>起訴書、一二審裁判、檢察署新聞稿</td><td>寫明審級與可否上訴，不把起訴當成有罪。</td></tr>
+            <tr><td>C｜偵查資訊</td><td>警方破案新聞、檢方分案公告</td><td>使用「涉嫌、查緝、分案」，數字註明公布機關與日期。</td></tr>
+            <tr><td>D｜媒體線索</td><td>可信媒體調查與庭訊報導</td><td>作為追查入口，重要事實仍回到官方或裁判交叉確認。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="ethics">
+      <div class="wrap">
+        <div class="section-head reveal"><h2>報導的三條<br>保護線</h2><p>這不是犯罪圖鑑，而是公共制度報導。任何可使未成年受害者再次被搜尋、辨識或拼湊的資訊，都不應為了「完整」而刊出。</p></div>
+        <div class="ethics-grid"><article class="leaf reveal"><h3>不重現</h3><p>不放影像縮圖、檔名、群組邀請方式、存取教學或犯罪術語清單。</p></article><article class="leaf reveal"><h3>不辨識</h3><p>不寫學校、班級、住居地、帳號與可交叉拼湊身分的時間細節。</p></article><article class="leaf reveal"><h3>不重複計數</h3><p>平台、會員、上游製造者與掃蕩波次分開呈現，不把同一受害者多次加總。</p></article></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head reveal"><h2>主要查核來源</h2><p>正式版以官方資料為骨架、中央社等可信媒體補足判決進度。來源更新日期與案件狀態應同步顯示。</p></div>
+        <ol class="source-list">
+          <li><a href="https://www.tcc.moj.gov.tw/295804/295830/657577/1198841/post">臺中地檢署：創意私房產業鏈查緝</a></li>
+          <li><a href="https://www.tph.moj.gov.tw/4421/4447/853423/1292696/post">臺灣高等檢察署：SCP、自動跟車群組與創意私房偵辦概述</a></li>
+          <li><a href="https://www.tcc.moj.gov.tw/295804/295830/657577/1229261/post">臺中地檢署：SCP、OAT 社群衍生偷拍與兒少案件</a></li>
+          <li><a href="https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&amp;module=news&amp;serno=fa4a06db-ea3c-4b33-ab18-cfb51ec6266f">刑事警察局：創意私房跨境與匿名網路特徵</a></li>
+          <li><a href="https://www.cib.npa.gov.tw/ch/app/news/view?id=1885&amp;module=news&amp;serno=586857aa-c619-4b1c-872b-fa21ff9f0685">刑事警察局：男版創意私房查緝</a></li>
+          <li><a href="https://www.qtc.moj.gov.tw/10181/10255/10257/1351455/post">橋頭地檢署：5F 自拍網站案</a></li>
+          <li><a href="https://www.tcc.moj.gov.tw/295804/295830/657577/1271413/post">臺中地檢署：創意私房高級會員分案偵辦</a></li>
+          <li><a href="https://www.cna.com.tw/news/asoc/202412250189.aspx">中央社：SCP 社群一審判決</a></li>
+          <li><a href="https://www.cna.com.tw/news/asoc/202511250151.aspx">中央社：創意私房各支線與北投偷拍案司法進度</a></li>
+          <li><a href="https://www.rjsd.moj.gov.tw/RJSDWeb/common/WebListFile.ashx?list_id=1994">法務部司法官學院：我國性影像犯罪態樣</a></li>
+        </ol>
+      </div>
+    </section>
+  </main>
+  <footer class="footer"><div class="wrap">本頁為獨立查核研究專題。案件狀態可能變動；更新時須再次查核裁判與不起訴、緩起訴、上訴或定讞情形。未成年受害人一律去識別化。</div></footer>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script>
+    const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!reduced&&window.gsap){gsap.registerPlugin(ScrollTrigger);gsap.utils.toArray('.reveal').forEach((el,i)=>gsap.to(el,{opacity:1,y:0,duration:.85,delay:(i%3)*.05,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 88%',once:true}}));gsap.to('.w1',{x:70,y:40,scrollTrigger:{trigger:'.hero',scrub:1}});gsap.to('.w2',{x:-60,y:-25,scrollTrigger:{trigger:'.hero',scrub:1}})}else document.querySelectorAll('.reveal').forEach(el=>{el.style.opacity=1;el.style.transform='none'});
+    document.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-filter]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const f=btn.dataset.filter;document.querySelectorAll('.case').forEach(c=>c.hidden=f!=='all'&&c.dataset.kind!==f)}));
+  </script>
+<script data-cpa-four-language-toolbar-script src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"></script>
+<script data-cpa-legal-notice-script src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"></script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+(()=>{'use strict';const fallback='./assets/art/sanchong-child-dignity-autumn-20260930.webp';document.querySelectorAll('#home-media-reports .home-media-report-card img').forEach(img=>{img.addEventListener('error',()=>{if(img.dataset.fallbackApplied)return;img.dataset.fallbackApplied='true';img.src=fallback})});})();

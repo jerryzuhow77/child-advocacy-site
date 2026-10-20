@@ -1,0 +1,165 @@
+(function () {
+  'use strict';
+
+  var locale = (document.documentElement.lang || '').toLowerCase().startsWith('ja') ? 'ja' : 'en';
+  if (locale !== 'en' && locale !== 'ja') return;
+  var current = document.currentScript && document.currentScript.src ? document.currentScript.src : location.href;
+  var siteRoot = new URL('../', current).href;
+  var section = document.getElementById('news-flash');
+  if (!section) return;
+
+  function local(path) { return new URL(path.replace(/^\//, ''), siteRoot).href; }
+  function node(tag, className, text) {
+    var element = document.createElement(tag);
+    if (className) element.className = className;
+    if (typeof text === 'string') element.textContent = text;
+    return element;
+  }
+  function localizedPath(path) { return local(locale + '/' + path.replace(/^\//, '')); }
+
+  var sharedPinned = [
+    { className:'is-recognition-blind-spots-20260914', href:localizedPath('features/social-observation/child-abuse-recognition-blind-spots/'), image:local('assets/art/recognition-blind-spots-autumn-impressionist-20260913.webp'), viewKey:'recognition-blind-spots-20260914-shared' },
+    { className:'is-early-warning-audit-20260908', href:localizedPath('news/early-warning-audit-20260908/'), image:local('assets/art/early-warning-audit-20260908.webp'), viewKey:'early-warning-audit-20260908-shared' },
+    { className:'is-daily-brief-20260908', href:localizedPath('news/daily-child-protection-brief-20260908/'), image:local('assets/images/daily-child-protection-brief-ink-autumn-20260908.webp') },
+    { className:'is-daily-brief-20260907', href:localizedPath('news/daily-child-protection-brief-20260907/'), image:local('assets/images/daily-child-protection-brief-paper-clay-20260907.webp'), viewKey:'daily-child-protection-brief-20260907-shared' },
+    { className: 'is-guardian-duty-rebuttal', href: localizedPath('cases/kaikai/features/guardian-duty-rebuttal/'), image: local('cases/kaikai/features/guardian-duty-rebuttal/hero.webp') },
+    { className: 'is-luo-brothers', href: local('cases/luo-brothers/'), image: local('assets/art/luo-brothers-hearing-poster.webp') },
+    { className: 'is-hearing-update', href: local('activity-records/20260820-taipei-station-advocacy/'), image: local('assets/art/chen-shangjie-hearing-20260916-guohua-kai-v3.jpg') },
+    { className: 'is-charity-donation', href: local('activity-records/20260825-111-surplus-donation/'), image: local('activity-records/20260825-111-surplus-donation/images/charity-paper-clay-thumbnail-v3.webp?v=20260828-thumb-restore-2') }
+  ];
+  var sharedItems = [
+    { className: 'is-day10', href: localizedPath('hearing-records/prison-watch/kaikai-day10-20250507/'), imageByLocale: { en: local('assets/art/prison-watch-day10-kaikai-sentencing-poster-en-20260827.svg'), ja: local('assets/art/prison-watch-day10-kaikai-sentencing-poster-ja-20260827.svg') } },
+    { className: 'is-jungein-korea', href: 'https://cn.globalprotectionwall.com/historical-cases/korea/jungein', image: local('assets/art/jungein-memory-door-home-20260826.webp'), external: true },
+    { href: local('hearing-records/prison-watch/kaikai-day8-20250505/'), imageByLocale: { en: local('assets/art/prison-watch-day8-kaikai-evidence-poster-en-20260827.svg'), ja: local('assets/art/prison-watch-day8-kaikai-evidence-poster-ja-20260827.svg') } },
+    { href: 'https://tainan-tom-bear-case.jerryzuhow77.chatgpt.site/', image: local('assets/art/tainan-tom-bear-home-hero-20260825.webp'), external: true },
+    { className: 'is-tucheng-domestic-hearing', href: local('hearing-records/tucheng-domestic-violence-double-homicide-20260821/'), image: local('assets/images/tucheng-hearing-20260821-hero.jpg') },
+    { className: 'is-tucheng-domestic-case', href: local('cases/tucheng-domestic-violence-double-homicide/'), image: local('assets/images/tucheng-family-feature-20260823.jpg') },
+    { href: localizedPath('hearing-records/prison-watch/kaikai-day5-20250429/'), imageByLocale: { en: local('assets/art/prison-watch-day5-forensic-en-20260827.svg'), ja: local('assets/art/prison-watch-day5-forensic-ja-20260827.svg') } },
+    { href: localizedPath('hearing-records/prison-watch/kaikai-day4-20250428/'), image: local('assets/art/prison-watch-day4-hearing-poster-clay-20260821-v2.webp') },
+    { className: 'is-story-collection', href: localizedPath('activity-records/20260820-kaikai-story-collection/'), image: local('activity-records/20260820-kaikai-story-collection/images/kaikai-story-collection-hero.webp'), qa916: true },
+    { href: localizedPath('activity-records/20260801-ketagal-rally/'), image: local('assets/art/rally-20260801-ai-poster.jpg') }
+  ];
+
+  var copy = {
+    en: {
+      eyebrow: 'LATEST REPORTS · RECENTLY UPDATED', title: 'Latest reports',
+      intro: 'Eight pinned reports support automatic looping and manual horizontal movement, while the 10 most recently published articles move gently around the children’s Ferris wheel.',
+      all: 'View all documents →', pinned: 'Pinned reports', pinnedHint: 'Eight important updates can loop automatically or move manually',
+      listLabel: 'The 10 most recently published articles', wheel: 'Latest reports', wheelCount: '10 recent articles',
+      previous: 'Previous report', next: 'Next report', help: 'The wheel turns slowly. Hover, touch, or drag to pause, then select a carriage to read the full article.',
+      pinnedItems: [        { meta: '09.14 · KAIKAI CASE · CHILD-SAFETY FEATURE · PINNED', title: 'When Warning Signs Are Split Apart', summary: 'Chen Shangjie’s 2/23 hearing notes cross-checked against five Children’s Welfare League witness records; fluorescent highlights mark checkable points.', alt: 'Autumn paper-cut and clay artwork for a child-safety evidence cross-check' },
+
+        { meta: '09.08 · AUDIT SOURCE CHECK · PINNED', title: 'Beyond 70%: bringing early warnings into protection', summary: 'Three-year definitions, causes of death, repeat reports after closure, and the official response on safety assessment.', alt: 'AI splashed-ink landscape with an empty lantern, an open gate and a golden protection network; not an event photograph' },
+    {"meta": "09.08 · DAILY CHILD PROTECTION BRIEF · PINNED", "title": "Invisible before reporting, waiting after", "summary": "The audited 61.90%–92.86% range, a reported placement delay and a Twelve Doors comparison.", "alt": "Expressive ink painting of persimmons, lotus pond, guardian birds, lantern and open gate"},
+        {"meta":"09.07 · DAILY CHILD PROTECTION BRIEF · PINNED","title":"How should early warnings trigger protection?","summary":"Article 156, verified audit data, the 24-hour reporting duty and auditable protection thresholds.","alt":"Paper-and-clay artwork symbolising early warnings and child-protection thresholds"},
+        { meta: 'SEP 07 · MULTIPLE PERSPECTIVES · PINNED', title: 'Not a Scapegoat | Four Sets of Case-Specific Evidence', summary: 'News claims, official records, and analysis compared; case-specific duty is not a judgment on social workers as a profession', alt: 'Colorful ink-wash flowers, birds, lotus leaves, and red thread symbolising repair of a broken safety net' },
+        { meta: '08.26 · LATEST REPORT · PINNED', title: 'Luo Brothers Miscarriage-of-Justice Retrial', summary: 'Latest developments, case background, and complete documents', alt: 'Key visual for the Luo brothers miscarriage-of-justice retrial' },
+        { meta: '09.16 · APPEAL PREPARATORY PROCEEDING · PINNED', title: 'Chen Shangjie Case Appeal Preparatory Proceeding', summary: '2:30 p.m. · Taiwan High Court Special Courtroom', alt: 'Ink-wash mountains with a small symbolic child in navy and pale-blue stripes facing sunlight, representing care and hope' },
+        { meta: '08.25 · DONATION NOTICE · PINNED', title: 'Continuing Our Shared Support as Another Act of Care', summary: 'Jan 11 child-protection march: the remaining NT$27,128 in public activity funds was donated in full', alt: 'Public notice confirming the full donation of NT$27,128 remaining from the January 11 child-protection march', thumbLabel: 'DONATION', thumbAmount: 'NT$27,128', thumbNote: 'DONATED IN FULL' }
+      ],
+      items: [
+        { meta: '08.27 · LATEST COURT RECORD', title: 'Tenth Trial Date', summary: 'Sentencing arguments and a comparison of responsibility between the two defendants', alt: 'Cover artwork for the tenth trial date, sentencing arguments, and the responsibility of two defendants' },
+        { meta: '08.26 · NEW KOREAN HISTORICAL CASE', title: 'The Jeong-in Case | The Door Did Not Open', summary: 'Three reports did not become a path to safety', alt: 'Hanji paper-cut artwork with a half-open paper door, porcelain bowl, brass spoon, wrapping cloth and child socks; no injuries are depicted' },
+        { meta: '08.26 · LATEST COURT RECORD', title: 'Eighth Trial Date', summary: 'Evidence review, closing arguments, and sentencing documents', alt: 'Cover artwork for the complete court record from the eighth trial date' },
+        { meta: '08.25 · NEW TAIWAN HISTORICAL CASE', title: 'The Tainan Tom’s World Case', summary: 'He said there would be no death sentence—and there was not', alt: 'Paper-cut feature artwork for the Tainan Tom’s World case' },
+        { meta: '08.23 · LATEST COURT RECORD', title: 'Tucheng Domestic-Violence Double Homicide', summary: 'First-instance judgment, sentencing arguments, and full court notes', alt: 'Cover artwork for the complete August 21, 2026 Tucheng court notes' },
+        { meta: '08.23 · CASE FEATURE', title: 'Before the Fracture', summary: 'A family’s silence and collapse', alt: 'Cover artwork for the Tucheng family tragedy and institutional reflection feature' },
+        { meta: '08.22 · COURT RECORD', title: 'Fifth Trial Date', summary: 'Two physicians’ testimony and the medical evidence compared', alt: 'Cover artwork for the fifth trial date medical evidence and complete court record' },
+        { meta: '08.21 · COURT RECORD', title: 'Fourth Trial Date', summary: 'Two witnesses, three movement routes, and injury reporting', alt: 'Cover artwork for reconstructed editorial notes from the fourth trial date' },
+        { meta: '08.20 · ACTION BEFORE THE 9/16 HEARING', title: 'Let Us Write Kai-Kai’s Story Together', summary: 'Share your feelings, questions, and hopes for change', alt: 'Paper-cut and clay campaign artwork inviting the public to write Kai-Kai’s story' },
+        { meta: '08.20 · ACTIVITY RECORD UPDATE', title: 'Rally Against Drugged and Drunk Driving', summary: 'Support for victims’ families and child-protection advocacy', alt: 'Record of the August 1, 2026 Ketagalan Boulevard rally against drugged and drunk driving' }
+      ]
+    },
+    ja: {
+      eyebrow: 'LATEST REPORTS · RECENTLY UPDATED', title: '最新速報',
+      intro: '8件の固定速報は自動循環と手動の横移動に対応し、最新公開10件の記事が子どもらしい観覧車に乗ってゆっくり回ります。',
+      all: '資料一覧を見る →', pinned: '固定速報', pinnedHint: '重要な8件を自動循環または手動で横移動',
+      listLabel: '最新公開の10記事', wheel: '最新速報', wheelCount: '最新10件',
+      previous: '前の速報', next: '次の速報', help: '観覧車はゆっくり回転します。マウスを重ねる、触れる、またはドラッグすると停止し、ゴンドラを選ぶと記事全文を読めます。',
+      pinnedItems: [        { meta: '09.14・剴剴事件特集・子ども保護・固定速報', title: '警告サインが分断されるとき', summary: '陳尚潔氏の2月23日傍聴整理を、5名の兒福聯盟関係証人の記録と照合し、検証できる箇所を蛍光線で示します。', alt: '秋の切り紙とクレイによる、児童虐待認識の死角を照合するビジュアル' },
+
+        { meta: '09.08・監査原文照合・固定', title: '「約7割」の先へ：早期の兆候を保護につなぐ', summary: '3年間の定義、死因、終結後の再通報、安全評価に関する政府回答を補足。', alt: '空の灯籠、開いた門、金色の保護網を描いたAI潑墨山水。現場写真ではありません' },
+    {"meta": "09.08・子ども保護デイリーブリーフ・固定", "title": "通報前の死角、通報後の待機", "summary": "監査原文の61.90%～92.86%、保護遅延報道、十二の扉の比較。", "alt": "秋の柿、蓮池、守護する鳥、灯籠と開いた門の写意水墨画"},
+        {"meta":"09.07・子ども保護デイリーブリーフ・固定","title":"早期警告を、どう保護につなげるか","summary":"憲法第156条、確認済み監査資料、24時間以内の通報義務、監査可能な保護基準。","alt":"早期警告と子ども保護基準を象徴する紙彫刻と粘土のアート"},
+        { meta: '09.07・多角的考察・固定', title: '身代わりではない｜四つの証拠が示す個別責任', summary: '報道、公式資料、分析を照合し、職種全体ではなく本件固有の作為義務を検証', alt: '壊れた安全網の修復を象徴する、花鳥、蓮の葉、赤い糸による鮮やかな水墨画' },
+        { meta: '08.26・最新速報・固定', title: '羅兄弟冤罪事件の再審理', summary: '最新動向、事件の経緯、関連資料', alt: '羅兄弟冤罪事件の再審理を伝えるメインビジュアル' },
+        { meta: '09.16・第二審準備手続・固定', title: '陳尚潔事件・第二審準備手続', summary: '午後2時30分・台湾高等法院 専一法廷', alt: '水墨の山並みの中、紺と淡い青の縞模様の服を着た象徴的な小さな子どもが光へ向かう、見守りと希望を表す主ビジュアル' },
+        { meta: '08.25・寄付公告・固定', title: '皆さまの支援を、次の守りへ', summary: '1月11日の児童保護デモ：活動公費の残額27,128元を全額寄付', alt: '1月11日の児童保護デモの残額27,128元を全額寄付したことを知らせる公告', thumbLabel: '寄付公告', thumbAmount: '27,128元', thumbNote: '全額寄付' }
+      ],
+      items: [
+        { meta: '08.27・最新傍聴記録', title: '第10回公判期日', summary: '量刑に関する弁論と2人の責任を比較', alt: '第10回公判期日の量刑弁論と被告2人の責任を扱うメインビジュアル' },
+        { meta: '08.26・韓国の歴史的事件・新着', title: '韓国チョンイン事件｜扉は開かなかった', summary: '3度の通報は安全への出口にならなかった', alt: '半開きの韓紙の扉、白磁の器、真鍮の匙、ポジャギ、子どもの靴下で構成した事件特集ビジュアル。傷害表現はありません' },
+        { meta: '08.26・最新傍聴記録', title: '第8回公判期日', summary: '証拠調べ、論告、量刑資料の整理', alt: '第8回公判期日の完全傍聴記録メインビジュアル' },
+        { meta: '08.25・台湾の歴史的事件・新着', title: '台南トムズ・ワールド男児殺害事件', summary: '「死刑にはならない」と語り、実際に死刑にはならなかった', alt: '台南トムズ・ワールド男児殺害事件の切り絵特集ビジュアル' },
+        { meta: '08.23・最新傍聴記録', title: '土城DV二人死亡事件', summary: '一審判決、量刑をめぐる攻防、完全傍聴記録', alt: '2026年8月21日の土城事件完全傍聴記録のメインビジュアル' },
+        { meta: '08.23・社会事件特集', title: '亀裂の前に', summary: 'ある家族の沈黙と崩壊', alt: '土城事件の家族悲劇と制度的省察を描く特集ビジュアル' },
+        { meta: '08.22・傍聴記録', title: '第5回公判期日', summary: '2人の医師の証言と医学証拠を比較', alt: '第5回公判期日の医学証拠と完全傍聴記録のメインビジュアル' },
+        { meta: '08.21・傍聴記録', title: '第4回公判期日', summary: '2人の証人、3つの動線、傷害の通報', alt: '第4回公判期日の再構成編集記録メインビジュアル' },
+        { meta: '08.20・9/16公判前の行動', title: '一緒にカイカイの物語を書き残そう', summary: '感じたこと、疑問、変化への願いをお寄せください', alt: 'カイカイの物語を共に書き残す紙彫刻と陶土の投稿企画ビジュアル' },
+        { meta: '08.20・活動記録更新', title: '薬物・飲酒運転に反対する大行進', summary: '被害者家族への支援と子どもの保護を訴える活動', alt: '2026年8月1日の薬物・飲酒運転反対ケタガラン大通り集会の記録' }
+      ]
+    }
+  }[locale];
+
+  var replacement = node('section', 'home-latest-flash home-document-disc-section');
+  replacement.id = 'news-flash';
+  replacement.setAttribute('aria-labelledby', 'newsFlashTitle');
+  var container = node('div', 'container');
+  var head = node('div', 'home-news-stream-head home-flash-head');
+  var headCopy = node('div');
+  headCopy.appendChild(node('div', 'art-eyebrow dark', copy.eyebrow));
+  headCopy.appendChild(node('span', 'stream-icon', '✦'));
+  var title = node('h2', '', copy.title); title.id = 'newsFlashTitle'; headCopy.appendChild(title);
+  headCopy.appendChild(node('p', '', copy.intro));
+  var allLink = node('a', '', copy.all); allLink.href = localizedPath('cases/');
+  head.appendChild(headCopy); head.appendChild(allLink); container.appendChild(head);
+
+  var pinned = node('section', 'home-pinned-reports');
+  pinned.dataset.pinnedReports = '';
+  pinned.setAttribute('aria-labelledby', 'homePinnedReportsTitle');
+  var pinnedHead = node('header');
+  pinnedHead.appendChild(node('span', '', 'PINNED REPORTS'));
+  var pinnedTitle = node('h3', '', copy.pinned); pinnedTitle.id = 'homePinnedReportsTitle'; pinnedHead.appendChild(pinnedTitle);
+  pinnedHead.appendChild(node('small', '', copy.pinnedHint)); pinned.appendChild(pinnedHead);
+  var pinnedViewport = node('div', 'home-pinned-reports-viewport');
+  var pinnedTrack = node('div', 'home-pinned-reports-track');
+  sharedPinned.forEach(function (item, index) {
+    var text = copy.pinnedItems[index];
+    var card = node('a', 'home-pinned-report-card ' + item.className); card.href = item.href; if (item.viewKey) card.dataset.viewCounterKey = item.viewKey;
+    var image = node('img'); image.src = item.imageByLocale ? item.imageByLocale[locale] : item.image; image.alt = text.alt; image.loading = 'eager'; image.decoding = 'async';
+    if (text.thumbLabel) {
+      var thumbCopy = node('span', 'home-pinned-thumb-copy'); thumbCopy.setAttribute('aria-hidden', 'true');
+      thumbCopy.appendChild(node('small', '', text.thumbLabel)); thumbCopy.appendChild(node('strong', '', text.thumbAmount)); thumbCopy.appendChild(node('em', '', text.thumbNote)); card.appendChild(thumbCopy);
+    }
+    var cardCopy = node('span'); cardCopy.appendChild(node('small', '', text.meta)); cardCopy.appendChild(node('strong', '', text.title)); cardCopy.appendChild(node('em', '', text.summary));
+    card.appendChild(image); card.appendChild(cardCopy); pinnedTrack.appendChild(card);
+  });
+  pinnedViewport.appendChild(pinnedTrack); pinned.appendChild(pinnedViewport); container.appendChild(pinned);
+
+  var shell = node('div', 'home-document-disc-shell is-ferris-wheel'); shell.dataset.documentDisc = '';
+  var sea = node('div', 'home-sea-art'); sea.setAttribute('aria-hidden', 'true');
+  ['sea-horizon', 'sea-wave-layer sea-wave-far', 'sea-wave-layer sea-wave-near'].forEach(function (name) { sea.appendChild(node('span', name)); });
+  var sailboat = node('span', 'sea-sailboat'); sailboat.appendChild(node('i')); sailboat.appendChild(node('b')); sea.appendChild(sailboat);
+  sea.appendChild(node('span', 'sea-gulls', '⌒　⌒')); sea.appendChild(node('span', 'sea-fish fish-one', '◁')); sea.appendChild(node('span', 'sea-fish fish-two', '◁')); sea.appendChild(node('span', 'sea-pearls', '○ · ○')); shell.appendChild(sea);
+  var cloudOne = node('div', 'home-ferris-cloud cloud-one'); cloudOne.setAttribute('aria-hidden', 'true'); shell.appendChild(cloudOne);
+  var cloudTwo = node('div', 'home-ferris-cloud cloud-two'); cloudTwo.setAttribute('aria-hidden', 'true'); shell.appendChild(cloudTwo);
+  var spokes = node('div', 'home-ferris-spokes'); spokes.setAttribute('aria-hidden', 'true'); for (var spoke = 0; spoke < 4; spoke += 1) spokes.appendChild(node('i')); shell.appendChild(spokes);
+  var orbit = node('div', 'home-document-disc-orbit'); orbit.setAttribute('role', 'list'); orbit.setAttribute('aria-label', copy.listLabel);
+  sharedItems.forEach(function (item, index) {
+    var text = copy.items[index];
+    var card = node('a', 'home-document-disc-card' + (item.className ? ' ' + item.className : '')); card.href = item.href; card.setAttribute('role', 'listitem');
+    if (item.external) { card.target = '_blank'; card.rel = 'noopener noreferrer'; }
+    if (item.qa916) card.dataset.qa916Card = 'true';
+    var image = node('img'); image.src = item.imageByLocale ? item.imageByLocale[locale] : item.image; image.alt = text.alt; image.loading = 'lazy'; image.decoding = 'async'; if (item.qa916) image.dataset.qa916Image = '';
+    var cardCopy = node('span'); cardCopy.appendChild(node('small', '', text.meta)); cardCopy.appendChild(node('strong', '', text.title)); cardCopy.appendChild(node('em', '', text.summary));
+    card.appendChild(image); card.appendChild(cardCopy); orbit.appendChild(card);
+  });
+  shell.appendChild(orbit);
+  var center = node('div', 'home-document-disc-center'); center.setAttribute('aria-hidden', 'true'); center.appendChild(node('span', '', "CHILDREN'S WHEEL")); center.appendChild(node('strong', '', copy.wheel)); center.appendChild(node('small', '', copy.wheelCount)); shell.appendChild(center);
+  var stand = node('div', 'home-ferris-stand'); stand.setAttribute('aria-hidden', 'true'); stand.appendChild(node('i')); stand.appendChild(node('i')); stand.appendChild(node('b')); shell.appendChild(stand);
+  var previous = node('button', 'home-document-disc-control is-prev', '‹'); previous.type = 'button'; previous.dataset.discPrev = ''; previous.setAttribute('aria-label', copy.previous); shell.appendChild(previous);
+  var next = node('button', 'home-document-disc-control is-next', '›'); next.type = 'button'; next.dataset.discNext = ''; next.setAttribute('aria-label', copy.next); shell.appendChild(next);
+  container.appendChild(shell); container.appendChild(node('p', 'home-document-disc-help', copy.help)); replacement.appendChild(container);
+  section.replaceWith(replacement);
+  document.dispatchEvent(new CustomEvent('cpa-home-latest-ready', { detail: { locale: locale, count: sharedItems.length } }));
+}());

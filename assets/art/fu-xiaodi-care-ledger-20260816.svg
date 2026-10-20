@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">照顧交接簿與六份裁判的象徵畫面</title>
+  <desc id="desc">深藍背景上，一份未完成的照顧交接表連接2005年9月16日與11月26日，旁側排列六張裁判頁；沒有兒童、傷勢或案件人物。</desc>
+  <defs>
+    <linearGradient id="night" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071b27"/>
+      <stop offset="0.55" stop-color="#123746"/>
+      <stop offset="1" stop-color="#315663"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7f0df"/>
+      <stop offset="1" stop-color="#d9cbae"/>
+    </linearGradient>
+    <linearGradient id="light" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e9c77a" stop-opacity="0.92"/>
+      <stop offset="1" stop-color="#cf8f56" stop-opacity="0.12"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="20" stdDeviation="24" flood-color="#031016" flood-opacity="0.42"/>
+    </filter>
+    <pattern id="grain" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="4" cy="5" r="0.8" fill="#ffffff" opacity="0.07"/>
+      <circle cx="19" cy="15" r="0.7" fill="#000000" opacity="0.09"/>
+      <path d="M2 20L12 18" stroke="#ffffff" stroke-width="0.5" opacity="0.04"/>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#night)"/>
+  <rect width="1600" height="900" fill="url(#grain)"/>
+  <circle cx="1320" cy="124" r="285" fill="#d1a569" opacity="0.08"/>
+  <circle cx="1320" cy="124" r="182" fill="#e7c986" opacity="0.06"/>
+  <path d="M0 705C330 620 495 780 814 689C1112 605 1288 671 1600 565V900H0Z" fill="#06151d" opacity="0.48"/>
+
+  <g transform="translate(174 110) rotate(-2 480 315)" filter="url(#shadow)">
+    <rect x="0" y="0" width="930" height="650" rx="26" fill="url(#paper)"/>
+    <rect x="30" y="30" width="870" height="590" rx="12" fill="none" stroke="#315563" stroke-width="3" opacity="0.54"/>
+    <path d="M66 112H864M66 198H864M66 284H864M66 370H864M66 456H864M66 542H864" stroke="#5c6d6e" stroke-width="2" opacity="0.38"/>
+    <path d="M300 74V574" stroke="#5c6d6e" stroke-width="2" opacity="0.35"/>
+    <g fill="none" stroke="#315563" stroke-width="4" opacity="0.72">
+      <rect x="102" y="139" width="34" height="34" rx="4"/>
+      <rect x="102" y="225" width="34" height="34" rx="4"/>
+      <rect x="102" y="311" width="34" height="34" rx="4"/>
+      <rect x="102" y="397" width="34" height="34" rx="4"/>
+      <rect x="102" y="483" width="34" height="34" rx="4"/>
+    </g>
+    <g fill="#315563" opacity="0.68">
+      <rect x="164" y="146" width="96" height="12" rx="6"/>
+      <rect x="164" y="168" width="64" height="9" rx="4.5" opacity="0.58"/>
+      <rect x="164" y="232" width="76" height="12" rx="6"/>
+      <rect x="164" y="254" width="98" height="9" rx="4.5" opacity="0.58"/>
+      <rect x="164" y="318" width="88" height="12" rx="6"/>
+      <rect x="164" y="340" width="55" height="9" rx="4.5" opacity="0.58"/>
+      <rect x="164" y="404" width="68" height="12" rx="6"/>
+      <rect x="164" y="426" width="93" height="9" rx="4.5" opacity="0.58"/>
+      <rect x="164" y="490" width="82" height="12" rx="6"/>
+      <rect x="164" y="512" width="62" height="9" rx="4.5" opacity="0.58"/>
+    </g>
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="#163b48">
+      <text x="345" y="112" font-size="31" letter-spacing="2">2005.09.16</text>
+      <text x="694" y="112" font-size="31" letter-spacing="2">2005.11.26</text>
+      <text x="475" y="355" font-size="138" font-weight="700" opacity="0.84">71</text>
+    </g>
+    <path d="M418 159C500 126 625 126 747 159" fill="none" stroke="#b47b48" stroke-width="5" stroke-linecap="round"/>
+    <path d="M730 144L758 160L731 177" fill="none" stroke="#b47b48" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <g transform="translate(412 405)">
+      <rect width="385" height="112" rx="14" fill="#f5ead3" stroke="#b47b48" stroke-width="3" stroke-dasharray="10 9"/>
+      <circle cx="45" cy="56" r="19" fill="none" stroke="#b47b48" stroke-width="4"/>
+      <path d="M82 38H333M82 58H292M82 78H315" stroke="#6f6554" stroke-width="8" stroke-linecap="round" opacity="0.52"/>
+    </g>
+  </g>
+
+  <g transform="translate(1116 267) rotate(4 170 220)" filter="url(#shadow)">
+    <path d="M32 0H294L340 48V430H32Z" fill="#efe4cf"/>
+    <path d="M294 0V48H340" fill="#d4c19e"/>
+    <g stroke="#315563" stroke-width="7" stroke-linecap="round" opacity="0.48">
+      <path d="M80 94H285"/><path d="M80 135H265"/><path d="M80 176H290"/>
+      <path d="M80 256H274"/><path d="M80 297H252"/><path d="M80 338H285"/>
+    </g>
+    <circle cx="242" cy="222" r="66" fill="none" stroke="#b47b48" stroke-width="8" opacity="0.8"/>
+    <text x="242" y="247" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="74" font-weight="700" fill="#9f6337">6</text>
+  </g>
+
+  <path d="M1244 94V190" stroke="#e0bd79" stroke-width="7" stroke-linecap="round" opacity="0.76"/>
+  <path d="M1180 201H1308L1283 326H1205Z" fill="url(#light)" stroke="#e0bd79" stroke-width="6" opacity="0.84"/>
+  <path d="M1207 236H1281M1199 274H1289" stroke="#f3ddb0" stroke-width="4" opacity="0.72"/>
+  <circle cx="1244" cy="253" r="22" fill="#f7e8bf" opacity="0.38"/>
+</svg>

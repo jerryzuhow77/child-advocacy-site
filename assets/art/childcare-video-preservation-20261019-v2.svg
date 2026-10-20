@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="t d">
+<title id="t">Recorded footage protection</title><desc id="d">An abstract monitoring camera and protected case file, representing preservation, access and accountability.</desc>
+<rect width="1600" height="900" fill="#e9eee9"/>
+<path d="M0 0H1600V900H0Z" fill="url(#paper)"/>
+<defs><linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eaf0eb"/><stop offset=".58" stop-color="#f8f3e8"/><stop offset="1" stop-color="#d4e1db"/></linearGradient><linearGradient id="folder" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1e4d56"/><stop offset="1" stop-color="#12343b"/></linearGradient></defs>
+<path d="M0 660C290 570 408 790 670 696S1118 514 1600 670V900H0Z" fill="#c7d8d0"/>
+<circle cx="1280" cy="226" r="230" fill="#d79663" opacity=".22"/><circle cx="1360" cy="680" r="250" fill="#193f46" opacity=".08"/>
+<g transform="translate(152 150)"><path d="M0 118Q0 65 54 65H308L370 0H665Q720 0 720 55V476Q720 532 665 532H54Q0 532 0 476Z" fill="url(#folder)"/><path d="M0 118H720" stroke="#efc391" stroke-width="13" opacity=".88"/><path d="M92 216H590M92 286H512M92 356H584M92 426H436" stroke="#eaf0eb" stroke-width="18" stroke-linecap="round" opacity=".78"/><rect x="466" y="88" width="168" height="90" rx="15" fill="#e8b472"/><text x="550" y="146" text-anchor="middle" fill="#163e45" font-family="sans-serif" font-size="34" font-weight="700">EVIDENCE</text></g>
+<g transform="translate(902 180)" fill="none" stroke="#254e55" stroke-linecap="round" stroke-linejoin="round"><path d="M45 178H405L512 248V365H45Z" fill="#fdfaf2" stroke-width="16"/><path d="M230 365V472M156 472H310" stroke-width="20"/><path d="M0 111L95 68H390L466 111V194H0Z" fill="#d78b5b" stroke-width="16"/><circle cx="235" cy="150" r="57" fill="#203f46" stroke-width="16"/><circle cx="235" cy="150" r="24" fill="#f8dfaa" stroke="none"/><path d="M73 240H437" stroke-width="16"/><path d="M49 456H420" stroke="#b57857" stroke-width="12"/></g>
+<text x="890" y="670" fill="#254e55" font-family="sans-serif" font-size="45" letter-spacing="5">PRESERVE · ACCESS · ACCOUNT</text>
+</svg>

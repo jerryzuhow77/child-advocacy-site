@@ -1,0 +1,83 @@
+name: Clean final verify Kaikai Chapter 2 major homepage publication
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-verify-kaikai-chapter-two-major-clean-20260829.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  verify-and-clean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Confirm the current production contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          git pull --rebase origin main
+          grep -q 'data-kaikai-chapter-two-root-entry' index.html
+          grep -q 'data-kaikai-chapter-two-launch' index.html
+          grep -q 'data-kaikai-chapter-two-card' index.html
+          grep -q 'data-kaikai-chapter-two-footer' index.html
+          grep -q '第二章｜沒人要的孩子？' index.html
+          grep -q '第二章｜没人要的孩子？' index.html
+          ! grep -q '悲劇不忘・終章｜剴剴的672天' index.html
+          test -s assets/home-kaikai-chapter-two-20260829.css
+          test -s assets/home-kaikai-chapter-two-20260829.js
+          grep -q 'id="placement-harm-cases"' hearing-records/prison-watch/kaikai-final-chapter/index.html
+          grep -q 'id="placement-harm-cases"' hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+
+      - name: Patch the nested-menu browser evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/patch-kaikai-chapter-two-verifier-menu-20260829.py
+          node --check .github/scripts/verify-kaikai-chapter-two-major-20260829.mjs
+
+      - name: Install Playwright driver
+        run: npm install --no-save playwright-core@1.55.0
+
+      - name: Verify Traditional and Simplified desktop and mobile Chrome
+        run: node .github/scripts/verify-kaikai-chapter-two-major-20260829.mjs
+
+      - name: Upload clean final browser proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kaikai-chapter-two-major-homepage-clean-final-proof
+          path: browser-validation/kaikai-chapter-two-major
+          retention-days: 14
+
+      - name: Remove completed one-off publication files
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git reset --hard HEAD
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
+          git rm -f .github/workflows/oneoff-publish-kaikai-chapter-two-major-20260829.yml
+          git rm -f .github/workflows/oneoff-verify-kaikai-chapter-two-major-final-20260829.yml
+          git rm -f .github/workflows/oneoff-verify-kaikai-chapter-two-major-clean-20260829.yml
+          git rm -f .github/scripts/publish-kaikai-chapter-two-major-20260829.py
+          git rm -f .github/scripts/verify-kaikai-chapter-two-major-20260829.mjs
+          git rm -f .github/scripts/patch-kaikai-chapter-two-verifier-menu-20260829.py
+          git commit -m 'Remove completed Chapter 2 homepage publication tools'
+          pushed=0
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              pushed=1
+              break
+            fi
+            git pull --rebase origin main
+          done
+          test "$pushed" -eq 1

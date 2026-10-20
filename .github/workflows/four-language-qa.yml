@@ -1,0 +1,291 @@
+name: Four-language content QA and 9-16 hearing campaign
+# Validate this workflow whenever synchronization or cache contracts change.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/*.html'
+      - 'en/hearing-records/index.html'
+      - 'ja/hearing-records/index.html'
+      - 'en/hearing-records/prison-watch/kaikai-final-chapter/**'
+      - 'ja/hearing-records/prison-watch/kaikai-final-chapter/**'
+      - 'hearing-records/prison-watch/kaikai-final-chapter/index.html'
+      - 'hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html'
+      - 'hearing-records/prison-watch/kaikai-day10-20250507/index.html'
+      - 'hearing-records/prison-watch/kaikai-day10-20250507/zh-Hans/index.html'
+      - 'en/hearing-records/prison-watch/kaikai-day10-20250507/index.html'
+      - 'ja/hearing-records/prison-watch/kaikai-day10-20250507/index.html'
+      - 'sitemap.xml'
+      - '.github/scripts/verify-chapter-two-publication.py'
+      - '.github/scripts/protect-chapter-two-hold.py'
+      - '.github/scripts/sync-four-language-toolbar.py'
+      - '.github/scripts/test-home-language-links.py'
+      - '.github/scripts/test-four-language-cross-origin-routing.mjs'
+      - '.github/scripts/sync-zh-hans-content.py'
+      - 'scripts/verify-four-language-completeness.py'
+      - 'scripts/test-liu-hearing-localization.py'
+      - 'scripts/verify-jiajia-hearing-qualifiers.py'
+      - 'assets/news-desk-20260903.js'
+      - 'data/latest-bulletins.json'
+      - 'data/four-language-routes.json'
+      - 'assets/four-language-toolbar-20260901.css'
+      - 'assets/four-language-toolbar-20260901.js'
+      - 'assets/article-comments-20260828.js'
+      - 'assets/home-view-counter-20260811.js'
+      - 'assets/home-latest-i18n-20260826.js'
+      - 'assets/recognition-blind-spots-20260913.css'
+      - 'assets/recognition-blind-spots-20260913.js'
+      - 'features/kaikai-grandmother-rescue-barriers/**'
+      - 'activity-records/20260820-taipei-station-advocacy/**'
+      - 'en/activity-records/20260820-taipei-station-advocacy/**'
+      - 'ja/activity-records/20260820-taipei-station-advocacy/**'
+      - 'assets/site.js'
+      - 'assets/site-base-20260823.js'
+      - 'assets/site-four-language-qa-20260823.js'
+      - 'assets/home-archive-layout-20260823.js'
+      - 'assets/home-ia-hearing-campaign-20260823.js'
+      - 'assets/home-ia-bootstrap-20260823.js'
+      - 'assets/global-protection-wall-portal.js'
+      - 'sw.js'
+      - 'assets/pwa-install.js'
+      - '.github/scripts/verify-pwa-update.mjs'
+      - '.github/workflows/four-language-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: four-language-qa-main
+  cancel-in-progress: false
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Simplified Chinese converter
+        run: python3 -m pip install --disable-pip-version-check opencc-python-reimplemented==0.1.7
+
+      - name: Verify explicit homepage language links before synchronization
+        run: python3 .github/scripts/test-home-language-links.py -v
+
+      - name: Synchronize language routes from a fresh main snapshot
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            python3 .github/scripts/sync-zh-hans-content.py
+            python3 .github/scripts/sync-four-language-toolbar.py
+            # Do not publish a bot edit that breaks explicit language switches.
+            python3 .github/scripts/test-home-language-links.py -v
+            if git diff --quiet; then
+              break
+            fi
+            git add -- '*.html' data/four-language-routes.json
+            git commit -m "Sync complete Simplified Chinese content and language routes"
+            if git push origin HEAD:main; then
+              break
+            fi
+            if [ "$attempt" -eq 3 ]; then
+              echo 'Unable to publish synchronized four-language routes after three fresh attempts.' >&2
+              exit 1
+            fi
+            sleep 2
+          done
+
+      - name: Verify Simplified Chinese mirror parity
+        run: python3 .github/scripts/sync-zh-hans-content.py --check
+
+      - name: JavaScript syntax checks
+        run: |
+          set -euo pipefail
+          node --check assets/site.js
+          node --check assets/site-base-20260823.js
+          node --check assets/site-four-language-qa-20260823.js
+          node --check assets/home-archive-layout-20260823.js
+          node --check assets/home-ia-hearing-campaign-20260823.js
+          node --check assets/home-ia-bootstrap-20260823.js
+          node --check assets/global-protection-wall-portal.js
+          node --check assets/four-language-toolbar-20260901.js
+          node --check assets/home-media-thumbnail-fallback-20260930.js
+          node .github/scripts/test-four-language-cross-origin-routing.mjs
+          node --check assets/article-comments-20260828.js
+          node --check assets/home-view-counter-20260811.js
+          node --check assets/mobile-nav-view-counter-20260823.js
+          node --check assets/recognition-blind-spots-20260913.js
+          node --check features/kaikai-grandmother-rescue-barriers/page-motion.js
+          node --check sw.js
+          node --check assets/pwa-install.js
+
+      - name: Static synchronization assertions
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          root = Path('.')
+          base = (root / 'assets/site-base-20260823.js').read_text(encoding='utf-8')
+          loader = (root / 'assets/site.js').read_text(encoding='utf-8')
+          qa = (root / 'assets/site-four-language-qa-20260823.js').read_text(encoding='utf-8')
+          hearing = (root / 'assets/home-ia-hearing-campaign-20260823.js').read_text(encoding='utf-8')
+          portal = (root / 'assets/global-protection-wall-portal.js').read_text(encoding='utf-8')
+          toolbar = (root / 'assets/four-language-toolbar-20260901.js').read_text(encoding='utf-8')
+          comments = (root / 'assets/article-comments-20260828.js').read_text(encoding='utf-8')
+          routes = json.loads((root / 'data/four-language-routes.json').read_text(encoding='utf-8'))
+          sw = (root / 'sw.js').read_text(encoding='utf-8')
+          pwa_install = (root / 'assets/pwa-install.js').read_text(encoding='utf-8')
+          bulletin = json.loads((root / 'data/latest-bulletins.json').read_text(encoding='utf-8'))
+
+          assert len(base) > 100_000, 'Original site behavior was not preserved in the base layer.'
+          assert 'site-base-20260823.js' in loader and 'site-four-language-qa-20260823.js' in loader
+          assert 'https://cn.globalprotectionwall.com/?section=member-submit' in qa
+          assert "['中國大陸','大陸']" in qa and "['中国大陆','大陆']" in qa
+          assert "['Mainland China','Mainland']" in qa
+          assert '控訴審準備手続' in qa and '児童保護行動連盟' in qa
+          assert '9/16 開庭前，留下你想說的話' in hearing
+          assert 'Before the September 16 appeal hearing' in hearing
+          assert '9月16日の控訴審を前に' in hearing
+          assert '2026-09-16T14:30' in hearing
+          assert "const mainlandWallBase='https://cn.globalprotectionwall.com/'" in portal
+          assert "const wallBase='https://global-protection.jerryzuhow77.chatgpt.site/'" in portal
+          canonical_wall_api = 'https://global-protection.jerryzuhow77.chatgpt.site/api/public/view-count'
+          for asset in ('assets/four-language-toolbar-20260901.js', 'assets/article-comments-20260828.js', 'assets/home-post-engagement-20260826.js', 'assets/site-base-20260823.js'):
+              assert canonical_wall_api in (root / asset).read_text(encoding='utf-8'), f'Canonical wall API missing from {asset}'
+          assert 'cpa-four-language-toolbar' in toolbar
+          assert 'cpa-language-select' in toolbar and 'languageUrl' in toolbar, 'Every article toolbar must expose the shared four-language dropdown.'
+          assert 'https://cn.globalprotectionwall.com/' in toolbar and '簡中' in toolbar, 'Simplified Chinese must keep the short label and target the Hong Kong mirror.'
+          route_manifest_version = re.search(r'four-language-routes\.json\?v=([A-Za-z0-9-]+)', toolbar)
+          assert route_manifest_version, 'The toolbar must request the generated route manifest with a cache key.'
+          assert 'parts.filter(part => part.toLowerCase() !== "zh-hans")' in comments, 'Comment keys must ignore physical locale route segments.'
+          assert 'COMMENT_INDEX_ROUTES' in toolbar and 'attempts++<40' in toolbar, 'Unsupported comment pages must not poll indefinitely.'
+          assert 'else setTimeout(go,120)' not in toolbar, 'The comment scroll retry must stay bounded.'
+          comment_version = '20260905-comment-key-3'
+          assert comment_version in toolbar and comment_version in loader, 'Toolbar and site loaders must request the fresh comments bundle.'
+          excluded_roots = {'child-advocacy-site', 'child-advocacy-site-main', 'source', 'handoffs', 'global-protection-wall'}
+          active_html = [path for path in root.rglob('*.html') if not any(part in excluded_roots or part.startswith('.') for part in path.relative_to(root).parts)]
+          direct_comment_pages = [path for path in active_html if 'article-comments-20260828.js' in path.read_text(encoding='utf-8')]
+          assert direct_comment_pages and all(f'article-comments-20260828.js?v={comment_version}' in path.read_text(encoding='utf-8') for path in direct_comment_pages), 'Every direct comments loader must use the fresh bundle version.'
+          site_loader_pages = [path for path in active_html if 'site.js' in path.read_text(encoding='utf-8')]
+          assert site_loader_pages and all(f'site.js?v={comment_version}' in path.read_text(encoding='utf-8') for path in site_loader_pages), 'Every site loader must deploy the comments-loader cache key.'
+          lin_report = (root / 'news/lin-xinci-nexttv-20260902/index.html').read_text(encoding='utf-8')
+          assert '辯方怎麼說' in lin_report and '日期登載錯誤' in lin_report, 'The attributed substantive defense position must remain in the report.'
+          localized_art = '\n'.join((root / path).read_text(encoding='utf-8') for path in (
+              'news/zh-Hans/index.html', 'en/news/index.html', 'ja/news/index.html',
+              'news/lin-xinci-nexttv-20260902/zh-Hans/index.html',
+              'en/news/lin-xinci-nexttv-20260902/index.html', 'ja/news/lin-xinci-nexttv-20260902/index.html'))
+          assert all(term in localized_art for term in ('纸雕与黏土', 'paper-cut and clay', '紙彫刻と粘土造形')), 'Localized artwork descriptions must match the paper-cut and clay replacement.'
+          assert routes['version'] == route_manifest_version.group(1), 'The toolbar and generated route manifest must share the same cache key.'
+          assert set(routes['routes']['']) == {'zh-Hant', 'zh-Hans', 'en', 'ja'}
+          question_route = routes['routes']['news/kaikai-court-question-20260903/']
+          assert set(question_route) == {'zh-Hant', 'zh-Hans', 'en', 'ja'}, 'The courtroom-question article must have four physical language editions.'
+          question_pages = {
+              'zh-Hant': root / 'news/kaikai-court-question-20260903/index.html',
+              'zh-Hans': root / 'news/kaikai-court-question-20260903/zh-Hans/index.html',
+              'en': root / 'en/news/kaikai-court-question-20260903/index.html',
+              'ja': root / 'ja/news/kaikai-court-question-20260903/index.html',
+          }
+          question_styles = (root / 'news/kaikai-court-question-20260903/assets/styles.css').read_text(encoding='utf-8')
+          question_script = (root / 'news/kaikai-court-question-20260903/assets/page.js').read_text(encoding='utf-8')
+          assert '.art-frame img' in question_styles and 'height: auto;' in question_styles, 'The courtroom-question hero image must not retain its 1024px HTML height.'
+          assert 'min-width: 44px;' in question_styles and 'min-height: 44px;' in question_styles, 'The courtroom-question language controls must keep phone-sized touch targets.'
+          assert '#cpa-four-language-toolbar a[hreflang]' in question_script and 'localStorage.setItem("siteLang"' in question_script, 'The courtroom-question toolbar must persist the selected physical language before navigation.'
+          assert "else localStorage.setItem('siteLang','zh-Hant')" in question_pages['zh-Hant'].read_text(encoding='utf-8'), 'The physical Traditional Chinese edition must override a stale Simplified Chinese preference.'
+          for language, path in question_pages.items():
+              source = path.read_text(encoding='utf-8')
+              assert source.count('class="exchange') == 73, f'{language} courtroom-question edition must preserve all 73 speaker turns after source correction.'
+              assert source.count('<details class="record-details') == 2, f'{language} courtroom-question edition must preserve both testimony sections.'
+              assert '20260905-unified-1' in source, f'{language} courtroom-question edition must request the mobile-fix assets.'
+              for hreflang in ('zh-Hant', 'zh-Hans', 'en', 'ja'):
+                  assert f'hreflang="{hreflang}"' in source, f'{language} courtroom-question edition is missing {hreflang} alternate.'
+          assert 'not an official verbatim transcript released by the court' in question_pages['en'].read_text(encoding='utf-8')
+          assert '裁判所が公表した公式逐語録でも、裁判所の認定でもありません' in question_pages['ja'].read_text(encoding='utf-8')
+          assert '不是法院公布的官方逐字稿，也不是法院认定' in question_pages['zh-Hans'].read_text(encoding='utf-8')
+          cache_version = re.search(r"const VERSION = '([^']+)';", sw)
+          assert cache_version, 'Service worker cache version is missing.'
+          registration_tail = pwa_install.split('sw.js?v=', 1)[1] if 'sw.js?v=' in pwa_install else ''
+          registration_version = registration_tail.split("'", 1)[0]
+          assert registration_version == cache_version.group(1), 'PWA registration and service-worker cache namespace must use the same fresh version.'
+          pwa_loader_pages = [path for path in active_html if 'pwa-install.js' in path.read_text(encoding='utf-8')]
+          assert pwa_loader_pages and all(f'pwa-install.js?v={registration_version}' in path.read_text(encoding='utf-8') for path in pwa_loader_pages), 'Every PWA loader must deploy the matching service-worker namespace.'
+          assert "const closing=group.classList.contains('is-expanded');" in base
+          assert "group.matches(':hover')" not in base, 'A hovered nested menu must still open on its first click.'
+          feed_sections = {
+              name: [item.get('id') for item in bulletin[name]]
+              for name in ('pinned', 'items')
+          }
+          for name, feed_ids in feed_sections.items():
+              assert feed_ids.count('kaikai-chapter-one-20260828') == 1, f'Chapter One must appear exactly once in {name}.'
+              expected_chapter_two = 1 if name == 'pinned' else 0
+              assert feed_ids.count('kaikai-chapter-two-20260829') == expected_chapter_two, f'Chapter Two publication placement is incorrect in {name}.'
+          print('Static synchronization assertions passed.')
+          PY
+
+      - name: Verify four-language toolbar and physical editions
+        run: |
+          set -euo pipefail
+          python3 scripts/test-liu-hearing-localization.py -v
+          python3 scripts/verify-four-language-completeness.py
+
+      - name: Verify unconfirmed Jiajia hearing display units
+        run: python3 scripts/verify-jiajia-hearing-qualifiers.py
+
+      - name: Chapter Two publication hold contract
+        run: python3 .github/scripts/verify-chapter-two-publication.py
+
+      - name: Mobile homepage and campaign contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for page in index.html en/index.html ja/index.html; do
+            if grep -q 'data-home-layout="20261012-static-v2"' "$page"; then
+              grep -q 'class="mobile-menu"' "$page"
+              grep -q 'cpa-language-select' "$page"
+              grep -q 'data-home-view-counter' "$page"
+            else
+              grep -F 'autumn-mobile-v2-20260908.css?v=20260908-3' "$page"
+            fi
+          done
+          test -s assets/images/autumn-20260908/ferris-wheel-paper-clay.webp
+          test -s assets/images/autumn-20260908/ink-background.webp
+          if grep -E '#cpa-four-language-toolbar\\{display:none' assets/home-mobile-polish-20260907.css; then
+            echo 'The homepage mobile stylesheet must keep the four-language toolbar visible.' >&2
+            exit 1
+          fi
+          if grep -E 'html body #cpa-four-language-toolbar.*display:none' assets/autumn-mobile-v2-20260908.css; then
+            echo 'The language toolbar must remain visible on mobile.' >&2
+            exit 1
+          fi
+          grep -F 'aspect-ratio:4/3!important' assets/autumn-mobile-v2-20260908.css
+          grep -F 'ferris-wheel-paper-clay.webp' assets/autumn-mobile-v2-20260908.css
+
+          if grep -q 'data-home-layout="20261012-static-v2"' index.html; then
+            node .github/scripts/verify-home-locale-parity.mjs
+          else
+            grep -F 'data-qa916-card="true"' index.html
+            grep -F '一起寫下剴剴的故事' index.html
+          fi
+          grep -F '一起写下剀剀的故事' assets/home-ia-hearing-campaign-20260823.js
+          grep -F 'Let Us Write Kaikai’s Story Together' assets/home-ia-hearing-campaign-20260823.js
+          if grep -F 'Mainland China' en/index.html; then
+            echo 'English UI still contains the deprecated Mainland China label.' >&2
+            exit 1
+          fi
+          grep -F '控訴審準備手続' ja/activity-records/20260820-kaikai-story-collection/index.html
+          grep -F '思いを投稿する' assets/home-ia-hearing-campaign-20260823.js
+          if grep -E '治験|二次試験' ja/activity-records/20260820-kaikai-story-collection/index.html; then
+            echo 'Japanese page still contains mistranslated court terminology.' >&2
+            exit 1
+          fi
+
+          echo 'Mobile and four-language content contracts passed.'

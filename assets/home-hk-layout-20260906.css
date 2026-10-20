@@ -1,0 +1,66 @@
+/*
+ * Hong Kong mirror homepage layout polish — 2026-09-06
+ * Loaded after the bundled homepage stylesheet so the change remains isolated.
+ */
+:root{--home-shell:min(1180px,calc(100% - 32px))}
+.art-header .container.nav{width:var(--home-shell)}
+.premium-home-hero{min-height:auto;padding:clamp(34px,4.4vw,64px) 0}
+.premium-home-hero .premium-hero-grid{width:var(--home-shell);grid-template-columns:minmax(0,1.05fr) minmax(300px,.82fr);gap:clamp(28px,4vw,58px);align-items:center}
+.premium-home-hero .premium-hero-copy{padding:clamp(24px,3.2vw,42px)}
+.premium-home-hero h1{font-size:clamp(42px,5vw,68px);line-height:1.08;margin-bottom:16px}
+.premium-home-hero .premium-hero-lead{max-width:650px;margin-bottom:18px;font-size:clamp(16px,1.45vw,19px);line-height:1.75}
+.premium-home-hero .premium-hero-actions{gap:10px;margin-top:16px}
+.premium-home-hero .premium-hero-actions a{min-height:48px;padding:11px 18px}
+.premium-home-hero .premium-hero-art{max-width:470px;justify-self:end}
+.home-priority-strip{padding:clamp(18px,2.6vw,32px) 0}
+.home-priority-strip .container,.home-latest-flash>.container{width:var(--home-shell)}
+.home-priority-shell>header{margin-bottom:14px}
+.home-priority-shell>header h2{font-size:clamp(24px,3vw,34px)}
+.home-priority-links{gap:12px}
+.home-priority-links>a{min-height:112px;padding:16px}
+.home-latest-flash{padding-top:clamp(38px,5vw,66px)}
+.home-news-stream-head{margin-bottom:22px}
+.home-news-stream-head h2{font-size:clamp(30px,4vw,44px)}
+.home-pinned-reports{border-radius:24px}
+.home-pinned-report-card{border-radius:18px}
+.home-pinned-report-card img{aspect-ratio:16/10;object-fit:cover}
+@media(max-width:980px){
+  .premium-home-hero .premium-hero-grid{grid-template-columns:minmax(0,1fr) minmax(250px,.7fr);gap:24px}
+  .premium-home-hero h1{font-size:clamp(38px,6vw,55px)}
+  .home-priority-links{grid-template-columns:1fr 1fr}
+  .home-priority-links>a.is-guest{grid-column:1/-1}
+}
+@media(max-width:760px){
+  :root{--home-shell:calc(100% - 20px)}
+  .premium-home-hero{padding:18px 0 24px;background-size:112% auto,auto;background-position:145% bottom,center}
+  .premium-home-hero .premium-hero-grid{display:grid;grid-template-columns:1fr;gap:14px}
+  .premium-home-hero .premium-hero-copy{padding:22px 18px;border-radius:20px;background:rgba(255,252,246,.88);backdrop-filter:blur(8px)}
+  .premium-home-hero .premium-kicker,.premium-home-hero .art-eyebrow{font-size:10px;letter-spacing:.1em}
+  .premium-home-hero h1{font-size:clamp(34px,10.6vw,46px);line-height:1.12;margin:9px 0 12px}
+  .premium-home-hero .premium-hero-lead{margin:0 0 14px;font-size:15px;line-height:1.65}
+  .premium-home-hero .premium-hero-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
+  .premium-home-hero .premium-hero-actions a{min-width:0;min-height:46px;padding:9px 5px;font-size:13px;text-align:center}
+  .premium-home-hero .premium-hero-art{width:min(76vw,330px);margin:-4px auto 0;justify-self:center}
+  .premium-home-hero .premium-hero-proof{margin-top:12px}
+  .home-priority-strip{padding:16px 0}
+  .home-priority-shell>header{align-items:center}
+  .home-priority-shell>header h2{font-size:23px;line-height:1.25}
+  .home-priority-links{grid-template-columns:1fr;gap:9px}
+  .home-priority-links>a,.home-priority-links>a.is-guest{grid-column:auto;min-height:82px;padding:12px 13px}
+  .home-priority-links>a em{display:block;font-size:12px;line-height:1.45}
+  .home-latest-flash{padding-top:30px}
+  .home-news-stream-head{display:grid;gap:10px;margin-bottom:16px}
+  .home-news-stream-head p{margin-bottom:0;font-size:14px;line-height:1.6}
+  .home-news-stream-head>a{justify-self:start;min-height:42px}
+  .home-pinned-reports{padding:12px;border-radius:18px}
+  .home-pinned-reports>header{padding:4px 2px 10px}
+  .home-pinned-reports-viewport{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+  .home-pinned-reports-track{gap:10px}
+  .home-pinned-report-card{scroll-snap-align:start;flex-basis:min(82vw,310px)}
+  .home-pinned-report-card img{aspect-ratio:16/9}
+}
+@media(max-width:380px){
+  .premium-home-hero .premium-hero-actions{grid-template-columns:1fr}
+  .premium-home-hero .premium-hero-actions a{justify-content:center}
+}
+@media(prefers-reduced-motion:reduce){.home-pinned-reports-viewport{scroll-behavior:auto}}

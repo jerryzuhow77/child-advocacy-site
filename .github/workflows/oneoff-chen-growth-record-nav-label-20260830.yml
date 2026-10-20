@@ -1,0 +1,55 @@
+name: Correct Chen comparison navigation label
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-chen-growth-record-nav-label-20260830.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Use an accurate cross-case navigation label
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          replacements = {
+              Path('hearing-records/prison-watch/kaikai-final-chapter/index.html'): (
+                  '<a href="#chen-growth-record-comparison">同案成長紀錄對照</a>',
+                  '<a href="#chen-growth-record-comparison">不同個案成長紀錄對照</a>',
+              ),
+              Path('hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html'): (
+                  '<a href="#chen-growth-record-comparison">同案成长纪录对照</a>',
+                  '<a href="#chen-growth-record-comparison">不同个案成长纪录对照</a>',
+              ),
+          }
+
+          for path, (old, new) in replacements.items():
+              text = path.read_text(encoding='utf-8')
+              if new in text:
+                  print(f'already correct: {path}')
+                  continue
+              if text.count(old) != 1:
+                  raise RuntimeError(f'expected exactly one old label in {path}')
+              path.write_text(text.replace(old, new, 1), encoding='utf-8')
+              print(f'updated: {path}')
+          PY
+          git diff --check
+          grep -Fq '不同個案成長紀錄對照' hearing-records/prison-watch/kaikai-final-chapter/index.html
+          grep -Fq '不同个案成长纪录对照' hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+      - name: Commit label correction
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            hearing-records/prison-watch/kaikai-final-chapter/index.html \
+            hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Clarify Chen comparison as cross-case records'
+          git pull --rebase origin main
+          git push origin HEAD:main

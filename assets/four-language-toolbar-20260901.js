@@ -1,0 +1,236 @@
+(() => {
+  "use strict";
+  if (window.__cpaFourLanguageToolbarReady) return;
+  window.__cpaFourLanguageToolbarReady = true;
+  window.__cpaFourLanguageToolbar = true;
+
+  const ROOT = "/child-advocacy-site/";
+  const TOOLBAR_STYLE = `${ROOT}assets/four-language-toolbar-20260901.css?v=20260930-home-toolbar-2`;
+  if (document.createElement && !document.querySelector('link[data-cpa-four-language-toolbar-style]')) {
+    const style = document.createElement("link");
+    style.rel = "stylesheet";
+    style.href = TOOLBAR_STYLE;
+    style.dataset.cpaFourLanguageToolbarStyle = "true";
+    document.head.appendChild(style);
+  }
+  const ROUTES_URL = `${ROOT}data/four-language-routes.json?v=20260912-6`;
+  const ENGAGEMENT_API = "https://global-protection.jerryzuhow77.chatgpt.site/api/public/view-count";
+  const WORKER_API = "https://sweet-art-bed8child-advocacy-page-views.jerryzuhow77.workers.dev/views";
+  const BOOKMARK_KEY = "cpa_article_bookmarks_v1";
+  const LIKED_KEY = "cpa_engagement_liked_v1";
+  const TW_SITE_HOST = "jerryzuhow77.github.io";
+  const TW_SITE_BASE = `https://${TW_SITE_HOST}${ROOT}`;
+  const HK_MIRROR_HOST = "cn.globalprotectionwall.com";
+  const HK_SITE_BASE = "https://cn.globalprotectionwall.com/child-advocacy-site/";
+  // Every published article has necessarily been opened at least once during
+  // authoring or publication.  A zero therefore means that a counter key was
+  // reset/split during a migration, not that the article has never been read.
+  const MIN_PUBLISHED_VIEW_COUNT = 1;
+  function normalizedLocale(value){
+    return ({"zh-hant":"zh-Hant","zh-tw":"zh-Hant","zh-hans":"zh-Hans","zh-cn":"zh-Hans",en:"en",ja:"ja"})[String(value||"").trim().toLowerCase()]||"";
+  }
+  function rememberLocale(value){
+    const language=normalizedLocale(value);
+    if(!language)return;
+    try{localStorage.setItem("siteLang",language)}catch(_){}
+  }
+  function shouldUseHongKongMirror(){
+    if(location.hostname!==TW_SITE_HOST||!location.pathname.startsWith(ROOT))return false;
+    const query=normalizedLocale(new URLSearchParams(location.search).get("lang"));
+    if(query){rememberLocale(query);return query==="zh-Hans";}
+    const physical=(location.pathname.slice(ROOT.length).split("/")[0]||"").toLowerCase();
+    if(physical==="en"||physical==="ja"){rememberLocale(physical);return false;}
+    const declared=(document.documentElement.lang||"").toLowerCase();
+    if(declared.startsWith("en")||declared.startsWith("ja")){rememberLocale(declared.startsWith("en")?"en":"ja");return false;}
+    if(declared.startsWith("zh-hans")||declared==="zh-cn")return true;
+    try{
+      const saved=(localStorage.getItem("siteLang")||"").toLowerCase();
+      if(saved)return saved==="zh-hans"||saved==="zh-cn";
+    }catch(_){}
+    const languages=[...(navigator.languages||[]),navigator.language||""].map(value=>String(value).toLowerCase());
+    return languages.some(value=>value==="zh-cn"||value==="zh-sg"||value.startsWith("zh-hans"));
+  }
+  function redirectMainlandToMirror(){
+    if(!shouldUseHongKongMirror())return false;
+    const target=new URL(location.href);
+    target.protocol="https:";
+    target.host=HK_MIRROR_HOST;
+    if(!/(?:^|\/)zh-hans(?:\/|$)/i.test(target.pathname))target.searchParams.set("lang","zh-Hans");
+    location.replace(target.href);
+    return true;
+  }
+  if(redirectMainlandToMirror())return;
+  function applySimplifiedMirrorMetadata(){
+    const query=(new URLSearchParams(location.search).get("lang")||"").toLowerCase();
+    if(location.hostname!==HK_MIRROR_HOST||(query!=="zh-hans"&&query!=="zh-cn"))return;
+    document.documentElement.lang="zh-Hans";
+    document.documentElement.dataset.cpaLocale="zh-Hans";
+    const href=new URL(location.href);
+    href.hash="";
+    const canonical=document.querySelector('link[rel="canonical"]');
+    if(canonical)canonical.href=href.href;
+    const alternate=document.querySelector('link[rel="alternate"][hreflang="zh-Hans"]');
+    if(alternate)alternate.href=href.href;
+    const ogUrl=document.querySelector('meta[property="og:url"]');
+    if(ogUrl)ogUrl.content=href.href;
+  }
+  applySimplifiedMirrorMetadata();
+  const ARTICLE_HISTORY_FLOORS = Object.freeze({
+    "cases/lin-xinci/features/missing-four-days/": 33,
+    "historical-cases/regions/japan/kurihara-mia/": 39
+  });
+  const COMMENT_INDEX_ROUTES = new Set(["", "about", "social", "news", "cases", "hearing-records", "activity-records", "activity-records/albums", "court-comics", "global-protection-wall"]);
+  function boundedFetch(url, options = {}) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 12000);
+    return fetch(url, {...options, signal: controller.signal}).finally(() => clearTimeout(timer));
+  }
+  const localeNames = { "zh-Hant": "繁中", "zh-Hans": "簡中", en: "English", ja: "日本語" };
+  const copy = {
+    "zh-Hant": { brand:"護童行動聯盟",official:"官方網站",views:"瀏覽",unavailable:"尚未提供此語言版本",aria:"四語頂端工具列",like:"按讚",comment:"留言",bookmark:"收藏",bookmarked:"已收藏" },
+    "zh-Hans": { brand:"护童行动联盟",official:"官方网站",views:"浏览",unavailable:"尚未提供此语言版本",aria:"四语顶端工具栏",like:"点赞",comment:"留言",bookmark:"收藏",bookmarked:"已收藏" },
+    en: { brand:"Child Protection Action Alliance",official:"Official Site",views:"Views",unavailable:"This language edition is not available yet",aria:"Four-language top toolbar",like:"Like",comment:"Comments",bookmark:"Save",bookmarked:"Saved" },
+    ja: { brand:"子ども保護行動連盟",official:"公式サイト",views:"閲覧",unavailable:"この言語版はまだ公開されていません",aria:"4言語トップツールバー",like:"いいね",comment:"コメント",bookmark:"保存",bookmarked:"保存済み" },
+  };
+
+  function clientId(){try{let v=localStorage.getItem("cpa_engagement_client_v1");if(!v){v=crypto.randomUUID();localStorage.setItem("cpa_engagement_client_v1",v)}return v}catch(_){return ""}}
+  function locale(){const q=new URLSearchParams(location.search).get("lang")?.trim().toLowerCase();if(q==="zh-hans"||q==="zh-cn")return"zh-Hans";if(q==="zh-hant"||q==="zh-tw")return"zh-Hant";if(q==="en")return"en";if(q==="ja")return"ja";const v=(document.documentElement.lang||"zh-Hant").toLowerCase();if(v.startsWith("zh-hans")||v==="zh-cn")return"zh-Hans";if(v.startsWith("en"))return"en";if(v.startsWith("ja"))return"ja";return"zh-Hant"}
+  function neutralRoute(){let p=location.pathname.replace(/^\/child-advocacy-site\/?/i,"").replace(/index\.html$/i,"").replace(/^\/+|\/+$/g,"");const parts=p.split("/").filter(Boolean);if(/^(?:en|ja|zh-hans|zh-hant)$/i.test(parts[0]||""))parts.shift();const l=locale();if((l==="en"||l==="ja")&&parts[parts.length-1]?.toLowerCase()===l)parts.pop();p=parts.filter(x=>!/^zh-hans$/i.test(x)).join("/");return p?`${p}/`:""}
+  function articleKey(route){const slug=route.replace(/\/+$/g,"").toLowerCase().replace(/[^a-z0-9_-]+/g,"-").replace(/-+/g,"-").replace(/^-|-$/g,"");return slug?`official-${slug}`:"homepage-all-languages-v1"}
+  function format(value){const l=locale(),tag=l==="zh-Hans"?"zh-CN":l==="zh-Hant"?"zh-TW":l;try{return new Intl.NumberFormat(tag).format(value)}catch(_){return String(value)}}
+  async function historicalView(route,key){const floor=Math.max(MIN_PUBLISHED_VIEW_COUNT,ARTICLE_HISTORY_FLOORS[route]||0),slug=key.replace(/^official-/,""),values=[floor];try{const r=await boundedFetch(`${WORKER_API}?page=${encodeURIComponent(`page-${slug}`)}&increment=0&ts=${Date.now()}`,{cache:"no-store",credentials:"omit"});const d=await r.json(),n=Number(d.count);if(r.ok&&Number.isFinite(n))values.push(n)}catch(_){}return Math.max(...values)}
+  async function request(key,payload={action:"read"}){const r=await boundedFetch(ENGAGEMENT_API,{method:"POST",cache:"no-store",credentials:"omit",headers:{"content-type":"application/json"},body:JSON.stringify({...payload,channel:"official-article",articleKey:key})});if(!r.ok)throw new Error(`engagement ${r.status}`);return r.json()}
+  async function recordOrReadView(route,element){if(!route||document.querySelector("[data-home-view-counter]"))return null;const key=articleKey(route),seen=`cpa_article_viewed_${key}`;let inc=true;try{inc=!sessionStorage.getItem(seen)}catch(_){};try{if(inc)sessionStorage.setItem(seen,"pending");let data=await request(key,{action:inc?"view":"read",clientId:clientId()});let current=Number(data.viewCount);if(!Number.isFinite(current)||current<0)throw new Error("invalid counter");if(!inc&&current===0){data=await request(key,{action:"view",clientId:clientId()});current=Number(data.viewCount);if(!Number.isFinite(current)||current<0)throw new Error("invalid repaired counter")}sessionStorage.setItem(seen,"1");const value=Math.max(MIN_PUBLISHED_VIEW_COUNT,current,await historicalView(route,key));element.querySelector("b").textContent=format(value);element.hidden=false;return {...data,viewCount:value}}catch(_){try{if(inc)sessionStorage.removeItem(seen)}catch(_){}}try{const value=await historicalView(route,key);element.querySelector("b").textContent=format(value);element.hidden=false;return {viewCount:value}}catch(_){}return null}
+  function setFromStorage(name,key,value=true){try{const set=new Set(JSON.parse(localStorage.getItem(name)||"[]"));value?set.add(key):set.delete(key);localStorage.setItem(name,JSON.stringify([...set].slice(-300)));return set.has(key)}catch(_){return false}}
+  function hasStored(name,key){try{return new Set(JSON.parse(localStorage.getItem(name)||"[]")).has(key)}catch(_){return false}}
+  function isArticle(){return supportsComments(neutralRoute())}
+  function supportsComments(route){const path=route.replace(/\/+$/g,"");const articleRoute=/^(?:cases|hearing-records|activity-records|features|historical-cases|news|court-comics)\//.test(path);const articleMetadata=!!document.querySelector('meta[property="og:type"][content="article"],script[type="application/ld+json"]');return !COMMENT_INDEX_ROUTES.has(path)&&(articleRoute||articleMetadata)}
+  function ensureComments(){if(document.querySelector('script[data-cpa-site-layer="article-comments"]'))return;const s=document.createElement("script");s.src=`${ROOT}assets/article-comments-20260828.js?v=20260905-comment-key-3`;s.defer=true;s.dataset.cpaSiteLayer="article-comments";document.head.appendChild(s)}
+  function renderEngagement(route,initial){if(!route||!isArticle()||!supportsComments(route)||document.querySelector(".cpa-article-engagement"))return;const words=copy[locale()],key=articleKey(route),bar=document.createElement("section");bar.className="cpa-article-engagement";bar.setAttribute("aria-label",`${words.like}、${words.comment}、${words.bookmark}、${words.views}`);bar.innerHTML=`<button type="button" class="is-like" aria-pressed="false"><span>♡</span><b>${words.like}</b><em>—</em></button><button type="button" class="is-comment"><span>💬</span><b>${words.comment}</b><em>—</em></button><button type="button" class="is-bookmark" aria-pressed="false"><span>☆</span><b>${words.bookmark}</b></button><span class="is-view"><span>◉</span><b>${words.views}</b><em>—</em></span>`;
+    const main=document.querySelector("main")||document.body,anchor=main.querySelector(":scope > article,:scope > .report-wrap")||main.firstElementChild;anchor?anchor.before(bar):main.prepend(bar);
+    const like=bar.querySelector(".is-like"),comment=bar.querySelector(".is-comment"),bookmark=bar.querySelector(".is-bookmark"),view=bar.querySelector(".is-view em");
+    const liked=hasStored(LIKED_KEY,key);like.setAttribute("aria-pressed",String(liked));if(liked)like.classList.add("is-active");
+    const saved=hasStored(BOOKMARK_KEY,key);bookmark.setAttribute("aria-pressed",String(saved));bookmark.classList.toggle("is-active",saved);bookmark.querySelector("span").textContent=saved?"★":"☆";bookmark.querySelector("b").textContent=saved?words.bookmarked:words.bookmark;
+    function paint(data){if(data){bar.querySelector(".is-like em").textContent=format(Number(data.likeCount)||0);bar.querySelector(".is-comment em").textContent=format(Number(data.commentCount)||0);view.textContent=format(Number(data.viewCount)||0)}}paint(initial);if(!initial)request(key).then(paint).catch(()=>{});
+    like.addEventListener("click",async()=>{if(like.getAttribute("aria-busy")==="true"||like.getAttribute("aria-pressed")==="true")return;like.setAttribute("aria-busy","true");try{const data=await request(key,{action:"like",clientId:clientId()});setFromStorage(LIKED_KEY,key,true);like.setAttribute("aria-pressed","true");like.classList.add("is-active");like.querySelector("em").textContent=format(Number(data.likeCount)||0)}catch(_){const status=bar.querySelector("output");if(status)status.textContent=navigationCopy[locale()][5]}finally{like.removeAttribute("aria-busy")}});
+    bookmark.addEventListener("click",()=>{const next=bookmark.getAttribute("aria-pressed")!=="true";setFromStorage(BOOKMARK_KEY,key,next);bookmark.setAttribute("aria-pressed",String(next));bookmark.classList.toggle("is-active",next);bookmark.querySelector("span").textContent=next?"★":"☆";bookmark.querySelector("b").textContent=next?words.bookmarked:words.bookmark});
+    comment.addEventListener("click",()=>{ensureComments();let attempts=0;const go=()=>{const target=document.querySelector("[data-article-comments]");if(target)target.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});else if(attempts++<40)setTimeout(go,120)};go()});
+    ensureComments();
+    addShare(bar);
+  }
+  const navigationCopy = {
+    'zh-Hant': ['回首頁','章節','分享','連結已複製','請複製連結','目前無法按讚，請稍後再試。'],
+    'zh-Hans': ['回首页','章节','分享','链接已复制','请复制链接','目前无法点赞，请稍后再试。'],
+    en: ['Home','Sections','Share','Link copied','Copy this link','Unable to like right now. Please try again.'],
+    ja: ['ホーム','目次','共有','リンクをコピーしました','リンクをコピー','現在いいねを送信できません。後でもう一度お試しください。']
+  };
+  function addShare(bar) {
+    const words=navigationCopy[locale()],button=document.createElement('button');
+    button.type='button';button.className='is-share';button.textContent=words[2];
+    bar.querySelector('.is-bookmark').before(button);
+    const status=document.createElement('output');status.setAttribute('aria-live','polite');bar.append(status);
+    button.addEventListener('click',async()=>{
+      const url=new URL(location.href);url.hash='';
+      try {if(navigator.share){await navigator.share({title:document.title,url:url.href});return;}
+        await navigator.clipboard.writeText(url.href);status.textContent=words[3];
+      } catch(error) {if(error.name!=='AbortError')window.prompt(words[4],url.href);}
+    });
+  }
+  function addNavigation() {
+    const toolbar=document.getElementById('cpa-four-language-toolbar');if(!toolbar)return;
+    const words=navigationCopy[locale()],home=toolbar.querySelector('.cpa-four-language-brand');
+    home.setAttribute('aria-label',words[0]);home.title=words[0];
+    home.href=locale()==='en'||locale()==='ja'?ROOT+locale()+'/':(locale()==='zh-Hans'?HK_SITE_BASE:ROOT);
+    home.querySelector('span').textContent='⌂';home.querySelector('b').textContent=words[0];
+    if(!toolbar.dataset.languagePreferenceBound){
+      toolbar.dataset.languagePreferenceBound='true';
+      const select=toolbar.querySelector('.cpa-language-select');
+      select?.addEventListener('change',()=>{
+        const option=select.selectedOptions[0];
+        if(!option||option.disabled||!option.value)return;
+        const language=normalizedLocale(option.dataset.locale)||'zh-Hant',target=new URL(option.value,location.href);
+        rememberLocale(language);
+        if(location.hostname===HK_MIRROR_HOST&&target.hostname===TW_SITE_HOST)target.searchParams.set('lang',language);
+        location.href=target.href;
+      });
+    }
+    if(!neutralRoute())return;
+    const main=document.querySelector('main')||document.body;
+    let headings=[...main.querySelectorAll('h2,h3')].filter(h=>!h.closest('nav,aside,footer,[data-article-comments]'));
+    if(headings.length>40&&headings.some(h=>h.tagName==='H2'))headings=headings.filter(h=>h.tagName==='H2');
+    const signature=headings.map(h=>h.textContent.trim()).join('\n');
+    if(toolbar.dataset.chapterSignature===signature)return;
+    toolbar.dataset.chapterSignature=signature;
+    toolbar.querySelector('.cpa-chapter-select')?.remove();
+    if(!headings.length)return;
+    const select=document.createElement('select');select.className='cpa-chapter-select';select.setAttribute('aria-label',words[1]);
+    select.add(new Option(words[1],''));
+    const targets=[];
+    for(const heading of headings){
+      const label=heading.textContent.trim().replace(/\s+/g,' ');if(!label)continue;
+      if(!heading.id){let n=targets.length+1;while(document.getElementById('cpa-section-'+n))n++;heading.id='cpa-section-'+n;}
+      select.add(new Option(label,heading.id));targets.push(heading);
+    }
+    select.addEventListener('change',()=>{const target=document.getElementById(select.value);if(!target)return;
+      for(let parent=target.parentElement;parent;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;
+      if(!('cpaOriginalScrollMarginTop' in target.dataset))target.dataset.cpaOriginalScrollMarginTop=target.style.scrollMarginTop;
+      target.style.scrollMarginTop=target.dataset.cpaOriginalScrollMarginTop;
+      const authoredMargin=Number.parseFloat(getComputedStyle(target).scrollMarginTop)||0;
+      target.style.scrollMarginTop=Math.max(authoredMargin,toolbar.getBoundingClientRect().height+16)+'px';
+      target.scrollIntoView({block:'start',behavior:'auto'});history.replaceState(null,'','#'+encodeURIComponent(target.id));
+    });
+    toolbar.querySelector('.cpa-four-language-actions').prepend(select);
+    if(location.hash)select.value=decodeURIComponent(location.hash.slice(1));
+  }
+  function languageUrl(key,href){
+    if(!href){
+      return "";
+    }
+    if(key!=="zh-Hans"){
+      try{return new URL(href,TW_SITE_BASE).href}catch(_){return href}
+    }
+    try{
+      const direct=new URL(href,"https://jerryzuhow77.github.io");
+      if(direct.hostname==="cn.globalprotectionwall.com")return direct.href;
+      const relative=direct.pathname.replace(/^\/child-advocacy-site\/?/i,"");
+      return HK_SITE_BASE+relative+direct.search+direct.hash;
+    }catch(_){return href}
+  }
+  function pageAlternateRoutes(){
+    const routes={};
+    const aliases={"zh-hant":"zh-Hant","zh-tw":"zh-Hant","zh-hans":"zh-Hans","zh-cn":"zh-Hans",en:"en",ja:"ja"};
+    document.querySelectorAll('link[rel~="alternate"][hreflang][href]').forEach(link=>{
+      const key=aliases[(link.getAttribute("hreflang")||"").toLowerCase()];
+      if(key&&!routes[key])routes[key]=link.href;
+    });
+    return routes;
+  }
+  function render(manifest){
+    if(document.getElementById("cpa-four-language-toolbar"))return;
+    const route=neutralRoute();
+    const homepagePath=location.pathname.replace(/\/+$/, "") || "/";
+    if(!route && homepagePath !== "/" && homepagePath !== "/child-advocacy-site") {document.documentElement.classList.remove("cpa-four-language-toolbar-active");return;}
+    if(!route) document.documentElement.classList.add("cpa-four-language-toolbar-active");
+    document.documentElement.classList.add("cpa-four-language-toolbar-active");
+    document.getElementById("cpa-mobile-bar")?.remove();
+    document.getElementById("cpa-mobile-menu")?.remove();
+    document.documentElement.classList.remove("cpa-menu-open");
+    // A declared route group is authoritative; unavailable editions stay visibly disabled.
+    const language=locale(),words=copy[language],routes=manifest?.routes?.[route]||pageAlternateRoutes(),toolbar=document.createElement("aside");
+    toolbar.id="cpa-four-language-toolbar";
+    toolbar.setAttribute("aria-label",words.aria);
+    const options=Object.keys(localeNames).map(k=>{
+      const href=languageUrl(k,routes[k]);
+      const selected=language===k?" selected":"";
+      if(!href)return `<option value="" data-locale="${k}" disabled${selected}>${localeNames[k]} — ${words.unavailable}</option>`;
+      return `<option value="${href}" data-locale="${k}"${selected}>${localeNames[k]}</option>`;
+    }).join("");
+    toolbar.innerHTML=`<a class="cpa-four-language-brand" href="${ROOT}"><span aria-hidden="true">♥</span><b>${words.brand}</b><small>${words.official}</small></a><div class="cpa-four-language-actions"><span class="cpa-four-language-views" hidden aria-live="polite"><span>◉ ${words.views}</span><b>—</b></span><nav class="cpa-four-language-nav" aria-label="${words.aria}"><label class="cpa-language-picker"><span>${language==="en"?"Language":language==="ja"?"言語":language==="zh-Hans"?"语言":"語言"}</span><select class="cpa-language-select" aria-label="${words.aria}">${options}</select></label></nav></div>`;
+    document.body.prepend(toolbar);
+    document.querySelectorAll(".public-view-count-article,#cpa-page-views,[data-lx-counter],[data-km-view-counter]").forEach(n=>n.remove());
+    renderEngagement(route,null);
+    recordOrReadView(route,toolbar.querySelector(".cpa-four-language-views")).then(data=>{if(data){const count=document.querySelector(".cpa-article-engagement .is-view em");if(count)count.textContent=format(data.viewCount)}});
+  }
+  async function init(){const homeRoute=neutralRoute()==="";if(homeRoute){render(null);addNavigation();}let manifest=null;try{const r=await boundedFetch(ROUTES_URL,{cache:"no-store"});if(r.ok)manifest=await r.json()}catch(_){}if(!homeRoute)render(manifest);addNavigation();let pending=false;new MutationObserver(()=>{if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;addNavigation()})}).observe(document.querySelector("main")||document.body,{childList:true,subtree:true})}
+  document.readyState==="loading"?document.addEventListener("DOMContentLoaded",init,{once:true}):init();
+})();

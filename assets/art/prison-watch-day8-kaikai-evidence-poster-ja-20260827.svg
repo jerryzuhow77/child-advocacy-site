@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="960" viewBox="0 0 1600 960" role="img" aria-labelledby="title description">
+  <title id="title">悲劇を忘れない — 第8回公判期日</title>
+  <desc id="description">第8回公判期日の証拠調べ、論告、量刑資料を扱う日本語メインビジュアル。</desc>
+  <rect width="1600" height="960" fill="#ddcaa4"/>
+  <path d="M95 690V235c0-150 122-220 310-220s310 70 310 220v455H590V245c0-95-76-135-185-135s-185 40-185 135v445Z" fill="#988567"/>
+  <path d="M220 245c0-95 76-135 185-135s185 40 185 135v445H220Z" fill="#f4dca5"/>
+  <path d="M205 690h400l80 270H125Z" fill="#b6a27f"/><path d="M275 690h260l52 270H223Z" fill="#d9c49b"/>
+  <path d="M405 690c52 94 115 135 186 174" fill="none" stroke="#a23d2d" stroke-width="9"/>
+  <circle cx="405" cy="760" r="55" fill="#342d27"/><path d="M325 960V835c0-47 36-83 80-83s80 36 80 83v125Z" fill="#2f6178"/>
+  <rect x="800" width="800" height="960" fill="#f1e6ca" opacity=".985"/>
+  <path d="M821 0h36c-17 162 11 318-18 490s20 304-18 470h-21V0Z" fill="#d9c9a9" opacity=".66"/>
+  <text x="1200" y="125" text-anchor="middle" fill="#8a2f26" font-family="'Noto Serif JP', 'Yu Mincho', serif" font-size="45" font-weight="700" letter-spacing="10">悲劇を忘れない</text>
+  <text x="1200" y="245" text-anchor="middle" fill="#17304b" font-family="'Noto Serif JP', 'Yu Mincho', serif" font-size="78" font-weight="700" letter-spacing="8">第8回公判期日</text>
+  <text x="1200" y="320" text-anchor="middle" fill="#475168" font-family="Arial, sans-serif" font-size="27" letter-spacing="5">2025.05.05</text>
+  <line x1="920" y1="355" x2="1480" y2="355" stroke="#b4934d" stroke-width="3"/>
+  <text x="1200" y="455" text-anchor="middle" fill="#172d49" font-family="'Noto Serif JP', 'Yu Mincho', serif" font-size="55" font-weight="700">すべての量刑主張を</text>
+  <text x="1200" y="530" text-anchor="middle" fill="#172d49" font-family="'Noto Serif JP', 'Yu Mincho', serif" font-size="55" font-weight="700">証拠へ戻して検証する</text>
+  <rect x="920" y="615" width="560" height="160" rx="18" fill="#e4d4b5" opacity=".9"/>
+  <text x="1200" y="675" text-anchor="middle" fill="#4a402f" font-family="'Noto Sans JP', sans-serif" font-size="28">証言全文・61組の問答</text>
+  <text x="1200" y="725" text-anchor="middle" fill="#4a402f" font-family="'Noto Sans JP', sans-serif" font-size="28">論告・量刑資料・完全傍聴記録</text>
+  <text x="1200" y="875" text-anchor="middle" fill="#7e6441" font-family="'Noto Serif JP', serif" font-size="25" letter-spacing="5">COMPLETE COURT RECORD</text>
+</svg>

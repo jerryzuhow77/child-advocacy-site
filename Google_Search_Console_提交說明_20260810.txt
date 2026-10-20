@@ -1,0 +1,32 @@
+護童行動聯盟｜Google SEO 更新說明（2026-08-10）
+
+【本次更新檔案】
+1. index.html
+   - 搜尋標題改為：護童行動聯盟｜官方網站・兒少保護・法院旁聽・案件追蹤
+   - 搜尋描述加入「護童行動聯盟官方網站」「剴剴案」「兒少保護案件」「法院旁聽紀錄」「庭期與判決進度」「制度倡議」等自然語意。
+   - 保留 canonical、Organization JSON-LD，補強社群分享 metadata。
+   - 首頁可見品牌文字改為「護童行動聯盟｜官方網站」。
+
+2. sitemap.xml
+   - 收錄目前官網 18 個主要公開頁面。
+   - 首頁 lastmod 更新為 2026-08-10。
+   - 移除 Google 明確表示會忽略的 priority / changefreq，保留有效 URL 與 lastmod。
+
+3. robots.txt
+   - 保留允許爬取與 Sitemap 宣告。
+   - 注意：本站是 GitHub Pages 專案子目錄 /child-advocacy-site/，Google 正式 robots.txt 只讀主機根目錄 /robots.txt；因此本檔不是 Search Console 收錄的主要依據。
+
+【上傳方式】
+把 index.html、sitemap.xml、robots.txt 上傳到 child-advocacy-site 專案根目錄，覆蓋同名檔案。
+
+【Search Console 接著操作】
+1. 開啟 Sitemap。
+2. 在「新增 Sitemap」輸入：sitemap.xml
+3. 按「提交」。
+4. 再到「網址審查」，輸入：
+   https://jerryzuhow77.github.io/child-advocacy-site/
+5. 按「要求建立索引」。
+6. 重要案件頁可再逐頁要求建立索引。
+
+【重要限制】
+Google 的 Site Name 與 favicon 都以 hostname 為網站單位；目前官網位於 github.io 的子目錄，因此 Google 搜尋結果上方的「網站名稱」不一定能固定顯示為「護童行動聯盟」。若未來使用自有網域，品牌呈現會更完整。

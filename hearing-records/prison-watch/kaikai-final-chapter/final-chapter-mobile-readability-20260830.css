@@ -1,0 +1,229 @@
+/*
+ * Chen accountability mobile readability patch · 2026-08-30
+ * Shared by Traditional and Simplified Chinese Chapter 2 pages.
+ */
+
+#chen-questioning-20260223 > .record-boundary,
+#chen-final-statement-20260226 > .record-boundary {
+  background: rgba(255, 250, 241, .97);
+  color: #332a27;
+  border-color: rgba(118, 62, 49, .32);
+  box-shadow: 0 10px 28px rgba(48, 27, 22, .13);
+}
+
+#chen-questioning-20260223 > .record-boundary b,
+#chen-final-statement-20260226 > .record-boundary b {
+  color: #7a3128;
+}
+
+body #chen-questioning-20260223 > .record-boundary p,
+body #chen-final-statement-20260226 > .record-boundary p {
+  color: #403633 !important;
+}
+
+/* Keep the first-instance guarantor-status boundary visually prominent. */
+#chen-judgment-accountability > .nonfinal-banner {
+  border-left: 7px solid #efc77d;
+  box-shadow: 0 16px 38px rgba(71, 30, 25, .22);
+}
+
+#chen-judgment-accountability > .nonfinal-banner b {
+  color: #fff4cf;
+}
+
+#chen-judgment-accountability > .nonfinal-banner p {
+  color: #fff5ee;
+}
+
+/* The reconstructed final-statement cards sit on a dark red field.
+ * Keep their main copy light while preserving dark text inside cream asides. */
+#chen-final-statement-20260226 .final-statement-record > section > div,
+#chen-final-statement-20260226 .final-statement-record > section > div h5,
+#chen-final-statement-20260226 .final-statement-record > section > div p {
+  color: #fff8ee !important;
+}
+
+#chen-final-statement-20260226 .final-statement-record > section > aside,
+#chen-final-statement-20260226 .final-statement-record > section > aside b,
+#chen-final-statement-20260226 .final-statement-record > section > aside p {
+  color: #48372e !important;
+}
+
+/* The compact descriptor on transcript summaries must not disappear into
+ * either the navy or maroon header. */
+.full-transcript > summary small {
+  color: #ffe8bd !important;
+  background: rgba(255, 255, 255, .08);
+}
+
+@media (max-width: 720px) {
+  .section.chen-accountability-chapter {
+    padding-right: 6px;
+    padding-left: 6px;
+    border-radius: 22px;
+  }
+
+  .chen-accountability-chapter > .section-head {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .chen-accountability-chapter > .nonfinal-banner {
+    margin-right: 4px;
+    margin-left: 4px;
+    padding: 18px 15px;
+  }
+
+  .chen-hearing-record {
+    margin-right: 0;
+    margin-left: 0;
+    padding: 8px;
+    border-radius: 18px;
+  }
+
+  .hearing-day {
+    padding: 9px 7px;
+    border-radius: 17px;
+  }
+
+  .hearing-day > header {
+    padding-right: 4px;
+    padding-left: 4px;
+  }
+
+  .hearing-day > .record-boundary,
+  .hearing-focus-map,
+  .hearing-dialogue,
+  .closing-argument-record,
+  .final-statement-record {
+    width: 100%;
+    max-width: none;
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .dialogue-collapsible,
+  .argument-collapsible {
+    width: 100%;
+    max-width: none;
+  }
+
+  .dialogue-collapsible > .dialogue-round {
+    padding: 10px;
+  }
+
+  .dialogue-collapsible > .dialogue-round > .dialogue-main,
+  .dialogue-collapsible > .dialogue-round > aside {
+    padding: 12px;
+  }
+
+  .full-transcript {
+    width: auto;
+    max-width: none;
+    margin-right: -2px;
+    margin-left: -2px;
+    border-radius: 15px;
+  }
+
+  .full-transcript > summary {
+    padding: 14px 12px;
+  }
+
+  .transcript-disclaimer {
+    margin: 8px 6px;
+    padding: 12px 13px;
+  }
+
+  .transcript-toolbar {
+    padding-right: 6px;
+    padding-left: 6px;
+  }
+
+  .transcript-stream {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+
+  .transcript-turn {
+    width: 100%;
+    max-width: none;
+  }
+
+  .transcript-turn header {
+    padding: 9px 11px;
+  }
+
+  .transcript-turn p {
+    padding: 12px;
+    font-size: 15px;
+    line-height: 1.86;
+  }
+
+  .final-statement-record > section {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .section.chen-accountability-chapter {
+    padding-right: 4px;
+    padding-left: 4px;
+  }
+
+  .chen-hearing-record {
+    padding-right: 6px;
+    padding-left: 6px;
+  }
+
+  .hearing-day {
+    padding-right: 6px;
+    padding-left: 6px;
+  }
+
+  .transcript-stream {
+    padding-right: 3px;
+    padding-left: 3px;
+  }
+
+  .transcript-turn p {
+    padding-right: 11px;
+    padding-left: 11px;
+  }
+}
+
+/* 2026-08-31 · Chapter 2 evidence cards: enforce readable text contrast. */
+.chen-accountability-chapter .witness-rebuttal-grid article{
+  background:#fffdf8;
+  border-color:rgba(91,57,38,.28);
+}
+.chen-accountability-chapter .witness-rebuttal-grid h5{
+  color:#3b241d !important;
+  font-weight:900;
+  text-shadow:none;
+}
+.chen-accountability-chapter .witness-rebuttal-grid p{
+  color:#302722 !important;
+  font-weight:600;
+  text-shadow:none;
+}
+.chen-accountability-chapter .witness-rebuttal-grid article > span{
+  color:#4a271c;
+  background:#ead4b5;
+}
+.chen-accountability-chapter .witness-rebuttal-grid .prosecution-check{
+  background:#fff1e9;
+  border-color:#ad533b;
+}
+.chen-accountability-chapter .witness-rebuttal-grid .court-check{
+  background:#edf5ef;
+  border-color:#557764;
+}
+.chen-accountability-chapter .witness-rebuttal-grid .prosecution-check > span,
+.chen-accountability-chapter .witness-rebuttal-grid .court-check > span{
+  color:#fffdf8;
+}
+@media (max-width:640px){
+  .chen-accountability-chapter .witness-rebuttal-grid article{padding:18px 17px;}
+  .chen-accountability-chapter .witness-rebuttal-grid h5{font-size:18px;line-height:1.45;}
+  .chen-accountability-chapter .witness-rebuttal-grid p{font-size:16px;line-height:1.85;}
+}

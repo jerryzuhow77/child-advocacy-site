@@ -1,0 +1,1057 @@
+/* Homepage corrections requested after the 2026-09-08 layout review. */
+
+/* News and pinned reports must remain genuinely horizontally scrollable. */
+.home-pinned-reports-viewport{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  overscroll-behavior-x:contain;
+  scroll-snap-type:x proximity;
+  scrollbar-width:thin!important;
+  scrollbar-color:rgba(82,106,105,.45) transparent;
+  touch-action:pan-x pan-y!important;
+  -webkit-overflow-scrolling:touch;
+}
+.home-pinned-reports-track{
+  display:flex!important;
+  width:max-content!important;
+  min-width:100%!important;
+  flex-wrap:nowrap!important;
+  transform:none!important;
+}
+.home-pinned-report-card{
+  flex:0 0 min(43vw,440px)!important;
+  scroll-snap-align:start;
+}
+
+/* Keep the court area factual and remove inherited decorative artwork. */
+.home-court-schedule::before,
+.home-court-schedule::after,
+.home-court-schedule .home-news-card::after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+}
+
+/* Social cases: one clean horizontal rail without clay ornaments. */
+.home-social-cases-banner{
+  grid-template-columns:1fr!important;
+}
+.home-social-cases-qcluster{display:none!important}
+.home-case-reel{
+  display:flex!important;
+  width:100%!important;
+  max-width:100%!important;
+  flex-wrap:nowrap!important;
+  gap:16px!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  padding:8px 4px 18px!important;
+  scroll-snap-type:x proximity;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(82,106,105,.45) transparent;
+  touch-action:pan-x pan-y!important;
+  -webkit-overflow-scrolling:touch;
+}
+.home-case-reel-card{
+  flex:0 0 min(78vw,420px)!important;
+  width:min(78vw,420px)!important;
+  min-width:280px!important;
+  scroll-snap-align:start;
+}
+.home-social-cases-section::before,
+.home-social-cases-section::after,
+.home-case-reel-card::after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+}
+
+/* The memorial block uses the actual case artwork, not the clay symbol sheet. */
+.remember-kaikai-visual img{
+  width:100%!important;
+  height:100%!important;
+  min-height:360px;
+  object-fit:cover!important;
+  object-position:center!important;
+}
+.remember-kaikai-card::before,
+.remember-kaikai-card::after{content:none!important;display:none!important}
+
+@media(max-width:760px){
+  /* Give mobile thumbnails a readable landscape crop instead of a 96px strip. */
+  .home-pinned-report-card{
+    flex-basis:min(84vw,340px)!important;
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    grid-template-rows:132px auto auto!important;
+    height:auto!important;
+    min-height:330px!important;
+  }
+  .home-pinned-report-card>img{
+    grid-column:1!important;
+    grid-row:1!important;
+    width:100%!important;
+    height:132px!important;
+    min-height:132px!important;
+    aspect-ratio:auto!important;
+    object-fit:cover!important;
+    object-position:center!important;
+  }
+  .home-pinned-report-card>.home-pinned-thumb-copy{
+    inset:0 0 auto!important;
+    width:100%!important;
+    height:132px!important;
+    padding:12px 18px!important;
+    background:linear-gradient(180deg,rgba(24,47,45,.08),rgba(24,47,45,.7))!important;
+  }
+  .home-pinned-report-card>span:not(.home-post-engagement):not(.home-pinned-thumb-copy){
+    grid-column:1!important;
+    grid-row:2!important;
+    align-content:start!important;
+    padding:14px 15px 9px!important;
+  }
+  .home-pinned-report-card>.home-post-engagement{
+    grid-column:1!important;
+    grid-row:3!important;
+    margin:0 12px 12px!important;
+  }
+  .home-court-schedule .home-news-card.is-hearing.is-court-poster .home-guohua-poster-title{
+    display:none!important;
+  }
+  .home-court-schedule .home-news-card.is-hearing.is-court-poster .home-news-card-copy{
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:stretch!important;
+    padding:22px 18px 24px!important;
+  }
+  .home-court-schedule .home-news-card.is-hearing.is-court-poster .home-news-card-copy>small,
+  .home-court-schedule .home-news-card.is-hearing.is-court-poster .home-news-card-copy>strong{
+    display:block!important;
+    width:100%!important;
+  }
+  .home-court-schedule .home-news-card.is-hearing.is-court-poster .home-news-card-copy strong{
+    font-size:1.45rem!important;
+    line-height:1.32!important;
+  }
+  .home-case-reel-card{flex-basis:84vw!important;width:84vw!important;min-width:0!important}
+  .remember-kaikai-visual img{min-height:240px}
+}
+
+
+/* Samsung/mobile homepage layout repair — 2026-09-08 */
+@media (max-width:760px){
+  html,body{max-width:100%;overflow-x:hidden}
+
+  body.art-site.home-medium-palette .container{
+    width:100%;
+    max-width:100%;
+    padding-inline:16px;
+  }
+
+  /* Latest-content cards: swipeable cards with a stable landscape image and readable copy. */
+  .home-latest-flash .home-document-disc-shell{
+    width:100%!important;
+    height:auto!important;
+    margin:0!important;
+    padding:8px 0 18px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+  }
+  .home-latest-flash .home-document-disc-shell .home-document-disc-orbit{
+    display:flex!important;
+    width:max-content!important;
+    max-width:none!important;
+    grid-template-columns:none!important;
+    gap:12px!important;
+    padding:0 14vw 6px 0!important;
+    overflow:visible!important;
+  }
+  .home-latest-flash .home-document-disc-shell .home-document-disc-card{
+    display:flex!important;
+    flex:0 0 min(82vw,340px)!important;
+    width:min(82vw,340px)!important;
+    min-height:0!important;
+    height:auto!important;
+    border-radius:18px!important;
+    overflow:hidden!important;
+  }
+  .home-latest-flash .home-document-disc-card>img{
+    display:block!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    aspect-ratio:16/9!important;
+    object-fit:cover!important;
+    object-position:center!important;
+  }
+  .home-latest-flash .home-document-disc-card>span:not(.home-post-engagement):not(.home-pinned-thumb-copy){
+    display:grid!important;
+    gap:5px!important;
+    min-width:0!important;
+    padding:12px 14px 10px!important;
+  }
+  .home-latest-flash .home-document-disc-card small{
+    display:block!important;
+    font-size:.76rem!important;
+    line-height:1.4!important;
+  }
+  .home-latest-flash .home-document-disc-card strong{
+    display:block!important;
+    overflow-wrap:anywhere!important;
+    font-size:1.08rem!important;
+    line-height:1.45!important;
+  }
+  .home-latest-flash .home-document-disc-card em{
+    display:block!important;
+    overflow-wrap:anywhere!important;
+    font-size:.88rem!important;
+    line-height:1.55!important;
+  }
+  .home-latest-flash .home-document-disc-card>.home-post-engagement{
+    margin:0 10px 12px!important;
+  }
+
+  /* Hearing notes: prevent the feature artwork from becoming a full-screen portrait. */
+  .home-hearing-zone-head,
+  .home-crafted-head{align-items:flex-start!important;gap:12px!important}
+  .home-hearing-zone-head h2,
+  .home-crafted-head h2{font-size:clamp(2rem,10vw,2.65rem)!important;line-height:1.15!important}
+  .home-hearing-zone-head p,
+  .home-crafted-head p{font-size:1rem!important;line-height:1.75!important}
+  .home-hearing-zone-all{align-self:flex-start!important;white-space:normal!important}
+  .home-hearing-zone-feature{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    overflow:hidden!important;
+  }
+  .home-hearing-zone-poster{
+    display:block!important;
+    min-height:0!important;
+    aspect-ratio:16/10!important;
+    overflow:hidden!important;
+  }
+  .home-hearing-zone-poster>img{
+    display:block!important;
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    aspect-ratio:auto!important;
+    object-fit:cover!important;
+    object-position:center!important;
+  }
+  .home-hearing-zone-copy{padding:18px 16px 20px!important}
+  .home-hearing-zone-stamp{display:none!important}
+
+  /* Historical archive: keep the map landscape and cards compact/swipeable. */
+  .home-historical-grid{
+    display:flex!important;
+    width:100%!important;
+    max-width:100%!important;
+    gap:12px!important;
+    padding:4px 14vw 14px 0!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scroll-snap-type:x mandatory;
+    touch-action:pan-x pan-y!important;
+    -webkit-overflow-scrolling:touch;
+  }
+  .home-history-static-map,
+  .home-historical-card{
+    flex:0 0 min(84vw,350px)!important;
+    width:min(84vw,350px)!important;
+    min-width:0!important;
+    height:auto!important;
+    scroll-snap-align:start;
+    overflow:hidden!important;
+  }
+  .home-history-static-map>img{
+    display:block!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    aspect-ratio:16/10!important;
+    object-fit:cover!important;
+    object-position:center!important;
+  }
+  .home-history-static-map figcaption{
+    position:static!important;
+    padding:12px 14px!important;
+    font-size:.9rem!important;
+    line-height:1.55!important;
+  }
+  .home-historical-card{
+    display:flex!important;
+    flex-direction:column!important;
+  }
+  .home-historical-card .home-historical-image{
+    display:block!important;
+    width:100%!important;
+    height:auto!important;
+    aspect-ratio:16/10!important;
+    overflow:hidden!important;
+  }
+  .home-historical-card .home-historical-image>img{
+    display:block!important;
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    aspect-ratio:auto!important;
+    object-fit:cover!important;
+    object-position:center!important;
+  }
+  .home-historical-card>span:last-child{
+    display:grid!important;
+    gap:5px!important;
+    min-width:0!important;
+    padding:13px 14px 16px!important;
+  }
+  .home-historical-card small,
+  .home-historical-card strong,
+  .home-historical-card em{
+    display:block!important;
+    overflow-wrap:anywhere!important;
+    white-space:normal!important;
+  }
+  .home-historical-card small{font-size:.72rem!important;line-height:1.35!important}
+  .home-historical-card strong{font-size:1.06rem!important;line-height:1.45!important}
+  .home-historical-card em{font-size:.87rem!important;line-height:1.55!important}
+
+  /* One App entry only; remove the orphan launcher and its blank canvas. */
+  .pwa-install-launcher,
+  body>.pwa-install-launcher,
+  .home-footer-install{display:none!important}
+  .home-art-footer{margin-bottom:0!important;padding-bottom:calc(70px + env(safe-area-inset-bottom,0px))!important}
+  .home-footer-shell{min-height:0!important}
+}
+
+@media (max-width:390px){
+  body.art-site.home-medium-palette .container{padding-inline:13px}
+  .home-latest-flash .home-document-disc-shell .home-document-disc-card,
+  .home-history-static-map,
+  .home-historical-card{flex-basis:86vw!important;width:86vw!important}
+}
+
+
+/* Desktop-parity mobile homepage repair — 2026-09-08 v2 */
+@media (max-width:760px){
+  /* Restore the actual Ferris-wheel composition instead of the temporary card strip. */
+  .home-latest-flash .home-document-disc-shell{
+    position:relative!important;
+    width:100%!important;
+    height:570px!important;
+    margin:8px auto 0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    touch-action:pan-y!important;
+  }
+  .home-latest-flash .home-document-disc-shell::before,
+  .home-latest-flash .home-document-disc-shell::after{display:block!important}
+  .home-latest-flash .home-document-disc-orbit{
+    position:absolute!important;
+    inset:0!important;
+    display:block!important;
+    width:auto!important;
+    max-width:none!important;
+    height:auto!important;
+    padding:0!important;
+    overflow:visible!important;
+    transform:none;
+  }
+  .home-latest-flash .home-document-disc-shell .home-document-disc-card{
+    position:absolute!important;
+    left:50%!important;
+    top:50%!important;
+    display:flex!important;
+    flex:0 0 auto!important;
+    width:118px!important;
+    min-width:118px!important;
+    height:auto!important;
+    min-height:142px!important;
+    border-radius:48px 48px 16px 16px!important;
+    overflow:hidden!important;
+    transform-origin:50% 50%!important;
+  }
+  .home-latest-flash .home-document-disc-card>img{
+    width:100%!important;
+    height:66px!important;
+    min-height:66px!important;
+    aspect-ratio:auto!important;
+    object-fit:cover!important;
+  }
+  .home-latest-flash .home-document-disc-card>span:not(.home-post-engagement):not(.home-pinned-thumb-copy){
+    display:grid!important;
+    gap:2px!important;
+    padding:7px 8px 9px!important;
+    text-align:center!important;
+  }
+  .home-latest-flash .home-document-disc-card small{display:block!important;font-size:.56rem!important;line-height:1.25!important}
+  .home-latest-flash .home-document-disc-card strong{font-size:.76rem!important;line-height:1.3!important}
+  .home-latest-flash .home-document-disc-card em{display:none!important}
+  .home-latest-flash .home-document-disc-card>.home-post-engagement{display:none!important}
+  .home-document-disc-center{
+    position:absolute!important;
+    left:50%!important;
+    top:50%!important;
+    display:grid!important;
+    width:124px!important;
+    transform:translate(-50%,-50%)!important;
+  }
+  .home-ferris-spokes,.home-ferris-stand,.home-sea-art,.home-ferris-cloud,.home-ferris-bubbles{display:block!important}
+  .home-document-disc-control{
+    top:auto!important;
+    bottom:8px!important;
+    display:block!important;
+    width:44px!important;
+    height:44px!important;
+  }
+  .home-document-disc-control.is-prev{left:calc(50% - 52px)!important}
+  .home-document-disc-control.is-next{right:calc(50% - 52px)!important}
+  .home-disc-motion-control{display:block!important;top:8px!important;right:8px!important}
+  .home-document-disc-help{margin:10px 0 0!important;font-size:.88rem!important;line-height:1.7!important}
+
+  /* Always expose all ten trial-day thumbnails as a compact two-column gallery. */
+  .home-hearing-ten-day-grid{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:10px!important;
+    width:100%!important;
+    max-width:100%!important;
+    max-height:none!important;
+    margin:18px 0 24px!important;
+    overflow:visible!important;
+  }
+  .home-hearing-ten-day-grid>a{display:block!important;min-width:0!important}
+  .home-hearing-ten-day-grid img{display:block!important;width:100%!important;height:auto!important;aspect-ratio:4/3!important;object-fit:cover!important}
+  .home-hearing-ten-day-grid>a>span:not(.home-post-engagement){display:block!important;padding:9px 10px 11px!important}
+  .home-hearing-ten-day-grid>a>span:not(.home-post-engagement)>small,
+  .home-hearing-ten-day-grid>a>span:not(.home-post-engagement)>strong,
+  .home-hearing-ten-day-grid>a>span:not(.home-post-engagement)>b{display:block!important;white-space:normal!important}
+  .home-hearing-ten-day-grid>a>span:not(.home-post-engagement)>strong{margin-top:3px!important;font-size:.83rem!important;line-height:1.35!important}
+  .home-hearing-ten-day-grid>a>span:not(.home-post-engagement)>b{margin-top:6px!important;font-size:.7rem!important}
+
+  /* Match desktop content order: map first, then every historical case card. */
+  .home-historical-grid{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    width:100%!important;
+    max-width:100%!important;
+    gap:14px!important;
+    padding:0!important;
+    overflow:visible!important;
+  }
+  .home-history-static-map{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    margin:0 0 4px!important;
+    overflow:hidden!important;
+  }
+  .home-history-static-map>img{
+    display:block!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    aspect-ratio:16/10!important;
+    object-fit:cover!important;
+  }
+  .home-history-static-map figcaption{
+    position:absolute!important;
+    left:10px!important;
+    right:10px!important;
+    bottom:10px!important;
+    width:auto!important;
+    padding:8px 10px!important;
+    font-size:.76rem!important;
+    line-height:1.4!important;
+  }
+  .home-history-static-map .home-map-weather{display:none!important}
+  .home-historical-card{
+    display:grid!important;
+    grid-template-columns:minmax(112px,38%) minmax(0,1fr)!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-height:146px!important;
+    height:auto!important;
+    overflow:hidden!important;
+  }
+  .home-historical-card .home-historical-image{
+    width:100%!important;
+    height:100%!important;
+    min-height:146px!important;
+    aspect-ratio:auto!important;
+  }
+  .home-historical-card .home-historical-image>img{
+    width:100%!important;
+    height:100%!important;
+    min-height:146px!important;
+    aspect-ratio:auto!important;
+    object-fit:cover!important;
+  }
+  .home-historical-card>span:last-child{padding:13px!important}
+  .home-historical-foot{display:flex!important;flex-direction:column!important;gap:6px!important}
+
+  /* Restore both the full footer directory and the fixed phone shortcut bar. */
+  .home-art-footer{overflow:visible!important;padding-bottom:calc(86px + env(safe-area-inset-bottom,0px))!important}
+  .home-footer-shell{display:block!important;visibility:visible!important;opacity:1!important}
+  .home-footer-toolbar{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:10px!important;
+    padding:24px 0 20px!important;
+  }
+  .home-footer-toolbar section{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    align-content:start!important;
+    padding:15px!important;
+    background:rgba(255,255,255,.075)!important;
+  }
+  .home-footer-toolbar h2{display:block!important;grid-column:auto!important;color:#ffd8bd!important}
+  .home-footer-toolbar a{display:block!important;color:#eef6f2!important;opacity:1!important}
+  .home-footer-toolbar section.is-action{grid-column:1/-1!important}
+  .home-footer-wall-link{display:grid!important}
+  .home-footer-bottom{display:flex!important;color:#d8e5e2!important}
+  .home-footer-bottom a{display:inline-flex!important;color:#fff4e4!important}
+  .home-footer-mobile-bar{
+    position:fixed!important;
+    left:max(8px,env(safe-area-inset-left,0px))!important;
+    right:max(8px,env(safe-area-inset-right,0px))!important;
+    bottom:max(8px,env(safe-area-inset-bottom,0px))!important;
+    z-index:9997!important;
+    display:grid!important;
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+  body{padding-bottom:calc(78px + env(safe-area-inset-bottom,0px))!important}
+}
+
+
+/* Samsung mobile layout refinement — 2026-09-08 v3 */
+@media (max-width:760px){
+  /* Ten hearing days form one chronological horizontal timeline. */
+  .home-hearing-ten-day-grid{
+    position:relative!important;
+    display:flex!important;
+    grid-template-columns:none!important;
+    width:100%!important;
+    max-width:100%!important;
+    gap:12px!important;
+    margin:16px 0 24px!important;
+    padding:22px 12vw 12px 2px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scroll-snap-type:x mandatory;
+    overscroll-behavior-x:contain;
+    touch-action:pan-x pan-y!important;
+    -webkit-overflow-scrolling:touch;
+  }
+  .home-hearing-ten-day-grid::before{
+    content:"最新 → 最早";
+    position:absolute;
+    top:0;
+    left:2px;
+    color:#8b5b3f;
+    font-size:.74rem;
+    font-weight:800;
+    letter-spacing:.08em;
+  }
+  .home-hearing-ten-day-grid>a{
+    position:relative!important;
+    flex:0 0 min(68vw,280px)!important;
+    width:min(68vw,280px)!important;
+    min-width:0!important;
+    scroll-snap-align:start;
+  }
+  .home-hearing-ten-day-grid>a::before{
+    content:"";
+    position:absolute;
+    top:-9px;
+    left:18px;
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:#b96e49;
+    box-shadow:0 0 0 4px rgba(185,110,73,.16);
+  }
+  .home-hearing-ten-day-grid img{aspect-ratio:16/10!important}
+  .home-hearing-compact-grid,.home-hearing-archive-links{display:none!important}
+
+  /* Historical archive gains an explicit region selector and a clean vertical result list. */
+  .home-history-region-filter{
+    display:grid!important;
+    grid-template-columns:auto minmax(0,1fr);
+    align-items:center;
+    gap:10px;
+    margin:14px 0 16px;
+    padding:12px 13px;
+    border:1px solid rgba(116,77,54,.2);
+    border-radius:14px;
+    background:rgba(255,250,240,.84);
+  }
+  .home-history-region-filter label{font-size:.88rem;font-weight:800;color:#17394f;white-space:nowrap}
+  .home-history-region-filter select{
+    width:100%;
+    min-height:44px;
+    padding:8px 38px 8px 12px;
+    border:1px solid rgba(23,57,79,.28);
+    border-radius:10px;
+    background:#fffaf0;
+    color:#17394f;
+    font:inherit;
+    font-size:1rem;
+  }
+  .home-historical-card[hidden]{display:none!important}
+  .home-historical-grid{gap:12px!important}
+  .home-historical-card{grid-template-columns:minmax(118px,38%) minmax(0,1fr)!important}
+  .home-historical-card>span:last-child{min-width:0!important;padding:12px!important}
+  .home-historical-card small{font-size:.68rem!important;line-height:1.3!important}
+  .home-historical-card strong{font-size:1rem!important;line-height:1.35!important}
+  .home-historical-card em{font-size:.82rem!important;line-height:1.45!important}
+
+  /* Keep the full directory available without letting it dominate the phone page. */
+  .home-footer-toolbar{
+    display:flex!important;
+    grid-template-columns:none!important;
+    gap:10px!important;
+    padding:18px 0 16px!important;
+    overflow-x:auto!important;
+    scroll-snap-type:x mandatory;
+    touch-action:pan-x pan-y!important;
+  }
+  .home-footer-toolbar section,
+  .home-footer-toolbar section.is-action{
+    flex:0 0 min(72vw,290px)!important;
+    grid-column:auto!important;
+    min-width:0!important;
+    min-height:0!important;
+    padding:14px!important;
+    scroll-snap-align:start;
+  }
+  .home-footer-toolbar h2{font-size:1.2rem!important;line-height:1.25!important;white-space:nowrap!important}
+  .home-footer-toolbar a{font-size:.9rem!important;line-height:1.45!important}
+}
+
+
+/* Mobile activity stream refinement — 2026-09-08 v4 */
+@media (max-width:760px){
+  .home-activity-records{padding-block:46px!important}
+  .home-activity-records-head{display:grid!important;grid-template-columns:1fr!important;gap:12px!important;margin-bottom:18px!important}
+  .home-activity-records-head h2{font-size:clamp(2rem,10vw,2.55rem)!important;line-height:1.12!important}
+  .home-activity-records-head p{font-size:1rem!important;line-height:1.7!important}
+  .home-activity-records-head>a{justify-self:start!important;min-height:44px!important;padding:10px 14px!important}
+  .home-activity-scroll-shell{border-radius:20px!important;overflow:hidden!important}
+  .home-activity-scroll-toolbar{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;padding:12px 13px!important}
+  .home-activity-scroll-label{min-width:0!important;gap:8px!important}
+  .home-activity-scroll-label strong{font-size:.88rem!important;line-height:1.35!important}
+  .home-activity-scroll-label small{font-size:.72rem!important;line-height:1.4!important}
+  .home-activity-scroll-controls{display:flex!important;flex:0 0 auto!important;gap:6px!important}
+  .home-activity-scroll-controls button{width:40px!important;height:40px!important;min-width:40px!important}
+  .home-activity-scroll{max-height:min(72vh,680px)!important;padding:12px!important;scroll-padding-top:12px!important}
+  .home-activity-record-divider{margin:10px 0 8px!important;padding:10px 12px!important;border-radius:12px!important}
+  .home-activity-record-divider span{font-size:.63rem!important;line-height:1.35!important;letter-spacing:.06em!important}
+  .home-activity-record-divider strong{font-size:1rem!important;line-height:1.4!important}
+  .home-activity-record-divider small{font-size:.76rem!important;line-height:1.4!important}
+  .home-activity-feature{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:0!important;
+    margin:0 0 14px!important;
+    border-radius:18px!important;
+    overflow:hidden!important;
+  }
+  .home-story-campaign-visual,.home-activity-collage{width:100%!important;height:auto!important;min-height:0!important;aspect-ratio:16/10!important;overflow:hidden!important}
+  .home-story-campaign-visual>img,.home-activity-collage img{width:100%!important;height:100%!important;min-height:0!important;object-fit:cover!important}
+  .home-activity-collage{display:grid!important;grid-template-columns:2fr 1fr!important;grid-template-rows:1fr 1fr!important}
+  .home-activity-image-main{grid-row:1/3!important}
+  .home-activity-story{padding:16px!important}
+  .home-activity-story h3{margin:8px 0!important;font-size:1.28rem!important;line-height:1.38!important}
+  .home-activity-story p,.home-activity-story blockquote{font-size:.9rem!important;line-height:1.65!important}
+  .home-activity-story>p:not(.home-activity-lead),.home-activity-story>blockquote{display:none!important}
+  .home-activity-hearing-note{padding:10px 11px!important;font-size:.8rem!important;line-height:1.45!important}
+  .home-activity-tags{display:flex!important;gap:6px!important;overflow-x:auto!important;flex-wrap:nowrap!important;padding-bottom:3px!important}
+  .home-activity-tags span{flex:0 0 auto!important;font-size:.72rem!important;white-space:nowrap!important}
+  .home-activity-actions{display:grid!important;grid-template-columns:1fr!important;gap:8px!important;margin-top:12px!important}
+  .home-activity-actions a{width:100%!important;min-height:44px!important;justify-content:center!important;text-align:center!important}
+  .home-activity-clay-date{transform:scale(.78)!important;transform-origin:top right!important}
+}
+
+
+/* Mobile activity horizontal timeline — 2026-09-08 v5 */
+@media (max-width:760px){
+  .home-activity-scroll-toolbar .home-activity-scroll-label>i{transform:rotate(-90deg)!important}
+  .home-activity-scroll{display:flex!important;align-items:stretch!important;gap:12px!important;width:100%!important;max-width:100%!important;max-height:none!important;overflow-x:auto!important;overflow-y:hidden!important;padding:14px 14vw 14px 12px!important;scroll-snap-type:x mandatory!important;scroll-padding-left:12px!important;overscroll-behavior-x:contain!important;touch-action:pan-x pan-y!important;-webkit-overflow-scrolling:touch}
+  .home-activity-scroll>.home-activity-record-divider{display:none!important}
+  .home-activity-scroll>.home-activity-feature{flex:0 0 min(86vw,360px)!important;width:min(86vw,360px)!important;min-width:0!important;margin:0!important;scroll-snap-align:start!important;scroll-snap-stop:always!important;align-self:stretch!important}
+  .home-activity-feature .home-story-campaign-visual,.home-activity-feature .home-activity-collage{aspect-ratio:16/10!important}
+  .home-activity-story{display:flex!important;flex-direction:column!important;min-height:330px!important}
+  .home-activity-story .home-activity-actions{margin-top:auto!important}
+  .home-activity-scroll-controls button:first-child::before{content:"‹"!important;font-size:1.35rem!important}
+  .home-activity-scroll-controls button:last-child::before{content:"›"!important;font-size:1.35rem!important}
+  .home-activity-scroll-controls button{font-size:0!important}
+}
+
+
+/* Restore mobile activity vertical dialog — 2026-09-08 v6 */
+@media (max-width:760px){
+  .home-activity-scroll-shell{
+    position:relative!important;
+    border:2px solid rgba(139,82,55,.48)!important;
+    border-radius:22px!important;
+    background:rgba(255,249,237,.96)!important;
+    box-shadow:0 18px 42px rgba(54,36,27,.22),inset 0 0 0 5px rgba(255,255,255,.48)!important;
+    overflow:hidden!important;
+  }
+  .home-activity-scroll-toolbar{
+    position:sticky!important;
+    top:0!important;
+    z-index:5!important;
+    background:linear-gradient(135deg,#173f59,#28566b)!important;
+    color:#fff!important;
+    border-bottom:1px solid rgba(255,255,255,.2)!important;
+  }
+  .home-activity-scroll-label strong,.home-activity-scroll-label small{color:#fff!important}
+  .home-activity-scroll-label small{opacity:.82!important}
+  .home-activity-scroll{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    max-height:min(68vh,620px)!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    padding:12px!important;
+    scroll-snap-type:y proximity!important;
+    scroll-padding-top:12px!important;
+    overscroll-behavior-y:auto!important;
+    touch-action:pan-y!important;
+    -webkit-overflow-scrolling:touch!important;
+    scrollbar-width:thin!important;
+    scrollbar-color:#b56f4e rgba(235,218,194,.7)!important;
+  }
+  .home-activity-scroll>.home-activity-record-divider{display:grid!important;scroll-snap-align:start!important}
+  .home-activity-scroll>.home-activity-feature{
+    display:grid!important;
+    width:100%!important;
+    max-width:100%!important;
+    margin:0 0 14px!important;
+    scroll-snap-align:start!important;
+  }
+  .home-activity-story{min-height:0!important}
+  .home-activity-scroll-controls button{font-size:1.1rem!important;background:#fff7e8!important;color:#173f59!important;border:1px solid rgba(255,255,255,.72)!important;box-shadow:0 4px 12px rgba(0,0,0,.2)!important}
+  .home-activity-scroll-controls button:first-child::before,.home-activity-scroll-controls button:last-child::before{content:none!important}
+  .home-activity-scroll::after{content:"上下滑動查看更多活動";display:block;padding:12px 6px 4px;text-align:center;color:#79513d;font-size:.78rem;font-weight:800}
+  html[lang="en"] .home-activity-scroll::after{content:"Scroll for more activities"}
+  html[lang="ja"] .home-activity-scroll::after{content:"スクロールして活動記録をさらに表示"}
+}
+
+
+/* 2026-09-08 mobile Ferris orbit and engagement stabilization */
+@media (max-width:760px){
+  .home-latest-flash .home-document-disc-shell{
+    min-height:610px!important;
+    height:610px!important;
+    overflow:hidden!important;
+    touch-action:pan-y pinch-zoom!important;
+  }
+  .home-latest-flash .home-document-disc-card{
+    width:86px!important;
+    min-width:86px!important;
+    height:132px!important;
+    min-height:132px!important;
+    display:grid!important;
+    grid-template-rows:46px minmax(0,1fr) 25px!important;
+    border-radius:30px 30px 14px 14px!important;
+    overflow:hidden!important;
+  }
+  .home-latest-flash .home-document-disc-card>img{
+    width:100%!important;
+    height:46px!important;
+    min-height:46px!important;
+    object-fit:cover!important;
+  }
+  .home-latest-flash .home-document-disc-card>span:not(.home-post-engagement){
+    min-width:0!important;
+    padding:5px 5px 2px!important;
+    overflow:hidden!important;
+  }
+  .home-latest-flash .home-document-disc-card small{
+    display:block!important;
+    overflow:hidden!important;
+    white-space:nowrap!important;
+    text-overflow:ellipsis!important;
+    font-size:.48rem!important;
+    line-height:1.2!important;
+  }
+  .home-latest-flash .home-document-disc-card strong{
+    display:-webkit-box!important;
+    -webkit-box-orient:vertical!important;
+    -webkit-line-clamp:2!important;
+    overflow:hidden!important;
+    font-size:.64rem!important;
+    line-height:1.25!important;
+  }
+  .home-latest-flash .home-document-disc-card em{display:none!important}
+  .home-latest-flash .home-document-disc-card>.home-post-engagement{
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    align-items:center!important;
+    gap:0!important;
+    min-height:25px!important;
+    margin:0!important;
+    padding:2px 2px 3px!important;
+    border-top:1px solid rgba(107,72,45,.16)!important;
+    background:rgba(255,249,235,.9)!important;
+  }
+  .home-latest-flash .home-document-disc-card .home-post-stat{
+    min-width:0!important;
+    padding:0!important;
+    gap:1px!important;
+    justify-content:center!important;
+    font-size:.45rem!important;
+    line-height:1!important;
+  }
+  .home-latest-flash .home-document-disc-card .home-post-stat-label{display:none!important}
+  .home-latest-flash .home-document-disc-card .home-post-stat-icon,
+  .home-latest-flash .home-document-disc-card .home-post-stat-count{
+    font-size:.45rem!important;
+    line-height:1!important;
+  }
+  #news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement{
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:4px!important;
+    margin:8px 10px 12px!important;
+  }
+}
+
+
+/* 2026-09-08 Ferris full engagement labels */
+@media (max-width:760px){
+  .home-latest-flash .home-document-disc-card{
+    height:142px!important;
+    min-height:142px!important;
+    grid-template-rows:44px minmax(0,1fr) 38px!important;
+  }
+  .home-latest-flash .home-document-disc-card>img{
+    height:44px!important;
+    min-height:44px!important;
+  }
+  .home-latest-flash .home-document-disc-card>.home-post-engagement{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-template-rows:repeat(2,1fr)!important;
+    min-height:38px!important;
+    padding:3px 2px!important;
+    gap:2px 0!important;
+  }
+  .home-latest-flash .home-document-disc-card .home-post-stat{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:1px!important;
+    white-space:nowrap!important;
+    font-size:.52rem!important;
+    line-height:1.1!important;
+  }
+  .home-latest-flash .home-document-disc-card .home-post-stat-label{
+    display:inline!important;
+    font-size:.52rem!important;
+    line-height:1.1!important;
+  }
+  .home-latest-flash .home-document-disc-card .home-post-stat-icon,
+  .home-latest-flash .home-document-disc-card .home-post-stat-count{
+    display:inline!important;
+    font-size:.52rem!important;
+    line-height:1.1!important;
+  }
+}
+
+
+/* 2026-09-09 all mobile homepage engagement labels */
+@media (max-width:760px){
+  body .home-post-engagement{
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    width:100%!important;
+    max-width:100%!important;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+  body .home-post-engagement .home-post-stat{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    min-width:0!important;
+    white-space:nowrap!important;
+    font-size:.75rem!important;
+    line-height:1.2!important;
+  }
+  body .home-post-engagement .home-post-stat-label{
+    display:inline!important;
+    position:static!important;
+    width:auto!important;
+    height:auto!important;
+    overflow:visible!important;
+    clip:auto!important;
+    clip-path:none!important;
+    white-space:nowrap!important;
+    font-size:.75rem!important;
+    line-height:1.2!important;
+  }
+  body .home-post-engagement .home-post-stat-icon,
+  body .home-post-engagement .home-post-stat b{
+    display:inline!important;
+    position:static!important;
+    font-size:.75rem!important;
+    line-height:1.2!important;
+  }
+  .home-latest-flash .home-document-disc-card>.home-post-engagement{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  .home-latest-flash .home-document-disc-card .home-post-stat,
+  .home-latest-flash .home-document-disc-card .home-post-stat-label,
+  .home-latest-flash .home-document-disc-card .home-post-stat-icon,
+  .home-latest-flash .home-document-disc-card .home-post-stat b{
+    font-size:.52rem!important;
+  }
+}
+
+/* 2026-09-09 desktop hearing-card rail and engagement repair.
+   Keep the ten records readable instead of squeezing five interactive cards into
+   one row, and isolate the injected engagement spans from legacy card-copy rules. */
+#news-hearing-notes .home-hearing-ten-day-grid>a{
+  display:grid!important;
+  grid-template-rows:auto minmax(72px,auto) auto!important;
+  align-content:stretch!important;
+  align-self:flex-start!important;
+}
+#news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement{
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  align-items:center!important;
+  gap:5px!important;
+  width:auto!important;
+  max-width:none!important;
+  margin:0 12px 14px!important;
+  padding:0!important;
+}
+#news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement>.home-post-stat{
+  box-sizing:border-box!important;
+  display:flex!important;
+  grid-template-columns:none!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:3px!important;
+  min-width:0!important;
+  min-height:32px!important;
+  width:100%!important;
+  margin:0!important;
+  padding:5px 4px!important;
+  font-size:.68rem!important;
+  line-height:1.15!important;
+  white-space:nowrap!important;
+}
+#news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement>.home-post-stat>span{
+  grid-template-columns:none!important;
+  gap:0!important;
+  margin:0!important;
+  padding:0!important;
+}
+#news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement>.home-post-stat>.home-post-stat-icon{
+  display:inline-grid!important;
+  min-width:1em!important;
+  font-size:1em!important;
+  line-height:1!important;
+}
+#news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement>.home-post-stat>.home-post-stat-label,
+#news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement>.home-post-stat>b{
+  display:inline!important;
+  align-self:auto!important;
+  margin:0!important;
+  padding:0!important;
+  color:inherit!important;
+  font:inherit!important;
+  white-space:nowrap!important;
+}
+
+@media (min-width:761px){
+  #news-hearing-notes .home-hearing-ten-day-grid{
+    display:flex!important;
+    width:100%!important;
+    max-width:100%!important;
+    flex-wrap:nowrap!important;
+    align-items:flex-start!important;
+    gap:16px!important;
+    margin:20px 0 26px!important;
+    padding:4px 2px 14px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scroll-snap-type:x proximity!important;
+    scroll-padding-inline:2px!important;
+    overscroll-behavior-x:contain!important;
+    scrollbar-width:thin!important;
+    scrollbar-color:rgba(82,106,105,.5) rgba(255,255,255,.42)!important;
+    touch-action:pan-x pan-y!important;
+    -webkit-overflow-scrolling:touch;
+  }
+  #news-hearing-notes .home-hearing-ten-day-grid>a{
+    flex:0 0 clamp(300px,31%,350px)!important;
+    width:clamp(300px,31%,350px)!important;
+    min-width:300px!important;
+    scroll-snap-align:start!important;
+  }
+  #news-hearing-notes .home-hearing-ten-day-grid>a>img{
+    display:block!important;
+    width:100%!important;
+    height:clamp(188px,19vw,219px)!important;
+    aspect-ratio:auto!important;
+    object-fit:cover!important;
+    object-position:center!important;
+  }
+  #news-hearing-notes .home-hearing-ten-day-grid>a>span:not(.home-post-engagement){
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+    gap:5px 8px!important;
+    padding:12px 13px!important;
+  }
+}
+
+@media (min-width:761px) and (max-width:1099px){
+  #news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:6px!important;
+  }
+}
+
+@media (max-width:760px){
+  #news-hearing-notes .home-hearing-ten-day-grid>a>img{
+    display:block!important;
+    width:100%!important;
+    height:min(42.5vw,175px)!important;
+    aspect-ratio:auto!important;
+    object-fit:cover!important;
+    object-position:center!important;
+  }
+  #news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:6px!important;
+    width:auto!important;
+    margin:0 9px 10px!important;
+    padding:0!important;
+  }
+  #news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement>.home-post-stat{
+    min-height:32px!important;
+    padding:5px 7px!important;
+    font-size:.7rem!important;
+  }
+  #news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement>.home-post-stat>.home-post-stat-label,
+  #news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement>.home-post-stat>.home-post-stat-icon,
+  #news-hearing-notes .home-hearing-ten-day-grid>a>.home-post-engagement>.home-post-stat>b{
+    font-size:.7rem!important;
+  }
+}
