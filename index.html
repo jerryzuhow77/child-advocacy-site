@@ -182,7 +182,9 @@ const menu=document.querySelector('.mobile-menu');menu.querySelectorAll('a').for
       source: "中央社・法務部法令データベース →"
     }
   };
-  const language = document.documentElement.lang || "zh-Hant";
+  const language = location.hostname === "cn.globalprotectionwall.com"
+    ? "zh-Hans"
+    : (document.documentElement.lang || "zh-Hant");
   const image = "./assets/art/governance-accountability-20261020-hero.webp?v=20261020";
   document.querySelectorAll(".daily-brief-20261018").forEach(section => {
     section.querySelectorAll("[data-brief-locale]").forEach(link => {
