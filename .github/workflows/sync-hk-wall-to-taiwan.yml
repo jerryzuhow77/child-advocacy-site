@@ -57,8 +57,12 @@ jobs:
           host="${TENCENT_SSH_HOST:-150.109.69.104}"
           user="${TENCENT_SSH_USER:-ubuntu}"
           port="${TENCENT_SSH_PORT:-22}"
+          known_hosts="$RUNNER_TEMP/hk_sync_known_hosts"
+          ssh-keyscan -H -p "$port" "$host" > "$known_hosts"
+          test -s "$known_hosts"
           ssh -f -N -i "$RUNNER_TEMP/hk_sync_key" -p "$port" \
-            -o BatchMode=yes -o ExitOnForwardFailure=yes -o ConnectTimeout=20 \
+            -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$known_hosts" \
+            -o ExitOnForwardFailure=yes -o ConnectTimeout=20 \
             -L 127.0.0.1:18787:127.0.0.1:8787 "$user@$host"
           curl --silent --show-error --fail-with-body --max-time 20 \
             http://127.0.0.1:18787/api/public/submission-stats |
