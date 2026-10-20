@@ -46,6 +46,24 @@ jobs:
           ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'sudo bash -s' <<'REMOTE'
           set -Eeuo pipefail
           app=/opt/global-protection
+          ensure_local_api() {
+            if curl --silent --show-error --fail --max-time 8 http://127.0.0.1:8787/api/health >/dev/null; then
+              return 0
+            fi
+            systemctl restart global-protection.service
+            for attempt in $(seq 1 12); do
+              if curl --silent --show-error --fail --max-time 8 http://127.0.0.1:8787/api/health >/dev/null; then
+                return 0
+              fi
+              sleep 2
+            done
+            systemctl --no-pager --full status global-protection.service || true
+            journalctl --no-pager -u global-protection.service -n 80 || true
+            return 1
+          }
+          ensure_local_api
+          curl --silent --show-error --fail --max-time 12 http://127.0.0.1:8787/api/public/submission-stats |
+            python3 -c 'import json,sys; x=json.load(sys.stdin); assert x.get("scope") == "taiwan-hong-kong-shared"; assert isinstance(x.get("published"), int)'
           source="$app/components/guardian-wall.tsx"
           backup="$source.wall-timeout-$(date +%s).bak"
           cp "$source" "$backup"
