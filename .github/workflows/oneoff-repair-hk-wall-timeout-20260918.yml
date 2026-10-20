@@ -98,7 +98,7 @@ jobs:
             journalctl --no-pager -u global-protection.service -n 120 || true
             exit 1
           fi
-          systemctl is-active global-protection.service
+          ensure_local_api
           grep -n "controller.abort(), 20000" "$source"
           trap - EXIT
           REMOTE
