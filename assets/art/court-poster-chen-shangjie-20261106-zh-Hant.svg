@@ -28,12 +28,12 @@
     <text x="290" y="440" class="value">9/16 第一次準備庭完成</text>
     <text x="102" y="512" class="label">期限</text>
     <text x="290" y="512" class="value">10/15 書狀期限</text>
-    <text x="102" y="584" class="label">下一庭</text>
-    <text x="290" y="584" class="value">11/6・時間／法庭待法院公告</text>
+    <text x="102" y="584" class="label">開庭</text>
+    <text x="290" y="584" class="value">11/6（五）14:30・專一法庭</text>
   <rect x="78" y="720" width="924" height="186" rx="28" fill="#fbf7ee" fill-opacity=".90" stroke="#ffffff" stroke-opacity=".65"/>
   <text x="540" y="815" class="statement" text-anchor="middle">程序持續追蹤，不預設裁判結果。</text>
   <rect x="54" y="1085" width="972" height="215" rx="34" fill="url(#foot)" fill-opacity=".97"/>
-  <text x="88" y="1145" class="disclaimer">庭期與法庭請以法院最新公告為準</text>
+  <text x="88" y="1145" class="disclaimer">須領旁聽證始可入庭・登記請見法院公告</text>
   <text x="540" y="1230" class="org" text-anchor="middle">護童行動聯盟</text>
   <text x="540" y="1272" class="tagline" text-anchor="middle">記錄程序，也守住證據與責任的界線</text>
   <style>
