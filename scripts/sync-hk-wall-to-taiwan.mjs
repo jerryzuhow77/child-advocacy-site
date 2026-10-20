@@ -2,6 +2,7 @@
 import { createHash } from "node:crypto";
 
 const sourceOrigin = new URL(process.env.SOURCE_ORIGIN ?? "https://cn.globalprotectionwall.com").origin;
+const sourceStatsOrigin = new URL(process.env.SOURCE_STATS_ORIGIN ?? sourceOrigin).origin;
 const targetOrigin = new URL(process.env.TARGET_ORIGIN ?? "https://global-protection.jerryzuhow77.chatgpt.site").origin;
 const secret = process.env.HK_SYNC_SECRET;
 const apply = process.argv.includes("--apply");
@@ -25,8 +26,8 @@ const RETRYABLE_IMAGE_FETCH_CODES = new Set([
 ]);
 
 const [sourcePublic, targetPublic] = await Promise.all([
-  getPublicSnapshot(sourceOrigin, "taiwan-hong-kong-shared", "Hong Kong"),
-  getPublicSnapshot(targetOrigin, "taiwan-hong-kong-shared", "Taiwan"),
+  getPublicSnapshot(sourceOrigin, sourceStatsOrigin, "taiwan-hong-kong-shared", "Hong Kong"),
+  getPublicSnapshot(targetOrigin, targetOrigin, "taiwan-hong-kong-shared", "Taiwan"),
 ]);
 
 const sourceMessages = sourcePublic.messages;
@@ -123,8 +124,8 @@ if (apply) {
 
 const [verifiedSource, verifiedTarget] = apply
   ? await Promise.all([
-      getPublicSnapshot(sourceOrigin, "taiwan-hong-kong-shared", "verified Hong Kong"),
-      getPublicSnapshot(targetOrigin, "taiwan-hong-kong-shared", "verified Taiwan"),
+      getPublicSnapshot(sourceOrigin, sourceStatsOrigin, "taiwan-hong-kong-shared", "verified Hong Kong"),
+      getPublicSnapshot(targetOrigin, targetOrigin, "taiwan-hong-kong-shared", "verified Taiwan"),
     ])
   : [sourcePublic, targetPublic];
 const verifiedSourceMessages = verifiedSource.messages;
@@ -170,14 +171,14 @@ async function getJson(url) {
   return response.json();
 }
 
-async function getPublicSnapshot(origin, expectedScope, label) {
+async function getPublicSnapshot(origin, statsOrigin, expectedScope, label) {
   for (let attempt = 1; attempt <= 3; attempt += 1) {
-    const publishedBefore = await getPublishedCount(origin, expectedScope, label);
+    const publishedBefore = await getPublishedCount(statsOrigin, expectedScope, label);
     const url = new URL("/api/public/messages", origin);
     url.searchParams.set("limit", String(Math.max(publishedBefore, 1)));
     const payload = await getJson(url);
     const messages = array(payload.messages, `${label} messages`);
-    const publishedAfter = await getPublishedCount(origin, expectedScope, label);
+    const publishedAfter = await getPublishedCount(statsOrigin, expectedScope, label);
     if (publishedBefore !== publishedAfter) continue;
     if (messages.length < publishedAfter) {
       throw new Error(`${label} messages incomplete: expected at least ${publishedAfter}, received ${messages.length}`);
