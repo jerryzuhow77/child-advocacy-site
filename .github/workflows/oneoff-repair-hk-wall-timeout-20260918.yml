@@ -93,7 +93,11 @@ jobs:
           PY
           cd "$app"
           npm run build
-          systemctl restart global-protection.service
+          if ! systemctl restart global-protection.service; then
+            systemctl --no-pager --full status global-protection.service || true
+            journalctl --no-pager -u global-protection.service -n 120 || true
+            exit 1
+          fi
           systemctl is-active global-protection.service
           grep -n "controller.abort(), 20000" "$source"
           trap - EXIT
