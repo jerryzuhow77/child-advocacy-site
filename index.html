@@ -149,5 +149,66 @@ const menu=document.querySelector('.mobile-menu');menu.querySelectorAll('a').for
 <script defer="" src="./assets/pwa-install.js?v=20261019-thumbnail-force-refresh-v18"></script>
 <script async="" src="./assets/vendor/gsap-3.13.0.min.js"></script>
 <script defer="" src="./assets/home-cinema-20261013.js?v=4-film-openers"></script>
-<script defer="" src="./assets/home-ink-refinement-20261014.js"></script></body></html>
+<script defer="" src="./assets/home-ink-refinement-20261014.js"></script>
+<script id="daily-brief-20261020-home">
+(() => {
+  const editions = {
+    "zh-Hant": {
+      title: "今日護童快報｜從凱道到園長會議：護童不能只靠事件後的承諾",
+      summary: "把第一線對話，變成可驗證的保護機制：通報、24 小時分級、保全與調查都要留下可查核的結果。",
+      alt: "通報、二十四小時分級、調查與公開回應的水墨紙雕制度示意，非事件現場",
+      href: "./news/governance-accountability-20261020/",
+      source: "中央社・法務部全國法規資料庫 →"
+    },
+    "zh-Hans": {
+      title: "今日护童快报｜从凯道到园长会议：护童不能只靠事件后的承诺",
+      summary: "把一线对话，变成可验证的保护机制：通报、24 小时分级、保全与调查都要留下可核对的结果。",
+      alt: "通报、二十四小时分级、调查与公开回应的水墨纸雕制度示意，非事件现场",
+      href: "./news/governance-accountability-20261020/zh-Hans/",
+      source: "中央社・法务部全国法规资料库 →"
+    },
+    en: {
+      title: "Daily brief｜From the rally to the roundtable",
+      summary: "Child protection needs accountable steps, not promises after the event.",
+      alt: "Ink-and-paper illustration of reporting, review and public accountability",
+      href: "./news/governance-accountability-20261020/",
+      source: "CNA · Ministry of Justice database →"
+    },
+    ja: {
+      title: "今日の護童速報｜集会から対話の場へ",
+      summary: "事後の約束ではなく、検証できる保護の仕組みへ。",
+      alt: "通報・調査・説明責任を示す水墨と切り絵の制度イメージ",
+      href: "./news/governance-accountability-20261020/",
+      source: "中央社・法務部法令データベース →"
+    }
+  };
+  const language = document.documentElement.lang || "zh-Hant";
+  const image = "./assets/art/governance-accountability-20261020-hero.webp?v=20261020";
+  document.querySelectorAll(".daily-brief-20261018").forEach(section => {
+    section.querySelectorAll("[data-brief-locale]").forEach(link => {
+      const d = editions[link.dataset.briefLocale];
+      if (!d) return;
+      link.href = d.href;
+      link.querySelector("img").src = image;
+      link.querySelector("img").alt = d.alt;
+      link.querySelector("b").textContent = d.title;
+      link.querySelector("span").textContent = d.summary;
+    });
+  });
+  const mobile = document.querySelector(".mobile-daily-brief a");
+  if (mobile) {
+    const d = editions[language] || editions["zh-Hant"];
+    mobile.href = d.href;
+    mobile.querySelector(".mobile-daily-brief-kicker").textContent = "DAILY BRIEF · 20 OCT 2026";
+    mobile.querySelector("h2").textContent = language === "zh-Hans" ? "把对话变成保护机制" : "把對話變成保護機制";
+    mobile.querySelector("p").textContent = d.summary;
+    mobile.querySelector(".mobile-daily-brief-source").textContent = d.source;
+    mobile.querySelector(".mobile-daily-brief-art").style.cssText = "background:url('" + image + "') center/cover no-repeat";
+    const art = mobile.querySelector(".mobile-daily-brief-art");
+    art.replaceChildren();
+    art.setAttribute("role", "img");
+    art.setAttribute("aria-label", d.alt);
+  }
+})();
+</script></body></html>
 
