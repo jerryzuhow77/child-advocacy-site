@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 810" role="img" aria-labelledby="title desc">
+<title id="title">秋日校園流感防護與及時就醫意象</title>
+<desc id="desc">以莫蘭迪青綠、赭紅與米色水墨色塊構成校園、書包、溫度計、口罩與醫療指引的抽象守護圖，非事件現場。</desc>
+<defs>
+  <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f4eddf"/><stop offset="1" stop-color="#ddd8c9"/></linearGradient>
+  <linearGradient id="sun" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d9aa64"/><stop offset="1" stop-color="#b86a51"/></linearGradient>
+  <pattern id="grain" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="4" cy="7" r="1.2" fill="#294b4b" opacity=".08"/><circle cx="20" cy="17" r=".9" fill="#8f5a4b" opacity=".08"/><path d="M0 26L28 2" stroke="#fff" opacity=".08"/></pattern>
+</defs>
+<rect width="1440" height="810" fill="url(#paper)"/>
+<rect width="1440" height="810" fill="url(#grain)"/>
+<path d="M0 112C180 45 337 71 504 126S835 209 1006 126s299-78 434-28V0H0Z" fill="#617f7a" opacity=".22"/>
+<path d="M0 665c183-72 350-37 510 8s323 47 479-15 294-40 451 26v126H0Z" fill="#9a765e" opacity=".18"/>
+<circle cx="1145" cy="174" r="108" fill="url(#sun)" opacity=".64"/>
+<circle cx="1145" cy="174" r="145" fill="none" stroke="#b57a55" stroke-width="2" opacity=".3"/>
+<g fill="none" stroke="#294b4b" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M155 554h1128"/>
+  <path d="M220 535V314l255-109 255 109v221"/>
+  <path d="M267 325h416"/>
+  <path d="M315 370v64M419 370v64M523 370v64M627 370v64"/>
+  <path d="M318 535v-58h111v58M519 535v-103h108v103"/>
+</g>
+<g transform="translate(785 237)">
+  <path d="M0 98C0 43 45 0 100 0s100 43 100 98v186H0Z" fill="#315d59"/>
+  <path d="M40 95c0-34 27-60 60-60s60 26 60 60" fill="none" stroke="#f2e7d1" stroke-width="16"/>
+  <path d="M31 145h138v111H31Z" fill="#d7c49e"/>
+  <path d="M56 162h88v32H56Z" fill="#b2664f"/>
+  <path d="M55 218h90" stroke="#315d59" stroke-width="10"/>
+</g>
+<g transform="translate(972 328)">
+  <rect width="242" height="205" rx="22" fill="#f8f1e4" stroke="#315d59" stroke-width="10"/>
+  <path d="M38 54h104M38 94h158M38 134h98" stroke="#879b8d" stroke-width="11" stroke-linecap="round"/>
+  <circle cx="184" cy="154" r="30" fill="#b2664f"/>
+  <path d="M184 137v34M167 154h34" stroke="#f8f1e4" stroke-width="9" stroke-linecap="round"/>
+</g>
+<g transform="translate(675 304)">
+  <path d="M0 0v130" stroke="#8a4f42" stroke-width="17" stroke-linecap="round"/>
+  <circle cx="0" cy="144" r="31" fill="#8a4f42"/>
+  <rect x="-25" y="-22" width="50" height="130" rx="25" fill="#f7efe0" stroke="#8a4f42" stroke-width="10"/>
+  <path d="M0 23v76" stroke="#b2664f" stroke-width="14" stroke-linecap="round"/>
+</g>
+<path d="M690 643c76-47 156-46 234 3" fill="none" stroke="#315d59" stroke-width="9" stroke-linecap="round"/>
+<path d="M755 613c-26-53-17-101 26-142 41 54 39 105-6 153M866 620c9-65 43-103 103-116-1 67-34 106-98 125" fill="#879b8d" opacity=".78"/>
+<path d="M110 171c75 38 141 27 199-33M119 213c65 26 123 17 174-27" fill="none" stroke="#a8644d" stroke-width="8" stroke-linecap="round" opacity=".64"/>
+</svg>
