@@ -32,3 +32,17 @@ a{color:inherit}.news-skip{position:fixed;z-index:99;top:8px;left:8px;transform:
 .news-card-media{background-image:url('/child-advocacy-site/assets/images/lin-xinci-inkwash-hero-20260903.png?v=20260903-inkwash-1')!important;background-position:center!important}
 .news-card-media{background-image:none!important}
 .news-card-media>img{display:block!important}.news-card-media>.news-photo-credit{display:block!important}
+
+/* 2026-10-21: keep every news thumbnail inside one shadowless editorial media frame. */
+.news-grid{align-items:flex-start}
+.news-card{box-shadow:none;isolation:isolate}
+.news-card:hover,.news-card:focus-within{transform:translateY(-2px);border-color:rgba(119,89,88,.45);box-shadow:none}
+.news-card-media{aspect-ratio:16/9;min-height:0}
+.news-card-media img{min-height:0}
+.news-card>a{display:flex;flex-direction:column;min-width:0;min-height:0;height:100%;color:inherit;text-decoration:none}
+.news-card>a>img{display:block;width:100%;max-width:100%;height:auto;min-height:0;aspect-ratio:16/9;object-fit:cover;object-position:var(--news-focal,50% 50%);flex:none}
+.news-card>a>.news-card-date{display:block;margin:22px 24px 0;color:#946a70;font-size:.73rem;font-weight:950;letter-spacing:.05em}
+.news-card>a>h3{margin:.55em 24px .36em;font-family:"Noto Serif TC","Noto Serif SC","Noto Serif JP",serif;font-size:clamp(1.45rem,3vw,2.1rem);line-height:1.28}
+.news-card>a>p{margin:0 24px;color:var(--nd-muted);font-size:.94rem}
+.news-card>a>b{display:inline-flex;align-items:center;justify-content:center;min-height:40px;margin:auto 24px 24px;padding:8px 14px;border-radius:999px;background:#687d70;color:#fff;font-size:.78rem;font-weight:900}
+@media(max-width:560px){.news-card>a>.news-card-date{margin:18px 19px 0}.news-card>a>h3{margin-right:19px;margin-left:19px}.news-card>a>p{margin-right:19px;margin-left:19px}.news-card>a>b{margin-right:19px;margin-bottom:19px;margin-left:19px}}
