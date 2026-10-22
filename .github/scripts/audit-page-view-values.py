@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Read-only daily validation of every canonical article counter."""
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import json, re, urllib.parse, urllib.request
+import json, re, time, urllib.error, urllib.parse, urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -21,8 +21,18 @@ def slug(value):
     return re.sub(r"-+", "-", re.sub(r"[^a-z0-9_-]+", "-", value.lower())).strip("-")
 
 def read_json(request):
-    with urllib.request.urlopen(request, timeout=20) as response:
-        return json.load(response)
+    """Read a counter without turning one transient edge timeout into a failed audit."""
+    last_error = None
+    for attempt, pause in enumerate((1, 3, 7), start=1):
+        try:
+            with urllib.request.urlopen(request, timeout=25) as response:
+                return json.load(response)
+        except (OSError, urllib.error.HTTPError, urllib.error.URLError) as error:
+            last_error = error
+            if attempt == 3:
+                break
+            time.sleep(pause)
+    raise last_error
 
 def validate(item):
     name, current_key, legacy_key, mode = item
@@ -53,7 +63,7 @@ def main():
     items = [x for x in items if x[0] != "hearing-records/prison-watch/kaikai-final-chapter/"]
     items.append(("hearing-records/prison-watch/kaikai-final-chapter/", "kaikai-special-chapter-02-shared", "kaikai-special-chapter-02-shared", "add"))
     errors, results = [], []
-    with ThreadPoolExecutor(max_workers=12) as pool:
+    with ThreadPoolExecutor(max_workers=8) as pool:
         futures = {pool.submit(validate, item): item for item in items}
         for future in as_completed(futures):
             try: results.append(future.result())
