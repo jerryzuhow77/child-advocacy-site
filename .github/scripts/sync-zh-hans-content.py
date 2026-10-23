@@ -63,7 +63,7 @@ def repo_path(url: str) -> Path | None:
 
 def is_noindex(text: str) -> bool:
     """Redirect and hidden pages are not physical language editions."""
-    return bool(re.search(r"<meta\\b(?=[^>]*name=['\\"]robots['\\"])(?=[^>]*content=['\\"][^'\\"]*noindex)", text, re.I))
+    return bool(re.search(r"<meta\b(?=[^>]*name=['\"]robots['\"])(?=[^>]*content=['\"][^'\"]*noindex)", text, re.I))
 
 
 def normalize_page_path(path: Path) -> Path:
