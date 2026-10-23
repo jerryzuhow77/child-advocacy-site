@@ -31,7 +31,7 @@
 <p>本頁區分公開報導、法規與旁聽轉述。涉及被告罪名、證據能力、主觀犯意及刑責者，均應以法院依法調查與最終判決為準；本文不推定有罪。<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=C0000001" target="_blank" rel="noopener">法規來源：全國法規資料庫（刑法）↗</a>
 </p>
 </section>
-<section class="box hearing-video"><video controls playsinline preload="metadata" aria-label="毒駕殺警案二審旁聽相關影片"><source src="/child-advocacy-site/assets/video/liu-zongxin-appeal-hearing-20261022.mp4" type="video/mp4">您的瀏覽器不支援影片播放。</video><div class="hearing-video-copy"><h2>影片</h2><p>本影片由投稿者提供；內容僅供搭配旁聽整理閱讀，所涉事實、證據與主觀犯意均以法院依法調查及最終判決為準。</p></div></section>
+<section class="box hearing-video"><video controls playsinline preload="none" aria-label="毒駕殺警案二審旁聽相關影片" data-hearing-video></video><div class="hearing-video-copy"><h2>影片</h2><p data-hearing-status>正在載入完整影片⋯</p></div></section>
 <section class="box">
 <h2>法律說明與報導核對</h2>
 <p>
@@ -189,5 +189,5 @@
 <script data-cpa-four-language-toolbar-script src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"></script>
 <script data-cpa-legal-notice-script src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"></script>
 <script>(function(){var p='/child-advocacy-site/assets/art/liu-zongxin-appeal-court-hero-20261023.webp.b64';fetch(p).then(function(r){return r.text()}).then(function(b){var hero=document.querySelector('.hero');if(hero){hero.style.backgroundImage="linear-gradient(90deg,#102837ed,#17344368),url(data:image/webp;base64,"+b.trim()+")"}}).catch(function(){})})();</script>
-</body>
+<script>(function(){var v=document.querySelector('[data-hearing-video]'),s=document.querySelector('[data-hearing-status]'),p='/child-advocacy-site/assets/video/liu-zongxin-appeal-hearing-20261022.part';if(!v)return;Promise.all(Array.from({length:9},function(_,i){return fetch(p+String(i).padStart(2,'0')).then(function(r){if(!r.ok)throw Error(r.status);return r.arrayBuffer()})})).then(function(a){v.src=URL.createObjectURL(new Blob(a,{type:'video/mp4'}));v.load();if(s)s.textContent='已載入完整影片，可開始播放。'}).catch(function(){if(s)s.textContent='影片載入失敗，請重新整理後再試。'})})();</script></body>
 </html>
