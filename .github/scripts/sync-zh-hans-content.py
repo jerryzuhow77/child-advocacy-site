@@ -61,6 +61,11 @@ def repo_path(url: str) -> Path | None:
     return ROOT / relative
 
 
+def is_noindex(text: str) -> bool:
+    """Redirect and hidden pages are not physical language editions."""
+    return bool(re.search(r'<meta\\b(?=[^>]*name=["\\']robots["\\'])(?=[^>]*content=["\\'][^"\\']*noindex)', text, re.I))
+
+
 def normalize_page_path(path: Path) -> Path:
     if path.is_dir() or path.suffix == "":
         return path / "index.html"
@@ -200,6 +205,10 @@ def synchronize(check_only: bool) -> int:
             continue
         source = repo_path(hant_url)
         target = repo_path(hans_url)
+        # A stale manifest can temporarily retain a legacy redirect route.
+        # Do not treat noindex redirects as source material for a physical locale.
+        if source and source.exists() and is_noindex(source.read_text(encoding="utf-8")):
+            continue
         if source:
             source_to_hans[source.resolve()] = hans_url
         if source and target and source != target:
