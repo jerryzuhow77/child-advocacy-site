@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>找不到頁面</title>
+<style>body{margin:0;display:grid;min-height:100vh;place-items:center;font-family:system-ui,sans-serif;background:#faf7ef;color:#23423d}main{text-align:center;padding:2rem}a{color:#a65a3d}</style>
+</head>
+<body><main><h1>頁面不存在</h1><p>正在協助您前往正確頁面…</p><p><a href="/child-advocacy-site/">返回首頁</a></p></main>
+<script>
+(function(){
+  var path=location.pathname;
+  var bad="/child-advocacy-site/hearing-records/liu-zongxin-appeal-20261022/%C3%A2%C2%81%C2%A0/";
+  var decodedBad="/child-advocacy-site/hearing-records/liu-zongxin-appeal-20261022/â /";
+  if(path===bad||path===decodedBad||decodeURIComponent(path)===decodeURIComponent(bad)){
+    location.replace("/child-advocacy-site/hearing-records/liu-zongxin-appeal-20261022/");
+  }
+}());
+</script></body></html>
