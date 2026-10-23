@@ -196,11 +196,13 @@
 <script>(function(){fetch('/child-advocacy-site/assets/art/liu-zongxin-appeal-court-hero-20261023.webp.b64').then(r=>r.text()).then(b=>{const hero=document.querySelector('.hero');if(hero)hero.style.backgroundImage="linear-gradient(90deg,#102837ed,#17344368),url(data:image/webp;base64,"+b.trim()+")"}).catch(()=>{})})();</script>
 <script>(function(){var v=document.querySelector('[data-hearing-video]'),s=document.querySelector('[data-hearing-status]'),p='/child-advocacy-site/assets/video/liu-zongxin-appeal-hearing-20261022.part';if(!v)return;Promise.all(Array.from({length:9},function(_,i){return fetch(p+String(i).padStart(2,'0')).then(function(r){if(!r.ok)throw Error(r.status);return r.arrayBuffer()})})).then(function(a){v.src=URL.createObjectURL(new Blob(a,{type:'video/mp4'}));v.load();if(s)s.textContent='已加载完整影片，可以开始播放。'}).catch(function(){if(s)s.textContent='影片加载失败，请重新整理后再试。'})})();</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script>
 (function(){
  function enhance(){
   document.querySelectorAll('.box').forEach(function(box){box.classList.add('motion-card')});
   document.querySelectorAll('.transcript p').forEach(function(p){var t=p.textContent.trim();if(/^[「「]/.test(t)||t.indexOf('「他車上')>-1||t.indexOf('「回到那一天')>-1||t.indexOf('「他车上')>-1||t.indexOf('「回到那一天')>-1){p.classList.add('dialogue')}if(/核心|明知|危險|危险|停車|停车|救援|證據|证据|故意|過失|过失|不確定|不确定/.test(t)){p.classList.add('keyline')}});
+  if(window.ScrollTrigger)gsap.registerPlugin(ScrollTrigger);
   if(!window.gsap||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   gsap.from('.hero > div',{opacity:0,y:30,duration:.85,ease:'power3.out'});
   var cards=gsap.utils.toArray('.motion-card');
