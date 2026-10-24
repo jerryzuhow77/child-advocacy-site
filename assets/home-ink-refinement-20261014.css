@@ -321,3 +321,18 @@ html[lang="ja"] #news-flash .section-heading h2::before{content:"報"}html[lang=
   .join-zone>p,
   .join-zone>.actions{margin-right:46px}
 }
+
+
+/* Tablet keeps every card and GSAP hook, while removing accumulated vertical
+   breathing room at the one mid-width layout that exceeded its height budget. */
+@media (min-width:761px) and (max-width:800px){
+  .home-section{margin:22px 0}
+  .section-heading{margin-bottom:14px}
+  #news-flash .pinned-grid{gap:12px}
+  #news-flash .pinned-lead{grid-row:span 2}
+  #news-flash .pinned-lead .card-link>img{height:180px}
+  #news-flash .pinned-lead .card-copy{padding:18px}
+  #news-flash .pinned-lead h3{font-size:22px;line-height:1.4}
+  #news-flash .pinned-lead .card-summary{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+  #news-flash .pinned-lead .card-source{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+}
