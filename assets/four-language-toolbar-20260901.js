@@ -231,6 +231,15 @@
     renderEngagement(route,null);
     recordOrReadView(route,toolbar.querySelector(".cpa-four-language-views")).then(data=>{if(data){const count=document.querySelector(".cpa-article-engagement .is-view em");if(count)count.textContent=format(data.viewCount)}});
   }
-  async function init(){const homeRoute=neutralRoute()==="";if(homeRoute){render(null);addNavigation();}let manifest=null;try{const r=await boundedFetch(ROUTES_URL,{cache:"no-store"});if(r.ok)manifest=await r.json()}catch(_){}if(!homeRoute)render(manifest);addNavigation();let pending=false;new MutationObserver(()=>{if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;addNavigation()})}).observe(document.querySelector("main")||document.body,{childList:true,subtree:true})}
+  function repairOnlineSafetyVisual(){
+    if(!location.pathname.includes('/online-safety-help-route-20261024/'))return;
+    const cover=document.querySelector('.cover img');
+    if(!cover)return;
+    cover.style.height='auto';
+    cover.style.aspectRatio='16 / 9';
+    cover.style.objectFit='cover';
+    cover.src='/child-advocacy-site/assets/art/child-online-safety-help-route-20261024-visual.webp?v=20261024-visual-2';
+  }
+  async function init(){const homeRoute=neutralRoute()==="";if(homeRoute){render(null);addNavigation();}let manifest=null;try{const r=await boundedFetch(ROUTES_URL,{cache:"no-store"});if(r.ok)manifest=await r.json()}catch(_){}if(!homeRoute)render(manifest);repairOnlineSafetyVisual();addNavigation();let pending=false;new MutationObserver(()=>{if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;addNavigation()})}).observe(document.querySelector("main")||document.body,{childList:true,subtree:true})}
   document.readyState==="loading"?document.addEventListener("DOMContentLoaded",init,{once:true}):init();
 })();

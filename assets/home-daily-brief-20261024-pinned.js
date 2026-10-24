@@ -1,5 +1,14 @@
 (()=> {
   const ROOT='/child-advocacy-site/';
+  const style=document.createElement('style');
+  style.textContent=`
+    [data-home-brief="online-safety-20261024"]>img{background:#e9e2d4;object-fit:cover;object-position:58% center}
+    @media(max-width:760px){
+      .paired-daily-briefs[data-gsap-slider]>[data-home-brief="online-safety-20261024"]{display:grid!important;grid-template-columns:1fr!important}
+      [data-home-brief="online-safety-20261024"]>img{width:100%!important;height:auto!important;min-height:0!important;aspect-ratio:16/9;object-fit:cover;object-position:center}
+    }
+  `;
+  document.head.append(style);
   const briefs=[
     {
       key:'vehicle-safety-20261024',
@@ -19,7 +28,7 @@
         en:{href:ROOT+'news/online-safety-help-route-20261024/en/',small:'DAILY BRIEF · 24 OCT 2026',title:'When children face risk online, help should not be a maze',summary:'Online safety needs more than warnings: one clear route should connect reporting, takedown, evidence and support.',read:'Read the verified update →',alt:'Original ink-and-paper illustration of a child and carer following a clear route to help; not an incident scene, with no drop shadows'},
         ja:{href:ROOT+'news/online-safety-help-route-20261024/ja/',small:'今日の護童速報｜2026.10.24',title:'子どもがネットで危険に直面したとき、助けへの道を迷わせない',summary:'注意喚起だけでは不十分です。通報、削除、証拠保全、支援を一つの道につなげます。',read:'確認済みの更新を読む →',alt:'子どもと養育者が明確な支援の道へ向かう、オリジナルの水墨と紙の作品。事件現場ではなく、主視覚に影はありません'}
       },
-      image:ROOT+'assets/art/child-online-safety-help-route-20261024-hero.png?v=20261024'
+      image:ROOT+'assets/art/child-online-safety-help-route-20261024-visual.webp?v=20261024-visual-2'
     }
   ];
   const language=()=>document.documentElement.lang==='ja'?'ja':document.documentElement.lang==='en'?'en':document.documentElement.lang==='zh-Hans'?'zh-Hans':'zh-Hant';
