@@ -2,14 +2,24 @@
   const ROOT='/child-advocacy-site/';
   const style=document.createElement('style');
   style.textContent=`
-    [data-home-brief="online-safety-20261024"]>img{background:#e9e2d4;object-fit:cover;object-position:58% center}
+    [data-home-brief="online-safety-20261024"]>img{background:#e9e2d4;object-fit:cover;object-position:58% center}\n    [data-home-brief="weekly-roundup-20261025"]>img{background:#e9e2d4;object-fit:cover;object-position:center}
     @media(max-width:760px){
-      .paired-daily-briefs[data-gsap-slider]>[data-home-brief="online-safety-20261024"]{display:grid!important;grid-template-columns:1fr!important}
-      [data-home-brief="online-safety-20261024"]>img{width:100%!important;height:auto!important;min-height:0!important;aspect-ratio:16/9;object-fit:cover;object-position:center}
+      .paired-daily-briefs[data-gsap-slider]>[data-home-brief="online-safety-20261024"],.paired-daily-briefs[data-gsap-slider]>[data-home-brief="weekly-roundup-20261025"]{display:grid!important;grid-template-columns:1fr!important}
+      [data-home-brief="online-safety-20261024"]>img,[data-home-brief="weekly-roundup-20261025"]>img{width:100%!important;height:auto!important;min-height:0!important;aspect-ratio:16/9;object-fit:cover;object-position:center}
     }
   `;
   document.head.append(style);
-  const briefs=[
+  const briefs=[\n    {
+      key:'weekly-roundup-20261025',
+      copy:{
+        'zh-Hant':{href:ROOT+'news/weekly-protection-roundup-20261025/',small:'本週護童匯總｜2026.10.19–24',title:'讓保護不在風險間斷線',summary:'從影像保全、安置與托育、網路求助到日常移動：回看本週需要被接住的保護環節。',read:'閱讀本週查證整理 →',alt:'原創水墨紙藝週報意象：六枚相連的守護紙籤與清楚的保護路徑；非事件現場，主視覺無陰影'},
+        'zh-Hans':{href:ROOT+'news/weekly-protection-roundup-20261025/zh-Hans/',small:'本周护童汇总｜2026.10.19–24',title:'让保护不在风险间断线',summary:'从影像保全、安置与托育、网络求助到日常移动：回看本周需要被接住的保护环节。',read:'阅读本周核查整理 →',alt:'原创水墨纸艺周报意象：六枚相连的守护纸签与清楚的保护路径；非事件现场，主视觉无阴影'},
+        en:{href:ROOT+'news/weekly-protection-roundup-20261025/en/',small:'WEEKLY CHILD PROTECTION ROUNDUP · 19–24 OCT 2026',title:'Keeping protection from breaking at the point of risk',summary:'Evidence, placement and care, online help, and everyday travel: a verified look back at this week’s protection links.',read:'Read the weekly verified roundup →',alt:'Original ink-and-paper weekly roundup artwork with six connected protection markers and a clear path; not an incident scene, with no drop shadows'},
+        ja:{href:ROOT+'news/weekly-protection-roundup-20261025/ja/',small:'今週の護童まとめ｜2026.10.19–24',title:'危険の場面で、保護を途切れさせない',summary:'映像の保全、措置と保育、ネット上の相談、日常の移動。今週の保護のつながりを確かめます。',read:'今週の確認済みまとめを読む →',alt:'六つの守りのしるしと明確な道を描くオリジナル水墨紙作品。事件現場ではなく、主視覚に影はありません'}
+      },
+      image:ROOT+'assets/art/weekly-protection-roundup-20261025.svg?v=20261025-1'
+    },
+
     {
       key:'vehicle-safety-20261024',
       copy:{
