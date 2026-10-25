@@ -9,7 +9,8 @@
     }
   `;
   document.head.append(style);
-  const briefs=[\n    {
+  const briefs=[
+    {
       key:'weekly-roundup-20261025',
       copy:{
         'zh-Hant':{href:ROOT+'news/weekly-protection-roundup-20261025/',small:'本週護童匯總｜2026.10.19–24',title:'讓保護不在風險間斷線',summary:'從影像保全、安置與托育、網路求助到日常移動：回看本週需要被接住的保護環節。',read:'閱讀本週查證整理 →',alt:'原創水墨紙藝週報意象：六枚相連的守護紙籤與清楚的保護路徑；非事件現場，主視覺無陰影'},
