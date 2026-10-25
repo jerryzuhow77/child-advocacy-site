@@ -13,12 +13,12 @@
     {
       key:'weekly-roundup-20261025',
       copy:{
-        'zh-Hant':{href:ROOT+'news/weekly-protection-roundup-20261025/',small:'本週護童匯總｜2026.10.19–24',title:'讓保護不在風險間斷線',summary:'從影像保全、安置與托育、網路求助到日常移動：回看本週需要被接住的保護環節。',read:'閱讀本週查證整理 →',alt:'原創水墨紙藝週報意象：六枚相連的守護紙籤與清楚的保護路徑；非事件現場，主視覺無陰影'},
-        'zh-Hans':{href:ROOT+'news/weekly-protection-roundup-20261025/zh-Hans/',small:'本周护童汇总｜2026.10.19–24',title:'让保护不在风险间断线',summary:'从影像保全、安置与托育、网络求助到日常移动：回看本周需要被接住的保护环节。',read:'阅读本周核查整理 →',alt:'原创水墨纸艺周报意象：六枚相连的守护纸签与清楚的保护路径；非事件现场，主视觉无阴影'},
-        en:{href:ROOT+'news/weekly-protection-roundup-20261025/en/',small:'WEEKLY CHILD PROTECTION ROUNDUP · 19–24 OCT 2026',title:'Keeping protection from breaking at the point of risk',summary:'Evidence, placement and care, online help, and everyday travel: a verified look back at this week’s protection links.',read:'Read the weekly verified roundup →',alt:'Original ink-and-paper weekly roundup artwork with six connected protection markers and a clear path; not an incident scene, with no drop shadows'},
-        ja:{href:ROOT+'news/weekly-protection-roundup-20261025/ja/',small:'今週の護童まとめ｜2026.10.19–24',title:'危険の場面で、保護を途切れさせない',summary:'映像の保全、措置と保育、ネット上の相談、日常の移動。今週の保護のつながりを確かめます。',read:'今週の確認済みまとめを読む →',alt:'六つの守りのしるしと明確な道を描くオリジナル水墨紙作品。事件現場ではなく、主視覚に影はありません'}
+        'zh-Hant':{href:ROOT+'news/weekly-protection-roundup-20261025/',small:'本週護童匯總｜2026.10.19–24',title:'讓保護不在風險間斷線',summary:'從影像保全、安置與托育、網路求助到日常移動：回看本週需要被接住的保護環節。',read:'閱讀本週查證整理 →',alt:'美式學術風格週報主視覺：圖書館閱覽桌、檔案、保護路徑與校園光線；非事件現場，主視覺無陰影'},
+        'zh-Hans':{href:ROOT+'news/weekly-protection-roundup-20261025/zh-Hans/',small:'本周护童汇总｜2026.10.19–24',title:'让保护不在风险间断线',summary:'从影像保全、安置与托育、网络求助到日常移动：回看本周需要被接住的保护环节。',read:'阅读本周核查整理 →',alt:'美式学术风格周报主视觉：图书馆阅览桌、档案、保护路径与校园光线；非事件现场，主视觉无阴影'},
+        en:{href:ROOT+'news/weekly-protection-roundup-20261025/en/',small:'WEEKLY CHILD PROTECTION ROUNDUP · 19–24 OCT 2026',title:'Keeping protection from breaking at the point of risk',summary:'Evidence, placement and care, online help, and everyday travel: a verified look back at this week’s protection links.',read:'Read the weekly verified roundup →',alt:'American academic editorial illustration: a library study table, archival papers and a protection pathway; not an incident scene, with no drop shadows'},
+        ja:{href:ROOT+'news/weekly-protection-roundup-20261025/ja/',small:'今週の護童まとめ｜2026.10.19–24',title:'危険の場面で、保護を途切れさせない',summary:'映像の保全、措置と保育、ネット上の相談、日常の移動。今週の保護のつながりを確かめます。',read:'今週の確認済みまとめを読む →',alt:'アメリカン・アカデミック調の週報主視覚：図書館の閲覧机、資料、保護の道筋と校園の光。事件現場ではなく、主視覚に影はありません'}
       },
-      image:ROOT+'assets/art/weekly-protection-roundup-20261025.svg?v=20261025-1'
+      image:ROOT+'assets/art/weekly-protection-roundup-20261025-academic.jpg?v=20261025-academic-1'
     },
 
     {
