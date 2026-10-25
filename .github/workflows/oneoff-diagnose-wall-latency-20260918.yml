@@ -1,4 +1,4 @@
-name: Diagnose guardian wall latency # dispatch-20261025
+name: Recover guardian wall service
 
 on:
   push:
@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 jobs:
-  diagnose:
+  recover:
     runs-on: ubuntu-latest
     timeout-minutes: 8
     env:
@@ -38,22 +38,13 @@ jobs:
           ssh-keyscan -p "$port" "$host" > ~/.ssh/known_hosts
           printf 'HOST=%s\nUSER=%s\nPORT=%s\n' "$host" "$user" "$port" >> "$GITHUB_ENV"
 
-      - name: Measure local API and locate frontend timeout source
+      - name: Restart guardian wall service and verify public APIs
         shell: bash
         run: |
           set -Eeuo pipefail
-          ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'bash -s' <<'REMOTE'
-          set -Eeuo pipefail
-          systemctl is-active global-protection.service
-          systemctl show global-protection.service -p MainPID -p ActiveEnterTimestamp --no-pager
-          for path in /api/public/messages?limit=5 /api/public/submission-stats /api/public/view-count; do
-            curl --silent --show-error --output /dev/null --max-time 40 --write-out "$path %{http_code} %{time_total}s\n" "http://127.0.0.1:8787$path"
+          ssh -i ~/.ssh/hk_key -p "$PORT" "$USER@$HOST" 'sudo systemctl restart global-protection.service && sudo systemctl is-active global-protection.service'
+          for path in /api/public/messages?limit=1 /api/public/submission-stats /api/public/view-count; do
+            code="$(curl --silent --show-error --max-time 20 --output /dev/null --write-out '%{http_code}' "https://cn.globalprotectionwall.com$path")"
+            test "$code" = 200
+            echo "$path $code"
           done
-          find /opt/global-protection -type f \( -name '*.js' -o -name '*.mjs' -o -name '*.ts' -o -name '*.tsx' \) -print0 2>/dev/null |
-            xargs -0 grep -l 'Messages returned' 2>/dev/null || true
-          find /opt/global-protection -type f \( -name '*.js' -o -name '*.mjs' -o -name '*.ts' -o -name '*.tsx' \) -print0 2>/dev/null |
-            xargs -0 grep -l 'submission-stats' 2>/dev/null | head -40 || true
-          find /opt/global-protection -type f \( -name '*.js' -o -name '*.mjs' -o -name '*.ts' -o -name '*.tsx' \) -print0 2>/dev/null |
-            xargs -0 grep -l 'official_article_views' 2>/dev/null || true
-          grep -n -C 3 -E '7e3|7000|7_000|official_article_views' /opt/global-protection/components/guardian-wall.tsx /opt/global-protection/app/api/public/view-count/route.ts 2>/dev/null || true
-          REMOTE
