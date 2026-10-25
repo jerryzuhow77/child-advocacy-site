@@ -31,9 +31,13 @@
     const useTaiwan = location.hostname !== "cn.globalprotectionwall.com" || isTaiwanAudience();
     const language = languageKey();
     if (!useTaiwan) {
-      const target = new URL(HONG_KONG_WALL);
-      if (section !== "home") target.searchParams.set("section", section);
-      if (language !== "zh-Hans") target.searchParams.set("lang", language);
+      // Keep Hong Kong visitors on the shared primary application. Sending
+      // region=hk through the Hong Kong root can create a redirect loop.
+      const target = new URL(section === "member-submit" ? "submit/" : "", TAIWAN_WALL);
+      target.searchParams.set("region", "tw");
+      if (language !== "zh-Hant") target.searchParams.set("lang", language);
+      if (section === "bulletins") target.hash = "bulletins";
+      if (section === "guest-message") target.hash = "guest-message";
       return target.href;
     }
     const target = new URL(section === "member-submit" ? "submit/" : "", TAIWAN_WALL);
@@ -47,7 +51,7 @@
   function updateLink(link, section) {
     const target = wallUrl(section);
     if (link.href !== target) link.href = target;
-    link.dataset.guardianWallRegion = link.hostname === "cn.globalprotectionwall.com" ? "hk" : "tw";
+    link.dataset.guardianWallRegion = location.hostname === "cn.globalprotectionwall.com" ? "hk" : "tw";
   }
 
   function updateGuardianLinks() {
