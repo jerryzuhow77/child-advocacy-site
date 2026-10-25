@@ -1,0 +1,45 @@
+name: Restore HK local wall API safely
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/oneoff-restore-hk-local-wall-api-safely.yml']
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      K: ${{ secrets.TENCENT_SSH_PRIVATE_KEY }}
+    steps:
+      - run: |
+          set -Eeuo pipefail; test -n "$K"; umask 077; mkdir -p ~/.ssh
+          printf '%s\n' "$K" > ~/.ssh/key; chmod 600 ~/.ssh/key
+          ssh-keyscan 150.109.69.104 > ~/.ssh/known_hosts
+      - name: Restore local API proxy with rollback
+        run: |
+          set -Eeuo pipefail
+          ssh -i ~/.ssh/key ubuntu@150.109.69.104 'sudo bash -s' <<'REMOTE'
+          set -Eeuo pipefail
+          cfg=$(grep -rl 'cn.globalprotectionwall.com' /etc/nginx/sites-enabled /etc/nginx/conf.d 2>/dev/null|head -1); test -n "$cfg"
+          bak=/var/backups/child-advocacy-nginx/$(basename "$cfg").local-wall-$(date +%s%N); mkdir -p /var/backups/child-advocacy-nginx; cp -p "$cfg" "$bak"
+          rollback(){ cp -p "$bak" "$cfg"; nginx -t && systemctl reload nginx || true; }; trap rollback ERR
+          systemctl restart global-protection-hk.service
+          scope=; for i in 1 2 3 4 5; do scope=$(curl -sS --max-time 10 http://127.0.0.1:8787/api/public/submission-stats|python3 -c 'import json,sys;print(json.load(sys.stdin).get("scope",""))' || true); [ "$scope" = hong-kong-data-site ] && break; sleep 3; done; [ "$scope" = hong-kong-data-site ]
+          python3 - "$cfg" <<'PY'
+          import re,sys
+          p=sys.argv[1];s=open(p).read();m=re.search(r'(?m)^\s*location\s+\^~\s+/api/\s*\{',s);assert m
+          i=s.find('{',m.start());d=0
+          for j in range(i,len(s)):
+           d+= (s[j]=='{')-(s[j]=='}')
+           if not d: break
+          x='''location ^~ /api/ { proxy_pass http://127.0.0.1:8787; proxy_http_version 1.1; proxy_set_header Host $host; proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header X-Forwarded-Proto $scheme; proxy_no_cache 1; proxy_cache_bypass 1; }'''
+          open(p,'w').write(s[:m.start()]+x+s[j+1:])
+          PY
+          nginx -t; systemctl reload nginx; trap - ERR
+          REMOTE
+      - name: Verify public API
+        run: |
+          set -Eeuo pipefail; b=https://cn.globalprotectionwall.com/api
+          curl -fsS --max-time 25 "$b/health"|python3 -c 'import json,sys;assert json.load(sys.stdin)["status"]=="ok"'
+          curl -fsS --max-time 25 "$b/public/submission-stats"|python3 -c 'import json,sys;assert json.load(sys.stdin)["scope"]=="hong-kong-data-site"'
