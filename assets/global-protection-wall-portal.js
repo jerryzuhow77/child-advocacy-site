@@ -53,11 +53,14 @@
   let region=regions.includes(requested.get('region'))?requested.get('region'):(mirrorHost?'hk':'tw');
 
   const wallUrl=()=>{
-    // Keep the mainland base declared for mirror QA and restore it when its root app is healthy.
+    // Taiwan and Hong Kong share the healthy primary application. The primary
+    // app currently redirects region=hk through the Hong Kong root and can
+    // create a redirect loop, so use its stable Taiwan routing context here.
+    // Visitors can still select Hong Kong in the public country/region field.
     const regionalBase=wallBase;
     const path=section==='member-submit'?'submit/':section==='guidelines'?'guidelines/':'';
     const target=new URL(path,regionalBase);
-    target.searchParams.set('region',region);
+    target.searchParams.set('region','tw');
     if(locale!=='zh-Hant')target.searchParams.set('lang',locale);
     if(section==='bulletins')target.hash='bulletins';
     if(section==='guest-message')target.hash='guest-message';
