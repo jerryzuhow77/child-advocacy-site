@@ -116,33 +116,37 @@ html.cpa-four-language-toolbar-active .site-bar {
 .archive-hero {
   position: relative;
   overflow: hidden;
-  min-height: 400px;
-  padding: clamp(5rem, 9vw, 8rem) clamp(1.2rem, 6vw, 7rem) clamp(4rem, 7vw, 6rem);
+  min-height: clamp(190px, 18vw, 260px);
+  padding: clamp(2.4rem, 4.5vw, 4rem) clamp(1.2rem, 6vw, 7rem) clamp(2rem, 3.5vw, 3rem);
+  background:
+    linear-gradient(90deg, rgba(247, 242, 233, .94), rgba(247, 242, 233, .7)),
+    linear-gradient(135deg, rgba(183, 143, 144, .18), rgba(131, 150, 163, .13));
 }
 
+/* Flat watercolor marks: deliberate paper-and-ink texture, never a shadowed hero. */
 .archive-hero::before,
 .archive-hero::after {
   position: absolute;
   content: "";
   border-radius: 46% 54% 57% 43%;
-  filter: drop-shadow(0 18px 18px rgba(75, 58, 56, .09));
+  opacity: .72;
   transform: rotate(-8deg);
 }
 
 .archive-hero::before {
-  top: -10rem;
-  right: -7rem;
-  width: 38rem;
-  height: 34rem;
-  background: rgba(181, 143, 144, .28);
+  top: -13rem;
+  right: -5rem;
+  width: 29rem;
+  height: 24rem;
+  background: rgba(181, 143, 144, .22);
 }
 
 .archive-hero::after {
-  bottom: -15rem;
-  left: -9rem;
-  width: 34rem;
-  height: 30rem;
-  background: rgba(131, 150, 163, .25);
+  bottom: -17rem;
+  left: -8rem;
+  width: 27rem;
+  height: 22rem;
+  background: rgba(131, 150, 163, .18);
   transform: rotate(12deg);
 }
 
@@ -162,13 +166,13 @@ html.cpa-four-language-toolbar-active .site-bar {
 }
 
 h1 {
-  max-width: 12ch;
+  max-width: 16ch;
   margin: 0;
   font-family: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
-  font-size: clamp(2.65rem, 7vw, 5.6rem);
+  font-size: clamp(2.35rem, 5vw, 4.4rem);
   font-weight: 750;
   letter-spacing: -.045em;
-  line-height: 1.02;
+  line-height: 1.08;
 }
 
 .hero-copy {
@@ -181,17 +185,17 @@ h1 {
 .hero-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: .65rem;
-  margin-top: 2rem;
+  gap: .5rem;
+  margin-top: 1.25rem;
 }
 
 .hero-meta span {
-  padding: .55rem .9rem;
+  padding: .4rem .72rem;
   border: 1px solid rgba(103, 83, 80, .16);
   border-radius: 999px;
   background: rgba(255, 253, 249, .64);
   color: #675c5e;
-  font-size: .84rem;
+  font-size: .78rem;
   font-weight: 760;
 }
 
@@ -355,7 +359,25 @@ h1 {
   .site-bar { min-height: 62px; padding-inline: .9rem; }
   .brand span { font-size: .78rem; }
   .site-bar nav a:first-child { display: none; }
-  .archive-hero { min-height: 350px; padding-top: 4rem; }
+  .archive-hero {
+    min-height: 0;
+    padding: 2rem 1.1rem 1.35rem;
+  }
+  .archive-hero::before {
+    top: -11rem;
+    right: -11rem;
+    width: 23rem;
+    height: 19rem;
+  }
+  .archive-hero::after {
+    bottom: -15rem;
+    left: -12rem;
+    width: 22rem;
+    height: 18rem;
+  }
+  .hero-copy { margin-top: .8rem; }
+  .hero-meta { gap: .38rem; margin-top: .9rem; }
+  .hero-meta span { padding: .3rem .55rem; font-size: .72rem; }
   .archive-main { width: min(100% - 1.1rem, 1240px); }
   .section-head { align-items: start; flex-direction: column; gap: .2rem; }
   .report-card,
