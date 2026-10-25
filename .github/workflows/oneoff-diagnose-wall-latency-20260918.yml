@@ -1,4 +1,4 @@
-name: Diagnose guardian wall latency
+name: Diagnose guardian wall latency # dispatch-20261025
 
 on:
   push:
