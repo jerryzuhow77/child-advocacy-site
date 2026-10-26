@@ -4,20 +4,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>
-      子どもの傷害を見かけた後：通報で保護を終わらせない｜護童行動聯盟
+      通報から保護の引き継ぎへ：子どもを再び取り残さないために｜護童行動聯盟
     </title>
     <meta
       name="description"
-      content="台北で公表された疑いのある不適切な扱いの報道は、通報後に安全評価、ケアの手配、継続的なフォローをつなぐ必要を示しています。"
+      content="児童保護特集｜台北の報道を起点に、通報後の安全評価、ケアの手配、継続支援がどう一つの保護につながるべきかを考えます。"
     />
     <meta property="og:type" content="article" />
     <meta
       property="og:title"
-      content="子どもの傷害を見かけた後：通報で保護を終わらせない"
+      content="通報から保護の引き継ぎへ：子どもを再び取り残さないために"
     />
     <meta
       property="og:description"
-      content="不適切な扱いの疑いが見えたとき、保護の仕組みが受け止めなければなりません。"
+      content="児童保護特集：一つの通報を、継続的で説明可能な保護へつなぐために。"
     />
     <meta
       property="og:image"
@@ -105,6 +105,51 @@
         margin: 34px auto 70px;
         padding: 0 22px;
         counter-reset: chapter;
+      }
+      .feature-frontmatter {
+        margin: 10px 0 38px;
+        padding: 28px;
+        border-top: 3px solid var(--clay);
+        border-bottom: 1px solid var(--line);
+        background: linear-gradient(110deg, #fffaf1, #edf2ed);
+      }
+      .feature-kicker {
+        margin: 0 0 10px;
+        color: var(--clay);
+        font:
+          800 0.73rem/1.35 system-ui,
+          sans-serif;
+        letter-spacing: 0.16em;
+      }
+      .feature-standfirst {
+        max-width: 700px;
+        margin: 0;
+        color: #314f4d;
+        font:
+          700 clamp(1.22rem, 3vw, 1.68rem)/1.72 Georgia,
+          "Noto Serif JP",
+          serif;
+      }
+      .feature-guide {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin: 26px 0 0;
+      }
+      .feature-guide div {
+        padding-top: 12px;
+        border-top: 1px solid #b7aa95;
+      }
+      .feature-guide dt {
+        margin-bottom: 5px;
+        color: var(--clay);
+        font-weight: 800;
+      }
+      .feature-guide dd {
+        margin: 0;
+        color: #52645f;
+        font-size: 0.92rem;
+        line-height: 1.65;
       }
       .story > p {
         text-align: justify;
@@ -469,8 +514,12 @@
         .paths,
         .evidence-grid,
         .reading-lens,
-        .timeline {
+        .timeline,
+        .feature-guide {
           grid-template-columns: 1fr;
+        }
+        .feature-frontmatter {
+          padding: 22px 19px;
         }
         .key-statement {
           padding: 19px;
@@ -500,18 +549,38 @@
         }
       }
     </style>
-    <link data-cpa-four-language-toolbar-style rel="stylesheet" href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5">
+    <link
+      data-cpa-four-language-toolbar-style
+      rel="stylesheet"
+      href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5"
+    />
     <script>
       window.__cpaFourLanguageToolbar = true;
     </script>
     <script data-cpa-four-language-toolbar-flag>
       window.__cpaFourLanguageToolbar = true;
     </script>
-    <link rel="alternate" hreflang="en" href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/en/">
-<link rel="alternate" hreflang="ja" href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/ja/">
-<link rel="alternate" hreflang="zh-Hans" href="https://cn.globalprotectionwall.com/child-advocacy-site/news/taipei-child-protection-report-20261026/zh-Hans/">
-<link rel="alternate" hreflang="zh-Hant" href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/">
-</head>
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/en/"
+    />
+    <link
+      rel="alternate"
+      hreflang="ja"
+      href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/ja/"
+    />
+    <link
+      rel="alternate"
+      hreflang="zh-Hans"
+      href="https://cn.globalprotectionwall.com/child-advocacy-site/news/taipei-child-protection-report-20261026/zh-Hans/"
+    />
+    <link
+      rel="alternate"
+      hreflang="zh-Hant"
+      href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/"
+    />
+  </head>
   <body>
     <div class="reading-progress" aria-hidden="true"><span></span></div>
     <nav class="bar">
@@ -519,13 +588,13 @@
       ><a href="/child-advocacy-site/news/ja/">ニュース</a>
     </nav>
     <header class="hero">
-      <div class="eyebrow">DAILY CHILD PROTECTION BRIEF · SAFETY RESPONSE</div>
-      <h1>子どもの傷害を見かけた後：通報で保護を終わらせない</h1>
+      <div class="eyebrow">CHILD PROTECTION FEATURE · SPECIAL REPORT</div>
+      <h1>通報から保護の引き継ぎへ：子どもを再び取り残さないために</h1>
       <p>
-        不適切な扱いの疑いが見えたとき、必要なのは通報だけではありません。安全評価、一時的なケア、継続した支援を一つの道としてつなぐことが必要です。
+        一つの通報は危険の可能性を可視化します。その後、安全評価、ケアの手配、継続支援を一つの道につなげられるかが、子どもを再び見えなくしないための分かれ目になります。
       </p>
       <div class="date">
-        掲載 2026.10.26｜報道公開 2026.10.22｜資料：聯合報・衛生福利部
+        特集掲載 2026.10.26｜報道公開 2026.10.22｜裁判所・報道資料を横断して読む
       </div>
     </header>
     <figure class="cover">
@@ -540,19 +609,43 @@
       </figcaption>
     </figure>
     <main class="story">
+      <section class="feature-frontmatter" aria-label="特集の読み方">
+        <p class="feature-kicker">FEATURE ESSAY · 児童保護ネットワーク</p>
+        <p class="feature-standfirst">
+          子どもが見えた瞬間を、手続上の「通報完了」だけで終わらせてはなりません。本特集は公開報道、裁判所資料、市民の議論を手がかりに、誰が保護を引き継ぐのか、判断をどう追跡可能にするのか、警告信号を別々の場所で沈ませない仕組みとは何かをたどります。
+        </p>
+        <dl class="feature-guide">
+          <div>
+            <dt>事案から始める</dt>
+            <dd>確認できた事実と、なお対応が続く情報を分けます。</dd>
+          </div>
+          <div>
+            <dt>争点を深く読む</dt>
+            <dd>
+              個人の義務、専門的判断、機関横断の責任を一つの枠で捉えます。
+            </dd>
+          </div>
+          <div>
+            <dt>行動へ戻す</dt>
+            <dd>
+              実行可能な安全策と通報窓口を示し、怒りだけで終わらせません。
+            </dd>
+          </div>
+        </dl>
+      </section>
       <div class="facts">
         <div class="fact"><strong>10/20</strong>警察が通報を受理</div>
         <div class="fact"><strong>10/22</strong>報道が公開</div>
         <div class="fact"><strong>113</strong>保護ホットライン</div>
       </div>
-      <h2>確認できた事実</h2>
+      <h2>序章｜子どもが見えた後に</h2>
       <p>
         聯合報は10月22日、台北市中山区の運動施設で、子どもへの不適切な扱いが疑われる事案が報じられたと伝えました。警察は職権で児童・少年保護の通報を完了し、家族が当面のケアを行い、社会局にフォローアップを移管したとしています。公表情報は対応が進行中であることを示すものです。本ページは、出典を超えて事実認定や責任の帰属を判断するものではありません。
       </p>
       <div class="callout">
         「通報済み」は保護の終点ではありません。リスク評価と支援を直ちに始める合図です。子どもの安全、ケアの安定、支援の継続が確保されることが、仕組みに求められます。
       </div>
-      <h2>通報後に保護が受け止める三つのこと</h2>
+      <h2>第一幕｜通報後、誰が安全を引き受けるのか</h2>
       <div class="paths">
         <div class="path">
           <b>01｜まず安全を確保</b
@@ -567,7 +660,7 @@
           >一度の通報を一回限りの記録にしないこと。リスクの変化、ケアの負担、子どもの意見を見落としません。
         </div>
       </div>
-      <h2>制度の比較例：陳尚潔氏の一審判決から</h2>
+      <h2>第二幕｜一審判決から責任の境界を読む</h2>
       <p>
         剴剴事件では、台北地方法院114年度訴字第51号の一審判決が、陳尚潔氏について<span
           class="hl hl-gold"
@@ -601,7 +694,7 @@
         保護の引き継ぎとは、<span class="hl hl-gold">分散した警告信号</span
         >を行動可能なリスク判断につなげることです。各機関が自分の担当部分だけを見ることではありません。
       </div>
-      <h2>報道から見える三つの重要争点</h2>
+      <h2>第三幕｜警告信号はなぜ手続の中で消えるのか</h2>
       <ul class="detail-list">
         <li>
           <strong>訪問で累積する危険を把握できたか：</strong
@@ -619,7 +712,7 @@
       <div class="callout">
         この判決から考えるべきなのは、すべての責任を一つの職名に負わせることではありません。写真、訪問、健康変化、養育者の説明に散在する警告を誰が統合するのか、誰が再確認を始められるのか、誰が子どもを実際に確認したと保証するのか、という点です。
       </div>
-      <h2>3回の訪問から控訴審へ：四つの重要時点</h2>
+      <h2>時間の証言｜3回の訪問から控訴審へ</h2>
       <div class="timeline">
         <div class="timeline-item">
           <span class="timeline-date">2023.09.25／10.23／11.20</span>
@@ -638,7 +731,7 @@
           高等法院は午後2時30分から準備手続を続行すると公告しました。事件は係属中であり、最終的な法的責任は確定判決に従います。
         </div>
       </div>
-      <h2>報道をさらに深く読む：見落としてはいけない四つの問い</h2>
+      <h2>読み解く現場｜飛ばしてはいけない四つの問い</h2>
       <div class="reading-lens">
         <article class="lens-card">
           <span class="lens-kicker">01｜警告信号</span>
@@ -678,7 +771,7 @@
           </p>
         </article>
       </div>
-      <h2>一つの事件から制度へ：最低限必要な五つの安全策</h2>
+      <h2>制度からの答え｜最低限必要な五つの安全策</h2>
       <ul class="detail-list">
         <li>
           <strong>一回ではなく傾向を見る：</strong
@@ -705,7 +798,7 @@
         <b>確認のための四つの問い：</b
         >その記述は裁判所、検察・弁護側、報道、SNS投稿のどれに由来するのか。別の資料で裏付けられているか。事件は上訴中か。その情報は、そこから導く結論を本当に支えているか。
       </div>
-      <h2>Threadsの公開コメント：市民が示した疑問</h2>
+      <h2>市民の反響｜Threadsに現れた十の問い</h2>
       <p class="voices-intro">
         判決後の議論は一方向ではありません。量刑を問う声、責任を求める声、個人責任だけでは制度の断絶が隠れると懸念する声があります。以下の十の声を、量刑、家族との連絡、個人と制度の責任、判決の影響という流れで配置しました。これは市民の受け止めを示すものであり、<span
           class="hl hl-coral"
@@ -838,11 +931,11 @@
       <div class="status">
         陳尚潔氏の事件は現在も控訴審の手続中です。最終的な事実と法的責任は、確定判決に従います。本ページは、ここで報じた台北の事案の責任や処分を推論するものではありません。
       </div>
-      <h2>疑いのある状況を見たとき</h2>
+      <h2>読むことを行動へ｜疑いのある状況を見たとき</h2>
       <div class="status">
         児童・少年がネグレクト、虐待、その他の不適切な扱いを受けている可能性があり、緊急の危険がある場合は110へ。台湾の113保護ホットラインや所在地の家庭暴力・性侵害防治センターにも通報できます。二次被害を避けるため、子どもを特定できる画像や情報をネットに公開しないでください。
       </div>
-      <h2>出典と確認</h2>
+      <h2>取材と確認</h2>
       <div class="sources">
         <a href="https://udn.com/news/story/7320/9831096"
           >聯合報：台北・新生公園のプール施設で児童虐待の疑い、警察が児童保護を通報（2026-10-22）</a
@@ -867,8 +960,14 @@
         ><a href="../en/">English</a><a href="./">日本語</a>
       </nav>
     </main>
-    <script data-cpa-legal-notice-script src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"></script>
-    <script data-cpa-four-language-toolbar-script src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"></script>
+    <script
+      data-cpa-legal-notice-script
+      src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"
+    ></script>
+    <script
+      data-cpa-four-language-toolbar-script
+      src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"
+    ></script>
     <script src="/child-advocacy-site/assets/vendor/gsap-3.13.0.min.js"></script>
     <script src="/child-advocacy-site/assets/vendor/ScrollTrigger-3.13.0.min.js"></script>
     <script>
