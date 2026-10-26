@@ -148,6 +148,54 @@
         background: #fffaf1;
         border: 1px solid var(--line);
       }
+      .evidence-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 13px;
+        margin: 24px 0;
+      }
+      .evidence-card,
+      .social-quote {
+        padding: 20px;
+        background: #fffaf1;
+        border: 1px solid var(--line);
+      }
+      .evidence-card b,
+      .quote-meta {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--clay);
+        font-weight: 800;
+      }
+      .detail-list {
+        padding-left: 1.25em;
+      }
+      .detail-list li {
+        margin: 0.8em 0;
+      }
+      .social-voices {
+        display: grid;
+        gap: 13px;
+        margin: 24px 0;
+      }
+      .social-quote blockquote {
+        margin: 0 0 0.75em;
+        color: var(--ink);
+        font:
+          750 1.18rem/1.65 Georgia,
+          "Noto Serif TC",
+          serif;
+      }
+      .social-quote p {
+        margin: 0.45em 0;
+      }
+      .caution {
+        margin: 22px 0;
+        padding: 15px 18px;
+        border: 1px solid var(--clay);
+        color: #6c4638;
+        background: #f4e8dd;
+      }
       .sources a {
         display: block;
         margin: 0.65em 0;
@@ -173,7 +221,8 @@
           padding-top: 32px;
         }
         .facts,
-        .paths {
+        .paths,
+        .evidence-grid {
           grid-template-columns: 1fr;
         }
         .cover {
@@ -187,18 +236,38 @@
         }
       }
     </style>
-    <link data-cpa-four-language-toolbar-style rel="stylesheet" href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5">
+    <link
+      data-cpa-four-language-toolbar-style
+      rel="stylesheet"
+      href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5"
+    />
     <script>
       window.__cpaFourLanguageToolbar = true;
     </script>
     <script data-cpa-four-language-toolbar-flag>
       window.__cpaFourLanguageToolbar = true;
     </script>
-    <link rel="alternate" hreflang="en" href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/en/">
-<link rel="alternate" hreflang="ja" href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/ja/">
-<link rel="alternate" hreflang="zh-Hans" href="https://cn.globalprotectionwall.com/child-advocacy-site/news/taipei-child-protection-report-20261026/zh-Hans/">
-<link rel="alternate" hreflang="zh-Hant" href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/">
-</head>
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/en/"
+    />
+    <link
+      rel="alternate"
+      hreflang="ja"
+      href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/ja/"
+    />
+    <link
+      rel="alternate"
+      hreflang="zh-Hans"
+      href="https://cn.globalprotectionwall.com/child-advocacy-site/news/taipei-child-protection-report-20261026/zh-Hans/"
+    />
+    <link
+      rel="alternate"
+      hreflang="zh-Hant"
+      href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/"
+    />
+  </head>
   <body>
     <nav class="bar">
       <a href="/child-advocacy-site/">首頁</a
@@ -260,8 +329,75 @@
         號一審判決，認定被告陳尚潔犯過失致人於死罪，處有期徒刑 2
         年；其餘被訴偽造文書部分無罪。這是一審結論，並非確定判決。
       </p>
+      <div class="evidence-grid">
+        <div class="evidence-card">
+          <b>一審法院認定</b>
+          一審認為，陳尚潔在本案的具體分工與實際作為中，與兒盟共同形成危險源控制，並自願承擔對剴剴的保護義務，因此具有刑法上的「保證人地位」。
+        </div>
+        <div class="evidence-card">
+          <b>一審判決限定</b>
+          判決新聞稿明確說明，這是依個案事實所作的判斷，並非只因「社工」職業身分，就認定所有社工當然負有相同刑責。
+        </div>
+        <div class="evidence-card">
+          <b>二審仍在爭執</b>
+          公視報導，檢方認為一審兩年刑度偏低；辯方則主張收出養社工不是安置或兒保社工，一審擴大了陳尚潔的義務，請求改判無罪。
+        </div>
+      </div>
+      <h2>新聞內容中的三項關鍵爭點</h2>
+      <ul class="detail-list">
+        <li>
+          <strong>訪視是否足以辨識風險：</strong
+          >《報導者》整理指出，兒盟內部手冊要求每月至少家訪一次，並掌握出養童的飲食、睡眠、疾病、身心發展與生活情形；遇到健康發展問題時，還要蒐集資訊並規劃後續處遇。
+        </li>
+        <li>
+          <strong>紀錄是否能支持安全判斷：</strong
+          >檢方在審理中主張，沒有完整留下每月身高、體重等成長資訊，且把孩子變瘦理解為抽高，未能從累積變化辨識營養與照顧風險。這是檢方主張；是否構成犯罪及因果關係，仍以法院判決為準。
+        </li>
+        <li>
+          <strong>合作關係還是監督責任：</strong
+          >辯方主張收出養訪視以合作、預約為原則，不能直接套用居家托育訪視員的不預約監督規範；一審法院則依陳尚潔在本案中實際可接觸孩子、掌握資訊及採取行動的能力，認定其負有個案性的保護義務。
+        </li>
+      </ul>
       <div class="callout">
-        把這份判決放回今天的事件，不是把不同個案畫上等號，也不是預斷任何人的責任。它提醒的是：當可辨識的風險浮現，通報、訪視紀錄、督導、跨機關連結與安全決策，都必須留下可檢驗的承接；制度角色、權限、專業判斷與因果關係，仍須依每一案件的證據與法院程序認定。
+        這份判決最值得放回兒少保護流程理解的，不是把所有責任壓在單一職稱上，而是追問：當風險訊號分散在照片、訪視、健康變化與照顧者說詞裡，誰負責整合？誰能啟動複查？誰確保孩子真的被看見？
+      </div>
+      <h2>Threads 公開留言：民眾如何提出質疑</h2>
+      <div class="caution">
+        以下為公開社群貼文或留言中的意見與指控，不等於法院認定。本頁保留帳號與原始連結，也明確標示尚未由可靠資料獨立證實的內容；請勿據此騷擾、肉搜或擴散個人資料。
+      </div>
+      <div class="social-voices">
+        <article class="social-quote">
+          <span class="quote-meta">Threads 判決新聞留言串｜刑度質疑</span>
+          <blockquote>「怎麼才判兩年？」</blockquote>
+          <p>
+            這類留言反映部分民眾認為兩年刑期與孩子死亡的嚴重結果不相稱；但二審如何量刑，仍須由法院依犯罪成立範圍與量刑因素判斷。
+          </p>
+          <a href="https://www.threads.com/@tvbslivenews/post/DXLLlN-k1oD/"
+            >查看 Threads 原始新聞貼文與公開回應</a
+          >
+        </article>
+        <article class="social-quote">
+          <span class="quote-meta">Threads 使用者 @bamau666｜家屬接觸質疑</span>
+          <blockquote>「奶奶要看剴剴時，陳尚潔不讓她看」</blockquote>
+          <p>
+            這是該使用者的公開指控。本次查核未找到足以獨立證實此一具體說法的法院認定，因此不能把它寫成既定事實；可確認的是，家庭聯繫、照片回報與孩子近況是否被有效傳遞，確實是審理及新聞整理中的爭點。
+          </p>
+          <a href="https://www.threads.com/@bamau666/post/DXNkMdHElAv/"
+            >查看 Threads 原始貼文</a
+          >
+        </article>
+        <article class="social-quote">
+          <span class="quote-meta"
+            >Threads 使用者 @15social_worker｜制度與個責</span
+          >
+          <blockquote>「受不了這種全有全無的極端」</blockquote>
+          <p>
+            該貼文提醒，討論兒盟與社會安全網的制度問題，不等於替個人脫罪。這也說明公共討論不只是在「護航」與「重判」之間二選一，而要同時檢視個人作為與制度分工。
+          </p>
+          <a href="https://www.threads.com/@15social_worker/post/DUGOZxpCYu5/"
+            >查看 Threads 原始貼文</a
+          >
+        </article>
       </div>
       <div class="status">
         陳尚潔案目前仍在二審程序，最終事實與法律責任以法院確定判決為準。本頁也不據此推論本次北市個案的責任或處分。
@@ -284,6 +420,11 @@
         ><a href="https://www.judicial.gov.tw/tw/cp-1888-1632986-fc0b7-1.html"
           >臺灣高等法院：115 年度上訴字第 4688 號陳尚潔案旁聽公告（載明
           2026-11-06 準備程序）</a
+        ><a
+          href="https://www.twreporter.org/a/kaikai-case-aftermath-social-worker-criminal-proceeding"
+          >《報導者》：台灣首位社工遭判過失致死——陳尚潔案三大爭點</a
+        ><a href="https://news.pts.org.tw/article/827371"
+          >公視新聞：陳尚潔一審遭判兩年，二審首度開庭（2026-09-16）</a
         >
       </div>
       <nav class="languages">
@@ -291,7 +432,13 @@
         ><a href="./en/">English</a><a href="./ja/">日本語</a>
       </nav>
     </main>
-    <script data-cpa-legal-notice-script src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"></script>
-    <script data-cpa-four-language-toolbar-script src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"></script>
+    <script
+      data-cpa-legal-notice-script
+      src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"
+    ></script>
+    <script
+      data-cpa-four-language-toolbar-script
+      src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"
+    ></script>
   </body>
 </html>

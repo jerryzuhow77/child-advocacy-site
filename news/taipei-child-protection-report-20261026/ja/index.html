@@ -150,6 +150,54 @@
         background: #fffaf1;
         border: 1px solid var(--line);
       }
+      .evidence-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 13px;
+        margin: 24px 0;
+      }
+      .evidence-card,
+      .social-quote {
+        padding: 20px;
+        background: #fffaf1;
+        border: 1px solid var(--line);
+      }
+      .evidence-card b,
+      .quote-meta {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--clay);
+        font-weight: 800;
+      }
+      .detail-list {
+        padding-left: 1.25em;
+      }
+      .detail-list li {
+        margin: 0.8em 0;
+      }
+      .social-voices {
+        display: grid;
+        gap: 13px;
+        margin: 24px 0;
+      }
+      .social-quote blockquote {
+        margin: 0 0 0.75em;
+        color: var(--ink);
+        font:
+          750 1.18rem/1.65 Georgia,
+          "Noto Serif JP",
+          serif;
+      }
+      .social-quote p {
+        margin: 0.45em 0;
+      }
+      .caution {
+        margin: 22px 0;
+        padding: 15px 18px;
+        border: 1px solid var(--clay);
+        color: #6c4638;
+        background: #f4e8dd;
+      }
       .sources a {
         display: block;
         margin: 0.65em 0;
@@ -175,7 +223,8 @@
           padding-top: 32px;
         }
         .facts,
-        .paths {
+        .paths,
+        .evidence-grid {
           grid-template-columns: 1fr;
         }
         .cover {
@@ -189,18 +238,38 @@
         }
       }
     </style>
-    <link data-cpa-four-language-toolbar-style rel="stylesheet" href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5">
+    <link
+      data-cpa-four-language-toolbar-style
+      rel="stylesheet"
+      href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5"
+    />
     <script>
       window.__cpaFourLanguageToolbar = true;
     </script>
     <script data-cpa-four-language-toolbar-flag>
       window.__cpaFourLanguageToolbar = true;
     </script>
-    <link rel="alternate" hreflang="en" href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/en/">
-<link rel="alternate" hreflang="ja" href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/ja/">
-<link rel="alternate" hreflang="zh-Hans" href="https://cn.globalprotectionwall.com/child-advocacy-site/news/taipei-child-protection-report-20261026/zh-Hans/">
-<link rel="alternate" hreflang="zh-Hant" href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/">
-</head>
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/en/"
+    />
+    <link
+      rel="alternate"
+      hreflang="ja"
+      href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/ja/"
+    />
+    <link
+      rel="alternate"
+      hreflang="zh-Hans"
+      href="https://cn.globalprotectionwall.com/child-advocacy-site/news/taipei-child-protection-report-20261026/zh-Hans/"
+    />
+    <link
+      rel="alternate"
+      hreflang="zh-Hant"
+      href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/"
+    />
+  </head>
   <body>
     <nav class="bar">
       <a href="/child-advocacy-site/ja/">ホーム</a
@@ -259,8 +328,81 @@
       <p>
         剴剴事件では、台北地方法院114年度訴字第51号の一審判決が、陳尚潔氏について過失致死罪で懲役2年、その他の文書偽造の訴因については無罪としました。これは一審の結論であり、確定判決ではありません。
       </p>
+      <div class="evidence-grid">
+        <div class="evidence-card">
+          <b>一審が認定したこと</b>
+          一審は、本件における具体的な分担と行為から、陳氏と児童福利連盟が危険源の管理に関わり、陳氏が剴剴氏を保護する義務を自ら引き受けたとして、刑法上の「保証人的地位」を認めました。
+        </div>
+        <div class="evidence-card">
+          <b>判決が限定した範囲</b>
+          裁判所の発表は、個別の事実に基づく判断であり、「ソーシャルワーカー」という職業だけを理由に、すべてのソーシャルワーカーが同じ刑事責任を負うとしたものではないと明記しています。
+        </div>
+        <div class="evidence-card">
+          <b>控訴審で続く争い</b>
+          公視は、検察が懲役2年を軽すぎると主張する一方、弁護側は養子縁組支援担当者は措置・児童保護担当者ではなく、一審が義務を拡張したとして無罪を求めたと報じています。
+        </div>
+      </div>
+      <h2>報道から見える三つの重要争点</h2>
+      <ul class="detail-list">
+        <li>
+          <strong>訪問で累積する危険を把握できたか：</strong
+          >『報導者』によると、組織内の手引きは毎月少なくとも1回の家庭訪問を求め、食事、睡眠、病気、心身の発達、生活状況を確認し、健康・発達上の問題がある場合は情報収集と対応計画を行うとしていました。
+        </li>
+        <li>
+          <strong>記録が安全判断を支えたか：</strong
+          >検察は、公判で毎月の身長・体重などが十分に記録されず、痩せた様子を成長によるものと理解したため、栄養やケアの危険を累積的に把握できなかったと主張しました。これは検察の主張であり、犯罪成立と因果関係は裁判所の判断事項です。
+        </li>
+        <li>
+          <strong>協力関係か監督責任か：</strong
+          >弁護側は、養子縁組支援の訪問は協力を前提とした予約訪問であり、在宅保育訪問員の抜き打ち監督ルールを直接適用できないと主張。一審は、本件で陳氏が子どもや情報に接し、保護措置を取り得た具体的能力を重視しました。
+        </li>
+      </ul>
       <div class="callout">
-        この判決は、異なる事案を同一視したり、本件で誰かの責任を予断したりする根拠ではありません。そこから得る実務上の示唆は、見分けられる危険が現れたとき、通報、訪問記録、スーパービジョン、機関間の連携、安全に関する決定が、検証可能な保護の連鎖にならなければならないということです。役割、権限、専門的判断、因果関係は、各事案の証拠と裁判手続に基づいて判断されます。
+        この判決から考えるべきなのは、すべての責任を一つの職名に負わせることではありません。写真、訪問、健康変化、養育者の説明に散在する警告を誰が統合するのか、誰が再確認を始められるのか、誰が子どもを実際に確認したと保証するのか、という点です。
+      </div>
+      <h2>Threadsの公開コメント：市民が示した疑問</h2>
+      <div class="caution">
+        以下は公開SNS上の意見または告発であり、裁判所の認定ではありません。原アカウントとリンクを示し、信頼できる資料で独立に確認できない主張はその旨を明記しています。嫌がらせ、個人情報の暴露、拡散に利用しないでください。
+      </div>
+      <div class="social-voices">
+        <article class="social-quote">
+          <span class="quote-meta"
+            >Threadsの判決報道コメント｜量刑への疑問</span
+          >
+          <blockquote lang="zh-Hant">「怎麼才判兩年？」</blockquote>
+          <p>
+            「なぜ2年だけなのか」という反応は、子どもの死亡という重大な結果に刑期が見合わないと考える一部市民の受け止めを示します。ただし、控訴審の量刑は、成立する犯罪と法定の量刑事情に基づき裁判所が判断します。
+          </p>
+          <a href="https://www.threads.com/@tvbslivenews/post/DXLLlN-k1oD/"
+            >Threadsの元の報道投稿と公開反応を見る</a
+          >
+        </article>
+        <article class="social-quote">
+          <span class="quote-meta"
+            >Threadsユーザー @bamau666｜家族との接触</span
+          >
+          <blockquote lang="zh-Hant">
+            「奶奶要看剴剴時，陳尚潔不讓她看」
+          </blockquote>
+          <p>
+            投稿者は、祖母が剴剴氏に会うことを妨げられたと主張しています。この具体的主張を独立に裏付ける裁判所の認定は確認できなかったため、事実としては扱いません。一方、家族への連絡、写真、子どもの近況が適切に伝えられたかは、公判と報道で争点となっています。
+          </p>
+          <a href="https://www.threads.com/@bamau666/post/DXNkMdHElAv/"
+            >Threadsの元投稿を見る</a
+          >
+        </article>
+        <article class="social-quote">
+          <span class="quote-meta"
+            >Threadsユーザー @15social_worker｜制度と個人責任</span
+          >
+          <blockquote lang="zh-Hant">「受不了這種全有全無的極端」</blockquote>
+          <p>
+            この投稿は、「全か無か」の極端な議論を批判し、児童福利連盟や安全網の制度問題を論じることは、個人の免責を意味しないと指摘しています。個人の行為と制度の分担を同時に検証する必要性を示す視点です。
+          </p>
+          <a href="https://www.threads.com/@15social_worker/post/DUGOZxpCYu5/"
+            >Threadsの元投稿を見る</a
+          >
+        </article>
       </div>
       <div class="status">
         陳尚潔氏の事件は現在も控訴審の手続中です。最終的な事実と法的責任は、確定判決に従います。本ページは、ここで報じた台北の事案の責任や処分を推論するものではありません。
@@ -279,14 +421,25 @@
           >台北地方法院：114年度訴字第51号・陳尚潔氏の過失致死等事件に関する発表（一審判決の結論）</a
         ><a href="https://www.judicial.gov.tw/tw/cp-1888-1632986-fc0b7-1.html"
           >台湾高等法院：115年度上訴字第4688号・陳尚潔氏の事件に関する傍聴公告（2026-11-06の準備手続を記載）</a
+        ><a
+          href="https://www.twreporter.org/a/kaikai-case-aftermath-social-worker-criminal-proceeding"
+          >『報導者』：台湾初のソーシャルワーカー過失致死判決——陳尚潔氏事件の三争点</a
+        ><a href="https://news.pts.org.tw/article/827371"
+          >公視新聞：陳尚潔氏に一審懲役2年、控訴審が初開廷（2026-09-16）</a
         >
       </div>
       <nav class="languages">
-        <a href="../">繁中</a><a href="/child-advocacy-site/news/taipei-child-protection-report-20261026/ja/">简中</a
+        <a href="../">繁中</a><a href="../zh-Hans/">简中</a
         ><a href="../en/">English</a><a href="./">日本語</a>
       </nav>
     </main>
-    <script data-cpa-legal-notice-script src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"></script>
-    <script data-cpa-four-language-toolbar-script src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"></script>
+    <script
+      data-cpa-legal-notice-script
+      src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"
+    ></script>
+    <script
+      data-cpa-four-language-toolbar-script
+      src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"
+    ></script>
   </body>
 </html>
