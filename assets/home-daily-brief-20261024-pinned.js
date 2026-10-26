@@ -43,8 +43,20 @@
     }
   ];
   const language=()=>document.documentElement.lang==='ja'?'ja':document.documentElement.lang==='en'?'en':document.documentElement.lang==='zh-Hans'?'zh-Hans':'zh-Hant';
+  const canonicalArticlePath=(href)=>{
+    const path=new URL(href,location.origin).pathname;
+    return path.replace(/\/(?:en|ja|zh-Hans)\/?$/,'/');
+  };
+  const removeDuplicateArticles=(slider)=>{
+    const seen=new Set();
+    [...slider.querySelectorAll(':scope>a[data-home-article]')].forEach(card=>{
+      const key=canonicalArticlePath(card.href);
+      if(seen.has(key)) card.remove(); else seen.add(key);
+    });
+  };
   const addBrief=(slider,brief,locale)=>{
-    if(slider.querySelector('[data-home-brief="'+brief.key+'"]')) return;
+    const target=canonicalArticlePath(brief.copy[locale].href);
+    if([...slider.querySelectorAll(':scope>a[data-home-article]')].some(card=>canonicalArticlePath(card.href)===target)) return;
     const data=brief.copy[locale],card=document.createElement('a');
     card.href=data.href;
     card.dataset.homeArticle='';
@@ -56,6 +68,7 @@
     const slider=document.querySelector('[data-gsap-slider]');
     if(!slider) return;
     slider.id='daily-brief-pair-20261024';
+    removeDuplicateArticles(slider);
     const locale=language();
     [...briefs].reverse().forEach(brief=>addBrief(slider,brief,locale));
   };
