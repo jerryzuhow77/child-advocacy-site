@@ -3,19 +3,21 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>看見孩子受傷後：通報不是句點，保護要立刻接手｜護童行動聯盟</title>
+    <title>
+      從通報到承接：孩子被看見後，保護系統如何不再斷線｜護童行動聯盟
+    </title>
     <meta
       name="description"
-      content="北市疑似兒少不當對待事件的公開報導提醒：通報之後，安全評估、照顧安排與持續追蹤必須接上。"
+      content="護童專題｜從一則北市疑似兒少不當對待事件出發，追問通報之後，安全評估、照顧安排與持續追蹤如何真正接上。"
     />
     <meta property="og:type" content="article" />
     <meta
       property="og:title"
-      content="看見孩子受傷後：通報不是句點，保護要立刻接手"
+      content="從通報到承接：孩子被看見後，保護系統如何不再斷線"
     />
     <meta
       property="og:description"
-      content="疑似兒少不當對待被看見後，保護流程必須接得住。"
+      content="護童專題：一份通報如何走向持續、可追溯的保護承接。"
     />
     <meta
       property="og:image"
@@ -103,6 +105,51 @@
         margin: 34px auto 70px;
         padding: 0 22px;
         counter-reset: chapter;
+      }
+      .feature-frontmatter {
+        margin: 10px 0 38px;
+        padding: 28px;
+        border-top: 3px solid var(--clay);
+        border-bottom: 1px solid var(--line);
+        background: linear-gradient(110deg, #fffaf1, #edf2ed);
+      }
+      .feature-kicker {
+        margin: 0 0 10px;
+        color: var(--clay);
+        font:
+          800 0.73rem/1.35 system-ui,
+          sans-serif;
+        letter-spacing: 0.16em;
+      }
+      .feature-standfirst {
+        max-width: 700px;
+        margin: 0;
+        color: #314f4d;
+        font:
+          700 clamp(1.22rem, 3vw, 1.68rem)/1.72 Georgia,
+          "Noto Serif TC",
+          serif;
+      }
+      .feature-guide {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin: 26px 0 0;
+      }
+      .feature-guide div {
+        padding-top: 12px;
+        border-top: 1px solid #b7aa95;
+      }
+      .feature-guide dt {
+        margin-bottom: 5px;
+        color: var(--clay);
+        font-weight: 800;
+      }
+      .feature-guide dd {
+        margin: 0;
+        color: #52645f;
+        font-size: 0.92rem;
+        line-height: 1.65;
       }
       .story > p {
         text-align: justify;
@@ -468,8 +515,12 @@
         .paths,
         .evidence-grid,
         .reading-lens,
-        .timeline {
+        .timeline,
+        .feature-guide {
           grid-template-columns: 1fr;
+        }
+        .feature-frontmatter {
+          padding: 22px 19px;
         }
         .key-statement {
           padding: 19px;
@@ -499,18 +550,38 @@
         }
       }
     </style>
-    <link data-cpa-four-language-toolbar-style rel="stylesheet" href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5">
+    <link
+      data-cpa-four-language-toolbar-style
+      rel="stylesheet"
+      href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5"
+    />
     <script>
       window.__cpaFourLanguageToolbar = true;
     </script>
     <script data-cpa-four-language-toolbar-flag>
       window.__cpaFourLanguageToolbar = true;
     </script>
-    <link rel="alternate" hreflang="en" href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/en/">
-<link rel="alternate" hreflang="ja" href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/ja/">
-<link rel="alternate" hreflang="zh-Hans" href="https://cn.globalprotectionwall.com/child-advocacy-site/news/taipei-child-protection-report-20261026/zh-Hans/">
-<link rel="alternate" hreflang="zh-Hant" href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/">
-</head>
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/en/"
+    />
+    <link
+      rel="alternate"
+      hreflang="ja"
+      href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/ja/"
+    />
+    <link
+      rel="alternate"
+      hreflang="zh-Hans"
+      href="https://cn.globalprotectionwall.com/child-advocacy-site/news/taipei-child-protection-report-20261026/zh-Hans/"
+    />
+    <link
+      rel="alternate"
+      hreflang="zh-Hant"
+      href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/"
+    />
+  </head>
   <body>
     <div class="reading-progress" aria-hidden="true"><span></span></div>
     <nav class="bar">
@@ -518,13 +589,13 @@
       ><a href="/child-advocacy-site/news/">新聞專區</a>
     </nav>
     <header class="hero">
-      <div class="eyebrow">DAILY CHILD PROTECTION BRIEF · SAFETY RESPONSE</div>
-      <h1>看見孩子受傷後：通報不是句點，保護要立刻接手</h1>
+      <div class="eyebrow">CHILD PROTECTION FEATURE · SPECIAL REPORT</div>
+      <h1>從通報到承接：孩子被看見後，保護系統如何不再斷線</h1>
       <p>
-        當疑似不當對待被看見，孩子需要的不只是有人報警，而是一條能把安全評估、暫時照顧與後續支持接起來的路。
+        一則通報把風險帶到檯面上；接下來，保護系統能否把安全評估、照顧安排與持續支持接成一條路，才決定孩子會不會再次被遺落。
       </p>
       <div class="date">
-        發布 2026.10.26｜公開報導 2026.10.22｜資料：聯合報、衛福部
+        專題發布 2026.10.26｜公開報導 2026.10.22｜法院與新聞資料交叉閱讀
       </div>
     </header>
     <figure class="cover">
@@ -539,12 +610,32 @@
       </figcaption>
     </figure>
     <main class="story">
+      <section class="feature-frontmatter" aria-label="專題閱讀導覽">
+        <p class="feature-kicker">FEATURE ESSAY · 兒少保護網</p>
+        <p class="feature-standfirst">
+          孩子被看見的那一刻，不應只是流程上的「完成通報」。本專題從公開報導、法院資料與公共討論出發，追問保護究竟要由誰接手、如何留下可追溯的判斷，以及制度如何不再讓風險訊號各自沉沒。
+        </p>
+        <dl class="feature-guide">
+          <div>
+            <dt>從事件出發</dt>
+            <dd>先分清已查證事實與仍在處理中的資訊。</dd>
+          </div>
+          <div>
+            <dt>把爭點讀深</dt>
+            <dd>把個人義務、專業判斷與跨網絡責任放在同一張圖裡。</dd>
+          </div>
+          <div>
+            <dt>回到行動</dt>
+            <dd>以可執行的防線與通報資源，讓閱讀不止於憤怒。</dd>
+          </div>
+        </dl>
+      </section>
       <div class="facts">
         <div class="fact"><strong>10/20</strong>警方接獲通報</div>
         <div class="fact"><strong>10/22</strong>公開新聞報導</div>
         <div class="fact"><strong>113</strong>保護專線</div>
       </div>
-      <h2>已查證的事實</h2>
+      <h2>序章｜被看見之後</h2>
       <p>
         聯合報 10 月 22
         日報導，台北市中山區一處運動場館發生疑似兒少不當對待事件。警方表示，已依職權完成兒少保護通報，並由家屬先行照顧，移請社會局後續追蹤。公開資訊所述仍屬個案處理進程；本頁不對事實認定或責任歸屬作超出來源的推論。
@@ -552,7 +643,7 @@
       <div class="callout">
         「已通報」不是保護工作的終點。它代表風險評估與後續服務應即刻啟動；孩子是否安全、照顧是否穩定、支持能否持續，才是流程必須回應的問題。
       </div>
-      <h2>通報之後，保護要接住三件事</h2>
+      <h2>第一幕｜通報之後，誰把安全接下來？</h2>
       <div class="paths">
         <div class="path">
           <b>01｜先穩住安全</b
@@ -567,7 +658,7 @@
           >不讓一次通報變成一次性紀錄；風險變化、照顧壓力與孩子意見都要被看見。
         </div>
       </div>
-      <h2>制度案例對照：陳尚潔案提醒了什麼</h2>
+      <h2>第二幕｜一份判決，如何閱讀責任的界線</h2>
       <p>
         剴剴案中，臺灣臺北地方法院 114 年度訴字第 51
         號一審判決，認定被告陳尚潔犯<span class="hl hl-gold"
@@ -600,7 +691,7 @@
         真正的保護承接，是把<span class="hl hl-gold">分散的風險訊號</span
         >串成可以採取行動的判斷，而不是讓每個單位只看見自己負責的一小段。
       </div>
-      <h2>新聞內容中的三項關鍵爭點</h2>
+      <h2>第三幕｜風險訊號，為何會在流程裡消失？</h2>
       <ul class="detail-list">
         <li>
           <strong>訪視是否足以辨識風險：</strong
@@ -618,7 +709,7 @@
       <div class="callout">
         這份判決最值得放回兒少保護流程理解的，不是把所有責任壓在單一職稱上，而是追問：當風險訊號分散在照片、訪視、健康變化與照顧者說詞裡，誰負責整合？誰能啟動複查？誰確保孩子真的被看見？
       </div>
-      <h2>從三次訪視到二審：四個關鍵節點</h2>
+      <h2>時間的證詞｜從三次訪視到二審</h2>
       <div class="timeline">
         <div class="timeline-item">
           <span class="timeline-date">2023.09.25／10.23／11.20</span>
@@ -638,7 +729,7 @@
           在刑事庭大廈專一法庭續行準備程序。案件仍在審理，最終法律責任須以確定判決為準。
         </div>
       </div>
-      <h2>把報導讀深一層：四個不能跳過的問題</h2>
+      <h2>閱讀現場｜四個不能跳過的問題</h2>
       <div class="reading-lens">
         <article class="lens-card">
           <span class="lens-kicker">01｜風險訊號</span>
@@ -678,7 +769,7 @@
           </p>
         </article>
       </div>
-      <h2>從個案走向制度：五道最低保護防線</h2>
+      <h2>制度的回答｜五道最低保護防線</h2>
       <ul class="detail-list">
         <li>
           <strong>看趨勢，不只看單次：</strong
@@ -705,7 +796,7 @@
         <b>閱讀查核四問：</b
         >這句話來自法院、檢辯主張、新聞整理，還是社群貼文？是否有第二個來源交叉證實？案件是否仍在上訴？這項資訊能否直接支持它後面的結論？
       </div>
-      <h2>Threads 公開留言：民眾如何提出質疑</h2>
+      <h2>公共回聲｜Threads 上的十種質疑</h2>
       <p class="voices-intro">
         判決公布後，公共討論並沒有只朝同一個方向前進。有人追問刑度，有人要求究責，也有人擔心個人責任掩蓋制度斷裂。以下十則聲音依「量刑、家屬聯繫、個人與制度責任、判決效應」排列；它們呈現社會感受，<span
           class="hl hl-coral"
@@ -828,13 +919,13 @@
       <div class="status">
         陳尚潔案目前仍在二審程序，最終事實與法律責任以法院確定判決為準。本頁也不據此推論本次北市個案的責任或處分。
       </div>
-      <h2>看見疑似情況時，可以怎麼做</h2>
+      <h2>把閱讀化為行動｜看見疑似情況時，可以怎麼做</h2>
       <div class="status">
         若發現兒少疑似遭受疏忽、虐待或其他不當對待，請在緊急危險時撥打
         110；亦可撥打 113
         保護專線或向所在地家庭暴力及性侵害防治中心通報。請避免在網路公開可辨識孩子身分的影像與資訊，以免造成二度傷害。
       </div>
-      <h2>來源與查核</h2>
+      <h2>編採與查核</h2>
       <div class="sources">
         <a href="https://udn.com/news/story/7320/9831096"
           >聯合報：北市新生公園游泳池傳疑似虐童，警方到場通報兒少保護（2026-10-22）</a
@@ -858,8 +949,14 @@
         ><a href="./en/">English</a><a href="./ja/">日本語</a>
       </nav>
     </main>
-    <script data-cpa-legal-notice-script src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"></script>
-    <script data-cpa-four-language-toolbar-script src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"></script>
+    <script
+      data-cpa-legal-notice-script
+      src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"
+    ></script>
+    <script
+      data-cpa-four-language-toolbar-script
+      src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"
+    ></script>
     <script src="/child-advocacy-site/assets/vendor/gsap-3.13.0.min.js"></script>
     <script src="/child-advocacy-site/assets/vendor/ScrollTrigger-3.13.0.min.js"></script>
     <script>
