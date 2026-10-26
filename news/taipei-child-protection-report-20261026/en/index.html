@@ -4,21 +4,21 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>
-      After possible harm is seen: a report cannot be the endpoint | Child
-      Protection Action Alliance
+      From report to protection: how a child-safety response must not break |
+      Child Protection Action Alliance
     </title>
     <meta
       name="description"
-      content="A public report from Taipei is a reminder that safety assessment, safe care and follow-up must begin after a child-protection report."
+      content="A child-protection feature on what must happen after a public report: how safety assessment, safe care and follow-up become one continuous response."
     />
     <meta property="og:type" content="article" />
     <meta
       property="og:title"
-      content="After possible harm is seen: a report cannot be the endpoint"
+      content="From report to protection: how a child-safety response must not break"
     />
     <meta
       property="og:description"
-      content="When a possible child-protection concern is seen, the response must hold. "
+      content="A child-protection feature on turning a report into continuous, accountable protection."
     />
     <meta
       property="og:image"
@@ -104,6 +104,50 @@
         margin: 34px auto 70px;
         padding: 0 22px;
         counter-reset: chapter;
+      }
+      .feature-frontmatter {
+        margin: 10px 0 38px;
+        padding: 28px;
+        border-top: 3px solid var(--clay);
+        border-bottom: 1px solid var(--line);
+        background: linear-gradient(110deg, #fffaf1, #edf2ed);
+      }
+      .feature-kicker {
+        margin: 0 0 10px;
+        color: var(--clay);
+        font:
+          800 0.73rem/1.35 system-ui,
+          sans-serif;
+        letter-spacing: 0.16em;
+      }
+      .feature-standfirst {
+        max-width: 700px;
+        margin: 0;
+        color: #314f4d;
+        font:
+          700 clamp(1.22rem, 3vw, 1.68rem)/1.72 Georgia,
+          serif;
+      }
+      .feature-guide {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin: 26px 0 0;
+      }
+      .feature-guide div {
+        padding-top: 12px;
+        border-top: 1px solid #b7aa95;
+      }
+      .feature-guide dt {
+        margin-bottom: 5px;
+        color: var(--clay);
+        font-weight: 800;
+      }
+      .feature-guide dd {
+        margin: 0;
+        color: #52645f;
+        font-size: 0.92rem;
+        line-height: 1.65;
       }
       .story > p {
         text-align: justify;
@@ -463,8 +507,12 @@
         .paths,
         .evidence-grid,
         .reading-lens,
-        .timeline {
+        .timeline,
+        .feature-guide {
           grid-template-columns: 1fr;
+        }
+        .feature-frontmatter {
+          padding: 22px 19px;
         }
         .key-statement {
           padding: 19px;
@@ -494,18 +542,38 @@
         }
       }
     </style>
-    <link data-cpa-four-language-toolbar-style rel="stylesheet" href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5">
+    <link
+      data-cpa-four-language-toolbar-style
+      rel="stylesheet"
+      href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5"
+    />
     <script>
       window.__cpaFourLanguageToolbar = true;
     </script>
     <script data-cpa-four-language-toolbar-flag>
       window.__cpaFourLanguageToolbar = true;
     </script>
-    <link rel="alternate" hreflang="en" href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/en/">
-<link rel="alternate" hreflang="ja" href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/ja/">
-<link rel="alternate" hreflang="zh-Hans" href="https://cn.globalprotectionwall.com/child-advocacy-site/news/taipei-child-protection-report-20261026/zh-Hans/">
-<link rel="alternate" hreflang="zh-Hant" href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/">
-</head>
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/en/"
+    />
+    <link
+      rel="alternate"
+      hreflang="ja"
+      href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/ja/"
+    />
+    <link
+      rel="alternate"
+      hreflang="zh-Hans"
+      href="https://cn.globalprotectionwall.com/child-advocacy-site/news/taipei-child-protection-report-20261026/zh-Hans/"
+    />
+    <link
+      rel="alternate"
+      hreflang="zh-Hant"
+      href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/"
+    />
+  </head>
   <body>
     <div class="reading-progress" aria-hidden="true"><span></span></div>
     <nav class="bar">
@@ -513,16 +581,18 @@
       ><a href="/child-advocacy-site/news/en/">News</a>
     </nav>
     <header class="hero">
-      <div class="eyebrow">DAILY CHILD PROTECTION BRIEF · SAFETY RESPONSE</div>
-      <h1>After possible harm is seen: a report cannot be the endpoint</h1>
+      <div class="eyebrow">CHILD PROTECTION FEATURE · SPECIAL REPORT</div>
+      <h1>
+        From report to protection: how a child-safety response must not break
+      </h1>
       <p>
-        When possible maltreatment is seen, a child needs more than someone
-        calling for help. Safety assessment, safe interim care and continuing
-        support must connect into one path.
+        A report brings possible risk into view. What follows—whether safety
+        assessment, care and continuing support can form one path—determines
+        whether a child is left unseen again.
       </p>
       <div class="date">
-        Published 26 Oct 2026 · public report 22 Oct · sources: United Daily
-        News, MOHW
+        Feature published 26 Oct 2026 · public report 22 Oct · court and news
+        sources read together
       </div>
     </header>
     <figure class="cover">
@@ -538,12 +608,45 @@
       </figcaption>
     </figure>
     <main class="story">
+      <section class="feature-frontmatter" aria-label="Feature reading guide">
+        <p class="feature-kicker">FEATURE ESSAY · CHILD PROTECTION NETWORK</p>
+        <p class="feature-standfirst">
+          The moment a child is seen should not be reduced to a box ticked on a
+          report. Drawing on public reporting, court materials and public
+          discussion, this feature asks who takes over protection, how judgment
+          can remain traceable, and how a system can stop warning signs from
+          disappearing in separate places.
+        </p>
+        <dl class="feature-guide">
+          <div>
+            <dt>Begin with the event</dt>
+            <dd>
+              Separate verified facts from information that is still being
+              handled.
+            </dd>
+          </div>
+          <div>
+            <dt>Read the dispute deeply</dt>
+            <dd>
+              Hold individual duty, professional judgment and cross-network
+              responsibility in one frame.
+            </dd>
+          </div>
+          <div>
+            <dt>Return to action</dt>
+            <dd>
+              End with practical safeguards and reporting routes, rather than
+              anger alone.
+            </dd>
+          </div>
+        </dl>
+      </section>
       <div class="facts">
         <div class="fact"><strong>20 Oct</strong>police received a report</div>
         <div class="fact"><strong>22 Oct</strong>public news report</div>
         <div class="fact"><strong>113</strong>protection hotline</div>
       </div>
-      <h2>What has been verified</h2>
+      <h2>Prologue · after a child is seen</h2>
       <p>
         United Daily News reported on 22 October that a possible
         child-maltreatment incident had been reported at a sports venue in
@@ -558,7 +661,7 @@
         assessment and follow-up services. Whether the child is safe, care is
         stable and support continues is what the process must answer.
       </div>
-      <h2>What protection must hold after a report</h2>
+      <h2>Act I · after a report, who holds safety?</h2>
       <div class="paths">
         <div class="path">
           <b>01 · Stabilise safety</b>Move the child away from immediate risk
@@ -574,7 +677,7 @@
           remain visible.
         </div>
       </div>
-      <h2>A system case for comparison: the Chen Shang-jie judgment</h2>
+      <h2>Act II · reading the boundary of responsibility</h2>
       <p>
         In the Kai-kai case, the first-instance judgment in Taipei District
         Court case 114 Su No. 51 found Chen Shang-jie guilty of
@@ -619,7 +722,7 @@
         become an actionable risk judgment—not when each agency sees only its
         own narrow part of the case.
       </div>
-      <h2>Three issues explained in the news coverage</h2>
+      <h2>Act III · why warning signs disappear in a process</h2>
       <ul class="detail-list">
         <li>
           <strong>Could the visits identify accumulating risk?</strong> The
@@ -651,7 +754,7 @@
         trigger a re-check; and who verifies that the child has actually been
         seen.
       </div>
-      <h2>From three visits to the appeal: four key points in time</h2>
+      <h2>A record in time · from three visits to the appeal</h2>
       <div class="timeline">
         <div class="timeline-item">
           <span class="timeline-date">25 Sep / 23 Oct / 20 Nov 2023</span>
@@ -679,7 +782,7 @@
           judgment.
         </div>
       </div>
-      <h2>Reading the reporting more deeply: four questions not to skip</h2>
+      <h2>Inside the reading · four questions not to skip</h2>
       <div class="reading-lens">
         <article class="lens-card">
           <span class="lens-kicker">01 · WARNING SIGNS</span>
@@ -738,7 +841,7 @@
           </p>
         </article>
       </div>
-      <h2>From one case to the system: five minimum safeguards</h2>
+      <h2>The system’s answer · five minimum safeguards</h2>
       <ul class="detail-list">
         <li>
           <strong>Read trends, not snapshots:</strong> every visit should be
@@ -772,7 +875,7 @@
         it corroborated by another source? Is the case still on appeal? Does the
         information actually support the conclusion drawn from it?
       </div>
-      <h2>Public comments on Threads: the concerns people raised</h2>
+      <h2>Public echoes · ten questions from Threads</h2>
       <p class="voices-intro">
         Public discussion did not move in only one direction after the judgment.
         Some questioned the sentence, some demanded accountability, and others
@@ -960,7 +1063,7 @@
         inference about responsibility or sanction in the Taipei case reported
         here.
       </div>
-      <h2>What to do when you see a possible concern</h2>
+      <h2>Turn reading into action · what to do when you see a concern</h2>
       <div class="status">
         If a child or young person may be neglected, abused or otherwise harmed,
         call 110 in an emergency. Taiwan’s 113 protection hotline and local
@@ -968,7 +1071,7 @@
         reports. Do not post identifiable images or information about a child
         online; this can cause further harm.
       </div>
-      <h2>Sources and verification</h2>
+      <h2>Reporting and verification</h2>
       <div class="sources">
         <a href="https://udn.com/news/story/7320/9831096"
           >United Daily News: Suspected child maltreatment at Xinsheng Park
@@ -1000,8 +1103,14 @@
         ><a href="./">English</a><a href="../ja/">日本語</a>
       </nav>
     </main>
-    <script data-cpa-legal-notice-script src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"></script>
-    <script data-cpa-four-language-toolbar-script src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"></script>
+    <script
+      data-cpa-legal-notice-script
+      src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"
+    ></script>
+    <script
+      data-cpa-four-language-toolbar-script
+      src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"
+    ></script>
     <script src="/child-advocacy-site/assets/vendor/gsap-3.13.0.min.js"></script>
     <script src="/child-advocacy-site/assets/vendor/ScrollTrigger-3.13.0.min.js"></script>
     <script>
