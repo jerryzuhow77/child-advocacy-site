@@ -292,6 +292,57 @@
       .evidence-legend .public {
         background: #efd8d0;
       }
+      .reading-lens {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin: 24px 0 30px;
+      }
+      .lens-card {
+        padding: 20px;
+        border: 1px solid var(--line);
+        background: #fffaf1;
+      }
+      .lens-card:nth-child(2) {
+        background: #f4eee4;
+      }
+      .lens-card:nth-child(3) {
+        background: #edf2ed;
+      }
+      .lens-card:nth-child(4) {
+        background: #f4e8e3;
+      }
+      .lens-kicker {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--clay);
+        font:
+          850 0.72rem/1.3 system-ui,
+          sans-serif;
+        letter-spacing: 0.12em;
+      }
+      .lens-card h3 {
+        margin: 0 0 8px;
+        color: var(--ink);
+        font:
+          800 clamp(1.1rem, 2.4vw, 1.34rem)/1.4 Georgia,
+          "Noto Serif JP",
+          serif;
+      }
+      .lens-card p {
+        margin: 0;
+      }
+      .verification-note {
+        margin: 26px 0;
+        padding: 19px 21px;
+        border-left: 6px solid #bd8b3b;
+        background: #f2eadb;
+        color: #3d4d49;
+      }
+      .verification-note b {
+        color: #8d5b2f;
+        font-size: 1.08em;
+      }
       .detail-list li:nth-child(1) strong {
         color: #8d5b2f;
       }
@@ -340,6 +391,7 @@
         .facts,
         .paths,
         .evidence-grid,
+        .reading-lens,
         .timeline {
           grid-template-columns: 1fr;
         }
@@ -493,6 +545,73 @@
           <span class="timeline-date">2026.11.06</span>
           高等法院は午後2時30分から準備手続を続行すると公告しました。事件は係属中であり、最終的な法的責任は確定判決に従います。
         </div>
+      </div>
+      <h2>報道をさらに深く読む：見落としてはいけない四つの問い</h2>
+      <div class="reading-lens">
+        <article class="lens-card">
+          <span class="lens-kicker">01｜警告信号</span>
+          <h3>3回の訪問で実際に何が見えていたのか</h3>
+          <p>
+            公開報道によると、訪問記録には頭部のあざ、風邪と発熱、歯の脱落などが含まれていました。陳氏は質問し、受診や報告を求めていました。争点は、もっともらしい説明を得た後も、医療情報、写真、成長データ、他機関の情報と照合すべきだったかという点です。
+          </p>
+        </article>
+        <article class="lens-card">
+          <span class="lens-kicker">02｜累積的な判断</span>
+          <h3>記録の質がなぜ安全を左右するのか</h3>
+          <p>
+            記録は単に様式を埋めるためではありません。身長、体重、食事、睡眠、歯、感情、行動を月ごとに比較するためです。一つの出来事には個別の説明があり得ますが、複数の変化が重なれば、制度はそれらを<span
+              class="hl hl-gold"
+              >対応を引き上げるべきリスク像</span
+            >としてまとめる必要があります。
+          </p>
+        </article>
+        <article class="lens-card">
+          <span class="lens-kicker">03｜ネットワークの責任</span>
+          <h3>「誰が主担当か」がなぜ核心になるのか</h3>
+          <p>
+            関係したのは樹林・鶯歌社会福利サービスセンター、児童福利連盟の養子縁組支援、文山在宅保育サービスセンターでした。各機関が持つ情報と権限は異なります。一審は、子どもへの実際の接触、危険の管理、保護を始動できる能力を重視しました。<span
+              class="hl hl-sage"
+              >制度上の空白と個人の義務は同時に存在し得ます</span
+            >。一方が他方を消すものではありません。
+          </p>
+        </article>
+        <article class="lens-card">
+          <span class="lens-kicker">04｜控訴審の範囲</span>
+          <h3>控訴審で何が検討されるのか</h3>
+          <p>
+            控訴審では、本件固有の保証人的地位、注意義務、結果回避可能性、因果関係、量刑が引き続き検討されます。弁護側は職名だけで刑事責任を拡張できないと主張し、検察は陳氏が養育状況に接し得る程度の高さを重視します。<span
+              class="hl hl-coral"
+              >確定判決までは、いずれの主張も最終的な法的結論ではありません</span
+            >。
+          </p>
+        </article>
+      </div>
+      <h2>一つの事件から制度へ：最低限必要な五つの安全策</h2>
+      <ul class="detail-list">
+        <li>
+          <strong>一回ではなく傾向を見る：</strong
+          >各訪問を、それ以前の成長、外傷、感情、生活情報と比較します。
+        </li>
+        <li>
+          <strong>子どもを独立して確認する機会を設ける：</strong
+          >養育者の説明だけに頼らず、必要に応じて医療・発達その他の専門評価を行います。
+        </li>
+        <li>
+          <strong>警告信号を共有する：</strong
+          >福祉、養子縁組支援、保育監督の各機関は、追跡可能な通報、回答、未完了事項を共有します。
+        </li>
+        <li>
+          <strong>対応引上げの基準を先に定める：</strong
+          >あざ、不自然な歯の脱落、著しい体重減少、行動の急変が繰り返されれば、再確認と管理職の審査を始めます。
+        </li>
+        <li>
+          <strong>最終的な保護責任者を明確にする：</strong
+          >各機関が一部ずつ担当しながら、最後に子どもの安全を確認する者がいない状態を避けます。
+        </li>
+      </ul>
+      <div class="verification-note">
+        <b>確認のための四つの問い：</b
+        >その記述は裁判所、検察・弁護側、報道、SNS投稿のどれに由来するのか。別の資料で裏付けられているか。事件は上訴中か。その情報は、そこから導く結論を本当に支えているか。
       </div>
       <h2>Threadsの公開コメント：市民が示した疑問</h2>
       <div class="caution">
