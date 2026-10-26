@@ -16,10 +16,15 @@
 <script>
 (function(){
   var path=location.pathname;
-  var bad="/child-advocacy-site/hearing-records/liu-zongxin-appeal-20261022/%C3%A2%C2%81%C2%A0/";
-  var decodedBad="/child-advocacy-site/hearing-records/liu-zongxin-appeal-20261022/â /";
-  if(path===bad||path===decodedBad||decodeURIComponent(path)===decodeURIComponent(bad)){
-    location.replace("/child-advocacy-site/hearing-records/liu-zongxin-appeal-20261022/");
+  var decoded=path;
+  try { decoded=decodeURIComponent(path); } catch (_) {}
+  // Repair links copied with an invisible WORD JOINER (U+2060).
+  // GitHub Pages serves them through this 404, so normalize before showing an error.
+  var normalized=decoded
+    .replace(/\u2060/g,"")
+    .replace(/â\u0081\u00a0/g,"");
+  if(normalized!==decoded && normalized.indexOf("/child-advocacy-site/")===0){
+    location.replace(normalized+location.search+location.hash);
   }
 }());
 </script><script data-cpa-four-language-toolbar-script src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"></script>
