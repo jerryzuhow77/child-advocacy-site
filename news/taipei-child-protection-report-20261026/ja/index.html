@@ -198,6 +198,121 @@
         color: #6c4638;
         background: #f4e8dd;
       }
+      .hl {
+        padding: 0 0.08em;
+        background-repeat: no-repeat;
+        background-position: 0 88%;
+        background-size: 100% 0.46em;
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+      }
+      .hl-gold {
+        background-image: linear-gradient(
+          rgba(238, 196, 83, 0.58),
+          rgba(238, 196, 83, 0.58)
+        );
+      }
+      .hl-coral {
+        background-image: linear-gradient(
+          rgba(211, 112, 91, 0.45),
+          rgba(211, 112, 91, 0.45)
+        );
+      }
+      .hl-sage {
+        background-image: linear-gradient(
+          rgba(99, 160, 132, 0.44),
+          rgba(99, 160, 132, 0.44)
+        );
+      }
+      .key-statement {
+        margin: 30px 0;
+        padding: 24px;
+        border: 1px solid var(--ink);
+        background: #fffaf1;
+        color: var(--ink);
+        font:
+          750 clamp(1.22rem, 3vw, 1.72rem)/1.65 Georgia,
+          "Noto Serif JP",
+          serif;
+      }
+      .key-statement small {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--clay);
+        font:
+          800 0.72rem/1.4 system-ui,
+          sans-serif;
+        letter-spacing: 0.14em;
+      }
+      .timeline {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin: 24px 0;
+      }
+      .timeline-item {
+        padding: 18px;
+        border-top: 5px solid var(--ink);
+        background: #fffaf1;
+      }
+      .timeline-item:nth-child(2) {
+        border-color: #a96a4e;
+      }
+      .timeline-item:nth-child(3) {
+        border-color: #6f8b7d;
+      }
+      .timeline-item:nth-child(4) {
+        border-color: #bd8b3b;
+      }
+      .timeline-date {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--clay);
+        font:
+          800 1.05rem/1.3 Georgia,
+          serif;
+      }
+      .evidence-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 18px 0 28px;
+      }
+      .evidence-legend span {
+        padding: 7px 11px;
+        border: 1px solid var(--line);
+        font-weight: 800;
+      }
+      .evidence-legend .court {
+        background: #f2df9f;
+      }
+      .evidence-legend .argument {
+        background: #dce9e1;
+      }
+      .evidence-legend .public {
+        background: #efd8d0;
+      }
+      .detail-list li:nth-child(1) strong {
+        color: #8d5b2f;
+      }
+      .detail-list li:nth-child(2) strong {
+        color: #9b4d43;
+      }
+      .detail-list li:nth-child(3) strong {
+        color: #3f7469;
+      }
+      .social-quote:nth-child(1) blockquote {
+        color: #9b4d43;
+        font-size: 1.45rem;
+      }
+      .social-quote:nth-child(2) blockquote {
+        color: #8b5a2b;
+        font-size: 1.32rem;
+      }
+      .social-quote:nth-child(3) blockquote {
+        color: #376f66;
+        font-size: 1.25rem;
+      }
       .sources a {
         display: block;
         margin: 0.65em 0;
@@ -224,8 +339,12 @@
         }
         .facts,
         .paths,
-        .evidence-grid {
+        .evidence-grid,
+        .timeline {
           grid-template-columns: 1fr;
+        }
+        .key-statement {
+          padding: 19px;
         }
         .cover {
           padding: 0 14px;
@@ -238,18 +357,38 @@
         }
       }
     </style>
-    <link data-cpa-four-language-toolbar-style rel="stylesheet" href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5">
+    <link
+      data-cpa-four-language-toolbar-style
+      rel="stylesheet"
+      href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5"
+    />
     <script>
       window.__cpaFourLanguageToolbar = true;
     </script>
     <script data-cpa-four-language-toolbar-flag>
       window.__cpaFourLanguageToolbar = true;
     </script>
-    <link rel="alternate" hreflang="en" href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/en/">
-<link rel="alternate" hreflang="ja" href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/ja/">
-<link rel="alternate" hreflang="zh-Hans" href="https://cn.globalprotectionwall.com/child-advocacy-site/news/taipei-child-protection-report-20261026/zh-Hans/">
-<link rel="alternate" hreflang="zh-Hant" href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/">
-</head>
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/en/"
+    />
+    <link
+      rel="alternate"
+      hreflang="ja"
+      href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/ja/"
+    />
+    <link
+      rel="alternate"
+      hreflang="zh-Hans"
+      href="https://cn.globalprotectionwall.com/child-advocacy-site/news/taipei-child-protection-report-20261026/zh-Hans/"
+    />
+    <link
+      rel="alternate"
+      hreflang="zh-Hant"
+      href="https://jerryzuhow77.github.io/child-advocacy-site/news/taipei-child-protection-report-20261026/"
+    />
+  </head>
   <body>
     <nav class="bar">
       <a href="/child-advocacy-site/ja/">ホーム</a
@@ -306,8 +445,19 @@
       </div>
       <h2>制度の比較例：陳尚潔氏の一審判決から</h2>
       <p>
-        剴剴事件では、台北地方法院114年度訴字第51号の一審判決が、陳尚潔氏について過失致死罪で懲役2年、その他の文書偽造の訴因については無罪としました。これは一審の結論であり、確定判決ではありません。
+        剴剴事件では、台北地方法院114年度訴字第51号の一審判決が、陳尚潔氏について<span
+          class="hl hl-gold"
+          >過失致死罪で懲役2年</span
+        >、その他の<span class="hl hl-sage">文書偽造の訴因については無罪</span
+        >としました。これは一審の結論であり、<span class="hl hl-coral"
+          >確定判決ではありません</span
+        >。
       </p>
+      <div class="evidence-legend" aria-label="情報レベルの凡例">
+        <span class="court">一審裁判所の認定</span>
+        <span class="argument">検察・弁護側の主張</span>
+        <span class="public">市民意見／未確認の告発</span>
+      </div>
       <div class="evidence-grid">
         <div class="evidence-card">
           <b>一審が認定したこと</b>
@@ -321,6 +471,11 @@
           <b>控訴審で続く争い</b>
           公視は、検察が懲役2年を軽すぎると主張する一方、弁護側は養子縁組支援担当者は措置・児童保護担当者ではなく、一審が義務を拡張したとして無罪を求めたと報じています。
         </div>
+      </div>
+      <div class="key-statement">
+        <small>KEY READING｜読み方の要点</small>
+        保護の引き継ぎとは、<span class="hl hl-gold">分散した警告信号</span
+        >を行動可能なリスク判断につなげることです。各機関が自分の担当部分だけを見ることではありません。
       </div>
       <h2>報道から見える三つの重要争点</h2>
       <ul class="detail-list">
@@ -339,6 +494,25 @@
       </ul>
       <div class="callout">
         この判決から考えるべきなのは、すべての責任を一つの職名に負わせることではありません。写真、訪問、健康変化、養育者の説明に散在する警告を誰が統合するのか、誰が再確認を始められるのか、誰が子どもを実際に確認したと保証するのか、という点です。
+      </div>
+      <h2>3回の訪問から控訴審へ：四つの重要時点</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <span class="timeline-date">2023.09.25／10.23／11.20</span>
+          『報導者』は、劉彩萱氏による養育期間中に3回の定期訪問が行われたと整理しています。争点は訪問の有無だけでなく、情報を時系列で比較し、異常を上位対応につなげたかです。
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-date">2026.04.16</span>
+          台北地方法院は一審で過失致死罪につき懲役2年、文書偽造について無罪としました。本件固有の保証人的地位が中心的な法的争点となりました。
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-date">2026.09.16</span>
+          控訴審が初めて開廷。検察は量刑が軽すぎると主張し、弁護側は注意義務と保証人的地位の範囲を争いました。
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-date">2026.11.06</span>
+          高等法院は午後2時30分から準備手続を続行すると公告しました。事件は係属中であり、最終的な法的責任は確定判決に従います。
+        </div>
       </div>
       <h2>Threadsの公開コメント：市民が示した疑問</h2>
       <div class="caution">
@@ -409,11 +583,20 @@
         >
       </div>
       <nav class="languages">
-        <a href="../">繁中</a><a href="/child-advocacy-site/news/taipei-child-protection-report-20261026/ja/">简中</a
+        <a href="../">繁中</a
+        ><a
+          href="/child-advocacy-site/news/taipei-child-protection-report-20261026/ja/"
+          >简中</a
         ><a href="../en/">English</a><a href="./">日本語</a>
       </nav>
     </main>
-    <script data-cpa-legal-notice-script src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"></script>
-    <script data-cpa-four-language-toolbar-script src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"></script>
+    <script
+      data-cpa-legal-notice-script
+      src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"
+    ></script>
+    <script
+      data-cpa-four-language-toolbar-script
+      src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"
+    ></script>
   </body>
 </html>
