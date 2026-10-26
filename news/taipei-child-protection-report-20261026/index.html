@@ -290,6 +290,57 @@
       .evidence-legend .public {
         background: #efd8d0;
       }
+      .reading-lens {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin: 24px 0 30px;
+      }
+      .lens-card {
+        padding: 20px;
+        border: 1px solid var(--line);
+        background: #fffaf1;
+      }
+      .lens-card:nth-child(2) {
+        background: #f4eee4;
+      }
+      .lens-card:nth-child(3) {
+        background: #edf2ed;
+      }
+      .lens-card:nth-child(4) {
+        background: #f4e8e3;
+      }
+      .lens-kicker {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--clay);
+        font:
+          850 0.72rem/1.3 system-ui,
+          sans-serif;
+        letter-spacing: 0.12em;
+      }
+      .lens-card h3 {
+        margin: 0 0 8px;
+        color: var(--ink);
+        font:
+          800 clamp(1.1rem, 2.4vw, 1.34rem)/1.4 Georgia,
+          "Noto Serif TC",
+          serif;
+      }
+      .lens-card p {
+        margin: 0;
+      }
+      .verification-note {
+        margin: 26px 0;
+        padding: 19px 21px;
+        border-left: 6px solid #bd8b3b;
+        background: #f2eadb;
+        color: #3d4d49;
+      }
+      .verification-note b {
+        color: #8d5b2f;
+        font-size: 1.08em;
+      }
       .detail-list li:nth-child(1) strong {
         color: #8d5b2f;
       }
@@ -338,6 +389,7 @@
         .facts,
         .paths,
         .evidence-grid,
+        .reading-lens,
         .timeline {
           grid-template-columns: 1fr;
         }
@@ -492,6 +544,73 @@
           高院公告下午 2:30
           在刑事庭大廈專一法庭續行準備程序。案件仍在審理，最終法律責任須以確定判決為準。
         </div>
+      </div>
+      <h2>把報導讀深一層：四個不能跳過的問題</h2>
+      <div class="reading-lens">
+        <article class="lens-card">
+          <span class="lens-kicker">01｜風險訊號</span>
+          <h3>三次訪視到底看見了什麼？</h3>
+          <p>
+            公開報導整理的訪視紀錄曾出現頭部瘀青、感冒發燒、掉牙等狀況。陳尚潔曾追問並要求照顧者就醫或回報；真正的爭點是，在獲得看似合理的解釋後，是否還應以醫療資料、照片、成長數據或其他單位資訊進一步交叉查證。
+          </p>
+        </article>
+        <article class="lens-card">
+          <span class="lens-kicker">02｜累積判讀</span>
+          <h3>為什麼紀錄品質會影響安全？</h3>
+          <p>
+            紀錄的目的不是多填一張表，而是讓身高、體重、飲食、睡眠、牙齒、情緒與行為能跨月比較。單一事件可能各有解釋；若多項變化同時出現，制度就必須能把它們組合成<span
+              class="hl hl-gold"
+              >需要升級處理的風險圖像</span
+            >。
+          </p>
+        </article>
+        <article class="lens-card">
+          <span class="lens-kicker">03｜跨網絡責任</span>
+          <h3>為什麼「誰是主責」會成為核心？</h3>
+          <p>
+            當時涉及樹鶯社福中心、兒盟收出養服務與文山居托中心。不同單位掌握的資訊與可採取的行動並不相同；一審著重實際接觸孩子、控制風險與啟動保護的能力。<span
+              class="hl hl-sage"
+              >制度缺口與個人義務可以同時存在</span
+            >，不能互相抵銷。
+          </p>
+        </article>
+        <article class="lens-card">
+          <span class="lens-kicker">04｜二審界線</span>
+          <h3>二審接下來要處理什麼？</h3>
+          <p>
+            二審仍須檢視個案性的保證人地位、注意義務、結果可避免性、因果關係與量刑。辯方主張不能因職稱就擴張刑責；檢方則強調陳尚潔對孩子受照顧狀況具有較高的實際可及性。<span
+              class="hl hl-coral"
+              >在確定判決前，兩造主張都不等於最終結論</span
+            >。
+          </p>
+        </article>
+      </div>
+      <h2>從個案走向制度：五道最低保護防線</h2>
+      <ul class="detail-list">
+        <li>
+          <strong>看趨勢，不只看單次：</strong
+          >每次訪視都要能和前次的成長、外傷、情緒與生活資訊比較。
+        </li>
+        <li>
+          <strong>讓孩子有被單獨看見的機會：</strong
+          >不能只依賴照顧者說詞；必要時應安排醫療、發展或其他專業評估。
+        </li>
+        <li>
+          <strong>共用風險訊號：</strong
+          >社福、收出養與托育監督單位應有可追溯的通報、回覆與未完成事項。
+        </li>
+        <li>
+          <strong>事先寫明升級門檻：</strong
+          >瘀傷、異常掉牙、明顯消瘦或行為劇變等訊號若重複出現，應啟動複查與主管覆核。
+        </li>
+        <li>
+          <strong>每一案都要有最終承接者：</strong
+          >跨單位合作不能變成每個人都做了一部分，卻沒有人確認孩子最後是否安全。
+        </li>
+      </ul>
+      <div class="verification-note">
+        <b>閱讀查核四問：</b
+        >這句話來自法院、檢辯主張、新聞整理，還是社群貼文？是否有第二個來源交叉證實？案件是否仍在上訴？這項資訊能否直接支持它後面的結論？
       </div>
       <h2>Threads 公開留言：民眾如何提出質疑</h2>
       <div class="caution">
