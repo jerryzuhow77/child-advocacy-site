@@ -287,6 +287,57 @@
       .evidence-legend .public {
         background: #efd8d0;
       }
+      .reading-lens {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin: 24px 0 30px;
+      }
+      .lens-card {
+        padding: 20px;
+        border: 1px solid var(--line);
+        background: #fffaf1;
+      }
+      .lens-card:nth-child(2) {
+        background: #f4eee4;
+      }
+      .lens-card:nth-child(3) {
+        background: #edf2ed;
+      }
+      .lens-card:nth-child(4) {
+        background: #f4e8e3;
+      }
+      .lens-kicker {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--clay);
+        font:
+          850 0.72rem/1.3 system-ui,
+          sans-serif;
+        letter-spacing: 0.12em;
+      }
+      .lens-card h3 {
+        margin: 0 0 8px;
+        color: var(--ink);
+        font:
+          800 clamp(1.1rem, 2.4vw, 1.34rem)/1.4 Georgia,
+          "Noto Serif SC",
+          serif;
+      }
+      .lens-card p {
+        margin: 0;
+      }
+      .verification-note {
+        margin: 26px 0;
+        padding: 19px 21px;
+        border-left: 6px solid #bd8b3b;
+        background: #f2eadb;
+        color: #3d4d49;
+      }
+      .verification-note b {
+        color: #8d5b2f;
+        font-size: 1.08em;
+      }
       .detail-list li:nth-child(1) strong {
         color: #8d5b2f;
       }
@@ -335,6 +386,7 @@
         .facts,
         .paths,
         .evidence-grid,
+        .reading-lens,
         .timeline {
           grid-template-columns: 1fr;
         }
@@ -489,6 +541,73 @@
           高院公告下午 2:30
           在刑事庭大厦专一法庭续行准备程序。案件仍在审理，最终法律责任须以确定判决为准。
         </div>
+      </div>
+      <h2>把报道读深一层：四个不能跳过的问题</h2>
+      <div class="reading-lens">
+        <article class="lens-card">
+          <span class="lens-kicker">01｜风险信号</span>
+          <h3>三次访视到底看见了什么？</h3>
+          <p>
+            公开报道整理的访视记录曾出现头部瘀青、感冒发烧、掉牙等状况。陈尚洁曾追问并要求照顾者就医或回报；真正的争点是，在得到看似合理的解释后，是否还应通过医疗资料、照片、成长数据或其他单位信息进一步交叉核实。
+          </p>
+        </article>
+        <article class="lens-card">
+          <span class="lens-kicker">02｜累积研判</span>
+          <h3>为什么记录质量会影响安全？</h3>
+          <p>
+            记录的目的不是多填一张表，而是让身高、体重、饮食、睡眠、牙齿、情绪与行为能够跨月比较。单一事件可能各有解释；如果多项变化同时出现，制度就必须能把它们组合成<span
+              class="hl hl-gold"
+              >需要升级处理的风险图像</span
+            >。
+          </p>
+        </article>
+        <article class="lens-card">
+          <span class="lens-kicker">03｜跨网络责任</span>
+          <h3>为什么“谁是主责”会成为核心？</h3>
+          <p>
+            当时涉及树林莺歌社会福利服务中心、儿盟收养服务与文山居家托育服务中心。不同单位掌握的信息与能够采取的行动并不相同；一审着重实际接触孩子、控制风险与启动保护的能力。<span
+              class="hl hl-sage"
+              >制度缺口与个人义务可以同时存在</span
+            >，不能互相抵销。
+          </p>
+        </article>
+        <article class="lens-card">
+          <span class="lens-kicker">04｜二审界线</span>
+          <h3>二审接下来要处理什么？</h3>
+          <p>
+            二审仍须检视个案性的保证人地位、注意义务、结果可避免性、因果关系与量刑。辩方主张不能因职称就扩张刑责；检方则强调陈尚洁对孩子受照顾状况具有较高的实际可及性。<span
+              class="hl hl-coral"
+              >在确定判决前，双方主张都不等于最终结论</span
+            >。
+          </p>
+        </article>
+      </div>
+      <h2>从个案走向制度：五道最低保护防线</h2>
+      <ul class="detail-list">
+        <li>
+          <strong>看趋势，不只看单次：</strong
+          >每次访视都要能和前次的成长、外伤、情绪与生活信息比较。
+        </li>
+        <li>
+          <strong>让孩子有被单独看见的机会：</strong
+          >不能只依赖照顾者说法；必要时应安排医疗、发展或其他专业评估。
+        </li>
+        <li>
+          <strong>共享风险信号：</strong
+          >社会福利、收养服务与托育监督单位应有可追溯的通报、回复与未完成事项。
+        </li>
+        <li>
+          <strong>事先写明升级门槛：</strong
+          >瘀伤、异常掉牙、明显消瘦或行为剧变等信号如果重复出现，应启动复查与主管复核。
+        </li>
+        <li>
+          <strong>每一案都要有最终承接者：</strong
+          >跨单位合作不能变成每个人都做了一部分，却没有人确认孩子最后是否安全。
+        </li>
+      </ul>
+      <div class="verification-note">
+        <b>阅读查核四问：</b
+        >这句话来自法院、检辩主张、新闻整理，还是社交平台贴文？是否有第二个来源交叉证实？案件是否仍在上诉？这项信息能否直接支持它后面的结论？
       </div>
       <h2>Threads 公开留言：民众如何提出质疑</h2>
       <div class="caution">
