@@ -1,0 +1,31 @@
+name: Probe HK wall redirect chain
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/oneoff-probe-hk-wall-redirect-20261027.yml']
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Show public redirect hops
+        run: |
+          set -Eeuo pipefail
+          url='https://cn.globalprotectionwall.com/?region=hk&lang=zh-Hans'
+          for n in 1 2 3 4 5 6; do
+            printf 'hop=%s url=%s\n' "$n" "$url"
+            headers="$(curl -kSs -o /dev/null -D - --max-redirs 0 "$url" || true)"
+            status="$(printf '%s' "$headers" | awk 'toupper($1) ~ /^HTTP\// {s=$2} END{print s}')"
+            location="$(printf '%s' "$headers" | awk 'BEGIN{IGNORECASE=1}/^location:/{sub(/^[^:]*:[[:space:]]*/, ""); sub(/\r$/, ""); print; exit}')"
+            printf 'status=%s location=%s\n' "$status" "$location"
+            case "$status" in 301|302|303|307|308) ;; *) break;; esac
+            test -n "$location" || break
+            url="$(python3 - "$url" "$location" <<'PY'
+import sys,urllib.parse
+print(urllib.parse.urljoin(sys.argv[1],sys.argv[2]))
+PY
+)"
+          done
+          curl -kSs --max-time 20 'https://cn.globalprotectionwall.com/api/health' | python3 -c 'import json,sys; print("api_health="+json.load(sys.stdin).get("status","missing"))'
