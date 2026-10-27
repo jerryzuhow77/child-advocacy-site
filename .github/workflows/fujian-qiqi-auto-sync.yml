@@ -20,7 +20,7 @@ permissions:
 
 # Share the sitemap workflow's lock so both automations cannot push at once.
 concurrency:
-  group: child-advocacy-site-sitemap
+  group: child-advocacy-site-main-writer
   cancel-in-progress: false
 
 jobs:
