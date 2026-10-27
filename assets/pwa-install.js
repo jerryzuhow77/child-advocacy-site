@@ -157,7 +157,7 @@
         reloadingForUpdate = true;
         window.location.reload();
       });
-      navigator.serviceWorker.register(new URL('sw.js?v=20261026-pinned-chronology-v20', siteBase).href, {
+      navigator.serviceWorker.register(new URL('sw.js?v=20261027-safety-tools-v21', siteBase).href, {
         scope: siteBase.pathname,
         updateViaCache: 'none'
       })
