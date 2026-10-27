@@ -57,7 +57,9 @@ permissions:
   contents: write
 
 concurrency:
-  group: four-language-qa-main
+  # Share one repository-wide writer lock with every workflow that commits to main.
+  # This serializes generated locale, route, and sitemap commits without cancelling them.
+  group: child-advocacy-site-main-writer
   cancel-in-progress: false
 
 jobs:
@@ -79,8 +81,11 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          for attempt in 1 2 3; do
-            git fetch origin main
+          # A fresh snapshot is required for every attempt. The shared writer lock
+          # covers known bot writers; these retries also safely absorb human commits
+          # or independently dispatched legacy workflows without force-pushing.
+          for attempt in 1 2 3 4 5 6; do
+            git fetch --no-tags origin main
             git reset --hard origin/main
             python3 .github/scripts/sync-zh-hans-content.py
             python3 .github/scripts/sync-four-language-toolbar.py
@@ -94,11 +99,13 @@ jobs:
             if git push origin HEAD:main; then
               break
             fi
-            if [ "$attempt" -eq 3 ]; then
-              echo 'Unable to publish synchronized four-language routes after three fresh attempts.' >&2
+            if [ "$attempt" -eq 6 ]; then
+              echo 'Unable to publish synchronized four-language routes after six fresh attempts.' >&2
               exit 1
             fi
-            sleep 2
+            # Back off between fresh snapshots so a burst of normal main updates
+            # can drain before this generated commit tries again.
+            sleep "$((attempt * 3))"
           done
 
       - name: Verify Simplified Chinese mirror parity
