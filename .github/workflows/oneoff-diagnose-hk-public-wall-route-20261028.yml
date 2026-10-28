@@ -72,7 +72,12 @@ jobs:
                           body = block[loc.start():loc_end]
                           upstreams = re.findall(r"(?m)^\s*proxy_pass\s+([^;]+);", body)
                           locations.append({"location": header, "proxy_pass": upstreams})
-                      selected.append({"file": str(path), "api_locations": locations})
+                      selected.append({
+                          "file": str(path),
+                          "listen": re.findall(r"(?m)^\s*listen\s+([^;]+);", block),
+                          "server_name": re.findall(r"(?m)^\s*server_name\s+([^;]+);", block),
+                          "api_locations": locations,
+                      })
 
           def first(url):
               try:
