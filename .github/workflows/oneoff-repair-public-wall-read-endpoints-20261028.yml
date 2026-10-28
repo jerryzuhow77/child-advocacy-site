@@ -149,7 +149,7 @@ jobs:
           printf '%s' "$primary_json" | python3 -c 'import json,sys; data=json.load(sys.stdin); rows=data.get("messages", data) if isinstance(data,dict) else data; assert isinstance(rows,list); assert any(x.get("id")=="470d1b86-1298-4d2d-a8f6-ab1fa1466001" for x in rows)'
           primary_hash="$(printf '%s' "$primary_json" | sha256sum | cut -d' ' -f1)"
           for host in cn.globalprotectionwall.com wall.globalprotectionwall.com; do
-            current_json="$(ssh -i ~/.ssh/hk_key ubuntu@150.109.69.104 "curl --silent --show-error --fail-with-body --max-time 25 --resolve '$host:443:127.0.0.1' -k 'https://$host/api/public/messages?limit=100'")"
+            current_json="$(ssh -i ~/.ssh/hk_key ubuntu@150.109.69.104 "curl --silent --show-error --fail-with-body --max-time 25 -A 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36' --resolve '$host:443:127.0.0.1' -k 'https://$host/api/public/messages?limit=100'")"
             current_hash="$(printf '%s' "$current_json" | sha256sum | cut -d' ' -f1)"
             test "$primary_hash" = "$current_hash"
             printf '%s' "$current_json" | python3 -c 'import json,sys; data=json.load(sys.stdin); rows=data.get("messages", data) if isinstance(data,dict) else data; assert isinstance(rows,list); assert any(x.get("id")=="470d1b86-1298-4d2d-a8f6-ab1fa1466001" for x in rows); assert not any("請勿公開" in (x.get("title","")+x.get("content","")) or "系统功能测试" in (x.get("title","")+x.get("content","")) for x in rows)'
