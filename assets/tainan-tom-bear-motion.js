@@ -50,6 +50,7 @@
   const initGsap=()=>{
     const gsap=window.gsap,ScrollTrigger=window.ScrollTrigger;
     if(!gsap||!ScrollTrigger){revealFallback();return}
+    document.body.classList.add('gsap-ready');
     gsap.registerPlugin(ScrollTrigger);
     const opening=gsap.timeline({defaults:{ease:'power3.out'}});
     opening.from(stage,{autoAlpha:0,scale:.84,rotation:-4,duration:1.05})
