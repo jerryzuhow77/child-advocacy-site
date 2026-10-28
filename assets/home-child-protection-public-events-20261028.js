@@ -54,3 +54,21 @@
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
 })();
+
+(()=>{
+  const root='/child-advocacy-site/';
+  const card={
+    'zh-Hant':{href:root+'features/social-observation/xuanxuan-duty-and-records-20261028/',meta:'多元觀察｜2026.10.28',title:'萱萱案的兩條究責線：生母起訴與社工懲戒，不能混成一句話',summary:'誰被起訴？誰遭專業懲戒？把刑事與行政程序分開，才能精準追問保護責任。',read:'閱讀詳細解說 →',alt:'跨縣市兒少保護與訪視紀錄的原創水墨紙藝意象，非事件現場、無可辨識兒少。'},
+    'zh-Hans':{href:root+'features/social-observation/xuanxuan-duty-and-records-20261028/zh-Hans/',meta:'多元观察｜2026.10.28',title:'萱萱案的两条追责线：生母起诉与社工惩戒，不能混成一句话',summary:'谁被起诉？谁遭专业惩戒？把刑事与行政程序分开，才能精准追问保护责任。',read:'阅读详细解说 →',alt:'跨地区儿童保护与走访记录的原创水墨纸艺意象，非事件现场、无可识别儿童。'}
+  };
+  const add=()=>{
+    const grid=document.querySelector('#home-special-features .grid');
+    if(!grid||grid.querySelector('[data-xuanxuan-duty]'))return;
+    const d=card[document.documentElement.lang==='zh-Hans'?'zh-Hans':'zh-Hant'];
+    const item=document.createElement('article');
+    item.className='home-card feature-card';item.dataset.date='2026-10-28';item.dataset.xuanxuanDuty='';
+    item.innerHTML='<a class="card-link home-media-report-action" data-home-article href="'+d.href+'"><img loading="lazy" decoding="async" width="720" height="405" data-home-thumb src="'+root+'assets/art/xuanxuan-cross-region-records-20261016-refined.webp" alt="'+d.alt+'"><div class="card-copy"><p class="card-meta">'+d.meta+'</p><h3>'+d.title+'</h3><p class="card-summary">'+d.summary+'</p><span class="card-action">'+d.read+'</span></div></a>';
+    grid.insertBefore(item,grid.firstChild);
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
+})();
