@@ -1,0 +1,161 @@
+name: Repair public wall read endpoints
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-repair-public-wall-read-endpoints-20261028.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      HK_KEY: ${{ secrets.TENCENT_SSH_PRIVATE_KEY }}
+      PRIMARY_ORIGIN: https://global-protection.jerryzuhow77.chatgpt.site
+    steps:
+      - name: Configure SSH
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test -n "$HK_KEY"
+          umask 077
+          mkdir -p ~/.ssh
+          printf '%s\n' "$HK_KEY" > ~/.ssh/hk_key
+          chmod 600 ~/.ssh/hk_key
+          ssh-keyscan -H 150.109.69.104 > ~/.ssh/known_hosts
+
+      - name: Route only public wall read endpoints to the primary
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          ssh -i ~/.ssh/hk_key ubuntu@150.109.69.104 'sudo python3 -' <<'PY'
+          from pathlib import Path
+          import re, shutil, subprocess, time
+
+          domains = {"cn.globalprotectionwall.com", "wall.globalprotectionwall.com"}
+          marker = "# shared-primary-public-read-api"
+
+          def masked(text):
+              pattern = r'''#[^\n]*|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*' '''
+              return re.sub(pattern.rstrip(), lambda m: re.sub(r"[^\n]", " ", m.group()), text)
+
+          def block_end(text, start):
+              syntax = masked(text)
+              brace = syntax.find("{", start)
+              depth = 0
+              for pos in range(brace, len(syntax)):
+                  if syntax[pos] == "{": depth += 1
+                  elif syntax[pos] == "}":
+                      depth -= 1
+                      if depth == 0: return pos + 1
+              raise RuntimeError("unbalanced nginx block")
+
+          def route_public_reads(block):
+              while True:
+                  syntax = masked(block)
+                  match = re.search(
+                      r"(?m)^\s*location\s+(?:=\s+/api/public/(?:messages|submission-stats)|~\s+\^/api/public/messages/)\s*\{",
+                      syntax,
+                  )
+                  if not match: break
+                  loc_end = block_end(block, match.start())
+                  line_start = block.rfind("\n", 0, match.start()) + 1
+                  previous_start = block.rfind("\n", 0, max(0, line_start - 2)) + 1
+                  if block[previous_start:line_start].strip() == marker:
+                      line_start = previous_start
+                  while loc_end < len(block) and block[loc_end] in " \t\r\n":
+                      loc_end += 1
+                  block = block[:line_start] + block[loc_end:]
+              snippet = """
+              # shared-primary-public-read-api
+              location = /api/public/messages {
+                  limit_except GET { deny all; }
+                  proxy_pass https://global-protection.jerryzuhow77.chatgpt.site;
+                  proxy_ssl_server_name on;
+                  proxy_set_header Host global-protection.jerryzuhow77.chatgpt.site;
+                  proxy_no_cache 1;
+                  proxy_cache_bypass 1;
+              }
+              location = /api/public/submission-stats {
+                  limit_except GET { deny all; }
+                  proxy_pass https://global-protection.jerryzuhow77.chatgpt.site;
+                  proxy_ssl_server_name on;
+                  proxy_set_header Host global-protection.jerryzuhow77.chatgpt.site;
+                  proxy_no_cache 1;
+                  proxy_cache_bypass 1;
+              }
+              location ~ ^/api/public/messages/ {
+                  limit_except GET { deny all; }
+                  proxy_pass https://global-protection.jerryzuhow77.chatgpt.site;
+                  proxy_ssl_server_name on;
+                  proxy_set_header Host global-protection.jerryzuhow77.chatgpt.site;
+                  proxy_no_cache 1;
+                  proxy_cache_bypass 1;
+              }
+              """
+              return block[:block.rfind("}")] + snippet + block[block.rfind("}"):]
+
+          files = {}
+          for root in (Path("/etc/nginx/sites-enabled"), Path("/etc/nginx/conf.d")):
+              if root.exists():
+                  for path in root.iterdir():
+                      try: files[path.resolve()] = path.resolve().read_text()
+                      except Exception: pass
+
+          changes, found = {}, set()
+          for path, text in files.items():
+              syntax = masked(text)
+              for match in re.finditer(r"(?m)^\s*server\s*\{", syntax):
+                  end = block_end(text, match.start())
+                  block = text[match.start():end]
+                  names = set()
+                  for line in re.findall(r"(?m)^\s*server_name\s+([^;]+);", block):
+                      names.update(line.split())
+                  selected = names & domains
+                  if not selected or not re.search(r"(?m)^\s*listen\s+[^;]*\bssl\b", block):
+                      continue
+                  changes.setdefault(path, []).append((match.start(), end, route_public_reads(block)))
+                  found.update(selected)
+
+          if found != domains:
+              raise SystemExit("missing public TLS virtual host: " + ",".join(sorted(domains - found)))
+
+          backups = {}
+          try:
+              for path, replacements in changes.items():
+                  original = files[path]
+                  updated = original
+                  for start, end, block in sorted(replacements, reverse=True):
+                      updated = updated[:start] + block + updated[end:]
+                  backup_dir = Path("/var/backups/child-advocacy-nginx")
+                  backup_dir.mkdir(parents=True, exist_ok=True)
+                  backup = backup_dir / (path.name + ".public-wall-reads-" + str(time.time_ns()))
+                  shutil.copy2(path, backup)
+                  backups[path] = backup
+                  path.write_text(updated)
+              subprocess.run(["nginx", "-t"], check=True)
+              subprocess.run(["systemctl", "reload", "nginx"], check=True)
+          except Exception:
+              for path, backup in backups.items():
+                  shutil.copy2(backup, path)
+              subprocess.run(["nginx", "-t"], check=True)
+              subprocess.run(["systemctl", "reload", "nginx"], check=True)
+              raise
+          PY
+
+      - name: Verify public list and stats on both hosts
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          primary="$(curl --silent --show-error --fail-with-body --max-time 25 "$PRIMARY_ORIGIN/api/public/messages?limit=100" | sha256sum | cut -d' ' -f1)"
+          for host in cn.globalprotectionwall.com wall.globalprotectionwall.com; do
+            current="$(curl --silent --show-error --fail-with-body --max-time 25 --resolve "$host:443:127.0.0.1" -k "https://$host/api/public/messages?limit=100" | sha256sum | cut -d' ' -f1)"
+            test "$primary" = "$current"
+            scope="$(curl --silent --show-error --fail-with-body --max-time 25 --resolve "$host:443:127.0.0.1" -k "https://$host/api/public/submission-stats" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("scope", ""))')"
+            test "$scope" = taiwan-hong-kong-shared
+          done
