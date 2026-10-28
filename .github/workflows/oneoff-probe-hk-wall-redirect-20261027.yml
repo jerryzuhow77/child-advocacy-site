@@ -22,10 +22,6 @@ jobs:
             printf 'status=%s location=%s\n' "$status" "$location"
             case "$status" in 301|302|303|307|308) ;; *) break;; esac
             test -n "$location" || break
-            url="$(python3 - "$url" "$location" <<'PY'
-import sys,urllib.parse
-print(urllib.parse.urljoin(sys.argv[1],sys.argv[2]))
-PY
-)"
+            url="$(python3 -c 'import sys, urllib.parse; print(urllib.parse.urljoin(sys.argv[1], sys.argv[2]))' "$url" "$location")"
           done
           curl -kSs --max-time 20 'https://cn.globalprotectionwall.com/api/health' | python3 -c 'import json,sys; print("api_health="+json.load(sys.stdin).get("status","missing"))'
