@@ -68,13 +68,13 @@
     sections.forEach((section,index)=>{
       const head=section.querySelectorAll('.eyebrow,h2');
       const body=[...section.querySelectorAll('.wrap>p:not(.eyebrow),.sources li,.home')];
-      if(head.length)gsap.from(head,{autoAlpha:0,y:20,duration:.62,stagger:.08,ease:'power2.out',scrollTrigger:{trigger:section,start:'top 82%',once:true}});
+      if(head.length)gsap.from(head,{autoAlpha:0,y:20,duration:.62,stagger:.08,ease:'power2.out',scrollTrigger:{trigger:section,start:'top 82%',once:true},onComplete:()=>gsap.set(head,{clearProps:'opacity,visibility,transform'})});
       if(index===0&&cards.length){
-        gsap.from(cards,{autoAlpha:0,y:34,rotation:(i)=>i%2?-.7:.7,duration:.72,stagger:.12,ease:'power3.out',scrollTrigger:{trigger:grid,start:'top 82%',once:true}});
+        gsap.from(cards,{autoAlpha:0,y:34,rotation:(i)=>i%2?-.7:.7,duration:.72,stagger:.12,ease:'power3.out',scrollTrigger:{trigger:grid,start:'top 82%',once:true},onComplete:()=>gsap.set(cards,{clearProps:'opacity,visibility,transform'})});
         const timelinePath=grid.querySelector('path');
         if(timelinePath){const l=timelinePath.getTotalLength();gsap.set(timelinePath,{strokeDasharray:l,strokeDashoffset:l});gsap.to(timelinePath,{strokeDashoffset:0,duration:1.45,ease:'power2.out',scrollTrigger:{trigger:grid,start:'top 82%',once:true}})}
       }
-      if(body.length)gsap.from(body,{autoAlpha:0,y:18,duration:.55,stagger:.09,ease:'power2.out',scrollTrigger:{trigger:body[0],start:'top 88%',once:true}});
+      if(body.length)gsap.from(body,{autoAlpha:0,y:18,duration:.55,stagger:.09,ease:'power2.out',scrollTrigger:{trigger:body[0],start:'top 88%',once:true},onComplete:()=>gsap.set(body,{clearProps:'opacity,visibility,transform'})});
     });
     if(matchMedia('(pointer:fine)').matches){hero.addEventListener('pointermove',event=>{const x=(event.clientX/innerWidth-.5)*14;const y=(event.clientY/innerHeight-.5)*10;gsap.to(stage,{x,y,duration:.8,ease:'power2.out',overwrite:'auto'})});hero.addEventListener('pointerleave',()=>gsap.to(stage,{x:0,y:0,duration:1,ease:'power3.out'}))}
     addEventListener('load',()=>ScrollTrigger.refresh(),{once:true});
