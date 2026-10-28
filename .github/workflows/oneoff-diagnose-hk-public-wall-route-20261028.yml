@@ -75,10 +75,13 @@ jobs:
                       selected.append({"file": str(path), "api_locations": locations})
 
           def first(url):
-              with urllib.request.urlopen(url, timeout=15) as response:
-                  data = json.load(response)
-              messages = data.get("messages", [])
-              return {"count": len(messages), "first_id": messages[0].get("id") if messages else None}
+              try:
+                  with urllib.request.urlopen(url, timeout=15) as response:
+                      data = json.load(response)
+                  messages = data.get("messages", [])
+                  return {"count": len(messages), "first_id": messages[0].get("id") if messages else None}
+              except Exception as exc:
+                  return {"error": type(exc).__name__, "detail": str(exc)}
 
           print(json.dumps({
               "vhosts": selected,
