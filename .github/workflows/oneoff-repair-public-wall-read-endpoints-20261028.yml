@@ -68,7 +68,11 @@ jobs:
                       marker_start = block.rfind("\\n", 0, block.index(active_marker)) + 1
                       match = re.search(location_pattern, masked(block)[marker_start:])
                       if not match:
-                          raise RuntimeError("primary API marker without location")
+                          # A previous partial rollback can leave only the comment.
+                          # Remove that orphan safely and continue.
+                          marker_end = block.find("\\n", marker_start)
+                          block = block[:marker_start] + (block[marker_end + 1:] if marker_end >= 0 else "")
+                          continue
                       location_start = marker_start + match.start()
                       location_end = block_end(block, location_start)
                       while location_end < len(block) and block[location_end] in " \\t\\r\\n":
