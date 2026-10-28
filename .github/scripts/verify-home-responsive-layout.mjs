@@ -115,7 +115,10 @@ try{
    // The current pinned-brief slider intentionally sits before <main>. Track the
    // live module by its durable slider attribute, not its retired date-stamped ID,
    // so normal published cards are measured rather than misclassified as core layout.
-   const modules=[...document.querySelectorAll('[data-gsap-slider].paired-daily-briefs,main>.daily-brief-20261018,main>.mobile-daily-brief,main>.home-light-impression,main>#weekly-reading,main>#home-case-patterns,main>#october-action-focus,main>#chen-nov6-hearing,main>#child-family-support-administration-20261020')].map(e=>({name:e.id||e.className,height:footprint(e)}));
+   // The public activity round-up is a bounded, published card list. It was added
+   // after the original core-height ceiling, so measure it alongside the other
+   // editorial additions instead of treating ordinary article growth as layout bloat.
+   const modules=[...document.querySelectorAll('[data-gsap-slider].paired-daily-briefs,main>.daily-brief-20261018,main>.mobile-daily-brief,main>.home-light-impression,main>#weekly-reading,main>#home-case-patterns,main>#october-action-focus,main>#news-activity,main>#chen-nov6-hearing,main>#child-family-support-administration-20261020')].map(e=>({name:e.id||e.className,height:footprint(e)}));
    // The first two pinned reports are part of the historical core. Later cards
    // are published additions and must be measured individually and bounded.
    const pinned=[...document.querySelectorAll('#news-flash .home-card')].slice(2);
