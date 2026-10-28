@@ -18,7 +18,9 @@
   document.querySelectorAll(".event h2").forEach(el=>splitForMarker(el,"｜"));
   document.querySelectorAll(".event .meta").forEach(el=>splitForMarker(el,"｜"));
   window.addEventListener("load",()=>{
-    if(!window.gsap||window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+    const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.documentElement.dataset.cpaArticleMotion=reduce?"reduced":(window.gsap?"gsap":"fallback");
+    if(!window.gsap||reduce)return;
     const gsap=window.gsap;
     gsap.timeline({defaults:{ease:"power2.out"}})
       .from(".hero small",{opacity:0,y:10,duration:.35})
