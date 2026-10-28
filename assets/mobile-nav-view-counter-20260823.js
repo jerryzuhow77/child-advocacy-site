@@ -51,7 +51,7 @@ function isTaiwanAudience(){
 function guardianWallUrl(){
   var language=langCode();
   var useTaiwan=location.hostname!=='cn.globalprotectionwall.com'||isTaiwanAudience();
-  if(!useTaiwan)return'https://cn.globalprotectionwall.com/?region=hk&lang=zh-Hans#guest-message';
+  if(!useTaiwan)return'https://cn.globalprotectionwall.com/#guest-message';
   var target=new URL('https://global-protection.jerryzuhow77.chatgpt.site/');
   target.searchParams.set('region','tw');
   if(language!=='zh-Hant')target.searchParams.set('lang',language);
