@@ -1,4 +1,5 @@
 # 2026-10-28: reapply convergence after the public mirror lagged the approved guest post.
+# Narrow repair: exact legacy public endpoints otherwise bypass the shared proxy.
 name: Converge Hong Kong wall API with Taiwan primary
 
 on:
@@ -100,6 +101,17 @@ jobs:
               line_start = block.rfind("\n", 0, match.start()) + 1
               previous_start = block.rfind("\n", 0, max(0, line_start - 2)) + 1
               if block[previous_start:line_start].strip() in {marker, "# dedicated-hong-kong-api"}: line_start = previous_start
+              while loc_end < len(block) and block[loc_end] in " \t\r\n": loc_end += 1
+              block = block[:line_start] + block[loc_end:]
+
+          # Exact legacy public endpoints outrank the shared /api/ prefix. Remove only
+          # the two public read endpoints required for list and count consistency.
+          while True:
+              syntax = masked(block)
+              match = re.search(r"(?m)^\s*location\s+=\s+/api/public/(?:messages|submission-stats)\s*\{", syntax)
+              if not match: break
+              loc_end = block_end(block, match.start())
+              line_start = block.rfind("\n", 0, match.start()) + 1
               while loc_end < len(block) and block[loc_end] in " \t\r\n": loc_end += 1
               block = block[:line_start] + block[loc_end:]
 
