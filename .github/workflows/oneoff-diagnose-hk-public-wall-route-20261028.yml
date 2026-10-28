@@ -1,0 +1,88 @@
+name: Diagnose Hong Kong public wall route
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/oneoff-diagnose-hk-public-wall-route-20261028.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      HK_KEY: ${{ secrets.TENCENT_SSH_PRIVATE_KEY }}
+    steps:
+      - name: Configure SSH
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test -n "$HK_KEY"
+          umask 077
+          mkdir -p ~/.ssh
+          printf '%s\n' "$HK_KEY" > ~/.ssh/hk_key
+          chmod 600 ~/.ssh/hk_key
+          ssh-keyscan -H 150.109.69.104 > ~/.ssh/known_hosts
+
+      - name: Report only the public API routing signals
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          ssh -i ~/.ssh/hk_key ubuntu@150.109.69.104 'sudo python3 -' <<'PY'
+          from pathlib import Path
+          import json, re, subprocess, urllib.request
+
+          domain = "cn.globalprotectionwall.com"
+
+          def masked(text):
+              return re.sub(r'''#[^\n]*|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*' ''', lambda m: re.sub(r"[^\n]", " ", m.group()), text)
+
+          def block_end(text, start):
+              syntax = masked(text)
+              brace = syntax.find("{", start)
+              depth = 0
+              for pos in range(brace, len(syntax)):
+                  if syntax[pos] == "{": depth += 1
+                  elif syntax[pos] == "}":
+                      depth -= 1
+                      if depth == 0: return pos + 1
+              raise RuntimeError("unbalanced nginx block")
+
+          selected = []
+          for root in (Path("/etc/nginx/sites-enabled"), Path("/etc/nginx/conf.d")):
+              if not root.exists(): continue
+              for path in root.iterdir():
+                  try: text = path.read_text()
+                  except Exception: continue
+                  syntax = masked(text)
+                  for match in re.finditer(r"(?m)^\s*server\s*\{", syntax):
+                      end = block_end(text, match.start())
+                      block = text[match.start():end]
+                      if domain not in block: continue
+                      locations = []
+                      block_syntax = masked(block)
+                      for loc in re.finditer(r"(?m)^\s*location\s+[^\{]+\{", block_syntax):
+                          loc_end = block_end(block, loc.start())
+                          header = block[loc.start():block.find("{", loc.start())].strip()
+                          if "/api" not in header: continue
+                          body = block[loc.start():loc_end]
+                          upstreams = re.findall(r"(?m)^\s*proxy_pass\s+([^;]+);", body)
+                          locations.append({"location": header, "proxy_pass": upstreams})
+                      selected.append({"file": str(path), "api_locations": locations})
+
+          def first(url):
+              with urllib.request.urlopen(url, timeout=15) as response:
+                  data = json.load(response)
+              messages = data.get("messages", [])
+              return {"count": len(messages), "first_id": messages[0].get("id") if messages else None}
+
+          print(json.dumps({
+              "vhosts": selected,
+              "loopback": first("http://127.0.0.1:8787/api/public/messages?limit=100"),
+              "public": first("https://cn.globalprotectionwall.com/api/public/messages?limit=100"),
+          }, indent=2))
+          PY
