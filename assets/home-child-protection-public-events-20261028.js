@@ -72,3 +72,29 @@
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
 })();
+
+
+(()=>{
+  const ROOT='/child-advocacy-site/';
+  const pinned={
+    key:'xuanxuan-duty-and-records-20261028',
+    date:'2026-10-29T00:01',
+    image:ROOT+'assets/art/xuanxuan-cross-region-records-20261016-refined.webp',
+    copy:{
+      'zh-Hant':{href:ROOT+'features/social-observation/xuanxuan-duty-and-records-20261028/',small:'置頂・多元觀察｜2026.10.28',title:'萱萱案的兩條究責線：起訴與懲戒，必須分開讀',summary:'生母涉過失致死遭起訴；台南社工的公開究責是專業懲戒。用一頁拆開程序、責任與可查證資料。',read:'先讀 60 秒結論 →',alt:'跨縣市兒少保護與訪視紀錄的原創水墨紙藝意象，非事件現場、無可辨識兒少。'},
+      'zh-Hans':{href:ROOT+'features/social-observation/xuanxuan-duty-and-records-20261028/zh-Hans/',small:'置顶・多元观察｜2026.10.28',title:'萱萱案的两条追责线：起诉与惩戒，必须分开读',summary:'生母涉过失致死遭起诉；台南社工的公开追责是专业惩戒。用一页拆开程序、责任与可查证资料。',read:'先读 60 秒结论 →',alt:'跨地区儿童保护与走访记录的原创水墨纸艺意象，非事件现场、无可识别儿童。'}
+    }
+  };
+  const locale=document.documentElement.lang==='zh-Hans'?'zh-Hans':'zh-Hant';
+  const add=()=>{
+    const slider=document.querySelector('[data-gsap-slider]');
+    const d=pinned.copy[locale];
+    if(!slider||!d||slider.querySelector('[data-xuanxuan-pinned]'))return;
+    const card=document.createElement('a');
+    card.href=d.href;card.dataset.homeArticle='';card.dataset.homeBrief=pinned.key;card.dataset.homeDate=pinned.date;card.dataset.homePinned='true';card.dataset.xuanxuanPinned='';
+    card.innerHTML='<img src="'+pinned.image+'" alt="'+d.alt+'" data-home-thumb><span class="brief-copy"><small>'+d.small+'</small><h2>'+d.title+'</h2><p>'+d.summary+'</p><span class="brief-read">'+d.read+'</span></span>';
+    const first=[...slider.children].find(el=>(el.dataset.homeDate||'')<pinned.date);
+    slider.insertBefore(card,first||slider.firstChild);
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
+})();
