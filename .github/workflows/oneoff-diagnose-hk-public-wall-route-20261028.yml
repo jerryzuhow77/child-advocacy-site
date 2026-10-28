@@ -100,9 +100,5 @@ jobs:
             curl --silent --show-error --max-time 25 -D "$headers" -o "$body" "$origin/api/public/messages?limit=100"
             printf '%s\n' "origin=$origin"
             grep -iE '^(HTTP/|cf-cache-status:|cache-control:|age:|server:|date:)' "$headers" || true
-            python3 - "$body" <<'PY'
-            import json, sys
-            rows = json.load(open(sys.argv[1])).get("messages", [])
-            print({"count": len(rows), "first_id": rows[0].get("id") if rows else None})
-            PY
+            python3 -c 'import json,sys; rows=json.load(open(sys.argv[1])).get("messages", []); print({"count": len(rows), "first_id": rows[0].get("id") if rows else None})' "$body"
           done
