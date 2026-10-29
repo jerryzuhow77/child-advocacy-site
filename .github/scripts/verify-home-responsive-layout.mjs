@@ -123,7 +123,7 @@ try{
    // Measure only rows beyond the original six cards, including their grid gaps.
    const original=cards.slice(0,6),extra=cards.slice(6);
    const bottom=list=>Math.max(...list.map(e=>e.getBoundingClientRect().bottom));
-   const featured=[...document.querySelectorAll('main>#home-special-features [data-xuanxuan-duty]')].map(e=>({name:'xuanxuan-featured-card',height:footprint(e)}));
+   const featured=[...document.querySelectorAll('main>#home-special-features [data-xuanxuan-duty]')].map(e=>{const parent=e.parentElement,before=parent.getBoundingClientRect().height,display=e.style.display;e.style.display='none';const after=parent.getBoundingClientRect().height;e.style.display=display;return{name:'xuanxuan-featured-card',height:Math.max(0,Math.ceil(before-after))};});
    return {modules,featured,pinned:{cards:pinned.length,height:pinned.reduce((n,e)=>n+footprint(e),0)},news:extra.length?Math.max(0,bottom(cards)-bottom(original)):0,extraCards:extra.length};
   });
   const baseline=reports.find(r=>r.region===region&&r.locale==='zh-Hant'&&r.width===width);
@@ -131,7 +131,7 @@ try{
   assert(additions.modules.every(m=>m.height<(width<=760?1200:700)*translationScale),`${region}/${locale}/${width}: added editorial section too tall ${JSON.stringify(additions)}`);
   // This is a full story card at mobile, not a compact utility module; measure it
   // separately while preserving a tight visual-height ceiling.
-  assert(additions.featured.every(m=>m.height<(width<=760?1600:700)*translationScale),`${region}/${locale}/${width}: featured editorial card too tall ${JSON.stringify(additions)}`);
+  assert(additions.featured.every(m=>m.height<(width<=760?700:500)*translationScale),`${region}/${locale}/${width}: featured editorial addition too tall ${JSON.stringify(additions)}`);
   assert(additions.pinned.height<additions.pinned.cards*(width<=760?700:500)*translationScale+1,`${region}/${locale}/${width}: added pinned reports too tall ${JSON.stringify(additions)}`);
   assert(additions.news<additions.extraCards*(width<=760?400:300)*translationScale+1,`${region}/${locale}/${width}: added news rows too tall ${JSON.stringify(additions)}`);
   const additionHeight=additions.modules.reduce((n,m)=>n+m.height,0)+additions.featured.reduce((n,m)=>n+m.height,0)+additions.pinned.height+additions.news;
