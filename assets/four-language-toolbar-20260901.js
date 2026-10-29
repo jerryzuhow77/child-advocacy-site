@@ -182,6 +182,46 @@
     toolbar.querySelector('.cpa-four-language-actions').prepend(select);
     if(location.hash)select.value=decodeURIComponent(location.hash.slice(1));
   }
+  function normalizeNewsToolbar(){
+    const header=document.querySelector('.news-topbar'),languageBox=header?.querySelector('.news-language');
+    if(!header||!languageBox||header.dataset.cpaNativeToolbarReady)return;
+    header.dataset.cpaNativeToolbarReady='true';
+    const language=locale(),words=navigationCopy[language],links=[...languageBox.querySelectorAll('a[href]')];
+    if(!links.length)return;
+    const label=document.createElement('label');
+    label.className='news-language-picker';
+    const labelText=document.createElement('span');
+    labelText.textContent=language==='en'?'Language':language==='ja'?'言語':language==='zh-Hans'?'语言':'語言';
+    const select=document.createElement('select');
+    select.className='news-language-select';
+    select.setAttribute('aria-label',labelText.textContent);
+    links.forEach(link=>{
+      const option=new Option(link.textContent.trim(),link.href,link.hasAttribute('aria-current'),link.hasAttribute('aria-current'));
+      option.lang=link.lang||'';
+      select.add(option);
+    });
+    select.addEventListener('change',()=>{
+      const target=new URL(select.value,location.href);
+      const next=normalizedLocale(select.selectedOptions[0]?.lang)||normalizedLocale(select.selectedOptions[0]?.value)||'zh-Hant';
+      rememberLocale(next);
+      if(location.hostname===HK_MIRROR_HOST&&target.hostname===TW_SITE_HOST)target.searchParams.set('lang',next);
+      location.href=target.href;
+    });
+    label.append(labelText,select);
+    languageBox.replaceChildren(label);
+    const nav=header.querySelector('.news-toolbar-nav');
+    if(nav&&!nav.querySelector('.news-compact-nav')){
+      const compact=document.createElement('details');
+      compact.className='news-compact-nav';
+      const summary=document.createElement('summary');
+      summary.textContent=words[1];
+      const menu=document.createElement('div');
+      menu.className='news-compact-menu';
+      [...nav.querySelectorAll(':scope > a')].forEach(link=>menu.append(link.cloneNode(true)));
+      compact.append(summary,menu);
+      nav.insertBefore(compact,languageBox);
+    }
+  }
   function languageUrl(key,href){
     if(!href){
       return "";
@@ -240,6 +280,6 @@
     cover.style.objectFit='cover';
     cover.src='/child-advocacy-site/assets/art/child-online-safety-help-route-20261024-visual.webp?v=20261024-visual-2';
   }
-  async function init(){const homeRoute=neutralRoute()==="";if(homeRoute){render(null);addNavigation();}let manifest=null;try{const r=await boundedFetch(ROUTES_URL,{cache:"no-store"});if(r.ok)manifest=await r.json()}catch(_){}if(!homeRoute)render(manifest);repairOnlineSafetyVisual();addNavigation();let pending=false;new MutationObserver(()=>{if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;addNavigation()})}).observe(document.querySelector("main")||document.body,{childList:true,subtree:true})}
+  async function init(){if(document.body?.classList.contains('news-desk')){normalizeNewsToolbar();return;}const homeRoute=neutralRoute()==="";if(homeRoute){render(null);addNavigation();}let manifest=null;try{const r=await boundedFetch(ROUTES_URL,{cache:"no-store"});if(r.ok)manifest=await r.json()}catch(_){}if(!homeRoute)render(manifest);repairOnlineSafetyVisual();addNavigation();let pending=false;new MutationObserver(()=>{if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;addNavigation()})}).observe(document.querySelector("main")||document.body,{childList:true,subtree:true})}
   document.readyState==="loading"?document.addEventListener("DOMContentLoaded",init,{once:true}):init();
 })();
