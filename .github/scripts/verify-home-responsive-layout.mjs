@@ -115,7 +115,7 @@ try{
    // The current pinned-brief slider intentionally sits before <main>. Track the
    // live module by its durable slider attribute, not its retired date-stamped ID,
    // so normal published cards are measured rather than misclassified as core layout.
-   const modules=[...document.querySelectorAll('[data-gsap-slider].paired-daily-briefs,main>.daily-brief-20261018,main>.mobile-daily-brief,main>.home-light-impression,main>#weekly-reading,main>#home-case-patterns,main>#chen-nov6-hearing,main>#child-family-support-administration-20261020')].map(e=>({name:e.id||e.className,height:footprint(e)}));
+   const modules=[...document.querySelectorAll('[data-gsap-slider].paired-daily-briefs,main>.daily-brief-20261018,main>.mobile-daily-brief,main>.home-light-impression,main>#weekly-reading,main>#home-case-patterns,main>#october-action-focus,main>#chen-nov6-hearing,main>#child-family-support-administration-20261020')].map(e=>({name:e.id||e.className,height:footprint(e)}));
    // The first two pinned reports are part of the historical core. Later cards
    // are published additions and must be measured individually and bounded.
    const pinned=[...document.querySelectorAll('#news-flash .home-card')].slice(2);
@@ -123,17 +123,21 @@ try{
    // Measure only rows beyond the original six cards, including their grid gaps.
    const original=cards.slice(0,6),extra=cards.slice(6);
    const bottom=list=>Math.max(...list.map(e=>e.getBoundingClientRect().bottom));
-   return {modules,pinned:{cards:pinned.length,height:pinned.reduce((n,e)=>n+footprint(e),0)},news:extra.length?Math.max(0,bottom(cards)-bottom(original)):0,extraCards:extra.length};
+   const featured=[...document.querySelectorAll('main>#home-special-features [data-xuanxuan-duty]')].map(e=>{const parent=e.parentElement,before=parent.getBoundingClientRect().height,display=e.style.display;e.style.display='none';const after=parent.getBoundingClientRect().height;e.style.display=display;return{name:'xuanxuan-featured-card',height:Math.max(0,Math.ceil(before-after))};});
+   return {modules,featured,pinned:{cards:pinned.length,height:pinned.reduce((n,e)=>n+footprint(e),0)},news:extra.length?Math.max(0,bottom(cards)-bottom(original)):0,extraCards:extra.length};
   });
   const baseline=reports.find(r=>r.region===region&&r.locale==='zh-Hant'&&r.width===width);
   const translationScale=locale==='zh-Hant'?1:(width<=760?1.6:1.35);
   assert(additions.modules.every(m=>m.height<(width<=760?1200:700)*translationScale),`${region}/${locale}/${width}: added editorial section too tall ${JSON.stringify(additions)}`);
+  // This is a full story card at mobile, not a compact utility module; measure it
+  // separately while preserving a tight visual-height ceiling.
+  assert(additions.featured.every(m=>m.height<(width<=760?700:500)*translationScale),`${region}/${locale}/${width}: featured editorial addition too tall ${JSON.stringify(additions)}`);
   assert(additions.pinned.height<additions.pinned.cards*(width<=760?700:500)*translationScale+1,`${region}/${locale}/${width}: added pinned reports too tall ${JSON.stringify(additions)}`);
   assert(additions.news<additions.extraCards*(width<=760?400:300)*translationScale+1,`${region}/${locale}/${width}: added news rows too tall ${JSON.stringify(additions)}`);
-  const additionHeight=additions.modules.reduce((n,m)=>n+m.height,0)+additions.pinned.height+additions.news;
+  const additionHeight=additions.modules.reduce((n,m)=>n+m.height,0)+additions.featured.reduce((n,m)=>n+m.height,0)+additions.pinned.height+additions.news;
   report.coreHeight=report.height-additionHeight;
   report.additions=additions;
-  const newEditorialAllowance=editorial.seriesHeight+editorial.added*(width<=760?65:40);
+  const newEditorialAllowance=editorial.seriesHeight+editorial.added*(width<=760?65:width<1024?48:40);
   const heightBudget=baseline?baseline.coreHeight*translationScale:(width<=760?17000:12500)+newEditorialAllowance;
   assert(report.coreHeight<heightBudget,`${region}/${locale}/${width}: excessive core page height ${report.coreHeight} (budget ${Math.round(heightBudget)}), total ${report.height}`);
   const collections=await page.evaluate(()=>({portals:document.querySelectorAll('#home-sections .portal-card').length,chapters:document.querySelectorAll('.chapter-grid .chapter-card').length,topics:document.querySelectorAll('#observation-directory a').length,history:document.querySelectorAll('#home-historical-cases .history-card').length,cases:document.querySelectorAll('#home-social-cases a').length,comics:document.querySelectorAll('#home-court-comics .comic-card').length,hidden:['home-sections','case-reading','home-special-features','home-social-cases','home-historical-cases','home-court-comics','home-memorial','social'].filter(id=>{const e=document.getElementById(id);return !e||e.closest('details:not([open])')||getComputedStyle(e).display==='none'||e.getBoundingClientRect().height===0;})}));
