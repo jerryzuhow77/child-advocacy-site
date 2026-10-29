@@ -5,16 +5,31 @@
   if(!hero||!sections.length)return;
   const lang=(document.documentElement.lang||'zh-Hant').toLowerCase();
   const words=lang.startsWith('ja')
-    ?{seal:'記憶\nと保護',scroll:'スクロール',nav:['はじめに','確認事項','読み方','出典']}
+    ?{seal:'記憶\nと保護',scroll:'スクロール',skip:'序幕をスキップ',nav:['はじめに','確認事項','読み方','出典']}
     :lang.startsWith('en')
-      ?{seal:'MEMORY\n& CARE',scroll:'Scroll to read',nav:['Opening','Confirmed','Reading','Sources']}
+      ?{seal:'MEMORY\n& CARE',scroll:'Scroll to read',skip:'Skip opening',nav:['Opening','Confirmed','Reading','Sources']}
       :lang.includes('hans')
-        ?{seal:'记忆\n与守护',scroll:'向下阅读',nav:['开场','确认节点','阅读原则','公开来源']}
-        :{seal:'記憶\n與守護',scroll:'向下閱讀',nav:['開場','確認節點','閱讀原則','公開來源']};
+        ?{seal:'记忆\n与守护',scroll:'向下阅读',skip:'跳过序幕',nav:['开场','确认节点','阅读原则','公开来源']}
+        :{seal:'記憶\n與守護',scroll:'向下閱讀',skip:'略過序幕',nav:['開場','確認節點','閱讀原則','公開來源']};
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const saveData=Boolean(navigator.connection&&navigator.connection.saveData);
   document.body.classList.add('ttb-motion-page');
   hero.id=hero.id||'feature-opening';
+
+  const prologue=document.createElement('section');
+  prologue.className='case-prologue';
+  prologue.setAttribute('aria-label',words.nav[0]);
+  prologue.innerHTML='<div class="case-prologue-stage" aria-hidden="true"><i class="prologue-valance"></i><i class="prologue-side left"></i><i class="prologue-side right"></i><i class="prologue-curtain-panel left"></i><i class="prologue-curtain-panel right"></i></div><button class="case-prologue-skip" type="button">'+words.skip+'</button>';
+  document.body.prepend(prologue);
+  document.body.classList.add('case-prologue-active');
+  const dismissPrologue=(instant=false)=>{
+    if(!prologue.isConnected)return;
+    if(instant){prologue.remove();document.body.classList.remove('case-prologue-active');return}
+    prologue.classList.add('is-opening');
+    window.setTimeout(()=>{prologue.remove();document.body.classList.remove('case-prologue-active')},940);
+  };
+  prologue.querySelector('.case-prologue-skip').addEventListener('click',()=>dismissPrologue());
+  if(reduce||saveData)dismissPrologue(true);else window.setTimeout(()=>dismissPrologue(),3600);
 
   const stage=document.createElement('div');
   stage.className='case-opening-stage';
