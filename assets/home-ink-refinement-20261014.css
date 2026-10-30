@@ -339,5 +339,7 @@ html[lang="ja"] #news-flash .section-heading h2::before{content:"報"}html[lang=
 
 
 /* 2026-10-30 — keep the opening pledge within the single ink hero; no additional image, thumbnail, or shadow. */
-.home-hero-light-quote{max-width:43rem;margin:15px 0 0;padding:9px 0 9px 15px;border-left:2px solid #aa8155;background:linear-gradient(90deg,#f1e7d166,transparent 72%);color:#435b56;font-size:clamp(.94rem,1.25vw,1.04rem);line-height:1.82;letter-spacing:.01em}
-@media(max-width:760px){.home-hero-light-quote{margin-top:13px;padding:8px 0 8px 12px;font-size:.94rem;line-height:1.76}}
+.home-hero-light-quote{display:grid;grid-template-columns:72px minmax(0,1fr);gap:13px;align-items:center;max-width:43rem;margin:15px 0 0;padding:9px 0 9px 15px;border-left:2px solid #aa8155;background:linear-gradient(90deg,#f1e7d166,transparent 72%);color:#435b56;letter-spacing:.01em}
+.home-hero-light-quote p{margin:0;color:inherit;font-size:clamp(.94rem,1.25vw,1.04rem);line-height:1.82}
+.home-hero-light-thumb{width:72px;height:72px;object-fit:cover;border:1px solid #bfa984;border-radius:6px;filter:saturate(.78) contrast(1.06)}
+@media(max-width:760px){.home-hero-light-quote{grid-template-columns:60px minmax(0,1fr);gap:11px;margin-top:13px;padding:8px 0 8px 12px}.home-hero-light-quote p{font-size:.94rem;line-height:1.76}.home-hero-light-thumb{width:60px;height:60px}}
