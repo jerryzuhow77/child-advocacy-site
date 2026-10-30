@@ -100,28 +100,30 @@
 })();
 
 
-/* 2026-10-30 — replace only the Tamsui pinned-card thumbnails. */
+/* 2026-10-30 — keep the two approved Tamsui posters consistent on all four home editions. */
 (()=>{
+  const ROOT='/child-advocacy-site/';
+  const posters=[
+    {src:ROOT+'assets/art/tamsui-advocacy-poster-sunset-20261031-thumb.svg',alt:{'zh-Hant':'10月31日淡水漁人碼頭護童宣傳海報，夕陽舉牌版本','zh-Hans':'10月31日淡水渔人码头护童宣传海报，夕阳举牌版本',en:'31 October Tamsui Fisherman\'s Wharf child-protection poster: sunset sign-holding edition',ja:'10月31日淡水漁人碼頭・児童保護啓発ポスター：夕景でプラカードを掲げる版'}},
+    {src:ROOT+'assets/art/tamsui-advocacy-poster-blue-20261031-thumb.svg',alt:{'zh-Hant':'10月31日淡水漁人碼頭護童宣傳海報，藍色海港版本','zh-Hans':'10月31日淡水渔人码头护童宣传海报，蓝色海港版本',en:'31 October Tamsui Fisherman\'s Wharf child-protection poster: blue harbour edition',ja:'10月31日淡水漁人碼頭・児童保護啓発ポスター：青い港版'}}
+  ];
+  const locale=()=>document.documentElement.lang==='ja'?'ja':document.documentElement.lang==='en'?'en':document.documentElement.lang==='zh-Hans'?'zh-Hans':'zh-Hant';
+  const makePair=()=>{
+    const pair=document.createElement('div');pair.className='tamsui-poster-pair';
+    posters.forEach(p=>{const image=document.createElement('img');image.src=p.src;image.alt=p.alt[locale()];image.width=360;image.height=640;image.loading='eager';image.decoding='async';pair.append(image);});
+    return pair;
+  };
   const apply=()=>{
-    const pair=document.querySelector('#october-action-focus .october-focus-article.rally .october-focus-poster-pair');
-    if(!pair||pair.dataset.tamsuiPosterRefresh)return;
-    const images=[...pair.querySelectorAll('img')];
-    if(images.length!==2)return;
-    pair.dataset.tamsuiPosterRefresh='true';
-    pair.classList.add('portrait-posters');
-    const posters=[
-      {src:'./assets/art/tamsui-advocacy-poster-sunset-20261031-thumb.svg',alt:'10月31日淡水漁人碼頭護童宣傳海報，夕陽舉牌版本',hansAlt:'10月31日淡水渔人码头护童宣传海报，夕阳举牌版本'},
-      {src:'./assets/art/tamsui-advocacy-poster-blue-20261031-thumb.svg',alt:'10月31日淡水漁人碼頭護童宣傳海報，藍色海港版本',hansAlt:'10月31日淡水渔人码头护童宣传海报，蓝色海港版本'}
-    ];
-    images.forEach((image,index)=>{
-      const poster=posters[index];
-      image.src=poster.src;
-      image.alt=document.documentElement.lang==='zh-Hans'?poster.hansAlt:poster.alt;
-      image.setAttribute('data-hans-alt',poster.hansAlt);
-      image.width=360; image.height=640;
-      image.style.aspectRatio='9 / 16';
-      image.style.objectFit='cover';
-    });
+    const focus=document.querySelector('#october-action-focus .october-focus-article.rally .october-focus-poster-pair');
+    if(focus&&!focus.dataset.tamsuiPosterRefresh){
+      const images=[...focus.querySelectorAll('img')];
+      if(images.length===2){focus.dataset.tamsuiPosterRefresh='true';focus.classList.add('portrait-posters');images.forEach((image,index)=>{const poster=posters[index];image.src=poster.src;image.alt=poster.alt[locale()];image.width=360;image.height=640;image.style.aspectRatio='9 / 16';image.style.objectFit='cover';});}
+    }
+    if((locale()==='en'||locale()==='ja')){
+      const activity=document.querySelector('.activity-card[data-tamsui-20261031]');
+      if(activity&&!activity.querySelector('.tamsui-poster-pair')){const old=activity.querySelector('img');if(old)old.replaceWith(makePair());}
+    }
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
 })();
+
