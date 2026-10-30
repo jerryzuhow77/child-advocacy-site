@@ -59,12 +59,15 @@
   const root='/child-advocacy-site/';
   const card={
     'zh-Hant':{href:root+'features/social-observation/xuanxuan-duty-and-records-20261028/',meta:'置頂・多元觀察｜2026.10.28',title:'萱萱案的兩條究責線：生母起訴與社工懲戒，不能混成一句話',summary:'誰被起訴？誰遭專業懲戒？把刑事與行政程序分開，才能精準追問保護責任。',read:'閱讀詳細解說 →',alt:'跨縣市兒少保護與訪視紀錄的原創水墨紙藝意象，非事件現場、無可辨識兒少。'},
-    'zh-Hans':{href:root+'features/social-observation/xuanxuan-duty-and-records-20261028/zh-Hans/',meta:'置顶・多元观察｜2026.10.28',title:'萱萱案的两条追责线：生母起诉与社工惩戒，不能混成一句话',summary:'谁被起诉？谁遭专业惩戒？把刑事与行政程序分开，才能精准追问保护责任。',read:'阅读详细解说 →',alt:'跨地区儿童保护与走访记录的原创水墨纸艺意象，非事件现场、无可识别儿童。'}
+    'zh-Hans':{href:root+'features/social-observation/xuanxuan-duty-and-records-20261028/zh-Hans/',meta:'置顶・多元观察｜2026.10.28',title:'萱萱案的两条追责线：生母起诉与社工惩戒，不能混成一句话',summary:'谁被起诉？谁遭专业惩戒？把刑事与行政程序分开，才能精准追问保护责任。',read:'阅读详细解说 →',alt:'跨地区儿童保护与走访记录的原创水墨纸艺意象，非事件现场、无可识别儿童。'},
+    en:{href:root+'features/social-observation/xuanxuan-duty-and-records-20261028/en/',meta:'FEATURED · DIVERSE PERSPECTIVES · 28 OCT 2026',title:'The Xuanxuan case: who was charged, and who was disciplined?',summary:'A criminal charge and professional discipline are different procedures. Separate them before asking where child-protection responsibility lies.',read:'Read the verified guide →',alt:'Original ink-and-paper illustration of cross-city child protection and visit records; not an incident scene or portrait.'},
+    ja:{href:root+'features/social-observation/xuanxuan-duty-and-records-20261028/ja/',meta:'注目・多角的な視点｜2026.10.28',title:'萱萱さんの事案：起訴された人、懲戒を受けた人',summary:'刑事手続と専門職懲戒は別のものです。子どもの保護責任を問う前に、手続を分けて確認します。',read:'検証ガイドを読む →',alt:'自治体をまたぐ子どもの保護と訪問記録を描いたオリジナル水墨紙作品。事件現場や人物の肖像ではありません。'}
   };
   const add=()=>{
     const grid=document.querySelector('#home-special-features .grid');
     if(!grid||grid.querySelector('[data-xuanxuan-duty]'))return;
-    const d=card[document.documentElement.lang==='zh-Hans'?'zh-Hans':'zh-Hant'];
+    const lang=document.documentElement.lang;
+    const d=card[lang==='ja'?'ja':lang==='en'?'en':lang==='zh-Hans'?'zh-Hans':'zh-Hant'];
     const item=document.createElement('article');
     item.className='home-card feature-card is-pinned';item.dataset.date='2026-10-28';item.dataset.homePinned='true';item.dataset.xuanxuanDuty='';
     item.innerHTML='<a class="card-link home-media-report-action" data-home-article href="'+d.href+'"><img loading="lazy" decoding="async" width="720" height="405" data-home-thumb src="'+root+'assets/art/xuanxuan-cross-region-records-20261016-refined.webp" alt="'+d.alt+'"><div class="card-copy"><p class="card-meta">'+d.meta+'</p><h3>'+d.title+'</h3><p class="card-summary">'+d.summary+'</p><span class="card-action">'+d.read+'</span></div></a>';
@@ -82,10 +85,13 @@
     image:ROOT+'assets/art/xuanxuan-cross-region-records-20261016-refined.webp',
     copy:{
       'zh-Hant':{href:ROOT+'features/social-observation/xuanxuan-duty-and-records-20261028/',small:'置頂・多元觀察｜2026.10.28',title:'萱萱案的兩條究責線：起訴與懲戒，必須分開讀',summary:'生母涉過失致死遭起訴；台南社工的公開究責是專業懲戒。用一頁拆開程序、責任與可查證資料。',read:'先讀 60 秒結論 →',alt:'跨縣市兒少保護與訪視紀錄的原創水墨紙藝意象，非事件現場、無可辨識兒少。'},
-      'zh-Hans':{href:ROOT+'features/social-observation/xuanxuan-duty-and-records-20261028/zh-Hans/',small:'置顶・多元观察｜2026.10.28',title:'萱萱案的两条追责线：起诉与惩戒，必须分开读',summary:'生母涉过失致死遭起诉；台南社工的公开追责是专业惩戒。用一页拆开程序、责任与可查证资料。',read:'先读 60 秒结论 →',alt:'跨地区儿童保护与走访记录的原创水墨纸艺意象，非事件现场、无可识别儿童。'}
+      'zh-Hans':{href:ROOT+'features/social-observation/xuanxuan-duty-and-records-20261028/zh-Hans/',small:'置顶・多元观察｜2026.10.28',title:'萱萱案的两条追责线：起诉与惩戒，必须分开读',summary:'生母涉过失致死遭起诉；台南社工的公开追责是专业惩戒。用一页拆开程序、责任与可查证资料。',read:'先读 60 秒结论 →',alt:'跨地区儿童保护与走访记录的原创水墨纸艺意象，非事件现场、无可识别儿童。'},
+      en:{href:ROOT+'features/social-observation/xuanxuan-duty-and-records-20261028/en/',small:'FEATURED · DIVERSE PERSPECTIVES · 28 OCT 2026',title:'The Xuanxuan case: charge and discipline must be read separately',summary:'The mother faces a negligent-homicide charge; the Tainan caseworker received professional discipline. One page separates procedure, responsibility and verifiable material.',read:'Read the 60-second guide →',alt:'Original ink-and-paper illustration of cross-city child protection and visit records; not an incident scene or portrait.'},
+      ja:{href:ROOT+'features/social-observation/xuanxuan-duty-and-records-20261028/ja/',small:'注目・多角的な視点｜2026.10.28',title:'萱萱さんの事案：起訴と懲戒は分けて読む',summary:'母親への過失致死の起訴と、台南担当者への専門職懲戒は別の手続です。責任と確認可能な資料を一頁で整理します。',read:'60秒で要点を読む →',alt:'自治体をまたぐ子どもの保護と訪問記録を描いたオリジナル水墨紙作品。事件現場や人物の肖像ではありません。'}
     }
   };
-  const locale=document.documentElement.lang==='zh-Hans'?'zh-Hans':'zh-Hant';
+  const htmlLang=document.documentElement.lang;
+  const locale=htmlLang==='ja'?'ja':htmlLang==='en'?'en':htmlLang==='zh-Hans'?'zh-Hans':'zh-Hant';
   const add=()=>{
     const slider=document.querySelector('[data-gsap-slider]');
     const d=pinned.copy[locale];
