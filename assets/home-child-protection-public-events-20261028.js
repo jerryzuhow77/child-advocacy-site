@@ -98,3 +98,30 @@
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
 })();
+
+
+/* 2026-10-30 — replace only the Tamsui pinned-card thumbnails. */
+(()=>{
+  const apply=()=>{
+    const pair=document.querySelector('#october-action-focus .october-focus-article.rally .october-focus-poster-pair');
+    if(!pair||pair.dataset.tamsuiPosterRefresh)return;
+    const images=[...pair.querySelectorAll('img')];
+    if(images.length!==2)return;
+    pair.dataset.tamsuiPosterRefresh='true';
+    pair.classList.add('portrait-posters');
+    const posters=[
+      {src:'./assets/art/tamsui-advocacy-poster-sunset-20261031-thumb.svg',alt:'10月31日淡水漁人碼頭護童宣傳海報，夕陽舉牌版本',hansAlt:'10月31日淡水渔人码头护童宣传海报，夕阳举牌版本'},
+      {src:'./assets/art/tamsui-advocacy-poster-blue-20261031-thumb.svg',alt:'10月31日淡水漁人碼頭護童宣傳海報，藍色海港版本',hansAlt:'10月31日淡水渔人码头护童宣传海报，蓝色海港版本'}
+    ];
+    images.forEach((image,index)=>{
+      const poster=posters[index];
+      image.src=poster.src;
+      image.alt=document.documentElement.lang==='zh-Hans'?poster.hansAlt:poster.alt;
+      image.setAttribute('data-hans-alt',poster.hansAlt);
+      image.width=360; image.height=640;
+      image.style.aspectRatio='9 / 16';
+      image.style.objectFit='cover';
+    });
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
+})();
