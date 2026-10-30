@@ -336,3 +336,8 @@ html[lang="ja"] #news-flash .section-heading h2::before{content:"報"}html[lang=
   #news-flash .pinned-lead .card-summary{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
   #news-flash .pinned-lead .card-source{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
 }
+
+
+/* 2026-10-30 — keep the opening pledge within the single ink hero; no additional image, thumbnail, or shadow. */
+.home-hero-light-quote{max-width:43rem;margin:15px 0 0;padding:9px 0 9px 15px;border-left:2px solid #aa8155;background:linear-gradient(90deg,#f1e7d166,transparent 72%);color:#435b56;font-size:clamp(.94rem,1.25vw,1.04rem);line-height:1.82;letter-spacing:.01em}
+@media(max-width:760px){.home-hero-light-quote{margin-top:13px;padding:8px 0 8px 12px;font-size:.94rem;line-height:1.76}}
