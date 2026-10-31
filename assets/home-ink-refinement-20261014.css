@@ -343,3 +343,10 @@ html[lang="ja"] #news-flash .section-heading h2::before{content:"報"}html[lang=
 .home-hero-light-quote p{margin:0;color:inherit;font-size:clamp(.94rem,1.25vw,1.04rem);line-height:1.82}
 .home-hero-light-thumb{width:72px;height:72px;object-fit:cover;border:1px solid #bfa984;border-radius:6px;filter:saturate(.78) contrast(1.06)}
 @media(max-width:760px){.home-hero-light-quote{grid-template-columns:60px minmax(0,1fr);gap:11px;margin-top:13px;padding:8px 0 8px 12px}.home-hero-light-quote p{font-size:.94rem;line-height:1.76}.home-hero-light-thumb{width:60px;height:60px}}
+
+/* Daily brief cards are injected as direct anchors; preserve the 16:9 artwork on small screens. */
+@media(max-width:760px){
+  #news-flash .pinned-grid>a[data-home-article]{flex:0 0 min(88vw,360px);display:block;overflow:hidden;scroll-snap-align:start;background:#fffaf0;border:1px solid #c9b89e}
+  #news-flash .pinned-grid>a[data-home-article] [data-home-thumb]{display:block!important;width:100%!important;height:auto!important;min-height:0!important;aspect-ratio:16/9!important;object-fit:cover!important;object-position:center!important}
+  #news-flash .pinned-grid>a[data-home-article] .brief-copy{display:block;padding:18px 18px 20px}
+}
