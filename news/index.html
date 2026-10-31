@@ -3,6 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script>
+(() => {
+  const isHongKong = location.hostname.toLowerCase() === 'cn.globalprotectionwall.com';
+  const isDefaultNewsRoute = /^\/child-advocacy-site\/news\/?$/i.test(location.pathname);
+  if (!isHongKong || !isDefaultNewsRoute) return;
+  const target = new URL('/child-advocacy-site/news/zh-Hans/', location.origin);
+  target.search = location.search;
+  target.hash = location.hash;
+  location.replace(target.href);
+})();
+</script>
 <title>新聞專區｜護童行動聯盟</title>
 <meta name="description" content="護童行動聯盟新聞專區，依日期由新到舊整理重要媒體報導，清楚區分媒體敘述、訴訟主張與法院認定。">
 <meta name="robots" content="index,follow,max-image-preview:large">
