@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">校園保護機制與安全入口的原創紙藝意象</title>
+<desc id="desc">米紙色校園長廊、青綠色安全門、封存的檔案卡與一條連接通報和支持系統的金線。非事件現場，不含人物或可辨識校園。</desc>
+<defs>
+  <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7f0e3"/><stop offset=".55" stop-color="#eee3cf"/><stop offset="1" stop-color="#e2d1b8"/></linearGradient>
+  <linearGradient id="corridor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9e4df"/><stop offset="1" stop-color="#9ebcb7"/></linearGradient>
+  <linearGradient id="door" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#31585a"/><stop offset="1" stop-color="#183b3d"/></linearGradient>
+  <pattern id="grain" width="34" height="34" patternUnits="userSpaceOnUse"><path d="M4 8h1M22 3h1M13 26h1M30 18h1M7 31h1" stroke="#8e7c68" stroke-width="1" opacity=".18"/></pattern>
+</defs>
+<rect width="1600" height="900" fill="url(#paper)"/>
+<rect width="1600" height="900" fill="url(#grain)"/>
+<path d="M0 178C330 112 585 142 807 215c242 80 468 69 793-18V0H0Z" fill="#f9f4ea" opacity=".82"/>
+<path d="M0 786h1600v114H0z" fill="#c7b28f"/>
+<path d="M0 786 520 328h568l512 458Z" fill="url(#corridor)"/>
+<path d="M520 328 760 786H0Z" fill="#e7d9c3"/>
+<path d="M1088 328 842 786h758Z" fill="#d6c7ae"/>
+<path d="M760 786V328M842 786V328" stroke="#a18863" stroke-width="5" opacity=".7"/>
+<path d="M0 786h1600" stroke="#7d6a4d" stroke-width="8"/>
+<g fill="#f6f0e4" stroke="#b38c59" stroke-width="4">
+  <path d="M168 292h278v194H168z"/><path d="M1168 270h260v214h-260z"/>
+</g>
+<g fill="#9fbdb7" opacity=".75"><path d="M195 321h224v136H195z"/><path d="M1195 300h206v154h-206z"/></g>
+<g stroke="#f6f0e4" stroke-width="12" opacity=".86"><path d="M307 306v164M183 389h248"/><path d="M1298 284v184M1183 377h232"/></g>
+<path d="M628 191h347v442H628z" fill="#c4b18d" stroke="#8f744d" stroke-width="8"/>
+<path d="M661 227h281v406H661z" fill="url(#door)"/>
+<path d="M801 227v406" stroke="#d9c18c" stroke-width="5"/>
+<circle cx="884" cy="438" r="12" fill="#e9ca78"/>
+<path d="M690 279h223" stroke="#88aaa6" stroke-width="22" opacity=".6"/>
+<path d="M676 572h254" stroke="#f1e5cc" stroke-width="5" opacity=".7"/>
+<g transform="translate(180 592)">
+  <path d="M0 38 242 0l34 146-244 41Z" fill="#faf4e9" stroke="#9e7555" stroke-width="4"/>
+  <path d="m32 69 170-28M39 99l139-23M47 130l160-26" stroke="#b8a087" stroke-width="5"/>
+  <path d="m194 108 23 18 38-54" fill="none" stroke="#537f79" stroke-width="9"/>
+</g>
+<g transform="translate(1176 590)">
+  <path d="M0 0h234v173H0z" fill="#f7efe0" stroke="#9b5f4b" stroke-width="4"/>
+  <path d="M0 41h234M52 0v173" stroke="#c9a78b" stroke-width="4"/>
+  <circle cx="144" cy="103" r="34" fill="#d7b869"/>
+  <path d="m126 104 15 16 31-42" fill="none" stroke="#23494b" stroke-width="9"/>
+</g>
+<path d="M300 748C495 674 550 720 661 661c72-38 66-108 141-120 102-17 145 93 244 84 94-8 110-67 246-79" fill="none" stroke="#d9b44e" stroke-width="13" stroke-linecap="round"/>
+<g fill="#d9b44e"><circle cx="300" cy="748" r="17"/><circle cx="802" cy="541" r="17"/><circle cx="1292" cy="546" r="17"/></g>
+<path d="M742 146c24-46 73-68 120-52 40 14 67 55 64 98" fill="none" stroke="#9b5f4b" stroke-width="10" stroke-linecap="round"/>
+<path d="m910 175 16 17 14-19" fill="none" stroke="#9b5f4b" stroke-width="8" stroke-linecap="round"/>
+</svg>
