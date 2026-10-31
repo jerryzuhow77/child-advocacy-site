@@ -82,10 +82,10 @@ body.motion-gsap .backdrop:after,body.motion-gsap .mountain,body.motion-gsap .to
 <link data-cpa-four-language-toolbar-style rel="stylesheet" href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5">
 <script data-cpa-four-language-toolbar-flag>window.__cpaFourLanguageToolbar=true;</script>
 <link rel="canonical" href="https://jerryzuhow77.github.io/child-advocacy-site/ja/historical-cases/regions/taiwan/tainan-tom-bear-case/v14/">
+<link rel="alternate" hreflang="zh-Hant" href="https://jerryzuhow77.github.io/child-advocacy-site/historical-cases/regions/taiwan/tainan-tom-bear-case/v14/">
+<link rel="alternate" hreflang="zh-Hans" href="https://cn.globalprotectionwall.com/child-advocacy-site/historical-cases/regions/taiwan/tainan-tom-bear-case/v14/zh-Hans/">
 <link rel="alternate" hreflang="en" href="https://jerryzuhow77.github.io/child-advocacy-site/en/historical-cases/regions/taiwan/tainan-tom-bear-case/v14/">
 <link rel="alternate" hreflang="ja" href="https://jerryzuhow77.github.io/child-advocacy-site/ja/historical-cases/regions/taiwan/tainan-tom-bear-case/v14/">
-<link rel="alternate" hreflang="zh-Hans" href="https://cn.globalprotectionwall.com/child-advocacy-site/historical-cases/regions/taiwan/tainan-tom-bear-case/v14/zh-Hans/">
-<link rel="alternate" hreflang="zh-Hant" href="https://jerryzuhow77.github.io/child-advocacy-site/historical-cases/regions/taiwan/tainan-tom-bear-case/v14/">
 </head>
 <body>
 <header class="site-header">
@@ -209,6 +209,12 @@ const scenes=(window.V14_COPY&&window.V14_COPY.scenes)||[
 ];
 const stage=document.getElementById('stage'), caption=document.getElementById('stageCaption'), status=document.getElementById('stageStatus'), buttons=[...document.querySelectorAll('.scene-btn')];
 let timer=null, paused=false, current=0;
+const statusCopy={
+  'zh-Hant':{scene:i=>`第 ${i+1} 幕／八幕：${scenes[i][1]}`,opening:'戲臺開幕，分鏡播放中',finished:'演出結束。可選擇鏡位重新閱讀。',skipped:'已略過動畫，直接進入終幕。',paused:'動畫已暫停',resume:'繼續播放',stopped:'已停止動態效果'},
+  'zh-Hans':{scene:i=>`第 ${i+1} 幕／八幕：${scenes[i][1]}`,opening:'戏台开幕，分镜播放中',finished:'演出结束。可选择镜位重新阅读。',skipped:'已略过动画，直接进入终幕。',paused:'动画已暂停',resume:'继续播放',stopped:'已停止动态效果'},
+  en:{scene:i=>`Scene ${i+1} of eight: ${scenes[i][1]}`,opening:'The curtain rises; scenes are playing.',finished:'The performance has ended. Choose a scene to revisit.',skipped:'Animation skipped; showing the final scene.',paused:'Animation paused.',resume:'Resume playback',stopped:'Motion effects stopped.'},
+  ja:{scene:i=>`第${i+1}幕／全8幕：${scenes[i][1]}`,opening:'開幕しました。場面を再生中です。',finished:'上演が終わりました。場面を選んで読み直せます。',skipped:'アニメーションを飛ばし、終幕を表示しています。',paused:'アニメーションを停止しました。',resume:'再生を続ける',stopped:'動きの効果を停止しました。'}
+}[document.documentElement.lang]||{};
 function animatePuppets(i){
   if(!window.gsap||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   const g=window.gsap;
@@ -221,13 +227,13 @@ function animatePuppets(i){
   g.to('.puppet-guardian svg',{rotation:-1.2,transformOrigin:'50% 8%',duration:3.2,ease:'sine.inOut',repeat:-1,yoyo:true});
   g.to('.puppet-scale svg',{rotation:.8,transformOrigin:'50% 0%',duration:3.8,ease:'sine.inOut',repeat:-1,yoyo:true});
 }
-function showScene(i){current=i;stage.dataset.scene=String(i);caption.textContent=scenes[i][0];document.querySelector('.stage-sign').textContent=scenes[i][1];buttons.forEach((b,n)=>b.setAttribute('aria-pressed',String(n===i)));document.getElementById('backdrop').style.transform=`scale(${1.02+i*.012}) translateX(${(i%2?1:-1)*i*.3}%)`;status.textContent=`第 ${i+1} 幕／八幕：${scenes[i][1]}`;requestAnimationFrame(()=>animatePuppets(i));}
+function showScene(i){current=i;stage.dataset.scene=String(i);caption.textContent=scenes[i][0];document.querySelector('.stage-sign').textContent=scenes[i][1];buttons.forEach((b,n)=>b.setAttribute('aria-pressed',String(n===i)));document.getElementById('backdrop').style.transform=`scale(${1.02+i*.012}) translateX(${(i%2?1:-1)*i*.3}%)`;status.textContent=statusCopy.scene?statusCopy.scene(i):scenes[i][1];requestAnimationFrame(()=>animatePuppets(i));}
 function stop(){if(timer){clearInterval(timer);timer=null}}
-function play(){stop();paused=false;stage.classList.add('open');status.textContent='戲臺開幕，分鏡播放中';let i=0;showScene(0);timer=setInterval(()=>{i++;if(i>=8){stop();status.textContent='演出結束。可選擇鏡位重新閱讀。';return}showScene(i)},4300)}
+function play(){stop();paused=false;stage.classList.add('open');status.textContent=statusCopy.opening||'';let i=0;showScene(0);timer=setInterval(()=>{i++;if(i>=8){stop();status.textContent=statusCopy.finished||'';return}showScene(i)},4300)}
 buttons.forEach(b=>b.addEventListener('click',()=>{stop();stage.classList.add('open');showScene(Number(b.dataset.scene))}));
 document.getElementById('replay').addEventListener('click',play);
-document.getElementById('skip').addEventListener('click',()=>{stop();stage.classList.add('open');showScene(7);status.textContent='已略過動畫，直接進入終幕。'});
-document.getElementById('motion').addEventListener('click',e=>{if(timer){stop();paused=true;e.currentTarget.textContent='繼續播放';status.textContent='動畫已暫停'}else if(paused){play();e.currentTarget.textContent='暫停動態'}else{document.getElementById('backdrop').style.transform='none';status.textContent='已停止動態效果'}});
+document.getElementById('skip').addEventListener('click',()=>{stop();stage.classList.add('open');showScene(7);status.textContent=statusCopy.skipped||'';});
+document.getElementById('motion').addEventListener('click',e=>{if(timer){stop();paused=true;e.currentTarget.textContent=statusCopy.resume||'Resume';status.textContent=statusCopy.paused||''}else if(paused){play();e.currentTarget.textContent=(window.V14_COPY&&window.V14_COPY.controls?.[2])||'Pause motion'}else{document.getElementById('backdrop').style.transform='none';status.textContent=statusCopy.stopped||''}});
 if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){setTimeout(()=>{stage.classList.add('open');play()},700)}
 if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&window.gsap){
   const visual=window.gsap;
