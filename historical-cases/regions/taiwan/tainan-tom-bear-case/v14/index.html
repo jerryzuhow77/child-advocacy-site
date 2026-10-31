@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101716">
+<title>台南湯姆熊案件｜V14 紙雕戲偶舞台重建版</title>
+<meta name="description" content="台南湯姆熊案件互動專題：以紙雕戲臺、八段分鏡與司法時間軸，回看案件與制度爭議。">
+<style>
+:root{--ink:#101716;--indigo:#173b4a;--paper:#e8e3d7;--gold:#d6a646;--ticket:#c9b98d;--seal:#8a2e2e;--serif:"Noto Serif TC","Songti TC",serif;--sans:"Noto Sans TC","PingFang TC",sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#0b1212;color:var(--paper);font-family:var(--sans);line-height:1.8}
+a{color:#f0cc79}button{font:inherit;cursor:pointer}
+.site-header{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.7rem clamp(1rem,4vw,4rem);background:rgba(12,20,20,.94);border-bottom:1px solid #927346;backdrop-filter:blur(12px)}
+.brand{font-family:var(--serif);font-size:1.08rem;letter-spacing:.12em;font-weight:700}.brand small{display:block;font: .62rem var(--sans);letter-spacing:.18em;color:#c9b98d}
+.nav{display:flex;gap:clamp(.6rem,2vw,1.5rem);align-items:center;flex-wrap:wrap}.nav a{font-size:.83rem;text-decoration:none;color:#e8e3d7}.lang{font-size:.8rem;color:#c9b98d;white-space:nowrap}
+.hero{min-height:92vh;padding:clamp(2rem,5vw,5rem) clamp(1rem,5vw,5rem) 3rem;background:radial-gradient(ellipse at 50% 35%,#34505a 0,#152b30 43%,#101716 76%);position:relative;overflow:hidden}
+.hero:before,.hero:after{content:"";position:absolute;inset:0;pointer-events:none}
+.hero:before{background:repeating-linear-gradient(90deg,transparent 0 7%,#d6a64608 7.1% 7.3%),linear-gradient(180deg,#0005,transparent 25%,#0005);opacity:.8}
+.hero-inner{max-width:1280px;margin:auto;position:relative;z-index:1}
+.eyebrow{color:var(--gold);letter-spacing:.22em;font-size:.76rem;text-transform:uppercase}
+h1{font:clamp(2.4rem,6vw,5.4rem)/1.18 var(--serif);max-width:850px;margin:.5rem 0 1rem;color:#f0e8d6;text-shadow:0 4px 22px #0008}
+.lede{max-width:740px;color:#d9d1bf;font-family:var(--serif);font-size:clamp(1rem,1.8vw,1.25rem)}
+.stage-shell{margin:2.4rem auto 1rem;max-width:1180px;position:relative;padding:18px;background:linear-gradient(135deg,#8c6234,#d7b76f 16%,#50351f 27%,#d2aa5d 50%,#4b321f 70%,#a8783e);clip-path:polygon(1% 0,99% 0,100% 4%,100% 96%,99% 100%,1% 100%,0 96%,0 4%);box-shadow:0 25px 60px #0009}
+.stage{position:relative;min-height:420px;aspect-ratio:16/8.1;overflow:hidden;background:linear-gradient(180deg,#173b4a,#53717a 54%,#b28a56 55%,#4c3828 100%);border:8px solid #241b17;isolation:isolate}
+.backdrop{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,#f0d7a1aa,transparent 45%),linear-gradient(180deg,#274b5b 0 48%,#b88d59 49% 54%,#6b4a31 55%);transition:filter 1s,transform 1.4s}
+.mountain{position:absolute;bottom:35%;width:130%;height:35%;left:-15%;background:linear-gradient(140deg,transparent 0 15%,#294a4b 16% 29%,transparent 30%),linear-gradient(35deg,transparent 0 30%,#45665d 31% 48%,transparent 49%);opacity:.8}
+.town{position:absolute;bottom:35%;left:0;right:0;height:32%;background:repeating-linear-gradient(90deg,transparent 0 7%,#20383b 7.1% 7.5%,transparent 7.6% 13%),linear-gradient(0deg,#283d3c,#52635a);clip-path:polygon(0 60%,8% 60%,8% 18%,15% 18%,15% 50%,24% 50%,24% 0,34% 0,34% 56%,44% 56%,44% 22%,55% 22%,55% 55%,68% 55%,68% 10%,80% 10%,80% 55%,90% 55%,90% 30%,100% 30%,100% 100%,0 100%)}
+.ticket{position:absolute;width:42%;height:12%;left:29%;bottom:16%;background:repeating-linear-gradient(90deg,#d8c79e 0 12px,#b49d6d 13px 15px);border:2px dashed #80653c;transform:rotate(-4deg);box-shadow:0 8px 18px #0007;animation:ticketFloat 5s ease-in-out infinite}
+.ticket:after{content:"2012.12.01　未兌換的票券";display:block;text-align:center;color:#423626;font:clamp(.55rem,1vw,.9rem) var(--serif);letter-spacing:.15em;padding:.4rem}
+.lantern{position:absolute;top:12%;width:38px;height:54px;border-radius:48% 48% 42% 42%;background:radial-gradient(circle at 35% 30%,#ffe5a3,#b95a2f 65%,#6b241e);box-shadow:0 0 30px #e5a64a88}
+.lantern:before{content:"";position:absolute;width:2px;height:35px;background:#d7b76f;left:50%;top:-35px}.lantern.left{left:8%}.lantern.right{right:8%}
+.curtain{position:absolute;z-index:5;top:0;bottom:0;width:18%;background:repeating-linear-gradient(90deg,#5c1718 0 12px,#8b3025 13px 25px,#4a1318 26px 32px);box-shadow:inset 0 0 25px #1c0909,0 0 20px #0008;transition:transform 1.8s cubic-bezier(.2,.8,.2,1)}
+.curtain.left{left:0;clip-path:polygon(0 0,100% 0,85% 100%,0 100%)}.curtain.right{right:0;clip-path:polygon(0 0,100% 0,100% 100%,15% 100%)}
+.stage.open .curtain.left{transform:translateX(-105%)}.stage.open .curtain.right{transform:translateX(105%)}
+.stage-sign{position:absolute;top:7%;left:50%;transform:translateX(-50%);z-index:3;padding:.45rem 1.3rem;border:2px solid #d3ad61;background:#142426d9;color:#e8d4a5;font:clamp(.85rem,2vw,1.4rem) var(--serif);letter-spacing:.2em;white-space:nowrap}
+.stage-caption{position:absolute;z-index:6;bottom:7%;left:50%;transform:translateX(-50%);width:min(75%,680px);padding:1rem 1.3rem;text-align:center;background:#101716d9;border:1px solid #c9b98d;color:#f0e8d6;font-family:var(--serif);font-size:clamp(.9rem,1.7vw,1.2rem)}
+.stage-caption strong{color:#f0cf80}
+.scene-controls{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:.65rem;margin:1.25rem auto;max-width:1000px}
+.scene-btn,.control-btn{border:1px solid #9b7c48;color:#f0e8d6;background:linear-gradient(145deg,#243b40,#101a1d);border-radius:50%;width:48px;height:48px;box-shadow:0 4px 12px #0006}
+.scene-btn[aria-pressed=true]{background:radial-gradient(circle,#f2d38b,#a16b2f);color:#251b12;border-color:#f6d990;transform:translateY(-3px)}
+.control-btn{width:auto;border-radius:999px;padding:.65rem 1.1rem;font-size:.85rem}
+.stage-status{text-align:center;color:#c9b98d;font-size:.78rem;min-height:1.6em}
+main{max-width:1120px;margin:auto;padding:2rem clamp(1rem,4vw,3rem) 5rem}
+.section{padding:3rem 0;border-bottom:1px solid #67573c;scroll-margin-top:90px}
+.section h2{font:clamp(1.6rem,3vw,2.4rem) var(--serif);color:#e9cf98;margin:0 0 1rem}
+.section h3{font:1.2rem var(--serif);color:#d6a646;margin-top:2rem}
+.section p{color:#ded8ca;max-width:850px}
+.note{border-left:3px solid #a8793f;background:#182626;padding:1rem 1.2rem;color:#d8d0bf}
+.timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+.event{padding:1rem;border:1px solid #6d5a3a;background:linear-gradient(145deg,#182525,#101716);border-radius:4px}
+.event time{color:#e0b75e;font-family:monospace}
+.issue-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem}
+.issue{padding:1.2rem;background:#1b2928;border:1px solid #5f573e}
+.footer{padding:3rem 1rem;text-align:center;background:#080e0e;color:#c9b98d;font-family:var(--serif)}
+.quote{font:clamp(1.3rem,3vw,2rem)/1.6 var(--serif);color:#f0dcae}
+.small{font-size:.82rem;color:#b9b09d}
+@keyframes ticketFloat{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-8px) rotate(-2deg)}}
+@media(max-width:700px){.site-header{align-items:flex-start;flex-direction:column}.nav{gap:.6rem}.nav a{font-size:.74rem}.hero{min-height:auto}.stage{aspect-ratio:4/5;min-height:430px}.stage-sign{top:6%;}.town{height:22%;bottom:42%}.mountain{bottom:48%;height:25%}.ticket{bottom:23%;width:65%;left:17%}.stage-caption{width:84%;bottom:5%;padding:.75rem}.curtain{width:22%}.scene-btn{width:42px;height:42px}.scene-controls{gap:.45rem}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="brand">台南湯姆熊案件<small>HISTORICAL CASE · V14 PAPER THEATRE REBUILD</small></div>
+  <nav class="nav" aria-label="主要導覽"><a href="#opening">首頁</a><a href="#overview">案件背景</a><a href="#timeline">時間軸</a><a href="#issues">司法爭議</a><a href="#closing">結語</a></nav>
+  <div class="lang">繁體中文　|　簡體　|　EN　|　日本語</div>
+</header>
+<section class="hero" id="opening">
+<div class="hero-inner">
+  <div class="eyebrow">2012 · TAINAN · HISTORICAL CASE　／　V14 紙雕戲偶舞台重建版</div>
+  <h1>他說不會判死，<br>後來真的沒有判死。</h1>
+  <p class="lede">一個孩子走進遊戲場。一句冷酷的話穿過四年審判，成了判決之外最長的回音。這個專題不重演傷害，只留下可查證的案件紀錄、司法理由與社會提問。</p>
+  <div class="stage-shell">
+    <div class="stage" id="stage" aria-label="紙雕戲臺">
+      <div class="backdrop" id="backdrop"><div class="mountain"></div><div class="town"></div><div class="lantern left"></div><div class="lantern right"></div><div class="ticket"></div></div>
+      <div class="stage-sign">最後一枚沒有兌換的票券</div>
+      <div class="stage-caption" id="stageCaption" aria-live="polite">那一天，本來應該只是一次普通的遊戲。</div>
+      <div class="curtain left"></div><div class="curtain right"></div>
+    </div>
+  </div>
+  <div class="scene-controls" aria-label="八段鏡位">
+    <button class="scene-btn" data-scene="0" aria-pressed="true" aria-label="第1幕">1</button>
+    <button class="scene-btn" data-scene="1" aria-pressed="false" aria-label="第2幕">2</button>
+    <button class="scene-btn" data-scene="2" aria-pressed="false" aria-label="第3幕">3</button>
+    <button class="scene-btn" data-scene="3" aria-pressed="false" aria-label="第4幕">4</button>
+    <button class="scene-btn" data-scene="4" aria-pressed="false" aria-label="第5幕">5</button>
+    <button class="scene-btn" data-scene="5" aria-pressed="false" aria-label="第6幕">6</button>
+    <button class="scene-btn" data-scene="6" aria-pressed="false" aria-label="第7幕">7</button>
+    <button class="scene-btn" data-scene="7" aria-pressed="false" aria-label="第8幕">8</button>
+    <button class="control-btn" id="replay">▶ 重新播放</button>
+    <button class="control-btn" id="skip">⏭ 跳過動畫</button>
+    <button class="control-btn" id="motion">暫停動態</button>
+  </div>
+  <div class="stage-status" id="stageStatus" role="status">戲臺即將開幕</div>
+  <div class="note"><strong>閱讀提醒：</strong>本頁涉及兒童遭隨機殺害、精神鑑定與死刑爭議。不呈現傷口、不重演犯案，也不將精神疾病等同暴力。可略過動畫，直接閱讀完整文字。</div>
+</div>
+</section>
+<main>
+<section class="section" id="overview">
+  <h2>案件快讀</h2>
+  <p>曾文欽隨機殺人案，常稱「台南湯姆熊割喉案」。2012 年 12 月 1 日，一名十歲方姓男童在臺南市一間遊藝場遇害。案件歷經一審、二審、最高法院撤銷發回及更一審，最終於 2016 年 5 月 5 日判處無期徒刑、褫奪公權終身定讞。</p>
+  <div class="note">網站將「法院認定」「檢方主張」「家屬立場」「媒體報導」與「本站評論」分層呈現。尚未核實的細節不寫成確定事實。</div>
+  <h3>核心爭點</h3>
+  <p>犯前計畫與目標選擇、精神鑑定與責任能力、教化可能性、死刑作為最嚴重刑罰的適用界線，以及被害者生命與家屬處境如何進入司法說理。</p>
+</section>
+<section class="section" id="timeline">
+  <h2>案件時間軸</h2>
+  <div class="timeline">
+    <article class="event"><time>2012.11.30｜準備</time><p>判決記載被告先購買犯案工具，並將抵抗能力較弱的兒童選為目標。</p></article>
+    <article class="event"><time>2012.12.01｜案發</time><p>男童在臺南遊藝場遇害。專題以停止吐出的遊戲票券呈現，不重演具體傷害。</p></article>
+    <article class="event"><time>2013.07.30｜一審</time><p>臺南地方法院判處無期徒刑、褫奪公權終身。</p></article>
+    <article class="event"><time>2014.10.06｜二審</time><p>臺灣高等法院臺南分院維持無期徒刑。</p></article>
+    <article class="event"><time>2014.12.31｜最高法院</time><p>最高法院撤銷原判決，發回更審，要求更完整檢視量刑及相關理由。</p></article>
+    <article class="event"><time>2016.01.26｜更一審</time><p>臺南高分院仍判無期徒刑、褫奪公權終身。</p></article>
+    <article class="event"><time>2016.05.05｜定讞</time><p>最高法院駁回上訴，無期徒刑與褫奪公權終身確定。</p></article>
+    <article class="event"><time>2024.09.20｜憲判 8</time><p>憲法法庭未全面廢除死刑，而是限縮適用條件並提高程序要求。</p></article>
+  </div>
+</section>
+<section class="section" id="chapters">
+  <h2>六章正文｜把焦點留給生命與制度</h2>
+  <h3>第一章｜去玩一場遊戲的孩子</h3>
+  <p>遊戲場原本屬於笑聲、代幣與交換禮物。對孩子而言，那不是危險場所，而是日常生活的一部分。本案提醒我們：公共空間的安全不能只靠孩子自己提高警覺。</p>
+  <h3>第二章｜一場被計畫的隨機</h3>
+  <p>「隨機」描述的是被害人與犯案者彼此不相識，卻不能掩蓋犯案前的選擇與準備。依判決記載，被告事前購買工具並計畫在公共場所鎖定兒童。網站應同時呈現隨機性與事前準備，避免一個詞淡化計畫性。</p>
+  <h3>第三章｜他說，殺一、兩個人不會判死</h3>
+  <p>法律從來沒有「殺一、兩人不會判死」的規則；殺人罪法定刑包括死刑、無期徒刑或一定期間以上有期徒刑。但本案最後無期徒刑定讞，這句話因此成為社會持續追問量刑制度的象徵。</p>
+  <blockquote class="quote">他不是預見未來。<br>是判決讓他的話留到了今天。</blockquote>
+  <h3>第四章｜法庭為什麼沒有判死</h3>
+  <p>歷審審理涉及被告精神狀態、責任能力、犯後態度、教化可能性、比例原則與兩公約要求。說明判決不等於要求讀者接受判決；司法理由應能接受公開檢驗。</p>
+  <p>精神疾病不是暴力的同義詞，多數精神疾病患者並不會傷害他人。本專題檢視的是本案具體鑑定、行為能力與量刑理由，不以診斷標籤污名化群體。</p>
+  <h3>第五章｜今日的死刑仍在，卻被推到更窄的門內</h3>
+  <p>2024 年憲法法庭並未廢除死刑。判決要求只有犯罪情節屬最嚴重，並經最嚴密正當法律程序，才可能判處死刑。不能把 2024 年的標準倒過來當作 2016 年判決的唯一原因。</p>
+  <h3>第六章｜不要讓兇手成為孩子唯一的註腳</h3>
+  <p>重大刑案常以兇手姓名流傳，被害人卻只剩年齡與姓氏。我們重讀本案，不是反覆播放殘酷，而是記得一個孩子的生命被奪走，也記得司法必須對自己的量刑理由負責。</p>
+</section>
+<section class="section" id="issues">
+  <h2>司法爭議｜四個需要被說清楚的問題</h2>
+  <div class="issue-grid">
+    <article class="issue"><h3>「隨機」不等於沒有預謀</h3><p>被害人可能是隨機選擇，犯案行動仍可能經過準備。應分開呈現陌生人犯案與事前準備。</p></article>
+    <article class="issue"><h3>精神障礙不等於當然免責</h3><p>刑法審查行為時辨識違法與依辨識行為的能力，不能從診斷名稱直接推論無罪或免死。</p></article>
+    <article class="issue"><h3>教化可能不是一句口號</h3><p>「仍有教化可能」應說明證據、方法、期間與風險，才能接受社會檢驗。</p></article>
+    <article class="issue"><h3>無期徒刑不必然等於終身不得出獄</h3><p>法定上存在假釋制度，但是否准予仍須依法審查；不能把申請門檻寫成必然獲釋。</p></article>
+  </div>
+</section>
+<section class="section" id="sources">
+  <h2>來源與編輯註記</h2>
+  <ul>
+    <li>臺灣高等法院臺南分院 104 年度上重更（一）字第 4 號刑事判決與新聞稿。</li>
+    <li>最高法院 105 年度台上字第 1097 號刑事判決。</li>
+    <li>法務部對「殺一、兩人不會判死」說法之澄清。</li>
+    <li>公視新聞 2016 年 5 月 5 日定讞報導。</li>
+    <li>憲法法庭 113 年憲判字第 8 號判決及摘要。</li>
+  </ul>
+  <p class="small">編輯提醒：引用裁判、官方新聞稿與媒體報導時，應補上可直接開啟的原始來源連結及查核日期。此重建包未宣稱已完成最新司法資料更新。</p>
+</section>
+<section class="section" id="closing">
+  <h2>把最後一盞燈留給孩子</h2>
+  <blockquote class="quote">他說不會判死，後來真的沒有判死。<br>我們記得這句話，更要記得那個沒有回家的孩子。</blockquote>
+  <p>一個社會如何回應最嚴重的殺人案件，不只決定犯案者受到什麼刑罰，也決定我們如何看待被害人的生命。無論支持或反對死刑，都不能讓被害者只剩案號，不能讓家屬只在宣判那天被看見，也不能讓「教化可能」成為無須被驗證的四個字。</p>
+</section>
+</main>
+<footer class="footer">台南湯姆熊案件｜V14 紙雕戲偶舞台重建版<br><span class="small">以查證、記憶與制度檢視為核心。不是原始部署 ZIP；本包為依 2026-08-24 設計稿及 2026-08-25 V14 截圖重建。</span></footer>
+<script>
+const scenes=[
+ ["那一天，本來應該只是一次普通的遊戲。","序幕｜最後一枚沒有兌換的票券"],
+ ["有些孩子離開家，只是為了玩一場遊戲。","第一鏡｜仍亮著的遊戲場"],
+ ["2012.12.01｜紙券停止。","第二鏡｜票券停止"],
+ ["當一個人刻意尋找最難反抗的對象，法律如何衡量這份事前選擇？","第三鏡｜被選中的空位"],
+ ["「在台灣殺一、兩個人不會被判死刑。」","第四鏡｜那句話"],
+ ["2016.05.05｜無期徒刑定讞。","第五鏡｜不是預言，是結果"],
+ ["司法理由必須說明，並接受社會持續檢驗。","第六鏡｜判決與制度"],
+ ["願每一個走進公共場所的孩子，都能平安回到等他的人身邊。","終幕｜把最後一盞燈留給孩子"]
+];
+const stage=document.getElementById('stage'), caption=document.getElementById('stageCaption'), status=document.getElementById('stageStatus'), buttons=[...document.querySelectorAll('.scene-btn')];
+let timer=null, paused=false, current=0;
+function showScene(i){current=i;caption.textContent=scenes[i][0];document.querySelector('.stage-sign').textContent=scenes[i][1];buttons.forEach((b,n)=>b.setAttribute('aria-pressed',String(n===i)));document.getElementById('backdrop').style.transform=`scale(${1.02+i*.012}) translateX(${(i%2?1:-1)*i*.3}%)`;status.textContent=`第 ${i+1} 幕／八幕：${scenes[i][1]}`;}
+function stop(){if(timer){clearInterval(timer);timer=null}}
+function play(){stop();paused=false;stage.classList.add('open');status.textContent='戲臺開幕，分鏡播放中';let i=0;showScene(0);timer=setInterval(()=>{i++;if(i>=8){stop();status.textContent='演出結束。可選擇鏡位重新閱讀。';return}showScene(i)},4300)}
+buttons.forEach(b=>b.addEventListener('click',()=>{stop();stage.classList.add('open');showScene(Number(b.dataset.scene))}));
+document.getElementById('replay').addEventListener('click',play);
+document.getElementById('skip').addEventListener('click',()=>{stop();stage.classList.add('open');showScene(7);status.textContent='已略過動畫，直接進入終幕。'});
+document.getElementById('motion').addEventListener('click',e=>{if(timer){stop();paused=true;e.currentTarget.textContent='繼續播放';status.textContent='動畫已暫停'}else if(paused){play();e.currentTarget.textContent='暫停動態'}else{document.getElementById('backdrop').style.transform='none';status.textContent='已停止動態效果'}});
+if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){setTimeout(()=>{stage.classList.add('open');play()},700)}
+</script>
+</body></html>
