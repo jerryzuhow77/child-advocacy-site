@@ -33,11 +33,11 @@ h1{font:clamp(2.4rem,6vw,5.4rem)/1.18 var(--serif);max-width:850px;margin:.5rem 
 .lantern:before{content:"";position:absolute;width:2px;height:35px;background:#d7b76f;left:50%;top:-35px}.lantern.left{left:8%}.lantern.right{right:8%}
 .memory-light{position:absolute;z-index:1;left:18%;bottom:18%;width:38%;height:70%;opacity:0;background:linear-gradient(166deg,rgba(255,238,175,.38),rgba(255,222,134,.08) 52%,transparent 72%);clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);filter:blur(5px);transition:opacity 1.1s,transform 1.4s;transform:translateX(-10%) scale(.86);pointer-events:none}
 .puppet-layer{position:absolute;z-index:2;inset:0;pointer-events:none;overflow:hidden}
-.puppet{position:absolute;color:#ead8aa;opacity:0;transform-origin:50% 8%;transition:opacity 1s ease,transform 1.3s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 10px 8px rgba(0,0,0,.42)) drop-shadow(0 0 10px rgba(230,178,79,.22))}
+.puppet{position:absolute;color:#ead8aa;opacity:1;transform-origin:50% 8%;transition:opacity 1s ease,transform 1.3s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 10px 8px rgba(0,0,0,.42)) drop-shadow(0 0 10px rgba(230,178,79,.22))}
 .puppet:before{content:"";position:absolute;left:50%;bottom:98%;width:1px;height:56vh;background:linear-gradient(transparent,rgba(232,211,160,.72));transform:translateX(-50%)}
-.puppet svg{display:block;width:100%;height:auto;overflow:visible}.puppet .paper{fill:currentColor;stroke:#b88943;stroke-width:1.2}.puppet .joint{fill:#8d6738}.puppet-child{left:9%;bottom:25%;width:13%;transform:translateX(-135%) rotate(-4deg)}
-.puppet-guardian{right:7%;bottom:23%;width:18%;transform:translateX(130%) rotate(4deg);color:#d7c59b}
-.puppet-scale{left:50%;top:15%;width:20%;transform:translate(-50%,-150%) scale(.85);color:#dfbb66}
+.puppet svg{display:block;width:100%;height:auto;overflow:visible}.puppet .paper{fill:currentColor;stroke:#b88943;stroke-width:1.2}.puppet .joint{fill:#8d6738}.puppet-child{left:9%;bottom:25%;width:13%;transform:translateX(0) rotate(-1deg)}
+.puppet-guardian{right:7%;bottom:23%;width:18%;transform:translateX(0) rotate(1deg);color:#d7c59b}
+.puppet-scale{left:50%;top:15%;width:20%;transform:translate(-50%,0) scale(1);color:#dfbb66}
 .stage[data-scene="2"] .puppet-child,.stage[data-scene="3"] .puppet-child{opacity:1;transform:translateX(0) rotate(-1deg)}
 .stage[data-scene="3"] .puppet-child{transform:translateX(145%) rotate(1deg)}
 .stage[data-scene="4"] .puppet-child,.stage[data-scene="5"] .puppet-child,.stage[data-scene="6"] .puppet-child,.stage[data-scene="7"] .puppet-child{opacity:1;transform:translateX(28%) rotate(-1deg)}
@@ -208,13 +208,13 @@ function animatePuppets(i){
   if(!window.gsap||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   const g=window.gsap;
   g.killTweensOf('.puppet,.puppet svg,.memory-light');
-  if(i>=2)g.fromTo('.puppet-child',{x:-28,rotation:-5},{x:0,rotation:0,duration:1.15,ease:'power3.out',clearProps:'transform'});
-  if(i>=4)g.fromTo('.puppet-guardian',{x:34,rotation:5},{x:0,rotation:0,duration:1.2,ease:'power3.out',clearProps:'transform'});
-  if(i>=5)g.fromTo('.puppet-scale',{y:-36,scale:.82},{y:0,scale:1,duration:1.3,ease:'back.out(1.35)',clearProps:'transform'});
+  g.fromTo('.puppet-child',{x:-14,rotation:-3},{x:0,rotation:0,duration:1.15,ease:'power3.out',clearProps:'transform'});
+  g.fromTo('.puppet-guardian',{x:16,rotation:3},{x:0,rotation:0,duration:1.2,ease:'power3.out',clearProps:'transform'});
+  g.fromTo('.puppet-scale',{y:-16,scale:.92},{y:0,scale:1,duration:1.3,ease:'back.out(1.2)',clearProps:'transform'});
   if(i>=3)g.fromTo('.memory-light',{autoAlpha:.25,scale:.88},{autoAlpha:1,scale:1,duration:1.4,ease:'sine.out',clearProps:'transform,opacity'});
-  if(i>=2)g.to('.puppet-child svg',{rotation:1.5,transformOrigin:'50% 8%',duration:2.8,ease:'sine.inOut',repeat:-1,yoyo:true});
-  if(i>=4)g.to('.puppet-guardian svg',{rotation:-1.2,transformOrigin:'50% 8%',duration:3.2,ease:'sine.inOut',repeat:-1,yoyo:true});
-  if(i>=5)g.to('.puppet-scale svg',{rotation:.8,transformOrigin:'50% 0%',duration:3.8,ease:'sine.inOut',repeat:-1,yoyo:true});
+  g.to('.puppet-child svg',{rotation:1.5,transformOrigin:'50% 8%',duration:2.8,ease:'sine.inOut',repeat:-1,yoyo:true});
+  g.to('.puppet-guardian svg',{rotation:-1.2,transformOrigin:'50% 8%',duration:3.2,ease:'sine.inOut',repeat:-1,yoyo:true});
+  g.to('.puppet-scale svg',{rotation:.8,transformOrigin:'50% 0%',duration:3.8,ease:'sine.inOut',repeat:-1,yoyo:true});
 }
 function showScene(i){current=i;stage.dataset.scene=String(i);caption.textContent=scenes[i][0];document.querySelector('.stage-sign').textContent=scenes[i][1];buttons.forEach((b,n)=>b.setAttribute('aria-pressed',String(n===i)));document.getElementById('backdrop').style.transform=`scale(${1.02+i*.012}) translateX(${(i%2?1:-1)*i*.3}%)`;status.textContent=`第 ${i+1} 幕／八幕：${scenes[i][1]}`;requestAnimationFrame(()=>animatePuppets(i));}
 function stop(){if(timer){clearInterval(timer);timer=null}}
