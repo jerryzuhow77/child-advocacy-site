@@ -16,13 +16,15 @@ a{color:#f0cc79}button{font:inherit;cursor:pointer}
 .hero{min-height:92vh;padding:clamp(2rem,5vw,5rem) clamp(1rem,5vw,5rem) 3rem;background:radial-gradient(ellipse at 50% 35%,#34505a 0,#152b30 43%,#101716 76%);position:relative;overflow:hidden}
 .hero:before,.hero:after{content:"";position:absolute;inset:0;pointer-events:none}
 .hero:before{background:repeating-linear-gradient(90deg,transparent 0 7%,#d6a64608 7.1% 7.3%),linear-gradient(180deg,#0005,transparent 25%,#0005);opacity:.8}
+.hero:after{background:radial-gradient(circle at 13% 70%,rgba(214,166,70,.18),transparent 20%),radial-gradient(circle at 87% 24%,rgba(118,181,189,.18),transparent 23%),linear-gradient(115deg,transparent 30%,rgba(245,220,150,.07) 44%,transparent 57%);mix-blend-mode:screen;opacity:.7}
 .hero-inner{max-width:1280px;margin:auto;position:relative;z-index:1}
 .eyebrow{color:var(--gold);letter-spacing:.22em;font-size:.76rem;text-transform:uppercase}
 h1{font:clamp(2.4rem,6vw,5.4rem)/1.18 var(--serif);max-width:850px;margin:.5rem 0 1rem;color:#f0e8d6;text-shadow:0 4px 22px #0008}
 .lede{max-width:740px;color:#d9d1bf;font-family:var(--serif);font-size:clamp(1rem,1.8vw,1.25rem)}
 .stage-shell{margin:2.4rem auto 1rem;max-width:1180px;position:relative;padding:18px;background:linear-gradient(135deg,#8c6234,#d7b76f 16%,#50351f 27%,#d2aa5d 50%,#4b321f 70%,#a8783e);clip-path:polygon(1% 0,99% 0,100% 4%,100% 96%,99% 100%,1% 100%,0 96%,0 4%);box-shadow:0 25px 60px #0009}
 .stage{position:relative;min-height:420px;aspect-ratio:16/8.1;overflow:hidden;background:linear-gradient(180deg,#173b4a,#53717a 54%,#b28a56 55%,#4c3828 100%);border:8px solid #241b17;isolation:isolate}
-.backdrop{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,#f0d7a1aa,transparent 45%),linear-gradient(180deg,#274b5b 0 48%,#b88d59 49% 54%,#6b4a31 55%);transition:filter 1s,transform 1.4s}
+.backdrop{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,#f0d7a1aa,transparent 45%),linear-gradient(180deg,#274b5b 0 48%,#b88d59 49% 54%,#6b4a31 55%);transition:filter 1s,transform 1.4s;transform-origin:center center}
+.backdrop:after{content:"";position:absolute;inset:-12%;background:linear-gradient(112deg,transparent 36%,rgba(255,236,174,.22) 47%,transparent 58%),repeating-linear-gradient(90deg,transparent 0 58px,rgba(255,255,255,.045) 59px 61px);filter:blur(1px);mix-blend-mode:screen;pointer-events:none}
 .mountain{position:absolute;bottom:35%;width:130%;height:35%;left:-15%;background:linear-gradient(140deg,transparent 0 15%,#294a4b 16% 29%,transparent 30%),linear-gradient(35deg,transparent 0 30%,#45665d 31% 48%,transparent 49%);opacity:.8}
 .town{position:absolute;bottom:35%;left:0;right:0;height:32%;background:repeating-linear-gradient(90deg,transparent 0 7%,#20383b 7.1% 7.5%,transparent 7.6% 13%),linear-gradient(0deg,#283d3c,#52635a);clip-path:polygon(0 60%,8% 60%,8% 18%,15% 18%,15% 50%,24% 50%,24% 0,34% 0,34% 56%,44% 56%,44% 22%,55% 22%,55% 55%,68% 55%,68% 10%,80% 10%,80% 55%,90% 55%,90% 30%,100% 30%,100% 100%,0 100%)}
 .ticket{position:absolute;width:42%;height:12%;left:29%;bottom:16%;background:repeating-linear-gradient(90deg,#d8c79e 0 12px,#b49d6d 13px 15px);border:2px dashed #80653c;transform:rotate(-4deg);box-shadow:0 8px 18px #0007;animation:ticketFloat 5s ease-in-out infinite}
@@ -55,7 +57,7 @@ main{max-width:1120px;margin:auto;padding:2rem clamp(1rem,4vw,3rem) 5rem}
 .quote{font:clamp(1.3rem,3vw,2rem)/1.6 var(--serif);color:#f0dcae}
 .small{font-size:.82rem;color:#b9b09d}
 @keyframes ticketFloat{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-8px) rotate(-2deg)}}
-@media(max-width:700px){.site-header{align-items:flex-start;flex-direction:column}.nav{gap:.6rem}.nav a{font-size:.74rem}.hero{min-height:auto}.stage{aspect-ratio:4/5;min-height:430px}.stage-sign{top:6%;}.town{height:22%;bottom:42%}.mountain{bottom:48%;height:25%}.ticket{bottom:23%;width:65%;left:17%}.stage-caption{width:84%;bottom:5%;padding:.75rem}.curtain{width:22%}.scene-btn{width:42px;height:42px}.scene-controls{gap:.45rem}}
+@media(max-width:700px){.site-header{display:none}.hero{min-height:auto;padding:1rem 10px 2.25rem}.hero-inner{width:100%}.eyebrow{font-size:.6rem;letter-spacing:.13em}.hero h1{font-size:clamp(1.65rem,8vw,2.25rem);margin:.3rem 0 .6rem}.lede{font-size:.9rem;line-height:1.65}.stage-shell{margin:1.2rem auto .8rem;padding:9px;width:100%;clip-path:none;box-shadow:0 14px 34px #0008}.stage{aspect-ratio:1/1.06;min-height:0;border-width:6px}.stage-sign{top:5%;font-size:.76rem;letter-spacing:.1em;padding:.38rem .65rem;max-width:82%;overflow:hidden;text-overflow:ellipsis}.town{height:25%;bottom:38%}.mountain{bottom:43%;height:28%}.ticket{bottom:17%;width:72%;left:14%;height:13%}.ticket:after{font-size:.62rem;white-space:nowrap}.lantern{top:10%;width:30px;height:44px}.lantern.left{left:4%}.lantern.right{right:4%}.stage-caption{width:88%;bottom:4%;padding:.65rem .72rem;font-size:.9rem;line-height:1.65}.curtain{width:17%}.scene-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.55rem;margin:1rem auto;max-width:390px}.scene-btn{width:100%;aspect-ratio:1;height:auto;min-height:44px}.control-btn{grid-column:span 2;width:100%;min-height:44px;padding:.5rem .4rem;font-size:.86rem;white-space:nowrap}.stage-status{font-size:.72rem}.note{font-size:.85rem;line-height:1.65;padding:.8rem}.hero:after{opacity:.45}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 </style>
 <link data-cpa-four-language-toolbar-style rel="stylesheet" href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5">
@@ -163,6 +165,7 @@ main{max-width:1120px;margin:auto;padding:2rem clamp(1rem,4vw,3rem) 5rem}
 </section>
 </main>
 <footer class="footer">台南湯姆熊案件｜V14 紙雕戲偶舞台重建版<br><span class="small">以查證、記憶與制度檢視為核心。不是原始部署 ZIP；本包為依 2026-08-24 設計稿及 2026-08-25 V14 截圖重建。</span></footer>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 <script>
 const scenes=[
  ["那一天，本來應該只是一次普通的遊戲。","序幕｜最後一枚沒有兌換的票券"],
@@ -184,6 +187,16 @@ document.getElementById('replay').addEventListener('click',play);
 document.getElementById('skip').addEventListener('click',()=>{stop();stage.classList.add('open');showScene(7);status.textContent='已略過動畫，直接進入終幕。'});
 document.getElementById('motion').addEventListener('click',e=>{if(timer){stop();paused=true;e.currentTarget.textContent='繼續播放';status.textContent='動畫已暫停'}else if(paused){play();e.currentTarget.textContent='暫停動態'}else{document.getElementById('backdrop').style.transform='none';status.textContent='已停止動態效果'}});
 if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){setTimeout(()=>{stage.classList.add('open');play()},700)}
+if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&window.gsap){
+  const visual=window.gsap;
+  visual.from('.stage-shell',{autoAlpha:0,y:28,scale:.975,duration:1.05,ease:'power3.out',delay:.12});
+  visual.to('.backdrop',{scale:1.075,xPercent:-1.1,duration:12,ease:'sine.inOut',repeat:-1,yoyo:true});
+  visual.to('.mountain',{xPercent:5,duration:16,ease:'sine.inOut',repeat:-1,yoyo:true});
+  visual.to('.town',{xPercent:-2.5,duration:18,ease:'sine.inOut',repeat:-1,yoyo:true});
+  visual.to('.lantern.left',{y:7,rotation:-2,duration:3.8,ease:'sine.inOut',repeat:-1,yoyo:true});
+  visual.to('.lantern.right',{y:7,rotation:2,duration:4.2,ease:'sine.inOut',repeat:-1,yoyo:true});
+  visual.to('.stage-shell',{filter:'brightness(1.06) saturate(1.08)',duration:5,ease:'sine.inOut',repeat:-1,yoyo:true});
+}
 </script>
 <script data-cpa-four-language-toolbar-script src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"></script>
 <script data-cpa-legal-notice-script src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"></script>
