@@ -55,6 +55,20 @@
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
 })();
 
+/* 2026-11-01 — verified record of the completed Tamsui advocacy action. */
+(()=>{
+  const root='/child-advocacy-site/';
+  const copy={
+    'zh-Hant':{href:root+'activity-records/tamsui-fishermans-wharf-advocacy-20261031/',date:'2026/10/31・活動紀錄',title:'漁人碼頭護童宣傳行動順利完成',summary:'我們站在海風裡，為需要被看見、被保護的孩子發聲。剴剴案不能忘記；制度漏洞、失職環節與依法應負的責任，都要持續被追問。',note:'現場環境影像｜未公布參與人數或未查核成果。',read:'閱讀活動紀錄 →',alt:'2026年10月31日淡水漁人碼頭護童宣傳行動的現場環境影像：港灣、船隻與雲層。'},
+    'zh-Hans':{href:root+'activity-records/tamsui-fishermans-wharf-advocacy-20261031/zh-Hans/',date:'2026/10/31・活动记录',title:'渔人码头护童宣传行动顺利完成',summary:'我们站在海风里，为需要被看见、被保护的孩子发声。剀剀案不能忘记；制度漏洞、失职环节与依法应负的责任，都要持续被追问。',note:'现场环境影像｜未公布参与人数或未核实成果。',read:'阅读活动记录 →',alt:'2026年10月31日淡水渔人码头护童宣传行动的现场环境影像：港湾、船只与云层。'},
+    en:{href:root+'activity-records/tamsui-fishermans-wharf-advocacy-20261031/en/',date:'31 OCT 2026 · ACTIVITY RECORD',title:'Tamsui Fisherman’s Wharf advocacy action completed',summary:'Standing in the sea breeze, we spoke for every child who needs to be seen and protected. The Kaikai case must not be forgotten; systemic gaps, failures of duty, and responsibility under the law must remain subject to scrutiny.',note:'On-site environmental image | No attendance figure or unverified outcome is stated.',read:'Read the activity record →',alt:'On-site environmental image from the 31 October 2026 child-protection advocacy action at Tamsui Fisherman’s Wharf: harbour, boats and cloudscape.'},
+    ja:{href:root+'activity-records/tamsui-fishermans-wharf-advocacy-20261031/ja/',date:'2026.10.31・活動記録',title:'漁人碼頭での子ども保護啓発活動が終了',summary:'海風の中、見守られ保護されるべきすべての子どものために声を上げました。凱凱事件を忘れず、制度の穴、職務上の不備、法に基づく責任を問い続けます。',note:'現地環境の記録画像｜参加人数・未確認の成果は掲載していません。',read:'活動記録を読む →',alt:'2026年10月31日の淡水漁人碼頭での子ども保護啓発活動における、港、船、雲を写した現地環境の記録画像。'}
+  };
+  const locale=()=>document.documentElement.lang==='ja'?'ja':document.documentElement.lang==='en'?'en':document.documentElement.lang==='zh-Hans'?'zh-Hans':'zh-Hant';
+  const add=()=>{const list=document.querySelector('#news-activity .activity-list');if(!list||list.querySelector('[data-tamsui-record-20261031]'))return;const d=copy[locale()],card=document.createElement('a');card.className='activity-card thumbnail-link';card.dataset.homeArticle='';card.dataset.tamsuiRecord20261031='';card.href=d.href;card.innerHTML='<img src="'+root+'assets/art/tamsui-fishermans-wharf-advocacy-20261031-field.svg" alt="'+d.alt+'" loading="lazy" decoding="async" width="1536" height="599" data-home-thumb><div><span class="activity-date">'+d.date+'</span><h3>'+d.title+'</h3><p>'+d.summary+'</p><small>'+d.note+'</small><span class="card-action">'+d.read+'</span></div>';list.insertBefore(card,list.firstChild);};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
+})();
+
 (()=>{
   const root='/child-advocacy-site/';
   const card={
