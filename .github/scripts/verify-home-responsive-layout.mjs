@@ -70,6 +70,13 @@ try{
    const portalArt=await page.locator('#home-sections .ink-vignette img').evaluateAll(imgs=>imgs.map(i=>({src:i.currentSrc,width:i.naturalWidth,height:i.naturalHeight})));
    assert(ink.edition==='20261013-scroll-v1'&&ink.hero>0&&ink.portals===8&&ink.chapters===4&&new Set(portalArt.map(i=>i.src)).size===8&&portalArt.every(i=>/home-ink-[a-z]+-20261013-v2\.webp/.test(i.src)&&i.width>0&&i.height>0)&&ink.film&&!ink.heroHasLoop,`${region}/${locale}/${width}: watercolor imagery or preserved film section missing ${JSON.stringify(ink)}`);
   }
+  // A nested 360px hero column once squeezed a feature's text to zero width.
+  // Verify readable text columns and complete slider copy, independently of height budgets.
+  const copyLayout=await page.evaluate(()=>({
+   narrow:[...document.querySelectorAll('#home-special-features .card-copy')].filter(e=>e.getBoundingClientRect().width<140).length,
+   clipped:[...document.querySelectorAll('[data-gsap-slider] .brief-copy')].filter(e=>e.scrollHeight>e.clientHeight+1||e.scrollWidth>e.clientWidth+1).length
+  }));
+  assert(!copyLayout.narrow&&!copyLayout.clipped,`${region}/${locale}/${width}: unreadable or clipped editorial copy ${JSON.stringify(copyLayout)}`);
   const media=await page.evaluate(()=>({loopSource:document.querySelector('.cinema-loop')?.getAttribute('src'),filmSource:document.querySelector('.cinema-dialog video')?.getAttribute('src'),poster:document.querySelector('.cinema-poster')?.naturalWidth}));
   assert(!media.loopSource&&!media.filmSource&&media.poster>0,`${region}/${locale}/${width}: reduced-motion poster or deferred full film failed`);
   const artwork=await page.evaluate(()=>{const sections=[...document.querySelector('main').children].filter(e=>e.tagName==='SECTION').map(e=>e.id);const actionFocus=sections.indexOf('october-action-focus');return{cells:[...new Set([...document.querySelectorAll('.ink-vignette:not(:has(.ink-standalone))')].map(e=>Number(e.dataset.inkCell)))].sort(),banners:[...document.querySelectorAll('.ink-section-vignette')].map(e=>({width:e.getBoundingClientRect().width,height:e.getBoundingClientRect().height,image:e.querySelector('img').naturalWidth})),sections,actionFocus};});
