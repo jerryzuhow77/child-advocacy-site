@@ -260,6 +260,14 @@ def synchronize(check_only: bool) -> int:
             errors.append(f"{route}: missing source or target main element")
             continue
         converted_main = convert_html(source_main.group(0), source, target, source_to_hans, converter)
+        # Inline video-loader strings are not HTML attributes and therefore are
+        # not covered by URL_ATTR_RE. Rebase this split MP4 path explicitly for
+        # the physical zh-Hans sibling page, so the complete on-site recording
+        # stays playable after every synchronization.
+        converted_main = converted_main.replace(
+            '"./videos/segments/tamsui-advocacy-20261031.part-"',
+            '"../videos/segments/tamsui-advocacy-20261031.part-"',
+        )
         if route in KAIKAI_ROUTES:
             converted_main = converted_main.replace("剀剀", "凯凯")
         for source_asset, target_asset in LANGUAGE_ASSET_REWRITES.get(route, ()):
