@@ -78,6 +78,13 @@ main{max-width:1120px;margin:auto;padding:2rem clamp(1rem,4vw,3rem) 5rem}
 body.motion-gsap .backdrop:after,body.motion-gsap .mountain,body.motion-gsap .town,body.motion-gsap .lantern{animation:none}
 @media(max-width:700px){.site-header{display:none}.hero{min-height:auto;padding:1rem 10px 2.25rem}.hero-inner{width:100%}.eyebrow{font-size:.6rem;letter-spacing:.13em}.hero h1{font-size:clamp(1.65rem,8vw,2.25rem);margin:.3rem 0 .6rem}.lede{font-size:.9rem;line-height:1.65}.stage-shell{margin:1.2rem auto .8rem;padding:9px;width:100%;clip-path:none;box-shadow:0 14px 34px #0008}.stage{aspect-ratio:1/1.06;min-height:0;border-width:6px}.stage-sign{top:5%;font-size:.76rem;letter-spacing:.1em;padding:.38rem .65rem;max-width:82%;overflow:hidden;text-overflow:ellipsis}.town{height:25%;bottom:38%}.mountain{bottom:43%;height:28%}.ticket{bottom:17%;width:72%;left:14%;height:13%}.ticket:after{font-size:.62rem;white-space:nowrap}.lantern{top:10%;width:30px;height:44px}.lantern.left{left:4%}.lantern.right{right:4%}.puppet-child{width:18%;bottom:27%;left:7%}.puppet-guardian{width:24%;bottom:26%;right:4%}.puppet-scale{width:28%;top:17%}.puppet:before{height:48vh}.stage-caption{width:88%;bottom:4%;padding:.65rem .72rem;font-size:.9rem;line-height:1.65}.curtain{width:17%}.scene-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.55rem;margin:1rem auto;max-width:390px}.scene-btn{width:100%;aspect-ratio:1;height:auto;min-height:44px}.control-btn{grid-column:span 2;width:100%;min-height:44px;padding:.5rem .4rem;font-size:.86rem;white-space:nowrap}.stage-status{font-size:.72rem}.note{font-size:.85rem;line-height:1.65;padding:.8rem}.hero:after{opacity:.45}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+.edition-switcher{position:relative;z-index:19;display:flex;justify-content:center;align-items:center;gap:.55rem;flex-wrap:wrap;padding:.7rem 1rem;background:rgba(11,18,18,.96);border-bottom:1px solid rgba(214,166,70,.45);backdrop-filter:blur(10px)}
+.edition-switcher a{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:.48rem .78rem;border:1px solid rgba(214,166,70,.58);border-radius:999px;color:#e8e3d7;text-decoration:none;font-size:.82rem;line-height:1.2}
+.edition-switcher a:hover,.edition-switcher a:focus-visible,.edition-switcher a[aria-current="page"]{background:var(--gold);color:#101716;border-color:var(--gold);outline:none}
+.edition-switcher .simple-edition{background:var(--paper);color:#101716;border-color:var(--paper);font-weight:700}
+@media(max-width:700px){.edition-switcher{position:sticky;top:0;padding:.55rem .6rem;gap:.4rem}.edition-switcher a{min-height:36px;padding:.42rem .62rem;font-size:.75rem}}
+
 </style>
 <link data-cpa-four-language-toolbar-style rel="stylesheet" href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5">
 <script data-cpa-four-language-toolbar-flag>window.__cpaFourLanguageToolbar=true;</script>
@@ -91,8 +98,15 @@ body.motion-gsap .backdrop:after,body.motion-gsap .mountain,body.motion-gsap .to
 <header class="site-header">
   <div class="brand">台南湯姆熊案件<small>HISTORICAL CASE · V14 PAPER THEATRE REBUILD</small></div>
   <nav class="nav" aria-label="主要導覽"><a href="#opening">首頁</a><a href="#overview">案件背景</a><a href="#timeline">時間軸</a><a href="#issues">司法爭議</a><a href="#closing">結語</a></nav>
-  <div class="lang">繁體中文　|　簡體　|　EN　|　日本語</div>
+  <div class="lang">V14 · 纸雕戏偶版</div>
 </header>
+<nav class="edition-switcher" data-v14-edition-links aria-label="版本与语言">
+  <a lang="zh-Hant" hreflang="zh-Hant" href="https://jerryzuhow77.github.io/child-advocacy-site/historical-cases/regions/taiwan/tainan-tom-bear-case/v14/">繁中</a>
+  <a lang="zh-Hans" hreflang="zh-Hans" href="https://cn.globalprotectionwall.com/child-advocacy-site/historical-cases/regions/taiwan/tainan-tom-bear-case/v14/zh-Hans/" aria-current="page">简中・香港</a>
+  <a lang="en" hreflang="en" href="https://jerryzuhow77.github.io/child-advocacy-site/en/historical-cases/regions/taiwan/tainan-tom-bear-case/v14/">EN</a>
+  <a lang="ja" hreflang="ja" href="https://jerryzuhow77.github.io/child-advocacy-site/ja/historical-cases/regions/taiwan/tainan-tom-bear-case/v14/">日本語</a>
+  <a class="simple-edition" href="https://cn.globalprotectionwall.com/child-advocacy-site/historical-cases/regions/taiwan/tainan-tom-bear-case/zh-Hans/">简约阅读版</a>
+</nav>
 <section class="hero" id="opening">
 <div class="hero-inner">
   <div class="eyebrow">2012 · TAINAN · HISTORICAL CASE　／　V14 紙雕戲偶舞台重建版</div>
