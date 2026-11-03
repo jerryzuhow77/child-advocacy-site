@@ -147,3 +147,18 @@
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
 })();
 
+
+
+/* 2026-11-03 — newly verified public child-rights talks in Taipei. */
+(()=>{
+  const root='/child-advocacy-site/';
+  const copy={
+    'zh-Hant':{href:root+'activity-records/child-rights-cultural-equity-talks-202611/',meta:'新增・公開活動｜11/8、11/15',title:'兒少文化平權系列講座',summary:'聚場文化於台北舉辦兩場公開講座，從兒童權利、隱私與身體自主出發；免費、須事先報名。',read:'查看活動資訊 →',alt:'兒少文化平權系列講座的抽象城市與保護路徑意象，非活動現場。'},
+    'zh-Hans':{href:root+'activity-records/child-rights-cultural-equity-talks-202611/zh-Hans/',meta:'新增・公开活动｜11/8、11/15',title:'儿少文化平权系列讲座',summary:'聚场文化在台北举办两场公开讲座，从儿童权利、隐私与身体自主出发；免费、须事先报名。',read:'查看活动资讯 →',alt:'儿少文化平权系列讲座的抽象城市与保护路径意象，非活动现场。'},
+    en:{href:root+'activity-records/child-rights-cultural-equity-talks-202611/en/',meta:'NEW · PUBLIC EVENT · 8 & 15 NOV',title:'Children’s Cultural Equity Talk Series',summary:'Two public Taipei talks by Gather Culture on children’s rights, privacy and bodily autonomy; free with advance registration.',read:'View event details →',alt:'Abstract city and protection-pathway visual for the children’s cultural equity talk series; not an event scene.'},
+    ja:{href:root+'activity-records/child-rights-cultural-equity-talks-202611/ja/',meta:'新着・公開イベント｜11月8日・15日',title:'子ども・若者の文化的平等を考える連続講座',summary:'Gather Culture が台北で開く、子どもの権利、プライバシー、身体の自己決定を学ぶ公開講座。無料・事前申込制です。',read:'活動情報を見る →',alt:'子ども・若者の文化的平等を考える連続講座の抽象的な都市と保護の道筋。現場写真ではありません。'}
+  };
+  const locale=()=>document.documentElement.lang==='ja'?'ja':document.documentElement.lang==='en'?'en':document.documentElement.lang==='zh-Hans'?'zh-Hans':'zh-Hant';
+  const add=()=>{const slider=document.querySelector('[data-gsap-slider]');if(!slider||slider.querySelector('[data-cultural-equity-talks-202611]'))return;const d=copy[locale()];const card=document.createElement('a');card.href=d.href;card.dataset.homeArticle='';card.dataset.homeBrief='child-rights-cultural-equity-talks-202611';card.dataset.homeDate='2026-11-03T08:30';card.dataset.culturalEquityTalks202611='';card.innerHTML='<img src="'+root+'assets/art/dual-city-child-protection-events-20261028-hero.svg" alt="'+d.alt+'" data-home-thumb><span class="brief-copy"><small>'+d.meta+'</small><h2>'+d.title+'</h2><p>'+d.summary+'</p><span class="brief-read">'+d.read+'</span></span>';const first=[...slider.children].find(el=>(el.dataset.homeDate||'')<'2026-11-03T08:30');slider.insertBefore(card,first||slider.firstChild);};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
+})();
