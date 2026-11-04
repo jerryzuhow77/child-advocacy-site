@@ -29,7 +29,22 @@
     }
   };
 
+  function addStyle() {
+    if (document.getElementById('home-news-continuity-style')) return;
+    var style = document.createElement('style');
+    style.id = 'home-news-continuity-style';
+    style.textContent = [
+      '#news-flash,[data-news-archive]{scroll-margin-top:calc(56px + 16px)}',
+      '.home-news-continuity-bridge{display:flex;align-items:center;gap:12px;width:min(1200px,calc(100% - 48px));margin:18px auto 6px;color:#9b7c52}',
+      '.home-news-continuity-bridge::before,.home-news-continuity-bridge::after{content:"";height:1px;flex:1;background:#d8cfbf}',
+      '.home-news-continuity-bridge span{width:7px;height:7px;border:1px solid currentColor;border-radius:50%;background:#f7f3eb}',
+      '@media(max-width:760px){.home-news-continuity-bridge{width:calc(100% - 32px);margin:14px auto 4px}#news-flash,[data-news-archive]{scroll-margin-top:calc(56px + 12px)}}'
+    ].join('');
+    document.head.appendChild(style);
+  }
+
   function init() {
+    addStyle();
     var copy = labels[document.documentElement.lang] || labels['zh-Hant'];
     var flash = document.getElementById('news-flash');
     var archive = document.getElementById('home-media-reports');
