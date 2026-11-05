@@ -328,6 +328,11 @@ jobs:
                   try_files /index.html =404;
                   add_header X-Robots-Tag "noindex, nofollow" always;
               }
+              location = /child-advocacy-site/missed-warning-signals/ {
+                  root /srv/child-advocacy-site/current/child-advocacy-site;
+                  try_files /missed-warning-signals/index.html =404;
+                  add_header X-Robots-Tag "noindex, nofollow" always;
+              }
               location ^~ /child-advocacy-site/ {
                   # The release archive contains a child-advocacy-site directory.
                   # Strip the public prefix before resolving files inside that directory.
