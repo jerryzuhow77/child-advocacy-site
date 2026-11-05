@@ -162,3 +162,18 @@
   const add=()=>{const slider=document.querySelector('[data-gsap-slider]');if(!slider||slider.querySelector('[data-cultural-equity-talks-202611]'))return;const d=copy[locale()];const card=document.createElement('a');card.href=d.href;card.dataset.homeArticle='';card.dataset.homeBrief='child-rights-cultural-equity-talks-202611';card.dataset.homeDate='2026-11-03T08:30';card.dataset.homePinned='true';card.dataset.culturalEquityTalks202611='';card.innerHTML='<img src="'+root+'assets/art/child-rights-cultural-equity-talks-202611-hero.webp" alt="'+d.alt+'" data-home-thumb><span class="brief-copy"><small>'+d.meta+'</small><h2>'+d.title+'</h2><p>'+d.summary+'</p><span class="brief-read">'+d.read+'</span></span>';slider.insertBefore(card,slider.firstChild);};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
 })();
+
+
+/* 2026-11-05 — verified New Taipei public children’s-rights story sessions. */
+(()=>{
+  const root='/child-advocacy-site/';
+  const copy={
+    'zh-Hant':{href:root+'activity-records/ruifang-little-citizens-202611/',meta:'新增・公開活動｜11/15、11/22',title:'小小公民大聲說｜瑞芳親子故事同樂會',summary:'以繪本談兒童權利、表達與互相尊重；免費、免報名。確切開始時間與場地請依主辦公告確認。',read:'查看活動資訊 →',alt:'小小公民大聲說活動資訊的現代水墨色塊意象，非活動現場。'},
+    'zh-Hans':{href:root+'activity-records/ruifang-little-citizens-202611/zh-Hans/',meta:'新增・公开活动｜11/15、11/22',title:'小小公民大声说｜瑞芳亲子故事同乐会',summary:'以绘本谈儿童权利、表达与互相尊重；免费、免报名。确切开始时间与场地请依主办公告确认。',read:'查看活动资讯 →',alt:'小小公民大声说活动资讯的现代水墨色块意象，非活动现场。'},
+    en:{href:root+'activity-records/ruifang-little-citizens-202611/en/',meta:'NEW · PUBLIC EVENT · 15 & 22 NOV',title:'Little Citizens, Speak Up | Ruifang Story Sessions',summary:'Picture-book sessions on children’s rights, voice and mutual respect; free with no registration. Confirm time and room with the organizer.',read:'View event details →',alt:'Modern ink-wash colour field for the Little Citizens, Speak Up event information; not an event scene.'},
+    ja:{href:root+'activity-records/ruifang-little-citizens-202611/ja/',meta:'新着・公開イベント｜11月15日・22日',title:'小さな市民、声をあげよう｜瑞芳おはなし会',summary:'絵本で子どもの権利、表現、互いの尊重を考える無料・申込み不要の親子向け活動です。時刻と会場は主催者案内でご確認ください。',read:'活動情報を見る →',alt:'小さな市民、声をあげようの活動情報を示す現代的な水墨の色面。現場写真ではありません。'}
+  };
+  const locale=()=>document.documentElement.lang==='ja'?'ja':document.documentElement.lang==='en'?'en':document.documentElement.lang==='zh-Hans'?'zh-Hans':'zh-Hant';
+  const add=()=>{const slider=document.querySelector('[data-gsap-slider]');if(!slider||slider.querySelector('[data-ruifang-little-citizens-202611]'))return;const d=copy[locale()],card=document.createElement('a');card.href=d.href;card.dataset.homeArticle='';card.dataset.homeBrief='ruifang-little-citizens-202611';card.dataset.homeDate='2026-11-05T08:00';card.dataset.homePinned='true';card.dataset.ruifangLittleCitizens202611='';card.innerHTML='<span aria-hidden="true" style="display:block;min-height:180px;background:radial-gradient(circle at 70% 28%,#efc670 0 12%,transparent 13%),linear-gradient(145deg,#eff3e9,#bed1c5 55%,#e6c08b)"></span><span class="brief-copy"><small>'+d.meta+'</small><h2>'+d.title+'</h2><p>'+d.summary+'</p><span class="brief-read">'+d.read+'</span></span>';slider.insertBefore(card,slider.firstChild);};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
+})();
