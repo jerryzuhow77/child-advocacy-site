@@ -89,6 +89,7 @@
     let index=0;
     let timer=0;
     let paused=false;
+    let lastChangedAt=0;
 
     const ensureCuratedVoices=()=>{
       const articles=[...voices.children].filter(element=>element.matches('article'));
@@ -123,6 +124,9 @@
     };
     const go=(delta,manual=false)=>{
       if(slides.length<2)return;
+      const now=Date.now();
+      if(!manual&&now-lastChangedAt<4000)return;
+      lastChangedAt=now;
       const old=index;
       index=(index+delta+slides.length)%slides.length;
       if(old===index)return;
@@ -152,6 +156,7 @@
       stop();
       slides=[...voices.children].filter(element=>element.matches('article,.voice-empty'));
       index=0;
+      lastChangedAt=Date.now();
       slides.forEach((slide,i)=>{
         slide.classList.toggle('is-active',i===0);
         slide.setAttribute('aria-hidden',String(i!==0));
@@ -194,6 +199,5 @@
   };
   document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start,{once:true}):start();
 })();
-
 
 
