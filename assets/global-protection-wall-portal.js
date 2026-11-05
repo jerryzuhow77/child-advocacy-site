@@ -120,12 +120,13 @@
   };
   const loadCurated=async()=>{
     if(!curatedGrid)return;
-    const bases=[wallBase,mainlandWallBase];
+    const bases=region==='hk'||locale==='zh-Hans'?[mainlandWallBase,wallBase]:[wallBase,mainlandWallBase];
     for(const base of bases){
       try{
         const response=await fetch(new URL('api/public/messages?limit=12',base),{headers:{Accept:'application/json'}});
         if(!response.ok)continue;
         const rows=messageRows(await response.json());
+        if(!rows.some(row=>messageBody(row)))continue;
         renderCurated(rows);
         return;
       }catch(_){ }
@@ -141,14 +142,16 @@
   document.querySelectorAll('[data-wall-region]').forEach(button=>button.addEventListener('click',()=>{
     region=button.dataset.wallRegion;
     loadWall();
+    loadCurated();
   }));
-  language.addEventListener('change',()=>{locale=language.value;loadWall();});
+  language.addEventListener('change',()=>{locale=language.value;loadWall();loadCurated();});
   window.addEventListener('popstate',()=>{
     const params=new URLSearchParams(location.search);
     locale=supported.includes(params.get('lang'))?params.get('lang'):'zh-Hant';
     section=sections.includes(params.get('section'))?params.get('section'):'home';
     region=regions.includes(params.get('region'))?params.get('region'):(mirrorHost?'hk':'tw');
     loadWall();
+    loadCurated();
   });
   loadWall();
   loadCurated();
