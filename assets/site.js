@@ -102,15 +102,50 @@
 
     var style=document.createElement('style');
     style.id='campaign-copy-style';
-    style.textContent='.campaign-copy{max-width:820px;margin:28px auto 44px;padding:26px 28px;border:1px solid var(--line,#d4c6b2);background:#fffaf2;box-shadow:0 12px 30px rgba(63,45,31,.08)}.campaign-copy h2{margin:0 0 18px;color:var(--red,#a33129);font-size:clamp(1.55rem,3vw,2.2rem)}.campaign-copy .campaign-note{padding-bottom:14px;border-bottom:1px solid var(--line,#d4c6b2);color:#5d6866;font-size:.92rem}.campaign-copy p{margin:1em 0;font-size:1.06rem}.campaign-copy .campaign-title{font:800 clamp(1.3rem,3vw,1.9rem)/1.5 Georgia,"Noto Serif TC","Noto Serif SC","Noto Serif JP",serif;color:#642b25}.campaign-copy .campaign-details{font-weight:800}@media(max-width:720px){.campaign-copy{padding:22px 19px}.campaign-copy p{font-size:1rem}}';
+    style.textContent=
+      '.campaign-copy{--campaign-red:#9d2f2a;--campaign-gold:#b7792f;--campaign-blue:#254b59;--campaign-green:#3f6458;position:relative;overflow:hidden;max-width:860px;margin:32px auto 52px;padding:34px 38px 36px;border:1px solid rgba(133,97,65,.3);background:radial-gradient(circle at 95% 2%,rgba(183,121,47,.18),transparent 34%),linear-gradient(145deg,#fffdf8 0%,#f8efe0 100%);box-shadow:0 20px 48px rgba(63,45,31,.13)}'+
+      '.campaign-copy:before{content:"";position:absolute;inset:0 auto 0 0;width:7px;background:linear-gradient(180deg,var(--campaign-red),var(--campaign-gold),var(--campaign-blue))}'+
+      '.campaign-copy h2{position:relative;margin:0 0 20px;color:var(--campaign-red);font:900 clamp(1.35rem,2.8vw,2.25rem)/1.15 system-ui,"Noto Sans TC","Noto Sans SC","Noto Sans JP",sans-serif;letter-spacing:.13em}'+
+      '.campaign-copy h2:after{content:"";display:block;width:min(180px,42%);height:3px;margin-top:12px;background:linear-gradient(90deg,var(--campaign-red),var(--campaign-gold),transparent)}'+
+      '.campaign-copy .campaign-note{max-width:690px;margin:0 0 27px;padding:0 0 16px;border-bottom:1px solid rgba(133,97,65,.28);color:#68726f;font-size:clamp(.78rem,1.5vw,.92rem);line-height:1.7;letter-spacing:.035em}'+
+      '.campaign-copy .campaign-line{position:relative;margin:1.15em 0;line-height:1.8}'+
+      '.campaign-copy .campaign-line-1{margin:.2em 0 1.2em;line-height:1.35}'+
+      '.campaign-copy .campaign-title{display:inline-block;font:900 clamp(1.75rem,4.4vw,3.35rem)/1.25 Georgia,"Noto Serif TC","Noto Serif SC","Noto Serif JP",serif;color:#6f2420;letter-spacing:.015em}'+
+      '.campaign-copy .campaign-line-2{max-width:94%;color:var(--campaign-blue);font:700 clamp(1.05rem,2.3vw,1.32rem)/1.85 Georgia,"Noto Serif TC","Noto Serif SC","Noto Serif JP",serif}'+
+      '.campaign-copy .campaign-line-3{max-width:92%;margin-left:6%;color:#5a4c43;font-size:clamp(.98rem,1.8vw,1.1rem);font-weight:650}'+
+      '.campaign-copy .campaign-line-4{max-width:88%;margin-left:11%;color:var(--campaign-green);font:800 clamp(1.05rem,2.1vw,1.26rem)/1.78 Georgia,"Noto Serif TC","Noto Serif SC","Noto Serif JP",serif}'+
+      '.campaign-copy .campaign-line-5{max-width:96%;color:var(--campaign-red);font-size:clamp(1.08rem,2.4vw,1.42rem);font-weight:900;line-height:1.72}'+
+      '.campaign-copy .campaign-line-6{margin:1.45em 0;padding:18px 22px;border-left:4px solid var(--campaign-gold);background:rgba(183,121,47,.1);color:#263f46;font:800 clamp(1.05rem,2.25vw,1.34rem)/1.75 Georgia,"Noto Serif TC","Noto Serif SC","Noto Serif JP",serif}'+
+      '.campaign-copy .campaign-line-7{max-width:91%;margin-left:7%;color:#403b37;font-size:clamp(1rem,1.9vw,1.16rem)}'+
+      '.campaign-copy .campaign-line-8{margin:1.4em 0 .9em;padding:.55em 0;border-top:1px solid rgba(157,47,42,.45);border-bottom:1px solid rgba(157,47,42,.45);color:#7b2924;font:900 clamp(1.45rem,3.5vw,2.35rem)/1.5 Georgia,"Noto Serif TC","Noto Serif SC","Noto Serif JP",serif;text-align:center}'+
+      '.campaign-copy .campaign-details{margin:1.6em 0 .8em;color:#f9f4e9;background:#263f46;padding:16px 19px;font:800 clamp(.94rem,1.8vw,1.08rem)/1.85 ui-monospace,"Noto Sans Mono CJK TC",monospace;letter-spacing:.025em}'+
+      '.campaign-copy .campaign-credit{margin:.7em 0 0;color:#74665b;font-size:clamp(.76rem,1.4vw,.88rem);letter-spacing:.04em}'+
+      '@media(max-width:720px){.campaign-copy{padding:27px 21px 30px 27px}.campaign-copy .campaign-line-3,.campaign-copy .campaign-line-4,.campaign-copy .campaign-line-7{max-width:100%;margin-left:0}.campaign-copy .campaign-line-6{padding:15px 16px}.campaign-copy .campaign-details{padding:14px 15px}}';
     document.head.appendChild(style);
 
     var section=document.createElement('section');
     section.id='campaign-copy';
     section.className='campaign-copy';
     section.setAttribute('aria-labelledby','campaign-copy-title');
-    section.innerHTML='<h2 id="campaign-copy-title">'+copy.heading+'</h2><p class="campaign-note">'+copy.note+'</p>'+copy.paragraphs.map(function(paragraph){return '<p>'+paragraph+'</p>';}).join('')+'<p class="campaign-details">'+copy.details+'</p><p>'+copy.credit+'</p>';
+    section.innerHTML='<h2 id="campaign-copy-title">'+copy.heading+'</h2><p class="campaign-note">'+copy.note+'</p>'+copy.paragraphs.map(function(paragraph,index){return '<p class="campaign-line campaign-line-'+(index+1)+'">'+paragraph+'</p>';}).join('')+'<p class="campaign-details">'+copy.details+'</p><p class="campaign-credit">'+copy.credit+'</p>';
     notice.insertAdjacentElement('afterend',section);
+
+    if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&window.gsap){
+      var timelineOptions={};
+      if(window.ScrollTrigger){
+        window.gsap.registerPlugin(window.ScrollTrigger);
+        timelineOptions.scrollTrigger={trigger:section,start:'top 84%',once:true};
+      }
+      var timeline=window.gsap.timeline(timelineOptions);
+      timeline
+        .from(section,{opacity:0,scale:.975,y:30,duration:.72,ease:'power2.out'})
+        .from(section.querySelector('h2'),{opacity:0,x:-38,skewX:-7,duration:.58,ease:'power3.out'},'-.38')
+        .from(section.querySelector('.campaign-note'),{opacity:0,y:16,duration:.42},'-.25')
+        .from(section.querySelectorAll('.campaign-line'),{opacity:0,x:function(index){return index%2===0?-30:30;},y:function(index){return index%3===0?18:8;},rotation:function(index){return index%2===0?-1.1:1.1;},duration:.64,stagger:.11,ease:'power2.out',clearProps:'transform'},'-.16')
+        .from(section.querySelector('.campaign-details'),{opacity:0,scaleX:.92,transformOrigin:'left center',duration:.48,ease:'power2.out'},'-.22')
+        .from(section.querySelector('.campaign-credit'),{opacity:0,y:9,duration:.34},'-.2');
+      window.gsap.to(section.querySelector('.campaign-title'),{textShadow:'0 0 18px rgba(157,47,42,.32)',duration:2.2,repeat:-1,yoyo:true,ease:'sine.inOut'});
+    }
   }
   mountAdvocacyCampaignCopy();
   load('site-base-20260823.js','base',function(){
