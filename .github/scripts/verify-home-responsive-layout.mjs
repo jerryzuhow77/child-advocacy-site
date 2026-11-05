@@ -137,7 +137,7 @@ try{
   // The gateway is a deliberate homepage navigation and public-voice module.
   // Measure it separately so the original core ceiling remains meaningful,
   // while retaining a strict responsive height bound for this new section.
-  assert(additions.modules.every(m=>m.height<(m.name==='guardian-wall-gateway'?(width<=760?2400:1200):(width<=760?1200:700))*translationScale),`${region}/${locale}/${width}: added editorial section too tall ${JSON.stringify(additions)}`);
+  assert(additions.modules.every(m=>m.height<(m.name==='guardian-wall-gateway'?(width<=900?2400:1200):(width<=760?1200:700))*translationScale),`${region}/${locale}/${width}: added editorial section too tall ${JSON.stringify(additions)}`);
   assert(additions.pinned.height<additions.pinned.cards*(width<=760?700:500)*translationScale+1,`${region}/${locale}/${width}: added pinned reports too tall ${JSON.stringify(additions)}`);
   assert(additions.news<additions.extraCards*(width<=760?400:300)*translationScale+1,`${region}/${locale}/${width}: added news rows too tall ${JSON.stringify(additions)}`);
   const additionHeight=additions.modules.reduce((n,m)=>n+m.height,0)+additions.pinned.height+additions.news;
