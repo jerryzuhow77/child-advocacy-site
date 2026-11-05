@@ -28,6 +28,11 @@
       const copy=labels[locale()];
       const frame=document.createElement('span');
       frame.className='home-dual-poster-thumb';
+      frame.style.setProperty('display','grid','important');
+      frame.style.setProperty('grid-template-columns','repeat(2,minmax(0,1fr))','important');
+      frame.style.setProperty('width','100%','important');
+      frame.style.setProperty('height','auto','important');
+      frame.style.setProperty('aspect-ratio','8/5','important');
       frame.setAttribute('data-home-thumb','');
       frame.setAttribute('role','group');
       frame.setAttribute('aria-label',copy[2]);
