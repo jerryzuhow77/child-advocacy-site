@@ -1,3 +1,4 @@
+
 (function () {
   'use strict';
 
@@ -157,7 +158,7 @@
         reloadingForUpdate = true;
         window.location.reload();
       });
-      navigator.serviceWorker.register(new URL('sw.js?v=20261027-safety-tools-v21', siteBase).href, {
+      navigator.serviceWorker.register(new URL('sw.js?v=20261105-guardian-wall-v22', siteBase).href, {
         scope: siteBase.pathname,
         updateViaCache: 'none'
       })
@@ -349,3 +350,4 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
   else init();
 })();
+
