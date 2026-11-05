@@ -1,5 +1,4 @@
 (function(){
-  if(!document.querySelector('link[data-autumn-wall-theme]')){const seasonal=document.createElement('link');seasonal.rel='stylesheet';seasonal.href='../assets/global-protection-wall-autumn-20260908.css?v=20260908-1';seasonal.dataset.autumnWallTheme='true';document.head.append(seasonal);}
   'use strict';
   const wallBase='https://global-protection.jerryzuhow77.chatgpt.site/';
   // Temporary direct Sites route while custom-domain DNS validation is pending.
@@ -39,12 +38,12 @@
     }
   };
 
-  const frame=document.getElementById('guardianWallFrame');
-  const loader=document.getElementById('portalLoader');
   const language=document.getElementById('portalLanguage');
   const external=document.querySelector('[data-open-wall]');
+  const launchWall=document.querySelector('[data-launch-wall]');
   const officialHomeLinks=document.querySelectorAll('[data-official-home-link]');
-  if(!frame||!loader||!language||!external)return;
+  const curatedGrid=document.getElementById('curatedMessageGrid');
+  if(!language||!external)return;
 
   const requested=new URLSearchParams(location.search);
   let locale=supported.includes(requested.get('lang'))?requested.get('lang'):'zh-Hant';
@@ -91,7 +90,6 @@
     });
     const officialHome=locale==='en'?'../en/':locale==='ja'?'../ja/':locale==='zh-Hans'?'../?lang=zh-Hans':'../';
     officialHomeLinks.forEach(link=>{link.href=officialHome;link.setAttribute('aria-label',t.officialHome);});
-    frame.title=t.frameTitle;
     language.value=locale;
     document.querySelectorAll('[data-wall-section]').forEach(button=>button.setAttribute('aria-current',String(button.dataset.wallSection===section)));
     document.querySelectorAll('[data-wall-region]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.wallRegion===region)));
@@ -100,25 +98,45 @@
   const loadWall=()=>{
     const target=wallUrl();
     external.href=target;
+    if(launchWall)launchWall.href=target;
     renderCopy();
     syncParentUrl();
-    // Use one top-level application shell for Taiwan and Hong Kong. This also
-    // avoids leaving visitors in an iframe loader when embedding is blocked.
-    const navigate=()=>window.location.replace(target);
-    if(window.guardianWallTransition&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-      window.guardianWallTransition({region,target,navigate});
-    }else{
-      navigate();
-    }
   };
 
-  frame.addEventListener('load',()=>{
-    loader.classList.add('is-complete');
-    document.body.classList.add('portal-ready');
-  });
+  const safeText=(value)=>String(value||'').replace(/\s+/g,' ').trim();
+  const messageRows=(payload)=>Array.isArray(payload)?payload:Array.isArray(payload?.messages)?payload.messages:Array.isArray(payload?.items)?payload.items:[];
+  const messageBody=(row)=>safeText(row.message||row.content||row.body||row.text||row.excerpt);
+  const messageAuthor=(row)=>safeText(row.display_name||row.displayName||row.author_name||row.author?.display_name||row.nickname)||'守護留言者';
+  const messageRegion=(row)=>safeText(row.region_label||row.region||row.country||row.location)||'守護留言牆';
+  const renderCurated=(rows)=>{
+    if(!curatedGrid)return;
+    const selected=rows.filter(row=>messageBody(row)).slice(0,3);
+    if(!selected.length){
+      curatedGrid.innerHTML='<div class="curated-message-empty"><span>尚無公開精選留言</span><p>留言通過審核並同意公開後，會由留言牆資料直接呈現在這裡。</p><button type="button" data-empty-wall-action>成為第一個留下觀點的人</button></div>';
+      curatedGrid.querySelector('[data-empty-wall-action]')?.addEventListener('click',()=>{section='guest-message';loadWall();window.location.assign(wallUrl());});
+      return;
+    }
+    curatedGrid.innerHTML=selected.map((row,index)=>'<article class="curated-message-card"><span>0'+(index+1)+'</span><blockquote>「'+messageBody(row).replace(/[<>&]/g,char=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[char]))+'」</blockquote><footer><strong>'+messageAuthor(row).replace(/[<>&]/g,char=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[char]))+'</strong><small>'+messageRegion(row).replace(/[<>&]/g,char=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[char]))+'</small></footer></article>').join('');
+  };
+  const loadCurated=async()=>{
+    if(!curatedGrid)return;
+    const bases=[wallBase,mainlandWallBase];
+    for(const base of bases){
+      try{
+        const response=await fetch(new URL('api/public/messages?limit=12',base),{headers:{Accept:'application/json'}});
+        if(!response.ok)continue;
+        const rows=messageRows(await response.json());
+        renderCurated(rows);
+        return;
+      }catch(_){ }
+    }
+    renderCurated([]);
+  };
+
   document.querySelectorAll('[data-wall-section]').forEach(button=>button.addEventListener('click',()=>{
     section=button.dataset.wallSection;
     loadWall();
+    window.location.assign(wallUrl());
   }));
   document.querySelectorAll('[data-wall-region]').forEach(button=>button.addEventListener('click',()=>{
     region=button.dataset.wallRegion;
@@ -133,5 +151,7 @@
     loadWall();
   });
   loadWall();
+  loadCurated();
 })();
+
 
