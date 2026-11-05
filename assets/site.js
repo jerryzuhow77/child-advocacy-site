@@ -26,6 +26,68 @@
     script.onerror=function(){if(done)done();};
     document.head.appendChild(script);
   }
+  function mountAdvocacyHeroPosters(){
+    if(location.pathname.indexOf('/news/why-we-keep-showing-up-20261105/')===-1)return;
+    var hero=document.querySelector('.hero');
+    if(!hero||hero.querySelector('.hero-posters'))return;
+    var firstPoster=hero.querySelector(':scope > img');
+    if(!firstPoster)return;
+
+    var locale=location.pathname.indexOf('/zh-Hans/')!==-1?'zh-Hans':location.pathname.indexOf('/en/')!==-1?'en':location.pathname.indexOf('/ja/')!==-1?'ja':'zh-Hant';
+    var labels={
+      'zh-Hant':['11 月 6 日二審準備程序｜水墨版海報','水墨版','11 月 6 日二審準備程序｜霓虹版海報','霓虹版'],
+      'zh-Hans':['11 月 6 日二审准备程序｜水墨版海报','水墨版','11 月 6 日二审准备程序｜霓虹版海报','霓虹版'],
+      en:['6 November appeal preparatory hearing｜Ink poster','Ink edition','6 November appeal preparatory hearing｜Neon poster','Neon edition'],
+      ja:['11月6日 控訴審準備手続｜水墨版ポスター','水墨版','11月6日 控訴審準備手続｜ネオン版ポスター','ネオン版']
+    }[locale];
+
+    var posters=document.createElement('div');
+    posters.className='hero-posters';
+    posters.setAttribute('aria-label',labels[0]+'・'+labels[2]);
+    var inkFigure=document.createElement('figure');
+    inkFigure.className='hero-poster hero-poster-ink';
+    firstPoster.alt=labels[0];
+    firstPoster.loading='eager';
+    inkFigure.appendChild(firstPoster);
+    var inkCaption=document.createElement('figcaption');
+    inkCaption.textContent=labels[1];
+    inkFigure.appendChild(inkCaption);
+
+    var neonFigure=document.createElement('figure');
+    neonFigure.className='hero-poster hero-poster-neon';
+    var neonPoster=document.createElement('img');
+    neonPoster.src='/child-advocacy-site/assets/art/chen-shangjie-20261106-poster-neon.jpg?v=20261105-dual-poster-1';
+    neonPoster.alt=labels[2];
+    neonPoster.loading='eager';
+    neonPoster.decoding='async';
+    neonFigure.appendChild(neonPoster);
+    var neonCaption=document.createElement('figcaption');
+    neonCaption.textContent=labels[3];
+    neonFigure.appendChild(neonCaption);
+
+    posters.appendChild(inkFigure);
+    posters.appendChild(neonFigure);
+    hero.appendChild(posters);
+
+    var style=document.createElement('style');
+    style.id='advocacy-hero-posters-style';
+    style.textContent=
+      '.hero{grid-template-columns:minmax(300px,.82fr) minmax(0,1.18fr);gap:34px}'+
+      '.hero-posters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:stretch;perspective:1200px}'+
+      '.hero-poster{position:relative;overflow:hidden;margin:0;min-width:0;border:1px solid rgba(193,139,60,.42);background:#111;box-shadow:0 18px 38px rgba(25,27,27,.2);transition:transform .38s ease,box-shadow .38s ease}'+
+      '.hero-poster:first-child{transform:rotate(-1deg)}.hero-poster:last-child{transform:rotate(1deg)}'+
+      '.hero-poster:hover{transform:translateY(-7px) rotate(0);box-shadow:0 25px 48px rgba(25,27,27,.3)}'+
+      '.hero-posters .hero-poster img{display:block;width:100%;height:auto;max-height:none;aspect-ratio:4/5;object-fit:cover;background:#111}'+
+      '.hero-poster figcaption{position:absolute;inset:auto 0 0;padding:9px 12px;background:linear-gradient(transparent,rgba(9,13,14,.9));color:#fff7e8;font-size:.76rem;font-weight:800;letter-spacing:.12em;text-align:right;text-shadow:0 1px 3px #000}'+
+      '@media(max-width:900px){.hero{grid-template-columns:1fr}.hero-posters{max-width:680px;margin:8px auto 0}}'+
+      '@media(max-width:560px){.hero-posters{gap:8px}.hero-poster figcaption{padding:7px 8px;font-size:.67rem}.hero-posters .hero-poster img{aspect-ratio:4/5}}'+
+      '@media(prefers-reduced-motion:reduce){.hero-poster{transition:none}}';
+    document.head.appendChild(style);
+
+    if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&window.gsap){
+      window.gsap.from(posters.querySelectorAll('.hero-poster'),{opacity:0,y:34,x:function(index){return index===0?-22:22;},rotation:function(index){return index===0?-4:4;},duration:.85,stagger:.16,ease:'power3.out',clearProps:'opacity,x,y,rotation'});
+    }
+  }
   function mountAdvocacyCampaignCopy(){
     if(location.pathname.indexOf('/news/why-we-keep-showing-up-20261105/')===-1)return;
     if(document.getElementById('campaign-copy'))return;
@@ -147,6 +209,7 @@
       window.gsap.to(section.querySelector('.campaign-title'),{textShadow:'0 0 18px rgba(157,47,42,.32)',duration:2.2,repeat:-1,yoyo:true,ease:'sine.inOut'});
     }
   }
+  mountAdvocacyHeroPosters();
   mountAdvocacyCampaignCopy();
   load('site-base-20260823.js','base',function(){
     load('site-four-language-qa-20260823.js','four-language-qa',function(){
