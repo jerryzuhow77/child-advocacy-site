@@ -122,7 +122,7 @@ try{
    // The current pinned-brief slider intentionally sits before <main>. Track the
    // live module by its durable slider attribute, not its retired date-stamped ID,
    // so normal published cards are measured rather than misclassified as core layout.
-   const modules=[...document.querySelectorAll('[data-gsap-slider].paired-daily-briefs,main>.daily-brief-20261018,main>.mobile-daily-brief,main>.home-light-impression,main>#weekly-reading,main>#home-case-patterns,main>#chen-nov6-hearing,main>#child-family-support-administration-20261020')].map(e=>({name:e.id||e.className,height:footprint(e)}));
+   const modules=[...document.querySelectorAll('[data-gsap-slider].paired-daily-briefs,#guardian-wall-gateway,main>.daily-brief-20261018,main>.mobile-daily-brief,main>.home-light-impression,main>#weekly-reading,main>#home-case-patterns,main>#chen-nov6-hearing,main>#child-family-support-administration-20261020')].map(e=>({name:e.id||e.className,height:footprint(e)}));
    // The first two pinned reports are part of the historical core. Later cards
    // are published additions and must be measured individually and bounded.
    const pinned=[...document.querySelectorAll('#news-flash .home-card')].slice(2);
@@ -134,7 +134,10 @@ try{
   });
   const baseline=reports.find(r=>r.region===region&&r.locale==='zh-Hant'&&r.width===width);
   const translationScale=locale==='zh-Hant'?1:(width<=760?1.6:1.35);
-  assert(additions.modules.every(m=>m.height<(width<=760?1200:700)*translationScale),`${region}/${locale}/${width}: added editorial section too tall ${JSON.stringify(additions)}`);
+  // The gateway is a deliberate homepage navigation and public-voice module.
+  // Measure it separately so the original core ceiling remains meaningful,
+  // while retaining a strict responsive height bound for this new section.
+  assert(additions.modules.every(m=>m.height<(m.name==='guardian-wall-gateway'?(width<=760?2400:1200):(width<=760?1200:700))*translationScale),`${region}/${locale}/${width}: added editorial section too tall ${JSON.stringify(additions)}`);
   assert(additions.pinned.height<additions.pinned.cards*(width<=760?700:500)*translationScale+1,`${region}/${locale}/${width}: added pinned reports too tall ${JSON.stringify(additions)}`);
   assert(additions.news<additions.extraCards*(width<=760?400:300)*translationScale+1,`${region}/${locale}/${width}: added news rows too tall ${JSON.stringify(additions)}`);
   const additionHeight=additions.modules.reduce((n,m)=>n+m.height,0)+additions.pinned.height+additions.news;
