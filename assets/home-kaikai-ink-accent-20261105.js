@@ -119,7 +119,7 @@
     };
     const startTimer=()=>{
       stop();
-      if(!paused&&!reducedMotion()&&slides.length>1)timer=window.setInterval(()=>go(1),4800);
+      if(!paused&&!reducedMotion()&&slides.length>1)timer=window.setTimeout(()=>{go(1);startTimer()},4800);
     };
     const go=(delta,manual=false)=>{
       if(slides.length<2)return;
@@ -130,7 +130,14 @@
       const incoming=slides[index];
       slides.forEach((slide,i)=>slide.setAttribute('aria-hidden',String(i!==index)));
       if(window.gsap&&!reducedMotion()){
+        slides.forEach((slide,i)=>{
+          if(i===old||i===index)return;
+          window.gsap.killTweensOf(slide);
+          window.gsap.set(slide,{autoAlpha:0,y:0,rotateX:0});
+          slide.classList.remove('is-active');
+        });
         window.gsap.killTweensOf([outgoing,incoming]);
+        outgoing.classList.add('is-active');
         window.gsap.to(outgoing,{autoAlpha:0,y:-24,rotateX:4,duration:.36,ease:'power2.in',onComplete:()=>outgoing.classList.remove('is-active')});
         incoming.classList.add('is-active');
         window.gsap.fromTo(incoming,{autoAlpha:0,y:28,rotateX:-4},{autoAlpha:1,y:0,rotateX:0,duration:.58,ease:'power2.out'});
@@ -187,5 +194,6 @@
   };
   document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start,{once:true}):start();
 })();
+
 
 
