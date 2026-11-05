@@ -8,6 +8,14 @@
     '/child-advocacy-site/assets/ink-card-05-history-20261105.webp',
     '/child-advocacy-site/assets/ink-card-06-action-20261105.webp'
   ];
+  const curatedVoices=[
+    ['豆子','希望更多人关注儿童成长环境，关注剀剀小朋友。'],
+    ['守护','守护儿童健康成长'],
+    ['一束光','台灣寄養制度亟需改革，因為現行制度常忽略兒童的心理支持與長期安置規劃。寄養家庭不僅需要更多資源與培訓，也應建立完善的追蹤與輔導機制，避免孩子在制度中反覆流轉。'],
+    ['Jerry Chang','孩子不一定能清楚說出自己遭遇了什麼，但他們的沉默、退縮、害怕與反常，往往都在傳遞訊息。真正的兒童保護，不只是事後追究責任，更是當孩子發出微小求救時，有人願意停下來聽、仔細查…'],
+    ['一盏小灯','你已经不在，但是我们会帮你发声，这一路有的云爸爸妈妈可能坚持不住，但是你无需担心，对你的爱是会传递的，一棒接着一棒，后面的云爸妈会牢牢的接过这爱的一棒，继续前行！'],
+    ['RINA','關注剀剀的這三年，是我一次次心疼、共情、慢慢沉澱溫柔與力量的時光。']
+  ];
   const reducedMotion=()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const installStyles=()=>{
@@ -82,6 +90,25 @@
     let timer=0;
     let paused=false;
 
+    const ensureCuratedVoices=()=>{
+      const articles=[...voices.children].filter(element=>element.matches('article'));
+      const current=articles.map(article=>`${article.querySelector('small')?.textContent}\n${article.querySelector('p')?.textContent}`).join('\n---\n');
+      const expected=curatedVoices.map(([author,message])=>`${author}\n「${message}」`).join('\n---\n');
+      if(current===expected)return false;
+      const fragment=document.createDocumentFragment();
+      curatedVoices.forEach(([author,message])=>{
+        const article=document.createElement('article');
+        const small=document.createElement('small');
+        const paragraph=document.createElement('p');
+        small.textContent=author;
+        paragraph.textContent=`「${message}」`;
+        article.append(small,paragraph);
+        fragment.append(article);
+      });
+      voices.replaceChildren(fragment);
+      return true;
+    };
+
     const stop=()=>{window.clearInterval(timer);timer=0};
     const updateControls=()=>{
       count.textContent=`${String(index+1).padStart(2,'0')} / ${String(slides.length||1).padStart(2,'0')}`;
@@ -134,7 +161,8 @@
     aside.addEventListener('pointerleave',startTimer);
     aside.addEventListener('focusin',stop);
     aside.addEventListener('focusout',event=>{if(!aside.contains(event.relatedTarget))startTimer()});
-    new MutationObserver(()=>window.setTimeout(rebuild,0)).observe(voices,{childList:true});
+    new MutationObserver(()=>window.setTimeout(()=>{if(!ensureCuratedVoices())rebuild()},0)).observe(voices,{childList:true});
+    ensureCuratedVoices();
     rebuild();
   };
 
@@ -159,4 +187,5 @@
   };
   document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start,{once:true}):start();
 })();
+
 
