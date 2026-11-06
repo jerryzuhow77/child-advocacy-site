@@ -177,3 +177,18 @@
   const add=()=>{const slider=document.querySelector('[data-gsap-slider]');if(!slider||slider.querySelector('[data-ruifang-little-citizens-202611]'))return;const d=copy[locale()],card=document.createElement('a');card.href=d.href;card.dataset.homeArticle='';card.dataset.homeBrief='ruifang-little-citizens-202611';card.dataset.homeDate='2026-11-05T08:00';card.dataset.homePinned='true';card.dataset.ruifangLittleCitizens202611='';card.innerHTML='<img src="'+root+'assets/art/ruifang-little-citizens-202611-hero.jpg" alt="'+d.alt+'" width="1599" height="900" data-home-thumb><span class="brief-copy"><small>'+d.meta+'</small><h2>'+d.title+'</h2><p>'+d.summary+'</p><span class="brief-read">'+d.read+'</span></span>';slider.insertBefore(card,slider.firstChild);};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
 })();
+
+
+/* 2026-11-06 — verified public AI and child online-safety forum in Taipei. */
+(()=>{
+  const root='/child-advocacy-site/';
+  const copy={
+    'zh-Hant':{href:root+'activity-records/ai-child-online-safety-202612/',meta:'新增・公開數位安全活動｜12/2',title:'AI 世代的兒少網路安全與數位素養',summary:'台灣展翅協會與 Google 台灣合辦，提供台北實體與線上直播；以數位防護和媒體素養支持兒少安全。',read:'查看活動資訊 →',alt:'AI 世代兒少網路安全與數位素養的抽象數位安全景觀，非活動現場。'},
+    'zh-Hans':{href:root+'activity-records/ai-child-online-safety-202612/zh-Hans/',meta:'新增・公开数字安全活动｜12/2',title:'AI 世代的儿童网络安全与数字素养',summary:'台湾展翅协会与 Google 台湾合办，提供台北实体与在线直播；以数字防护和媒体素养支持儿童安全。',read:'查看活动资讯 →',alt:'AI 世代儿童网络安全与数字素养的抽象数字安全景观，非活动现场。'},
+    en:{href:root+'activity-records/ai-child-online-safety-202612/en/',meta:'NEW · PUBLIC DIGITAL-SAFETY EVENT · 2 DEC',title:'AI-era Child Online Safety & Digital Literacy',summary:'By Taiwan ECPAT and Google Taiwan, with a Taipei in-person forum and livestream; practical safeguards and media literacy for child safety.',read:'View event details →',alt:'Abstract digital-safety landscape for the AI-era child online safety and digital literacy forum; not an event scene.'},
+    ja:{href:root+'activity-records/ai-child-online-safety-202612/ja/',meta:'新着・公開デジタル安全イベント｜12月2日',title:'AI時代の子どものネット安全とデジタル・リテラシー',summary:'台湾展翅協会とGoogle台湾による、台北会場・ライブ配信のフォーラム。デジタル防護とメディア・リテラシーで子どもの安全を支えます。',read:'活動情報を見る →',alt:'AI時代の子どものネット安全とデジタル・リテラシーを示す抽象的なデジタル安全景観。現場写真ではありません。'}
+  };
+  const locale=()=>document.documentElement.lang==='ja'?'ja':document.documentElement.lang==='en'?'en':document.documentElement.lang==='zh-Hans'?'zh-Hans':'zh-Hant';
+  const add=()=>{const slider=document.querySelector('[data-gsap-slider]');if(!slider||slider.querySelector('[data-ai-child-online-safety-202612]'))return;const d=copy[locale()],card=document.createElement('a');card.href=d.href;card.dataset.homeArticle='';card.dataset.homeBrief='ai-child-online-safety-202612';card.dataset.homeDate='2026-11-06T08:00';card.dataset.homePinned='true';card.dataset.aiChildOnlineSafety202612='';card.innerHTML='<img src="'+root+'assets/art/ai-child-online-safety-202612-hero.svg" alt="'+d.alt+'" width="1600" height="900" data-home-thumb><span class="brief-copy"><small>'+d.meta+'</small><h2>'+d.title+'</h2><p>'+d.summary+'</p><span class="brief-read">'+d.read+'</span></span>';slider.insertBefore(card,slider.firstChild);};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
+})();
