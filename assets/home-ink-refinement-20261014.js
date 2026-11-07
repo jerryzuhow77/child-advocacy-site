@@ -59,11 +59,11 @@
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
 
-(()=>{const s=document.createElement('script');s.src='/child-advocacy-site/assets/home-guardian-wall-gateway-20261105.js?v=20261105-card-wheel-5';s.defer=true;document.head.appendChild(s)})();
+(()=>{const s=document.createElement('script');s.src='/child-advocacy-site/assets/home-guardian-wall-gateway-20261105.js?v=20261107-stable-gateway-1';s.defer=true;document.head.appendChild(s)})();
 
-(()=>{window.addEventListener('load',()=>{window.setTimeout(()=>{if(document.getElementById('guardian-wall-gateway'))return;const s=document.createElement('script');s.src='/child-advocacy-site/assets/home-guardian-wall-gateway-20261105.js?v=20261105-card-wheel-5&retry=1';document.head.appendChild(s)},0)},{once:true})})();
+(()=>{window.addEventListener('load',()=>{window.setTimeout(()=>{if(document.getElementById('guardian-wall-gateway'))return;const s=document.createElement('script');s.src='/child-advocacy-site/assets/home-guardian-wall-gateway-20261105.js?v=20261107-stable-gateway-1&retry=1';document.head.appendChild(s)},0)},{once:true})})();
 
-(()=>{const s=document.createElement('script');s.src='/child-advocacy-site/assets/home-kaikai-ink-accent-20261105.js?v=20261105-card-wheel-5';s.defer=true;document.head.appendChild(s)})();
+(()=>{const s=document.createElement('script');s.src='/child-advocacy-site/assets/home-kaikai-ink-accent-20261105.js?v=20261107-stable-gateway-1';s.defer=true;document.head.appendChild(s)})();
 
 
 
