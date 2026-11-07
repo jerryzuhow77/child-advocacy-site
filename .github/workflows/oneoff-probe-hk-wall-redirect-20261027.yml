@@ -1,8 +1,5 @@
 name: Probe HK wall redirect chain
 on:
-  push:
-    branches: [main]
-    paths: ['.github/workflows/oneoff-probe-hk-wall-redirect-20261027.yml']
   workflow_dispatch:
 permissions: {contents: read}
 jobs:
