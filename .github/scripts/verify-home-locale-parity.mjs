@@ -27,3 +27,19 @@ for (const locale of ['en', 'ja']) {
   }
 }
 console.log('English and Japanese homepages preserve all current sections, dates, resources, and executable scripts.');
+
+// Parse every homepage script, including data loaders omitted by the old fixed list.
+const checked = new Set();
+for (const home of ['index.html', 'en/index.html', 'ja/index.html']) {
+  for (const match of read(home).matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
+    if (/application\//i.test(match[1])) continue;
+    const src = match[1].match(/\bsrc\s*=\s*["']([^"']+)["']/i);
+    if (!src) { new vm.Script(match[2], {filename: home}); continue; }
+    const url = new URL(src[1], 'https://homepage.local/child-advocacy-site/' + home);
+    if (url.hostname !== 'homepage.local') continue;
+    assert.ok(url.pathname.startsWith('/child-advocacy-site/'), 'Homepage script must resolve within the site');
+    const file = url.pathname.slice('/child-advocacy-site/'.length);
+    if (!checked.has(file)) { new vm.Script(read(file), {filename: file}); checked.add(file); }
+  }
+}
+console.log(`Parsed ${checked.size} local homepage scripts, including the pinned daily brief loader.`);
