@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title>Abstract modern ink-and-paper artwork for trauma-informed justice</title>
+<desc>Warm handmade paper layers, a deep-teal protective arch, mist-teal paths and fine gold lines. No people, text or real location.</desc>
+<defs>
+ <filter id="paper"><feTurbulence type="fractalNoise" baseFrequency=".72" numOctaves="3" seed="18" result="n"/><feColorMatrix in="n" type="matrix" values=".15 0 0 0 .72 0 .13 0 0 .60 0 0 .09 0 .42 0 0 0 .16 0"/><feBlend in="SourceGraphic" mode="multiply"/></filter>
+ <filter id="soft"><feGaussianBlur stdDeviation="9"/></filter>
+ <linearGradient id="rice" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fffaf0"/><stop offset=".55" stop-color="#f1e4cc"/><stop offset="1" stop-color="#e8d4b2"/></linearGradient>
+ <linearGradient id="teal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#173f42"/><stop offset="1" stop-color="#2f6965"/></linearGradient>
+ <clipPath id="cut"><path d="M0 0h1600v900H0z"/></clipPath>
+</defs>
+<rect width="1600" height="900" fill="url(#rice)"/>
+<g filter="url(#paper)" clip-path="url(#cut)">
+ <path d="M-70 726C252 589 406 638 687 704c288 67 526 31 993-175v420H-70z" fill="#b8cec5"/>
+ <path d="M-34 790c270-152 526-90 749-39 278 64 564 47 916-198v368H-34z" fill="#d8e4dc"/>
+ <path d="M1135-45c197 97 311 234 497 455v-455z" fill="#b75f48" opacity=".83"/>
+ <path d="M-72 198c250 54 407 144 537 310-249-34-425 8-609 114z" fill="#d59a73" opacity=".8"/>
+ <path d="M236 61c351-102 753-23 1115 187l-75 93c-337-148-670-199-1002-89z" fill="#234e50"/>
+ <path d="M263 95c305-90 674-25 1032 180l-23 30C926 152 601 87 282 127z" fill="#f3e9d6" opacity=".9"/>
+ <path d="M588 727c-4-214 8-332 107-459 89-114 217-176 392-185 126-6 227 12 344 68v520c-256 117-546 163-843 56z" fill="url(#teal)"/>
+ <path d="M699 714c-6-179 11-287 90-390 69-91 170-142 307-150 98-5 177 11 269 51v389c-190 92-415 130-666 100z" fill="#f7f0e0"/>
+ <path d="M785 706c-2-139 16-222 77-298 52-65 127-104 231-112 75-6 137 8 208 37v258c-145 75-322 108-516 115z" fill="#a6c9c0"/>
+ <path d="M900 700c4-99 20-160 67-213 42-48 100-74 180-78 53-3 99 7 147 27v138c-111 61-242 98-394 126z" fill="#f5db9a"/>
+ <path d="M253 787c281-88 585-51 899-189" fill="none" stroke="#b3862e" stroke-width="10" stroke-linecap="round"/>
+ <path d="M279 819c319-75 638-17 1007-245" fill="none" stroke="#ba664b" stroke-width="4" stroke-linecap="round"/>
+ <g fill="#d8aa42"><circle cx="425" cy="739" r="12"/><circle cx="669" cy="704" r="9"/><circle cx="1021" cy="618" r="12"/><circle cx="1224" cy="545" r="8"/></g>
+ <path d="M236 61c351-102 753-23 1115 187" fill="none" stroke="#c8a34c" stroke-width="5"/>
+</g>
+<rect x="46" y="44" width="1508" height="812" rx="2" fill="none" stroke="#8d7457" stroke-opacity=".54" stroke-width="3"/>
+</svg>
