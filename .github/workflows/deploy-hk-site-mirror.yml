@@ -302,6 +302,7 @@ jobs:
               "location = /child-advocacy-site",
               "location = /child-advocacy-site/",
               "location ^~ /child-advocacy-site/",
+              "location = /child-advocacy-site/missed-warning-signals/",
               "location ^~ /cases/",
               "location /cases/",
               "location = /news/child-safety-network-20260914",
