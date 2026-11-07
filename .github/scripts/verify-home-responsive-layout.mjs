@@ -36,7 +36,7 @@ try{
    await route.fulfill({path:filename});
   });
   const page=await context.newPage();
-  page.on('pageerror',e=>errors.push(e.message));
+  page.on('pageerror',e=>errors.push(e.stack||e.message));
   page.on('load',()=>loadObserved=true);
   const homePath='/child-advocacy-site/'+(['en','ja'].includes(locale)?locale+'/':'?lang='+locale);
   await page.goto('https://'+host+homePath,{waitUntil:'commit'});
