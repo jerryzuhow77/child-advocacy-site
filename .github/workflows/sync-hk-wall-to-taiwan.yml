@@ -67,6 +67,10 @@ jobs:
           curl --silent --show-error --fail-with-body --max-time 20 \
             http://127.0.0.1:18787/api/public/submission-stats |
             node -e 'let body="";process.stdin.on("data",chunk=>body+=chunk);process.stdin.on("end",()=>{const stats=JSON.parse(body);if(stats.scope!=="taiwan-hong-kong-shared"||!Number.isSafeInteger(stats.published)||stats.published<0)process.exit(1)})'
+          # The SSH tunnel is the authenticated path to the Hong Kong service.
+          # Use it for both public counters and message/image reads so scheduled
+          # reconciliation does not depend on the public CDN/WAF route.
+          printf 'SOURCE_ORIGIN=%s\n' 'http://127.0.0.1:18787' >> "$GITHUB_ENV"
           printf 'SOURCE_STATS_ORIGIN=%s\n' 'http://127.0.0.1:18787' >> "$GITHUB_ENV"
 
       - name: Verify Taiwan synchronization endpoint
