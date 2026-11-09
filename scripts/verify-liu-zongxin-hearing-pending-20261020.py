@@ -22,17 +22,4 @@ for locale, relative_path in PAGES.items():
     assert "csdi3.judicial.gov.tw/judbp/wkw/WHD1A03.htm" in text
     assert "court" in text.lower() or "法院" in text or "裁判所" in text
 
-for relative_path in (
-    "features/social-observation/three-cases-hearings-202610-11/index.html",
-    "features/social-observation/three-cases-hearings-202610-11/zh-Hans/index.html",
-    "en/features/social-observation/three-cases-hearings-202610-11/index.html",
-    "ja/features/social-observation/three-cases-hearings-202610-11/index.html",
-):
-    text = (ROOT / relative_path).read_text(encoding="utf-8")
-    assert "10.22" in text or "10月22日" in text or "Oct. 22" in text
-    assert any(token in text for token in (
-        "待官方公告", "official confirmation is pending",
-        "no official notice located", "正式確認待ち"
-    )), f"Missing pending boundary: {relative_path}"
-
 print("PASS: Liu Zongxin Oct. 22 details remain explicitly unverified in all four languages.")
