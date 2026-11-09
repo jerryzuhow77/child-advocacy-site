@@ -17,16 +17,9 @@ TARGETS = {
     'news/liangping-naimilk-jiajia-hearing-20261007/zh-Hans/index.html': (
         '既有资料标注 16:45 为开庭', '约 16:30 为集合', '新海报标示 16:30 未注明用途'
     ),
-    'en/features/social-observation/three-cases-hearings-202610-11/index.html': (
-        '16:45 is listed as the hearing time', '16:30 as the gathering time',
-        'poster lists 16:30 without stating which it is'
-    ),
     'en/news/three-upcoming-hearings-20261004/index.html': (
         '16:45 is listed as the hearing time', '16:30 as the gathering time',
         'poster lists 16:30 without'
-    ),
-    'ja/features/social-observation/three-cases-hearings-202610-11/index.html': (
-        '16:45を開廷時刻', '16:30頃を集合時刻', 'ポスターは16:30とだけ示し'
     ),
     'ja/news/three-upcoming-hearings-20261004/index.html': (
         '16:45を開廷時刻', '16:30頃を集合時刻', 'ポスターは16:30とだけ示し'
