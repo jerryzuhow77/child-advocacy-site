@@ -1,38 +1,43 @@
+/* July 13 Lin-child hearing: localized pinned entry, shared by both site mirrors. */
 (() => {
-  'use strict';
   const root = '/child-advocacy-site/';
-  const route = 'hearing-records/liu-ruolin-lin-child-20260713/';
+  const article = root + 'hearing-records/liu-ruolin-lin-child-20260713/';
+  const image = root + 'assets/art/liu-ruolin-lin-child-20260713-hero.jpg';
   const copy = {
-    'zh-Hant': ['旁聽紀錄・2026.07.13', '劉若琳涉虐童另案｜林童旁聽筆記', '證人陳述、辯方主張與旁聽整理分開閱讀；不代表法院認定。'],
-    'zh-Hans': ['旁听记录・2026.07.13', '刘若琳涉虐童另案｜林童旁听笔记', '区分证人陈述、辩方主张与旁听整理；不代表法院认定。'],
-    en: ['Court observation · 2026.07.13', 'Liu Ruolin separate case | Notes concerning the Lin child', 'Witness accounts, defence submissions and observers’ analysis; not court findings.'],
-    ja: ['傍聴記録・2026.07.13', '劉若琳の別件｜林姓児童の傍聴記録', '証人の供述、弁護側の主張、傍聴整理を区別。裁判所の認定ではありません。']
+    'zh-Hant': ['旁聽紀錄・2026.07.13','劉若琳涉虐童另案｜林童旁聽筆記','證人陳述與待查事項分開記錄；不代表法院認定。','現代水墨紙藝主視覺'],
+    'zh-Hans': ['旁听记录・2026.07.13','刘若琳涉虐童另案｜林童旁听笔记','证人陈述与待查事项分开记录；不代表法院认定。','现代水墨纸艺主视觉'],
+    en: ['Court observation · 2026.07.13','Liu Ruo-lin separate case | Lin-child observation notes','Witness accounts and unresolved issues, distinguished from court findings.','Modern ink-wash paper-art illustration'],
+    ja: ['法廷傍聴・2026.07.13','劉若琳の別件事件｜林姓児童の傍聴メモ','証人の陳述と未確認事項を区別。裁判所の認定ではありません。','現代水墨・ペーパーアートのイメージ']
   };
-  function mount() {
+  let last = '';
+  function render() {
+    const lang = document.documentElement.lang;
+    const query = new URLSearchParams(location.search).get('lang');
+    const key = query === 'zh-Hans' || query === 'zh-CN' ? 'zh-Hans' : copy[lang] ? lang : 'zh-Hant';
     const track = document.querySelector('#news-flash .home-pinned-reports-track') || document.querySelector('.home-pinned-reports-track');
     if (!track) return;
-    const declared = document.documentElement.lang;
-    const query = new URLSearchParams(location.search).get('lang');
-    const lang = copy[query] ? query : (copy[declared] ? declared : 'zh-Hant');
     let card = document.getElementById('liu-ruolin-lin-child-pinned');
-    if (!card) {
+    if (card && key === last) return;
+    const fresh = !card;
+    if (fresh) {
       card = document.createElement('a');
       card.id = 'liu-ruolin-lin-child-pinned';
       card.className = 'home-pinned-report-card is-latest-report';
-      card.innerHTML = '<img loading="eager" decoding="async" width="1536" height="1024"><span><small></small><strong></strong><em></em></span>';
-      track.prepend(card);
-      if (window.gsap && !matchMedia('(prefers-reduced-motion:reduce)').matches) {
-        gsap.fromTo(card, {opacity: 0, y: 20}, {opacity: 1, y: 0, duration: .65, ease: 'power3.out'});
-      }
     }
-    card.href = root + route + (lang === 'zh-Hant' ? '' : lang + '/');
-    const img = card.querySelector('img');
-    img.src = root + 'assets/art/liu-ruolin-lin-child-20260713-hero.jpg';
-    img.alt = '';
-    ['small', 'strong', 'em'].forEach((tag, i) => {card.querySelector(tag).textContent = copy[lang][i];});
+    last = key;
+    const words = copy[key];
+    card.href = article + (key === 'zh-Hant' ? '' : key + '/');
+    card.hreflang = key;
+    card.replaceChildren();
+    const img = document.createElement('img');
+    img.src = image; img.alt = words[3]; img.loading = 'eager'; img.decoding = 'async';
+    const span = document.createElement('span');
+    ['small','strong','em'].forEach((tag,i) => {const el = document.createElement(tag);el.textContent = words[i];span.append(el);});
+    card.append(img, span);
+    if (fresh) track.prepend(card);
+    if (fresh && window.gsap && !matchMedia('(prefers-reduced-motion:reduce)').matches)
+      gsap.fromTo(card,{opacity:0,y:20,rotate:-.35},{opacity:1,y:0,rotate:0,duration:.65,ease:'power3.out'});
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount, {once: true});
-  else mount();
-  // The Hong Kong homepage may apply its locale after DOMContentLoaded.
-  new MutationObserver(mount).observe(document.documentElement, {attributes: true, attributeFilter: ['lang']});
+  const start = () => {render();new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});};
+  document.readyState === 'loading' ? addEventListener('DOMContentLoaded', start, {once:true}) : start();
 })();
