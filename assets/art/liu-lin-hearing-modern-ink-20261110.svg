@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-label="法院卷宗與保護光環的現代水墨意象">
+<defs>
+  <linearGradient id="paper" x2="1" y2="1"><stop stop-color="#fffaf0"/><stop offset=".55" stop-color="#f3ead9"/><stop offset="1" stop-color="#dce7e1"/></linearGradient>
+  <linearGradient id="mist" x2="1"><stop stop-color="#d9e5df" stop-opacity="0"/><stop offset="1" stop-color="#214c5b" stop-opacity=".82"/></linearGradient>
+  <radialGradient id="halo"><stop stop-color="#fff8dd" stop-opacity=".9"/><stop offset=".7" stop-color="#d7a845" stop-opacity=".12"/><stop offset="1" stop-color="#b77a22" stop-opacity=".55"/></radialGradient>
+  <filter id="soft"><feGaussianBlur stdDeviation="18"/></filter>
+  <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="8"/><feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .075 0"/></filter>
+</defs>
+<rect width="1600" height="1000" fill="url(#paper)"/><rect width="1600" height="1000" filter="url(#grain)" opacity=".32"/>
+<path d="M420 760C710 575 875 730 1070 555S1420 390 1600 500V1000H300Z" fill="#8ba8a3" opacity=".28" filter="url(#soft)"/>
+<path d="M730 790c220-205 348-75 520-270 112-127 234-138 350-92v572H600z" fill="#184756" opacity=".66"/>
+<path d="M850 835c180-135 285-52 418-178 106-100 213-112 332-80v423H770z" fill="#295d68" opacity=".55"/>
+<circle cx="1230" cy="310" r="275" fill="url(#halo)" opacity=".82"/><circle cx="1230" cy="310" r="275" fill="none" stroke="#c99a43" stroke-width="3" opacity=".7"/>
+<path d="M1020 460h412l-34-126-90-58-94 58-158 42z" fill="#eef0e6" opacity=".92"/><path d="M1052 475h342v82h-342z" fill="#eff0e7"/><path d="M1090 365v112m47-130v130m48-143v143m48-130v130m48-112v112" stroke="#315a62" stroke-width="14" opacity=".75"/>
+<g transform="translate(960 650) rotate(-10)"><rect x="0" y="60" width="270" height="210" rx="14" fill="#e6d5ae"/><rect x="34" y="20" width="275" height="228" rx="14" fill="#9daea4"/><rect x="85" y="-10" width="288" height="240" rx="14" fill="#f3e5c5"/><path d="M120 86h220M120 112h190" stroke="#c5ad78" stroke-width="5" opacity=".7"/><circle cx="230" cy="184" r="20" fill="none" stroke="#a77b36" stroke-width="6"/></g>
+<path d="M670 905C820 760 940 890 1110 785s282-76 490-175" fill="none" stroke="#c79736" stroke-width="5" opacity=".9"/>
+<rect width="1600" height="1000" fill="url(#mist)" opacity=".16"/>
+</svg>
