@@ -14,7 +14,7 @@
     const lang = document.documentElement.lang;
     const query = new URLSearchParams(location.search).get('lang');
     const key = query === 'zh-Hans' || query === 'zh-CN' ? 'zh-Hans' : copy[lang] ? lang : 'zh-Hant';
-    const track = document.querySelector('#news-flash .home-pinned-reports-track') || document.querySelector('.home-pinned-reports-track');
+    const track = document.querySelector('#news-flash .home-pinned-reports-track') || document.querySelector('.home-pinned-reports-track') || document.querySelector('[data-gsap-slider]');
     if (!track) return;
     let card = document.getElementById('liu-ruolin-lin-child-pinned');
     if (card && key === last) return;
@@ -22,7 +22,8 @@
     if (fresh) {
       card = document.createElement('a');
       card.id = 'liu-ruolin-lin-child-pinned';
-      card.className = 'home-pinned-report-card is-latest-report';
+      card.className = track.matches('[data-gsap-slider]') ? 'lin-hearing-pinned' : 'home-pinned-report-card is-latest-report';
+      card.dataset.homeArticle = ''; card.dataset.homeBrief = 'lin-child-hearing-20260713'; card.dataset.homePin = 'true'; card.dataset.homeDate = '2026-11-10T13:00';
     }
     last = key;
     const words = copy[key];
@@ -31,8 +32,8 @@
     card.replaceChildren();
     const img = document.createElement('img');
     img.src = image; img.alt = words[3]; img.loading = 'eager'; img.decoding = 'async';
-    const span = document.createElement('span');
-    ['small','strong','em'].forEach((tag,i) => {const el = document.createElement(tag);el.textContent = words[i];span.append(el);});
+    const span = document.createElement('span'); span.className = 'brief-copy';
+    (track.matches('[data-gsap-slider]') ? ['small','h2','p'] : ['small','strong','em']).forEach((tag,i) => {const el = document.createElement(tag);el.textContent = words[i];span.append(el);});
     card.append(img, span);
     if (fresh) track.prepend(card);
     if (fresh && window.gsap && !matchMedia('(prefers-reduced-motion:reduce)').matches)
