@@ -163,7 +163,6 @@ try{
   await context.close();
  }
 }finally{await browser.close();await fs.writeFile(path.join(output,'report.json'),JSON.stringify({reports,failures},null,2));}
-if(failures.length)throw new Error(failures.join('
-'));
+if(failures.length)throw new Error(failures.join('\n'));
 console.log('All regional homepage checks passed.');
 
