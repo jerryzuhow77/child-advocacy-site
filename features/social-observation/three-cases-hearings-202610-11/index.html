@@ -22,6 +22,22 @@ h2,.card h3,.case-detail summary{color:var(--type-main);font-weight:750}.lede,.c
 .card time{color:var(--type-accent);font-size:.92rem;font-weight:700}.card h3{font-size:1.25rem;font-weight:750}.card h3 span{color:var(--type-muted);font-size:.88rem;font-weight:600}.card p{font-size:.92rem}.jump,.cases a{color:var(--type-main);font-size:.92rem;font-weight:700}
 .case-detail summary{font-size:1.2rem}.case-detail summary:before{color:var(--type-accent);font-weight:800}.case-detail .case-body{font-size:1rem}.case-sources{color:var(--type-main);font-size:.92rem}
 @media(max-width:560px){body{font-size:16px}.hero p:last-child{font-size:.96rem}.lede,.card p{font-size:.9rem}.card h3{font-size:1.12rem}.card h3 span{font-size:.84rem}.case-detail summary{font-size:1.08rem}.case-detail .case-body{font-size:.98rem}}
+
+/* mobile reading rhythm: prevent browser text inflation and add breathing room */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+@media (max-width:560px){
+  .panel{padding:25px 20px}
+  .panel h2{margin-bottom:12px;font-size:1.82rem;line-height:1.24}
+  .lede{margin:0 0 28px;line-height:1.9}
+  .cases{gap:18px}
+  .cases .case-detail{border-left-width:4px;border-radius:18px}
+  .case-detail summary{min-height:72px;padding:18px 54px 18px 20px;font-size:1.12rem;line-height:1.45}
+  .case-detail summary:after{right:19px}
+  .case-detail .case-body{padding:24px 21px 28px;font-size:.93rem;line-height:1.95;letter-spacing:.01em}
+  .case-detail p+p{margin-top:1.45em}
+  .case-sources{margin-top:1.6em;padding:14px;font-size:.87rem;line-height:1.75}
+}
+
 </style>
 <script data-cpa-four-language-toolbar-flag>window.__cpaFourLanguageToolbar=true;</script>
 <link rel="alternate" hreflang="en" href="https://jerryzuhow77.github.io/child-advocacy-site/en/features/social-observation/three-cases-hearings-202610-11/">
