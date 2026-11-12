@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 800" role="img" aria-labelledby="title desc">
+<title>警察主題水墨海報</title><desc>雨夜中的匿名警察背影、法院建築、警盾與天秤</desc>
+<defs>
+ <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#102d4b"/><stop offset=".58" stop-color="#53738b"/><stop offset="1" stop-color="#e4c782"/></linearGradient>
+ <linearGradient id="road" x2="0" y2="1"><stop stop-color="#426a82"/><stop offset="1" stop-color="#112f43"/></linearGradient>
+ <linearGradient id="gold" x2="1" y2="1"><stop stop-color="#fff0ad"/><stop offset=".5" stop-color="#d9a84b"/><stop offset="1" stop-color="#f7d884"/></linearGradient>
+ <filter id="blur"><feGaussianBlur stdDeviation="17"/></filter><filter id="paper"><feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="3" result="n"/><feColorMatrix in="n" type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .10"/></feComponentTransfer><feBlend in="SourceGraphic" mode="multiply"/></filter>
+</defs>
+<rect width="640" height="800" fill="url(#sky)"/><g opacity=".3" filter="url(#blur)"><circle cx="86" cy="108" r="120" fill="#234f64"/><circle cx="520" cy="238" r="155" fill="#b1cad0"/><path d="M0 530Q180 450 340 555T640 490V800H0Z" fill="#154154"/></g>
+<g stroke="#d9eff5" stroke-width="2" opacity=".48"><path d="M0 40l-34 94"/><path d="M37 111l-34 94"/><path d="M74 182l-34 94"/><path d="M111 253l-34 94"/><path d="M148 324l-34 94"/><path d="M185 395l-34 94"/><path d="M222 466l-34 94"/><path d="M259 537l-34 94"/><path d="M296 88l-34 94"/><path d="M333 159l-34 94"/><path d="M370 230l-34 94"/><path d="M407 301l-34 94"/><path d="M444 372l-34 94"/><path d="M481 443l-34 94"/><path d="M518 514l-34 94"/><path d="M555 65l-34 94"/><path d="M592 136l-34 94"/><path d="M629 207l-34 94"/><path d="M26 278l-34 94"/><path d="M63 349l-34 94"/><path d="M100 420l-34 94"/><path d="M137 491l-34 94"/></g>
+<path d="M0 510Q150 460 320 524T640 482V800H0Z" fill="url(#road)"/><path d="M0 604Q200 560 640 630M0 698Q260 644 640 719" fill="none" stroke="#e8ca77" stroke-width="8" opacity=".35"/>
+<!-- courthouse -->
+<g transform="translate(334 322)"><path d="M-18 77L112 0 242 77Z" fill="#d9e3df"/><path d="M0 76h224v204H0z" fill="#294c63"/><path d="M-12 279h248v20H-12z" fill="#d7bd77"/><g fill="#e9c16d"><rect x="19" y="95" width="24" height="120"/><rect x="67" y="95" width="24" height="120"/><rect x="115" y="95" width="24" height="120"/><rect x="163" y="95" width="24" height="120"/></g><path d="M0 230h224v49H0z" fill="#19394f"/><rect x="88" y="241" width="50" height="38" fill="#f2cf78"/></g>
+<!-- shield -->
+<path d="M90 88l103-39 103 39v92c0 88-65 133-103 151-38-18-103-63-103-151z" fill="#153954" stroke="url(#gold)" stroke-width="11" opacity=".92"/><path d="M144 151h98M193 101v101" stroke="url(#gold)" stroke-width="10"/><circle cx="193" cy="151" r="32" fill="none" stroke="url(#gold)" stroke-width="6"/>
+<!-- scales -->
+<g transform="translate(440 88)" stroke="url(#gold)" fill="none" stroke-width="8"><path d="M90 0v166M42 45h96M90 45l-46 88m46-88 46 88M2 133h84m8 0h84"/><path d="M20 133q24 38 48 0M112 133q24 38 48 0"/></g>
+<!-- officer -->
+<g transform="translate(92 342)"><ellipse cx="137" cy="386" rx="128" ry="25" fill="#071c2b" opacity=".6"/><path d="M71 98q56-65 128 0l-11 72H82z" fill="#172d4f"/><path d="M68 112q60-34 134 0l-8 22H76z" fill="#0d1f38"/><path d="M53 175q83-52 167 0l37 214H20z" fill="#122842"/><path d="M61 194l-30 178M213 194l30 178" stroke="#284b6a" stroke-width="31"/><path d="M70 267q67 24 136 0" fill="none" stroke="#d9e8ee" stroke-width="12" opacity=".8"/><path d="M76 382h124l30 112H44z" fill="#0c2035"/><path d="M70 390l-30 90m159-90 30 90" stroke="#162d48" stroke-width="28"/><rect x="102" y="222" width="66" height="54" rx="6" fill="#244867" stroke="url(#gold)" stroke-width="4"/><circle cx="135" cy="248" r="12" fill="url(#gold)"/></g>
+<g filter="url(#paper)"><rect width="640" height="800" fill="#f8f0d9" opacity=".42"/></g></svg>
