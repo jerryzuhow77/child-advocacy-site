@@ -4,10 +4,10 @@
   const dates = ['2025.04.22','2025.04.23','2025.04.25','2025.04.28','2025.04.29','2025.04.30','2025.05.02','2025.05.05','2025.05.06','2025.05.07'];
   const slugs = ['kaikai-day1-20250422','kaikai-day2-20250423','kaikai-day3-20250425','kaikai-day4-20250428','kaikai-day5-20250429','kaikai-day6-20250430','kaikai-day7-20250502','kaikai-day8-20250505','kaikai-day9-20250506','kaikai-day10-20250507'];
   const words = {
-    'zh-Hant': {title:'延伸閱讀｜剴剴案十日審判與林童筆記',sub:'十日庭審紀錄',lin:'林童旁聽筆記 →'},
-    'zh-Hans': {title:'延伸阅读｜剀剀案十日庭审与林童笔记',sub:'十日庭审记录',lin:'林童旁听笔记 →'},
-    en: {title:'Related reading | ten hearing records and Lin-child notes',sub:'Ten hearing records',lin:'Lin-child observation notes →'},
-    ja: {title:'関連資料｜10回の公判記録と林姓児童の傍聴メモ',sub:'10回の公判記録',lin:'林姓児童の傍聴メモ →'}
+    'zh-Hant': {title:'延伸閱讀｜剴剴案十日審判、另案林童旁聽筆記',sub:'十日庭審紀錄',lin:'另案林童旁聽筆記 →'},
+    'zh-Hans': {title:'延伸阅读｜剀剀案十日庭审、另案林童旁听笔记',sub:'十日庭审记录',lin:'另案林童旁听笔记 →'},
+    en: {title:'Related reading | ten hearing records and Lin-child separate-case observation notes',sub:'Ten hearing records',lin:'Lin-child separate-case observation notes →'},
+    ja: {title:'関連資料｜10回の公判記録と林姓児童の別件傍聴メモ',sub:'10回の公判記録',lin:'林姓児童の別件傍聴メモ →'}
   };
   function locale(){
     const q=new URLSearchParams(location.search).get('lang');
