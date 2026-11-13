@@ -180,3 +180,11 @@ html[lang="zh-Hans"] :where(p,li,blockquote,figcaption,summary,dd,dt){
   .cpa-language-select{width:92px;min-width:92px;max-width:31vw;padding-left:8px}
   main :is(h2,h3){scroll-margin-top:calc(var(--cpa-article-toolbar-height) + 12px)}
 }
+
+/* 2026-11-13 — Article toolbars flow with the document on both regional sites. */
+#cpa-four-language-toolbar{
+  position:relative!important;
+  inset:auto!important;
+  top:auto!important;
+}
+body{padding-top:0!important}
