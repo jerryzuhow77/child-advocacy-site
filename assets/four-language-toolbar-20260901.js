@@ -243,5 +243,5 @@
   async function init(){const homeRoute=neutralRoute()==="";if(homeRoute){render(null);addNavigation();}let manifest=null;try{const r=await boundedFetch(ROUTES_URL,{cache:"no-store"});if(r.ok)manifest=await r.json()}catch(_){}if(!homeRoute)render(manifest);repairOnlineSafetyVisual();addNavigation();let pending=false;new MutationObserver(()=>{if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;addNavigation()})}).observe(document.querySelector("main")||document.body,{childList:true,subtree:true})}
   document.readyState==="loading"?document.addEventListener("DOMContentLoaded",init,{once:true}):init();
   // A cached or restored page must not lose its reading controls.
-  window.addEventListener("pageshow",()=>{if(!document.getElementById("cpa-four-language-toolbar")){try{init()}catch(_){}}});
+  if(typeof window.addEventListener==="function")window.addEventListener("pageshow",()=>{if(!document.getElementById("cpa-four-language-toolbar")){try{init()}catch(_){}}});
 })();
