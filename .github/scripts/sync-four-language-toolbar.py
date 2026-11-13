@@ -22,6 +22,9 @@ TOOLBAR_JS_ROUTE_SUFFIXES = {
     "features/kaikai-grandmother-rescue-barriers/": "closing-offset-20260913-1",
     "hearing-records/prison-watch/kaikai-final-chapter/": "scroll-with-page-20261113-1",
 }
+TOOLBAR_CSS_ROUTE_SUFFIXES = {
+    "hearing-records/prison-watch/kaikai-final-chapter/": "scroll-with-page-20261113-1",
+}
 COMMENT_VERSION = "20260905-comment-key-3"
 EXCLUDED_ROOTS = {"child-advocacy-site", "child-advocacy-site-main", "source", "handoffs", "global-protection-wall", "node_modules"}
 EXCLUDED_FILES = {"offline.html", "google5c94bbe55c53b683.html"}
@@ -120,13 +123,16 @@ def inject(path: Path, text: str) -> str:
         text = re.sub(r'<script\b[^>]*' + JS_MARKER + r'[^>]*>[\s\S]*?</script>\s*', '', text, flags=re.I)
         return text
     route = neutral_route(path, html_locale(path, text))
+    css_suffix = TOOLBAR_CSS_ROUTE_SUFFIXES.get(route)
+    css_version = TOOLBAR_CSS_VERSION + (f"-{css_suffix}" if css_suffix else "")
+    css_tag = f'<link {CSS_MARKER} rel="stylesheet" href="{BASE}assets/four-language-toolbar-20260901.css?v={css_version}">'
     route_suffix = TOOLBAR_JS_ROUTE_SUFFIXES.get(route)
     js_version = TOOLBAR_JS_VERSION + (f"-{route_suffix}" if route_suffix else "")
     js_tag = f'<script {JS_MARKER} src="{BASE}assets/four-language-toolbar-20260901.js?v={js_version}"></script>'
-    text = re.sub(r'<link\b[^>]*' + CSS_MARKER + r'[^>]*>', lambda _: CSS_TAG, text, flags=re.I)
+    text = re.sub(r'<link\b[^>]*' + CSS_MARKER + r'[^>]*>', lambda _: css_tag, text, flags=re.I)
     text = re.sub(r'<script\b[^>]*' + JS_MARKER + r'[^>]*>\s*</script>', lambda _: js_tag, text, flags=re.I)
     if CSS_MARKER not in text and re.search(r"</head>", text, re.I):
-        text = re.sub(r"</head>", CSS_TAG + "\n</head>", text, count=1, flags=re.I)
+        text = re.sub(r"</head>", css_tag + "\n</head>", text, count=1, flags=re.I)
     if FLAG_MARKER not in text and re.search(r"</head>", text, re.I):
         text = re.sub(r"</head>", FLAG_TAG + "\n</head>", text, count=1, flags=re.I)
     if JS_MARKER not in text and re.search(r"</body>", text, re.I):
