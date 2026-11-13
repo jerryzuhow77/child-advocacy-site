@@ -5,7 +5,7 @@
   window.__cpaFourLanguageToolbar = true;
 
   const ROOT = "/child-advocacy-site/";
-  const TOOLBAR_STYLE = `${ROOT}assets/four-language-toolbar-20260901.css?v=20260930-home-toolbar-2`;
+  const TOOLBAR_STYLE = `${ROOT}assets/four-language-toolbar-20260901.css?v=20261113-scroll-with-page-1`;
   if (document.createElement && !document.querySelector('link[data-cpa-four-language-toolbar-style]')) {
     const style = document.createElement("link");
     style.rel = "stylesheet";
