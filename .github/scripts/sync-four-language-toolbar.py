@@ -20,6 +20,7 @@ TOOLBAR_CSS_VERSION = "20260909-5"
 TOOLBAR_JS_VERSION = "20260911-hk-site-home-4"
 TOOLBAR_JS_ROUTE_SUFFIXES = {
     "features/kaikai-grandmother-rescue-barriers/": "closing-offset-20260913-1",
+    "hearing-records/prison-watch/kaikai-final-chapter/": "scroll-with-page-20261113-1",
 }
 COMMENT_VERSION = "20260905-comment-key-3"
 EXCLUDED_ROOTS = {"child-advocacy-site", "child-advocacy-site-main", "source", "handoffs", "global-protection-wall", "node_modules"}
