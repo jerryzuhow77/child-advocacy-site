@@ -1,19 +1,20 @@
 (()=>{
   const base='/child-advocacy-site/assets/posters/chen-shangjie-appeal-20270108/';
   const posters=[
-    ['chen-shangjie-appeal-gold-court.svg','金光法庭・追思版'],
-    ['chen-shangjie-appeal-modern-ink.svg','現代水墨・守望版'],
-    ['chen-shangjie-appeal-watercolor.svg','水彩追思・白花版'],
-    ['chen-shangjie-appeal-chalk.svg','粉筆夜色・小熊版']
+    ['chen-shangjie-appeal-blue-court.jpg','藍調法庭・守望版'],
+    ['chen-shangjie-appeal-ink-watercolor.jpg','水墨白花・追思版'],
+    ['chen-shangjie-appeal-chalk-night.jpg','粉筆夜色・小熊版'],
+    ['chen-shangjie-appeal-warm-court.jpg','暖光法庭・追思版']
   ];
   const strings={
-    'zh-Hant':{title:'剴剴案開庭追思海報下載',lead:'四款海報均標示陳尚潔案二審準備程序：116 年 1 月 8 日（五）14:30，臺灣高等法院，115 年度上訴字第 4688 號，博愛路 127 號・專一法庭。目前提供 SVG 示意版預覽與下載；原始圖稿尚待逐張核對。庭期如有異動請以法院公告為準。',preview:'預覽海報',download:'下載 SVG',labels:['金光法庭・追思版','現代水墨・守望版','水彩追思・白花版','粉筆夜色・小熊版']},
-    'zh-Hans':{title:'剀剀案开庭追思海报下载',lead:'四款海报均标示陈尚洁案二审准备程序：116 年 1 月 8 日（五）14:30，台湾高等法院，115 年度上诉字第 4688 号，博爱路 127 号・专一法庭。目前提供 SVG 示意版预览与下载；原始图稿尚待逐张核对。庭期如有异动请以法院公告为准。',preview:'预览海报',download:'下载 SVG',labels:['金光法庭・追思版','现代水墨・守望版','水彩追思・白花版','粉笔夜色・小熊版']},
-    en:{title:'Kaikai Hearing Memorial Poster Downloads',lead:'Four downloadable memorial posters for the Chen Shangjie appeal preparation hearing: 8 January 2027 (Fri), 14:30, Taiwan High Court, Case No. 115 Shang-Su 4688, No. 127 Bo-ai Road, Courtroom 1. These are SVG illustrative versions pending a poster-by-poster check against the source artwork. Please confirm any change with the court’s latest notice.',preview:'Preview poster',download:'Download SVG',labels:['Golden Court Memorial','Modern Ink Vigil','Watercolor Memorial','Chalk Night Memorial']},
-    ja:{title:'剴剴事件・開廷追悼ポスター',lead:'陳尚潔事件・控訴審準備手続の追悼ポスター4種です。116年1月8日（金）14:30、台湾高等法院、115年度上訴字第4688号、博愛路127号・専一法廷。現在はSVGの参考版です。原図との1枚ごとの照合が未了です。期日に変更がある場合は、裁判所の最新公告をご確認ください。',preview:'ポスターを見る',download:'SVGをダウンロード',labels:['金色の法廷・追悼版','現代水墨・見守り版','水彩追悼・白花版','チョーク夜景・小熊版']}
+    'zh-Hant':{title:'剴剴案開庭追思海報下載',lead:'四款海報均標示陳尚潔案二審準備程序：116 年 1 月 8 日（五）14:30，臺灣高等法院，115 年度上訴字第 4688 號，博愛路 127 號・專一法庭。可先預覽，再下載 JPEG 海報；庭期如有異動請以法院公告為準。',preview:'預覽海報',download:'下載 JPEG',labels:['藍調法庭・守望版','水墨白花・追思版','粉筆夜色・小熊版','暖光法庭・追思版']},
+    'zh-Hans':{title:'剀剀案开庭追思海报下载',lead:'四款海报均标示陈尚洁案二审准备程序：116 年 1 月 8 日（五）14:30，台湾高等法院，115 年度上诉字第 4688 号，博爱路 127 号・专一法庭。可先预览，再下载 JPEG 海报；庭期如有异动请以法院公告为准。',preview:'预览海报',download:'下载 JPEG',labels:['蓝调法庭・守望版','水墨白花・追思版','粉笔夜色・小熊版','暖光法庭・追思版']},
+    en:{title:'Kaikai Hearing Memorial Poster Downloads',lead:'Four downloadable memorial posters for the Chen Shangjie appeal preparation hearing: 8 January 2027 (Fri), 14:30, Taiwan High Court, Case No. 115 Shang-Su 4688, No. 127 Bo-ai Road, Courtroom 1. Please confirm any change with the court’s latest notice.',preview:'Preview poster',download:'Download JPEG',labels:['Blue Court Vigil','Ink-and-Flower Memorial','Chalk Night Memorial','Warm Court Memorial']},
+    ja:{title:'剴剴事件・開廷追悼ポスター',lead:'陳尚潔事件・控訴審準備手続の追悼ポスター4種です。116年1月8日（金）14:30、台湾高等法院、115年度上訴字第4688号、博愛路127号・専一法廷。期日に変更がある場合は、裁判所の最新公告をご確認ください。',preview:'ポスターを見る',download:'JPEGをダウンロード',labels:['青い法廷・見守り版','水墨と白花・追悼版','チョーク夜景・小熊版','暖光の法廷・追悼版']}
   };
   const locale=()=>document.documentElement.lang==='zh-Hans'?'zh-Hans':document.documentElement.lang==='ja'?'ja':document.documentElement.lang==='en'?'en':'zh-Hant';
   const render=()=>{
+    if(!document.getElementById('poster-download-layout')){const style=document.createElement('style');style.id='poster-download-layout';style.textContent='.poster-download{margin-top:26px}.poster-download .lede{max-width:760px}.poster-download-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:18px}.poster-download-card{display:flex;flex-direction:column;min-width:0;border:1px solid #c9ae88;background:#fffdf8;box-shadow:0 8px 22px rgba(46,39,30,.08)}.poster-download-card img{display:block;width:100%;height:auto;aspect-ratio:2/3;object-fit:contain;object-position:center;background:#e9e3d8}.poster-download-copy{padding:14px 14px 16px;display:grid;gap:8px}.poster-download-copy h3{margin:0;font-size:18px;line-height:1.42;color:#29464b}.poster-download-copy p{margin:0;color:#5c5146;font-size:14px;line-height:1.65}.poster-download-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:3px}.poster-download-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:8px 11px;border:1px solid #31565a;color:#24494d;text-decoration:none;font-weight:750;font-size:14px}.poster-download-actions a:first-child{background:#31565a;color:#fffdf8}@media(max-width:960px){.poster-download-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){.poster-download-grid{grid-template-columns:1fr}.poster-download-card{display:grid;grid-template-columns:116px minmax(0,1fr)}.poster-download-copy{padding:13px}.poster-download-card img{height:174px;aspect-ratio:auto}.poster-download-copy h3{font-size:16px}.poster-download-copy p{font-size:13px}.poster-download-actions a{font-size:13px;padding:7px 9px}}';document.head.append(style)}
     const s=strings[locale()];
     let section=document.getElementById('poster-downloads');
     if(!section){section=document.createElement('section');section.className='panel poster-download';section.id='poster-downloads';const target=document.querySelector('.cases')?.closest('.panel');if(target)target.before(section);else document.querySelector('main.shell')?.append(section)}
