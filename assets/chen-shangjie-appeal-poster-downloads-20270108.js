@@ -1,10 +1,10 @@
 (()=>{
   const base='/child-advocacy-site/assets/posters/chen-shangjie-appeal-20270108/';
   const posters=[
-    ['chen-shangjie-appeal-gold-court.png','金光法庭・追思版'],
-    ['chen-shangjie-appeal-modern-ink.png','現代水墨・守望版'],
-    ['chen-shangjie-appeal-watercolor.png','水彩追思・白花版'],
-    ['chen-shangjie-appeal-chalk.png','粉筆夜色・小熊版']
+    ['chen-shangjie-appeal-gold-court.svg','金光法庭・追思版'],
+    ['chen-shangjie-appeal-modern-ink.svg','現代水墨・守望版'],
+    ['chen-shangjie-appeal-watercolor.svg','水彩追思・白花版'],
+    ['chen-shangjie-appeal-chalk.svg','粉筆夜色・小熊版']
   ];
   const strings={
     'zh-Hant':{title:'剴剴案開庭追思海報下載',lead:'四款海報均標示陳尚潔案二審準備程序：116 年 1 月 8 日（五）14:30，臺灣高等法院，115 年度上訴字第 4688 號，博愛路 127 號・專一法庭。可先預覽，再下載原始圖檔；庭期如有異動請以法院公告為準。',preview:'預覽海報',download:'下載原始檔',labels:['金光法庭・追思版','現代水墨・守望版','水彩追思・白花版','粉筆夜色・小熊版']},
