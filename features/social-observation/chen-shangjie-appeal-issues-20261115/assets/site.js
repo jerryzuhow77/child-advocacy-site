@@ -3,6 +3,7 @@
   const audio = q('#soundtrack'), play = q('.audio-toggle'), motion = q('.motion-toggle');
   const title = q('#node-title'), copy = q('#node-copy'), list = q('#node-list'), panel = q('#comparison-panel');
   const documentBody = q('.document-body');
+  const readingEntry = q('.reading-entry'), readingEntryButton = q('.reading-entry-button');
   const chapterHeadings = [];
 
   const nodes = {
@@ -110,6 +111,19 @@
       ['pointerdown','touchstart','keydown'].forEach(type => document.addEventListener(type, unlock, { once: true, passive: type !== 'keydown' }));
     }
   }
+  readingEntryButton?.addEventListener('click', async () => {
+    readingEntryButton.disabled = true;
+    readingEntryButton.textContent = '正在進入…';
+    try {
+      audio.muted = false; audio.volume = .28; audio.loop = true; await audio.play();
+      play.textContent = '暫停配樂'; play.setAttribute('aria-pressed', 'true'); play.classList.remove('needs-gesture');
+    } catch {
+      play.textContent = '播放配樂'; play.setAttribute('aria-pressed', 'false');
+    }
+    document.body.classList.remove('entry-locked');
+    readingEntry.classList.add('is-leaving');
+    setTimeout(() => { readingEntry.hidden = true; q('#title')?.focus?.({ preventScroll: true }); }, 560);
+  });
   play?.addEventListener('click', async () => { try { if (audio.paused) { audio.muted = false; await audio.play(); play.textContent = '暫停配樂'; play.setAttribute('aria-pressed', 'true'); } else if (audio.muted) { audio.muted = false; play.textContent = '暫停配樂'; play.setAttribute('aria-pressed', 'true'); } else { audio.pause(); play.textContent = '播放配樂'; play.setAttribute('aria-pressed', 'false'); } } catch { play.textContent = '播放配樂'; } });
   motion?.addEventListener('click', () => { document.documentElement.classList.toggle('reduce-motion'); const enabled = document.documentElement.classList.contains('reduce-motion'); motion.setAttribute('aria-pressed', String(enabled)); motion.textContent = enabled ? '恢復動態' : '減少動態'; });
   autoMusic();
