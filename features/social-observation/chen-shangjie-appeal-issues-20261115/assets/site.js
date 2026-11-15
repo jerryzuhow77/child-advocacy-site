@@ -162,8 +162,9 @@
       const labelMap = document.querySelector('.node-map');
       const cloudLabels = gsap.timeline({delay:.28});
       cloudLabels.fromTo('.node-map button',
-        {y:-44, scale:.9, opacity:0, filter:'blur(4px)'},
-        {y:0, scale:1, opacity:1, filter:'blur(0px)', duration:.82, stagger:.13, ease:'power3.out', clearProps:'filter'});
+        {y:-110, scale:.82, opacity:0, filter:'blur(6px)'},
+        {y:0, scale:1, opacity:1, filter:'blur(0px)', duration:1.18, stagger:.26, ease:'elastic.out(1,.58)', clearProps:'filter'});
+      cloudLabels.to('.node-map button', {scale:1.045, duration:.19, stagger:.12, yoyo:true, repeat:1, ease:'sine.inOut'}, '-=.42');
       cloudLabels.to('.node-map button', {boxShadow:'0 0 0 2px rgba(198,155,72,.24), 0 6px 14px rgba(111,75,37,.20)', duration:.42, stagger:.08, yoyo:true, repeat:1, ease:'sine.inOut'}, '-=.18');
       if (labelMap) {
         gsap.to(labelMap, {y:-3, duration:2.8, yoyo:true, repeat:-1, ease:'sine.inOut'});
