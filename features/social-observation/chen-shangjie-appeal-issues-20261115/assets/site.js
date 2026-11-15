@@ -130,8 +130,10 @@
     readingEntryButton.disabled = true;
     readingEntryButton.textContent = '正在進入…';
     try {
-      audio.muted = false; audio.volume = .28; audio.loop = true; await audio.play();
+      audio.muted = false; audio.volume = .28; audio.loop = true;
+      const playback = audio.play();
       play.textContent = '暫停配樂'; play.setAttribute('aria-pressed', 'true'); play.classList.remove('needs-gesture');
+      playback?.catch?.(() => { play.textContent = '播放配樂'; play.setAttribute('aria-pressed', 'false'); });
     } catch {
       play.textContent = '播放配樂'; play.setAttribute('aria-pressed', 'false');
     }
