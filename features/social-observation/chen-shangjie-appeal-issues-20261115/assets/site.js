@@ -3,6 +3,8 @@
   const audio = q('#soundtrack'), play = q('.audio-toggle'), motion = q('.motion-toggle');
   const title = q('#node-title'), copy = q('#node-copy'), list = q('#node-list'), panel = q('#comparison-panel');
   const documentBody = q('.document-body');
+  const chapterHeadings = [];
+
   const nodes = {
     family: { title: '親屬：照顧與監護資訊的一端', copy: '需核對親屬在何時取得何種訊息、與誰聯繫，以及監護與照顧安排如何影響可採取措施。', items: ['權限：監護、就醫與照顧安排的實際參與', '證據：監護卷證、聯繫與回應紀錄', '爭點：資訊是否已被傳遞並形成後續處置的可能'] },
     chen: { title: '陳尚潔：資訊與處置樞紐', copy: '應分別檢驗她的個案角色、可得資訊、聯繫能力、向上呈報與協作路徑；這些都是待由卷證核對的事實，而非預設結論。', items: ['權限：能否查證、回報、通報或促成就醫', '證據：工作紀錄、聯繫紀錄、督導鏈與機構流程', '爭點：實際控制是否足以形成個人化義務'] },
@@ -21,7 +23,7 @@
     const style = document.createElement('style');
     style.textContent = `.document-body{max-width:900px;margin:0 auto;padding:clamp(22px,5vw,70px);background:#fffdf8;color:#183d3f;font-family:system-ui,"Noto Sans TC",sans-serif;line-height:1.9}.document-body h1{font-family:"Noto Serif TC","Songti TC",serif!important;color:#183d3f!important;border-top:1px solid #c39b55!important;padding-top:34px!important}.document-body h2{font-family:"Noto Serif TC",serif!important;color:#785039!important}.document-body table{display:block;overflow:auto;border-collapse:collapse;background:#fff;max-width:100%}.document-body td,.document-body th{padding:10px!important;border:1px solid #d8cab2!important}.chapter-art{position:relative;margin:22px 0 34px;overflow:hidden;background:#e5e0d6;border:1px solid #d8cab2}.chapter-art img{display:block;width:100%;aspect-ratio:16/7;object-fit:cover}.chapter-art figcaption{position:absolute;inset:auto 0 0;padding:12px 17px;color:#fff;background:linear-gradient(90deg,#183d3fe8,#183d3f22);font:700 13px system-ui,"Noto Sans TC",sans-serif;letter-spacing:.07em}.chapter-art b{display:block;font:700 19px "Noto Serif TC",serif;letter-spacing:.03em;margin-top:2px}`;
     document.head.append(style);
-    [...documentBody.querySelectorAll('h1')].forEach(heading => {
+    [...documentBody.querySelectorAll('h1,h2')].forEach(heading => {
       const match = heading.textContent.trim().match(/^([一二三四五六七八九十]+)、/);
       if (!match || !chapterNames[match[1]]) return;
       const number = Object.keys(chapterNames).indexOf(match[1]) + 1;
@@ -29,7 +31,27 @@
       figure.className = 'chapter-art';
       figure.innerHTML = `<img src="./assets/chapter-${String(number).padStart(2, '0')}.jpg" alt="第${number}章：${chapterNames[match[1]]}的現代水墨意象"><figcaption>第 ${number} 章<b>${chapterNames[match[1]]}</b></figcaption>`;
       heading.insertAdjacentElement('afterend', figure);
+      chapterHeadings.push({ number, heading, title: chapterNames[match[1]] });
     });
+    if (chapterHeadings.length) {
+      const nav = document.createElement('nav');
+      nav.className = 'chapter-jump';
+      nav.setAttribute('aria-label', '十五章快速導覽');
+      nav.innerHTML = `<strong>十五章快速導覽</strong><div class="chapter-jump-list">${chapterHeadings.sort((a,b)=>a.number-b.number).map(item => { const id = `chapter-${String(item.number).padStart(2,'0')}`; item.heading.id = id; return `<a href="#${id}">${item.number}. ${item.title}</a>`; }).join('')}</div>`;
+      documentBody.insertAdjacentElement('beforebegin', nav);
+    }
+  }
+  function addReadingProgress() {
+    const bar = document.createElement('div'); bar.className = 'reading-progress'; bar.setAttribute('aria-hidden','true'); bar.innerHTML = '<span></span>'; document.body.prepend(bar);
+    const fill = bar.firstElementChild;
+    const update = () => { const max = document.documentElement.scrollHeight - innerHeight; fill.style.width = `${max > 0 ? Math.min(100, scrollY / max * 100) : 0}%`; };
+    addEventListener('scroll', update, { passive: true }); addEventListener('resize', update); update();
+  }
+  function simplifyChapterSelect() {
+    const toolbar = document.querySelector('#cpa-four-language-toolbar'); if (!toolbar) return;
+    const select = [...toolbar.querySelectorAll('select')].find(item => item.options?.[0]?.textContent.trim() === '章節'); if (!select || select.dataset.simplified) return;
+    const keep = [...select.options].filter((option, index) => index === 0 || /^(能同時聯繫|先把每一環|不是保證|同一爭點|結論必須|從程序定位|[一二三四五六七八九十]+、)/.test(option.textContent.trim()));
+    select.replaceChildren(...keep.map(option => option.cloneNode(true))); select.dataset.simplified = 'true';
   }
   renderIssue('duty');
   document.querySelectorAll('[data-node]').forEach(button => button.addEventListener('click', () => { const node = nodes[button.dataset.node]; title.textContent = node.title; copy.textContent = node.copy; list.innerHTML = node.items.map(item => `<li>${item}</li>`).join(''); }));
@@ -38,7 +60,7 @@
   play?.addEventListener('click', async () => { try { if (audio.paused) { audio.muted = false; await audio.play(); play.textContent = '暫停配樂'; play.setAttribute('aria-pressed', 'true'); } else if (audio.muted) { audio.muted = false; play.textContent = '暫停配樂'; play.setAttribute('aria-pressed', 'true'); } else { audio.pause(); play.textContent = '播放配樂'; play.setAttribute('aria-pressed', 'false'); } } catch { play.textContent = '播放配樂'; } });
   motion?.addEventListener('click', () => { document.documentElement.classList.toggle('reduce-motion'); const enabled = document.documentElement.classList.contains('reduce-motion'); motion.setAttribute('aria-pressed', String(enabled)); motion.textContent = enabled ? '恢復動態' : '減少動態'; });
   window.addEventListener('load', () => {
-    enhanceDocument(); autoMusic();
+    enhanceDocument(); addReadingProgress(); simplifyChapterSelect(); setTimeout(simplifyChapterSelect, 500); autoMusic();
     if (!window.gsap || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     gsap.registerPlugin(ScrollTrigger);
     gsap.from('.hero>img', { opacity: 0, scale: 1.045, duration: 1.25, ease: 'power2.out' });
