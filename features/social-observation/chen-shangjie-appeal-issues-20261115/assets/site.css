@@ -75,3 +75,32 @@
   .document-body tr{margin:0 0 1rem;border:1px solid var(--line);background:#fff}.document-body td{border:0!important;border-bottom:1px solid var(--line)!important;padding:.8rem!important}.document-body td:last-child{border-bottom:0!important}
   .document-body td:before{display:block;margin-bottom:.25rem;color:#785039;font-weight:850;font-size:.75rem;letter-spacing:.05em}.document-body td:nth-child(1):before{content:"爭點"}.document-body td:nth-child(2):before{content:"辯方摘要（待核）"}.document-body td:nth-child(3):before{content:"檢方／一審方向摘要（待核）"}.document-body td:nth-child(4):before{content:"關鍵核對資料"}
 }
+
+
+/* chapter 15 mobile card repair 20261115 */
+@media(max-width:620px){
+  .chapter-section#chapter-15{border:0;background:transparent}
+  #chapter-15 .chapter-section-body{padding-inline:0}
+  #chapter-15 table,
+  #chapter-15 tbody{display:block!important;width:100%!important;min-width:0!important;height:auto!important;overflow:visible!important}
+  #chapter-15 tr{display:block!important;width:100%!important;height:auto!important;min-height:0!important;margin:0 0 1.15rem!important;padding:0!important;border:1px solid #cbbfa9!important;border-radius:12px;background:#fffdf8!important;overflow:hidden!important;box-shadow:0 5px 16px #183d3f12}
+  #chapter-15 tr:first-child{display:none!important}
+  #chapter-15 td{display:block!important;position:static!important;float:none!important;width:auto!important;min-width:0!important;max-width:none!important;height:auto!important;min-height:0!important;margin:0!important;padding:.9rem 1rem!important;border:0!important;border-bottom:1px solid #ded4c2!important;vertical-align:top!important;overflow:visible!important;white-space:normal!important;transform:none!important}
+  #chapter-15 td:last-child{border-bottom:0!important}
+  #chapter-15 td:before{display:block!important;margin:0 0 .38rem!important;font:800 .72rem/1.25 system-ui,"Noto Sans TC",sans-serif!important;letter-spacing:.08em!important;text-transform:none}
+  #chapter-15 td p{display:block!important;position:static!important;width:auto!important;height:auto!important;min-height:0!important;margin:0!important;padding:0!important;line-height:1.72!important;text-align:left!important;overflow:visible!important;white-space:normal!important}
+  #chapter-15 td span{font-family:system-ui,"Noto Sans TC",sans-serif!important;font-size:inherit!important;line-height:inherit!important;vertical-align:baseline!important}
+  #chapter-15 td:nth-child(1){background:#e8f3ef!important;color:#123f40!important}
+  #chapter-15 td:nth-child(1):before{content:"爭點";color:#17675f!important}
+  #chapter-15 td:nth-child(1) p{font-size:1.12rem!important;line-height:1.5!important;font-weight:850!important}
+  #chapter-15 td:nth-child(2){background:#fff1e7!important;color:#633d31!important}
+  #chapter-15 td:nth-child(2):before{content:"辯方摘要（待核）";color:#a24e32!important}
+  #chapter-15 td:nth-child(2) p{font-size:1rem!important;font-weight:560!important}
+  #chapter-15 td:nth-child(3){background:#eaf2fb!important;color:#24465d!important}
+  #chapter-15 td:nth-child(3):before{content:"檢方／一審方向摘要（待核）";color:#326d91!important}
+  #chapter-15 td:nth-child(3) p{font-size:.96rem!important;font-weight:520!important}
+  #chapter-15 td:nth-child(4){background:#fff9d9!important;color:#554b26!important}
+  #chapter-15 td:nth-child(4):before{content:"關鍵核對資料";color:#8c751c!important}
+  #chapter-15 td:nth-child(4) p{font-size:.91rem!important;font-weight:500!important;line-height:1.66!important}
+  #chapter-15 td span[style*="background-color"]{box-decoration-break:clone;-webkit-box-decoration-break:clone;padding:.04em .12em}
+}
