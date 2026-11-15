@@ -143,3 +143,22 @@ body.entry-locked{overflow:hidden}
 html.reduce-motion{scroll-behavior:auto}
 html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{animation:none!important;transition:none!important}
 @media(max-width:620px){#three-way{margin-inline:.35rem;padding:1.35rem;box-shadow:4px 5px 0 #ede3d1,5px 6px 0 #d8cab2}.paper-relief{height:65px}.question-grid{gap:12px}.question-grid article{min-height:0}.node-map button{min-width:44px;min-height:44px}}
+
+/* Three-way atelier relief — refined clay and paper craft */
+#three-way{overflow:hidden}
+#three-way:before{content:"";position:absolute;inset:10px;z-index:-1;pointer-events:none;border:1px solid #fff9ee;clip-path:polygon(0 3%,42% 0,100% 7%,98% 96%,58% 100%,0 94%);opacity:.9}
+.paper-relief{display:block;height:142px;margin:-1.5rem -3rem 1.6rem;position:relative;overflow:hidden;background:linear-gradient(112deg,#f0e6d5 0%,#fbf7ef 53%,#e5ecdf 100%)}
+.paper-relief .paper-layer{position:absolute;display:block;width:120%;height:125px;left:-10%;border-radius:52% 46% 0 0;background:#d3ddcf;border-top:1px solid #f8f3e8;box-shadow:0 -2px 0 #b3c2b018,0 -8px 14px #77604c12}
+.paper-relief .paper-layer.one{bottom:-74px;background:#b7c8b9;transform:rotate(-3deg)}
+.paper-relief .paper-layer.two{bottom:-89px;background:#e4d5bc;transform:rotate(2deg)}
+.paper-relief .paper-layer.three{bottom:-105px;background:#f8f3e8;transform:rotate(-2.4deg)}
+.paper-relief .clay-figure{position:absolute;z-index:3;bottom:18px;width:34px;height:50px;border-radius:46% 46% 42% 42%;background:radial-gradient(circle at 32% 22%,#f5c9ab 0 13%,#bd7654 66%,#7d463b 100%);box-shadow:inset 2px 2px 4px #fff8,inset -3px -3px 6px #4c2a2738,3px 8px 12px #5b46332b}
+.paper-relief .clay-figure:before{content:"";position:absolute;width:23px;height:23px;left:5.5px;top:-17px;border-radius:50%;background:inherit;box-shadow:inset 2px 2px 3px #fff8,inset -2px -3px 4px #4c2a2730}
+.paper-relief .clay-figure.left{left:26%}
+.paper-relief .clay-figure.center{left:calc(50% - 26px);bottom:12px;width:52px;height:74px;background:radial-gradient(circle at 32% 22%,#5b988b 0 12%,#1e5655 65%,#14383c 100%)}
+.paper-relief .clay-figure.center:before{width:31px;height:31px;left:10.5px;top:-22px}
+.paper-relief .clay-figure.right{right:26%;background:radial-gradient(circle at 32% 22%,#fff4da 0 13%,#dbcbaa 68%,#947d5f 100%)}
+.paper-relief .gold-thread{position:absolute;z-index:2;left:28%;right:28%;bottom:50px;height:42px;border-bottom:1.5px solid #c79a46;border-radius:0 0 50% 50%;filter:drop-shadow(0 1px 1px #fff9)}
+.paper-relief .gold-thread:after{content:"";position:absolute;left:48%;top:35px;width:5px;height:5px;border-radius:50%;background:#d4ab58;box-shadow:0 0 0 3px #fff4d8}
+.paper-relief .gold-leaf{position:absolute;right:12%;top:17px;width:46px;height:16px;background:linear-gradient(105deg,transparent 0 9%,#b88a39 11% 31%,#e8cb79 34% 55%,#ba8b35 58% 80%,transparent 83%);clip-path:polygon(0 53%,18% 9%,43% 35%,62% 5%,100% 45%,65% 81%,38% 61%,16% 94%);opacity:.9}
+@media(max-width:620px){.paper-relief{height:112px;margin:-1.35rem -1.35rem 1.35rem}.paper-relief .clay-figure.left{left:18%}.paper-relief .clay-figure.right{right:18%}.paper-relief .gold-thread{left:20%;right:20%}}
