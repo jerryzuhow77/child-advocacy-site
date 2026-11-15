@@ -436,3 +436,14 @@ body .cpa-article-engagement{inline-size:min(960px,100%)!important;max-inline-si
   .hero .node-map{bottom:clamp(1.85rem,8.5vw,2.5rem)!important}
   .hero .node-map button,.hero .node-map .node-main{border-radius:9px!important}
 }
+
+/* Keep reading controls clear of the cloud-plaque labels on wide screens. */
+@media(min-width:861px){
+  .hero .hero-actions{
+    position:absolute;
+    top:clamp(1.25rem,2.2vw,1.8rem);
+    left:clamp(2rem,4.2vw,4rem);
+    z-index:5;
+    margin:0;
+  }
+}
