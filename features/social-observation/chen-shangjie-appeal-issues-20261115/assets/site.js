@@ -104,7 +104,7 @@
     } catch {
       play.textContent = '點一下開啟配樂'; play.setAttribute('aria-pressed', 'false'); play.classList.add('needs-gesture');
       const unlock = async event => {
-        if (event?.target?.closest?.('.motion-toggle')) return;
+        if (event?.target?.closest?.('.motion-toggle,.audio-toggle')) return;
         try { audio.muted = false; await audio.play(); play.textContent = '暫停配樂'; play.setAttribute('aria-pressed', 'true'); play.classList.remove('needs-gesture'); } catch {}
       };
       ['pointerdown','touchstart','keydown'].forEach(type => document.addEventListener(type, unlock, { once: true, passive: type !== 'keydown' }));
