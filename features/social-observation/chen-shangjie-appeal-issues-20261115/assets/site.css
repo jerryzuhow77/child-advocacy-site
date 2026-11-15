@@ -162,3 +162,28 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
 .paper-relief .gold-thread:after{content:"";position:absolute;left:48%;top:35px;width:5px;height:5px;border-radius:50%;background:#d4ab58;box-shadow:0 0 0 3px #fff4d8}
 .paper-relief .gold-leaf{position:absolute;right:12%;top:17px;width:46px;height:16px;background:linear-gradient(105deg,transparent 0 9%,#b88a39 11% 31%,#e8cb79 34% 55%,#ba8b35 58% 80%,transparent 83%);clip-path:polygon(0 53%,18% 9%,43% 35%,62% 5%,100% 45%,65% 81%,38% 61%,16% 94%);opacity:.9}
 @media(max-width:620px){.paper-relief{height:112px;margin:-1.35rem -1.35rem 1.35rem}.paper-relief .clay-figure.left{left:18%}.paper-relief .clay-figure.right{right:18%}.paper-relief .gold-thread{left:20%;right:20%}}
+
+/* Translucent rice-paper atmosphere — 20261115 */
+body{background:
+  radial-gradient(ellipse at 12% 4%,#d3c6a94d,transparent 31%),
+  radial-gradient(ellipse at 90% 19%,#aec6bb35,transparent 28%),
+  linear-gradient(112deg,#f5f0e6 0%,#fbf8f1 48%,#edf1e9 100%) fixed}
+body:before{content:"";position:fixed;z-index:-2;inset:0;pointer-events:none;opacity:.42;background-image:radial-gradient(#80654a21 .55px,transparent .7px),radial-gradient(#ffffff70 .5px,transparent .7px);background-size:8px 8px,13px 13px;background-position:0 0,4px 7px}
+.hero{border-color:#fffbf266;box-shadow:0 18px 45px #183d3f20}
+.hero-ink{background:linear-gradient(90deg,#fffbf2ed 0 39%,#fffaf4a6 58%,#fffaf425 82%,transparent)}
+.hero-copy{background:linear-gradient(112deg,#fffdf4b8 0%,#fffaf274 66%,transparent);backdrop-filter:blur(2px)}
+.intro{position:relative;padding:clamp(1.5rem,4vw,3rem);background:#fffdf897;border:1px solid #fffdf8d4;box-shadow:0 15px 36px #183d3f0d;backdrop-filter:blur(9px);border-radius:3px 24px 3px 3px}
+.intro:after{content:"";position:absolute;right:1.5rem;top:1.25rem;width:72px;height:1px;background:linear-gradient(90deg,transparent,#c39b55,transparent)}
+.node-detail{background:linear-gradient(115deg,#fffdf9cc,#f7f0e2a8);border-top:1px solid #fff;box-shadow:7px 9px 0 #e9dfcc8f,0 16px 36px #183d3f10;backdrop-filter:blur(10px)}
+.question-grid article{background:linear-gradient(145deg,#fffefbe0,#f9f4e8b9);border-color:#fffdf8d9;box-shadow:3px 4px 0 #e9dfcc9e,0 14px 28px #183d3f0a;backdrop-filter:blur(8px)}
+.boundary{background:linear-gradient(125deg,#dfe9e2df,#e8efdfaf);border-color:#ffffffa6;box-shadow:6px 7px 0 #cbd9cd8c,0 16px 34px #183d3f0e;backdrop-filter:blur(9px)}
+.comparison{padding:clamp(1.2rem,3vw,2.5rem);border:1px solid #fffdf8c9;background:#fffdf86e;box-shadow:0 15px 35px #183d3f0c;backdrop-filter:blur(9px)}
+.comparison-panel{border-color:#ddcfb994;background:#fffdf8a3;box-shadow:0 12px 30px #183d3f09;backdrop-filter:blur(8px)}
+.comparison-panel article{border-color:#ddcfb994}
+.evidence{background:linear-gradient(120deg,#fffdf8cf,#edf2eac4);border-color:#a2c7a5a6;box-shadow:0 15px 35px #183d3f0d;backdrop-filter:blur(9px)}
+.complete-document{padding:clamp(1.2rem,3vw,2.5rem);background:#fffdf85c;border-inline:1px solid #fffdf8b3;backdrop-filter:blur(6px)}
+.reading-tools{background:#fffaf2dc;border-color:#fffdf8;box-shadow:0 8px 24px #183d3f1a}
+.chapter-section{background:#fffdf8cf;border-color:#fffdf8e3;box-shadow:3px 4px 0 #e8decc8f,0 13px 28px #183d3f0a;backdrop-filter:blur(8px)}
+.chapter-art{box-shadow:0 10px 20px #183d3f18}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.intro,.node-detail,.question-grid article,.boundary,.comparison,.evidence,.complete-document,.chapter-section{background:#fffdf8}}
+@media(max-width:620px){.intro,.comparison,.complete-document{padding:1.15rem}.hero-copy{background:linear-gradient(180deg,#fffaf4e9,#fffaf4c7 66%,#fffaf45a)}.comparison{margin-inline:-.15rem}.paper-relief{background:linear-gradient(112deg,#eee1cd 0%,#fbf7ef 53%,#dfe9da 100%)}}
