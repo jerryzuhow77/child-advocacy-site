@@ -125,16 +125,39 @@
     setTimeout(() => { readingEntry.hidden = true; q('#title')?.focus?.({ preventScroll: true }); }, 560);
   });
   play?.addEventListener('click', async () => { try { if (audio.paused) { audio.muted = false; await audio.play(); play.textContent = '暫停配樂'; play.setAttribute('aria-pressed', 'true'); } else if (audio.muted) { audio.muted = false; play.textContent = '暫停配樂'; play.setAttribute('aria-pressed', 'true'); } else { audio.pause(); play.textContent = '播放配樂'; play.setAttribute('aria-pressed', 'false'); } } catch { play.textContent = '播放配樂'; } });
-  motion?.addEventListener('click', () => { document.documentElement.classList.toggle('reduce-motion'); const enabled = document.documentElement.classList.contains('reduce-motion'); motion.setAttribute('aria-pressed', String(enabled)); motion.textContent = enabled ? '恢復動態' : '減少動態'; });
+  let artContext;
+  const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
+  function updateArtMotion() {
+    artContext?.revert();
+    artContext = null;
+    if (!window.gsap || !window.ScrollTrigger || motionPreference.matches || document.documentElement.classList.contains('reduce-motion')) return;
+    gsap.registerPlugin(ScrollTrigger);
+    artContext = gsap.context(() => {
+      gsap.from('.paper-relief i', {y:18, stagger:.12, duration:.8, ease:'power2.out', scrollTrigger:{trigger:'#three-way',start:'top 90%',once:true},clearProps:'transform'});
+      gsap.from('.question-grid article', {y:16, stagger:.09, duration:.55, ease:'power2.out', scrollTrigger:{trigger:'.question-grid',start:'top 90%',once:true},clearProps:'transform'});
+    });
+  }
+  motion?.addEventListener('click', () => {
+    const enabled = document.documentElement.classList.toggle('reduce-motion');
+    motion.setAttribute('aria-pressed', String(enabled));
+    motion.textContent = enabled ? '恢復動態' : '減少動態';
+    updateArtMotion();
+  });
+  motionPreference.addEventListener('change', updateArtMotion);
+  const relief = document.createElement('div');
+  relief.className = 'paper-relief';
+  relief.setAttribute('aria-hidden', 'true');
+  relief.innerHTML = '<i></i><i></i><i></i>';
+  q('#three-way')?.prepend(relief);
+  document.querySelectorAll('[data-node]').forEach(button => {
+    button.setAttribute('aria-pressed', String(button.dataset.node === 'chen'));
+    button.addEventListener('click', () => {
+      document.querySelectorAll('[data-node]').forEach(node => node.setAttribute('aria-pressed', String(node === button)));
+    });
+  });
   autoMusic();
   window.addEventListener('load', () => {
     enhanceDocument(); addReadingProgress(); simplifyChapterSelect(); setTimeout(simplifyChapterSelect, 500);
-    if (!window.gsap || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    gsap.registerPlugin(ScrollTrigger);
-    gsap.from('.hero>img', { opacity: 0, scale: 1.045, duration: 1.25, ease: 'power2.out' });
-    gsap.from('.node-map button', { opacity: 0, scale: .75, stagger: .24, duration: .7, delay: .25, ease: 'back.out(1.3)' });
-    gsap.from('.hero-copy', { y: 18, duration: .8, delay: .15, clearProps: 'transform' });
-    gsap.utils.toArray('.grid-reveal,.questions,.boundary,.comparison,.evidence,.complete-document').forEach(element => gsap.from(element, { opacity: 0, y: 24, duration: .65, ease: 'power2.out', scrollTrigger: { trigger: element, start: 'top 84%', once: true } }));
-    gsap.from('.question-grid article', { opacity: 0, y: 18, stagger: .1, duration: .45, scrollTrigger: { trigger: '.question-grid', start: 'top 88%', once: true } });
+    updateArtMotion();
   });
 })();
