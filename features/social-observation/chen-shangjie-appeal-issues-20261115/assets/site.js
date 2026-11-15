@@ -172,8 +172,10 @@
       // Keep the artwork alive without competing with reading: slow paper drift, silk shimmer and scroll parallax.
       gsap.from('.hero>img', {scale:1.055, filter:'saturate(.9) brightness(1.04)', duration:1.45, ease:'power3.out'});
       // Visible even when the mobile hero is stationary: a deliberate breathing image and light pass.
-      gsap.to('.hero>img', {scale:1.075, rotation:.45, duration:2.35, repeat:-1, yoyo:true, ease:'sine.inOut', transformOrigin:'50% 52%'});
-      gsap.to('.hero-light-pass', {xPercent:720, opacity:.92, duration:1.35, repeat:-1, repeatDelay:1.05, ease:'power2.inOut'});
+      // Deliberately visible on mobile: the artwork pans from right to left within a cropped frame.
+      gsap.to('.hero>img', {scale:1.20, rotation:.65, duration:3.1, repeat:-1, yoyo:true, ease:'sine.inOut', transformOrigin:'50% 52%'});
+      gsap.fromTo('.hero>img', {xPercent:7}, {xPercent:-7, duration:4.8, repeat:-1, yoyo:true, ease:'sine.inOut', transformOrigin:'50% 52%'});
+      gsap.to('.hero-light-pass', {xPercent:720, opacity:.96, duration:1.1, repeat:-1, repeatDelay:.75, ease:'power2.inOut'});
       gsap.to('.hero>img', {yPercent:9, ease:'none', scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:.8}});
       gsap.to('.hero-paper-glow.one', {xPercent:30, yPercent:15, scale:1.28, duration:5.5, repeat:-1, yoyo:true, ease:'sine.inOut'});
       gsap.to('.hero-paper-glow.two', {xPercent:-32, yPercent:-20, scale:.78, duration:6.5, repeat:-1, yoyo:true, ease:'sine.inOut'});
