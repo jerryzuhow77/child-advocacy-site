@@ -225,7 +225,12 @@
       if(!href)return `<option value="" data-locale="${k}" disabled${selected}>${localeNames[k]} — ${words.unavailable}</option>`;
       return `<option value="${href}" data-locale="${k}"${selected}>${localeNames[k]}</option>`;
     }).join("");
-    toolbar.innerHTML=`<a class="cpa-four-language-brand" href="${ROOT}"><span aria-hidden="true">♥</span><b>${words.brand}</b><small>${words.official}</small></a><div class="cpa-four-language-actions"><span class="cpa-four-language-views" hidden aria-live="polite"><span>◉ ${words.views}</span><b>—</b></span><nav class="cpa-four-language-nav" aria-label="${words.aria}"><label class="cpa-language-picker"><span>${language==="en"?"Language":language==="ja"?"言語":language==="zh-Hans"?"语言":"語言"}</span><select class="cpa-language-select" aria-label="${words.aria}">${options}</select></label></nav></div>`;
+    const quickLinks=Object.keys(localeNames).map(k=>{
+      const href=languageUrl(k,routes[k]),label={"zh-Hant":"繁", "zh-Hans":"簡", en:"EN", ja:"日"}[k];
+      if(!href)return `<span class="cpa-language-link is-unavailable" aria-disabled="true" title="${localeNames[k]} — ${words.unavailable}">${label}</span>`;
+      return `<a class="cpa-language-link${language===k?" is-current":""}" href="${href}" hreflang="${k}" lang="${k}"${language===k?' aria-current="page"':""}>${label}</a>`;
+    }).join("");
+    toolbar.innerHTML=`<a class="cpa-four-language-brand" href="${ROOT}"><span aria-hidden="true">♥</span><b>${words.brand}</b><small>${words.official}</small></a><div class="cpa-four-language-actions"><span class="cpa-four-language-views" hidden aria-live="polite"><span>◉ ${words.views}</span><b>—</b></span><nav class="cpa-four-language-nav" aria-label="${words.aria}"><span class="cpa-language-links" aria-label="${words.aria}">${quickLinks}</span><label class="cpa-language-picker"><span>${language==="en"?"Language":language==="ja"?"言語":language==="zh-Hans"?"语言":"語言"}</span><select class="cpa-language-select" aria-label="${words.aria}">${options}</select></label></nav></div>`;
     document.body.prepend(toolbar);
     document.querySelectorAll(".public-view-count-article,#cpa-page-views,[data-lx-counter],[data-km-view-counter]").forEach(n=>n.remove());
     renderEngagement(route,null);
