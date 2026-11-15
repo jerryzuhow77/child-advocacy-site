@@ -41,3 +41,37 @@
   .document-body{padding:1.25rem!important}
   .chapter-art img{aspect-ratio:16/9!important}
 }
+
+
+/* 20261115 reading-layout optimization */
+.hero{min-height:560px}
+.hero-copy{min-height:560px;padding:clamp(2rem,5vw,4.5rem)}
+.hero h1{font-size:clamp(2.45rem,4.6vw,4.25rem);max-width:9.5em;text-wrap:balance}
+.hero-copy p:not(.eyebrow){color:#344b47}
+.complete-document{position:relative}
+.complete-document .section-head{max-width:780px;margin-inline:auto}
+.document-body{max-width:780px!important}
+.reading-tools{position:sticky;top:70px;z-index:8;max-width:900px;margin:1rem auto 1.5rem;padding:.75rem;background:#fffaf2f2;border:1px solid var(--line);box-shadow:0 8px 24px #183d3f16;backdrop-filter:blur(12px)}
+.reading-tools-actions{display:flex;gap:.5rem;justify-content:flex-end;margin-bottom:.55rem}
+.reading-tools button{border:1px solid var(--line);background:#fff;color:var(--ink);padding:.42rem .7rem;font-weight:750;cursor:pointer}
+.chapter-nav{display:flex;gap:.4rem;overflow-x:auto;padding:.1rem 0 .3rem;scrollbar-width:thin}
+.chapter-nav a{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-width:2.25rem;height:2.25rem;padding:0 .55rem;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:800;font-size:.8rem;background:#fff}
+.chapter-section{max-width:780px;margin:1rem auto;border:1px solid var(--line);background:#fffdf8}
+.chapter-section>summary{display:flex;align-items:center;gap:.8rem;cursor:pointer;padding:1rem 1.1rem;color:var(--ink);font:700 clamp(1.05rem,2vw,1.35rem)/1.45 "Noto Serif TC",serif;list-style:none}
+.chapter-section>summary::-webkit-details-marker{display:none}
+.chapter-section>summary:before{content:"＋";display:grid;place-items:center;flex:0 0 1.75rem;height:1.75rem;border:1px solid var(--gold);border-radius:50%;font-family:system-ui}
+.chapter-section[open]>summary:before{content:"−";background:var(--ink);color:#fff;border-color:var(--ink)}
+.chapter-section[open]>summary{border-bottom:1px solid var(--line)}
+.chapter-section-body{padding:0 clamp(1rem,4vw,2.2rem) 2rem}
+.chapter-section-body>.chapter-title{font-size:0!important;border:0!important;padding:0!important;margin:0!important;height:0;overflow:hidden}
+.chapter-jump{display:flex;justify-content:space-between;gap:1rem;margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line)}
+.chapter-jump a{color:#785039;font-weight:800;text-decoration:none}
+@media(max-width:860px){.hero{min-height:610px}.hero-copy{min-height:455px}.reading-tools{top:58px;margin-inline:-.35rem}}
+@media(max-width:620px){
+  main{padding-inline:.7rem}.hero{min-height:620px}.hero-copy{min-height:440px;padding:1.55rem 1.1rem}.hero h1{font-size:clamp(2.15rem,10vw,3.1rem);line-height:1.2}.hero-copy p:not(.eyebrow){font-size:.96rem;line-height:1.75}
+  .hero-actions{display:grid;grid-template-columns:1fr 1fr}.hero-actions .button{grid-column:1/-1;text-align:center}
+  .reading-tools-actions{justify-content:stretch}.reading-tools-actions button{flex:1}
+  .document-body table,.document-body tbody,.document-body tr,.document-body td{display:block!important;width:100%!important}.document-body thead,.document-body tr:first-child{display:none!important}
+  .document-body tr{margin:0 0 1rem;border:1px solid var(--line);background:#fff}.document-body td{border:0!important;border-bottom:1px solid var(--line)!important;padding:.8rem!important}.document-body td:last-child{border-bottom:0!important}
+  .document-body td:before{display:block;margin-bottom:.25rem;color:#785039;font-weight:850;font-size:.75rem;letter-spacing:.05em}.document-body td:nth-child(1):before{content:"爭點"}.document-body td:nth-child(2):before{content:"辯方摘要（待核）"}.document-body td:nth-child(3):before{content:"檢方／一審方向摘要（待核）"}.document-body td:nth-child(4):before{content:"關鍵核對資料"}
+}
