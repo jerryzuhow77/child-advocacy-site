@@ -123,3 +123,23 @@ body.entry-locked{overflow:hidden}
 .reading-entry-card small{display:block;margin-top:1rem;color:#6b7777}
 @media(max-width:620px){.reading-entry-card{padding:2.2rem 1.25rem}.reading-entry-card h2{font-size:clamp(2rem,9vw,2.8rem)}.reading-entry-button{width:100%}}
 @media(prefers-reduced-motion:reduce){.reading-entry,.reading-entry-button{transition:none}}
+
+/* Clay relief and layered paper */
+#three-way{position:relative;padding:clamp(1.5rem,4vw,3rem);scroll-margin-top:110px;background:#fffcf5;border:1px solid #dfd2bc;border-radius:3px 28px 4px 4px;box-shadow:6px 7px 0 #ede3d1,7px 8px 0 #d8cab2,12px 15px 24px #72543b22}
+.paper-relief{height:80px;position:relative;overflow:hidden;margin:0 0 1.4rem;pointer-events:none}
+.paper-relief i{position:absolute;left:-4%;bottom:-55px;width:108%;height:105px;border-radius:50% 50% 0 0;box-shadow:0 -3px 8px #72543b16;border-top:1px solid #fffdf9;background:#dfd6bf}
+.paper-relief i:nth-child(2){bottom:-66px;left:-15%;background:#b8c8bb;transform:rotate(-7deg)}
+.paper-relief i:nth-child(3){bottom:-77px;left:10%;background:#f6eedf;transform:rotate(6deg)}
+.paper-relief:after{content:"";position:absolute;width:40px;height:40px;border-radius:50%;right:15%;top:3px;background:radial-gradient(circle at 32% 25%,#efcfaf,#b87858 72%);box-shadow:inset 2px 3px 5px #fff7,inset -3px -4px 7px #673c3038,3px 6px 9px #72543b25}
+.node-map button{background:radial-gradient(ellipse at 30% 22%,#f7e0c9,#d6ac8c 78%);border-color:#b38866;color:#453d30;box-shadow:inset 2px 3px 4px #fff8,inset -3px -4px 8px #80553840,4px 8px 16px #203b3930}
+.node-map .node-main{background:radial-gradient(ellipse at 30% 22%,#53766c,#244d49 78%);color:#fff;border-color:#b99a6e;box-shadow:inset 2px 3px 5px #cbe1cd55,inset -4px -5px 9px #122e3566,4px 9px 18px #173a3940}
+.node-map button[aria-pressed="true"],.node-map button:focus-visible{outline:3px solid #a86148;outline-offset:5px}
+.node-detail{border-left-color:#a86148;border-radius:3px 16px 3px 3px;box-shadow:5px 6px 0 #e9dfcc}
+.question-grid{gap:14px;border:0;background:transparent}
+.question-grid article{border:1px solid #ded2bf;border-radius:3px 18px 3px 3px;box-shadow:3px 4px 0 #e9dfcc;min-width:0}
+.question-grid b{display:grid;place-items:center;width:46px;height:46px;border-radius:45% 50% 46% 48%;color:#fff9ef;background:radial-gradient(circle at 30% 20%,#c48d6c,#95513d);box-shadow:inset 1px 2px 3px #ffe6c966,2px 4px 6px #72543b25;font-size:1.2rem}
+.boundary{border-radius:4px 26px 4px 4px;box-shadow:6px 7px 0 #cbd9cd}
+.chapter-section{box-shadow:3px 4px 0 #e8decc}
+html.reduce-motion{scroll-behavior:auto}
+html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{animation:none!important;transition:none!important}
+@media(max-width:620px){#three-way{margin-inline:.35rem;padding:1.35rem;box-shadow:4px 5px 0 #ede3d1,5px 6px 0 #d8cab2}.paper-relief{height:65px}.question-grid{gap:12px}.question-grid article{min-height:0}.node-map button{min-width:44px;min-height:44px}}
