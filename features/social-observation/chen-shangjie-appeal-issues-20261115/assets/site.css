@@ -78,7 +78,7 @@
 
 
 /* chapter 15 mobile card repair 20261115 */
-@media(max-width:620px){
+@media(max-width:860px){
   .chapter-section#chapter-15{border:0;background:transparent}
   #chapter-15 .chapter-section-body{padding-inline:0}
   #chapter-15 table,
@@ -194,3 +194,17 @@ html:not(.reduce-motion) .hero>img,html:not(.reduce-motion) .hero-ink,html:not(.
 html:not(.reduce-motion) .grid-reveal,html:not(.reduce-motion) .boundary,html:not(.reduce-motion) .comparison,html:not(.reduce-motion) .evidence{will-change:transform,opacity}
 .node-detail{transform-style:preserve-3d;perspective:900px}.comparison-panel article{transform-origin:50% 100%;backface-visibility:hidden}.chapter-art{transform:translateZ(0)}.chapter-art img{scale:1.08}.reading-entry-card{transform-origin:50% 55%}.motion-toggle[aria-pressed="true"]{box-shadow:inset 0 0 0 2px #c39b55}
 @media(prefers-reduced-motion:reduce){.chapter-art img{scale:1}}html.reduce-motion .chapter-art img{scale:1!important;transform:none!important}
+
+/* tablet and mobile reading-density polish */
+@media(max-width:860px){
+  .topbar{gap:.55rem;padding-inline:1rem;font-size:.88rem}
+  .topbar span{display:none}
+  .reading-tools{position:sticky;top:56px;z-index:12}
+  .chapter-links{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));gap:.42rem;overflow:visible!important;padding-bottom:0!important}
+  .chapter-links a{min-width:0!important;text-align:center!important;padding:.58rem .2rem!important}
+}
+@media(max-width:620px){
+  .reading-tools{top:48px}
+  .chapter-links{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .chapter-links a{font-size:.82rem}
+}
