@@ -447,3 +447,16 @@ body .cpa-article-engagement{inline-size:min(960px,100%)!important;max-inline-si
     margin:0;
   }
 }
+
+/* Reserve the illustrated lower band exclusively for the three cloud labels. */
+@media(min-width:861px){
+  .hero .hero-copy p:not(.eyebrow){
+    max-width:22rem;
+    position:relative;
+    top:-2.4rem;
+    margin-bottom:-2.4rem;
+  }
+  .hero .node-map button,.hero .node-map .node-main{
+    background:linear-gradient(135deg,rgba(255,252,241,.95),rgba(236,211,166,.84))!important;
+  }
+}
