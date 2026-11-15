@@ -1032,6 +1032,14 @@ body.prologue-active{
   overscroll-behavior:none;
   touch-action:none;
 }
+
+/* Keep the four-language toolbar reachable when a deep-link opens behind the entry prologue. */
+body.prologue-active #cpa-four-language-toolbar{
+  position:fixed!important;
+  inset:0 0 auto!important;
+  z-index:2147483001!important;
+  width:100%;
+}
 .entry-prologue{
   position:fixed;
   inset:0;
