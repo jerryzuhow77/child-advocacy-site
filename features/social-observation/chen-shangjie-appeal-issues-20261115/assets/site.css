@@ -467,3 +467,17 @@ body .cpa-article-engagement{inline-size:min(960px,100%)!important;max-inline-si
   border-color:rgba(177,130,58,.78)!important;
   box-shadow:0 5px 16px rgba(101,66,28,.23),inset 0 1px 0 rgba(255,255,255,.92)!important;
 }
+
+/* Mobile document rhythm — keep imported headings and paragraphs on one shared reading grid. */
+@media(max-width:620px){
+  #complete-document,.document-body,.chapter-section,.chapter-section-body{box-sizing:border-box!important;width:100%!important;max-width:none!important}
+  #complete-document{margin-inline:0!important;padding:12px!important}
+  .document-body{margin:0!important;padding:14px!important}
+  .chapter-section{margin:16px 0!important}
+  .chapter-section-body{padding:0 14px 24px!important}
+  .document-body p,.chapter-section-body p{max-width:none!important;margin-inline:0!important;padding-inline:0!important;text-align:left!important;text-wrap:pretty}
+  .document-body h1,.document-body h2,.document-body h3,.chapter-section-body h1,.chapter-section-body h2,.chapter-section-body h3{max-width:none!important;margin-inline:0!important;padding-inline:0!important;text-align:left!important;overflow-wrap:break-word!important;word-break:normal!important;text-wrap:balance}
+  .chapter-section-body h2:not(.chapter-title){font-size:clamp(1.3rem,6.35vw,1.58rem)!important;line-height:1.48!important;letter-spacing:.01em!important;margin:1.25rem 0 .7rem!important}
+  .chapter-section-body h2:not(.chapter-title) span{font-size:inherit!important;line-height:inherit!important;letter-spacing:inherit!important}
+  .chapter-section-body p,.chapter-section-body li{font-size:1.04rem!important;line-height:1.88!important;letter-spacing:.005em!important}
+}
