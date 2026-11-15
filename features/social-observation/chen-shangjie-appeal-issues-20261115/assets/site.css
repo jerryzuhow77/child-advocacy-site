@@ -249,7 +249,7 @@ body:before{content:""!important;position:fixed!important;z-index:-1!important;i
 
 /* Mobile centering + ink three-way art + Kaikai memorial background — 20261115 */
 :root{
-  --three-way-ink-art:url("./three-way-ink-kaikai-guardian-v2.svg?v=20261115-ink-guardian-1");
+  --three-way-ink-art:url("./three-way-clay-kaikai-guardian-v3.svg?v=20261115-clay-guardian-1");
   --kaikai-memorial-art:url("/child-advocacy-site/assets/images/kaikai-warning-signals-review-20260922/paper-clay-kaikai-hero-20260923.png")
 }
 html,body{inline-size:100%!important;max-inline-size:100%!important;overflow-x:clip!important}
@@ -257,7 +257,7 @@ body{margin-inline:0!important;background-color:#f3ecdf!important;background-ima
 body:before{content:""!important;position:fixed!important;z-index:-1!important;inset:0!important;pointer-events:none!important;opacity:.1!important;background:var(--kaikai-memorial-art) right 30% top 9rem/min(1180px,128vw) auto no-repeat!important;filter:saturate(.55) sepia(.14) blur(.2px)!important}
 .topbar{inline-size:100%!important;max-inline-size:none!important;margin-inline:0!important;inset-inline:0!important}
 main{inline-size:min(100%,1160px)!important;max-inline-size:1160px!important;margin-inline:auto!important}
-.hero>img{content:url("./three-way-ink-kaikai-guardian-v2.svg?v=20261115-ink-guardian-1")!important;object-position:center center!important}
+.hero>img{content:url("./three-way-clay-kaikai-guardian-v3.svg?v=20261115-clay-guardian-1")!important;object-position:center center!important}
 .hero-ink{background:linear-gradient(90deg,rgba(255,250,241,.98) 0 43%,rgba(255,250,241,.72) 59%,rgba(255,250,241,.08) 80%)!important}
 .paper-relief{background:#eee3d0 var(--three-way-ink-art) center center/cover no-repeat!important;aspect-ratio:16/9!important;clip-path:polygon(1% 2%,25% 0,52% 1%,78% 0,99% 2%,100% 97%,76% 100%,49% 98%,22% 100%,0 97%)!important}
 #three-way{background-image:linear-gradient(rgba(255,252,245,.79),rgba(255,252,245,.7)),var(--three-way-ink-art)!important;background-size:auto,cover!important;background-position:center,center!important;background-blend-mode:normal,soft-light!important}
@@ -296,3 +296,12 @@ main{inline-size:min(100%,1160px)!important;max-inline-size:1160px!important;mar
 .node-map button:focus-visible{outline:2px solid #846332!important;outline-offset:10px!important}
 .node-map button[aria-pressed="true"]{outline:1px solid #ab874c!important;outline-offset:9px!important}
 @media(max-width:620px){.node-map{gap:1.3rem!important;padding:18px 6px!important;bottom:1.2rem!important}.node-map button{width:64px!important;height:75px!important;font-size:.75rem!important}.node-map .node-main{width:88px!important;height:96px!important}.node-map:before{inset:-8px -13px!important}}
+
+
+/* Refined clay art + visible Kaikai watermark + explicit centering — 20261115 v5 */
+body{background-color:#f3ecdf!important;background-image:linear-gradient(rgba(248,243,233,.82),rgba(246,239,227,.86)),var(--kaikai-memorial-art)!important;background-repeat:no-repeat!important;background-position:center,right -1rem center!important;background-size:auto,auto min(720px,62vh)!important;background-attachment:fixed!important;background-blend-mode:normal,multiply!important}
+body:before{opacity:0!important;background:none!important}
+body .cpa-article-engagement{inline-size:min(960px,100%)!important;max-inline-size:100%!important;margin-left:auto!important;margin-right:auto!important;transform:none!important}
+.hero>img{content:url("./three-way-clay-kaikai-guardian-v3.svg?v=20261115-clay-guardian-1")!important}
+.intro,.node-detail,.question-grid article,.boundary,.comparison,.comparison-panel,.evidence,.complete-document,.chapter-section,.reading-tools{background-color:rgba(255,252,244,.76)!important;background-image:linear-gradient(rgba(255,253,247,.82),rgba(255,250,241,.72))!important;background-blend-mode:normal!important}
+@media(max-width:620px){body{background-position:center,right -2.2rem center!important;background-size:auto,auto 55vh!important;background-attachment:fixed!important}body .cpa-article-engagement{inline-size:100%!important;max-inline-size:100%!important;margin-inline:auto!important}main{left:auto!important;right:auto!important;transform:none!important}main>.hero,main>#three-way,main>.node-detail,main>.questions,main>.boundary,main>.comparison,main>.evidence,main>.complete-document{inline-size:100%!important;max-inline-size:100%!important;box-sizing:border-box!important}.intro,.node-detail,.question-grid article,.boundary,.comparison,.comparison-panel,.evidence,.complete-document,.chapter-section,.reading-tools{background-color:rgba(255,252,244,.72)!important;background-image:linear-gradient(rgba(255,253,247,.8),rgba(255,250,241,.68))!important}}
