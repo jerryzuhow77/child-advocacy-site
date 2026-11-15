@@ -193,6 +193,19 @@
       gsap.utils.toArray('.chapter-art').forEach(figure=>{const image=figure.querySelector('img'),caption=figure.querySelector('figcaption');gsap.from(figure,{y:24,opacity:0,duration:.7,ease:'power3.out',scrollTrigger:{trigger:figure,start:'top 90%',once:true},clearProps:'transform,opacity'});gsap.to(image,{yPercent:10,ease:'none',scrollTrigger:{trigger:figure,start:'top bottom',end:'bottom top',scrub:.75}});if(caption)gsap.from(caption,{x:-28,opacity:0,duration:.62,ease:'power3.out',scrollTrigger:{trigger:figure,start:'top 82%',once:true},clearProps:'transform,opacity'});});
       gsap.utils.toArray('.chapter-section>summary').forEach(summary=>gsap.from(summary,{x:-18,opacity:0,duration:.48,ease:'power2.out',scrollTrigger:{trigger:summary,start:'top 94%',once:true},clearProps:'transform,opacity'}));
       gsap.from('#comparison-panel article',{y:22,rotationX:-6,opacity:0,stagger:.08,duration:.62,ease:'power3.out',scrollTrigger:{trigger:'#comparison-panel',start:'top 88%',once:true},clearProps:'transform,opacity'});
+      chapterHeadings.forEach(({ number }) => {
+        const section = q('#chapter-' + String(number).padStart(2, '0'));
+        const link = q('.chapter-nav a[href="#' + section?.id + '"]');
+        if (!section || !link) return;
+        ScrollTrigger.create({ trigger: section, start: 'top 58%', end: 'bottom 42%', onToggle: self => {
+          if (!self.isActive) return;
+          document.querySelectorAll('.chapter-nav a').forEach(item => item.classList.toggle('is-current', item === link));
+          gsap.fromTo(link, { scale: .92 }, { scale: 1, duration: .32, ease: 'back.out(2)', overwrite: 'auto' });
+        }});
+      });
+      gsap.utils.toArray('.evidence .green').forEach((tag, index) => {
+        gsap.from(tag, { y: 16, opacity: 0, duration: .5, delay: index * .06, ease: 'power2.out', scrollTrigger: { trigger: '.evidence', start: 'top 82%', once: true }, clearProps: 'transform,opacity' });
+      });
       ScrollTrigger.refresh();
     });
   }
