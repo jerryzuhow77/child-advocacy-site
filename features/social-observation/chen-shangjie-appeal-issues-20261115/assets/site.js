@@ -98,14 +98,18 @@
     const node = nodes[button.dataset.node];
     const apply = () => { title.textContent = node.title; copy.textContent = node.copy; list.innerHTML = node.items.map(item => `<li>${item}</li>`).join(''); };
     if (!window.gsap || motionPreference.matches || document.documentElement.classList.contains('reduce-motion')) { apply(); return; }
-    gsap.timeline().to('.node-detail>*', {y:-8, opacity:0, duration:.18, stagger:.025, ease:'power2.in'}).add(apply).fromTo('.node-detail>*', {y:13, opacity:0}, {y:0, opacity:1, duration:.42, stagger:.055, ease:'power3.out'});
+    apply();
+    gsap.killTweensOf('.node-detail>*');
+    gsap.fromTo('.node-detail>*', {y:13, opacity:0}, {y:0, opacity:1, duration:.42, stagger:.055, ease:'power3.out', overwrite:'auto'});
     gsap.fromTo(button, {scale:.92}, {scale:1, duration:.5, ease:'elastic.out(1,.42)', clearProps:'transform'});
   }));
   document.querySelectorAll('[data-issue]').forEach(button => button.addEventListener('click', () => {
     document.querySelectorAll('[data-issue]').forEach(item => item.setAttribute('aria-selected', 'false')); button.setAttribute('aria-selected', 'true');
     const apply = () => renderIssue(button.dataset.issue);
     if (!window.gsap || motionPreference.matches || document.documentElement.classList.contains('reduce-motion')) { apply(); return; }
-    gsap.timeline().to('#comparison-panel article', {y:-10, rotationX:4, opacity:0, duration:.2, stagger:.035, ease:'power2.in'}).add(apply).fromTo('#comparison-panel article', {y:18, rotationX:-7, opacity:0}, {y:0, rotationX:0, opacity:1, duration:.48, stagger:.075, ease:'power3.out'});
+    apply();
+    gsap.killTweensOf('#comparison-panel article');
+    gsap.fromTo('#comparison-panel article', {y:18, rotationX:-7, opacity:0}, {y:0, rotationX:0, opacity:1, duration:.48, stagger:.075, ease:'power3.out', overwrite:'auto'});
   }));
   async function autoMusic() {
     if (!audio) return;
