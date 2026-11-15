@@ -159,8 +159,15 @@
       gsap.from('.reading-entry-card>*', {y:16, opacity:0, stagger:.085, duration:.62, delay:.12, ease:'power3.out'});
       gsap.from('.reading-entry-card', {scale:.965, opacity:0, duration:.85, ease:'power3.out'});
       gsap.from('.hero-copy>*', {y:24, opacity:0, stagger:.1, duration:.72, delay:.15, ease:'power3.out'});
-      gsap.from('.node-map button', {scale:.55, opacity:0, stagger:.14, duration:.85, delay:.35, ease:'back.out(1.7)'});
-      gsap.to('.node-map button', {y:-5, duration:2.4, stagger:{each:.32,yoyo:true,repeat:-1},ease:'sine.inOut'});
+      const labelMap = document.querySelector('.node-map');
+      const cloudLabels = gsap.timeline({delay:.28});
+      cloudLabels.fromTo('.node-map button',
+        {y:-44, scale:.9, opacity:0, filter:'blur(4px)'},
+        {y:0, scale:1, opacity:1, filter:'blur(0px)', duration:.82, stagger:.13, ease:'power3.out', clearProps:'filter'});
+      cloudLabels.to('.node-map button', {boxShadow:'0 0 0 2px rgba(198,155,72,.24), 0 6px 14px rgba(111,75,37,.20)', duration:.42, stagger:.08, yoyo:true, repeat:1, ease:'sine.inOut'}, '-=.18');
+      if (labelMap) {
+        gsap.to(labelMap, {y:-3, duration:2.8, yoyo:true, repeat:-1, ease:'sine.inOut'});
+      }
       // Keep the artwork alive without competing with reading: slow paper drift, silk shimmer and scroll parallax.
       gsap.from('.hero>img', {scale:1.055, filter:'saturate(.9) brightness(1.04)', duration:1.45, ease:'power3.out'});
       gsap.to('.hero>img', {yPercent:9, scale:1.1, ease:'none', scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:.8}});
