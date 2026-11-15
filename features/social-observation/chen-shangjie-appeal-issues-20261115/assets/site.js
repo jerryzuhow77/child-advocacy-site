@@ -56,11 +56,26 @@
   renderIssue('duty');
   document.querySelectorAll('[data-node]').forEach(button => button.addEventListener('click', () => { const node = nodes[button.dataset.node]; title.textContent = node.title; copy.textContent = node.copy; list.innerHTML = node.items.map(item => `<li>${item}</li>`).join(''); }));
   document.querySelectorAll('[data-issue]').forEach(button => button.addEventListener('click', () => { document.querySelectorAll('[data-issue]').forEach(item => item.setAttribute('aria-selected', 'false')); button.setAttribute('aria-selected', 'true'); renderIssue(button.dataset.issue); }));
-  async function autoMusic() { if (!audio) return; audio.autoplay = true; audio.volume = .28; try { audio.muted = false; await audio.play(); play.textContent = '暫停配樂'; play.setAttribute('aria-pressed', 'true'); } catch { try { audio.muted = true; await audio.play(); play.textContent = '開啟配樂聲音'; } catch { play.textContent = '播放配樂'; } } }
+  async function autoMusic() {
+    if (!audio) return;
+    audio.autoplay = true; audio.loop = true; audio.playsInline = true; audio.preload = 'auto'; audio.volume = .28; audio.muted = false;
+    try {
+      await audio.play();
+      play.textContent = '暫停配樂'; play.setAttribute('aria-pressed', 'true');
+    } catch {
+      play.textContent = '點一下開啟配樂'; play.setAttribute('aria-pressed', 'false'); play.classList.add('needs-gesture');
+      const unlock = async event => {
+        if (event?.target?.closest?.('.motion-toggle')) return;
+        try { audio.muted = false; await audio.play(); play.textContent = '暫停配樂'; play.setAttribute('aria-pressed', 'true'); play.classList.remove('needs-gesture'); } catch {}
+      };
+      ['pointerdown','touchstart','keydown'].forEach(type => document.addEventListener(type, unlock, { once: true, passive: type !== 'keydown' }));
+    }
+  }
   play?.addEventListener('click', async () => { try { if (audio.paused) { audio.muted = false; await audio.play(); play.textContent = '暫停配樂'; play.setAttribute('aria-pressed', 'true'); } else if (audio.muted) { audio.muted = false; play.textContent = '暫停配樂'; play.setAttribute('aria-pressed', 'true'); } else { audio.pause(); play.textContent = '播放配樂'; play.setAttribute('aria-pressed', 'false'); } } catch { play.textContent = '播放配樂'; } });
   motion?.addEventListener('click', () => { document.documentElement.classList.toggle('reduce-motion'); const enabled = document.documentElement.classList.contains('reduce-motion'); motion.setAttribute('aria-pressed', String(enabled)); motion.textContent = enabled ? '恢復動態' : '減少動態'; });
+  autoMusic();
   window.addEventListener('load', () => {
-    enhanceDocument(); addReadingProgress(); simplifyChapterSelect(); setTimeout(simplifyChapterSelect, 500); autoMusic();
+    enhanceDocument(); addReadingProgress(); simplifyChapterSelect(); setTimeout(simplifyChapterSelect, 500);
     if (!window.gsap || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     gsap.registerPlugin(ScrollTrigger);
     gsap.from('.hero>img', { opacity: 0, scale: 1.045, duration: 1.25, ease: 'power2.out' });
