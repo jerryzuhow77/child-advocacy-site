@@ -460,3 +460,10 @@ body .cpa-article-engagement{inline-size:min(960px,100%)!important;max-inline-si
     background:linear-gradient(135deg,rgba(255,252,241,.95),rgba(236,211,166,.84))!important;
   }
 }
+
+/* Prominent cloud-landing motion: labels occupy the illustrated speech clouds. */
+.hero .node-map{z-index:6!important}
+.hero .node-map button,.hero .node-map .node-main{
+  border-color:rgba(177,130,58,.78)!important;
+  box-shadow:0 5px 16px rgba(101,66,28,.23),inset 0 1px 0 rgba(255,255,255,.92)!important;
+}
