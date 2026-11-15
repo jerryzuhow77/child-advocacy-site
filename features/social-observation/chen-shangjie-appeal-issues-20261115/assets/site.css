@@ -412,3 +412,27 @@ body .cpa-article-engagement{inline-size:min(960px,100%)!important;max-inline-si
   .hero{min-height:900px}
   .node-map{bottom:4.8rem}
 }
+
+
+/* 2026-11-15: align the three labels inside the illustrated cloud speech plaques. */
+.hero .node-map{
+  bottom:clamp(1.65rem,2.8vw,2.8rem)!important;
+  height:clamp(2.25rem,4.6vw,3.6rem)!important;
+}
+.hero .node-map button,.hero .node-map .node-main{
+  border:1px solid #fff7e8b8!important;
+  border-radius:12px!important;
+  background:linear-gradient(135deg,#fff9e9b5,#e7c99570)!important;
+  box-shadow:0 2px 7px #6f4b252e,inset 0 1px 0 #fffdf7b8!important;
+  backdrop-filter:blur(1.5px);
+  text-shadow:0 1px 1px #fffdf6!important;
+}
+.hero .node-map button[data-node="chen"]{border-radius:15px!important}
+.hero:has(.node-map button:hover) .node-map button:not(:hover){opacity:.72}
+@media(max-width:860px){
+  .hero .node-map{bottom:clamp(2.15rem,8.4vw,3.85rem)!important}
+}
+@media(max-width:520px){
+  .hero .node-map{bottom:clamp(1.85rem,8.5vw,2.5rem)!important}
+  .hero .node-map button,.hero .node-map .node-main{border-radius:9px!important}
+}
