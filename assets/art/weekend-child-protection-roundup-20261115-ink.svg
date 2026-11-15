@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="t d">
+<title id="t">晨霧中的守護之路</title><desc id="d">當代水墨風格的山巒、照顧者與孩子走向暖光，象徵可被查證的持續守護。</desc>
+<defs>
+ <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#112f37"/><stop offset=".48" stop-color="#315a60"/><stop offset="1" stop-color="#f1c879"/></linearGradient>
+ <linearGradient id="mist" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#dbe6dc" stop-opacity=".12"/><stop offset=".6" stop-color="#fdf5df" stop-opacity=".72"/><stop offset="1" stop-color="#f4d28e" stop-opacity=".14"/></linearGradient>
+ <radialGradient id="sun"><stop stop-color="#fff9dd"/><stop offset=".45" stop-color="#f9d680" stop-opacity=".72"/><stop offset="1" stop-color="#eeb15f" stop-opacity="0"/></radialGradient>
+ <filter id="blur"><feGaussianBlur stdDeviation="18"/></filter><filter id="paper"><feTurbulence baseFrequency=".8" numOctaves="3" seed="4" type="fractalNoise"/><feColorMatrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 .08 0"/></filter>
+</defs>
+<rect width="1600" height="900" fill="url(#sky)"/><rect width="1600" height="900" filter="url(#paper)" opacity=".42"/>
+<circle cx="1230" cy="190" r="240" fill="url(#sun)"/>
+<path d="M300 90C520 45 730 115 910 210c-160-15-288 15-438 85-105-92-220-135-356-148Z" fill="#1d444b" opacity=".72"/>
+<path d="M460 320c205-163 432-165 708-35-182 6-304 84-431 177-150-109-293-123-485-79Z" fill="#355d5e" opacity=".82"/>
+<path d="M620 485c190-124 477-104 790 75-229-43-374 15-530 112-157-125-317-161-565-101Z" fill="#183d43" opacity=".76"/>
+<path d="M0 600c223-100 397-59 584 42 165 89 333 114 530 42 144-52 287-43 486 55V900H0Z" fill="#102f36"/>
+<path d="M790 900c52-154 99-236 181-314 96-90 135-155 225-286 7 145-39 259-119 345-98 104-139 164-195 255Z" fill="#f7d48d" opacity=".78"/>
+<path d="M810 900c61-157 109-230 190-303 84-75 129-152 197-262" fill="none" stroke="#fff7d5" stroke-width="21" stroke-linecap="round" opacity=".72"/>
+<g opacity=".85"><path d="M1160 505c18-78 10-151-8-208M1161 342c-46-24-80-25-114-12M1154 305c45-37 90-40 139-10M1161 285c-23-58 1-94 33-124M1171 280c51-38 91-43 137-16" fill="none" stroke="#263f3d" stroke-width="12" stroke-linecap="round"/><path d="M1153 322c0 0 37-32 66-31M1164 365c0 0 64-35 104-28M1149 390c0 0-56-28-90-10" fill="none" stroke="#a89d46" stroke-width="11" stroke-linecap="round"/></g>
+<g transform="translate(930 510)"><path d="M48 293c4-105 6-165 14-240 7-55 58-73 88-26 22 38 34 90 38 266Z" fill="#1a3a40"/><circle cx="105" cy="26" r="38" fill="#17373d"/><path d="M122 288c-6-75-4-113 2-164M151 170l34 83" fill="none" stroke="#17373d" stroke-width="23" stroke-linecap="round"/><path d="M199 217c0-31 45-31 45 0v56c0 27-45 27-45 0Z" fill="#d98a38"/><path d="M202 225h39M221 206v-19M209 285l-7 37m25-37 8 37" stroke="#f5cf73" stroke-width="5"/><path d="M7 299c3-50 9-98 23-131 13-30 50-29 61 5 8 29 11 78 12 126Z" fill="#e7d0a2"/><circle cx="48" cy="139" r="25" fill="#213f40"/><path d="M72 215l36-29" stroke="#e7d0a2" stroke-width="18" stroke-linecap="round"/></g>
+<rect width="1600" height="900" fill="url(#mist)" opacity=".4"/><path d="M0 0h620v900H0z" fill="#0e2b33" opacity=".24"/>
+</svg>
