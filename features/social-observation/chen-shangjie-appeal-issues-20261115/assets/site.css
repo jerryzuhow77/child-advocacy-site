@@ -374,3 +374,22 @@ body .cpa-article-engagement{inline-size:min(960px,100%)!important;max-inline-si
   }
   .chapter-jump{font-size:1rem!important}
 }
+
+/* Wide, large-type evidence cards on phones — 20261115 */
+@media(max-width:620px){
+  #chapter-15{
+    width:calc(100vw - 20px)!important;
+    max-width:none!important;
+    margin-left:calc((100% - 100vw)/2 + 10px)!important;
+    margin-right:0!important;
+  }
+  #chapter-15 .chapter-section-body{padding-inline:0!important}
+  #chapter-15 table{width:100%!important;max-width:none!important}
+  #chapter-15 tr{width:100%!important;margin-bottom:18px!important}
+  #chapter-15 td{padding:1rem 1.1rem!important}
+  #chapter-15 td:before{font-size:.84rem!important;line-height:1.35!important;margin-bottom:.5rem!important}
+  #chapter-15 td:nth-child(1) p{font-size:1.3rem!important;line-height:1.48!important}
+  #chapter-15 td:nth-child(2) p{font-size:1.16rem!important;line-height:1.86!important}
+  #chapter-15 td:nth-child(3) p{font-size:1.13rem!important;line-height:1.86!important}
+  #chapter-15 td:nth-child(4) p{font-size:1.08rem!important;line-height:1.8!important}
+}
