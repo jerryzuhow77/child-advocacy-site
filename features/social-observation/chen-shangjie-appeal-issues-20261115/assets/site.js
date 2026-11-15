@@ -161,8 +161,27 @@
       gsap.from('.hero-copy>*', {y:24, opacity:0, stagger:.1, duration:.72, delay:.15, ease:'power3.out'});
       gsap.from('.node-map button', {scale:.55, opacity:0, stagger:.14, duration:.85, delay:.35, ease:'back.out(1.7)'});
       gsap.to('.node-map button', {y:-5, duration:2.4, stagger:{each:.32,yoyo:true,repeat:-1},ease:'sine.inOut'});
+      // Keep the artwork alive without competing with reading: slow paper drift, silk shimmer and scroll parallax.
+      gsap.from('.hero>img', {scale:1.055, filter:'saturate(.9) brightness(1.04)', duration:1.45, ease:'power3.out'});
       gsap.to('.hero>img', {yPercent:9, scale:1.1, ease:'none', scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:.8}});
+      gsap.to('.hero-paper-glow.one', {xPercent:18, yPercent:10, scale:1.12, duration:9, repeat:-1, yoyo:true, ease:'sine.inOut'});
+      gsap.to('.hero-paper-glow.two', {xPercent:-20, yPercent:-14, scale:.88, duration:11, repeat:-1, yoyo:true, ease:'sine.inOut'});
+      gsap.timeline({repeat:-1, repeatDelay:2.4})
+        .set('.hero-silk-sweep', {xPercent:-8, opacity:0})
+        .to('.hero-silk-sweep', {xPercent:9, opacity:.88, duration:1.5, ease:'power2.inOut'})
+        .to('.hero-silk-sweep', {opacity:0, duration:.65, ease:'power1.out'}, '-=.2');
+      gsap.to('.hero-gold-particle', {opacity:.95, y:-8, scale:1.35, stagger:{each:.22, repeat:-1, yoyo:true}, duration:1.6, ease:'sine.inOut'});
       gsap.to('.hero-ink', {opacity:.82, ease:'none', scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom 20%',scrub:.65}});
+      if (matchMedia('(pointer:fine)').matches) {
+        hero?.addEventListener('pointermove', event => {
+          const box = hero.getBoundingClientRect(), x = (event.clientX - box.left) / box.width - .5, y = (event.clientY - box.top) / box.height - .5;
+          gsap.to('.hero>img', {x:x * 8, y:y * 6, duration:.85, overwrite:'auto', ease:'power2.out'});
+          gsap.to('.hero-motion-atmosphere', {x:x * 4, y:y * 3, duration:1.1, overwrite:'auto', ease:'power2.out'});
+        });
+        hero?.addEventListener('pointerleave', () => {
+          gsap.to('.hero>img,.hero-motion-atmosphere', {x:0, y:0, duration:1.15, overwrite:'auto', ease:'power2.out'});
+        });
+      }
       gsap.utils.toArray('.grid-reveal,.boundary,.comparison,.evidence').forEach((element,index)=>gsap.from(element,{y:34,opacity:0,duration:.82,ease:'power3.out',scrollTrigger:{trigger:element,start:'top 86%',once:true},delay:index%2*.04,clearProps:'transform,opacity'}));
       gsap.utils.toArray('.chapter-art').forEach(figure=>{const image=figure.querySelector('img'),caption=figure.querySelector('figcaption');gsap.from(figure,{y:24,opacity:0,duration:.7,ease:'power3.out',scrollTrigger:{trigger:figure,start:'top 90%',once:true},clearProps:'transform,opacity'});gsap.to(image,{yPercent:10,ease:'none',scrollTrigger:{trigger:figure,start:'top bottom',end:'bottom top',scrub:.75}});if(caption)gsap.from(caption,{x:-28,opacity:0,duration:.62,ease:'power3.out',scrollTrigger:{trigger:figure,start:'top 82%',once:true},clearProps:'transform,opacity'});});
       gsap.utils.toArray('.chapter-section>summary').forEach(summary=>gsap.from(summary,{x:-18,opacity:0,duration:.48,ease:'power2.out',scrollTrigger:{trigger:summary,start:'top 94%',once:true},clearProps:'transform,opacity'}));
@@ -182,6 +201,18 @@
   relief.setAttribute('aria-hidden', 'true');
   relief.innerHTML = '<span class="paper-layer one"></span><span class="paper-layer two"></span><span class="paper-layer three"></span><span class="gold-thread"></span><span class="gold-leaf"></span><span class="clay-figure left"></span><span class="clay-figure center"></span><span class="clay-figure right"></span>';
   q('#three-way')?.prepend(relief);
+  // Hero artwork: a restrained, layered motion treatment for the clay-and-silk illustration.
+  const hero = q('.hero');
+  if (hero && !hero.querySelector('.hero-motion-atmosphere')) {
+    const atmosphere = document.createElement('div');
+    atmosphere.className = 'hero-motion-atmosphere';
+    atmosphere.setAttribute('aria-hidden', 'true');
+    atmosphere.innerHTML = '<i class="hero-paper-glow one"></i><i class="hero-paper-glow two"></i><i class="hero-silk-sweep"></i><span class="hero-gold-particle p1"></span><span class="hero-gold-particle p2"></span><span class="hero-gold-particle p3"></span><span class="hero-gold-particle p4"></span><span class="hero-gold-particle p5"></span>';
+    hero.append(atmosphere);
+    const heroStyle = document.createElement('style');
+    heroStyle.textContent = `.hero-motion-atmosphere{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}.hero-paper-glow{position:absolute;border-radius:50%;filter:blur(2px);mix-blend-mode:screen;opacity:.38}.hero-paper-glow.one{width:42%;aspect-ratio:1;left:36%;top:-18%;background:radial-gradient(circle,#fffdf3aa 0,transparent 67%)}.hero-paper-glow.two{width:30%;aspect-ratio:1;right:-8%;bottom:-16%;background:radial-gradient(circle,#e2c57a6e 0,transparent 70%)}.hero-silk-sweep{position:absolute;left:-30%;top:59%;width:150%;height:2px;background:linear-gradient(90deg,transparent 0%,transparent 34%,#f8e6a5 46%,#bd8638 50%,#f8e6a5 54%,transparent 66%,transparent 100%);opacity:0;filter:drop-shadow(0 0 4px #c99b48)}.hero-gold-particle{position:absolute;width:5px;height:5px;border-radius:50%;background:#f6d57a;box-shadow:0 0 0 2px #fff4c247,0 0 10px #c99032;opacity:0}.hero-gold-particle.p1{left:42%;top:58%}.hero-gold-particle.p2{left:51%;top:62%}.hero-gold-particle.p3{left:61%;top:59%}.hero-gold-particle.p4{left:71%;top:64%}.hero-gold-particle.p5{left:80%;top:59%}@media(max-width:860px){.hero-motion-atmosphere{top:auto;height:47%;bottom:0}.hero-silk-sweep{top:54%}.hero-gold-particle.p1{left:20%;top:47%}.hero-gold-particle.p2{left:37%;top:53%}.hero-gold-particle.p3{left:54%;top:49%}.hero-gold-particle.p4{left:70%;top:55%}.hero-gold-particle.p5{left:85%;top:48%}}@media(prefers-reduced-motion:reduce){.hero-motion-atmosphere{display:none}}`;
+    document.head.append(heroStyle);
+  }
   document.querySelectorAll('[data-node]').forEach(button => {
     button.setAttribute('aria-pressed', String(button.dataset.node === 'chen'));
     button.addEventListener('click', () => {
