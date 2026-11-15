@@ -171,13 +171,18 @@
       // Keep the artwork alive without competing with reading: slow paper drift, silk shimmer and scroll parallax.
       gsap.from('.hero>img', {scale:1.055, filter:'saturate(.9) brightness(1.04)', duration:1.45, ease:'power3.out'});
       gsap.to('.hero>img', {yPercent:9, scale:1.1, ease:'none', scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:.8}});
-      gsap.to('.hero-paper-glow.one', {xPercent:18, yPercent:10, scale:1.12, duration:9, repeat:-1, yoyo:true, ease:'sine.inOut'});
-      gsap.to('.hero-paper-glow.two', {xPercent:-20, yPercent:-14, scale:.88, duration:11, repeat:-1, yoyo:true, ease:'sine.inOut'});
-      gsap.timeline({repeat:-1, repeatDelay:2.4})
-        .set('.hero-silk-sweep', {xPercent:-8, opacity:0})
-        .to('.hero-silk-sweep', {xPercent:9, opacity:.88, duration:1.5, ease:'power2.inOut'})
-        .to('.hero-silk-sweep', {opacity:0, duration:.65, ease:'power1.out'}, '-=.2');
-      gsap.to('.hero-gold-particle', {opacity:.95, y:-8, scale:1.35, stagger:{each:.22, repeat:-1, yoyo:true}, duration:1.6, ease:'sine.inOut'});
+      gsap.to('.hero-paper-glow.one', {xPercent:30, yPercent:15, scale:1.28, duration:5.5, repeat:-1, yoyo:true, ease:'sine.inOut'});
+      gsap.to('.hero-paper-glow.two', {xPercent:-32, yPercent:-20, scale:.78, duration:6.5, repeat:-1, yoyo:true, ease:'sine.inOut'});
+      gsap.timeline({repeat:-1, repeatDelay:.7})
+        .set('.hero-silk-sweep:not(.second)', {xPercent:-24, opacity:0})
+        .to('.hero-silk-sweep:not(.second)', {xPercent:18, opacity:1, duration:1.35, ease:'power2.inOut'})
+        .to('.hero-silk-sweep:not(.second)', {opacity:0, duration:.32, ease:'power1.out'});
+      gsap.timeline({repeat:-1, repeatDelay:1.1, delay:.65})
+        .set('.hero-silk-sweep.second', {xPercent:-28, opacity:0})
+        .to('.hero-silk-sweep.second', {xPercent:20, opacity:.9, duration:1.18, ease:'power2.inOut'})
+        .to('.hero-silk-sweep.second', {opacity:0, duration:.28, ease:'power1.out'});
+      gsap.to('.hero-gold-particle', {opacity:1, y:-16, scale:1.75, stagger:{each:.13, repeat:-1, yoyo:true}, duration:1.05, ease:'sine.inOut'});
+      gsap.fromTo('.node-map button', {y:16, opacity:0}, {y:0, opacity:1, stagger:.18, duration:.85, delay:.5, ease:'back.out(1.9)'});
       gsap.to('.hero-ink', {opacity:.82, ease:'none', scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom 20%',scrub:.65}});
       if (matchMedia('(pointer:fine)').matches) {
         hero?.addEventListener('pointermove', event => {
@@ -214,10 +219,10 @@
     const atmosphere = document.createElement('div');
     atmosphere.className = 'hero-motion-atmosphere';
     atmosphere.setAttribute('aria-hidden', 'true');
-    atmosphere.innerHTML = '<i class="hero-paper-glow one"></i><i class="hero-paper-glow two"></i><i class="hero-silk-sweep"></i><span class="hero-gold-particle p1"></span><span class="hero-gold-particle p2"></span><span class="hero-gold-particle p3"></span><span class="hero-gold-particle p4"></span><span class="hero-gold-particle p5"></span>';
+    atmosphere.innerHTML = '<i class="hero-paper-glow one"></i><i class="hero-paper-glow two"></i><i class="hero-silk-sweep"></i><i class="hero-silk-sweep second"></i><span class="hero-gold-particle p1"></span><span class="hero-gold-particle p2"></span><span class="hero-gold-particle p3"></span><span class="hero-gold-particle p4"></span><span class="hero-gold-particle p5"></span><span class="hero-gold-particle p6"></span><span class="hero-gold-particle p7"></span>';
     hero.append(atmosphere);
     const heroStyle = document.createElement('style');
-    heroStyle.textContent = `.hero-motion-atmosphere{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}.hero-paper-glow{position:absolute;border-radius:50%;filter:blur(2px);mix-blend-mode:screen;opacity:.38}.hero-paper-glow.one{width:42%;aspect-ratio:1;left:36%;top:-18%;background:radial-gradient(circle,#fffdf3aa 0,transparent 67%)}.hero-paper-glow.two{width:30%;aspect-ratio:1;right:-8%;bottom:-16%;background:radial-gradient(circle,#e2c57a6e 0,transparent 70%)}.hero-silk-sweep{position:absolute;left:-30%;top:59%;width:150%;height:2px;background:linear-gradient(90deg,transparent 0%,transparent 34%,#f8e6a5 46%,#bd8638 50%,#f8e6a5 54%,transparent 66%,transparent 100%);opacity:0;filter:drop-shadow(0 0 4px #c99b48)}.hero-gold-particle{position:absolute;width:5px;height:5px;border-radius:50%;background:#f6d57a;box-shadow:0 0 0 2px #fff4c247,0 0 10px #c99032;opacity:0}.hero-gold-particle.p1{left:42%;top:58%}.hero-gold-particle.p2{left:51%;top:62%}.hero-gold-particle.p3{left:61%;top:59%}.hero-gold-particle.p4{left:71%;top:64%}.hero-gold-particle.p5{left:80%;top:59%}@media(max-width:860px){.hero-motion-atmosphere{top:auto;height:47%;bottom:0}.hero-silk-sweep{top:54%}.hero-gold-particle.p1{left:20%;top:47%}.hero-gold-particle.p2{left:37%;top:53%}.hero-gold-particle.p3{left:54%;top:49%}.hero-gold-particle.p4{left:70%;top:55%}.hero-gold-particle.p5{left:85%;top:48%}}@media(prefers-reduced-motion:reduce){.hero-motion-atmosphere{display:none}}`;
+    heroStyle.textContent = `.hero-motion-atmosphere{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}.hero-paper-glow{position:absolute;border-radius:50%;filter:blur(2px);mix-blend-mode:screen;opacity:.38}.hero-paper-glow.one{width:42%;aspect-ratio:1;left:36%;top:-18%;background:radial-gradient(circle,#fffdf3aa 0,transparent 67%)}.hero-paper-glow.two{width:30%;aspect-ratio:1;right:-8%;bottom:-16%;background:radial-gradient(circle,#e2c57a6e 0,transparent 70%)}.hero-silk-sweep{position:absolute;left:-30%;top:59%;width:150%;height:4px;background:linear-gradient(90deg,transparent 0%,transparent 30%,#fff8cf 42%,#d59831 49%,#fff8cf 53%,#c48127 57%,transparent 70%,transparent 100%);opacity:0;filter:drop-shadow(0 0 7px #c99032)}.hero-silk-sweep.second{top:63%;transform:scaleX(.8);filter:drop-shadow(0 0 10px #f1c75a)}.hero-gold-particle{position:absolute;width:7px;height:7px;border-radius:50%;background:#fff2a6;box-shadow:0 0 0 3px #fff4c247,0 0 18px 4px #d79427;opacity:0}.hero-gold-particle.p1{left:42%;top:58%}.hero-gold-particle.p2{left:48%;top:62%}.hero-gold-particle.p3{left:55%;top:59%}.hero-gold-particle.p4{left:63%;top:63%}.hero-gold-particle.p5{left:71%;top:59%}.hero-gold-particle.p6{left:78%;top:62%}.hero-gold-particle.p7{left:85%;top:58%}@media(max-width:860px){.hero-motion-atmosphere{top:auto;height:47%;bottom:0}.hero-silk-sweep{top:54%}.hero-gold-particle.p1{left:20%;top:47%}.hero-gold-particle.p2{left:37%;top:53%}.hero-gold-particle.p3{left:54%;top:49%}.hero-gold-particle.p4{left:70%;top:55%}.hero-gold-particle.p5{left:85%;top:48%}}@media(prefers-reduced-motion:reduce){.hero-motion-atmosphere{display:none}}`;
     document.head.append(heroStyle);
   }
   document.querySelectorAll('[data-node]').forEach(button => {
