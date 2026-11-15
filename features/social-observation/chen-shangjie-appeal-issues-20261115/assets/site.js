@@ -133,7 +133,7 @@
     if (!window.gsap || !window.ScrollTrigger || motionPreference.matches || document.documentElement.classList.contains('reduce-motion')) return;
     gsap.registerPlugin(ScrollTrigger);
     artContext = gsap.context(() => {
-      gsap.from('.paper-relief i', {y:18, stagger:.12, duration:.8, ease:'power2.out', scrollTrigger:{trigger:'#three-way',start:'top 90%',once:true},clearProps:'transform'});
+      gsap.from('.paper-relief .paper-layer', {y:36, opacity:0, stagger:.12, duration:1.05, ease:'power3.out', scrollTrigger:{trigger:'#three-way',start:'top 88%',once:true},clearProps:'transform,opacity'}); gsap.from('.paper-relief .clay-figure', {y:18, scale:.88, opacity:0, transformOrigin:'50% 100%', stagger:.1, duration:.75, ease:'back.out(1.5)', scrollTrigger:{trigger:'#three-way',start:'top 84%',once:true},clearProps:'transform,opacity'}); gsap.from('.paper-relief .gold-thread,.paper-relief .gold-leaf', {opacity:0, duration:.85, delay:.35, ease:'power2.out', scrollTrigger:{trigger:'#three-way',start:'top 84%',once:true},clearProps:'opacity'});
       gsap.from('.question-grid article', {y:16, stagger:.09, duration:.55, ease:'power2.out', scrollTrigger:{trigger:'.question-grid',start:'top 90%',once:true},clearProps:'transform'});
     });
   }
@@ -147,7 +147,7 @@
   const relief = document.createElement('div');
   relief.className = 'paper-relief';
   relief.setAttribute('aria-hidden', 'true');
-  relief.innerHTML = '<i></i><i></i><i></i>';
+  relief.innerHTML = '<span class="paper-layer one"></span><span class="paper-layer two"></span><span class="paper-layer three"></span><span class="gold-thread"></span><span class="gold-leaf"></span><span class="clay-figure left"></span><span class="clay-figure center"></span><span class="clay-figure right"></span>';
   q('#three-way')?.prepend(relief);
   document.querySelectorAll('[data-node]').forEach(button => {
     button.setAttribute('aria-pressed', String(button.dataset.node === 'chen'));
