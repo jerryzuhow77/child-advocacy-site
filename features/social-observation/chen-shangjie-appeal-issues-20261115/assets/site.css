@@ -305,3 +305,72 @@ body .cpa-article-engagement{inline-size:min(960px,100%)!important;max-inline-si
 .hero>img{content:url("./three-way-clay-kaikai-guardian-v3.svg?v=20261115-clay-guardian-1")!important}
 .intro,.node-detail,.question-grid article,.boundary,.comparison,.comparison-panel,.evidence,.complete-document,.chapter-section,.reading-tools{background-color:rgba(255,252,244,.76)!important;background-image:linear-gradient(rgba(255,253,247,.82),rgba(255,250,241,.72))!important;background-blend-mode:normal!important}
 @media(max-width:620px){body{background-position:center,right -2.2rem center!important;background-size:auto,auto 55vh!important;background-attachment:fixed!important}body .cpa-article-engagement{inline-size:100%!important;max-inline-size:100%!important;margin-inline:auto!important}main{left:auto!important;right:auto!important;transform:none!important}main>.hero,main>#three-way,main>.node-detail,main>.questions,main>.boundary,main>.comparison,main>.evidence,main>.complete-document{inline-size:100%!important;max-inline-size:100%!important;box-sizing:border-box!important}.intro,.node-detail,.question-grid article,.boundary,.comparison,.comparison-panel,.evidence,.complete-document,.chapter-section,.reading-tools{background-color:rgba(255,252,244,.72)!important;background-image:linear-gradient(rgba(255,253,247,.8),rgba(255,250,241,.68))!important}}
+
+
+/* Comfortable full-width mobile reading — 20261115 */
+@media(max-width:620px){
+  main{padding-inline:8px!important}
+  .complete-document{padding:12px!important}
+  .complete-document .section-head{padding-inline:4px!important}
+  .document-body{
+    display:block!important;
+    width:100%!important;
+    max-width:none!important;
+    margin-inline:0!important;
+    padding:14px!important;
+    font-size:18px!important;
+    line-height:2!important;
+  }
+  .chapter-section{
+    display:block!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:16px 0!important;
+  }
+  .chapter-section>summary{
+    padding:1rem!important;
+    font-size:1.2rem!important;
+    line-height:1.5!important;
+  }
+  .chapter-section-body{padding:0 14px 22px!important}
+  .chapter-section-body p,
+  .chapter-section-body li{
+    font-size:1.075rem!important;
+    line-height:1.92!important;
+  }
+  .chapter-section-body p span,
+  .chapter-section-body li span{
+    font-size:inherit!important;
+    line-height:inherit!important;
+  }
+  .chapter-section-body h2:not(.chapter-title){
+    font-size:1.55rem!important;
+    line-height:1.45!important;
+  }
+  .chapter-section-body h2:not(.chapter-title) span{
+    font-size:inherit!important;
+    line-height:inherit!important;
+  }
+  .chapter-art{margin:18px 0 28px!important}
+  .chapter-art img{aspect-ratio:16/8.5!important}
+  .reading-tools{
+    width:100%!important;
+    max-width:none!important;
+    margin:14px 0 18px!important;
+    padding:12px!important;
+  }
+  .reading-tools-actions{gap:10px!important}
+  .reading-tools-actions button{
+    min-height:48px!important;
+    padding:.6rem .75rem!important;
+    font-size:1rem!important;
+  }
+  .chapter-nav{gap:8px!important;padding-bottom:4px!important}
+  .chapter-nav a{
+    min-width:3rem!important;
+    height:3rem!important;
+    padding:0 .7rem!important;
+    font-size:1rem!important;
+  }
+  .chapter-jump{font-size:1rem!important}
+}
