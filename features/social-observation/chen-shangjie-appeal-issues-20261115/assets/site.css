@@ -104,3 +104,22 @@
   #chapter-15 td:nth-child(4) p{font-size:.91rem!important;font-weight:500!important;line-height:1.66!important}
   #chapter-15 td span[style*="background-color"]{box-decoration-break:clone;-webkit-box-decoration-break:clone;padding:.04em .12em}
 }
+
+
+/* reading entry with user-initiated soundtrack */
+body.entry-locked{overflow:hidden}
+.reading-entry{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:1rem;isolation:isolate;transition:opacity .55s ease,visibility .55s ease}
+.reading-entry[hidden]{display:none}
+.reading-entry.is-leaving{opacity:0;visibility:hidden;pointer-events:none}
+.reading-entry-backdrop{position:absolute;inset:0;z-index:-2;background:#102f30 url("../assets/information-chain-hero.jpg") center/cover no-repeat}
+.reading-entry-backdrop:after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,#102f30ef 5%,#183d3fc4 55%,#7850399c),radial-gradient(circle at 70% 25%,#c39b5538,transparent 36%)}
+.reading-entry-card{width:min(680px,100%);padding:clamp(2rem,6vw,4rem);border:1px solid #d7b875a8;background:#fffaf0f2;box-shadow:0 30px 90px #071c1de0;text-align:center;backdrop-filter:blur(10px)}
+.reading-entry-card .eyebrow{color:#785039}
+.reading-entry-card h2{margin:.65rem 0 1rem;color:#183d3f;font:700 clamp(2rem,6vw,4.2rem)/1.18 "Noto Serif TC","Songti TC",serif}
+.reading-entry-card h2 em{color:#a7583e;font-style:normal}
+.reading-entry-card>p:not(.eyebrow){margin:.5rem auto 1.6rem;color:#425657;line-height:1.8}
+.reading-entry-button{min-height:3.4rem;padding:.8rem 1.5rem;border:1px solid #c39b55;background:#183d3f;color:#fff;font:800 1rem/1.3 system-ui,"Noto Sans TC",sans-serif;letter-spacing:.05em;cursor:pointer;box-shadow:0 8px 24px #183d3f3d;transition:transform .2s ease,background .2s ease}
+.reading-entry-button:hover,.reading-entry-button:focus-visible{background:#a7583e;transform:translateY(-2px);outline:3px solid #c39b5570;outline-offset:3px}
+.reading-entry-card small{display:block;margin-top:1rem;color:#6b7777}
+@media(max-width:620px){.reading-entry-card{padding:2.2rem 1.25rem}.reading-entry-card h2{font-size:clamp(2rem,9vw,2.8rem)}.reading-entry-button{width:100%}}
+@media(prefers-reduced-motion:reduce){.reading-entry,.reading-entry-button{transition:none}}
