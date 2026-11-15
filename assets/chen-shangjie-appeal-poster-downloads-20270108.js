@@ -7,10 +7,10 @@
     ['chen-shangjie-appeal-chalk.svg','粉筆夜色・小熊版']
   ];
   const strings={
-    'zh-Hant':{title:'剴剴案開庭追思海報下載',lead:'四款海報均標示陳尚潔案二審準備程序：116 年 1 月 8 日（五）14:30，臺灣高等法院，115 年度上訴字第 4688 號，博愛路 127 號・專一法庭。目前提供 SVG 示意版預覽與下載；原始圖稿尚待逐張核對。庭期如有異動請以法院公告為準。',preview:'預覽海報',download:'下載 SVG',labels:['金光法庭・追思版','現代水墨・守望版','水彩追思・白花版','粉筆夜色・小熊版']},
-    'zh-Hans':{title:'剀剀案开庭追思海报下载',lead:'四款海报均标示陈尚洁案二审准备程序：116 年 1 月 8 日（五）14:30，台湾高等法院，115 年度上诉字第 4688 号，博爱路 127 号・专一法庭。目前提供 SVG 示意版预览与下载；原始图稿尚待逐张核对。庭期如有异动请以法院公告为准。',preview:'预览海报',download:'下载 SVG',labels:['金光法庭・追思版','现代水墨・守望版','水彩追思・白花版','粉笔夜色・小熊版']},
-    en:{title:'Kaikai Hearing Memorial Poster Downloads',lead:'Four downloadable memorial posters for the Chen Shangjie appeal preparation hearing: 8 January 2027 (Fri), 14:30, Taiwan High Court, Case No. 115 Shang-Su 4688, No. 127 Bo-ai Road, Courtroom 1. These are SVG illustrative versions pending a poster-by-poster check against the source artwork. Please confirm any change with the court’s latest notice.',preview:'Preview poster',download:'Download SVG',labels:['Golden Court Memorial','Modern Ink Vigil','Watercolor Memorial','Chalk Night Memorial']},
-    ja:{title:'剴剴事件・開廷追悼ポスター',lead:'陳尚潔事件・控訴審準備手続の追悼ポスター4種です。116年1月8日（金）14:30、台湾高等法院、115年度上訴字第4688号、博愛路127号・専一法廷。現在はSVGの参考版です。原図との1枚ごとの照合が未了です。期日に変更がある場合は、裁判所の最新公告をご確認ください。',preview:'ポスターを見る',download:'SVGをダウンロード',labels:['金色の法廷・追悼版','現代水墨・見守り版','水彩追悼・白花版','チョーク夜景・小熊版']}
+    'zh-Hant':{title:'剴剴案開庭追思海報下載',lead:'四款海報均標示陳尚潔案二審準備程序：116 年 1 月 8 日（五）14:30，臺灣高等法院，115 年度上訴字第 4688 號，博愛路 127 號・專一法庭。可先預覽，再下載海報檔。庭期如有異動請以法院公告為準。',preview:'預覽海報',download:'下載海報檔',labels:['金光法庭・追思版','現代水墨・守望版','水彩追思・白花版','粉筆夜色・小熊版']},
+    'zh-Hans':{title:'剀剀案开庭追思海报下载',lead:'四款海报均标示陈尚洁案二审准备程序：116 年 1 月 8 日（五）14:30，台湾高等法院，115 年度上诉字第 4688 号，博爱路 127 号・专一法庭。可先预览，再下载海报文件。庭期如有异动请以法院公告为准。',preview:'预览海报',download:'下载海报文件',labels:['金光法庭・追思版','现代水墨・守望版','水彩追思・白花版','粉笔夜色・小熊版']},
+    en:{title:'Kaikai Hearing Memorial Poster Downloads',lead:'Four downloadable memorial posters for the Chen Shangjie appeal preparation hearing: 8 January 2027 (Fri), 14:30, Taiwan High Court, Case No. 115 Shang-Su 4688, No. 127 Bo-ai Road, Courtroom 1. Please confirm any change with the court’s latest notice.',preview:'Preview poster',download:'Download poster',labels:['Golden Court Memorial','Modern Ink Vigil','Watercolor Memorial','Chalk Night Memorial']},
+    ja:{title:'剴剴事件・開廷追悼ポスター',lead:'陳尚潔事件・控訴審準備手続の追悼ポスター4種です。116年1月8日（金）14:30、台湾高等法院、115年度上訴字第4688号、博愛路127号・専一法廷。プレビューの後、ポスターファイルをダウンロードできます。期日に変更がある場合は、裁判所の最新公告をご確認ください。',preview:'ポスターを見る',download:'ポスターをダウンロード',labels:['金色の法廷・追悼版','現代水墨・見守り版','水彩追悼・白花版','チョーク夜景・小熊版']}
   };
   const locale=()=>document.documentElement.lang==='zh-Hans'?'zh-Hans':document.documentElement.lang==='ja'?'ja':document.documentElement.lang==='en'?'en':'zh-Hant';
   const render=()=>{
