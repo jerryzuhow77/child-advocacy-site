@@ -9,7 +9,7 @@
 <link data-cpa-four-language-toolbar-style rel="stylesheet" href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5">
 <script data-cpa-four-language-toolbar-flag>window.__cpaFourLanguageToolbar=true;</script>
 <link rel="canonical" href="https://jerryzuhow77.github.io/child-advocacy-site/features/social-observation/chen-shangjie-appeal-issues-20261115/">
-<style id="clay-plaque-label-positions-v2">
+<style id="clay-plaque-label-positions-v3">
 /* Top hero only: use the supplied three-person clay artwork, never the prior guardian illustration. */
 .hero>img{content:normal!important;object-position:center center!important}
 .hero .node-map{position:absolute!important;inset:auto 0 clamp(4.5rem,7vw,7.5rem)!important;display:block!important;width:auto!important;height:clamp(2.25rem,4.6vw,3.6rem)!important;transform:none!important;pointer-events:none!important}
@@ -20,6 +20,12 @@
 .hero .node-map button[data-node="caregiver"]{left:auto!important;right:5%!important}
 @media(max-width:860px){.hero{display:flex!important;flex-direction:column!important;min-height:0!important}.hero>img{position:relative!important;inset:auto!important;order:2!important;width:100%!important;height:auto!important;min-height:0!important;aspect-ratio:1536/961!important;object-fit:cover!important;object-position:center center!important;z-index:0!important}.hero-copy{order:1!important;min-height:0!important}.hero .node-map{bottom:clamp(3.9rem,16vw,6.3rem)!important;height:clamp(2.15rem,9vw,3.25rem)!important}.hero .node-map button,.hero .node-map .node-main{font-size:clamp(.8rem,3.8vw,1.05rem)!important}}
 @media(max-width:520px){.hero .node-map{bottom:4.15rem!important}}
+
+/* Keep plaque labels above the hero copy after GSAP has finished. */
+.hero{isolation:isolate!important}
+@media(min-width:861px){.hero-copy{padding-bottom:clamp(7rem,10vw,9rem)!important}}
+.hero .node-map{z-index:6!important;isolation:isolate!important}
+.hero .node-map button,.hero .node-map .node-main{z-index:1!important;display:grid!important;place-items:center!important;white-space:nowrap!important}
 </style>
 <link rel="alternate" hreflang="en" href="https://jerryzuhow77.github.io/child-advocacy-site/features/social-observation/chen-shangjie-appeal-issues-20261115/en/">
 <link rel="alternate" hreflang="ja" href="https://jerryzuhow77.github.io/child-advocacy-site/features/social-observation/chen-shangjie-appeal-issues-20261115/ja/">
