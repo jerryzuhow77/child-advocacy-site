@@ -19,27 +19,70 @@
   const chapterNames = { 一: '案件與程序定位', 二: '爭點總覽', 三: '不作為犯與保證人地位', 四: '保證人地位的五步檢驗', 五: '作為可能性與避免死亡結果', 六: '注意義務、風險訊號與通報', 七: '制度分工', 八: '規範來源與提醒指標', 九: '調查聲請與待證資料', 十: '法律與社工專業鑑定', 十一: '雙方攻防的結構對照', 十二: '證據與論證地圖', 十三: '現階段程序與後續待辦', 十四: '規範適用、職務分工與個人義務', 十五: '檢辯主張對照表' };
   function renderIssue(key) { const [defence, prosecution, evidence] = issues[key]; panel.innerHTML = `<article><h3>辯方摘要</h3><p>${defence}</p></article><article><h3>檢方／一審方向</h3><p>${prosecution}</p></article><article><h3>待核對資料</h3><p>${evidence}</p></article>`; }
   function enhanceDocument() {
-    if (!documentBody || documentBody.querySelector('.chapter-art')) return;
+    if (!documentBody || documentBody.querySelector('.chapter-section')) return;
     const style = document.createElement('style');
-    style.textContent = `.document-body{max-width:900px;margin:0 auto;padding:clamp(22px,5vw,70px);background:#fffdf8;color:#183d3f;font-family:system-ui,"Noto Sans TC",sans-serif;line-height:1.9}.document-body h1{font-family:"Noto Serif TC","Songti TC",serif!important;color:#183d3f!important;border-top:1px solid #c39b55!important;padding-top:34px!important}.document-body h2{font-family:"Noto Serif TC",serif!important;color:#785039!important}.document-body table{display:block;overflow:auto;border-collapse:collapse;background:#fff;max-width:100%}.document-body td,.document-body th{padding:10px!important;border:1px solid #d8cab2!important}.chapter-art{position:relative;margin:22px 0 34px;overflow:hidden;background:#e5e0d6;border:1px solid #d8cab2}.chapter-art img{display:block;width:100%;aspect-ratio:16/7;object-fit:cover}.chapter-art figcaption{position:absolute;inset:auto 0 0;padding:12px 17px;color:#fff;background:linear-gradient(90deg,#183d3fe8,#183d3f22);font:700 13px system-ui,"Noto Sans TC",sans-serif;letter-spacing:.07em}.chapter-art b{display:block;font:700 19px "Noto Serif TC",serif;letter-spacing:.03em;margin-top:2px}`;
+    style.textContent = `.document-body{max-width:780px;margin:0 auto;padding:clamp(22px,5vw,58px);background:#fffdf8;color:#183d3f;font-family:system-ui,"Noto Sans TC",sans-serif;line-height:1.95}.document-body h2{font-family:"Noto Serif TC","Songti TC",serif!important;color:#183d3f!important;border-top:1px solid #c39b55!important;padding-top:34px!important}.document-body h3{font-family:"Noto Serif TC",serif!important;color:#785039!important}.document-body table{display:block;overflow:auto;border-collapse:collapse;background:#fff;max-width:100%}.document-body td,.document-body th{padding:10px!important;border:1px solid #d8cab2!important}.chapter-art{position:relative;margin:22px 0 34px;overflow:hidden;background:#e5e0d6;border:1px solid #d8cab2}.chapter-art img{display:block;width:100%;aspect-ratio:16/7;object-fit:cover}.chapter-art figcaption{position:absolute;inset:auto 0 0;padding:12px 17px;color:#fff;background:linear-gradient(90deg,#183d3fe8,#183d3f22);font:700 13px system-ui,"Noto Sans TC",sans-serif;letter-spacing:.07em}.chapter-art b{display:block;font:700 19px "Noto Serif TC",serif;letter-spacing:.03em;margin-top:2px}`;
     document.head.append(style);
-    [...documentBody.querySelectorAll('h1,h2')].forEach(heading => {
+
+    [...documentBody.querySelectorAll('h1')].forEach(heading => {
+      if (!heading.textContent.trim()) { heading.remove(); return; }
+      const replacement = document.createElement('h2');
+      [...heading.attributes].forEach(attribute => replacement.setAttribute(attribute.name, attribute.value));
+      replacement.innerHTML = heading.innerHTML;
+      heading.replaceWith(replacement);
+    });
+
+    const headings = [...documentBody.querySelectorAll('h2')].filter(heading => /^([一二三四五六七八九十]+)、/.test(heading.textContent.trim()));
+    headings.forEach(heading => {
       const match = heading.textContent.trim().match(/^([一二三四五六七八九十]+)、/);
       if (!match || !chapterNames[match[1]]) return;
       const number = Object.keys(chapterNames).indexOf(match[1]) + 1;
       const figure = document.createElement('figure');
       figure.className = 'chapter-art';
       figure.innerHTML = `<img src="./assets/chapter-${String(number).padStart(2, '0')}.jpg" alt="第${number}章：${chapterNames[match[1]]}的現代水墨意象"><figcaption>第 ${number} 章<b>${chapterNames[match[1]]}</b></figcaption>`;
+      heading.classList.add('chapter-title');
       heading.insertAdjacentElement('afterend', figure);
       chapterHeadings.push({ number, heading, title: chapterNames[match[1]] });
     });
-    if (chapterHeadings.length) {
-      const nav = document.createElement('nav');
-      nav.className = 'chapter-jump';
-      nav.setAttribute('aria-label', '十五章快速導覽');
-      nav.innerHTML = `<strong>十五章快速導覽</strong><div class="chapter-jump-list">${chapterHeadings.sort((a,b)=>a.number-b.number).map(item => { const id = `chapter-${String(item.number).padStart(2,'0')}`; item.heading.id = id; return `<a href="#${id}">${item.number}. ${item.title}</a>`; }).join('')}</div>`;
-      documentBody.insertAdjacentElement('beforebegin', nav);
-    }
+
+    const tools = document.createElement('nav');
+    tools.className = 'reading-tools';
+    tools.setAttribute('aria-label', '十五章閱讀控制');
+    tools.innerHTML = '<div class="reading-tools-actions"><button type="button" data-expand>全部展開</button><button type="button" data-collapse>全部收合</button></div><div class="chapter-nav"></div>';
+    documentBody.insertAdjacentElement('beforebegin', tools);
+    const nav = tools.querySelector('.chapter-nav');
+
+    const ordered = [...chapterHeadings].sort((a, b) => a.number - b.number);
+    ordered.forEach((item, index) => {
+      const nextHeading = ordered[index + 1]?.heading;
+      const details = document.createElement('details');
+      details.className = 'chapter-section';
+      details.id = 'chapter-' + String(item.number).padStart(2, '0');
+      details.open = [1, 4, 15].includes(item.number);
+      const summary = document.createElement('summary');
+      summary.textContent = item.heading.textContent.trim();
+      const body = document.createElement('div');
+      body.className = 'chapter-section-body';
+      item.heading.parentNode.insertBefore(details, item.heading);
+      details.append(summary, body);
+      let node = item.heading;
+      while (node && node !== nextHeading) {
+        const next = node.nextSibling;
+        body.appendChild(node);
+        node = next;
+      }
+      const jump = document.createElement('div');
+      jump.className = 'chapter-jump';
+      jump.innerHTML = '<a href="#complete-document">回到章節目錄</a>' + (index < ordered.length - 1 ? '<a href="#chapter-' + String(ordered[index + 1].number).padStart(2, '0') + '">下一章 →</a>' : '<a href="#comparison">回到重點對照 ↑</a>');
+      body.appendChild(jump);
+      const link = document.createElement('a');
+      link.href = '#' + details.id;
+      link.textContent = String(item.number).padStart(2, '0');
+      link.title = item.title;
+      nav.appendChild(link);
+    });
+    tools.querySelector('[data-expand]').addEventListener('click', () => documentBody.querySelectorAll('.chapter-section').forEach(section => section.open = true));
+    tools.querySelector('[data-collapse]').addEventListener('click', () => documentBody.querySelectorAll('.chapter-section').forEach(section => section.open = false));
   }
   function addReadingProgress() {
     const bar = document.createElement('div'); bar.className = 'reading-progress'; bar.setAttribute('aria-hidden','true'); bar.innerHTML = '<span></span>'; document.body.prepend(bar);
@@ -65,7 +108,7 @@
     gsap.registerPlugin(ScrollTrigger);
     gsap.from('.hero>img', { opacity: 0, scale: 1.045, duration: 1.25, ease: 'power2.out' });
     gsap.from('.node-map button', { opacity: 0, scale: .75, stagger: .24, duration: .7, delay: .25, ease: 'back.out(1.3)' });
-    gsap.from('.hero-copy', { opacity: 0, y: 18, duration: .8, delay: .15 });
+    gsap.from('.hero-copy', { y: 18, duration: .8, delay: .15, clearProps: 'transform' });
     gsap.utils.toArray('.grid-reveal,.questions,.boundary,.comparison,.evidence,.complete-document').forEach(element => gsap.from(element, { opacity: 0, y: 24, duration: .65, ease: 'power2.out', scrollTrigger: { trigger: element, start: 'top 84%', once: true } }));
     gsap.from('.question-grid article', { opacity: 0, y: 18, stagger: .1, duration: .45, scrollTrigger: { trigger: '.question-grid', start: 'top 88%', once: true } });
   });
