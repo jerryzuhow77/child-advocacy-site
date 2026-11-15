@@ -40,6 +40,14 @@
 <link rel="alternate" hreflang="ja" href="https://jerryzuhow77.github.io/child-advocacy-site/ja/hearing-records/prison-watch/kaikai-final-chapter/">
 <link rel="alternate" hreflang="zh-Hans" href="https://cn.globalprotectionwall.com/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/zh-Hans/">
 <link rel="alternate" hreflang="zh-Hant" href="https://jerryzuhow77.github.io/child-advocacy-site/hearing-records/prison-watch/kaikai-final-chapter/">
+
+<style id="chapter-language-shortcuts-style">
+  /* Keep every edition visible during the opening film and at deep links. */
+  #cpa-four-language-toolbar .chapter-language-shortcuts{display:flex;align-items:center;gap:4px}
+  #cpa-four-language-toolbar .chapter-language-shortcuts a{display:inline-grid;place-items:center;min-width:32px;min-height:32px;padding:4px 7px;border:1px solid rgba(70,108,107,.4);border-radius:8px;background:#fff;color:#365857;font:800 12px/1 system-ui,sans-serif;text-decoration:none}
+  #cpa-four-language-toolbar .chapter-language-shortcuts a[aria-current="page"]{border-color:#466c6b;background:#466c6b;color:#fff}
+  @media(max-width:820px){#cpa-four-language-toolbar .chapter-language-shortcuts{gap:3px}#cpa-four-language-toolbar .chapter-language-shortcuts a{min-width:28px;min-height:34px;padding:4px;font-size:11px}}
+</style>
 </head>
 <body class="prologue-active">
 <!-- ENTRY-PROLOGUE-OVERLAY-20260829 -->
@@ -1615,6 +1623,35 @@
 <script src="../../../assets/home-view-counter-20260811.js?v=7-live-sync-no-cache"></script>
 <script src="./final-chapter.js?v=20260831-chapter-search-1" defer></script>
 <script data-cpa-four-language-toolbar-script src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4-scroll-with-page-20261113-1"></script>
+
+<script id="chapter-language-shortcuts">
+(() => {
+  const labels = {"zh-Hant":"繁","zh-Hans":"簡",en:"EN",ja:"日"};
+  function install(){
+    const toolbar=document.getElementById("cpa-four-language-toolbar");
+    const select=toolbar?.querySelector(".cpa-language-select");
+    const nav=toolbar?.querySelector(".cpa-four-language-nav");
+    if(!toolbar||!select||!nav||nav.querySelector(".chapter-language-shortcuts"))return;
+    const links=document.createElement("span");
+    links.className="chapter-language-shortcuts";
+    links.setAttribute("aria-label","四語連結");
+    for(const option of select.options){
+      if(!option.value||option.disabled)continue;
+      const locale=option.dataset.locale||"";
+      const link=document.createElement("a");
+      link.href=option.value;
+      link.hreflang=locale;
+      link.lang=locale;
+      link.textContent=labels[locale]||option.textContent;
+      link.title=option.textContent;
+      if(option.selected)link.setAttribute("aria-current","page");
+      links.append(link);
+    }
+    nav.prepend(links);
+  }
+  document.readyState==="loading"?document.addEventListener("DOMContentLoaded",install,{once:true}):install();
+})();
+</script>
 <script data-cpa-legal-notice-script src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"></script>
 </body>
 </html>
