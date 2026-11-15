@@ -162,3 +162,23 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
 .paper-relief .gold-thread:after{content:"";position:absolute;left:48%;top:35px;width:5px;height:5px;border-radius:50%;background:#d4ab58;box-shadow:0 0 0 3px #fff4d8}
 .paper-relief .gold-leaf{position:absolute;right:12%;top:17px;width:46px;height:16px;background:linear-gradient(105deg,transparent 0 9%,#b88a39 11% 31%,#e8cb79 34% 55%,#ba8b35 58% 80%,transparent 83%);clip-path:polygon(0 53%,18% 9%,43% 35%,62% 5%,100% 45%,65% 81%,38% 61%,16% 94%);opacity:.9}
 @media(max-width:620px){.paper-relief{height:112px;margin:-1.35rem -1.35rem 1.35rem}.paper-relief .clay-figure.left{left:18%}.paper-relief .clay-figure.right{right:18%}.paper-relief .gold-thread{left:20%;right:20%}}
+
+
+/* advanced GSAP storytelling */
+html:not(.reduce-motion) .hero>img,
+html:not(.reduce-motion) .hero-ink,
+html:not(.reduce-motion) .node-map button,
+html:not(.reduce-motion) .question-grid article,
+html:not(.reduce-motion) .chapter-art img{will-change:transform}
+html:not(.reduce-motion) .grid-reveal,
+html:not(.reduce-motion) .boundary,
+html:not(.reduce-motion) .comparison,
+html:not(.reduce-motion) .evidence{will-change:transform,opacity}
+.node-detail{transform-style:preserve-3d;perspective:900px}
+.comparison-panel article{transform-origin:50% 100%;backface-visibility:hidden}
+.chapter-art{transform:translateZ(0)}
+.chapter-art img{scale:1.08}
+.reading-entry-card{transform-origin:50% 55%}
+.motion-toggle[aria-pressed="true"]{box-shadow:inset 0 0 0 2px #c39b55}
+@media(prefers-reduced-motion:reduce){[style*="will-change"]{will-change:auto!important}.chapter-art img{scale:1}}
+html.reduce-motion .chapter-art img{scale:1!important;transform:none!important}
