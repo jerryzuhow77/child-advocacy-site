@@ -285,7 +285,7 @@
       }
       gsap.utils.toArray('.grid-reveal,.boundary,.comparison,.evidence').forEach((element,index)=>gsap.from(element,{y:34,opacity:0,duration:.82,ease:'power3.out',scrollTrigger:{trigger:element,start:'top 86%',once:true},delay:index%2*.04,clearProps:'transform,opacity'}));
       gsap.utils.toArray('.chapter-art').forEach(figure=>{const image=figure.querySelector('img'),caption=figure.querySelector('figcaption');gsap.from(figure,{y:24,opacity:0,duration:.7,ease:'power3.out',scrollTrigger:{trigger:figure,start:'top 90%',once:true},clearProps:'transform,opacity'});gsap.to(image,{yPercent:10,ease:'none',scrollTrigger:{trigger:figure,start:'top bottom',end:'bottom top',scrub:.75}});if(caption)gsap.from(caption,{x:-28,opacity:0,duration:.62,ease:'power3.out',scrollTrigger:{trigger:figure,start:'top 82%',once:true},clearProps:'transform,opacity'});});
-      gsap.utils.toArray('.chapter-section>summary').forEach(summary=>gsap.from(summary,{x:-18,opacity:0,duration:.48,ease:'power2.out',scrollTrigger:{trigger:summary,start:'top 94%',once:true},clearProps:'transform,opacity'}));
+      // Chapter summaries must remain immediately visible on mobile; do not animate opacity.
       gsap.from('#comparison-panel article',{y:22,rotationX:-6,opacity:0,stagger:.08,duration:.62,ease:'power3.out',scrollTrigger:{trigger:'#comparison-panel',start:'top 88%',once:true},clearProps:'transform,opacity'});
       ScrollTrigger.refresh();
     });
