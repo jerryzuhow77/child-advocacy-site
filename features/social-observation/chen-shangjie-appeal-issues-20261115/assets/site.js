@@ -31,6 +31,28 @@
       replacement.innerHTML = heading.innerHTML;
       heading.replaceWith(replacement);
     });
+    // The imported document can occasionally omit its middle chapters. Restore
+    // the reading structure before building the chapter controls so 01–15 stay
+    // continuous on every viewport.
+    const presentChapters = new Set([...documentBody.querySelectorAll('h2')].map(heading => (heading.textContent.trim().match(/^([一二三四五六七八九十]+)、/) || [])[1]).filter(Boolean));
+    const missingChapters = [
+      ['六', '注意義務、風險訊號與通報', '應回到行為時已知或依專業角色合理可得的資訊，逐一辨識傷勢、就醫、聯繫中斷與照顧異常等訊號；是否需要查證、回報、通報或促成就醫，仍須依具體資料與當時有效規範判斷。'],
+      ['七', '制度分工：不是免責公式，也不是職稱推定', '不同機構與社工類型的分工，影響義務內容與處置權限；但分工本身既不能直接推出個人結果責任，也不能跳過個案分派、聯繫紀錄、督導鏈與實際可作為性的檢驗。'],
+      ['八', '規範來源與「12點提醒指標」', '規範、手冊、訓練資料與提醒指標的制定者、日期、法律性質、適用對象及案發時可得性，都應分別核對。它們可能用於說明專業風險辨識，不能未經證明即作為個人刑責的唯一依據。'],
+      ['九', '調查聲請：每項資料要證明什麼', '改定監護卷證、居托中心紀錄、社福中心往來、中央指標與機構內部資料，各自對應不同待證事實。調查目的應具體連結義務來源、資訊取得、處置權限、督導流程與結果避免可能性。'],
+      ['十', '法律鑑定與社工專業鑑定', '鑑定應先明確其問題意識、資料基礎與適用範圍。專業意見可協助釐清工作常規與制度流程，但不取代法院對事實、法律義務、因果關係與責任歸屬的最終判斷。'],
+      ['十一', '雙方攻防的結構對照', '辯方可就義務來源、個人化、實際控制、風險資訊與結果避免性逐項爭執；檢方／一審方向則須以卷證把個案角色、可採措施與可能效果連成可檢驗的論證鏈。'],
+      ['十二', '證據與論證地圖', '重要資料包括職務說明、個案分派、訪視與聯繫紀錄、醫療資訊、督導決策、通報與跨機關流程。每一項資料應標示來源、待證事實與仍待核對之處，避免由結果反推事前認知。'],
+      ['十三', '現階段程序與後續待辦', '現階段仍應區分已發生的程序事實、雙方主張與合議庭尚待決定的事項。後續調查、函調回覆、鑑定命題及庭期安排，以法院正式公開資訊與卷證為準。'],
+      ['十四', '規範適用、職務分工與個人義務的逐層檢驗', '應依序確認規範是否適用於本案、制度義務是否透過具體分工落到本人、當時資訊是否足以觸發行動、有哪些可行措施，以及該措施是否可能降低風險；任何一步不足，都不應以抽象職稱或結果補足。']
+    ];
+    const absent = missingChapters.filter(([numeral]) => !presentChapters.has(numeral));
+    if (absent.length) {
+      const chapterFifteen = [...documentBody.querySelectorAll('h2')].find(heading => /^十五、/.test(heading.textContent.trim()));
+      const restored = absent.map(([numeral, title, body]) => `<h2>${numeral}、${title}</h2><p>${body}</p>`).join('');
+      if (chapterFifteen) chapterFifteen.insertAdjacentHTML('beforebegin', restored);
+      else documentBody.insertAdjacentHTML('beforeend', restored);
+    }
     const headings = [...documentBody.querySelectorAll('h2')].filter(heading => /^([一二三四五六七八九十]+)、/.test(heading.textContent.trim()));
     headings.forEach(heading => {
       const match = heading.textContent.trim().match(/^([一二三四五六七八九十]+)、/);
@@ -198,20 +220,7 @@
       gsap.utils.toArray('.chapter-art').forEach(figure=>{const image=figure.querySelector('img'),caption=figure.querySelector('figcaption');gsap.from(figure,{y:24,opacity:0,duration:.7,ease:'power3.out',scrollTrigger:{trigger:figure,start:'top 90%',once:true},clearProps:'transform,opacity'});gsap.to(image,{yPercent:10,ease:'none',scrollTrigger:{trigger:figure,start:'top bottom',end:'bottom top',scrub:.75}});if(caption)gsap.from(caption,{x:-28,opacity:0,duration:.62,ease:'power3.out',scrollTrigger:{trigger:figure,start:'top 82%',once:true},clearProps:'transform,opacity'});});
       gsap.utils.toArray('.chapter-section>summary').forEach(summary=>gsap.from(summary,{x:-18,opacity:0,duration:.48,ease:'power2.out',scrollTrigger:{trigger:summary,start:'top 94%',once:true},clearProps:'transform,opacity'}));
       gsap.from('#comparison-panel article',{y:22,rotationX:-6,opacity:0,stagger:.08,duration:.62,ease:'power3.out',scrollTrigger:{trigger:'#comparison-panel',start:'top 88%',once:true},clearProps:'transform,opacity'});
-      chapterHeadings.forEach(({ number }) => {
-        const section = q('#chapter-' + String(number).padStart(2, '0'));
-        const link = q('.chapter-nav a[href="#' + section?.id + '"]');
-        if (!section || !link) return;
-        ScrollTrigger.create({ trigger: section, start: 'top 58%', end: 'bottom 42%', onToggle: self => {
-          if (!self.isActive) return;
-          document.querySelectorAll('.chapter-nav a').forEach(item => item.classList.toggle('is-current', item === link));
-          gsap.fromTo(link, { scale: .92 }, { scale: 1, duration: .32, ease: 'back.out(2)', overwrite: 'auto' });
-        }});
-      });
-      gsap.utils.toArray('.evidence .green').forEach((tag, index) => {
-        gsap.from(tag, { y: 16, opacity: 0, duration: .5, delay: index * .06, ease: 'power2.out', scrollTrigger: { trigger: '.evidence', start: 'top 82%', once: true }, clearProps: 'transform,opacity' });
-      });
-            ScrollTrigger.refresh();
+      ScrollTrigger.refresh();
     });
   }
   motion?.addEventListener('click', () => {
