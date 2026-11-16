@@ -110,16 +110,16 @@
       if (chapterFifteen) chapterFifteen.insertAdjacentHTML('beforebegin', restored);
       else documentBody.insertAdjacentHTML('beforeend', restored);
     }
+    // Remove any stale chapter-art nodes left by a previous cached script before rebuilding.
+    documentBody.querySelectorAll('.chapter-art').forEach(figure => figure.remove());
     const headings = [...documentBody.querySelectorAll('h2')].filter(heading => /^([一二三四五六七八九十]+)、/.test(heading.textContent.trim()));
     headings.forEach(heading => {
       const match = heading.textContent.trim().match(/^([一二三四五六七八九十]+)、/);
       if (!match || !chapterNames[match[1]]) return;
       const number = Object.keys(chapterNames).indexOf(match[1]) + 1;
-      const figure = document.createElement('figure');
-      figure.className = 'chapter-art';
-      figure.innerHTML = `<img src="./assets/chapter-${String(number).padStart(2, '0')}.jpg" alt="第${number}章：${chapterNames[match[1]]}的現代水墨意象"><figcaption>第 ${number} 章<b>${chapterNames[match[1]]}</b></figcaption>`;
+      // Chapter artwork is intentionally not injected here. It created empty
+      // placeholders on narrow screens and competed with the single court-observation GIF.
       heading.classList.add('chapter-title');
-      heading.insertAdjacentElement('afterend', figure);
       chapterHeadings.push({ number, heading, title: chapterNames[match[1]] });
     });
     const tools = document.createElement('nav');
