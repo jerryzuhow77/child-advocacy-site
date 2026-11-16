@@ -1,0 +1,20 @@
+/* Shared by the Taiwan homepage and the Hong Kong / Simplified Chinese mirror. */
+#daily-brief-pair-20261023[data-gsap-slider][data-two-week-carousel] > a,
+#daily-brief-pair-20261026[data-gsap-slider][data-two-week-carousel] > a {
+  height: clamp(390px, 31vw, 430px) !important;
+  min-height: 0 !important;
+}
+
+#daily-brief-pair-20261023[data-gsap-slider][data-two-week-carousel] > a > .brief-copy,
+#daily-brief-pair-20261026[data-gsap-slider][data-two-week-carousel] > a > .brief-copy {
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+@media (max-width: 760px) {
+  #daily-brief-pair-20261023[data-gsap-slider][data-two-week-carousel] > a,
+  #daily-brief-pair-20261026[data-gsap-slider][data-two-week-carousel] > a {
+    height: auto !important;
+  }
+}
+
