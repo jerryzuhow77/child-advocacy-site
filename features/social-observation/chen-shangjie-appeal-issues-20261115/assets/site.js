@@ -19,6 +19,63 @@
   };
   const chapterNames = { 一: '案件與程序定位', 二: '爭點總覽', 三: '不作為犯與保證人地位', 四: '保證人地位的五步檢驗', 五: '作為可能性與避免死亡結果', 六: '注意義務、風險訊號與通報', 七: '制度分工', 八: '規範來源與提醒指標', 九: '調查聲請與待證資料', 十: '法律與社工專業鑑定', 十一: '雙方攻防的結構對照', 十二: '證據與論證地圖', 十三: '現階段程序與後續待辦', 十四: '規範適用、職務分工與個人義務', 十五: '檢辯主張對照表' };
   function renderIssue(key) { const [defence, prosecution, evidence] = issues[key]; panel.innerHTML = `<article><h3>辯方摘要</h3><p>${defence}</p></article><article><h3>檢方／一審方向</h3><p>${prosecution}</p></article><article><h3>待核對資料</h3><p>${evidence}</p></article>`; }
+  function enableChapterRail(nav) {
+    if (!nav || nav.dataset.railReady) return;
+    nav.dataset.railReady = 'true';
+    nav.classList.add('chapter-rail');
+    nav.setAttribute('aria-label', '左右滑動選擇章節');
+    const links = [...nav.querySelectorAll('a')];
+    let pressed = false, dragged = false, startX = 0, startLeft = 0, lastX = 0, lastTime = 0, velocity = 0;
+    const animateTo = (left, duration = .34) => {
+      const target = Math.max(0, Math.min(left, nav.scrollWidth - nav.clientWidth));
+      if (window.gsap && !motionPreference.matches && !document.documentElement.classList.contains('reduce-motion')) {
+        gsap.to(nav, {scrollLeft: target, duration, ease: 'power3.out', overwrite: 'auto'});
+      } else nav.scrollLeft = target;
+    };
+    const centre = link => animateTo(link.offsetLeft - (nav.clientWidth - link.offsetWidth) / 2);
+    const markActive = link => {
+      links.forEach(item => item.classList.toggle('is-active', item === link));
+      centre(link);
+    };
+    links.forEach((link, index) => {
+      link.addEventListener('click', event => {
+        if (dragged) { event.preventDefault(); return; }
+        markActive(link);
+      });
+      if (index === 0) link.classList.add('is-active');
+    });
+    nav.addEventListener('pointerdown', event => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      pressed = true; dragged = false; startX = lastX = event.clientX; startLeft = nav.scrollLeft; lastTime = performance.now(); velocity = 0;
+      nav.setPointerCapture?.(event.pointerId);
+      nav.classList.add('is-dragging');
+      window.gsap?.killTweensOf(nav);
+    });
+    nav.addEventListener('pointermove', event => {
+      if (!pressed) return;
+      const delta = event.clientX - startX;
+      if (Math.abs(delta) > 5) dragged = true;
+      const now = performance.now();
+      velocity = (lastX - event.clientX) / Math.max(1, now - lastTime) * 20;
+      lastX = event.clientX; lastTime = now;
+      nav.scrollLeft = startLeft - delta;
+    });
+    const release = event => {
+      if (!pressed) return;
+      pressed = false; nav.classList.remove('is-dragging');
+      nav.releasePointerCapture?.(event.pointerId);
+      if (dragged) animateTo(nav.scrollLeft + velocity * 8, .48);
+      setTimeout(() => { dragged = false; }, 0);
+    };
+    nav.addEventListener('pointerup', release);
+    nav.addEventListener('pointercancel', release);
+    nav.addEventListener('wheel', event => {
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX) || !matchMedia('(max-width:620px)').matches) return;
+      event.preventDefault();
+      animateTo(nav.scrollLeft + event.deltaY, .2);
+    }, {passive:false});
+    if (window.gsap && !motionPreference.matches) gsap.from(links, {x: 28, opacity: 0, duration: .46, stagger: .035, ease: 'power3.out', clearProps: 'transform,opacity'});
+  }
   function enhanceDocument() {
     if (!documentBody || documentBody.querySelector('.chapter-section')) return;
     const style = document.createElement('style');
@@ -100,6 +157,7 @@
       link.title = item.title;
       nav.appendChild(link);
     });
+    enableChapterRail(nav);
     tools.querySelector('[data-expand]').addEventListener('click', () => documentBody.querySelectorAll('.chapter-section').forEach(section => section.open = true));
     tools.querySelector('[data-collapse]').addEventListener('click', () => documentBody.querySelectorAll('.chapter-section').forEach(section => section.open = false));
   }
