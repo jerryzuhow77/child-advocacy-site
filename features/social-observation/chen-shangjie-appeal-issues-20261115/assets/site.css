@@ -504,6 +504,39 @@ body .cpa-article-engagement{inline-size:min(960px,100%)!important;max-inline-si
   }
 }
 
-
-/* Keep the active chapter visible without moving the reading layout. */
-.chapter-nav a{transition:background-color .2s ease,color .2s ease,box-shadow .2s ease}.chapter-nav a.is-current{background:#244f4c!important;color:#fffaf0!important;box-shadow:0 0 0 3px rgba(195,155,85,.34),0 7px 17px rgba(24,61,63,.18)!important}@media(prefers-reduced-motion:reduce){.chapter-nav a{transition:none}}
+/* GSAP-driven horizontal chapter rail on phones. */
+@media(max-width:620px){
+  .reading-tools .chapter-nav.chapter-rail{
+    display:flex!important;
+    grid-template-columns:none!important;
+    gap:10px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    width:calc(100% + 2px)!important;
+    margin-inline:-1px!important;
+    padding:6px 1px 12px!important;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
+    touch-action:pan-x;
+    cursor:grab;
+  }
+  .reading-tools .chapter-nav.chapter-rail::-webkit-scrollbar{display:none}
+  .reading-tools .chapter-nav.chapter-rail.is-dragging{cursor:grabbing;scroll-snap-type:none}
+  .reading-tools .chapter-nav.chapter-rail a{
+    flex:0 0 4.1rem!important;
+    width:4.1rem!important;
+    height:3.3rem!important;
+    scroll-snap-align:center;
+    border-color:#d5c6ad!important;
+    box-shadow:0 3px 0 rgba(156,121,68,.13);
+    transition:background-color .22s ease,color .22s ease,border-color .22s ease,box-shadow .22s ease;
+  }
+  .reading-tools .chapter-nav.chapter-rail a.is-active{
+    color:#fffaf0!important;
+    background:#1b5555!important;
+    border-color:#1b5555!important;
+    box-shadow:0 6px 13px rgba(24,61,63,.24);
+  }
+}
