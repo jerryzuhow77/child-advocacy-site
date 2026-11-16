@@ -481,3 +481,25 @@ body .cpa-article-engagement{inline-size:min(960px,100%)!important;max-inline-si
   .chapter-section-body h2:not(.chapter-title) span{font-size:inherit!important;line-height:inherit!important;letter-spacing:inherit!important}
   .chapter-section-body p,.chapter-section-body li{font-size:1.04rem!important;line-height:1.88!important;letter-spacing:.005em!important}
 }
+
+/* Keep every chapter available on phones: the real control is .chapter-nav,
+   not the legacy .chapter-links selector. */
+@media(max-width:620px){
+  .reading-tools .chapter-nav{
+    display:grid!important;
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    gap:8px!important;
+    overflow:visible!important;
+    width:100%!important;
+    padding:4px 0 0!important;
+  }
+  .reading-tools .chapter-nav a{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    min-width:0!important;
+    width:100%!important;
+    height:3rem!important;
+    padding:0!important;
+  }
+}
