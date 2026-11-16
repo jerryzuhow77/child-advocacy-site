@@ -157,6 +157,15 @@
       link.title = item.title;
       nav.appendChild(link);
     });
+    documentBody.querySelectorAll('.chapter-section').forEach(section => {
+      const summary = section.querySelector(':scope > summary');
+      const title = (summary?.textContent || '').replace(/[\\s\\u200B-\\u200D\\uFEFF]/g, '');
+      if (title.length < 3) {
+        const id = section.id;
+        section.classList.add('is-empty-chapter');
+        nav.querySelector('a[href="#' + id + '"]')?.remove();
+      }
+    });
     enableChapterRail(nav);
     tools.querySelector('[data-expand]').addEventListener('click', () => documentBody.querySelectorAll('.chapter-section').forEach(section => section.open = true));
     tools.querySelector('[data-collapse]').addEventListener('click', () => documentBody.querySelectorAll('.chapter-section').forEach(section => section.open = false));
