@@ -560,3 +560,19 @@ body .cpa-article-engagement{inline-size:min(960px,100%)!important;max-inline-si
 /* Final guard: never render a chapter card without a visible summary. */
 .chapter-section.is-empty-chapter{display:none!important}
 @media(max-width:620px){.chapter-section .chapter-art{display:none!important}}
+
+
+/* Chapter headings are controls, never animation placeholders. */
+.chapter-section>summary{
+  opacity:1!important;
+  visibility:visible!important;
+  transform:none!important;
+}
+@media(max-width:620px){
+  .chapter-section:not([open])>.chapter-section-body{display:none!important}
+  .chapter-section>summary{
+    display:flex!important;
+    min-height:0!important;
+    color:#183d3f!important;
+  }
+}
