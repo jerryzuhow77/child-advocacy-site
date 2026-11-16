@@ -548,3 +548,7 @@ body .cpa-article-engagement{inline-size:min(960px,100%)!important;max-inline-si
 
 /* Restore the supplied original top three-way clay artwork. */
 .hero>img{content:url("./assets/three-way-clay-original-top.jpg?v=20261116-1")!important;object-position:center center!important}
+
+
+/* Avoid empty chapter-art placeholders on phone layouts; chapter text remains available. */
+@media(max-width:620px){.chapter-section .chapter-art{display:none!important}.chapter-section-body{padding-top:0!important}}
