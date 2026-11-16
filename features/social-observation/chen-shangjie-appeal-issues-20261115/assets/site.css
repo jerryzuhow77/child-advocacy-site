@@ -552,3 +552,6 @@ body .cpa-article-engagement{inline-size:min(960px,100%)!important;max-inline-si
 
 /* Avoid empty chapter-art placeholders on phone layouts; chapter text remains available. */
 @media(max-width:620px){.chapter-section .chapter-art{display:none!important}.chapter-section-body{padding-top:0!important}}
+
+/* Courtroom observation GIF: restrained paper-frame treatment */
+.courtroom-observation{margin:clamp(1.8rem,5vw,3.8rem) auto;max-width:38rem;padding:clamp(.55rem,1.8vw,1rem);background:rgba(255,252,244,.72);border:1px solid rgba(142,109,59,.32);box-shadow:0 14px 30px rgba(79,64,39,.12);text-align:center}.courtroom-observation img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;background:#efe4cf}.courtroom-observation figcaption{padding:.85rem .45rem .15rem;color:#745a35;font-size:.92rem;letter-spacing:.04em;line-height:1.65}@media(max-width:620px){.courtroom-observation{margin:1.4rem auto;padding:.45rem;max-width:calc(100% - 1.4rem)}.courtroom-observation figcaption{font-size:.82rem;padding:.7rem .35rem .1rem}}
