@@ -544,3 +544,7 @@ body .cpa-article-engagement{inline-size:min(960px,100%)!important;max-inline-si
 
 /* GIF belongs to the lower three-way artwork only; leave the labeled top hero unchanged. */
 #three-way .paper-relief{background:#eee3d0 url("./three-way-clay-silk-lower-pan.gif?v=20261116-1") center center/cover no-repeat!important}
+
+
+/* Restore the supplied original top three-way clay artwork. */
+.hero>img{content:url("./assets/three-way-clay-original-top.jpg?v=20261116-1")!important;object-position:center center!important}
