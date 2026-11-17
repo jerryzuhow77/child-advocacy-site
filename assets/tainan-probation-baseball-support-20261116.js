@@ -86,7 +86,7 @@
   const langLinks=Object.keys(routes).map(k=>'<a '+(k===lang?'aria-current=\"page\"':'')+' href=\"'+routes[k]+'\">'+labels[k]+'</a>').join('');
   document.body.innerHTML='<header><div class=\"wrap\"><a class=\"brand\" href=\"'+root+'\">'+c.brand+'</a><nav class=\"langs\" aria-label=\"Languages\">'+langLinks+'</nav></div></header><main class=\"wrap\"><section class=\"hero\"><div class=\"hero-grid\"><div><div class=\"meta\">'+c.meta+'</div><h1>'+c.title+'</h1><p class=\"lead\">'+c.lead+'</p><div class=\"tags\">'+c.tags.map(x=>'<span>'+x+'</span>').join('')+'</div></div><div class=\"art\" role=\"img\" aria-label=\"Abstract contemporary ink and paper illustration\"><i class=\"gold\"></i><i class=\"ball\"></i></div></div></section><section class=\"facts\"><div class=\"fact\"><b>✓</b>'+c.verified+'</div><div class=\"fact\"><b>!</b>'+c.unknown+'</div></section><article><h2>'+c.h1+'</h2><p>'+c.p1+'</p><p>'+c.p2+'</p><h2>'+c.h2+'</h2><p>'+c.p3+'</p><p>'+c.p4+'</p><h3>'+c.h3+'</h3><p>'+c.p5+'</p></article><footer class=\"source\"><b>Source</b><br><a href=\"https://tnd.judicial.gov.tw/\" rel=\"noopener noreferrer\">'+c.source+'</a><br><br><a href=\"'+root+'\">← '+c.back+'</a></footer></main>';
   const hero=document.querySelector('.art');
-  hero.innerHTML='<img src=\"'+root+'art/tainan-probation-baseball-support-hero-20261117.png\" alt=\"Modern ink wash painting of an indigo protective arc, a gold thread and lantern over a quiet field\">';
+  hero.innerHTML='<img src=\"'+heroImage+'\" alt=\"'+c.title+'\">';
   hero.removeAttribute('role');
   hero.removeAttribute('aria-label');
 })();
