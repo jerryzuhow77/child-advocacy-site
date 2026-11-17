@@ -21,6 +21,8 @@
     if(root.dataset.gsapCarouselReady==='true')return;
     root.dataset.gsapCarouselReady='true';
     root.dataset.twoWeekCarousel='true';
+    root.style.cursor='grab';
+    root.style.userSelect='none';
     root.setAttribute('aria-label','近兩週護童貼文；可左右滑動');
 
     const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -79,11 +81,17 @@
         return day>=firstDay&&day<=lastDay;
       }).sort((a,b)=>(b.dataset.homeDate||'').localeCompare(a.dataset.homeDate||''));
 
-      syncing=true;
-      all.filter(card=>!kept.includes(card)).forEach(card=>card.remove());
-      kept.forEach(card=>root.append(card));
-      syncing=false;
+      const currentOrder=all.filter(card=>kept.includes(card));
+      const orderChanged=currentOrder.length!==kept.length||currentOrder.some((card,index)=>card!==kept[index]);
+      const obsolete=all.filter(card=>!kept.includes(card));
+      if(obsolete.length||orderChanged){
+        syncing=true;
+        obsolete.forEach(card=>card.remove());
+        if(orderChanged)kept.forEach(card=>root.append(card));
+        syncing=false;
+      }
       cards=kept;
+      cards.forEach(card=>card.querySelectorAll('img').forEach(img=>{img.draggable=false;}));
       active=Math.min(active,Math.max(0,cards.length-1));
       updateCounter();
       revealNew();
@@ -148,6 +156,7 @@
     let dragged=false;
     root.addEventListener('pointerdown',event=>{
       if(event.pointerType==='touch')return;
+      event.preventDefault();
       pointerId=event.pointerId;
       startX=event.clientX;
       startScroll=root.scrollLeft;
@@ -155,6 +164,7 @@
       clearInterval(timer);
       root.setPointerCapture?.(pointerId);
       root.classList.add('is-dragging');
+      root.style.cursor='grabbing';
     });
     root.addEventListener('pointermove',event=>{
       if(pointerId!==event.pointerId)return;
@@ -168,6 +178,7 @@
       root.releasePointerCapture?.(pointerId);
       pointerId=null;
       root.classList.remove('is-dragging');
+      root.style.cursor='grab';
       go(nearestIndex(),true);
     }
     root.addEventListener('pointerup',endDrag);
