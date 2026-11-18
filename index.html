@@ -386,11 +386,6 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </script>
 
 <!-- Homepage carousel temporarily disabled: 2026-11-18 -->
-<style id="home-carousel-disabled-20261118">
-/* Temporarily hide the homepage's recent-post carousel and its navigation controls. */
-#daily-brief-pair-20261023,
-#daily-brief-pair-20261026,
-.pinned-brief-slider-controls {
-  display: none !important;
-}
-</style>
+<script id="home-carousel-disabled-20261118">
+(()=>{const style=document.createElement('style');style.id='home-carousel-disabled-20261118-style';style.textContent='#daily-brief-pair-20261023,#daily-brief-pair-20261026,.pinned-brief-slider-controls{display:none!important}';document.head.append(style)})();
+</script>
