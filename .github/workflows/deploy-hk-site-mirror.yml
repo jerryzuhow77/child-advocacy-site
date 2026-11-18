@@ -69,6 +69,7 @@ jobs:
               root / "news/index.html",
               root / "hearing-records/prison-watch/kaikai-day6-20250430/index.html",
               root / "assets/legal-notice.js",
+              root / "assets/home-daily-brief-20261108-pinned.js",
               root / "news/child-safety-network-20260914/index.html",
               root / "news/child-safety-network-20260914/zh-Hans/index.html",
               root / "zh-Hans/features/social-observation/family-preservation-incentives/index.html",
@@ -495,6 +496,12 @@ jobs:
           poster_code="$(curl --connect-timeout 10 --max-time 25 -sS -o /tmp/direct-brief-poster.png -w '%{http_code}' "https://cn.globalprotectionwall.com$poster_path" || true)"
           test "$poster_code" = 200 && test "$(wc -c < /tmp/direct-brief-poster.png)" -gt 100000 || {
             echo "Mirror brief poster failed: $poster_path status=${poster_code:-none}"
+            exit 1
+          }
+          daily_brief_asset=/child-advocacy-site/assets/home-daily-brief-20261108-pinned.js
+          daily_brief_code="$(curl --connect-timeout 10 --max-time 25 -sS -o /tmp/daily-brief.js -w '%{http_code}' "https://cn.globalprotectionwall.com$daily_brief_asset" || true)"
+          test "$daily_brief_code" = 200 && grep -Fq "weekly-child-protection-roundup-20261102-1108" /tmp/daily-brief.js || {
+            echo "Mirror daily-brief asset failed: $daily_brief_asset status=${daily_brief_code:-none}"
             exit 1
           }
           for path in "${paths[@]}"; do
