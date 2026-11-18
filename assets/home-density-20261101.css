@@ -49,6 +49,12 @@
   main>.home-section{margin-block:22px}
   .section-heading:has(>.ink-section-vignette){min-height:160px}
 }
+@media(min-width:761px) and (max-width:1000px){
+  /* Tablet density: reclaim only inter-section whitespace; preserve all copy,
+     artwork, animations and interactive targets. */
+  main>.home-section{margin-block:16px}
+  #home-media-reports,#home-special-features,#home-social-cases,#home-historical-cases,#home-court-comics{padding-block:8px}
+}
 @media(min-width:761px){
   /* English/Japanese currently have one court-focus spread; use the full row. */
   #october-action-focus .october-focus-article:only-child{grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:center}
