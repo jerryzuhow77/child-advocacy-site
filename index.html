@@ -363,7 +363,10 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 /* 2026-11-18: temporarily disable the recent-post carousel. Keep this selector more specific than later carousel layout rules. */
 html body #daily-brief-pair-20261023#daily-brief-pair-20261023#daily-brief-pair-20261023,
 html body #daily-brief-pair-20261026#daily-brief-pair-20261026#daily-brief-pair-20261026,
-html body .pinned-brief-slider-controls.pinned-brief-slider-controls.pinned-brief-slider-controls {
+html body #daily-brief-pair-20261023#daily-brief-pair-20261023#daily-brief-pair-20261023 + .pinned-brief-slider-controls,
+html body #daily-brief-pair-20261023#daily-brief-pair-20261023#daily-brief-pair-20261023 ~ .pinned-brief-slider-controls,
+html body #daily-brief-pair-20261026#daily-brief-pair-20261026#daily-brief-pair-20261026 + .pinned-brief-slider-controls,
+html body #daily-brief-pair-20261026#daily-brief-pair-20261026#daily-brief-pair-20261026 ~ .pinned-brief-slider-controls {
   display: none !important;
 }
 </style><style id="two-week-gsap-carousel-20261116">
