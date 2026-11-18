@@ -6,10 +6,8 @@
       const card=document.createElement('article');
       card.className='home-card pinned-lead';
       card.dataset.liuAppealPin='';
-      card.innerHTML='<a class="card-link home-media-report-action" href="'+(hans?'/child-advocacy-site/hearing-records/liu-zongxin-appeal-20261022/zh-Hans/':'/child-advocacy-site/hearing-records/liu-zongxin-appeal-20261022/')+'"><img alt="紙雕風格警察、城市與守護光帶意象，非事件現場" height="480" loading="eager" src="/child-advocacy-site/assets/art/liu-zongxin-appeal-20261022.svg" width="720"><div class="card-copy"><p class="card-meta">2026.10.22・旁聽筆記</p><h3>毒駕殺警案二審｜開庭重點</h3><p class="card-summary">影像勘驗、車窗爭議與故意／過失的法律判斷。</p><p class="card-source">現場整理，非正式法庭筆錄；事實與責任以法院最終認定為準。</p><span class="card-action">閱讀旁聽筆記 →</span></div></a>';
+      card.innerHTML='<a class="card-link home-media-report-action" href="'+(hans?'/child-advocacy-site/hearing-records/liu-zongxin-appeal-20261022/zh-Hans/':'/child-advocacy-site/hearing-records/liu-zongxin-appeal-20261022/')+'"><img alt="精緻現代水墨：法院、天秤與守護燈光意象，非事件現場" height="480" loading="eager" src="/child-advocacy-site/assets/art/liu-zongxin-modern-ink-20261118.jpg" width="720"><div class="card-copy"><p class="card-meta">2026.10.22・旁聽筆記</p><h3>毒駕殺警案二審｜開庭重點</h3><p class="card-summary">影像勘驗、車窗爭議與故意／過失的法律判斷。</p><p class="card-source">現場整理，非正式法庭筆錄；事實與責任以法院最終認定為準。</p><span class="card-action">閱讀旁聽筆記 →</span></div></a>';
       grid.prepend(card);
-      fetch('/child-advocacy-site/assets/art/liu-zongxin-appeal-court-thumb-20261023.webp.b64')
-        .then(r=>r.text()).then(b=>{const img=card.querySelector('img');if(img)img.src='data:image/webp;base64,'+b.trim();}).catch(()=>{});
     }
   }
 
