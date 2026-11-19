@@ -45,30 +45,105 @@
     lin: { date:'2026-09-02', priority:3, publisher:{'zh-Hant':'壹電視','zh-Hans':'壹电视',en:'Next TV',ja:'壹電視'}, title:{'zh-Hant':'林心慈案首度開庭','zh-Hans':'林心慈案首次开庭',en:'First hearing in the Lin Hsin-tzu case',ja:'林心慈事件、初公判'}, summary:{'zh-Hant':'從訪視紀錄與日期登載爭議出發，整理媒體報導、檢方指控、辯方主張與尚待法院審酌的事項。','zh-Hans':'从访视记录与日期登记争议出发，整理媒体报道、检方指控、辩方主张及尚待法院审酌的事项。',en:'A source-attributed review of the disputed visit records, the prosecution account, the defense position, and matters still for the court.',ja:'訪問記録と日付記載をめぐる争点について、報道、検察側の説明、弁護側の主張を整理します。'}, article:{'zh-Hant':`${ROOT}news/lin-xinci-nexttv-20260902/`,'zh-Hans':`${ROOT}news/lin-xinci-nexttv-20260902/zh-Hans/`,en:`${ROOT}en/news/lin-xinci-nexttv-20260902/`,ja:`${ROOT}ja/news/lin-xinci-nexttv-20260902/`}, source:'https://www.nexttv.com.tw/NextTV/News/Home/Society/m/2026-09-02/2455025.html', image:`${ROOT}assets/images/lin-xinci-inkwash-hero-20260903.png`, alt:{'zh-Hant':'中國傳統水墨山景與訪視紀錄意象','zh-Hans':'中国传统水墨山景与访视记录意象',en:'Traditional Chinese ink-wash landscape and visit-record imagery',ja:'中国伝統水墨の山景と訪問記録のイメージ'} }
   };
 
+  // Kept separate from the historical report rail: these are the current public updates
+  // that are already published in all four site languages.
+  const currentUpdates = [
+    {
+      date: '2026-11-14',
+      image: `${ROOT}assets/art/youth-social-reintegration-20261114-hero.jpg?v=20261114-1`,
+      article: {
+        'zh-Hant': `${ROOT}news/youth-social-reintegration-20261114/`,
+        'zh-Hans': `${ROOT}news/youth-social-reintegration-20261114/zh-Hans/`,
+        en: `${ROOT}news/youth-social-reintegration-20261114/en/`,
+        ja: `${ROOT}news/youth-social-reintegration-20261114/ja/`
+      },
+      title: {
+        'zh-Hant': '少年涉詐、涉毒之後：處遇如何接上社會復歸？',
+        'zh-Hans': '少年涉诈、涉毒之后：处遇如何接上社会复归？',
+        en: 'After fraud or drug involvement: how can a young person reconnect to life?',
+        ja: '詐欺・薬物に関わった後：少年の処遇を社会復帰へどうつなぐか'
+      },
+      summary: {
+        'zh-Hant': '司法院研討會聚焦處遇與復歸；制度調整與成果仍待公開資料驗證。',
+        'zh-Hans': '司法院研讨会聚焦处遇与复归；制度调整与成果仍待公开资料核验。',
+        en: 'The Judicial Yuan conference focused on responses and reintegration; outcomes and system change still need public evidence.',
+        ja: '司法院の会議は処遇と社会復帰を扱いました。制度変更と成果は、なお公開資料での検証が必要です。'
+      },
+      alt: {
+        'zh-Hant': '三條無字紙路匯入一座橋，細金線通向晨光的現代水墨紙藝意象，非事件現場。',
+        'zh-Hans': '三条无字纸路汇入一座桥，细金线通向晨光的现代水墨纸艺意象，非事件现场。',
+        en: 'Modern ink-and-paper artwork of three wordless paper paths meeting at a bridge, with a fine gold line toward dawn; not an incident scene.',
+        ja: '三つの無文字の紙の道が橋へ集まり、細い金線が朝の光へ続く現代水墨紙作品。事件現場ではありません。'
+      }
+    },
+    {
+      date: '2026-11-13',
+      article: {
+        'zh-Hant': `${ROOT}news/school-gender-procedure-training-20261113/`,
+        'zh-Hans': `${ROOT}news/school-gender-procedure-training-20261113/zh-Hans/`,
+        en: `${ROOT}news/school-gender-procedure-training-20261113/en/`,
+        ja: `${ROOT}news/school-gender-procedure-training-20261113/ja/`
+      },
+      title: {
+        'zh-Hant': '校園性別事件：程序如何守住安全？',
+        'zh-Hans': '校园性别事件：程序如何守住安全？',
+        en: 'School gender-based incidents: can procedure safeguard safety?',
+        ja: '学校のジェンダー事案：手続は安全をどう守るか'
+      },
+      summary: {
+        'zh-Hant': '北區研討會已舉行；培力不等於成效，安全、支持與救濟仍須持續驗證。',
+        'zh-Hans': '北区研讨会已举行；培训不等于成效，安全、支持与救济仍须持续核验。',
+        en: 'The northern workshop is verified; training is not an outcome. Safety, support and remedy still need evidence.',
+        ja: '北部研修の実施は確認済み。研修は成果ではなく、安全・支援・救済には継続した検証が必要です。'
+      }
+    },
+    {
+      date: '2026-11-12',
+      article: {
+        'zh-Hant': `${ROOT}news/taoyuan-youth-mental-health-consultation-20261112/`,
+        'zh-Hans': `${ROOT}news/taoyuan-youth-mental-health-consultation-20261112/zh-Hans/`,
+        en: `${ROOT}news/taoyuan-youth-mental-health-consultation-20261112/en/`,
+        ja: `${ROOT}news/taoyuan-youth-mental-health-consultation-20261112/ja/`
+      },
+      title: {
+        'zh-Hant': '諮詢不是診斷：少年司法如何接上支持？',
+        'zh-Hans': '咨询不是诊断：少年司法如何接上支持？',
+        en: 'Consultation is not a diagnosis',
+        ja: '相談は診断ではない'
+      },
+      summary: {
+        'zh-Hant': '桃園地院啟動專業諮詢；知情同意、隱私與轉介是必要界線。',
+        'zh-Hans': '桃园地院启动专业咨询；知情同意、隐私与转介是必要界线。',
+        en: 'Taoyuan Court began specialist consultation; consent, privacy and referral are essential boundaries.',
+        ja: '桃園地方法院が専門相談を開始。同意・プライバシー・紹介が必要な境界です。'
+      }
+    }
+  ];
+
   const localeCopy = {
     'zh-Hant': {
       source: '原始資料',
       read: '閱讀本站整理',
       original: '原始報導',
-      unavailable: '圖片暫時無法載入。', items: Object.values(reports)
+      unavailable: '圖片暫時無法載入。', current: '當前追蹤', currentIntro: '先掌握最新公開更新，再回看完整新聞脈絡。', items: Object.values(reports)
     },
     'zh-Hans': {
       source: '原始资料',
       read: '阅读本站整理',
       original: '原始报道',
-      unavailable: '图片暂时无法载入。', items: Object.values(reports)
+      unavailable: '图片暂时无法载入。', current: '当前追踪', currentIntro: '先掌握最新公开更新，再回看完整新闻脉络。', items: Object.values(reports)
     },
     en: {
       source: 'Original source',
       read: 'Read our brief',
       original: 'Original report',
-      unavailable: 'The image is temporarily unavailable.', items: Object.values(reports)
+      unavailable: 'The image is temporarily unavailable.', current: 'Now tracking', currentIntro: 'Read the newest public updates before returning to the full reporting archive.', items: Object.values(reports)
     },
     ja: {
       source: '原資料',
       read: '本サイトの整理を読む',
       original: '元の報道',
-      unavailable: '画像を読み込めません。', items: Object.values(reports)
+      unavailable: '画像を読み込めません。', current: '現在追跡', currentIntro: '最新の公開更新を確認してから、ニュースの全体像へ進みます。', items: Object.values(reports)
     }
   };
 
@@ -100,6 +175,77 @@
       link.rel = 'noopener noreferrer';
     }
     return link;
+  }
+
+  function injectCurrentUpdateStyles() {
+    if (document.getElementById('newsCurrentUpdatesStyle')) return;
+    const style = document.createElement('style');
+    style.id = 'newsCurrentUpdatesStyle';
+    style.textContent = `.news-current{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);gap:18px 28px;margin:0 0 34px;padding:clamp(22px,4vw,42px);border:1px solid rgba(111,133,119,.42);border-radius:28px;background:linear-gradient(135deg,rgba(255,250,246,.92),rgba(230,237,231,.88));box-shadow:none}.news-current-head{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:8px 28px;align-items:end}.news-current-head p{margin:0;color:#52635f;font-size:.92rem}.news-current-head p:first-child{grid-column:1/-1;color:#8d604a;font-size:.74rem;font-weight:950;letter-spacing:.14em;text-transform:uppercase}.news-current-head h2{margin:0;font-family:"Noto Serif TC","Noto Serif SC","Noto Serif JP",serif;font-size:clamp(1.65rem,3.5vw,2.55rem);line-height:1.25}.news-current-head h2+p{padding-bottom:3px}.news-current-lead{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);overflow:hidden;border:1px solid rgba(205,191,169,.82);border-radius:20px;background:#fffdf8;color:inherit;text-decoration:none}.news-current-lead:focus-visible,.news-current-links a:focus-visible{outline:3px solid #936335;outline-offset:4px}.news-current-lead img{display:block;width:100%;height:100%;min-height:235px;aspect-ratio:16/11;object-fit:cover;object-position:center}.news-current-lead-copy{display:flex;min-width:0;flex-direction:column;align-items:flex-start;justify-content:center;padding:22px}.news-current-lead-copy time,.news-current-links time{color:#8d604a;font-size:.73rem;font-weight:900;letter-spacing:.08em}.news-current-lead-copy strong{margin:8px 0;color:#193f42;font-family:"Noto Serif TC","Noto Serif SC","Noto Serif JP",serif;font-size:clamp(1.18rem,2.2vw,1.62rem);line-height:1.3}.news-current-lead-copy>span:not(.news-current-action){color:#586663;font-size:.9rem;line-height:1.65}.news-current-action{margin-top:18px;color:#765039;font-size:.82rem;font-weight:900}.news-current-links{display:grid;align-content:start;gap:0;margin:0;padding:0;list-style:none;border-top:1px solid rgba(111,133,119,.3)}.news-current-links li{border-bottom:1px solid rgba(111,133,119,.3)}.news-current-links a{display:grid;gap:6px;padding:19px 0;color:inherit;text-decoration:none}.news-current-links a:hover strong{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}.news-current-links strong{color:#254a4b;font-family:"Noto Serif TC","Noto Serif SC","Noto Serif JP",serif;font-size:1.1rem;line-height:1.4}.news-current-links span{color:#66726e;font-size:.84rem;line-height:1.55}@media(max-width:820px){.news-current,.news-current-head{grid-template-columns:1fr}.news-current-head h2+p{padding-bottom:0}.news-current-lead{grid-template-columns:1fr}.news-current-lead img{min-height:0;aspect-ratio:16/9}}@media(max-width:560px){.news-current{margin-bottom:25px;padding:20px 18px;border-radius:22px}.news-current-lead-copy{padding:19px}.news-current-links a{padding:16px 0}}`;
+    document.head.append(style);
+  }
+
+  function renderCurrentUpdates(grid, words, language) {
+    const items = currentUpdates.filter((item) => item.article?.[language] && item.title?.[language]).sort((a, b) => Date.parse(`${b.date}T12:00:00+08:00`) - Date.parse(`${a.date}T12:00:00+08:00`));
+    if (!items.length || document.getElementById('newsCurrentUpdates')) return;
+    injectCurrentUpdateStyles();
+    const section = document.createElement('section');
+    section.className = 'news-current';
+    section.id = 'newsCurrentUpdates';
+    section.setAttribute('aria-labelledby', 'newsCurrentTitle');
+    const header = document.createElement('header');
+    header.className = 'news-current-head';
+    const eyebrow = document.createElement('p');
+    eyebrow.textContent = words.current;
+    const heading = document.createElement('h2');
+    heading.id = 'newsCurrentTitle';
+    heading.textContent = items[0].title[language];
+    const intro = document.createElement('p');
+    intro.textContent = words.currentIntro;
+    header.append(eyebrow, heading, intro);
+    const lead = document.createElement('a');
+    lead.className = 'news-current-lead';
+    lead.href = items[0].article[language];
+    const media = document.createElement('img');
+    media.src = items[0].image;
+    media.alt = items[0].alt[language];
+    media.width = 1672;
+    media.height = 941;
+    media.decoding = 'async';
+    const leadCopy = document.createElement('span');
+    leadCopy.className = 'news-current-lead-copy';
+    const meta = document.createElement('time');
+    meta.dateTime = items[0].date;
+    meta.textContent = formatDate(items[0].date, language);
+    const title = document.createElement('strong');
+    title.textContent = items[0].title[language];
+    const summary = document.createElement('span');
+    summary.textContent = items[0].summary[language];
+    const action = document.createElement('span');
+    action.className = 'news-current-action';
+    action.textContent = `${words.read} →`;
+    leadCopy.append(meta, title, summary, action);
+    lead.append(media, leadCopy);
+    const links = document.createElement('ol');
+    links.className = 'news-current-links';
+    items.slice(1).forEach((item) => {
+      const row = document.createElement('li');
+      const link = makeLink('', item.article[language], '');
+      const date = document.createElement('time');
+      date.dateTime = item.date;
+      date.textContent = formatDate(item.date, language);
+      const rowTitle = document.createElement('strong');
+      rowTitle.textContent = item.title[language];
+      const rowSummary = document.createElement('span');
+      rowSummary.textContent = item.summary[language];
+      link.append(date, rowTitle, rowSummary);
+      row.append(link);
+      links.append(row);
+    });
+    section.append(header, lead, links);
+    const shell = grid.closest('.news-shell');
+    const listHeader = shell?.querySelector('.news-list-head');
+    if (shell && listHeader) shell.insertBefore(section, listHeader);
   }
 
   function renderCard(item, words, language, index) {
@@ -160,6 +306,7 @@
     if (!grid || grid.dataset.rendered === 'true') return;
     const language = locale();
     const words = localeCopy[language] || localeCopy['zh-Hant'];
+    renderCurrentUpdates(grid, words, language);
     const items = words.items.filter((item) => !item.languages || item.languages.includes(language)).sort((a, b) => {
       const dateDifference = Date.parse(`${b.date}T12:00:00+08:00`) - Date.parse(`${a.date}T12:00:00+08:00`);
       return dateDifference || a.priority - b.priority;
