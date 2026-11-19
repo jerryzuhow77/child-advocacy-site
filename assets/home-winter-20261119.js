@@ -61,6 +61,94 @@
     return links;
   };
 
+  const mountSnow = hero => {
+    const stage = hero?.querySelector('.ink-hero-stage');
+    if (!stage || stage.querySelector('.winter-snow-layer')) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const layer = document.createElement('div');
+    layer.className = 'winter-snow-layer';
+    layer.setAttribute('aria-hidden', 'true');
+    const flakeCount = window.innerWidth <= 760 ? 14 : 24;
+    const flakes = Array.from({ length: flakeCount }, (_, index) => {
+      const flake = document.createElement('i');
+      flake.className = 'winter-flake';
+      flake.style.setProperty('--snow-left', `${(index * 37) % 100}%`);
+      flake.style.setProperty('--snow-duration', `${7 + (index % 8)}s`);
+      flake.style.setProperty('--snow-delay', `${-(index % 11)}s`);
+      flake.style.setProperty('--snow-drift', `${-34 + (index * 19) % 68}px`);
+      layer.append(flake);
+      return flake;
+    });
+    stage.append(layer);
+
+    const startSnowAnimation = () => {
+      const { gsap } = window;
+      if (!gsap) {
+        layer.dataset.animationEngine = 'css';
+        layer.classList.add('winter-snow-fallback');
+        return;
+      }
+
+      layer.dataset.animationEngine = 'gsap';
+
+      const random = (min, max) => min + Math.random() * (max - min);
+      const fall = (flake, firstRun = false) => {
+        if (!flake.isConnected) return;
+        const width = Math.max(stage.clientWidth, 280);
+        const height = Math.max(stage.clientHeight, 220);
+        const startY = firstRun ? random(-20, height * .9) : random(-height * .35, -18);
+        const endY = height + 28;
+        const speed = random(27, 43);
+        gsap.set(flake, {
+          x: random(10, width - 10),
+          y: startY,
+          rotation: random(0, 180),
+          scale: random(.58, 1.18),
+          opacity: random(.2, .58)
+        });
+        gsap.to(flake, {
+          x: `+=${random(-54, 54)}`,
+          y: endY,
+          rotation: `+=${random(100, 300)}`,
+          duration: Math.max(5.5, (endY - startY) / speed),
+          ease: 'none',
+          onComplete: () => fall(flake)
+        });
+      };
+      flakes.forEach(flake => fall(flake, true));
+    };
+
+    if (document.readyState === 'complete') startSnowAnimation();
+    else window.addEventListener('load', startSnowAnimation, { once: true });
+  };
+
+  const mountPaperCraft = hero => {
+    const stage = hero?.querySelector('.ink-hero-stage');
+    const copy = hero?.querySelector('.cinema-copy');
+    if (!stage || !copy || stage.querySelector('.winter-paper-craft')) return;
+
+    const craft = document.createElement('div');
+    craft.className = 'winter-paper-craft';
+    craft.setAttribute('aria-hidden', 'true');
+    const ridge = document.createElement('span');
+    ridge.className = 'winter-paper-ridge';
+    const lantern = document.createElement('span');
+    lantern.className = 'winter-paper-lantern';
+    craft.append(ridge, lantern);
+    stage.append(craft);
+
+    const magnolia = document.createElement('img');
+    magnolia.className = 'winter-ronghua-magnolia';
+    magnolia.src = './assets/art/tian-tian-ronghua-refined-snow-magnolia-20260818.webp';
+    magnolia.alt = '';
+    magnolia.width = 1200;
+    magnolia.height = 800;
+    magnolia.decoding = 'async';
+    magnolia.setAttribute('aria-hidden', 'true');
+    copy.append(magnolia);
+  };
+
   const mount = () => {
     const body = document.body;
     const main = document.querySelector('main#main-content');
@@ -72,6 +160,8 @@
     const copy = isHans ? TEXT.zhHans : TEXT.zhHant;
 
     body?.classList.add('home-winter-20261119');
+    mountPaperCraft(hero);
+    mountSnow(hero);
 
     if (main && hero && main.firstElementChild !== hero) {
       main.insertBefore(hero, main.firstElementChild);

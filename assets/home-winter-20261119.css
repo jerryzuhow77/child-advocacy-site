@@ -121,6 +121,120 @@ body.home-winter-20261119 {
   transform: scale(1.03);
 }
 
+.home-winter-20261119 .winter-snow-layer {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  contain: paint;
+}
+
+.home-winter-20261119 .winter-paper-craft {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.home-winter-20261119 .winter-paper-ridge {
+  position: absolute;
+  right: -4%;
+  bottom: -8px;
+  left: -4%;
+  height: 25%;
+  opacity: .45;
+  background: linear-gradient(165deg, rgba(242, 239, 225, .16), rgba(198, 219, 216, .76));
+  clip-path: polygon(0 64%, 8% 52%, 18% 60%, 28% 30%, 38% 54%, 50% 22%, 61% 58%, 72% 36%, 82% 60%, 91% 44%, 100% 63%, 100% 100%, 0 100%);
+  filter: drop-shadow(0 -7px 9px rgba(39, 72, 67, .12));
+}
+
+.home-winter-20261119 .winter-paper-ridge::before {
+  content: "";
+  position: absolute;
+  inset: 22% -2% 0;
+  opacity: .68;
+  background: linear-gradient(165deg, rgba(255, 253, 248, .4), rgba(218, 232, 230, .82));
+  clip-path: polygon(0 63%, 13% 44%, 23% 60%, 35% 29%, 47% 61%, 61% 37%, 75% 63%, 88% 39%, 100% 59%, 100% 100%, 0 100%);
+}
+
+.home-winter-20261119 .winter-paper-lantern {
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+  width: 150px;
+  aspect-ratio: 1;
+  opacity: .62;
+  background: url('./art/tian-tian-paper-cut-scene-atlas-20260826.webp') 0 50% / 300% 300% no-repeat;
+  filter: drop-shadow(0 9px 13px rgba(44, 63, 55, .2)) saturate(.72);
+  transform: rotate(-2deg);
+}
+
+.home-winter-20261119 .winter-ronghua-magnolia {
+  position: absolute;
+  z-index: 0;
+  right: -74px;
+  bottom: -42px;
+  width: 245px;
+  height: auto;
+  opacity: .14;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  filter: saturate(.55) sepia(.08);
+  transform: rotate(-8deg);
+}
+
+.home-winter-20261119 .winter-flake {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 1.5px;
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .86);
+  filter: drop-shadow(0 0 3px rgba(225, 239, 242, .72));
+  will-change: transform, opacity;
+}
+
+.home-winter-20261119 .winter-flake::before,
+.home-winter-20261119 .winter-flake::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  transform-origin: 50% 50%;
+}
+
+.home-winter-20261119 .winter-flake::before {
+  transform: rotate(60deg);
+}
+
+.home-winter-20261119 .winter-flake::after {
+  transform: rotate(-60deg);
+}
+
+.home-winter-20261119 .winter-snow-fallback .winter-flake {
+  left: var(--snow-left);
+  animation: winter-snow-fall var(--snow-duration) linear var(--snow-delay) infinite;
+}
+
+@keyframes winter-snow-fall {
+  from {
+    opacity: .16;
+    transform: translate3d(0, -24px, 0) rotate(0);
+  }
+  40% {
+    opacity: .54;
+  }
+  to {
+    opacity: .18;
+    transform: translate3d(var(--snow-drift), 680px, 0) rotate(240deg);
+  }
+}
+
 .home-winter-20261119 .ink-scroll-hero > .cinema-copy {
   position: relative !important;
   inset: auto !important;
@@ -496,6 +610,23 @@ body.home-winter-20261119 {
     min-height: 245px !important;
   }
 
+  .home-winter-20261119 .winter-paper-lantern {
+    bottom: 10px;
+    left: 10px;
+    width: 104px;
+  }
+
+  .home-winter-20261119 .winter-paper-ridge {
+    height: 31%;
+  }
+
+  .home-winter-20261119 .winter-ronghua-magnolia {
+    right: -58px;
+    bottom: -25px;
+    width: 175px;
+    opacity: .1;
+  }
+
   .home-winter-20261119 .ink-scroll-hero .ink-hero-caption {
     max-width: calc(100% - 16px) !important;
   }
@@ -576,6 +707,10 @@ body.home-winter-20261119 {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .home-winter-20261119 .winter-snow-layer {
+    display: none !important;
+  }
+
   .home-winter-20261119 *,
   .home-winter-20261119 *::before,
   .home-winter-20261119 *::after {
