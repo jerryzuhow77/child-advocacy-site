@@ -1,0 +1,508 @@
+:root {
+  --winter-ink: #173d37;
+  --winter-ink-soft: #315750;
+  --winter-frost: #dce8e7;
+  --winter-paper: #f7f2e8;
+  --winter-paper-bright: #fffdf8;
+  --winter-amber: #d59643;
+  --winter-brick: #985445;
+  --winter-line: #c9c3b4;
+  --winter-shadow: 0 18px 48px rgba(37, 61, 55, .1);
+}
+
+html {
+  scroll-padding-top: 92px;
+}
+
+body.home-winter-20261119 {
+  color: var(--winter-ink);
+  background:
+    radial-gradient(circle at 8% 4%, rgba(255, 255, 255, .94) 0 2px, transparent 3px),
+    radial-gradient(circle at 82% 11%, rgba(255, 255, 255, .72) 0 1px, transparent 2px),
+    linear-gradient(180deg, #fbf8f1 0, var(--winter-paper) 58%, #eef2ec 100%);
+  background-size: 84px 84px, 112px 112px, auto;
+}
+
+.home-winter-20261119 .site-header {
+  border-color: rgba(23, 61, 55, .16) !important;
+  background: rgba(255, 253, 248, .94) !important;
+  box-shadow: 0 8px 32px rgba(23, 61, 55, .07) !important;
+  backdrop-filter: blur(16px) saturate(1.08);
+}
+
+.home-winter-20261119 .header-inner {
+  min-height: 82px;
+}
+
+.home-winter-20261119 .brand strong,
+.home-winter-20261119 .primary-nav a {
+  color: var(--winter-ink) !important;
+}
+
+.home-winter-20261119 .primary-nav {
+  gap: 8px !important;
+}
+
+.home-winter-20261119 .primary-nav a {
+  min-height: 42px;
+  padding: 10px 15px !important;
+  border: 0 !important;
+  border-radius: 999px;
+  font-size: 15px !important;
+  font-weight: 750;
+}
+
+.home-winter-20261119 .primary-nav a:hover,
+.home-winter-20261119 .primary-nav a:focus-visible,
+.home-winter-20261119 .primary-nav a[aria-current="page"] {
+  color: #fffdf8 !important;
+  background: var(--winter-ink);
+  outline: 3px solid rgba(213, 150, 67, .38);
+  outline-offset: 2px;
+}
+
+@media (min-width: 1024px) {
+  .home-winter-20261119 .primary-nav > a:nth-child(n + 6) {
+    display: none !important;
+  }
+}
+
+.home-winter-20261119 main#main-content {
+  width: min(1240px, calc(100% - 48px));
+  padding-top: 28px !important;
+}
+
+/* The brand promise is the first meaningful content on the page. */
+.home-winter-20261119 .ink-scroll-hero.editorial-hero {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.06fr) minmax(420px, .94fr) !important;
+  min-height: 590px !important;
+  margin: 0 0 38px !important;
+  border: 1px solid rgba(23, 61, 55, .2) !important;
+  border-radius: 28px 10px 28px 10px !important;
+  background: var(--winter-paper-bright) !important;
+  box-shadow: var(--winter-shadow) !important;
+  overflow: hidden !important;
+}
+
+.home-winter-20261119 .ink-scroll-hero > .ink-hero-stage {
+  position: relative !important;
+  inset: auto !important;
+  grid-column: 2;
+  grid-row: 1;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 590px;
+  margin: 0 !important;
+  overflow: hidden;
+  background: #dfe9e8;
+}
+
+.home-winter-20261119 .ink-scroll-hero > .ink-hero-stage::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 72% 38%, rgba(229, 170, 82, .42), transparent 26%),
+    linear-gradient(90deg, rgba(247, 242, 232, .34), transparent 38%),
+    linear-gradient(180deg, rgba(220, 232, 231, .12), rgba(23, 61, 55, .14));
+}
+
+.home-winter-20261119 .ink-scroll-hero .ink-hero-image {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: 62% 64% !important;
+  filter: saturate(.78) contrast(.96) brightness(1.02) hue-rotate(4deg);
+  transform: scale(1.03);
+}
+
+.home-winter-20261119 .ink-scroll-hero > .cinema-copy {
+  position: relative !important;
+  inset: auto !important;
+  z-index: 2;
+  grid-column: 1;
+  grid-row: 1;
+  width: auto !important;
+  padding: clamp(42px, 5.4vw, 78px) clamp(32px, 5vw, 70px) !important;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(220, 232, 231, .5), transparent 30%),
+    url('./home-paper-grain-20261013.svg'),
+    linear-gradient(135deg, #fffdf8, #f5efe3) !important;
+}
+
+.home-winter-20261119 .ink-scroll-hero .eyebrow {
+  color: var(--winter-brick) !important;
+  font-size: 12px !important;
+  font-weight: 800;
+  letter-spacing: .15em !important;
+}
+
+.home-winter-20261119 .ink-scroll-hero .eyebrow::before {
+  height: 3px !important;
+  background: var(--winter-amber) !important;
+}
+
+.home-winter-20261119 .ink-scroll-hero h1 {
+  max-width: 9em;
+  margin: 27px 0 20px !important;
+  color: var(--winter-ink) !important;
+  font-size: clamp(42px, 4.4vw, 64px) !important;
+  line-height: 1.3 !important;
+  letter-spacing: .025em !important;
+  text-shadow: none !important;
+}
+
+.home-winter-20261119 .ink-scroll-hero .cinema-intro {
+  max-width: 35em !important;
+  margin-bottom: 28px !important;
+  color: #415b55 !important;
+  font-size: 17px !important;
+  line-height: 1.9 !important;
+}
+
+.home-winter-20261119 .ink-scroll-hero .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px !important;
+  padding: 12px 22px !important;
+  border: 1px solid var(--winter-ink) !important;
+  border-radius: 12px 4px 12px 4px !important;
+  color: #fffdf8 !important;
+  background: var(--winter-ink) !important;
+  box-shadow: 0 8px 18px rgba(23, 61, 55, .14) !important;
+  font-size: 15px !important;
+  font-weight: 800;
+}
+
+.home-winter-20261119 .ink-scroll-hero .button.secondary {
+  border-color: rgba(213, 150, 67, .75) !important;
+  color: #4f3925 !important;
+  background: #f0bd72 !important;
+}
+
+.home-winter-20261119 .home-hero-light-quote {
+  margin-top: 28px !important;
+  padding: 13px 15px !important;
+  border: 1px solid rgba(23, 61, 55, .13) !important;
+  border-radius: 12px 4px 12px 4px !important;
+  background: rgba(255, 255, 255, .58) !important;
+}
+
+.home-winter-20261119 .home-hero-light-thumb {
+  width: 54px !important;
+  height: 54px !important;
+  border-radius: 50% !important;
+}
+
+.home-winter-20261119 .hero-view-counter {
+  margin-top: 15px !important;
+  opacity: .78;
+}
+
+/* Court dates are concise, prominent, and limited to the next three entries. */
+.home-winter-20261119 #october-action-focus {
+  margin: 0 0 42px !important;
+  padding: 30px !important;
+  border: 1px solid rgba(23, 61, 55, .18) !important;
+  border-radius: 20px 6px 20px 6px !important;
+  background:
+    linear-gradient(90deg, rgba(220, 232, 231, .76), rgba(255, 253, 248, .94) 38%, rgba(247, 242, 232, .96)) !important;
+  box-shadow: 0 12px 34px rgba(23, 61, 55, .07) !important;
+}
+
+.home-winter-20261119 .upcoming-hearings-kicker {
+  color: var(--winter-brick) !important;
+}
+
+.home-winter-20261119 .upcoming-hearings-head h2 {
+  color: var(--winter-ink) !important;
+}
+
+.home-winter-20261119 .upcoming-hearings-all,
+.home-winter-20261119 .home-latest-all {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 9px 14px;
+  border: 1px solid rgba(23, 61, 55, .36);
+  border-radius: 10px 3px 10px 3px;
+  color: var(--winter-ink) !important;
+  background: rgba(255, 253, 248, .76);
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.home-winter-20261119 .upcoming-hearings-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.home-winter-20261119 .upcoming-hearing {
+  position: relative;
+  min-height: 158px;
+  padding: 20px !important;
+  border: 1px solid rgba(23, 61, 55, .16) !important;
+  border-radius: 16px 5px 16px 5px !important;
+  background: rgba(255, 253, 248, .9) !important;
+  box-shadow: 0 8px 22px rgba(23, 61, 55, .06);
+}
+
+.home-winter-20261119 .upcoming-hearing:nth-child(n + 4) {
+  display: none !important;
+}
+
+.home-winter-20261119 .upcoming-hearing time {
+  color: var(--winter-brick) !important;
+  font-size: 16px !important;
+}
+
+.home-winter-20261119 .upcoming-hearing h3 {
+  color: var(--winter-ink) !important;
+  font-size: 19px !important;
+}
+
+.home-winter-20261119 .upcoming-hearings-note {
+  border-color: var(--winter-amber) !important;
+  background: rgba(255, 253, 248, .72) !important;
+}
+
+/* Replace the 25-tile wall with a 1 + 3 editorial selection. */
+.home-winter-20261119 .home-latest-25 {
+  width: 100% !important;
+  margin: 0 0 54px !important;
+  padding: 34px !important;
+  border: 1px solid rgba(23, 61, 55, .16);
+  border-radius: 24px 8px 24px 8px;
+  background: rgba(255, 253, 248, .84);
+  box-shadow: 0 16px 40px rgba(23, 61, 55, .07);
+}
+
+.home-winter-20261119 .home-latest-25-head {
+  align-items: center !important;
+  margin-bottom: 22px !important;
+}
+
+.home-winter-20261119 .home-latest-25-head small {
+  color: var(--winter-brick) !important;
+}
+
+.home-winter-20261119 .home-latest-25-head h2 {
+  color: var(--winter-ink) !important;
+  font-size: clamp(30px, 3.2vw, 44px) !important;
+}
+
+.home-winter-20261119 .home-latest-25-note {
+  max-width: 34em;
+  color: #5a6b66 !important;
+}
+
+.home-winter-20261119 .home-latest-25-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, .75fr) !important;
+  grid-template-rows: repeat(3, minmax(138px, 1fr));
+  gap: 14px !important;
+}
+
+.home-winter-20261119 .home-latest-25-card {
+  aspect-ratio: auto !important;
+  min-height: 138px;
+  padding: 18px !important;
+  border: 1px solid rgba(23, 61, 55, .18) !important;
+  border-radius: 17px 5px 17px 5px !important;
+  background: #e3ebe7 !important;
+  box-shadow: 0 8px 22px rgba(23, 61, 55, .08);
+}
+
+.home-winter-20261119 .home-latest-25-card:first-child {
+  grid-row: 1 / 4;
+  min-height: 450px;
+  padding: 26px !important;
+}
+
+.home-winter-20261119 .home-latest-25-card:first-child strong {
+  max-width: 18em;
+  font-size: clamp(25px, 3vw, 38px) !important;
+  line-height: 1.28 !important;
+}
+
+.home-winter-20261119 .home-latest-25-card:not(:first-child) strong {
+  font-size: 18px !important;
+  -webkit-line-clamp: 2 !important;
+}
+
+.home-winter-20261119 .home-latest-25-card::after {
+  background: linear-gradient(180deg, transparent 12%, rgba(15, 48, 45, .9) 100%) !important;
+}
+
+.home-winter-20261119 .home-latest-25-card.no-image::after {
+  background: linear-gradient(135deg, rgba(247, 242, 232, .94), rgba(220, 232, 231, .96)) !important;
+}
+
+.home-winter-20261119 .home-latest-25-card.no-image strong {
+  color: var(--winter-ink) !important;
+}
+
+.home-winter-20261119 .home-latest-25-card.no-image time {
+  color: var(--winter-brick) !important;
+}
+
+.home-winter-20261119 #previous-hearing-notice,
+.home-winter-20261119 #chen-nov6-hearing,
+.home-winter-20261119 #daily-brief-pair-20261026 {
+  display: none !important;
+}
+
+.home-winter-20261119 .mobile-menu-more {
+  margin-top: 8px;
+  border-top: 1px solid rgba(23, 61, 55, .14);
+}
+
+.home-winter-20261119 .mobile-menu-more > summary {
+  padding: 13px 12px;
+  color: var(--winter-ink);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.home-winter-20261119 .mobile-menu-more-links {
+  display: grid;
+}
+
+@media (max-width: 1023px) {
+  .home-winter-20261119 .header-inner {
+    min-height: 72px;
+  }
+}
+
+@media (max-width: 760px) {
+  html {
+    scroll-padding-top: 82px;
+  }
+
+  .home-winter-20261119 main#main-content {
+    width: calc(100% - 24px);
+    padding-top: 14px !important;
+  }
+
+  .home-winter-20261119 .ink-scroll-hero.editorial-hero {
+    display: flex !important;
+    min-height: 0 !important;
+    margin-bottom: 22px !important;
+    border-radius: 20px 7px 20px 7px !important;
+  }
+
+  .home-winter-20261119 .ink-scroll-hero > .cinema-copy {
+    order: 0;
+    width: 100% !important;
+    padding: 30px 22px 24px !important;
+  }
+
+  .home-winter-20261119 .ink-scroll-hero h1 {
+    max-width: none;
+    margin: 18px 0 14px !important;
+    font-size: clamp(34px, 10.2vw, 46px) !important;
+    line-height: 1.32 !important;
+  }
+
+  .home-winter-20261119 .ink-scroll-hero .cinema-intro {
+    font-size: 16px !important;
+  }
+
+  .home-winter-20261119 .ink-scroll-hero .actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .home-winter-20261119 .ink-scroll-hero .button {
+    min-width: 0 !important;
+    padding: 11px 9px !important;
+  }
+
+  .home-winter-20261119 .home-hero-light-quote {
+    display: none !important;
+  }
+
+  .home-winter-20261119 .ink-scroll-hero > .ink-hero-stage {
+    order: 1;
+    width: 100% !important;
+    height: 245px !important;
+    min-height: 245px !important;
+  }
+
+  .home-winter-20261119 .ink-scroll-hero .ink-hero-caption {
+    max-width: calc(100% - 16px) !important;
+  }
+
+  .home-winter-20261119 #october-action-focus,
+  .home-winter-20261119 .home-latest-25 {
+    padding: 22px 16px !important;
+    border-radius: 18px 6px 18px 6px !important;
+  }
+
+  .home-winter-20261119 .upcoming-hearings-head,
+  .home-winter-20261119 .home-latest-25-head {
+    display: block !important;
+  }
+
+  .home-winter-20261119 .upcoming-hearings-all,
+  .home-winter-20261119 .home-latest-all {
+    margin-top: 12px;
+  }
+
+  .home-winter-20261119 .upcoming-hearings-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .home-winter-20261119 .upcoming-hearing {
+    min-height: 0;
+  }
+
+  .home-winter-20261119 .home-latest-25-grid {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: none !important;
+  }
+
+  .home-winter-20261119 .home-latest-25-card,
+  .home-winter-20261119 .home-latest-25-card:first-child {
+    grid-row: auto !important;
+    min-height: 154px !important;
+    padding: 17px !important;
+  }
+
+  .home-winter-20261119 .home-latest-25-card:first-child {
+    min-height: 286px !important;
+  }
+
+  .home-winter-20261119 .home-latest-25-card:first-child strong {
+    font-size: 25px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .home-winter-20261119 .ink-scroll-hero .actions {
+    grid-template-columns: 1fr;
+  }
+
+  .home-winter-20261119 .ink-scroll-hero > .ink-hero-stage {
+    height: 220px !important;
+    min-height: 220px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-winter-20261119 *,
+  .home-winter-20261119 *::before,
+  .home-winter-20261119 *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
