@@ -503,8 +503,26 @@ body.home-winter-20261119 {
   box-shadow: 0 8px 22px rgba(23, 61, 55, .06);
 }
 
-.home-winter-20261119 .upcoming-hearing:nth-child(n + 4) {
+.home-winter-20261119 .upcoming-hearings-section.is-collapsible:not([data-expanded="true"]) .upcoming-hearing:nth-child(n + 4) {
   display: none !important;
+}
+
+.home-winter-20261119 .upcoming-hearings-section[data-expanded="true"] .upcoming-hearing:nth-child(n + 4) {
+  display: grid !important;
+}
+
+.home-winter-20261119 .upcoming-hearings-toggle {
+  border-color: rgba(23, 61, 55, .44);
+  background: rgba(255, 253, 248, .92);
+  color: var(--winter-ink);
+  box-shadow: 0 8px 20px rgba(23, 61, 55, .08);
+}
+
+.home-winter-20261119 .upcoming-hearings-toggle:hover,
+.home-winter-20261119 .upcoming-hearings-toggle:focus-visible {
+  border-color: var(--winter-pine);
+  background: var(--winter-pine);
+  color: #fff;
 }
 
 .home-winter-20261119 .upcoming-hearing time {
