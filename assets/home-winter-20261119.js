@@ -8,9 +8,11 @@
       join: '參與',
       news: '新聞',
       more: '更多內容',
-      title: '最新發布',
-      note: '精選近期重要內容；完整文章請前往新聞專區。',
+      title: '最新發布 25 篇',
+      note: '首先呈現 4 篇精選；可在本專區展開瀏覽完整 25 篇。',
       all: '查看全部文章',
+      expandLatest: '展開全部 25 篇',
+      collapseLatest: '收合文章',
       hearingCta: '查看最新庭期',
       hearingAll: '查看完整庭期表'
     },
@@ -22,16 +24,28 @@
       join: '参与',
       news: '新闻',
       more: '更多内容',
-      title: '最新发布',
-      note: '精选近期重要内容；完整文章请前往新闻专区。',
+      title: '最新发布 25 篇',
+      note: '首先呈现 4 篇精选；可在本专区展开浏览完整 25 篇。',
       all: '查看全部文章',
+      expandLatest: '展开全部 25 篇',
+      collapseLatest: '收起文章',
       hearingCta: '查看最新庭期',
       hearingAll: '查看完整庭期表'
     }
   };
 
-  const trimLatest = grid => {
-    [...grid.children].slice(4).forEach(card => card.remove());
+  const organizeLatest = (latest, grid) => {
+    const cards = [...grid.querySelectorAll(':scope > .home-latest-25-card')];
+    if (cards.length <= 4) return { count: cards.length, moreGrid: null };
+
+    const moreGrid = document.createElement('div');
+    moreGrid.id = 'home-latest-more-20261119';
+    moreGrid.className = 'home-latest-more-grid';
+    moreGrid.hidden = true;
+    cards.slice(4).forEach(card => moreGrid.append(card));
+    grid.insertAdjacentElement('afterend', moreGrid);
+    latest.dataset.articleCount = String(cards.length);
+    return { count: cards.length, moreGrid };
   };
 
   const simplifyNav = (nav, labels, hrefs) => {
@@ -66,10 +80,9 @@
       hearings.insertAdjacentElement('afterend', latest);
     }
 
-    if (grid) {
-      trimLatest(grid);
-      new MutationObserver(() => trimLatest(grid)).observe(grid, { childList: true });
-    }
+    const latestCollection = grid
+      ? organizeLatest(latest, grid)
+      : { count: 0, moreGrid: null };
 
     const latestTitle = latest?.querySelector('h2');
     const latestNote = latest?.querySelector('.home-latest-25-note');
@@ -85,13 +98,30 @@
     if (latestHead && !latestHead.querySelector('.home-latest-all')) {
       const controls = document.createElement('div');
       controls.className = 'home-latest-head-controls';
+      const toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'home-latest-toggle';
+      toggle.textContent = copy.expandLatest;
+      toggle.dataset.hans = TEXT.zhHans.expandLatest;
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-controls', 'home-latest-more-20261119');
       const all = document.createElement('a');
       all.className = 'home-latest-all';
       all.href = './news/';
       all.dataset.hansHref = './zh-Hans/news/';
       all.dataset.hans = TEXT.zhHans.all;
       all.textContent = copy.all;
-      controls.append(latestNote, all);
+      toggle.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!expanded));
+        toggle.textContent = expanded ? copy.expandLatest : copy.collapseLatest;
+        toggle.dataset.hans = expanded ? TEXT.zhHans.expandLatest : TEXT.zhHans.collapseLatest;
+        latestCollection.moreGrid.hidden = expanded;
+        latest?.classList.toggle('is-expanded', !expanded);
+      });
+      controls.append(latestNote);
+      if (latestCollection.moreGrid && latestCollection.count > 4) controls.append(toggle);
+      controls.append(all);
       latestHead.append(controls);
     }
 

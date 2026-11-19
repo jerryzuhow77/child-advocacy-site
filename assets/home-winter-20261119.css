@@ -225,7 +225,8 @@ body.home-winter-20261119 {
 }
 
 .home-winter-20261119 .upcoming-hearings-all,
-.home-winter-20261119 .home-latest-all {
+.home-winter-20261119 .home-latest-all,
+.home-winter-20261119 .home-latest-toggle {
   display: inline-flex;
   align-items: center;
   min-height: 42px;
@@ -237,6 +238,7 @@ body.home-winter-20261119 {
   font-size: 14px;
   font-weight: 800;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .home-winter-20261119 .upcoming-hearings-grid {
@@ -273,7 +275,7 @@ body.home-winter-20261119 {
   background: rgba(255, 253, 248, .72) !important;
 }
 
-/* Replace the 25-tile wall with a 1 + 3 editorial selection. */
+/* Keep all 25 articles, with a calm 1 + 3 lead and an expandable archive. */
 .home-winter-20261119 .home-latest-25 {
   width: 100% !important;
   margin: 0 0 54px !important;
@@ -303,6 +305,24 @@ body.home-winter-20261119 {
   color: #5a6b66 !important;
 }
 
+.home-winter-20261119 .home-latest-head-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.home-winter-20261119 .home-latest-head-controls .home-latest-25-note {
+  flex: 1 1 260px;
+}
+
+.home-winter-20261119 .home-latest-toggle {
+  border-color: var(--winter-ink);
+  color: #fffdf8 !important;
+  background: var(--winter-ink);
+}
+
 .home-winter-20261119 .home-latest-25-grid {
   display: grid !important;
   grid-template-columns: minmax(0, 1.35fr) minmax(320px, .75fr) !important;
@@ -320,21 +340,44 @@ body.home-winter-20261119 {
   box-shadow: 0 8px 22px rgba(23, 61, 55, .08);
 }
 
-.home-winter-20261119 .home-latest-25-card:first-child {
+.home-winter-20261119 .home-latest-25-grid > .home-latest-25-card:first-child {
   grid-row: 1 / 4;
   min-height: 450px;
   padding: 26px !important;
 }
 
-.home-winter-20261119 .home-latest-25-card:first-child strong {
+.home-winter-20261119 .home-latest-25-grid > .home-latest-25-card:first-child strong {
   max-width: 18em;
   font-size: clamp(25px, 3vw, 38px) !important;
   line-height: 1.28 !important;
 }
 
-.home-winter-20261119 .home-latest-25-card:not(:first-child) strong {
+.home-winter-20261119 .home-latest-25-grid > .home-latest-25-card:not(:first-child) strong {
   font-size: 18px !important;
   -webkit-line-clamp: 2 !important;
+}
+
+.home-winter-20261119 .home-latest-more-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(23, 61, 55, .14);
+}
+
+.home-winter-20261119 .home-latest-more-grid[hidden] {
+  display: none !important;
+}
+
+.home-winter-20261119 .home-latest-more-grid .home-latest-25-card {
+  min-height: 168px;
+  padding: 15px !important;
+}
+
+.home-winter-20261119 .home-latest-more-grid .home-latest-25-card strong {
+  font-size: 16px !important;
+  -webkit-line-clamp: 3 !important;
 }
 
 .home-winter-20261119 .home-latest-25-card::after {
@@ -391,6 +434,10 @@ body.home-winter-20261119 {
 @media (max-width: 1023px) {
   .home-winter-20261119 .header-inner {
     min-height: 72px;
+  }
+
+  .home-winter-20261119 .home-latest-more-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -465,7 +512,8 @@ body.home-winter-20261119 {
   }
 
   .home-winter-20261119 .upcoming-hearings-all,
-  .home-winter-20261119 .home-latest-all {
+  .home-winter-20261119 .home-latest-all,
+  .home-winter-20261119 .home-latest-toggle {
     margin-top: 12px;
   }
 
@@ -483,18 +531,36 @@ body.home-winter-20261119 {
   }
 
   .home-winter-20261119 .home-latest-25-card,
-  .home-winter-20261119 .home-latest-25-card:first-child {
+  .home-winter-20261119 .home-latest-25-grid > .home-latest-25-card:first-child {
     grid-row: auto !important;
     min-height: 154px !important;
     padding: 17px !important;
   }
 
-  .home-winter-20261119 .home-latest-25-card:first-child {
+  .home-winter-20261119 .home-latest-25-grid > .home-latest-25-card:first-child {
     min-height: 286px !important;
   }
 
-  .home-winter-20261119 .home-latest-25-card:first-child strong {
+  .home-winter-20261119 .home-latest-25-grid > .home-latest-25-card:first-child strong {
     font-size: 25px !important;
+  }
+
+  .home-winter-20261119 .home-latest-head-controls {
+    justify-content: flex-start;
+  }
+
+  .home-winter-20261119 .home-latest-more-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .home-winter-20261119 .home-latest-more-grid .home-latest-25-card {
+    min-height: 164px !important;
+    padding: 12px !important;
+  }
+
+  .home-winter-20261119 .home-latest-more-grid .home-latest-25-card strong {
+    font-size: 14px !important;
   }
 }
 
