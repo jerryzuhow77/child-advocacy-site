@@ -6,6 +6,7 @@
       cases: '案件',
       features: '專題',
       join: '參與',
+      news: '新聞',
       more: '更多內容',
       title: '最新發布',
       note: '精選近期重要內容；完整文章請前往新聞專區。',
@@ -19,6 +20,7 @@
       cases: '案件',
       features: '专题',
       join: '参与',
+      news: '新闻',
       more: '更多内容',
       title: '最新发布',
       note: '精选近期重要内容；完整文章请前往新闻专区。',
@@ -100,6 +102,12 @@
     const mobileNav = document.querySelector('.mobile-menu > nav');
     const mobileLinks = simplifyNav(mobileNav, navLabels, navHrefs);
     if (mobileNav && mobileLinks.length > 5 && !mobileNav.querySelector('.mobile-menu-more')) {
+      const news = document.createElement('a');
+      news.href = '#home-media-reports';
+      news.textContent = copy.news;
+      news.dataset.hans = TEXT.zhHans.news;
+      mobileNav.append(news);
+
       const more = document.createElement('div');
       more.className = 'mobile-menu-more';
       const toggle = document.createElement('button');
@@ -119,6 +127,12 @@
       });
       more.append(toggle, links);
       mobileNav.append(more);
+
+      mobileNav.addEventListener('click', event => {
+        if (event.target.closest('a')) {
+          mobileNav.closest('details')?.removeAttribute('open');
+        }
+      });
     }
 
     const heroPrimary = hero?.querySelector('.actions .button:first-child span');
