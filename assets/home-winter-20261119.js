@@ -14,7 +14,9 @@
       expandLatest: '展開全部 25 篇',
       collapseLatest: '收合文章',
       hearingCta: '查看最新庭期',
-      hearingAll: '查看完整庭期表'
+      hearingAll: '查看完整庭期表',
+      heroCaption: '剴剴守護意象｜冬日水墨紙雕',
+      heroAlt: '剴剴守護意象：冬日水墨紙雕中穿藍色條紋上衣的孩子背影，非真實肖像或事件現場'
     },
     zhHans: {
       latest: '最新',
@@ -30,7 +32,9 @@
       expandLatest: '展开全部 25 篇',
       collapseLatest: '收起文章',
       hearingCta: '查看最新庭期',
-      hearingAll: '查看完整庭期表'
+      hearingAll: '查看完整庭期表',
+      heroCaption: '剴剴守护意象｜冬日水墨纸雕',
+      heroAlt: '剴剴守护意象：冬日水墨纸雕中穿蓝色条纹上衣的孩子背影，非真实肖像或事件现场'
     }
   };
 
@@ -69,7 +73,7 @@
     const layer = document.createElement('div');
     layer.className = 'winter-snow-layer';
     layer.setAttribute('aria-hidden', 'true');
-    const flakeCount = window.innerWidth <= 760 ? 14 : 24;
+    const flakeCount = window.innerWidth <= 760 ? 18 : 30;
     const flakes = Array.from({ length: flakeCount }, (_, index) => {
       const flake = document.createElement('i');
       flake.className = 'winter-flake';
@@ -104,8 +108,8 @@
           x: random(10, width - 10),
           y: startY,
           rotation: random(0, 180),
-          scale: random(.58, 1.18),
-          opacity: random(.2, .58)
+          scale: random(.75, 1.5),
+          opacity: random(.35, .78)
         });
         gsap.to(flake, {
           x: `+=${random(-54, 54)}`,
@@ -259,6 +263,17 @@
     if (heroPrimary) {
       heroPrimary.textContent = copy.hearingCta;
       heroPrimary.dataset.hans = TEXT.zhHans.hearingCta;
+    }
+
+    const heroImage = hero?.querySelector('.ink-hero-image');
+    const heroCaption = hero?.querySelector('.ink-hero-caption');
+    if (heroImage) {
+      heroImage.alt = copy.heroAlt;
+      heroImage.dataset.hansAlt = TEXT.zhHans.heroAlt;
+    }
+    if (heroCaption) {
+      heroCaption.textContent = copy.heroCaption;
+      heroCaption.dataset.hans = TEXT.zhHans.heroCaption;
     }
 
     const hearingAll = hearings?.querySelector('.upcoming-hearings-all span');

@@ -116,7 +116,7 @@ body.home-winter-20261119 {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
-  object-position: 62% 64% !important;
+  object-position: 83% 64% !important;
   filter: saturate(.78) contrast(.96) brightness(1.02) hue-rotate(4deg);
   transform: scale(1.03);
 }
@@ -143,8 +143,8 @@ body.home-winter-20261119 {
   right: -4%;
   bottom: -8px;
   left: -4%;
-  height: 25%;
-  opacity: .45;
+  height: 36%;
+  opacity: .68;
   background: linear-gradient(165deg, rgba(242, 239, 225, .16), rgba(198, 219, 216, .76));
   clip-path: polygon(0 64%, 8% 52%, 18% 60%, 28% 30%, 38% 54%, 50% 22%, 61% 58%, 72% 36%, 82% 60%, 91% 44%, 100% 63%, 100% 100%, 0 100%);
   filter: drop-shadow(0 -7px 9px rgba(39, 72, 67, .12));
@@ -154,18 +154,18 @@ body.home-winter-20261119 {
   content: "";
   position: absolute;
   inset: 22% -2% 0;
-  opacity: .68;
+  opacity: .82;
   background: linear-gradient(165deg, rgba(255, 253, 248, .4), rgba(218, 232, 230, .82));
   clip-path: polygon(0 63%, 13% 44%, 23% 60%, 35% 29%, 47% 61%, 61% 37%, 75% 63%, 88% 39%, 100% 59%, 100% 100%, 0 100%);
 }
 
 .home-winter-20261119 .winter-paper-lantern {
   position: absolute;
-  bottom: 18px;
-  left: 18px;
-  width: 150px;
+  bottom: 12px;
+  left: 12px;
+  width: 230px;
   aspect-ratio: 1;
-  opacity: .62;
+  opacity: .92;
   background: url('./art/tian-tian-paper-cut-scene-atlas-20260826.webp') 0 50% / 300% 300% no-repeat;
   filter: drop-shadow(0 9px 13px rgba(44, 63, 55, .2)) saturate(.72);
   transform: rotate(-2deg);
@@ -174,11 +174,11 @@ body.home-winter-20261119 {
 .home-winter-20261119 .winter-ronghua-magnolia {
   position: absolute;
   z-index: 0;
-  right: -74px;
-  bottom: -42px;
-  width: 245px;
+  right: -58px;
+  bottom: -36px;
+  width: 310px;
   height: auto;
-  opacity: .14;
+  opacity: .24;
   pointer-events: none;
   mix-blend-mode: multiply;
   filter: saturate(.55) sepia(.08);
@@ -190,8 +190,8 @@ body.home-winter-20261119 {
   top: 0;
   left: 0;
   display: block;
-  width: 1.5px;
-  height: 14px;
+  width: 2px;
+  height: 18px;
   border-radius: 999px;
   background: rgba(255, 255, 255, .86);
   filter: drop-shadow(0 0 3px rgba(225, 239, 242, .72));
@@ -610,21 +610,25 @@ body.home-winter-20261119 {
     min-height: 245px !important;
   }
 
+  .home-winter-20261119 .ink-scroll-hero .ink-hero-image {
+    object-position: 78% 64% !important;
+  }
+
   .home-winter-20261119 .winter-paper-lantern {
     bottom: 10px;
     left: 10px;
-    width: 104px;
+    width: 142px;
   }
 
   .home-winter-20261119 .winter-paper-ridge {
-    height: 31%;
+    height: 39%;
   }
 
   .home-winter-20261119 .winter-ronghua-magnolia {
     right: -58px;
     bottom: -25px;
-    width: 175px;
-    opacity: .1;
+    width: 205px;
+    opacity: .18;
   }
 
   .home-winter-20261119 .ink-scroll-hero .ink-hero-caption {
