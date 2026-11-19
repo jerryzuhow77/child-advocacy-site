@@ -1,1 +1,52 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc"><title id="title">Continuous support for children with diverse needs</title><desc id="desc">An original abstract ink-and-paper-inspired illustration of a school, home, and community garden linked by supportive flowing forms.</desc><defs><linearGradient id="paper" x2="0" y2="1"><stop stop-color="#fffaf0"/><stop offset="1" stop-color="#eadcc8"/></linearGradient><linearGradient id="teal" x2="1" y2=".2"><stop stop-color="#174e50"/><stop offset="1" stop-color="#6b9b91"/></linearGradient><filter id="grain"><feTurbulence baseFrequency=".65" numOctaves="2" stitchTiles="stitch" type="fractalNoise"/><feColorMatrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 .09 0"/><feBlend in="SourceGraphic" mode="multiply"/></filter></defs><rect width="1600" height="900" fill="url(#paper)"/><g opacity=".28" filter="url(#grain)"><rect width="1600" height="900" fill="#c59d61"/></g><circle cx="1260" cy="160" r="78" fill="#e1b652" opacity=".8"/><path d="M0 610C220 410 380 520 575 390s350-95 520 42 335 42 505-130v248c-190 208-365 267-534 172s-334-50-486 105-360 86-580-22Z" fill="url(#teal)"/><path d="M-40 695c192-120 350-136 492-17s300 142 440 25 316-97 470 29 245 87 278 58v110H-40Z" fill="#9b5c48"/><path d="M-15 764c238-66 375-39 516 43s296 64 424-17 269-91 421-7 230 59 294 35v82H-15Z" fill="#f7f0e3"/><g stroke="#284f50" stroke-width="11" stroke-linejoin="round" fill="#fbf4e8"><path d="M157 558V373l135-102 135 102v185Z"/><path d="M690 625V431l135-105 135 105v194Z"/><path d="M1045 633V438l135-104 135 104v195Z"/></g><g fill="#d59b4d"><rect x="196" y="423" width="192" height="135" rx="8"/><rect x="732" y="479" width="186" height="144" rx="8"/><rect x="1088" y="485" width="185" height="142" rx="8"/></g><g fill="#fffaf0" stroke="#345b58" stroke-width="8"><circle cx="320" cy="618" r="25"/><path d="M320 645c-32 15-43 68-23 89m23-89c32 15 43 68 23 89m-23-62-46 40m46-40 45 40"/><circle cx="563" cy="664" r="25"/><path d="M563 690c-32 15-43 68-23 89m23-89c32 15 43 68 23 89m-23-62-46 40m46-40 45 40"/><circle cx="1001" cy="665" r="25"/><path d="M1001 691c-32 15-43 68-23 89m23-89c32 15 43 68 23 89m-23-62-46 40m46-40 45 40"/><circle cx="1322" cy="611" r="25"/><path d="M1322 637c-32 15-43 68-23 89m23-89c32 15 43 68 23 89m-23-62-46 40m46-40 45 40"/></g><g fill="#cf8761"><circle cx="236" cy="683" r="25"/><path d="M236 709c-32 15-43 68-23 89m23-89c32 15 43 68 23 89m-23-62-46 40m46-40 45 40"/></g><g fill="#e1b652"><path d="M99 700q22-95 44 0m-22-83v98M1450 732q22-95 44 0m-22-83v98M1380 760q22-95 44 0m-22-83v98"/></g><g fill="#385e55"><path d="M0 275q95-123 190 0t190 0v45H0ZM1220 330q95-123 190 0t190 0v45h-380Z" opacity=".85"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">從學習到生活持續支持的兒少保護意象</title>
+<desc id="desc">原創現代水墨紙藝風格：三個代表學校、家庭與社區的支持節點，以金色路徑與柔和的青綠、赭紅紙藝環帶連接。</desc>
+<defs>
+  <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff9ed"/><stop offset=".48" stop-color="#f2e4c9"/><stop offset="1" stop-color="#ead7b9"/></linearGradient>
+  <linearGradient id="sea" x1="0" y1=".15" x2="1" y2=".85"><stop stop-color="#164e52"/><stop offset=".58" stop-color="#397879"/><stop offset="1" stop-color="#9bbdb0"/></linearGradient>
+  <linearGradient id="rust" x1=".1" y1="0" x2=".9" y2="1"><stop stop-color="#be714f"/><stop offset="1" stop-color="#8f493a"/></linearGradient>
+  <linearGradient id="gold" x1="0" x2="1"><stop stop-color="#d3a948"/><stop offset=".5" stop-color="#f5dc83"/><stop offset="1" stop-color="#c38d31"/></linearGradient>
+  <filter id="texture"><feTurbulence type="fractalNoise" baseFrequency=".55" numOctaves="3" seed="8"/><feColorMatrix values="1 0 0 0 .35 0 1 0 0 .22 0 0 1 0 .08 0 0 0 .12 0"/><feBlend in="SourceGraphic" mode="multiply"/></filter>
+  <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="9" flood-color="#5e4533" flood-opacity=".19"/></filter>
+</defs>
+<rect width="1600" height="900" fill="url(#paper)"/>
+<rect width="1600" height="900" filter="url(#texture)" opacity=".34"/>
+<circle cx="1312" cy="148" r="86" fill="#e5bd5c" opacity=".82"/>
+<path d="M0 230C182 149 293 187 429 255c148 75 285 34 404-79 130-124 285-147 418-76 131 70 225 59 349-32v230H0Z" fill="#d9c39b" opacity=".43"/>
+<path d="M-43 750c160-153 327-214 515-128 188 86 322 55 458-83 141-142 298-153 487-60 70 35 131 45 183 42v379H-43Z" fill="url(#sea)"/>
+<path d="M-32 805c182-119 340-128 481-21 150 114 300 123 442 15 150-114 310-113 484-1 86 55 161 67 225 43v59H-32Z" fill="url(#rust)" opacity=".95"/>
+<path d="M-20 698c198-64 341-34 474 46 135 81 279 87 420 19 150-72 306-73 466 9 113 58 200 63 260 30v99H-20Z" fill="#fff8eb"/>
+<path d="M164 560C351 391 515 430 670 543s312 101 470-26c132-106 254-108 396-24" fill="none" stroke="url(#gold)" stroke-width="18" stroke-linecap="round"/>
+<path d="M164 560C351 391 515 430 670 543s312 101 470-26c132-106 254-108 396-24" fill="none" stroke="#fff6cf" stroke-width="5" stroke-linecap="round" stroke-dasharray="3 22"/>
+<g filter="url(#shadow)">
+  <g transform="translate(159 432)">
+    <circle cx="0" cy="0" r="106" fill="#fbf5e7" stroke="#1e5557" stroke-width="14"/>
+    <path d="M-51 23V-29L0-69 51-29v52" fill="#c16c4e" stroke="#1e5557" stroke-width="9" stroke-linejoin="round"/>
+    <path d="M-23 23v-44h46v44M-38-29h76" fill="none" stroke="#f8e9bd" stroke-width="8"/>
+    <path d="M-50 49h100" stroke="#d5ad4d" stroke-width="8" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(785 518)">
+    <circle cx="0" cy="0" r="127" fill="#fbf5e7" stroke="#1e5557" stroke-width="14"/>
+    <path d="M-73 35V-31l73-55 73 55v66" fill="#3d7b78" stroke="#1e5557" stroke-width="9" stroke-linejoin="round"/>
+    <path d="M-45-4h25v35h-25zm40 0h25v35H-5zm40 0h25v35H35z" fill="#f3d97b"/>
+    <path d="M-55 46h110" stroke="#c16c4e" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(1373 427)">
+    <circle cx="0" cy="0" r="108" fill="#fbf5e7" stroke="#1e5557" stroke-width="14"/>
+    <path d="M-60 35c12-61 35-91 60-91s48 30 60 91" fill="#9ac1ad" stroke="#1e5557" stroke-width="9"/>
+    <path d="M0-58v92M0-31l-36-26M0-17 38-43M0 4l-49-14M0 18l50-13" stroke="#f4d67a" stroke-width="8" stroke-linecap="round"/>
+    <path d="M-52 45h104" stroke="#c16c4e" stroke-width="10" stroke-linecap="round"/>
+  </g>
+</g>
+<g fill="#f8e9bd" stroke="#204f51" stroke-width="8" stroke-linejoin="round">
+ <path d="M387 658c0-32 25-58 57-58s57 26 57 58v37H387Z"/><circle cx="444" cy="570" r="24"/>
+ <path d="M1058 650c0-32 25-58 57-58s57 26 57 58v37h-114Z"/><circle cx="1115" cy="562" r="24"/>
+</g>
+<path d="M418 681h52M1089 673h52" stroke="#d1a64a" stroke-width="8" stroke-linecap="round"/>
+<g fill="#d4a347">
+ <circle cx="268" cy="673" r="11"/><circle cx="327" cy="703" r="9"/><circle cx="587" cy="694" r="10"/><circle cx="966" cy="713" r="10"/><circle cx="1280" cy="661" r="11"/>
+</g>
+<g fill="#1e5557" opacity=".82">
+ <path d="M71 303q48-116 96 0t96 0v25H71Z"/><path d="M1302 300q45-111 90 0t90 0v25h-180Z"/>
+</g>
+</svg>
