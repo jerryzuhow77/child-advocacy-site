@@ -160,13 +160,30 @@
       !section.classList.contains('ink-scroll-hero')
     );
 
-    sections.forEach(section => {
+    const artScenes = [
+      ['#home-latest-25-20261118', 'is-warm'],
+      ['#kaikai-ten-hearings', 'is-mirrored'],
+      ['#home-special-features', 'is-muted'],
+      ['#home-historical-cases', 'is-mirrored is-muted'],
+      ['#home-memorial', 'is-warm'],
+      ['#join', 'is-muted']
+    ];
+
+    sections.forEach((section, sectionIndex) => {
       section.classList.add('winter-section-panel');
+      section.dataset.winterScene = `${sectionIndex + 1}`;
       if (!section.querySelector(':scope > .winter-section-snowcap')) {
         const snowcap = document.createElement('span');
         snowcap.className = 'winter-section-snowcap';
         snowcap.setAttribute('aria-hidden', 'true');
         section.prepend(snowcap);
+      }
+      const scene = artScenes.find(([selector]) => section.matches(selector));
+      if (scene && !section.querySelector(':scope > .winter-scroll-divider')) {
+        const divider = document.createElement('span');
+        divider.className = `winter-scroll-divider ${scene[1]}`;
+        divider.setAttribute('aria-hidden', 'true');
+        section.insertBefore(divider, section.querySelector(':scope > .winter-section-snowcap')?.nextSibling || section.firstChild);
       }
     });
 
@@ -178,7 +195,9 @@
     const flakeCount = window.innerWidth <= 760 ? 24 : 42;
     const flakes = Array.from({ length: flakeCount }, (_, index) => {
       const flake = document.createElement('i');
-      flake.className = 'winter-page-flake';
+      const depth = index % 7 === 0 ? 'is-near' : index % 3 === 0 ? 'is-far' : 'is-mid';
+      flake.className = `winter-page-flake ${depth}`;
+      flake.dataset.depth = depth;
       flake.style.setProperty('--page-snow-left', `${(index * 29) % 100}%`);
       flake.style.setProperty('--page-snow-duration', `${8 + (index % 10)}s`);
       flake.style.setProperty('--page-snow-delay', `${-(index % 13)}s`);
@@ -200,20 +219,22 @@
         if (!flake.isConnected) return;
         const width = Math.max(window.innerWidth, 320);
         const height = Math.max(window.innerHeight, 640);
+        const isFar = flake.dataset.depth === 'is-far';
+        const isNear = flake.dataset.depth === 'is-near';
         const startY = firstRun ? random(-30, height) : random(-height * .3, -24);
         const endY = height + 40;
         gsap.set(flake, {
           x: random(8, width - 8),
           y: startY,
           rotation: random(0, 180),
-          scale: random(.7, 1.45),
-          opacity: random(.24, .62)
+          scale: isFar ? random(.55, .9) : isNear ? random(1.05, 1.55) : random(.72, 1.25),
+          opacity: isFar ? random(.16, .34) : isNear ? random(.28, .58) : random(.22, .5)
         });
         gsap.to(flake, {
-          x: `+=${random(-72, 72)}`,
+          x: `+=${random(isFar ? -34 : -82, isFar ? 34 : 82)}`,
           y: endY,
           rotation: `+=${random(120, 340)}`,
-          duration: random(9, 17),
+          duration: isFar ? random(16, 24) : isNear ? random(8, 13) : random(11, 18),
           ease: 'none',
           onComplete: () => fall(flake)
         });
@@ -224,6 +245,7 @@
         entries.forEach(entry => {
           if (!entry.isIntersecting) return;
           const cap = entry.target.querySelector(':scope > .winter-section-snowcap');
+          const divider = entry.target.querySelector(':scope > .winter-scroll-divider');
           const heading = entry.target.querySelector('h2');
           if (cap && !cap.dataset.animated) {
             cap.dataset.animated = 'true';
@@ -233,11 +255,36 @@
             );
             gsap.to(cap, { backgroundPositionX: '+=96px', duration: 9, repeat: -1, ease: 'none' });
           }
+          if (divider && !divider.dataset.animated) {
+            divider.dataset.animated = 'true';
+            const mirrored = divider.classList.contains('is-mirrored');
+            gsap.fromTo(divider,
+              { opacity: 0, y: 22, scaleX: mirrored ? -.96 : .96, scaleY: .96 },
+              { opacity: divider.classList.contains('is-muted') ? .78 : 1, y: 0, scaleX: mirrored ? -1 : 1, scaleY: 1, duration: 1.15, ease: 'power2.out' }
+            );
+            gsap.to(divider, {
+              y: -4,
+              duration: 4.8,
+              repeat: -1,
+              yoyo: true,
+              ease: 'sine.inOut'
+            });
+          }
           if (heading && !heading.dataset.winterAnimated) {
             heading.dataset.winterAnimated = 'true';
             gsap.fromTo(heading,
               { opacity: .72, y: 12 },
               { opacity: 1, y: 0, duration: .65, ease: 'power2.out' }
+            );
+          }
+          const cards = [...entry.target.querySelectorAll('.home-card, .home-latest-25-card, .upcoming-hearing')]
+            .filter(card => card.offsetParent !== null)
+            .slice(0, 10);
+          if (cards.length && !entry.target.dataset.cardsAnimated) {
+            entry.target.dataset.cardsAnimated = 'true';
+            gsap.fromTo(cards,
+              { opacity: .72, y: 14 },
+              { opacity: 1, y: 0, duration: .62, stagger: .055, ease: 'power2.out', clearProps: 'transform' }
             );
           }
           observer.unobserve(entry.target);
@@ -263,7 +310,6 @@
     body?.classList.add('home-winter-20261119');
     mountPaperCraft(hero);
     mountSnow(hero);
-    mountPageWinter(main);
 
     if (main && hero && main.firstElementChild !== hero) {
       main.insertBefore(hero, main.firstElementChild);
@@ -271,6 +317,8 @@
     if (hearings && latest) {
       hearings.insertAdjacentElement('afterend', latest);
     }
+
+    mountPageWinter(main);
 
     const latestCollection = grid
       ? organizeLatest(latest, grid)

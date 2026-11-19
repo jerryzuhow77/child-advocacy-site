@@ -152,6 +152,20 @@ body.home-winter-20261119 {
   will-change: transform, opacity;
 }
 
+.home-winter-20261119 .winter-page-flake.is-far {
+  width: 1px;
+  height: 8px;
+  background: rgba(190, 209, 211, .62);
+  filter: blur(.35px) drop-shadow(0 0 2px rgba(255, 255, 255, .9));
+}
+
+.home-winter-20261119 .winter-page-flake.is-near {
+  width: 2px;
+  height: 20px;
+  background: rgba(255, 255, 255, .9);
+  filter: blur(.8px) drop-shadow(0 0 5px rgba(128, 165, 171, .5));
+}
+
 .home-winter-20261119 .winter-page-flake::before,
 .home-winter-20261119 .winter-page-flake::after {
   content: "";
@@ -178,6 +192,43 @@ body.home-winter-20261119 {
 .home-winter-20261119 .winter-section-panel {
   position: relative;
   isolation: isolate;
+}
+
+.home-winter-20261119 .winter-scroll-divider {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: calc(100% + 36px);
+  height: clamp(110px, 14vw, 174px);
+  margin: -25px -18px -18px;
+  pointer-events: none;
+  background: url('./art/home-winter-paper-scroll-divider-20261119.png') center bottom / contain no-repeat;
+  filter: drop-shadow(0 16px 14px rgba(34, 66, 61, .12));
+  transform-origin: center bottom;
+}
+
+.home-winter-20261119 .winter-scroll-divider.is-warm {
+  filter: sepia(.08) saturate(1.06) drop-shadow(0 18px 16px rgba(75, 60, 38, .14));
+}
+
+.home-winter-20261119 .winter-scroll-divider.is-muted {
+  opacity: .78;
+  filter: saturate(.76) drop-shadow(0 14px 13px rgba(34, 66, 61, .1));
+}
+
+.home-winter-20261119 .winter-section-panel h2 {
+  text-wrap: balance;
+}
+
+.home-winter-20261119 .winter-section-panel h2::after {
+  content: "";
+  display: block;
+  width: clamp(58px, 7vw, 92px);
+  height: 4px;
+  margin-top: 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--winter-amber), rgba(213, 150, 67, .08));
+  box-shadow: 18px -3px 0 -1px rgba(255, 255, 255, .92);
 }
 
 .home-winter-20261119 .winter-section-snowcap {
@@ -533,7 +584,45 @@ body.home-winter-20261119 {
   border: 1px solid rgba(23, 61, 55, .18) !important;
   border-radius: 17px 5px 17px 5px !important;
   background: #e3ebe7 !important;
-  box-shadow: 0 8px 22px rgba(23, 61, 55, .08);
+  box-shadow:
+    0 8px 22px rgba(23, 61, 55, .08),
+    inset 0 0 0 1px rgba(255, 255, 255, .48);
+  transition: transform .32s ease, box-shadow .32s ease, border-color .32s ease;
+}
+
+.home-winter-20261119 .home-latest-25-card:hover,
+.home-winter-20261119 .home-latest-25-card:focus-visible,
+.home-winter-20261119 .upcoming-hearing:hover,
+.home-winter-20261119 .upcoming-hearing:focus-within,
+.home-winter-20261119 .home-card:hover,
+.home-winter-20261119 .home-card:focus-within {
+  transform: translateY(-5px);
+  border-color: rgba(213, 150, 67, .64) !important;
+  box-shadow:
+    0 18px 34px rgba(23, 61, 55, .14),
+    inset 0 0 0 1px rgba(255, 255, 255, .7) !important;
+}
+
+.home-winter-20261119 .home-latest-25-card::before {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  top: -3px;
+  right: 10%;
+  left: 10%;
+  height: 10px;
+  border-radius: 0 0 70% 55%;
+  opacity: .74;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .96), rgba(216, 231, 231, .42));
+  box-shadow: 0 4px 8px rgba(47, 78, 74, .09);
+  transition: transform .36s ease, opacity .36s ease;
+}
+
+.home-winter-20261119 .home-latest-25-card:hover::before,
+.home-winter-20261119 .home-latest-25-card:focus-visible::before {
+  opacity: .96;
+  transform: translate3d(0, 5px, 0) rotate(-.4deg);
 }
 
 .home-winter-20261119 .home-latest-25-grid > .home-latest-25-card:first-child {
@@ -640,6 +729,18 @@ body.home-winter-20261119 {
 @media (max-width: 760px) {
   html {
     scroll-padding-top: 82px;
+  }
+
+  .home-winter-20261119 .winter-scroll-divider {
+    width: calc(100% + 20px);
+    height: 92px;
+    margin: -14px -10px -8px;
+    background-size: 148% auto;
+  }
+
+  .home-winter-20261119 .winter-section-panel h2::after {
+    width: 54px;
+    margin-top: 7px;
   }
 
   .home-winter-20261119 main#main-content {
@@ -799,6 +900,12 @@ body.home-winter-20261119 {
 
   .home-winter-20261119 .winter-page-snow-layer {
     display: none !important;
+  }
+
+  .home-winter-20261119 .home-latest-25-card,
+  .home-winter-20261119 .upcoming-hearing,
+  .home-winter-20261119 .home-card {
+    transform: none !important;
   }
 
   .home-winter-20261119 *,
