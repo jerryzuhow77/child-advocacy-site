@@ -153,6 +153,103 @@
     copy.append(magnolia);
   };
 
+  const mountPageWinter = main => {
+    if (!main || document.querySelector('.winter-page-snow-layer')) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const sections = [...main.querySelectorAll(':scope > section')].filter(section =>
+      !section.classList.contains('ink-scroll-hero')
+    );
+
+    sections.forEach(section => {
+      section.classList.add('winter-section-panel');
+      if (!section.querySelector(':scope > .winter-section-snowcap')) {
+        const snowcap = document.createElement('span');
+        snowcap.className = 'winter-section-snowcap';
+        snowcap.setAttribute('aria-hidden', 'true');
+        section.prepend(snowcap);
+      }
+    });
+
+    if (reduceMotion) return;
+
+    const layer = document.createElement('div');
+    layer.className = 'winter-page-snow-layer';
+    layer.setAttribute('aria-hidden', 'true');
+    const flakeCount = window.innerWidth <= 760 ? 24 : 42;
+    const flakes = Array.from({ length: flakeCount }, (_, index) => {
+      const flake = document.createElement('i');
+      flake.className = 'winter-page-flake';
+      flake.style.setProperty('--page-snow-left', `${(index * 29) % 100}%`);
+      flake.style.setProperty('--page-snow-duration', `${8 + (index % 10)}s`);
+      flake.style.setProperty('--page-snow-delay', `${-(index % 13)}s`);
+      layer.append(flake);
+      return flake;
+    });
+    document.body.append(layer);
+
+    const start = () => {
+      const { gsap } = window;
+      if (!gsap) {
+        layer.dataset.animationEngine = 'css';
+        layer.classList.add('winter-page-snow-fallback');
+        return;
+      }
+      layer.dataset.animationEngine = 'gsap';
+      const random = (min, max) => min + Math.random() * (max - min);
+      const fall = (flake, firstRun = false) => {
+        if (!flake.isConnected) return;
+        const width = Math.max(window.innerWidth, 320);
+        const height = Math.max(window.innerHeight, 640);
+        const startY = firstRun ? random(-30, height) : random(-height * .3, -24);
+        const endY = height + 40;
+        gsap.set(flake, {
+          x: random(8, width - 8),
+          y: startY,
+          rotation: random(0, 180),
+          scale: random(.7, 1.45),
+          opacity: random(.24, .62)
+        });
+        gsap.to(flake, {
+          x: `+=${random(-72, 72)}`,
+          y: endY,
+          rotation: `+=${random(120, 340)}`,
+          duration: random(9, 17),
+          ease: 'none',
+          onComplete: () => fall(flake)
+        });
+      };
+      flakes.forEach(flake => fall(flake, true));
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const cap = entry.target.querySelector(':scope > .winter-section-snowcap');
+          const heading = entry.target.querySelector('h2');
+          if (cap && !cap.dataset.animated) {
+            cap.dataset.animated = 'true';
+            gsap.fromTo(cap,
+              { opacity: 0, scaleX: .18, x: -24 },
+              { opacity: .92, scaleX: 1, x: 0, duration: .9, ease: 'power2.out' }
+            );
+            gsap.to(cap, { backgroundPositionX: '+=96px', duration: 9, repeat: -1, ease: 'none' });
+          }
+          if (heading && !heading.dataset.winterAnimated) {
+            heading.dataset.winterAnimated = 'true';
+            gsap.fromTo(heading,
+              { opacity: .72, y: 12 },
+              { opacity: 1, y: 0, duration: .65, ease: 'power2.out' }
+            );
+          }
+          observer.unobserve(entry.target);
+        });
+      }, { rootMargin: '0px 0px -12% 0px', threshold: .08 });
+      sections.forEach(section => observer.observe(section));
+    };
+
+    if (document.readyState === 'complete') start();
+    else window.addEventListener('load', start, { once: true });
+  };
+
   const mount = () => {
     const body = document.body;
     const main = document.querySelector('main#main-content');
@@ -166,6 +263,7 @@
     body?.classList.add('home-winter-20261119');
     mountPaperCraft(hero);
     mountSnow(hero);
+    mountPageWinter(main);
 
     if (main && hero && main.firstElementChild !== hero) {
       main.insertBefore(hero, main.firstElementChild);

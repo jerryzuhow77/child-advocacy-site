@@ -130,6 +130,88 @@ body.home-winter-20261119 {
   contain: paint;
 }
 
+.home-winter-20261119 .winter-page-snow-layer {
+  position: fixed;
+  z-index: 70;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+}
+
+.home-winter-20261119 .winter-page-flake {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 1.7px;
+  height: 15px;
+  border-radius: 999px;
+  background: rgba(146, 180, 188, .78);
+  filter: drop-shadow(0 0 3px rgba(255, 255, 255, .96));
+  will-change: transform, opacity;
+}
+
+.home-winter-20261119 .winter-page-flake::before,
+.home-winter-20261119 .winter-page-flake::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  transform-origin: 50% 50%;
+}
+
+.home-winter-20261119 .winter-page-flake::before {
+  transform: rotate(60deg);
+}
+
+.home-winter-20261119 .winter-page-flake::after {
+  transform: rotate(-60deg);
+}
+
+.home-winter-20261119 .winter-page-snow-fallback .winter-page-flake {
+  left: var(--page-snow-left);
+  animation: winter-page-snow-fall var(--page-snow-duration) linear var(--page-snow-delay) infinite;
+}
+
+.home-winter-20261119 .winter-section-panel {
+  position: relative;
+  isolation: isolate;
+}
+
+.home-winter-20261119 .winter-section-snowcap {
+  position: absolute;
+  z-index: 6;
+  top: -3px;
+  right: clamp(14px, 3vw, 38px);
+  left: clamp(14px, 3vw, 38px);
+  height: 15px;
+  border-top: 2px solid rgba(255, 255, 255, .94);
+  border-radius: 999px 999px 38% 42%;
+  opacity: .86;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 12px 0, rgba(255, 255, 255, .96) 0 13px, transparent 14px) 0 0 / 48px 16px repeat-x,
+    linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(208, 227, 228, .46));
+  box-shadow: 0 5px 12px rgba(56, 91, 88, .12);
+  transform-origin: left center;
+}
+
+@keyframes winter-page-snow-fall {
+  from {
+    opacity: .18;
+    transform: translate3d(0, -30px, 0) rotate(0);
+  }
+  45% {
+    opacity: .58;
+  }
+  to {
+    opacity: .2;
+    transform: translate3d(38px, 110vh, 0) rotate(300deg);
+  }
+}
+
 .home-winter-20261119 .winter-paper-craft {
   position: absolute;
   z-index: 2;
@@ -712,6 +794,10 @@ body.home-winter-20261119 {
 
 @media (prefers-reduced-motion: reduce) {
   .home-winter-20261119 .winter-snow-layer {
+    display: none !important;
+  }
+
+  .home-winter-20261119 .winter-page-snow-layer {
     display: none !important;
   }
 
