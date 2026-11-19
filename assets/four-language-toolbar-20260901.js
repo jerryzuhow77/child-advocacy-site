@@ -87,10 +87,10 @@
   }
   const localeNames = { "zh-Hant": "繁中", "zh-Hans": "簡中", en: "English", ja: "日本語" };
   const copy = {
-    "zh-Hant": { brand:"護童行動聯盟",official:"官方網站",views:"瀏覽",unavailable:"尚未提供此語言版本",aria:"四語頂端工具列",like:"按讚",comment:"留言",bookmark:"收藏",bookmarked:"已收藏" },
+    "zh-Hant": { brand:"護童行動聯盟",official:"官方網站",views:"瀏覽",unavailable:"尚未提供此語言版本",aria:"四語頂端工具列",like:"按讚",comment:"留言",bookmark:"收藏",bookmarked:"已收藏",share:"分享",share:"分享" },
     "zh-Hans": { brand:"护童行动联盟",official:"官方网站",views:"浏览",unavailable:"尚未提供此语言版本",aria:"四语顶端工具栏",like:"点赞",comment:"留言",bookmark:"收藏",bookmarked:"已收藏" },
-    en: { brand:"Child Protection Action Alliance",official:"Official Site",views:"Views",unavailable:"This language edition is not available yet",aria:"Four-language top toolbar",like:"Like",comment:"Comments",bookmark:"Save",bookmarked:"Saved" },
-    ja: { brand:"子ども保護行動連盟",official:"公式サイト",views:"閲覧",unavailable:"この言語版はまだ公開されていません",aria:"4言語トップツールバー",like:"いいね",comment:"コメント",bookmark:"保存",bookmarked:"保存済み" },
+    en: { brand:"Child Protection Action Alliance",official:"Official Site",views:"Views",unavailable:"This language edition is not available yet",aria:"Four-language top toolbar",like:"Like",comment:"Comments",bookmark:"Save",bookmarked:"Saved",share:"Share" },
+    ja: { brand:"子ども保護行動連盟",official:"公式サイト",views:"閲覧",unavailable:"この言語版はまだ公開されていません",aria:"4言語トップツールバー",like:"いいね",comment:"コメント",bookmark:"保存",bookmarked:"保存済み",share:"共有" },
   };
 
   function clientId(){try{let v=localStorage.getItem("cpa_engagement_client_v1");if(!v){v=crypto.randomUUID();localStorage.setItem("cpa_engagement_client_v1",v)}return v}catch(_){return ""}}
@@ -106,7 +106,7 @@
   function isArticle(){return supportsComments(neutralRoute())}
   function supportsComments(route){const path=route.replace(/\/+$/g,"");const articleRoute=/^(?:cases|hearing-records|activity-records|features|historical-cases|news|court-comics)\//.test(path);const articleMetadata=!!document.querySelector('meta[property="og:type"][content="article"],script[type="application/ld+json"]');return !COMMENT_INDEX_ROUTES.has(path)&&(articleRoute||articleMetadata)}
   function ensureComments(){if(document.querySelector('script[data-cpa-site-layer="article-comments"]'))return;const s=document.createElement("script");s.src=`${ROOT}assets/article-comments-20260828.js?v=20260905-comment-key-3`;s.defer=true;s.dataset.cpaSiteLayer="article-comments";document.head.appendChild(s)}
-  function renderEngagement(route,initial){if(!route||!isArticle()||!supportsComments(route)||document.querySelector(".cpa-article-engagement"))return;const words=copy[locale()],key=articleKey(route),bar=document.createElement("section");bar.className="cpa-article-engagement";bar.setAttribute("aria-label",`${words.like}、${words.comment}、${words.bookmark}、${words.views}`);bar.innerHTML=`<button type="button" class="is-like" aria-pressed="false"><span>♡</span><b>${words.like}</b><em>—</em></button><button type="button" class="is-comment"><span>💬</span><b>${words.comment}</b><em>—</em></button><button type="button" class="is-bookmark" aria-pressed="false"><span>☆</span><b>${words.bookmark}</b></button><span class="is-view"><span>◉</span><b>${words.views}</b><em>—</em></span>`;
+  function renderEngagement(route,initial){if(!route||!isArticle()||!supportsComments(route)||document.querySelector(".cpa-article-engagement"))return;const words=copy[locale()],key=articleKey(route),bar=document.createElement("section");bar.className="cpa-article-engagement";bar.setAttribute("aria-label",`${words.like}、${words.comment}、${words.bookmark}、${words.share}、${words.views}`);bar.innerHTML=`<button type="button" class="is-like" aria-pressed="false"><span>♡</span><b>${words.like}</b><em>—</em></button><button type="button" class="is-comment"><span>💬</span><b>${words.comment}</b><em>—</em></button><button type="button" class="is-bookmark" aria-pressed="false"><span>☆</span><b>${words.bookmark}</b></button><span class="is-view"><span>◉</span><b>${words.views}</b><em>—</em></span>`;
     const main=document.querySelector("main")||document.body,anchor=main.querySelector(":scope > article,:scope > .report-wrap")||main.firstElementChild;anchor?anchor.before(bar):main.prepend(bar);
     const like=bar.querySelector(".is-like"),comment=bar.querySelector(".is-comment"),bookmark=bar.querySelector(".is-bookmark"),view=bar.querySelector(".is-view em");
     const liked=hasStored(LIKED_KEY,key);like.setAttribute("aria-pressed",String(liked));if(liked)like.classList.add("is-active");
