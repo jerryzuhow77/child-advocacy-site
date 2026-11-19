@@ -364,11 +364,24 @@ body.home-winter-20261119 {
   border-top: 1px solid rgba(23, 61, 55, .14);
 }
 
-.home-winter-20261119 .mobile-menu-more > summary {
+.home-winter-20261119 .mobile-menu-more-toggle {
+  width: 100%;
   padding: 13px 12px;
+  border: 0;
   color: var(--winter-ink);
+  background: transparent;
   font-weight: 800;
+  text-align: left;
   cursor: pointer;
+}
+
+.home-winter-20261119 .mobile-menu-more-toggle::after {
+  content: "+";
+  float: right;
+}
+
+.home-winter-20261119 .mobile-menu-more-toggle[aria-expanded="true"]::after {
+  content: "−";
 }
 
 .home-winter-20261119 .mobile-menu-more-links {

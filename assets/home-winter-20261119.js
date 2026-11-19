@@ -100,15 +100,24 @@
     const mobileNav = document.querySelector('.mobile-menu > nav');
     const mobileLinks = simplifyNav(mobileNav, navLabels, navHrefs);
     if (mobileNav && mobileLinks.length > 5 && !mobileNav.querySelector('.mobile-menu-more')) {
-      const more = document.createElement('details');
+      const more = document.createElement('div');
       more.className = 'mobile-menu-more';
-      const summary = document.createElement('summary');
-      summary.textContent = copy.more;
-      summary.dataset.hans = TEXT.zhHans.more;
+      const toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'mobile-menu-more-toggle';
+      toggle.textContent = copy.more;
+      toggle.dataset.hans = TEXT.zhHans.more;
+      toggle.setAttribute('aria-expanded', 'false');
       const links = document.createElement('div');
       links.className = 'mobile-menu-more-links';
+      links.hidden = true;
       mobileLinks.slice(5).forEach(link => links.append(link));
-      more.append(summary, links);
+      toggle.addEventListener('click', () => {
+        const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!isOpen));
+        links.hidden = isOpen;
+      });
+      more.append(toggle, links);
       mobileNav.append(more);
     }
 
