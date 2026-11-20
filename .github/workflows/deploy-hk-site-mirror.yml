@@ -67,6 +67,9 @@ jobs:
               root / "en/index.html",
               root / "ja/index.html",
               root / "news/index.html",
+              root / "news/zh-Hans/index.html",
+              root / "assets/news-desk-20260903.css",
+              root / "assets/news-desk-20260903.js",
               root / "hearing-records/prison-watch/kaikai-day6-20250430/index.html",
               root / "assets/legal-notice.js",
               root / "news/child-safety-network-20260914/index.html",
@@ -75,6 +78,16 @@ jobs:
           ]
           missing = [str(path) for path in required if not path.is_file()]
           assert not missing, "Missing required mirror files: " + ", ".join(missing)
+
+          taiwan_news = (root / "news/index.html").read_text(encoding="utf-8")
+          hong_kong_news = (root / "news/zh-Hans/index.html").read_text(encoding="utf-8")
+          news_script = (root / "assets/news-desk-20260903.js").read_text(encoding="utf-8")
+          for marker in ("news-hub-v2", "newsFeatured", "newsSearch", "newsLoadMore"):
+              assert marker in taiwan_news, f"Taiwan news hub is missing {marker}"
+              assert marker in hong_kong_news, f"Hong Kong news hub is missing {marker}"
+          assert "113" in taiwan_news, "Taiwan help route is missing"
+          assert "2343 2255" in hong_kong_news and "999" in hong_kong_news, "Hong Kong help routes are missing"
+          assert "categoryFor" in news_script and "batchSize = 12" in news_script, "News discovery controls are missing"
 
           sitemap = ET.parse(root / "sitemap.xml")
           namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
@@ -478,6 +491,7 @@ jobs:
             /child-advocacy-site/en/
             /child-advocacy-site/ja/
             /child-advocacy-site/news/
+            /child-advocacy-site/news/zh-Hans/
             /child-advocacy-site/news/daily-child-protection-brief-20260918/zh-Hans/
             /news/child-safety-network-20260914/
             /news/child-safety-network-20260914/zh-Hans/
@@ -509,3 +523,9 @@ jobs:
             done
             test -n "$ok" || { echo "Mirror verification failed: $path status=${code:-none}"; exit 1; }
           done
+
+          news_code="$(curl --connect-timeout 10 --max-time 25 -sS -o /tmp/hk-news.html -w '%{http_code}' 'https://cn.globalprotectionwall.com/child-advocacy-site/news/zh-Hans/' || true)"
+          test "$news_code" = 200 || { echo "Hong Kong news hub failed: status=${news_code:-none}"; exit 1; }
+          grep -q 'news-hub-v2' /tmp/hk-news.html || { echo 'Hong Kong news hub marker is missing'; exit 1; }
+          grep -q '2343 2255' /tmp/hk-news.html || { echo 'Hong Kong help route is missing'; exit 1; }
+
