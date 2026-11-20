@@ -3,6 +3,7 @@
 
   const ROOT = '/child-advocacy-site/';
   const reports = {
+    whoWasDeceived20261120:{"date":"2026-11-20","priority":-30,"languages":["zh-Hant","zh-Hans"],"publisher":{"zh-Hant":"首頁置頂專題・案件資訊時間線","zh-Hans":"首页置顶专题・案件信息时间线"},"title":{"zh-Hant":"誰被騙？誰刻意隱瞞？","zh-Hans":"谁被骗？谁刻意隐瞒？"},"summary":{"zh-Hant":"從額頭大片瘀傷、接連掉牙，到延後告知外婆：把時間點排在一起，檢視「遭欺騙、被隱瞞」的辯方主張。","zh-Hans":"从额头大片瘀伤、接连掉牙，到延后告知外婆：把时间点排在一起，检视“遭欺骗、被隐瞒”的辩方主张。"},"article":{"zh-Hant":"/child-advocacy-site/news/who-was-deceived-20261120/","zh-Hans":"/child-advocacy-site/news/who-was-deceived-20261120/zh-Hans/"},"source":{"zh-Hant":"/child-advocacy-site/news/who-was-deceived-20261120/","zh-Hans":"/child-advocacy-site/news/who-was-deceived-20261120/zh-Hans/"},"image":"/child-advocacy-site/assets/images/news/who-was-deceived-20261120/who-was-deceived-hero.jpg","alt":{"zh-Hant":"誰被騙、誰刻意隱瞞案件時間線倡議圖卡","zh-Hans":"谁被骗、谁刻意隐瞒案件时间线倡议图卡"},"credit":{"zh-Hant":"主視覺由倡議者提供；圖中文字為案件時間線之倡議整理，不等同法院判決或正式筆錄。","zh-Hans":"主视觉由倡议者提供；图中文字为案件时间线的倡议整理，不等同法院判决或正式笔录。"}},
     taipeiMediationPath20261120:{"date":"2026-11-20","priority":-20,"languages":["zh-Hant","zh-Hans","en","ja"],"publisher":{"zh-Hant":"制度追蹤・置頂快報","zh-Hans":"制度追踪・置顶快报","en":"Policy watch · Pinned report","ja":"制度追跡・注目速報"},"title":{"zh-Hant":"調解延期後：家長的救濟路徑不能失聯","zh-Hans":"调解延期后：家长的救济路径不能失联","en":"After mediation is postponed: parents must not lose the path to remedy","ja":"調停延期後：保護者の救済への道を途切れさせない"},"summary":{"zh-Hant":"調解延期是程序進度，不代表任何一方責任已被認定；家庭仍需要可近的資訊、支持與可追蹤的救濟路徑。","zh-Hans":"调解延期是程序进度，不代表任何一方责任已被认定；家庭仍需要可及的信息、支持与可追踪的救济路径。","en":"A postponed mediation is a procedural development, not a finding of responsibility. Families still need accessible information, support and traceable routes to remedy.","ja":"調停の延期は手続の進展であり、誰かの責任が認定されたことを意味しません。家族には、利用しやすい情報、支援、追跡可能な救済への道が必要です。"},"article":{"zh-Hant":"/child-advocacy-site/news/taipei-mediation-path-20261120/","zh-Hans":"/child-advocacy-site/news/taipei-mediation-path-20261120/zh-Hans/","en":"/child-advocacy-site/news/taipei-mediation-path-20261120/en/","ja":"/child-advocacy-site/news/taipei-mediation-path-20261120/ja/"},"source":"https://legalaffairs.gov.taipei/","image":"/child-advocacy-site/assets/art/taipei-mediation-path-20261120-hero.jpg?v=20261120-2","alt":{"zh-Hant":"現代水墨紙藝：兩張椅子、圓桌、卷宗與通往光線的路徑；非事件現場","zh-Hans":"现代水墨纸艺：两张椅子、圆桌、卷宗与通往光线的路径；非事件现场","en":"Contemporary ink-and-paper artwork of two chairs, a round table, records and a path toward light; not an incident scene.","ja":"二つの椅子、円卓、記録、光へ向かう道を描く現代水墨紙作品。事件現場ではありません。"},"credit":{"zh-Hant":"護童行動聯盟原創現代水墨紙藝；非事件現場。","zh-Hans":"护童行动联盟原创现代水墨纸艺；非事件现场。","en":"Original contemporary ink-and-paper artwork by Child Protection Action Alliance; not an incident scene.","ja":"子ども保護行動連盟によるオリジナル現代水墨紙作品。事件現場ではありません。"}},
     campusSafeguarding20261031:{"date":"2026-10-31","priority":-10,"languages":["zh-Hant","zh-Hans","en","ja"],"publisher":{"zh-Hant":"每日護童快報","zh-Hans":"每日护童快报","en":"Daily Child Protection Brief","ja":"毎日子ども保護速報"},"title":{"zh-Hant":"校園性侵案移審續押：司法程序之外，誰負責補上校安缺口？","zh-Hans":"校园性侵案移审续押：司法程序之外，谁负责补上校安缺口？","en":"After indictment, who closes the safeguarding gaps?","ja":"起訴・勾留継続の先に、学校安全の穴を誰が埋めるのか"},"summary":{"zh-Hant":"北院裁定被告續押禁見；起訴不是定罪。教育部承諾檢討校安機制，後續追蹤通報、監督與長期支持。","zh-Hans":"台北地院裁定被告继续羁押并禁止接见通信；起诉不是定罪。后续追踪通报、监督与长期支持。","en":"The court ordered continued detention. Indictment is not conviction; reporting, supervision and long-term support require scrutiny.","ja":"裁判所は勾留継続を決定。起訴は有罪判決ではなく、通報、監督、長期支援の改善を追います。"},"article":{"zh-Hant":"/child-advocacy-site/news/campus-safeguarding-review-20261031/","zh-Hans":"/child-advocacy-site/news/campus-safeguarding-review-20261031/zh-Hans/","en":"/child-advocacy-site/news/campus-safeguarding-review-20261031/en/","ja":"/child-advocacy-site/news/campus-safeguarding-review-20261031/ja/"},"source":"https://www.cna.com.tw/news/asoc/202610300252.aspx","image":"/child-advocacy-site/assets/art/campus-safeguarding-modern-ink-hires-20261031.webp?v=20261031-webp-final","alt":{"zh-Hant":"原創水墨紙藝：空校園長廊、安全門、檔案卡與守護金線，非事件現場，不含人物。","zh-Hans":"原创水墨纸艺：空校园长廊、安全门、档案卡与守护金线，非事件现场，不含人物。","en":"Original ink-and-paper artwork of an empty school corridor, a safe doorway, records and a protective gold line; not an incident scene.","ja":"空の学校廊下、安全な扉、記録、守護の金線を描いたオリジナル水墨紙作品。事件現場ではありません。"},"credit":{"zh-Hant":"護童行動聯盟原創 SVG 水墨紙藝意象；非事件現場，不含可辨識兒少、校園或當事人。","zh-Hans":"护童行动联盟原创 SVG 水墨纸艺意象；非事件现场，不含可识别儿童、校园或当事人。","en":"Original AI-assisted contemporary ink-and-paper visual by Child Protection Action Alliance; not an incident scene and contains no identifiable child, school or party.","ja":"子ども保護行動連盟によるオリジナルSVG水墨紙作品。事件現場ではなく、識別可能な子ども、学校、当事者を含みません。"}},
     taichungSafety20261028:{"date":"2026-10-28","priority":-2,"languages":["zh-Hant","zh-Hans","en","ja"],"publisher":{"zh-Hant":"每日護童快報","zh-Hans":"每日护童快报","en":"Daily Child Protection Brief","ja":"毎日子ども保護速報"},"title":{"zh-Hant":"街頭警訊被看見之後：台中女童案，保護如何接手？","zh-Hans":"街头警讯被看见之后：台中女童案，保护如何接手？","en":"After a street warning is seen: who follows through for the child?","ja":"街頭の警告が見えた後に：台中の女児を誰が守り続けるのか"},"summary":{"zh-Hant":"警方主動調查、社工介入，是已公開的最新進展；孩子是否持續安全，仍須追蹤。","zh-Hans":"警方主动调查、社工介入，是已公开的最新进展；孩子是否持续安全，仍须追踪。","en":"Police investigation and social-worker involvement are the reported developments. The child’s continuing safety remains a follow-up question.","ja":"警察の調査とソーシャルワーカーの関与が公表された進展です。子どもの安全が継続して確保されるか、追跡が必要です。"},"article":{"zh-Hant":"https://jerryzuhow77.github.io/child-advocacy-site/news/taichung-child-safety-response-20261028/","zh-Hans":"https://cn.globalprotectionwall.com/child-advocacy-site/news/taichung-child-safety-response-20261028/zh-Hans/","en":"https://jerryzuhow77.github.io/child-advocacy-site/news/taichung-child-safety-response-20261028/en/","ja":"https://jerryzuhow77.github.io/child-advocacy-site/news/taichung-child-safety-response-20261028/ja/"},"source":"https://www.cna.com.tw/news/aloc/202610270205.aspx","image":"/child-advocacy-site/assets/art/taichung-child-safety-response-20261028-hero.webp","alt":{"zh-Hant":"原創AI輔助水墨紙藝：虛構城市的安全入口，非台中街景或事件重建，無可辨識兒少。","zh-Hans":"原创AI辅助水墨纸艺：虚构城市的安全入口，非台中街景或事件重建，无可识别儿童。","en":"Original AI-assisted ink-and-paper artwork of a fictional city’s safe doorway; not Taichung scenery or an incident reconstruction. No identifiable children.","ja":"AI補助によるオリジナル水墨紙作品。架空の街の安全な入口で、台中の風景や事件の再現ではありません。識別できる子どもはいません。"},"credit":{"zh-Hant":"原創AI輔助水墨紙藝：虛構城市的安全入口，非台中街景或事件重建，無可辨識兒少。","zh-Hans":"原创AI辅助水墨纸艺：虚构城市的安全入口，非台中街景或事件重建，无可识别儿童。","en":"Original AI-assisted ink-and-paper artwork of a fictional city’s safe doorway; not Taichung scenery or an incident reconstruction. No identifiable children.","ja":"AI補助によるオリジナル水墨紙作品。架空の街の安全な入口で、台中の風景や事件の再現ではありません。識別できる子どもはいません。"}},
@@ -51,25 +52,33 @@
       source: '原始資料',
       read: '閱讀本站整理',
       original: '原始報導',
-      unavailable: '圖片暫時無法載入。', items: Object.values(reports)
+      unavailable: '圖片暫時無法載入。',
+      results: (shown, total) => `顯示 ${shown} 篇，共 ${total} 篇`,
+      items: Object.values(reports)
     },
     'zh-Hans': {
       source: '原始资料',
       read: '阅读本站整理',
       original: '原始报道',
-      unavailable: '图片暂时无法载入。', items: Object.values(reports)
+      unavailable: '图片暂时无法载入。',
+      results: (shown, total) => `显示 ${shown} 篇，共 ${total} 篇`,
+      items: Object.values(reports)
     },
     en: {
       source: 'Original source',
       read: 'Read our brief',
       original: 'Original report',
-      unavailable: 'The image is temporarily unavailable.', items: Object.values(reports)
+      unavailable: 'The image is temporarily unavailable.',
+      results: (shown, total) => `Showing ${shown} of ${total}`,
+      items: Object.values(reports)
     },
     ja: {
       source: '原資料',
       read: '本サイトの整理を読む',
       original: '元の報道',
-      unavailable: '画像を読み込めません。', items: Object.values(reports)
+      unavailable: '画像を読み込めません。',
+      results: (shown, total) => `${total}件中${shown}件を表示`,
+      items: Object.values(reports)
     }
   };
 
@@ -101,6 +110,22 @@
       link.rel = 'noopener noreferrer';
     }
     return link;
+  }
+
+  function articleUrl(item, language) {
+    return typeof item.article === 'string' ? item.article : item.article[language];
+  }
+
+  function sourceUrl(item, language) {
+    return typeof item.source === 'string' ? item.source : item.source[language];
+  }
+
+  function categoryFor(item, language) {
+    const text = `${item.publisher?.[language] || ''} ${item.title?.[language] || ''}`.toLowerCase();
+    if (/活動|活动|行動|行动|倡議|倡议|聲明|声明|抗議|抗议|展覽|展览|募款|campaign|advocacy|rally|protest|statement|exhibition/.test(text)) return 'action';
+    if (/法庭|法院|司法|裁判|裁定|判決|開庭|審理|上訴|訴訟|案件|hearing|court|trial|ruling|appeal|法廷|裁判|審理|事件/.test(text)) return 'case';
+    if (/制度|政策|治理|監督|修法|法案|法規|權益|稽核|社工|安置|托育|policy|governance|law|rights|reform|制度|政策|監督|法改正/.test(text)) return 'policy';
+    return 'safety';
   }
 
   function renderCard(item, words, language, index) {
@@ -138,8 +163,8 @@
     meta.append(time, publisher);
 
     const title = document.createElement('h3');
-    const articleUrl = typeof item.article === 'string' ? item.article : item.article[language];
-    const titleLink = makeLink('', articleUrl, item.title[language]);
+    const url = articleUrl(item, language);
+    const titleLink = makeLink('', url, item.title[language]);
     title.appendChild(titleLink);
     const summary = document.createElement('p');
     summary.textContent = item.summary[language];
@@ -147,13 +172,58 @@
     const actions = document.createElement('div');
     actions.className = 'news-card-actions';
     actions.append(
-      makeLink('news-read-link', articleUrl, `${words.read} →`),
-      makeLink('news-source-link', item.source, `${words.original} ↗`, true)
+      makeLink('news-read-link', url, words.read),
+      makeLink('news-source-link', sourceUrl(item, language), words.original, true)
     );
 
     body.append(meta, title, summary, actions);
     article.append(figure, body);
     return article;
+  }
+
+  function renderFeatured(item, words, language) {
+    const wrapper = document.createElement('article');
+    wrapper.className = 'news-featured-card';
+
+    const figure = document.createElement('figure');
+    figure.className = 'news-featured-media';
+    const photo = document.createElement('img');
+    photo.src = item.image;
+    photo.alt = item.alt[language];
+    photo.loading = 'eager';
+    photo.decoding = 'async';
+    const credit = document.createElement('figcaption');
+    credit.textContent = item.credit?.[language] || words.unavailable;
+    photo.addEventListener('error', () => {
+      photo.hidden = true;
+      figure.classList.add('is-photo-unavailable');
+      credit.textContent = words.unavailable;
+    }, { once: true });
+    figure.append(photo, credit);
+
+    const copy = document.createElement('div');
+    copy.className = 'news-featured-copy';
+    const meta = document.createElement('div');
+    meta.className = 'news-card-meta';
+    const time = document.createElement('time');
+    time.dateTime = item.date;
+    time.textContent = formatDate(item.date, language);
+    const publisher = document.createElement('span');
+    publisher.textContent = item.publisher[language];
+    meta.append(time, publisher);
+    const title = document.createElement('h3');
+    title.append(makeLink('', articleUrl(item, language), item.title[language]));
+    const summary = document.createElement('p');
+    summary.textContent = item.summary[language];
+    const actions = document.createElement('div');
+    actions.className = 'news-card-actions';
+    actions.append(
+      makeLink('news-read-link', articleUrl(item, language), words.read),
+      makeLink('news-source-link', sourceUrl(item, language), words.original, true)
+    );
+    copy.append(meta, title, summary, actions);
+    wrapper.append(figure, copy);
+    return wrapper;
   }
 
   function init() {
@@ -165,10 +235,62 @@
       const dateDifference = Date.parse(`${b.date}T12:00:00+08:00`) - Date.parse(`${a.date}T12:00:00+08:00`);
       return dateDifference || a.priority - b.priority;
     });
-    grid.replaceChildren(...items.map((item, index) => renderCard(item, words, language, index)));
+
+    const enhanced = document.body.classList.contains('news-hub-v2');
+    if (!enhanced) {
+      grid.replaceChildren(...items.map((item, index) => renderCard(item, words, language, index)));
+      grid.dataset.rendered = 'true';
+      return;
+    }
+
+    const featured = document.getElementById('newsFeatured');
+    if (featured && items[0]) featured.replaceChildren(renderFeatured(items[0], words, language));
+
+    const search = document.getElementById('newsSearch');
+    const filters = [...document.querySelectorAll('[data-news-filter]')];
+    const count = document.getElementById('newsResultCount');
+    const empty = document.getElementById('newsEmpty');
+    const loadMore = document.getElementById('newsLoadMore');
+    const batchSize = 12;
+    let activeCategory = 'all';
+    let limit = batchSize;
+
+    function render() {
+      const query = (search?.value || '').trim().toLocaleLowerCase(language === 'zh-Hant' ? 'zh-TW' : language === 'zh-Hans' ? 'zh-CN' : language);
+      const matching = items.filter((item) => {
+        if (activeCategory !== 'all' && categoryFor(item, language) !== activeCategory) return false;
+        if (!query) return true;
+        const haystack = [item.title?.[language], item.summary?.[language], item.publisher?.[language], item.date]
+          .filter(Boolean).join(' ').toLocaleLowerCase();
+        return haystack.includes(query);
+      });
+      const visible = matching.slice(0, limit);
+      grid.replaceChildren(...visible.map((item, index) => renderCard(item, words, language, index)));
+      if (count) count.textContent = words.results(visible.length, matching.length);
+      if (empty) empty.hidden = matching.length !== 0;
+      if (loadMore) loadMore.hidden = visible.length >= matching.length;
+    }
+
+    search?.addEventListener('input', () => {
+      limit = batchSize;
+      render();
+    });
+    filters.forEach((button) => button.addEventListener('click', () => {
+      activeCategory = button.dataset.newsFilter || 'all';
+      limit = batchSize;
+      filters.forEach((candidate) => candidate.setAttribute('aria-pressed', String(candidate === button)));
+      render();
+    }));
+    loadMore?.addEventListener('click', () => {
+      limit += batchSize;
+      render();
+    });
+
+    render();
     grid.dataset.rendered = 'true';
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
   else init();
 })();
+
