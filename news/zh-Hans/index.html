@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>新闻专区｜护童行动联盟</title>
-<meta name="description" content="护童行动联盟新闻专区，依日期由新到旧整理重要媒体报道，清楚区分媒体叙述、诉讼主张与法院认定。">
+<meta name="description" content="护童行动联盟香港镜像新闻中心，整合最新报道、案件与法庭、制度政策及儿童安全信息，提供搜索、分类与香港官方求助入口。">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="theme-color" content="#f2d8dc">
 <link rel="canonical" href="https://cn.globalprotectionwall.com/child-advocacy-site/news/zh-Hans/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="护童行动联盟">
 <meta property="og:title" content="新闻专区｜护童行动联盟">
-<meta property="og:description" content="重要媒体报道依日期由新到旧，以精致纸雕与黏土艺术主视觉及可横向滑动的卡片呈现。">
+<meta property="og:description" content="整合最新报道、案件与法庭、制度政策及儿童安全信息，快速找到重要追踪与香港官方求助入口。">
 <meta property="og:url" content="https://cn.globalprotectionwall.com/child-advocacy-site/news/zh-Hans/">
 <meta property="og:image" content="https://jerryzuhow77.github.io/child-advocacy-site/assets/images/lin-xinci-inkwash-hero-20260903.png">
-<link rel="stylesheet" href="/child-advocacy-site/assets/news-desk-20260903.css?v=20261031-mobile-hero-1">
+<link rel="stylesheet" href="/child-advocacy-site/assets/news-desk-20260903.css?v=20261120-regional-news-hub-1">
 <link data-cpa-four-language-toolbar-style rel="stylesheet" href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5">
 <script data-cpa-four-language-toolbar-flag>window.__cpaFourLanguageToolbar=true;</script>
 <link rel="alternate" hreflang="en" href="https://jerryzuhow77.github.io/child-advocacy-site/en/news/">
@@ -22,7 +22,7 @@
 <link rel="alternate" hreflang="zh-Hans" href="https://cn.globalprotectionwall.com/child-advocacy-site/news/zh-Hans/">
 <link rel="alternate" hreflang="zh-Hant" href="https://jerryzuhow77.github.io/child-advocacy-site/news/">
 </head>
-<body class="news-desk">
+<body class="news-desk news-hub-v2">
 <a class="news-skip" href="#newsDeskGrid">跳至新闻列表</a>
 <header class="news-topbar" aria-label="新闻专区顶端工具栏">
 <a class="news-brand" href="/child-advocacy-site/?lang=zh-Hans"><span class="news-brand-mark" aria-hidden="true">♥</span><span>护童行动联盟</span></a>
@@ -42,10 +42,10 @@
 <section class="news-hero">
 <div class="news-shell news-hero-card">
 <div>
-<div class="news-eyebrow">MEDIA REPORTS · 新闻专区</div>
-<h1>新闻专区</h1>
-<p>把重要新闻放回完整脉络，清楚标示媒体、照片与摄影来源，也把媒体报导、诉讼主张及法院认定分开阅读。</p>
-<span class="news-sort-note">日期由新到旧排列</span>
+<div class="news-eyebrow">HONG KONG MIRROR · NEWS &amp; FOLLOW-UP</div>
+<h1>最新消息与持续追踪</h1>
+<p>整合儿童保护案件、司法进度、制度改革与公共行动。香港镜像站与台湾主站同步更新，并提供香港本地求助入口。</p>
+<div class="news-hero-actions"><span class="news-sort-note">香港镜像・最新优先</span><a class="news-hero-link" href="/child-advocacy-site/?lang=zh-Hans#news-flash">浏览最新快报</a></div>
 </div>
 <figure class="news-pastel-frame">
 <img src="../../assets/images/lin-xinci-inkwash-hero-20260903.png?v=20260903-inkwash-1" alt="中国传统水墨山景、访视纪录与穿深蓝及浅蓝条纹衣的剀剀背影意象" width="1536" height="960">
@@ -53,18 +53,53 @@
 </figure>
 </div>
 </section>
+<section class="news-shell news-featured-section" aria-labelledby="newsFeaturedTitle">
+<header class="news-section-heading">
+<div><span>EDITOR'S FOCUS</span><h2 id="newsFeaturedTitle">今日焦点</h2></div>
+<p>从最新发布内容开始，快速掌握值得持续追踪的保护议题。</p>
+</header>
+<div class="news-featured" id="newsFeatured" aria-live="polite"></div>
+</section>
 <section class="news-shell" aria-labelledby="newsListTitle">
 <header class="news-list-head">
-<h2 id="newsListTitle">媒体报导整理</h2>
-<p>卡片依新闻日期自动排序；可用手指、滑鼠或触控板横向移动，最新报导排在最前。</p>
+<h2 id="newsListTitle">全部报道</h2>
+<p>搜索关键词或按主题筛选；最新发布内容排在最前。</p>
 </header>
+<div class="news-tools" aria-label="新闻搜索与分类">
+<label class="news-search" for="newsSearch"><span>搜索</span><input id="newsSearch" type="search" autocomplete="off" placeholder="搜索标题、摘要或来源类型"></label>
+<div class="news-filters" role="group" aria-label="按主题筛选">
+<button type="button" data-news-filter="all" aria-pressed="true">全部</button>
+<button type="button" data-news-filter="case" aria-pressed="false">案件与法庭</button>
+<button type="button" data-news-filter="policy" aria-pressed="false">制度政策</button>
+<button type="button" data-news-filter="safety" aria-pressed="false">安全与支持</button>
+<button type="button" data-news-filter="action" aria-pressed="false">公共行动</button>
+</div>
+<output class="news-result-count" id="newsResultCount" aria-live="polite"></output>
+</div>
 <div class="news-grid" id="newsDeskGrid" aria-live="polite"></div>
+<p class="news-empty" id="newsEmpty" hidden>没有找到符合条件的内容，请尝试其他关键词或分类。</p>
+<div class="news-load-row"><button class="news-load-more" id="newsLoadMore" type="button">显示更多报道</button></div>
 <p class="news-rights">新闻摘要由本站整理；原始报导文字、真人照片与影音之著作权，均属原媒体、摄影者或其他权利人。每张照片均于卡片中标示来源。</p>
 </section>
+<section class="news-shell news-help" aria-labelledby="hongKongHelpTitle">
+<div>
+<span class="news-help-kicker">HONG KONG · 需要即时协助</span>
+<h2 id="hongKongHelpTitle">怀疑儿童受到伤害或虐待，请尽快联系专业人员</h2>
+<p>可致电香港社会福利署热线 2343 2255，或联络老师、社工、医生及警方；如遇紧急情况，请立即拨打 999。</p>
+</div>
+<div class="news-help-actions">
+<a href="tel:23432255"><strong>2343 2255</strong><span>社会福利署热线</span></a>
+<a href="https://www.swd.gov.hk/sc/svcdesk/faqs/familyandc/" target="_blank" rel="noopener noreferrer"><strong>官方指引</strong><span>怀疑虐儿求助方法</span></a>
+<a href="tel:999"><strong>999</strong><span>紧急求助</span></a>
+</div>
+<p class="news-help-source">求助信息来源：香港社会福利署及香港警务处。本站不是紧急服务单位。</p>
+</section>
+<noscript><p class="news-shell news-noscript">新闻列表需要 JavaScript 才能显示。如遇紧急情况，请拨打 999；其他怀疑虐儿个案可致电社会福利署热线 2343 2255。</p></noscript>
 </main>
 <footer class="news-footer">愿下一个孩子，在伤害发生以前，就有人伸手接住。</footer>
-<script src="/child-advocacy-site/assets/news-desk-20260903.js?v=20261031-campus-safeguarding-1" defer></script>
+<script src="/child-advocacy-site/assets/news-desk-20260903.js?v=20261120-regional-news-hub-1" defer></script>
 <script data-cpa-four-language-toolbar-script src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"></script>
 <script data-cpa-legal-notice-script src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"></script>
 </body>
 </html>
+

@@ -15,17 +15,17 @@
 })();
 </script>
 <title>新聞專區｜護童行動聯盟</title>
-<meta name="description" content="護童行動聯盟新聞專區，依日期由新到舊整理重要媒體報導，清楚區分媒體敘述、訴訟主張與法院認定。">
+<meta name="description" content="護童行動聯盟台灣新聞中心，整合最新報導、案件與法庭、制度政策及兒少安全資訊，提供搜尋、分類與官方求助入口。">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="theme-color" content="#f2d8dc">
 <link rel="canonical" href="https://jerryzuhow77.github.io/child-advocacy-site/news/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="護童行動聯盟">
 <meta property="og:title" content="新聞專區｜護童行動聯盟">
-<meta property="og:description" content="重要媒體報導依日期新到舊，以紙雕與陶土藝術主視覺及可橫向滑動的卡片呈現。">
+<meta property="og:description" content="整合最新報導、案件與法庭、制度政策及兒少安全資訊，快速找到重要追蹤與官方求助入口。">
 <meta property="og:url" content="https://jerryzuhow77.github.io/child-advocacy-site/news/">
 <meta property="og:image" content="https://jerryzuhow77.github.io/child-advocacy-site/assets/images/lin-xinci-inkwash-hero-20260903.png">
-<link rel="stylesheet" href="/child-advocacy-site/assets/news-desk-20260903.css?v=20261031-mobile-hero-1">
+<link rel="stylesheet" href="/child-advocacy-site/assets/news-desk-20260903.css?v=20261120-regional-news-hub-1">
 <link data-cpa-four-language-toolbar-style rel="stylesheet" href="/child-advocacy-site/assets/four-language-toolbar-20260901.css?v=20260909-5">
 <script data-cpa-four-language-toolbar-flag>window.__cpaFourLanguageToolbar=true;</script>
 <link rel="alternate" hreflang="en" href="https://jerryzuhow77.github.io/child-advocacy-site/en/news/">
@@ -33,7 +33,7 @@
 <link rel="alternate" hreflang="zh-Hans" href="https://cn.globalprotectionwall.com/child-advocacy-site/news/zh-Hans/">
 <link rel="alternate" hreflang="zh-Hant" href="https://jerryzuhow77.github.io/child-advocacy-site/news/">
 </head>
-<body class="news-desk">
+<body class="news-desk news-hub-v2">
 <a class="news-skip" href="#newsDeskGrid">跳至新聞列表</a>
 <header class="news-topbar" aria-label="新聞專區頂端工具列">
 <a class="news-brand" href="/child-advocacy-site/"><span class="news-brand-mark" aria-hidden="true">♥</span><span>護童行動聯盟</span></a>
@@ -53,10 +53,10 @@
 <section class="news-hero">
 <div class="news-shell news-hero-card">
 <div>
-<div class="news-eyebrow">MEDIA REPORTS · 新聞專區</div>
-<h1>新聞專區</h1>
-<p>把重要新聞放回完整脈絡，清楚標示媒體、照片與攝影來源，也把媒體報導、訴訟主張及法院認定分開閱讀。</p>
-<span class="news-sort-note">日期由新到舊排列</span><p><a href="/child-advocacy-site/news/pinned-reports/">查看置頂快報專區 →</a></p>
+<div class="news-eyebrow">TAIWAN · NEWS &amp; FOLLOW-UP</div>
+<h1>最新消息與持續追蹤</h1>
+<p>整合兒少保護案件、司法進度、制度改革與公共行動。每一筆記錄，都為了讓重要事實不被時間掩埋。</p>
+<div class="news-hero-actions"><span class="news-sort-note">台灣站・最新優先</span><a class="news-hero-link" href="/child-advocacy-site/news/pinned-reports/">瀏覽置頂快報</a></div>
 </div>
 <figure class="news-pastel-frame">
 <img src="/child-advocacy-site/assets/images/lin-xinci-inkwash-hero-20260903.png?v=20260903-inkwash-1" alt="中國傳統水墨山景、訪視紀錄與穿深藍及淺藍條紋衣的剴剴背影意象" width="1536" height="960">
@@ -64,19 +64,54 @@
 </figure>
 </div>
 </section>
+<section class="news-shell news-featured-section" aria-labelledby="newsFeaturedTitle">
+<header class="news-section-heading">
+<div><span>EDITOR'S FOCUS</span><h2 id="newsFeaturedTitle">今日焦點</h2></div>
+<p>從最新發布內容開始，快速掌握值得持續追蹤的保護議題。</p>
+</header>
+<div class="news-featured" id="newsFeatured" aria-live="polite"></div>
+</section>
 <section class="news-shell" aria-labelledby="newsListTitle">
 <header class="news-list-head">
-<h2 id="newsListTitle">媒體報導整理</h2>
-<p>卡片依新聞日期自動排序；可用手指、滑鼠或觸控板橫向移動，最新報導排在最前。</p>
+<h2 id="newsListTitle">全部報導</h2>
+<p>搜尋關鍵字或依主題篩選；最新發布內容排在最前。</p>
 </header>
+<div class="news-tools" aria-label="新聞搜尋與分類">
+<label class="news-search" for="newsSearch"><span>搜尋</span><input id="newsSearch" type="search" autocomplete="off" placeholder="搜尋標題、摘要或來源類型"></label>
+<div class="news-filters" role="group" aria-label="依主題篩選">
+<button type="button" data-news-filter="all" aria-pressed="true">全部</button>
+<button type="button" data-news-filter="case" aria-pressed="false">案件與法庭</button>
+<button type="button" data-news-filter="policy" aria-pressed="false">制度政策</button>
+<button type="button" data-news-filter="safety" aria-pressed="false">安全與支持</button>
+<button type="button" data-news-filter="action" aria-pressed="false">公共行動</button>
+</div>
+<output class="news-result-count" id="newsResultCount" aria-live="polite"></output>
+</div>
 <div class="news-grid" id="newsDeskGrid" aria-live="polite"></div>
+<p class="news-empty" id="newsEmpty" hidden>找不到符合條件的內容，請改用其他關鍵字或分類。</p>
+<div class="news-load-row"><button class="news-load-more" id="newsLoadMore" type="button">顯示更多報導</button></div>
 <p class="news-rights">新聞摘要由本站整理；原始報導文字、真人照片與影音之著作權，均屬原媒體、攝影者或其他權利人。每張照片均於卡片中標示來源。</p>
 </section>
+<section class="news-shell news-help" aria-labelledby="taiwanHelpTitle">
+<div>
+<span class="news-help-kicker">TAIWAN · 需要立即協助</span>
+<h2 id="taiwanHelpTitle">懷疑兒少受到虐待或疏忽，不必等到證據完整才求助</h2>
+<p>113 保護專線全年無休、24 小時提供諮詢與通報；若兒少生命安全正處於危急狀況，請立即撥打 110。</p>
+</div>
+<div class="news-help-actions">
+<a href="tel:113"><strong>113</strong><span>保護專線</span></a>
+<a href="https://ecare.mohw.gov.tw/" target="_blank" rel="noopener noreferrer"><strong>線上通報</strong><span>關懷 e 起來</span></a>
+<a href="tel:110"><strong>110</strong><span>緊急協助</span></a>
+</div>
+<p class="news-help-source">求助資訊來源：衛生福利部。本站不是緊急服務單位。</p>
+</section>
+<noscript><p class="news-shell news-noscript">新聞列表需要 JavaScript 才能顯示。您仍可前往 <a href="/child-advocacy-site/news/pinned-reports/">置頂快報</a>，或在緊急情況下撥打 113／110。</p></noscript>
 </main>
 <footer class="news-footer">願下一個孩子，在傷害發生以前，就有人伸手接住。</footer>
-<script src="/child-advocacy-site/assets/news-desk-20260903.js?v=20261031-campus-safeguarding-1" defer></script>
+<script src="/child-advocacy-site/assets/news-desk-20260903.js?v=20261120-regional-news-hub-1" defer></script>
 <script data-cpa-four-language-toolbar-script src="/child-advocacy-site/assets/four-language-toolbar-20260901.js?v=20260911-hk-site-home-4"></script>
 <script data-cpa-legal-notice-script src="/child-advocacy-site/assets/legal-notice.js?v=20260905-footer-1"></script>
 
 </body>
 </html>
+
