@@ -165,9 +165,19 @@ console.log(JSON.stringify({
   hongKongImagesMissingInTaiwan: apply ? missingImageCount : null,
 }));
 
-async function getJson(url) {
+async function getJson(url, sourceLabel, endpointLabel) {
   const response = await fetch(url, { headers: { accept: "application/json", "user-agent": USER_AGENT }, cache: "no-store" });
-  if (!response.ok) throw new Error(`GET failed ${response.status} ${new URL(url).pathname}`);
+  if (!response.ok) {
+    const requestId = response.headers.get("cf-ray") ?? response.headers.get("x-request-id");
+    const diagnostic = [
+      `source=${sourceLabel}`,
+      `host=${new URL(url).host}`,
+      `endpoint=${endpointLabel}`,
+      `status=${response.status}`,
+      requestId ? `requestId=${requestId}` : null,
+    ].filter(Boolean).join(" ");
+    throw new Error(`Public snapshot request failed: ${diagnostic}`);
+  }
   return response.json();
 }
 
@@ -176,7 +186,7 @@ async function getPublicSnapshot(origin, statsOrigin, expectedScope, label) {
     const publishedBefore = await getPublishedCount(statsOrigin, expectedScope, label);
     const url = new URL("/api/public/messages", origin);
     url.searchParams.set("limit", String(Math.max(publishedBefore, 1)));
-    const payload = await getJson(url);
+    const payload = await getJson(url, label, "public-messages");
     const messages = array(payload.messages, `${label} messages`);
     const publishedAfter = await getPublishedCount(statsOrigin, expectedScope, label);
     if (publishedBefore !== publishedAfter) continue;
@@ -189,7 +199,7 @@ async function getPublicSnapshot(origin, statsOrigin, expectedScope, label) {
 }
 
 async function getPublishedCount(origin, expectedScope, label) {
-  const stats = await getJson(`${origin}/api/public/submission-stats`);
+  const stats = await getJson(`${origin}/api/public/submission-stats`, label, "submission-stats");
   if (stats.scope !== expectedScope) throw new Error(`${label} scope changed`);
   const published = Number(stats.published);
   if (!Number.isSafeInteger(published) || published < 0) throw new Error(`Invalid ${label} published count`);
