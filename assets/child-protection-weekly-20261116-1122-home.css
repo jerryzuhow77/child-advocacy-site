@@ -1,0 +1,7 @@
+.weekly-latest { width: min(1320px, calc(100% - 2rem)); margin: 1.5rem auto; }
+.weekly-latest-card { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); min-width: 0; color: #23433e; background: #fffaf1; border: 1px solid #d8cfbb; text-decoration: none; }
+.weekly-latest-card:focus-visible { outline: 2px solid #704429; outline-offset: 3px; }
+.weekly-latest-card img { display: block; width: 100%; height: 100%; aspect-ratio: 16/9; object-fit: cover; }
+.weekly-latest-card > span { display: flex; flex-direction: column; gap: .45rem; padding: 1rem; overflow-wrap: anywhere; }
+.weekly-latest-title { font-size: 1.12rem; line-height: 1.35; }
+@media (max-width: 760px) { .weekly-latest-card { grid-template-columns: minmax(0, 1fr); } }
