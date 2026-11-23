@@ -30,8 +30,8 @@
     "url": "/child-advocacy-site/news/child-protection-weekly-20261116-1122/ja/"
   }
 };
-  const lang = new URLSearchParams(location.search).get('lang') === 'zh-Hans'
-    ? 'zh-Hans' : document.documentElement.lang;
+  const routeLocale = location.pathname.match(/^\/child-advocacy-site\/(en|ja|zh-Hans)(?:\/|$)/)?.[1];
+  const lang = routeLocale || new URLSearchParams(location.search).get('lang') || document.documentElement.lang;
   const data = cards[lang] || cards['zh-Hant'];
   const grid = document.querySelector('.home-latest-25-grid, [data-weekly-latest]');
   if (!grid) return;
