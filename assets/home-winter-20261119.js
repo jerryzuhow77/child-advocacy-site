@@ -429,7 +429,7 @@
     }
 
     const legalNotes = [...document.querySelectorAll('details')].find(details =>
-      details.querySelector('summary')?.textContent.includes('法律爭議界限')
+      /法律[爭争]議界限/.test(details.querySelector('summary')?.textContent || '')
     );
     legalNotes?.removeAttribute('open');
   };
