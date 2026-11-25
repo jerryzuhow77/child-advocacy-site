@@ -33,7 +33,10 @@
       .slice(0, 9);
 
     if (pinned) pinned.classList.add('featured');
-    grid.replaceChildren(...[pinned, ...recent].filter(Boolean));
+    const ordered = [pinned, ...recent].filter(Boolean);
+    const current = [...grid.children];
+    const needsRebuild = current.length !== ordered.length || current.some((card, index) => card !== ordered[index]);
+    if (needsRebuild) grid.replaceChildren(...ordered);
     if (note) {
       const hans = document.documentElement.lang === 'zh-Hans';
       note.textContent = hans
