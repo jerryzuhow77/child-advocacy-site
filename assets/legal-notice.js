@@ -60,6 +60,6 @@
   document.head.appendChild(style);
   var note=document.createElement('aside');
   note.className='cpa-legal-notice';note.setAttribute('data-cpa-legal-notice','true');note.setAttribute('aria-label',text.heading);
-  note.innerHTML='<details open><summary>'+text.heading+'</summary><div><p>'+text.common+'</p><p>'+text[type]+'</p><p>'+text.boundary+'</p></div></details>';
+  note.innerHTML='<details><summary>'+text.heading+'</summary><div><p>'+text.common+'</p><p>'+text[type]+'</p><p>'+text.boundary+'</p></div></details>';
   target.appendChild(note);
 }());
