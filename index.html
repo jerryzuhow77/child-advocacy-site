@@ -431,7 +431,7 @@ html body #daily-brief-pair-20261026#daily-brief-pair-20261026#daily-brief-pair-
 
 <script defer src="/child-advocacy-site/assets/home-special-needs-support-forum-20261119.js?v=20261119-4"></script>
 
-<script>if('serviceWorker' in navigator){addEventListener('load',()=>navigator.serviceWorker.register('/child-advocacy-site/article-reader-sw.js?v=20261125-home-order-1',{scope:'/child-advocacy-site/'}).catch(()=>{}))}</script>
+<script>if('serviceWorker' in navigator){addEventListener('load',()=>navigator.serviceWorker.register('/child-advocacy-site/article-reader-sw.js?v=20261125-home-order-2',{scope:'/child-advocacy-site/'}).catch(()=>{}))}</script>
 
 <script defer src="/child-advocacy-site/assets/home-pinned-briefs-20261121.js?v=20261122-2"></script>
 
@@ -445,6 +445,18 @@ html body #daily-brief-pair-20261026#daily-brief-pair-20261026#daily-brief-pair-
 <script defer src="/child-advocacy-site/assets/site.js?v=20261125-luxe-fly-1"></script>
 
 
+<style id="home-zh-hant-hero-order-20261125">
+@media (max-width:760px){
+  html[lang="zh-Hant"] #main-content > .ink-scroll-hero.editorial-hero{
+    display:flex!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:relative!important;
+    order:initial!important;
+    min-height:700px!important;
+  }
+}
+</style>
 <script id="home-top-order-guard-20261125">
 (() => {
   const normalize = () => {
@@ -452,13 +464,17 @@ html body #daily-brief-pair-20261026#daily-brief-pair-20261026#daily-brief-pair-
     const hero = main?.querySelector(":scope > .ink-scroll-hero.editorial-hero");
     const hearing = main?.querySelector(":scope > #court-hearing-home-20270108");
     if (!main || !hero || !hearing) return;
-    main.insertBefore(hero, main.firstElementChild);
+    if (main.firstElementChild !== hero) main.insertBefore(hero, main.firstElementChild);
     if (hero.nextElementSibling !== hearing) main.insertBefore(hearing, hero.nextElementSibling);
   };
   const run = () => {
     normalize();
+    const main = document.querySelector("#main-content");
+    if (!main) return;
+    const observer = new MutationObserver(normalize);
+    observer.observe(main, { childList: true });
     requestAnimationFrame(normalize);
-    setTimeout(normalize, 300);
+    setTimeout(() => { normalize(); observer.disconnect(); }, 5000);
   };
   document.readyState === "loading"
     ? document.addEventListener("DOMContentLoaded", run, { once: true })
