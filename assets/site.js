@@ -236,3 +236,11 @@
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
 })();
+
+
+/* Upgrade the shared traveller into a full, foreground reindeer sleigh tableau. */
+(() => {
+ const upgrade=()=>{const el=document.querySelector('.cpa-global-sleigh');if(!el||el.dataset.reindeerUpgrade)return;el.dataset.reindeerUpgrade='true';
+ el.innerHTML='<span class="cpa-global-sleigh__trail"></span><svg viewBox="0 0 620 280" role="presentation"><defs><linearGradient id="cpaRed" x1="0" x2="1"><stop stop-color="#7f302d"/><stop offset=".55" stop-color="#bd5d46"/><stop offset="1" stop-color="#722b31"/></linearGradient><linearGradient id="cpaGold" x1="0" x2="1"><stop stop-color="#8f672a"/><stop offset=".5" stop-color="#f8db91"/><stop offset="1" stop-color="#b17b31"/></linearGradient></defs><g fill="#f6ead5" stroke="#c79c61" stroke-width="5"><path d="M170 125c-31-46-74-48-100-13 24 1 38 9 49 25-30-11-56-4-70 24 27-5 47 1 61 19l59-14z"/><path d="M310 135c-31-46-74-48-100-13 24 1 38 9 49 25-30-11-56-4-70 24 27-5 47 1 61 19l59-14z"/></g><g fill="#f8efe0" stroke="#9f7040" stroke-width="7"><path d="M135 110c-38-13-69 12-67 52l15 44 23-20 12 32 20-7 1-39c33-11 49-35 16-62z"/><path d="M275 120c-38-13-69 12-67 52l15 44 23-20 12 32 20-7 1-39c33-11 49-35 16-62z"/></g><g fill="none" stroke="url(#cpaGold)" stroke-width="12" stroke-linecap="round"><path d="M92 111l-21-43m30 38L91 57m8 51l24-39M232 121l-21-43m30 38l-10-49m8 51l24-39"/><path d="M118 171L388 159M257 180l133-21"/></g><g fill="url(#cpaRed)" stroke="url(#cpaGold)" stroke-width="10"><path d="M358 134c55-29 135-22 177 16l-6 77H347z"/><path d="M388 125c12-47 62-64 95-35l21 48z"/></g><g fill="#f8efe0" stroke="#a36c42" stroke-width="5"><circle cx="440" cy="92" r="30"/><path d="M411 76c15-35 56-27 58 7l-16 8z"/><path d="M399 131c35-15 67-8 88 20l-80 17z"/></g><path d="M360 229c48 23 123 21 177-9m-172 27c49 24 122 24 173-7" fill="none" stroke="url(#cpaGold)" stroke-width="13" stroke-linecap="round"/><circle cx="105" cy="163" r="8" fill="#d49c43"/><circle cx="245" cy="173" r="8" fill="#d49c43"/></svg>';};
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(upgrade,20),{once:true});else setTimeout(upgrade,20);
+})();
