@@ -7,7 +7,7 @@
   grid-template-rows: repeat(2, minmax(0, 1fr));
   align-items: center;
   column-gap: clamp(28px, 5vw, 64px);
-  row-gap: 12px;
+  row-gap: 24px;
   width: min(1120px, calc(100% - 32px));
   margin: 18px auto 20px;
   padding: clamp(24px, 3vw, 34px);
@@ -81,7 +81,7 @@
 .court-home-copy {
   grid-column: 1;
   grid-row: 1;
-  align-self: center;
+  align-self: end;
   max-width: 680px;
 }
 
@@ -112,7 +112,7 @@
 .court-home-downloads {
   grid-column: 1;
   grid-row: 2;
-  align-self: center;
+  align-self: start;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
