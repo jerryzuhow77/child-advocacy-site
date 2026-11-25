@@ -40,13 +40,13 @@
 
   const organizeLatest = (latest, grid) => {
     const cards = [...grid.querySelectorAll(':scope > .home-latest-25-card')];
-    if (cards.length <= 4) return { count: cards.length, moreGrid: null };
+    if (cards.length <= 5) return { count: cards.length, moreGrid: null };
 
     const moreGrid = document.createElement('div');
     moreGrid.id = 'home-latest-more-20261119';
     moreGrid.className = 'home-latest-more-grid';
     moreGrid.hidden = true;
-    cards.slice(4).forEach(card => moreGrid.append(card));
+    cards.slice(5).forEach(card => moreGrid.append(card));
     grid.insertAdjacentElement('afterend', moreGrid);
     latest.dataset.articleCount = String(cards.length);
     return { count: cards.length, moreGrid };
