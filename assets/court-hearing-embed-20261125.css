@@ -219,3 +219,39 @@
 @media (prefers-reduced-motion: reduce) {
   .court-home-flake { will-change: auto; }
 }
+
+
+/* Mobile safeguard: the seasonal header pseudo-element must not overlay the hearing date. */
+@media (max-width: 700px) {
+  .home-winter-20261119 .court-hearing-home-20270108::before {
+    content: "近期公開程序" !important;
+    position: absolute !important;
+    inset: 12px auto auto 18px !important;
+    z-index: 2 !important;
+    display: block !important;
+    padding: 0 !important;
+    border: 0 !important;
+    color: #8c6a2c !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+    letter-spacing: .08em !important;
+  }
+
+  .home-winter-20261119 .court-home-copy {
+    padding-top: 27px !important;
+  }
+
+  .home-winter-20261119 .court-home-kicker {
+    display: block !important;
+    max-width: 100% !important;
+    overflow-wrap: anywhere;
+    line-height: 1.45 !important;
+    margin-bottom: 8px !important;
+  }
+
+  .home-winter-20261119 .court-hearing-home-20270108 h2 {
+    font-size: clamp(25px, 7.2vw, 31px) !important;
+    max-width: 100% !important;
+  }
+}
