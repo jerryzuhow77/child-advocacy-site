@@ -935,3 +935,23 @@ body.home-winter-20261119 {
     animation-iteration-count: 1 !important;
   }
 }
+
+
+/* Christmas 2026: shared Taiwan / CN home art direction. */
+.home-winter-20261119 .ink-scroll-hero > .ink-hero-stage::after{
+  content:"";position:absolute;z-index:4;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 74% 19%,rgba(255,245,202,.78) 0 2px,transparent 3px) 0 0/82px 72px,
+    linear-gradient(180deg,transparent 55%,rgba(18,47,67,.17));
+}
+.home-winter-20261119 .ink-scroll-hero > .ink-hero-stage{background:#17354c!important}
+.home-winter-20261119 .ink-scroll-hero .ink-hero-image{filter:saturate(.7) contrast(1.08) brightness(.88) hue-rotate(8deg)!important}
+.home-winter-20261119 .ink-scroll-hero > .cinema-copy{
+  background:radial-gradient(circle at 5% 4%,rgba(207,162,94,.17),transparent 29%),url('./home-paper-grain-20261013.svg'),linear-gradient(135deg,#fffdf8,#f4ebdd)!important
+}
+.winter-lost-sleigh{position:absolute;z-index:7;top:7%;right:5%;width:142px;height:76px;pointer-events:none;filter:drop-shadow(0 9px 13px rgba(7,25,43,.34));transform-origin:center}
+.winter-lost-sleigh svg{width:100%;height:100%;overflow:visible}.winter-lost-sleigh__trail{position:absolute;right:66%;top:34%;width:250px;height:82px;border-top:2px dashed rgba(255,246,215,.9);border-radius:50%;transform:rotate(-11deg);opacity:.85}
+.winter-material-tokens{position:absolute;z-index:8;right:17px;bottom:16px;display:flex;gap:7px;color:#fffdf8;font-size:11px;font-weight:750;text-shadow:0 1px 5px rgba(7,25,43,.7);pointer-events:none}
+.winter-material-tokens span{display:flex;align-items:center;gap:5px;padding:5px 8px;border:1px solid rgba(255,255,255,.34);border-radius:999px;background:rgba(17,45,69,.48);backdrop-filter:blur(7px)}
+.winter-material-tokens i{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,#eaf0ef,#567d91)}.winter-material-tokens span:nth-child(2) i{background:linear-gradient(135deg,#fffef7,#c8bca7)}.winter-material-tokens span:nth-child(3) i{background:#b96f50}
+@media(prefers-reduced-motion:no-preference){.winter-lost-sleigh{animation:winter-lost-sleigh 18s ease-in-out infinite}.winter-lost-sleigh__trail{animation:winter-lost-trail 18s ease-in-out infinite}}@keyframes winter-lost-sleigh{0%,100%{transform:translate(0,0) rotate(3deg)}25%{transform:translate(-42px,13px) rotate(-5deg)}51%{transform:translate(-82px,-6px) rotate(5deg)}74%{transform:translate(-34px,-19px) rotate(-2deg)}}@keyframes winter-lost-trail{0%,100%{transform:rotate(-11deg) scaleX(.82);opacity:.25}45%{transform:rotate(9deg) scaleX(1);opacity:.9}70%{opacity:.4}}
+@media(max-width:760px){.winter-lost-sleigh{width:96px;height:52px;right:3%;top:4%}.winter-material-tokens{right:10px;bottom:10px;font-size:10px}.winter-material-tokens span{padding:4px 6px}.winter-material-tokens span:nth-child(3){display:none}}
