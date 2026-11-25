@@ -5680,3 +5680,16 @@ body::after{content:"";position:fixed;z-index:-1;inset:0;pointer-events:none;opa
 .site-header{background:linear-gradient(102deg,#0a2439,#173c55 65%,#243f53)!important}
 .site-footer{position:relative;overflow:hidden}.site-footer::before{content:"✦  ·  ❄  ·  ✦  ·  ❄  ·  ✦";display:block;text-align:center;letter-spacing:.7em;color:#e6c577;padding:12px 0 2px;font-size:1rem}
 .card,.home-card,.news-card,.feature-card,.case-card,.reading-card{position:relative;overflow:hidden}.card::after,.home-card::after,.news-card::after,.feature-card::after,.case-card::after,.reading-card::after{content:"✦";position:absolute;right:12px;top:8px;color:rgba(184,135,59,.36);font-size:1.15rem}
+
+/* Christmas Neon Sleigh Gallery — high-impact seasonal art direction */
+:root{--cpa-night:#100b2a;--cpa-evergreen:#063f36;--cpa-holly:#b80f36;--cpa-neon-red:#ff315a;--cpa-neon-green:#4ff0ac;--cpa-gold:#ffd36d;--cpa-ice:#9cddff;--cpa-paper:#fff5df}
+body{background:radial-gradient(circle at 8% 10%,rgba(255,49,90,.14),transparent 28%),radial-gradient(circle at 92% 24%,rgba(79,240,172,.15),transparent 31%),linear-gradient(150deg,#0e0926 0,#133e36 55%,#160b32 100%)!important;color:#fff5df}
+body::before{z-index:-1;opacity:.72;background-image:radial-gradient(circle,rgba(255,255,255,.9) 0 1px,transparent 1.8px),radial-gradient(circle,rgba(255,211,109,.8) 0 1.1px,transparent 2px);background-size:47px 47px,93px 81px;background-position:0 0,25px 17px}
+.site-header{background:linear-gradient(90deg,rgba(12,7,39,.95),rgba(5,63,54,.92),rgba(184,15,54,.88))!important;border-bottom:1px solid rgba(255,211,109,.72)!important;box-shadow:0 10px 35px rgba(255,49,90,.18),0 0 30px rgba(79,240,172,.12)!important}
+.site-footer{background:#0d0824!important;border-top:1px solid rgba(255,211,109,.5)!important}
+main>section,.page-section,.content-section{border-color:rgba(255,211,109,.28)!important}
+.card,.home-card,.news-card,.feature-card,.case-card,.reading-card{background:linear-gradient(140deg,rgba(255,245,223,.98),rgba(239,255,247,.94))!important;color:#1d1937!important;border:1px solid rgba(255,211,109,.75)!important;box-shadow:0 13px 32px rgba(0,0,0,.24),inset 0 1px rgba(255,255,255,.9)!important}
+h1,h2,h3{color:inherit}.button,.btn,.cta{background:linear-gradient(90deg,#ff315a,#ff9a3f,#ffd36d)!important;color:#250720!important;border:0!important;box-shadow:0 0 0 1px rgba(255,255,255,.45),0 7px 22px rgba(255,49,90,.36)!important}
+.cpa-global-sleigh{z-index:9999!important;width:460px!important;height:250px!important;opacity:1!important;filter:drop-shadow(0 10px 12px rgba(0,0,0,.38)) drop-shadow(0 0 22px rgba(255,49,90,.6)) drop-shadow(0 0 25px rgba(79,240,172,.42))!important}
+.cpa-global-sleigh svg{overflow:visible!important}.cpa-global-sleigh__trail{width:640px!important;height:210px!important;border-top:5px dashed #ffd36d!important;box-shadow:0 -1px 12px #ffcc48,0 -1px 28px #ff315a!important;right:62%!important;top:18%!important}
+.cpa-global-sleigh .neon{filter:drop-shadow(0 0 6px #ff315a)}@media(max-width:760px){.cpa-global-sleigh{width:245px!important;height:135px!important}.cpa-global-sleigh__trail{width:310px!important;height:104px!important;border-top-width:3px!important}}
