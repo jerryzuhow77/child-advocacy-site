@@ -230,6 +230,11 @@ def synchronize(check_only: bool) -> int:
             source_main = MAIN_RE.search(source.read_text(encoding="utf-8"))
             target_main = MAIN_RE.search(target_text)
             if not source_main or not target_main:
+                if route in DYNAMIC_ARTICLE_ROOT_ROUTES:
+                    source_root = '<div id="article-root"' in source.read_text(encoding="utf-8")
+                    target_root = '<div id="article-root"' in target_text
+                    if source_root and target_root:
+                        continue
                 errors.append(f"{route}: missing main element")
                 continue
             if structural_signature(source_main.group(0)) != structural_signature(target_main.group(0)):
