@@ -455,3 +455,12 @@
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||!window.gsap)return;
   window.gsap.to(sleigh,{rotation:1.5,y:-3,duration:2.8,repeat:-1,yoyo:true,ease:'sine.inOut'});
 })();
+
+
+(() => {
+  const banner=document.querySelector('.court-hearing-home-20270108');
+  if(!banner || banner.querySelector('.winter-top-sleigh')) return;
+  const sleigh=document.createElement('div');sleigh.className='winter-top-sleigh';sleigh.setAttribute('aria-hidden','true');
+  sleigh.innerHTML='<span class="winter-top-sleigh__trail"></span><svg viewBox="0 0 180 90" role="presentation"><path d="M62 68c28 10 64 8 89-4M61 73c26 10 62 10 88-2" fill="none" stroke="#d8ad70" stroke-width="4" stroke-linecap="round"/><path d="M52 56h89l-11-24H64z" fill="#a74f3e"/><path d="M60 52h74" stroke="#f6dfaa" stroke-width="5"/><circle cx="87" cy="39" r="16" fill="#f0c2a6"/><path d="M72 34c2-21 27-24 31-3" fill="#fff7e5"/><path d="M70 31c8-17 24-17 34 0" fill="#b9473c"/><circle cx="103" cy="31" r="4" fill="#fff7e5"/><path d="M56 44L33 36M55 54L25 57" stroke="#c9975f" stroke-width="3"/><path d="M26 35c-7-10-16-8-20 0 8 0 13 4 20 10M23 57c-9-8-17-4-19 5 8-2 14 0 19 5" fill="none" stroke="#d7b47d" stroke-width="3"/></svg>';
+  banner.append(sleigh);
+})();

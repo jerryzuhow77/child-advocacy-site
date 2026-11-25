@@ -955,3 +955,11 @@ body.home-winter-20261119 {
 .winter-material-tokens i{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,#eaf0ef,#567d91)}.winter-material-tokens span:nth-child(2) i{background:linear-gradient(135deg,#fffef7,#c8bca7)}.winter-material-tokens span:nth-child(3) i{background:#b96f50}
 @media(prefers-reduced-motion:no-preference){.winter-lost-sleigh{animation:winter-lost-sleigh 18s ease-in-out infinite}.winter-lost-sleigh__trail{animation:winter-lost-trail 18s ease-in-out infinite}}@keyframes winter-lost-sleigh{0%,100%{transform:translate(0,0) rotate(3deg)}25%{transform:translate(-42px,13px) rotate(-5deg)}51%{transform:translate(-82px,-6px) rotate(5deg)}74%{transform:translate(-34px,-19px) rotate(-2deg)}}@keyframes winter-lost-trail{0%,100%{transform:rotate(-11deg) scaleX(.82);opacity:.25}45%{transform:rotate(9deg) scaleX(1);opacity:.9}70%{opacity:.4}}
 @media(max-width:760px){.winter-lost-sleigh{width:96px;height:52px;right:3%;top:4%}.winter-material-tokens{right:10px;bottom:10px;font-size:10px}.winter-material-tokens span{padding:4px 6px}.winter-material-tokens span:nth-child(3){display:none}}
+
+
+/* Keep the festive journey visible before visitors scroll past the court update banner. */
+.court-hearing-home-20270108{position:relative;overflow:hidden}
+.court-hearing-home-20270108 .winter-top-sleigh{position:absolute;z-index:5;top:26px;right:clamp(28px,6vw,94px);width:154px;height:82px;pointer-events:none;filter:drop-shadow(0 8px 12px rgba(31,58,75,.2))}
+.court-hearing-home-20270108 .winter-top-sleigh__trail{position:absolute;right:67%;top:37%;width:260px;height:76px;border-top:2px dashed rgba(184,136,69,.66);border-radius:50%;transform:rotate(-12deg)}
+@media(prefers-reduced-motion:no-preference){.court-hearing-home-20270108 .winter-top-sleigh{animation:winter-lost-sleigh 18s ease-in-out infinite}.court-hearing-home-20270108 .winter-top-sleigh__trail{animation:winter-lost-trail 18s ease-in-out infinite}}
+@media(max-width:760px){.court-hearing-home-20270108 .winter-top-sleigh{top:12px;right:12px;width:100px;height:54px}.court-hearing-home-20270108 .winter-top-sleigh__trail{width:150px}}
