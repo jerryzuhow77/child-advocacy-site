@@ -473,3 +473,16 @@
   art.innerHTML='<i class="christmas-paper-origami"></i><i class="christmas-clay-lantern"></i>';
   banner.prepend(art);
 })();
+
+
+/* Editorial reading order: the core promise is the first visual experience;
+   practical court information follows immediately as the first utility module. */
+(() => {
+  const arrange=()=>{
+    const main=document.querySelector('main#main-content');
+    const hero=main?.querySelector('.ink-scroll-hero');
+    const hearing=document.querySelector('.court-hearing-home-20270108');
+    if(main&&hero&&hearing&&hearing.previousElementSibling!==hero) hero.insertAdjacentElement('afterend',hearing);
+  };
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',arrange,{once:true}); else arrange();
+})();
