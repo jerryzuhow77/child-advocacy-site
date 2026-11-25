@@ -26,7 +26,20 @@
     const cards = [...grid.querySelectorAll('.home-latest-25-card'), weeklyCard].filter(Boolean);
     if (!cards.length) return;
 
-    const pinned = cards.find(card => new URL(card.href).pathname.includes(pinnedPath));
+    let pinned = cards.find(card => new URL(card.href).pathname.includes(pinnedPath));
+    if (!pinned) {
+      const template = cards.find(card => card.classList.contains('home-latest-25-card'));
+      if (template) {
+        pinned = template.cloneNode(true);
+        pinned.href = pinnedPath;
+        const title = pinned.querySelector('strong, h3');
+        if (title) title.textContent = document.documentElement.lang === 'zh-Hans'
+          ? '不是职称，而是信息、权限与可作为性｜十五章旁听笔记'
+          : '不是職稱，而是資訊、權限與可作為性｜十五章旁聽筆記';
+        const time = pinned.querySelector('time');
+        if (time) { time.dateTime = '2026-11-15'; time.textContent = '2026/11/15'; }
+      }
+    }
     const recent = cards
       .filter(card => card !== pinned)
       .sort((a, b) => (b.querySelector('time')?.dateTime || '').localeCompare(a.querySelector('time')?.dateTime || ''))
@@ -82,6 +95,6 @@
   const observer = new MutationObserver(schedulePreview);
   observer.observe(grid, { childList: true });
   schedulePreview();
-  window.addEventListener('load', schedulePreview, { once: true });
+  window.addEventListener('load', () => { schedulePreview(); setTimeout(schedulePreview, 1200); setTimeout(schedulePreview, 3500); }, { once: true });
 })();
 
