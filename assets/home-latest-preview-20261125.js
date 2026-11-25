@@ -67,5 +67,6 @@
   document.head.append(style);
 
   applyPreview();
+  window.addEventListener('load', applyPreview, { once: true });
 })();
 
