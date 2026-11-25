@@ -12,7 +12,8 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  # Sitemap commits may follow a publication push; let the active Pages deploy finish.
+  cancel-in-progress: false
 
 jobs:
   deploy:
