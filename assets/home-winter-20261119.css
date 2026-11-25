@@ -1012,3 +1012,55 @@ body.home-winter-20261119 {
 .editorial-hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 78% 18%,rgba(255,211,109,.4),transparent 18%),radial-gradient(circle at 88% 72%,rgba(79,240,172,.22),transparent 23%);mix-blend-mode:screen}
 .editorial-hero .editorial-copy,.editorial-hero .ink-hero-copy{position:relative;z-index:2;text-shadow:0 3px 28px #13072d}.editorial-hero h1{color:#fff4d6!important;text-shadow:0 0 20px rgba(255,211,109,.6),0 0 42px rgba(255,49,90,.48)!important}.editorial-hero .eyebrow{color:#ffd36d!important;letter-spacing:.16em!important}
 @media(max-width:760px){.editorial-hero{min-height:660px!important;background-position:62% center!important;background-image:linear-gradient(0deg,rgba(12,6,39,.95) 0%,rgba(12,6,39,.42) 100%),url("images/neon-reindeer-sleigh-hero.png")!important}.editorial-hero .editorial-copy,.editorial-hero .ink-hero-copy{padding-top:260px!important}}
+
+
+/* 2026-11-26 mobile hero: two children remain readable and the scene is modern ink, not seasonal decoration. */
+.home-winter-20261119 .winter-lost-sleigh,
+.home-winter-20261119 .winter-material-tokens,
+.home-winter-20261119 .winter-snow-layer,
+.home-winter-20261119 .winter-paper-craft {
+  display: none !important;
+}
+.home-winter-20261119 .ink-scroll-hero.editorial-hero {
+  background: #102a42 !important;
+  border-bottom-color: rgba(214, 185, 111, .42) !important;
+  box-shadow: none !important;
+}
+.home-winter-20261119 .ink-scroll-hero > .ink-hero-stage::after {
+  background:
+    radial-gradient(circle at 76% 21%, rgba(236, 218, 159, .20) 0 1px, transparent 2px) 0 0 / 70px 66px,
+    linear-gradient(180deg, rgba(9, 31, 49, .10), rgba(9, 31, 49, .34)) !important;
+}
+.home-winter-20261119 .ink-scroll-hero .ink-hero-image {
+  filter: saturate(.56) contrast(1.04) brightness(.90) hue-rotate(7deg) !important;
+}
+@media (max-width: 760px) {
+  .home-winter-20261119 .ink-scroll-hero.editorial-hero {
+    min-height: 760px !important;
+    background: #102a42 !important;
+  }
+  .home-winter-20261119 .ink-scroll-hero > .ink-hero-stage::before {
+    background:
+      linear-gradient(180deg, #102a42 0%, rgba(16, 42, 66, .91) 40%, rgba(16, 42, 66, .18) 72%, rgba(8, 24, 39, .10) 100%) !important;
+  }
+  .home-winter-20261119 .ink-scroll-hero .ink-hero-image {
+    object-position: 73% 73% !important;
+    transform: scale(1.15) !important;
+    filter: saturate(.62) contrast(1.03) brightness(.98) hue-rotate(5deg) !important;
+  }
+  .home-winter-20261119 .ink-scroll-hero > .cinema-copy {
+    min-height: 760px !important;
+    padding: 76px 26px 288px !important;
+    background: linear-gradient(180deg, #102a42 0%, rgba(16,42,66,.92) 43%, rgba(16,42,66,.35) 66%, rgba(16,42,66,0) 81%) !important;
+  }
+  .home-winter-20261119 .ink-scroll-hero .actions {
+    position: relative;
+    z-index: 7;
+  }
+  .home-winter-20261119 .ink-scroll-hero .ink-hero-caption {
+    z-index: 7 !important;
+    right: 14px !important;
+    bottom: 12px !important;
+    color: rgba(255,248,232,.88) !important;
+  }
+}
