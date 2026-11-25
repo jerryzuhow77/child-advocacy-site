@@ -19,6 +19,13 @@ HK_BASE = "https://cn.globalprotectionwall.com"
 HK_ROOT_ROUTES = {"news/child-safety-network-20260914/"}
 URL_ATTR_RE = re.compile(r"(?P<prefix>\b(?:href|src|action|poster)\s*=\s*)(?P<quote>[\"'])(?P<url>.*?)(?P=quote)", re.I | re.S)
 MAIN_RE = re.compile(r"<main\b[^>]*>[\s\S]*?</main>", re.I)
+# These two articles render their body into #article-root at runtime; their
+# locale-specific scripts are maintained as complete editions, not fragments
+# suitable for static OpenCC replacement.
+DYNAMIC_ARTICLE_ROOT_ROUTES = {
+    "news/tainan-child-participation-20261121/",
+    "news/taipei-mediation-path-20261120/",
+}
 KAIKAI_ROUTES = {
     "features/kaikai-grandmother-rescue-barriers/",
     "features/social-observation/child-abuse-recognition-blind-spots/",
@@ -257,6 +264,11 @@ def synchronize(check_only: bool) -> int:
         source_main = MAIN_RE.search(source_text)
         target_main = MAIN_RE.search(target_text)
         if not source_main or not target_main:
+            if route in DYNAMIC_ARTICLE_ROOT_ROUTES:
+                source_root = '<div id="article-root"' in source_text
+                target_root = '<div id="article-root"' in target_text
+                if source_root and target_root:
+                    continue
             errors.append(f"{route}: missing source or target main element")
             continue
         converted_main = convert_html(source_main.group(0), source, target, source_to_hans, converter)
