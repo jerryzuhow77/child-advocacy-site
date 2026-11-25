@@ -15,8 +15,8 @@
       collapseLatest: '收合文章',
       hearingCta: '查看最新庭期',
       hearingAll: '查看完整庭期表',
-      heroCaption: '剴剴守護意象｜冬日水墨紙雕',
-      heroAlt: '剴剴守護意象：冬日水墨紙雕中穿藍色條紋上衣的孩子背影，非真實肖像或事件現場'
+      heroCaption: '剴剴守護意象｜現代水墨',
+      heroAlt: '剴剴守護意象：兩名孩子走向山谷光線的現代水墨插畫，非真實肖像或事件現場'
     },
     zhHans: {
       latest: '最新',
@@ -33,8 +33,8 @@
       collapseLatest: '收起文章',
       hearingCta: '查看最新庭期',
       hearingAll: '查看完整庭期表',
-      heroCaption: '剴剴守护意象｜冬日水墨纸雕',
-      heroAlt: '剴剴守护意象：冬日水墨纸雕中穿蓝色条纹上衣的孩子背影，非真实肖像或事件现场'
+      heroCaption: '剴剴守护意象｜现代水墨',
+      heroAlt: '剴剴守护意象：两名孩子走向山谷光线的现代水墨插画，非真实肖像或事件现场'
     }
   };
 
