@@ -66,7 +66,19 @@
   `;
   document.head.append(style);
 
-  applyPreview();
-  window.addEventListener('load', applyPreview, { once: true });
+  let queued = false;
+  const schedulePreview = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => {
+      queued = false;
+      applyPreview();
+    });
+  };
+
+  const observer = new MutationObserver(schedulePreview);
+  observer.observe(grid, { childList: true });
+  schedulePreview();
+  window.addEventListener('load', schedulePreview, { once: true });
 })();
 
