@@ -443,3 +443,25 @@ html body #daily-brief-pair-20261026#daily-brief-pair-20261026#daily-brief-pair-
 <link rel="stylesheet" href="/child-advocacy-site/assets/site.css?v=20261125-luxe-fly-1">
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
 <script defer src="/child-advocacy-site/assets/site.js?v=20261125-luxe-fly-1"></script>
+
+
+<script id="home-top-order-guard-20261125">
+(() => {
+  const normalize = () => {
+    const main = document.querySelector("#main-content");
+    const hero = main?.querySelector(":scope > .ink-scroll-hero.editorial-hero");
+    const hearing = main?.querySelector(":scope > #court-hearing-home-20270108");
+    if (!main || !hero || !hearing) return;
+    main.insertBefore(hero, main.firstElementChild);
+    if (hero.nextElementSibling !== hearing) main.insertBefore(hearing, hero.nextElementSibling);
+  };
+  const run = () => {
+    normalize();
+    requestAnimationFrame(normalize);
+    setTimeout(normalize, 300);
+  };
+  document.readyState === "loading"
+    ? document.addEventListener("DOMContentLoaded", run, { once: true })
+    : run();
+})();
+</script>
