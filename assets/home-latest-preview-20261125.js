@@ -45,7 +45,7 @@
     const recent = cards
       .filter(card => card !== pinned)
       .sort((a, b) => (b.querySelector('time')?.dateTime || '').localeCompare(a.querySelector('time')?.dateTime || ''))
-      .slice(0, 9);
+      .slice(0, 10);
 
     if (pinned) pinned.classList.add('featured');
     const ordered = [pinned, ...recent].filter(Boolean);
