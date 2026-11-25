@@ -31,7 +31,9 @@
       const template = cards.find(card => card.classList.contains('home-latest-25-card'));
       if (template) {
         pinned = template.cloneNode(true);
-        pinned.href = 'https://cn.globalprotectionwall.com/child-advocacy-site/features/social-observation/chen-shangjie-appeal-issues-20261115/?lang=zh-Hans';
+        pinned.href = document.documentElement.lang === 'zh-Hans'
+          ? 'https://cn.globalprotectionwall.com/child-advocacy-site/features/social-observation/chen-shangjie-appeal-issues-20261115/?lang=zh-Hans'
+          : 'https://jerryzuhow77.github.io/child-advocacy-site/features/social-observation/chen-shangjie-appeal-issues-20261115/';
         const title = pinned.querySelector('strong, h3');
         if (title) title.textContent = document.documentElement.lang === 'zh-Hans'
           ? '不是职称，而是信息、权限与可作为性｜十五章旁听笔记'
