@@ -158,7 +158,7 @@
         reloadingForUpdate = true;
         window.location.reload();
       });
-      navigator.serviceWorker.register(new URL('sw.js?v=20261116-home-layout-refresh-v24', siteBase).href, {
+      navigator.serviceWorker.register(new URL('sw.js?v=20261125-luxe-free-sleigh-v27', siteBase).href, {
         scope: siteBase.pathname,
         updateViaCache: 'none'
       })
