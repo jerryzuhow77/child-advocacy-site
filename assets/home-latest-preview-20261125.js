@@ -36,8 +36,8 @@
           : 'https://jerryzuhow77.github.io/child-advocacy-site/features/social-observation/chen-shangjie-appeal-issues-20261115/';
         const title = pinned.querySelector('strong, h3');
         if (title) title.textContent = document.documentElement.lang === 'zh-Hans'
-          ? '不是职称，而是信息、权限与可作为性｜十五章旁听笔记'
-          : '不是職稱，而是資訊、權限與可作為性｜十五章旁聽筆記';
+          ? '陈尚洁二审准备程序旁听笔记'
+          : '陳尚潔二審準備程序旁聽筆記';
         const time = pinned.querySelector('time');
         if (time) { time.dateTime = '2026-11-15'; time.textContent = '2026/11/15'; }
       }
