@@ -289,6 +289,14 @@ def synchronize(check_only: bool) -> int:
             converted_main = converted_main.replace("剀剀", "凯凯")
         for source_asset, target_asset in LANGUAGE_ASSET_REWRITES.get(route, ()):
             converted_main = converted_main.replace(source_asset, target_asset)
+        # The Hong Kong mirror uses its own emergency-help contacts on the Simplified
+        # Chinese news hub. Preserve that localized section while synchronizing the
+        # shared news layout and article listing.
+        if route == "news/":
+            target_help = re.search(r'<section class="news-shell news-help"[\\s\\S]*?</section>', target_main.group(0), re.I)
+            converted_help = re.search(r'<section class="news-shell news-help"[\\s\\S]*?</section>', converted_main, re.I)
+            if target_help and converted_help:
+                converted_main = converted_main[:converted_help.start()] + target_help.group(0) + converted_main[converted_help.end():]
         updated = target_text[:target_main.start()] + converted_main + target_text[target_main.end():]
         updated = ensure_shared_record_assets(updated, source_text)
         updated = re.sub(r'(<html\b[^>]*\blang\s*=\s*)["\'][^"\']+["\']', r'\1"zh-Hans"', updated, count=1, flags=re.I)
