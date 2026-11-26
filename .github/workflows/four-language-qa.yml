@@ -190,7 +190,7 @@ jobs:
               'news/zh-Hans/index.html', 'en/news/index.html', 'ja/news/index.html',
               'news/lin-xinci-nexttv-20260902/zh-Hans/index.html',
               'en/news/lin-xinci-nexttv-20260902/index.html', 'ja/news/lin-xinci-nexttv-20260902/index.html'))
-          assert all(term in localized_art for term in ('纸雕与黏土', 'paper-cut and clay', '紙彫刻と粘土造形')), 'Localized artwork descriptions must match the paper-cut and clay replacement.'
+          assert all(term in localized_art for term in ('纸雕与陶土', 'paper-cut and clay', '紙彫刻と粘土造形')), 'Localized artwork descriptions must match the paper-cut and clay replacement.'
           assert routes['version'] == route_manifest_version.group(1), 'The toolbar and generated route manifest must share the same cache key.'
           assert set(routes['routes']['']) == {'zh-Hant', 'zh-Hans', 'en', 'ja'}
           question_route = routes['routes']['news/kaikai-court-question-20260903/']
