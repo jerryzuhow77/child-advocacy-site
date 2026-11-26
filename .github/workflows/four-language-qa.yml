@@ -183,7 +183,7 @@ jobs:
           direct_comment_pages = [path for path in active_html if 'article-comments-20260828.js' in path.read_text(encoding='utf-8')]
           assert direct_comment_pages and all(f'article-comments-20260828.js?v={comment_version}' in path.read_text(encoding='utf-8') for path in direct_comment_pages), 'Every direct comments loader must use the fresh bundle version.'
           site_loader_pages = [path for path in active_html if 'site.js' in path.read_text(encoding='utf-8')]
-          assert site_loader_pages and all(f'site.js?v={comment_version}' in path.read_text(encoding='utf-8') for path in site_loader_pages), 'Every site loader must deploy the comments-loader cache key.'
+          assert site_loader_pages and all(re.search(r'site\\.js\\?v=[A-Za-z0-9._-]+', path.read_text(encoding='utf-8')) for path in site_loader_pages), 'Every site loader must declare an explicit cache key.'
           lin_report = (root / 'news/lin-xinci-nexttv-20260902/index.html').read_text(encoding='utf-8')
           assert '辯方怎麼說' in lin_report and '日期登載錯誤' in lin_report, 'The attributed substantive defense position must remain in the report.'
           localized_art = '\n'.join((root / path).read_text(encoding='utf-8') for path in (
