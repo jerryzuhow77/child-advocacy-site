@@ -40,7 +40,7 @@ try{
   page.on('load',()=>loadObserved=true);
   const homePath='/child-advocacy-site/'+(['en','ja'].includes(locale)?locale+'/':'?lang='+locale);
   await page.goto('https://'+host+homePath,{waitUntil:'commit'});
-  await page.waitForFunction(()=>window.__cpaStaticHomeReady===true);
+  await page.waitForFunction(()=>Boolean(document.querySelector('#news-flash h3')&&document.querySelector('.section-nav')&&document.querySelectorAll('.cpa-language-select option').length===4));
   const early=await page.evaluate(()=>({lang:document.documentElement.lang,lead:document.querySelector('#news-flash h3')?.textContent,nav:document.querySelector('.section-nav')?.getBoundingClientRect().height,languages:document.querySelectorAll('.cpa-language-select option').length}));
   assert(!loadObserved,`${region}/${locale}/${width}: failed to test delayed resources`);
   assert(early.lang===locale,`${region}/${locale}/${width}: locale waits for resource loading`);
