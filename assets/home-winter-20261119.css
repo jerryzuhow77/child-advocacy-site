@@ -1064,3 +1064,29 @@ body.home-winter-20261119 {
     color: rgba(255,248,232,.88) !important;
   }
 }
+
+
+/* 2026-11-27: keep both children in the ink wash, and keep the shared view count visible. */
+.home-winter-20261119 .ink-scroll-hero .ink-hero-image {
+  object-position: 50% 64% !important;
+  opacity: .72 !important;
+  filter: saturate(.72) contrast(.94) brightness(1.06) hue-rotate(4deg) !important;
+}
+
+.home-winter-20261119 .ink-scroll-hero .hero-view-counter {
+  display: block !important;
+  width: fit-content;
+  margin-top: 18px !important;
+  padding: 8px 12px !important;
+  border: 1px solid rgba(215, 184, 107, .58) !important;
+  background: rgba(10, 39, 61, .48) !important;
+  color: #fff8e8 !important;
+  opacity: 1 !important;
+  font-size: 13px !important;
+  line-height: 1.45 !important;
+}
+
+.home-winter-20261119 .ink-scroll-hero .hero-view-counter .home-view-counter,
+.home-winter-20261119 .ink-scroll-hero .hero-view-counter * {
+  color: inherit !important;
+}
